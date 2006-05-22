@@ -1,5 +1,19 @@
 2006-05-22  Tom Tromey  <tromey@redhat.com>
 
+	* resource/gnu/classpath/tools/serialver/messages.properties: New
+	file.
+	* tools/gnu/classpath/tools/serialver/Messages.java: New file.
+	* tools/gnu/classpath/tools/serialver/SerialVer.java (classes): New
+	field.
+	(classpath): Likewise.
+	(run): New method.
+	(main): Use it.
+	(addFileURL): New method.
+	(getClassLoader): Likewise.
+	(printMessage): Likewise.
+
+2006-05-22  Tom Tromey  <tromey@redhat.com>
+
 	* tools/gnu/classpath/tools/serialver/SerialVer.java: New file.
 
 2006-05-22  Audrius Meskauskas  <AudriusA@Bioinformatics.org>

@@ -17,9 +17,24 @@
  along with GNU Classpath; see the file COPYING.  If not, write to the
  Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  02111-1307 USA. */
+
+
 package gnu.classpath.tools.serialver;
 
+import gnu.classpath.tools.getopt.ClasspathToolParser;
+import gnu.classpath.tools.getopt.FileArgumentCallback;
+import gnu.classpath.tools.getopt.Option;
+import gnu.classpath.tools.getopt.OptionException;
+import gnu.classpath.tools.getopt.Parser;
+
+import java.io.File;
 import java.io.ObjectStreamClass;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.StringTokenizer;
 
 /**
  * This class is an implementation of the `serialver' program. Any number of
@@ -29,32 +44,120 @@ import java.io.ObjectStreamClass;
  */
 public class SerialVer
 {
-  public static void main(String[] args)
+  // List of classes to load.
+  ArrayList classes = new ArrayList();
+  // The class path to use.
+  String classpath;
+
+  // FIXME: taken from ClassLoader, should share it.
+  private static void addFileURL(ArrayList list, String file)
   {
-    if (args.length == 0)
+    try
       {
-        System.out.println("Usage: serialver [CLASS]...");
-        return;
+        list.add(new File(file).toURL());
       }
-    Class clazz;
-    ObjectStreamClass osc;
-    for (int i = 0; i < args.length; i++)
+    catch(java.net.MalformedURLException x)
       {
+      }
+  }
+
+  private ClassLoader getClassLoader()
+  {
+    // FIXME: this code is taken from ClassLoader.
+    // We should share it somewhere.
+    URL[] urls;
+    if (classpath == null)
+      urls = new URL[0];
+    else
+      {
+        StringTokenizer tok = new StringTokenizer(classpath,
+                                                  File.pathSeparator, true);
+        ArrayList list = new ArrayList();
+        while (tok.hasMoreTokens())
+          {
+            String s = tok.nextToken();
+            if (s.equals(File.pathSeparator))
+              addFileURL(list, "."); //$NON-NLS-1$
+            else
+              {
+                addFileURL(list, s);
+                if (tok.hasMoreTokens())
+                  {
+                    // Skip the separator.
+                    tok.nextToken();
+                    // If the classpath ended with a separator,
+                    // append the current directory.
+                    if (!tok.hasMoreTokens())
+                      addFileURL(list, "."); //$NON-NLS-1$
+                  }
+              }
+          }
+        urls = new URL[list.size()];
+        urls = (URL[]) list.toArray(urls);
+      }
+    return new URLClassLoader(urls);
+  }
+
+  private void printMessage(String format, String klass)
+  {
+    System.err.println(MessageFormat.format(format, new Object[] { klass }));
+  }
+
+  public void run(String[] args)
+  {
+    Parser p = new ClasspathToolParser("serialver", true) //$NON-NLS-1$
+    {
+      protected void validate() throws OptionException
+      {
+        if (classes.isEmpty())
+          throw new OptionException(Messages.getString("SerialVer.NoClassesSpecd")); //$NON-NLS-1$
+      }
+    };
+    p.setHeader(Messages.getString("SerialVer.HelpHeader")); //$NON-NLS-1$
+
+    p.add(new Option(Messages.getString("SerialVer.5"), Messages.getString("SerialVer.ClasspathHelp"), "PATH") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    {
+      public void parsed(String argument) throws OptionException
+      {
+        if (classpath != null)
+          throw new OptionException(Messages.getString("SerialVer.DupClasspath")); //$NON-NLS-1$
+        classpath = argument;
+      }
+    });
+
+    p.parse(args, new FileArgumentCallback()
+    {
+      public void notifyFile(String fileArgument) throws OptionException
+      {
+        classes.add(fileArgument);
+      }
+    });
+
+    ClassLoader loader = getClassLoader();
+    Iterator it = classes.iterator();
+    while (it.hasNext())
+      {
+        String name = (String) it.next();
         try
           {
-            clazz = Class.forName(args[i]);
-            osc = ObjectStreamClass.lookup(clazz);
+            Class clazz = loader.loadClass(name);
+            ObjectStreamClass osc = ObjectStreamClass.lookup(clazz);
             if (osc != null)
-              System.out.println(clazz.getName() + ": "
-                                 + "static final long serialVersionUID = "
-                                 + osc.getSerialVersionUID() + "L;");
+              System.out.println(clazz.getName() + ": " //$NON-NLS-1$
+                                 + "static final long serialVersionUID = " //$NON-NLS-1$
+                                 + osc.getSerialVersionUID() + "L;"); //$NON-NLS-1$
             else
-              System.err.println("Class " + args[i] + " is not serializable");
+              printMessage(Messages.getString("SerialVer.ClassNotSerial"), name); //$NON-NLS-1$
           }
         catch (ClassNotFoundException e)
           {
-            System.err.println("Class for " + args[i] + " not found");
+            printMessage(Messages.getString("SerialVer.ClassNotFound"), name); //$NON-NLS-1$
           }
       }
+  }
+
+  public static void main(String[] args)
+  {
+    new SerialVer().run(args);
   }
 }
