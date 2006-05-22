@@ -1,3 +1,19 @@
+2006-05-21  Tom Tromey  <tromey@redhat.com>
+
+	PR classpath/27688:
+	* tools/gnu/classpath/tools/jar/Extractor.java (allItems): Now
+	a WorkSet.
+	(initSet): Removed.
+	(shouldExtract): Removed.
+	(run): Updated.
+	* tools/gnu/classpath/tools/jar/WorkSet.java: New file.
+	* tools/gnu/classpath/tools/jar/Lister.java (readUntilEnd): New
+	method.
+	(listJar): Use it.
+	(allItems): New field.
+	(run): Initialize it.
+	(listJar): Use it.
+
 2006-05-22  Sven de Marothy  <sven@physto.se>
 
 	* java/nio/CharBuffer.java

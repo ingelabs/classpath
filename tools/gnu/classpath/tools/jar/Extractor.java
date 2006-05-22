@@ -45,9 +45,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -55,8 +52,7 @@ public class Extractor
     extends Action
 {
   // This is a set of all the items specified on the command line.
-  // It is null if none were specified.
-  private HashSet allItems;
+  private WorkSet allItems;
 
   private void copyFile(InputStream input, File output) throws IOException
   {
@@ -72,43 +68,10 @@ public class Extractor
     os.close();
   }
 
-  private void initSet(ArrayList entries)
-  {
-    if (entries == null || entries.isEmpty())
-      return;
-    allItems = new HashSet();
-    Iterator it = entries.iterator();
-    while (it.hasNext())
-      {
-        Entry entry = (Entry) it.next();
-        int len = entry.name.length();
-        while (len > 0 && entry.name.charAt(len - 1) == '/')
-          --len;
-        String name = entry.name.substring(0, len);
-        allItems.add(name);
-      }
-  }
-
-  private boolean shouldExtract(String filename)
-  {
-    if (allItems == null)
-      return true;
-    while (filename.length() > 0)
-      {
-        if (allItems.contains(filename))
-          return true;
-        int index = filename.lastIndexOf('/');
-        if (index == -1)
-          break;
-        filename = filename.substring(0, index);
-      }
-    return false;
-  }
-
   public void run(Main parameters) throws IOException
   {
     // Figure out what we want to extract.
-    initSet(parameters.entries);
+    allItems = new WorkSet(parameters.entries);
     // Open the input file.
     ZipInputStream zis;
     File zfile = parameters.archiveFile;
@@ -125,7 +88,7 @@ public class Extractor
         ZipEntry entry = zis.getNextEntry();
         if (entry == null)
           break;
-        if (! shouldExtract(entry.getName()))
+        if (! allItems.contains(entry.getName()))
           continue;
         File file = new File(entry.getName());
         if (entry.isDirectory())
