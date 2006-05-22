@@ -44,8 +44,10 @@ import javax.naming.Context;
 import javax.naming.Name;
 
 /**
- * Represents a factory for creating the object. Classes, implementing this
- * interface, must be public and have public parameterless constructor.
+ * Represents a factory for creating the object. ObjectFactory performs the
+ * operation, that is the opposite to the operation, performed by the
+ * {@link StateFactory}. Classes, implementing this interface, must be public
+ * and have public parameterless constructor.
  */
 public interface ObjectFactory
 {

@@ -573,7 +573,7 @@ public class NamingManager
     if (env != null)
       env.put (CPE, cpe);
 
-    // It is really unclear to me if this is right.
+    // TODO: Check if this implementation matches the API specification
     try
       {
 	Object obj = getObjectInstance (cpe.getResolvedObj(),
@@ -592,7 +592,22 @@ public class NamingManager
 
     throw cpe;
   }
-
+  
+  /**
+   * Get the object state for binding.
+   * 
+   * @param obj the object, for that the binding state must be retrieved. Cannot
+   *          be null.
+   * @param name the name of this object, related to the nameCtx. Can be null if
+   *          not specified.
+   * @param nameCtx the naming context, to that the object name is related. Can
+   *          be null if the name is related to the initial default context.
+   * @param environment the properties for creating the object state. Can be
+   *          null if no properties are provided.
+   * @return the object state for binding, may be null if no changes are
+   *         returned by the factory
+   * @throws NamingException
+   */ 
   public static Object getStateToBind (Object obj, Name name,
 				       Context nameCtx, Hashtable environment)
     throws NamingException

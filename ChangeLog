@@ -1,3 +1,13 @@
+2006-05-22  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/naming/spi/InitialContextFactory.java,
+	javax/naming/spi/InitialContextFactoryBuilder.java,
+	javax/naming/spi/NamingManager.java,
+	javax/naming/spi/ObjectFactory.java,
+	javax/naming/spi/ResolveResult.java,
+	javax/naming/spi/Resolver.java,
+	javax/naming/spi/StateFactory.java: Documented.
+
 2006-05-21  Tom Tromey  <tromey@redhat.com>
 
 	PR classpath/27688:
