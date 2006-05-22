@@ -1,3 +1,7 @@
+2006-05-22  Tom Tromey  <tromey@redhat.com>
+
+	* NEWS: Updated.
+
 2006-05-22  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JLabel.java
