@@ -1,8 +1,10 @@
 2006-05-23  Robert Schuster  <robertschuster@fsfe.org>
 
 	* examples/gnu/classpath/examples/awt/Demo.java:
-	(MainWindow.MainWindow): Added ResolutionWindow instance as subframe.
+	(MainWindow.MainWindow): Added ResolutionWindow and FullscreenWindow
+	instance as subframe.
 	(ResolutionWindow): New inner class.
+	(FullscreenWindow): New inner class.
 
 2006-05-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 	
