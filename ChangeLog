@@ -1,5 +1,18 @@
 2006-05-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* examples/gnu/classpath/examples/swing/TableDemo.java:
+	(SliderCell): New inner class. (setCustomEditors,
+	setInformativeHeaders): New fields. (createContent):
+	Rewritten.
+	* javax/swing/DefaultCellEditor.java 
+	(JComboBoxDelegate.shouldSelectCell): New method.
+	* javax/swing/JTable.java (editCellAt): Call shouldSelectCell.
+	* javax/swing/plaf/basic/BasicTableUI.java
+	(MouseInputHandler.mouseClicked): Start editing on a single
+	click if the cell editor is not a default cell editor.
+
+2006-05-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* javax/swing/naming/CompositeName.java,
 	javax/swing/naming/CompoundName.java:
 	Documented.

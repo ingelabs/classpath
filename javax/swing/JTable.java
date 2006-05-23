@@ -3905,7 +3905,9 @@ public class JTable
         moveToCellBeingEdited(editorComp);
         scrollRectToVisible(editorComp.getBounds());
         editorComp.requestFocusInWindow();
-        return true;
+        
+        // Deliver the should select event.
+        return editor.shouldSelectCell(null);        
       }
   }
 
