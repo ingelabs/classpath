@@ -1,5 +1,19 @@
 2006-05-23  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/tree/AbstractLayoutCache.java: Coding style fixes,
+	* javax/swing/tree/DefaultMutableTreeNode.java: Likewise,
+	* javax/swing/tree/DefaultTreeCellRenderer.java: Likewise,
+	* javax/swing/tree/DefaultTreeModel.java: Likewise,
+	* javax/swing/tree/DefaultTreeSelectionModel.java: Likewise,
+	* javax/swing/tree/ExpandVetoException.java: Likewise,
+	* javax/swing/tree/FixedHeightLayoutCache.java: Likewise,
+	* javax/swing/tree/RowMapper.java: Likewise,
+	* javax/swing/tree/TreeNode.java: Likewise,
+	* javax/swing/tree/TreeSelectionModel.java: Likewise,
+	* javax/swing/tree/VariableHeightLayoutCache.java: Likewise.
+
+2006-05-23  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/tree/DefaultTreeCellRenderer.java
 	(DefaultTreeCellRenderer): Changed key for 
 	setBackgroundNonSelectionColor(),

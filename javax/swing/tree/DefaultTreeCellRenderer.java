@@ -510,7 +510,7 @@ public class DefaultTreeCellRenderer
       insets = border.getBorderInsets(this);
 
     FontMetrics fm = getToolkit().getFontMetrics(getFont());
-    SwingUtilities.layoutCompoundLabel(((JLabel) this), fm, getText(),
+    SwingUtilities.layoutCompoundLabel((JLabel) this, fm, getText(),
                                        getIcon(), getVerticalAlignment(),
                                        getHorizontalAlignment(),
                                        getVerticalTextPosition(),
@@ -521,7 +521,7 @@ public class DefaultTreeCellRenderer
     Rectangle bounds = getBounds(ir);
     
     bounds.x = tr.x - insets.left;
-    bounds.width = tr.width + insets.left+insets.right;
+    bounds.width = tr.width + insets.left + insets.right;
     
     g.setColor(super.getBackground());
     g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
@@ -552,7 +552,7 @@ public class DefaultTreeCellRenderer
     Rectangle tr = new Rectangle();
 
     FontMetrics fm = getToolkit().getFontMetrics(getFont());
-    SwingUtilities.layoutCompoundLabel(((JLabel) this), fm, getText(),
+    SwingUtilities.layoutCompoundLabel((JLabel) this, fm, getText(),
                                        getIcon(), getVerticalAlignment(),
                                        getHorizontalAlignment(),
                                        getVerticalTextPosition(),
