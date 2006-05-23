@@ -1,3 +1,9 @@
+2006-05-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/naming/CompositeName.java,
+	javax/swing/naming/CompoundName.java:
+	Documented.
+
 2006-05-23  Archie Cobbs  <archie@dellroad.org>
 
 	* vm/reference/java/lang/VMClassLoader.java: fix static initializer
