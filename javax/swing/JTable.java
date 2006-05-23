@@ -1045,7 +1045,17 @@ public class JTable
     /**
      * The CheckBox that is used for rendering.
      */
-    private final JCheckBox checkBox = new JCheckBox();
+    private final JCheckBox checkBox;
+    
+    /**
+     * Creates a new checkbox based boolean cell renderer. The checkbox is
+     * centered by default.
+     */
+    BooleanCellRenderer()
+    {
+       checkBox = new JCheckBox();
+       checkBox.setHorizontalAlignment(SwingConstants.CENTER);
+    }
    
     /**
      * Get the check box.
@@ -1251,6 +1261,12 @@ public class JTable
   private class IconCellRenderer
     extends DefaultTableCellRenderer
   {
+    IconCellRenderer()
+    {
+      setHorizontalAlignment(SwingConstants.CENTER);
+    }
+    
+    
     /**
      * Returns the component that is used for rendering the value.
      *
