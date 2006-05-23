@@ -1,3 +1,10 @@
+2006-05-23  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/tree/DefaultTreeCellRenderer.java
+	(DefaultTreeCellRenderer): Changed key for 
+	setBackgroundNonSelectionColor(),
+	plus API docs all over.
+
 2006-05-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 	
 	PR 27680
