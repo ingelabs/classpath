@@ -1,3 +1,14 @@
+2006-05-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+	
+	PR 27680
+	* javax/swing/JTable.java (booleanInvertingEditor): New field.
+	(defaultEditorsByColumnClass, defaultRenderersByColumnClass):
+	Initialise in constructor. (columnMoved): Cancel editing.
+	(createDefaultEditors): Rewritten. (editCellAt):
+	Just invert the value if this is a boolean cell. 
+	(initialiseLocalVars): Do not initialise renderer and editor tables.
+	(setUI): Create editors and renderers here.
+
 2006-05-23  Robert Schuster  <robertschuster@fsfe.org>
 
 	* examples/gnu/classpath/examples/awt/Demo.java:
