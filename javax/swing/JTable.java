@@ -2067,6 +2067,10 @@ public class JTable
    */
   public void valueChanged (ListSelectionEvent event)
   {
+    // If we are in the editing process, end the editing session.
+    if (isEditing())
+      editingStopped(null);
+    
     // Repaint the changed region.
     int first = Math.max(0, Math.min(getRowCount() - 1, event.getFirstIndex()));
     int last = Math.max(0, Math.min(getRowCount() - 1, event.getLastIndex()));
