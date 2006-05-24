@@ -3719,6 +3719,10 @@ public class JTable
    */
   public void selectAll()
   {
+    // The table is empty - nothing to do!
+    if (getRowCount() == 0 || getColumnCount() == 0)
+      return;
+    
     // rowLead and colLead store the current lead selection indices
     int rowLead = selectionModel.getLeadSelectionIndex();
     int colLead = getColumnModel().getSelectionModel().getLeadSelectionIndex();

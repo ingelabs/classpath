@@ -1,3 +1,9 @@
+2006-05-24  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	Reported by Antony Balkisson.
+	* javax/swing/JTable.java (selectAll): Return without action 
+	if the table is empty.
+
 2006-05-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* examples/gnu/classpath/examples/swing/TableDemo.java:
