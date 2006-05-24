@@ -1,3 +1,9 @@
+2006-05-24  Lillian Angel  <langel@redhat.com>
+
+	* tools/gnu/classpath/tools/appletviewer/AppletTag.java
+	(prependCodeBase): Added check to determine if the documentbase
+	points to a directory or a file.
+
 2006-05-24  Sven de Marothy  <sven@physto.se>
 
 	* java/awt/dnd/DragGestureRecognizer.java
