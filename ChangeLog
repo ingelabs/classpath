@@ -1,5 +1,11 @@
 2006-05-25  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* examples/gnu/classpath/examples/swing/Demo.java: Add FillRect
+	paint performance demo.
+	* examples/gnu/classpath/examples/swing/FillRect.java: New file.
+
+2006-05-25  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	* INSTALL: Bump GTK requirement to 2.8 or higher.  Do not mention
 	Cairo version requirement.  Do not mention --enable-gtk-cairo
 	configure option.
