@@ -396,7 +396,7 @@ Java_gnu_java_awt_peer_gtk_GdkFontPeer_getTextMetrics
 
 JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GdkFontPeer_setFont
-  (JNIEnv *env, jobject self, jstring family_name_str, jint style_int, jint size, jboolean useGraphics2D)
+  (JNIEnv *env, jobject self, jstring family_name_str, jint style_int, jint size)
 {
   struct peerfont *pfont = NULL;
   char const *family_name = NULL;
@@ -433,22 +433,11 @@ Java_gnu_java_awt_peer_gtk_GdkFontPeer_setFont
   if (style & java_awt_font_ITALIC)
     pango_font_description_set_style (pfont->desc, PANGO_STYLE_ITALIC);
 
-  if (useGraphics2D)
+  pango_font_description_set_size (pfont->desc, size * PANGO_SCALE);
+  if (pfont->ctx == NULL)
     {
-      pango_font_description_set_size (pfont->desc, size * PANGO_SCALE);
-      if (pfont->ctx == NULL)
-	{
-	  ft2_map = PANGO_FT2_FONT_MAP(pango_ft2_font_map_for_display ());
-	  pfont->ctx = pango_ft2_font_map_create_context (ft2_map);
-	}
-    }
-  else
-    {
-      /* GDK uses a slightly different DPI setting. */
-      pango_font_description_set_size (pfont->desc,
-				   size * cp_gtk_dpi_conversion_factor);
-      if (pfont->ctx == NULL)
-	pfont->ctx = gdk_pango_context_get();
+      ft2_map = PANGO_FT2_FONT_MAP(pango_ft2_font_map_for_display ());
+      pfont->ctx = pango_ft2_font_map_create_context (ft2_map);
     }
 
   g_assert (pfont->ctx != NULL);

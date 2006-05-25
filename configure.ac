@@ -165,23 +165,6 @@ dnl GTK native peer error checking
 dnl -----------------------------------------------------------
 AC_ARG_ENABLE([gtk-peers],,AC_MSG_ERROR([No --enable-gtk-peers (or --disable-gtk-peers) option; you want --enable-gtk-peer]))
 
-dnl ------------------------------------------------------------
-dnl determine whether to enable the cairo GTK Graphics2D backend
-dnl ------------------------------------------------------------
-AC_ARG_ENABLE([gtk-cairo],
-              [AS_HELP_STRING(--enable-gtk-cairo,build the cairo Graphics2D implementation on GTK [default=no])],
-              [case "${enableval}" in
-                yes) GTK_CAIRO_ENABLED=true ;;
-                no) GTK_CAIRO_ENABLED=false ;;
-                *) GTK_CAIRO_ENABLED=true ;;
-              esac],
-              [GTK_CAIRO_ENABLED=false])
-AC_SUBST(GTK_CAIRO_ENABLED)
-if test "x${GTK_CAIRO_ENABLED}" = xtrue; then
-  AC_DEFINE(GTK_CAIRO, 1, [defined if cairo support was built in])
-fi
-AM_CONDITIONAL(GTK_CAIRO, test "x${GTK_CAIRO_ENABLED}" = xtrue)
-
 dnl -----------------------------------------------------------
 dnl Qt native peer (disabled by default)
 dnl -----------------------------------------------------------
@@ -401,18 +384,11 @@ if test "x${COMPILE_JNI}" = xyes; then
        	  [AC_MSG_ERROR([libXtst NOT found, required for GdkRobot])],
        	  [${X_LIBS}])
     PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.4 gthread-2.0 >= 2.2 gdk-pixbuf-2.0)
-
-    if test "x${enable_gtk_cairo}" = xyes; then
-      PKG_CHECK_MODULES(CAIRO, cairo >= 0.5.0)
-    fi
-
     PKG_CHECK_MODULES(FREETYPE2, freetype2)
     PKG_CHECK_MODULES(PANGOFT2, pangoft2)
 
     AC_SUBST(GTK_CFLAGS)
     AC_SUBST(GTK_LIBS)
-    AC_SUBST(CAIRO_LIBS)
-    AC_SUBST(CAIRO_CFLAGS)
     AC_SUBST(FREETYPE2_LIBS)
     AC_SUBST(FREETYPE2_CFLAGS)
     AC_SUBST(PANGOFT2_LIBS)

@@ -109,14 +109,7 @@ public class GtkComponentPeer extends GtkGenericPeer
   native void gtkWidgetRequestFocus ();
   native void gtkWidgetDispatchKeyEvent (int id, long when, int mods,
                                          int keyCode, int keyLocation);
-
-  native boolean isRealized ();
-
-  void realize ()
-  {
-    // Default implementation does nothing
-  }
-
+  native void realize();
   native void setNativeEventMask ();
 
   void create ()
@@ -149,6 +142,9 @@ public class GtkComponentPeer extends GtkGenericPeer
 
     setNativeEventMask ();
 
+    // This peer is guaranteed to have an X window upon construction.
+    // That is, native methods such as those in GdkGraphics can rely
+    // on this component's widget->window field being non-null.
     realize ();
 
     if (awtComponent.isCursorSet())
@@ -212,10 +208,7 @@ public class GtkComponentPeer extends GtkGenericPeer
   public Image createImage (int width, int height)
   {
     Image image;
-    if (GtkToolkit.useGraphics2D ())
-      image = new BufferedImage (width, height, BufferedImage.TYPE_INT_RGB);
-    else
-      image = new GtkImage (width, height);
+    image = new BufferedImage (width, height, BufferedImage.TYPE_INT_RGB);
 
     Graphics g = image.getGraphics();
     g.setColor(getBackground());
@@ -247,10 +240,7 @@ public class GtkComponentPeer extends GtkGenericPeer
   // never return null.
   public Graphics getGraphics ()
   {
-    if (GtkToolkit.useGraphics2D ())
-        return new GdkGraphics2D (this);
-    else
-        return new GdkGraphics (this);
+    return new GdkGraphics2D (this);
   }
 
   public Point getLocationOnScreen () 

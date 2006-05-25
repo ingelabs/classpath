@@ -37,8 +37,10 @@ exception statement from your version. */
 
 #include "jcl.h"
 #include "gtkpeer.h"
+#include <cairo-xlib.h>
+#include <gdk/gdkx.h>
+
 #include "gnu_java_awt_peer_gtk_GtkImage.h"
-#include <gdk-pixbuf/gdk-pixbuf.h>
 
 /* The constant fields in java.awt.Image */   
 #define SCALE_DEFAULT      1
@@ -324,7 +326,7 @@ Java_gnu_java_awt_peer_gtk_GtkImage_drawPixelsScaled
    jint x, jint y, jint width, jint height, jboolean composite)
 {
   GdkPixbuf* dst;
-  struct graphics *g;
+  struct graphics2d *g;
   guint32 bgColor;
 
   gdk_threads_enter ();
@@ -338,7 +340,7 @@ Java_gnu_java_awt_peer_gtk_GtkImage_drawPixelsScaled
   bgColor = ((bg_red & 0xFF) << 16) |
     ((bg_green & 0xFF) << 8) | (bg_blue & 0xFF);
     
-  g = (struct graphics *) NSA_GET_G_PTR (env, gc_obj);
+  g = (struct graphics2d *) NSA_GET_G2D_PTR (env, gc_obj);
   
   if (!g || !GDK_IS_DRAWABLE (g->drawable))
     {
@@ -365,24 +367,16 @@ Java_gnu_java_awt_peer_gtk_GtkImage_drawPixelsScaled
 				      width, height,
 				      GDK_INTERP_BILINEAR);
 
-      gdk_draw_pixbuf (g->drawable,
-		       g->gc,
-		       dst,
-		       0, 0,
-		       x + g->x_offset, y + g->y_offset, 
-		       width, height,
-		       GDK_RGB_DITHER_NORMAL, 0, 0);
+      gdk_cairo_set_source_pixbuf (g->cr, dst, (double) x, (double) y);
       gdk_pixbuf_unref (dst);
 
     } else {
       /* Get a pixmap */
       GdkPixmap* pixmap = (GdkPixmap *)getData (env, obj);
-      gdk_draw_drawable (g->drawable,
-			 g->gc,
-			 pixmap,
-			 0, 0, /* src x,y */
-			 x + g->x_offset, y + g->y_offset, 
-			 width, height);
+      cairo_xlib_surface_set_drawable (g->surface,
+                                       GDK_PIXMAP_XID(pixmap),
+                                       width,
+                                       height);
     }
     
   gdk_threads_leave ();
@@ -408,7 +402,7 @@ Java_gnu_java_awt_peer_gtk_GtkImage_drawPixelsScaledFlipped
 {
   GdkPixbuf *pixbuf;
   GdkPixbuf *tmp, *dst;
-  struct graphics *g;
+  struct graphics2d *g;
   guint32 bgColor;
 
   gdk_threads_enter ();
@@ -423,7 +417,7 @@ Java_gnu_java_awt_peer_gtk_GtkImage_drawPixelsScaledFlipped
   bgColor = ((bg_red & 0xFF) << 16) |
     ((bg_green & 0xFF) << 8) | (bg_blue & 0xFF);
     
-  g = (struct graphics *) NSA_GET_G_PTR (env, gc_obj);
+  g = (struct graphics2d *) NSA_GET_G2D_PTR (env, gc_obj);
   
   if (!g || !GDK_IS_DRAWABLE (g->drawable))
     {
@@ -492,14 +486,8 @@ Java_gnu_java_awt_peer_gtk_GtkImage_drawPixelsScaledFlipped
 				  GDK_INTERP_BILINEAR);
   gdk_pixbuf_unref (tmp);
     
-  gdk_draw_pixbuf (g->drawable,
-		   g->gc,
-		   dst,
-		   0, 0,
-		   dstx + g->x_offset, dsty + g->y_offset, 
-		   dstwidth, dstheight,
-		   GDK_RGB_DITHER_NORMAL, 0, 0);
-  
+  gdk_cairo_set_source_pixbuf (g->cr, dst, (double) dstx,
+                               (double) dsty);
   gdk_pixbuf_unref (dst);
 
   gdk_threads_leave ();

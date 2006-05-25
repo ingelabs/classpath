@@ -201,60 +201,9 @@ public class GdkTextLayout
 
   public void draw (Graphics2D g2, float x, float y)
   {
-    if (g2 instanceof GdkGraphics2D)
-      {
-        // we share pango structures directly with GdkGraphics2D 
-        // when legal
-        GdkGraphics2D gg2 = (GdkGraphics2D) g2;
-        gg2.drawGdkTextLayout(this, x, y);
-      }
-    else 
-      {
-        // falling back to a rather tedious layout algorithm when
-        // not legal
-        AttributedCharacterIterator ci = attributedString.getIterator ();
-        CharacterIteratorProxy proxy = new CharacterIteratorProxy (ci);
-        Font defFont = g2.getFont ();
-
-        /* Note: this implementation currently only interprets FONT text
-         * attributes. There is a reasonable argument to be made for some
-         * attributes being interpreted out here, where we have control of the
-         * Graphics2D and can construct or derive new fonts, and some
-         * attributes being interpreted by the GlyphVector itself. So far, for
-         * all attributes except FONT we do neither.
-         */
-
-        for (char c = ci.first ();
-             c != CharacterIterator.DONE;
-             c = ci.next ())
-          {                
-            proxy.begin = ci.getIndex ();
-            proxy.limit = ci.getRunLimit(TextAttribute.FONT);
-            if (proxy.limit <= proxy.begin)
-              continue;
-
-            proxy.index = proxy.begin;
-
-            Object fnt = ci.getAttribute(TextAttribute.FONT);
-            GlyphVector gv;
-            if (fnt instanceof Font)
-              gv = ((Font)fnt).createGlyphVector (fontRenderContext, proxy);
-            else
-              gv = defFont.createGlyphVector (fontRenderContext, proxy);
-
-            g2.drawGlyphVector (gv, x, y);
-
-            int n = gv.getNumGlyphs ();
-            for (int i = 0; i < n; ++i)
-              {
-                GlyphMetrics gm = gv.getGlyphMetrics (i);
-                if (gm.getAdvanceX() == gm.getAdvance ())
-                  x += gm.getAdvanceX ();
-                else
-                  y += gm.getAdvanceY ();
-              }
-          }
-      }
+    // we share pango structures directly with GdkGraphics2D 
+    GdkGraphics2D gg2 = (GdkGraphics2D) g2;
+    gg2.drawGdkTextLayout(this, x, y);
   }
 
   public TextHitInfo getStrongCaret (TextHitInfo hit1, 

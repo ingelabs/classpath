@@ -754,6 +754,20 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetForeground
 }
 
 JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_realize (JNIEnv *env, jobject obj)
+{
+  void *ptr;
+
+  gdk_threads_enter ();
+
+  ptr = NSA_GET_PTR (env, obj);
+
+  gtk_widget_realize (GTK_WIDGET (ptr));
+
+  gdk_threads_leave ();
+}
+
+JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setVisibleNative
   (JNIEnv *env, jobject obj, jboolean visible)
 {
@@ -791,30 +805,6 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_isEnabled
   ptr = NSA_GET_PTR (env, obj);
 
   ret_val = GTK_WIDGET_IS_SENSITIVE (get_widget(GTK_WIDGET (ptr)));
-
-  gdk_threads_leave ();
-
-  return ret_val;
-}
-
-JNIEXPORT jboolean JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkComponentPeer_isRealized
-  (JNIEnv *env, jobject obj)
-{
-  void *ptr;
-  jboolean ret_val;
-
-  gdk_threads_enter ();
-
-  ptr = NSA_GET_PTR (env, obj);
-
-  if (ptr == NULL)
-    {
-      gdk_threads_leave ();
-      return FALSE;
-    }
-
-  ret_val = GTK_WIDGET_REALIZED (get_widget(GTK_WIDGET (ptr)));
 
   gdk_threads_leave ();
 

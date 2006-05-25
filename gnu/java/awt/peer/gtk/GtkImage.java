@@ -168,7 +168,7 @@ public class GtkImage extends Image
    * Should be called with the GdkPixbufDecoder.pixbufLock held.
    * Also acquires global gdk lock for drawing.
    */
-  private native void drawPixelsScaled (GdkGraphics gc, 
+  private native void drawPixelsScaled (GdkGraphics2D gc, 
 					int bg_red, int bg_green, int bg_blue, 
 					int x, int y, int width, int height, 
 					boolean composite);
@@ -178,7 +178,7 @@ public class GtkImage extends Image
    * Should be called with the GdkPixbufDecoder.pixbufLock held.
    * Also acquires global gdk lock for drawing.
    */
-  private native void drawPixelsScaledFlipped (GdkGraphics gc, 
+  private native void drawPixelsScaledFlipped (GdkGraphics2D gc, 
 					       int bg_red, int bg_green, 
 					       int bg_blue, 
 					       boolean flipX, boolean flipY,
@@ -466,7 +466,7 @@ public class GtkImage extends Image
     if (!isLoaded) 
       return null;
     if (offScreen)
-      return new GdkGraphics(this);
+      return null; // FIXME: (Graphics) new GdkGraphics(this);
     else
       throw new IllegalAccessError("This method only works for off-screen"
 				   +" Images.");
@@ -540,7 +540,7 @@ public class GtkImage extends Image
   /**
    * Draws an image with eventual scaling/transforming.
    */
-  public boolean drawImage (GdkGraphics g, int dx1, int dy1, int dx2, int dy2, 
+  public boolean drawImage (GdkGraphics2D g, int dx1, int dy1, int dx2, int dy2, 
 			    int sx1, int sy1, int sx2, int sy2, 
 			    Color bgcolor, ImageObserver observer)
   {
@@ -613,7 +613,7 @@ public class GtkImage extends Image
    * Draws an image to the GdkGraphics context, at (x,y) scaled to 
    * width and height, with optional compositing with a background color.
    */
-  public boolean drawImage (GdkGraphics g, int x, int y, int width, int height,
+  public boolean drawImage (GdkGraphics2D g, int x, int y, int width, int height,
 			    Color bgcolor, ImageObserver observer)
   {
     if (addObserver(observer))

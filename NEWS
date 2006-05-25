@@ -1,5 +1,9 @@
 New in release 0.92 (UNRELEASED)
 
+* The GdkGraphics2D backend has been made the default.  There is no
+  longer an explicit dependency on Cairo, the --enable-gtk-cairo
+  configure option is gone, and GTK 2.8 or higher is now required to
+  build the GTK peers.
 * A Mozilla plugin, 'gcjwebplugin', is now included.  It introduces a
   dependency on the Mozilla plugin support headers and libraries.
 * Several new tools are now included:

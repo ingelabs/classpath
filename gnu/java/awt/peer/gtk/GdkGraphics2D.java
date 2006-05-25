@@ -100,10 +100,6 @@ public class GdkGraphics2D extends Graphics2D
 
   static 
   {
-    if (! Configuration.GTK_CAIRO_ENABLED)
-      throw new Error("Graphics2D not implemented. "
-		      + "Cairo was not found or disabled at configure time");
-
     if (Configuration.INIT_LOAD_LIBRARY)
       System.loadLibrary("gtkpeer");
 
@@ -132,15 +128,12 @@ public class GdkGraphics2D extends Graphics2D
   Composite comp;
   private Stack stateStack;
 
-  private native void initStateUnlocked(GtkComponentPeer component);
   private native void initState(GtkComponentPeer component);
   private native void initState(int width, int height);
   private native void initState(int[] pixes, int width, int height);
   private native void copyState(GdkGraphics2D g);
   public native void dispose();
   private native void cairoSurfaceSetFilter(int filter);
-  private native void cairoSurfaceSetFilterUnlocked(int filter);
-  native void connectSignals(GtkComponentPeer component);
 
   public void finalize()
   {
@@ -157,19 +150,8 @@ public class GdkGraphics2D extends Graphics2D
     return new GdkGraphics2D(this, x, y, width, height);
   }
 
-  private void fail_g2d ()
-  {
-    System.err.println ("Attempted to instantiate GdkGraphics2D"
-			+ " but Graphics2D not enabled.  Try again with"
-			+ " -Dgnu.java.awt.peer.gtk.Graphics=Graphics2D");
-    System.exit (1);
-  }
-
   GdkGraphics2D(GdkGraphics2D g)
   {
-    if (!GtkToolkit.useGraphics2D ())
-      fail_g2d ();
-
     paint = g.paint;
     stroke = g.stroke;
     setRenderingHints(g.hints);
@@ -221,9 +203,6 @@ public class GdkGraphics2D extends Graphics2D
 
   GdkGraphics2D(int width, int height)
   {
-    if (!GtkToolkit.useGraphics2D ())
-      fail_g2d ();
-
     initState(width, height);
 
     setColor(Color.black);
@@ -239,15 +218,9 @@ public class GdkGraphics2D extends Graphics2D
 
   GdkGraphics2D(GtkComponentPeer component)
   {
-    if (!GtkToolkit.useGraphics2D ())
-      fail_g2d ();
-
     this.component = component;
     
-    if (component.isRealized())
-      initComponentGraphics2D();
-    else
-      connectSignals(component);
+    initComponentGraphics2D();
   }
 
   void initComponentGraphics2D()
@@ -261,21 +234,6 @@ public class GdkGraphics2D extends Graphics2D
     setStroke(new BasicStroke());
     setRenderingHints(getDefaultHints());
     setFont(new Font("SansSerif", Font.PLAIN, 12));
-
-    stateStack = new Stack();
-  }
-
-  void initComponentGraphics2DUnlocked()
-  {
-    initStateUnlocked(component);
-
-    setColorUnlocked(component.awtComponent.getForeground());
-    setBackgroundUnlocked(component.awtComponent.getBackground());
-    setPaintUnlocked(getColorUnlocked());
-    setTransformUnlocked(new AffineTransform());
-    setStrokeUnlocked(new BasicStroke());
-    setRenderingHintsUnlocked(getDefaultHints());
-    setFontUnlocked(new Font("SansSerif", Font.PLAIN, 12));
 
     stateStack = new Stack();
   }
@@ -324,37 +282,25 @@ public class GdkGraphics2D extends Graphics2D
   // drawing utility methods
   private native void drawPixels(int[] pixels, int w, int h, int stride,
                                  double[] i2u);
-  private native void setTexturePixelsUnlocked(int[] pixels, int w, int h, int stride);
   private native void setTexturePixels(int[] pixels, int w, int h, int stride);
   private native void setGradient(double x1, double y1, double x2, double y2,
                                   int r1, int g1, int b1, int a1, int r2,
                                   int g2, int b2, int a2, boolean cyclic);
-  private native void setGradientUnlocked(double x1, double y1, double x2, double y2,
-                                  int r1, int g1, int b1, int a1, int r2,
-                                  int g2, int b2, int a2, boolean cyclic);
-
+  
   // simple passthroughs to cairo
   private native void cairoSave();
   private native void cairoRestore();
   private native void cairoSetMatrix(double[] m);
-  private native void cairoSetMatrixUnlocked(double[] m);
   private native void cairoSetOperator(int cairoOperator);
   private native void cairoSetRGBAColor(double red, double green,
                                         double blue, double alpha);
-  private native void cairoSetRGBAColorUnlocked(double red, double green,
-                                        double blue, double alpha);
   private native void cairoSetFillRule(int cairoFillRule);
   private native void cairoSetLineWidth(double width);
-  private native void cairoSetLineWidthUnlocked(double width);
   private native void cairoSetLineCap(int cairoLineCap);
-  private native void cairoSetLineCapUnlocked(int cairoLineCap);
   private native void cairoSetLineJoin(int cairoLineJoin);
-  private native void cairoSetLineJoinUnlocked(int cairoLineJoin);
   private native void cairoSetDash(double[] dashes, int ndash, double offset);
-  private native void cairoSetDashUnlocked(double[] dashes, int ndash, double offset);
 
   private native void cairoSetMiterLimit(double limit);
-  private native void cairoSetMiterLimitUnlocked(double limit);
   private native void cairoNewPath();
   private native void cairoMoveTo(double x, double y);
   private native void cairoLineTo(double x, double y);
@@ -745,49 +691,6 @@ public class GdkGraphics2D extends Graphics2D
       throw new java.lang.UnsupportedOperationException();
   }
 
-  public void setPaintUnlocked(Paint p)
-  {
-    if (paint == null)
-      return;
-
-    paint = p;
-    if (paint instanceof Color)
-      {
-        setColorUnlocked((Color) paint);
-      }
-    else if (paint instanceof TexturePaint)
-      {
-	TexturePaint tp = (TexturePaint) paint;
-	BufferedImage img = tp.getImage();
-
-	// map the image to the anchor rectangle  
-	int width = (int) tp.getAnchorRect().getWidth();
-	int height = (int) tp.getAnchorRect().getHeight();
-
-	double scaleX = width / (double) img.getWidth();
-	double scaleY = width / (double) img.getHeight();
-
-	AffineTransform at = new AffineTransform(scaleX, 0, 0, scaleY, 0, 0);
-	AffineTransformOp op = new AffineTransformOp(at, getRenderingHints());
-	BufferedImage texture = op.filter(img, null);
-	int[] pixels = texture.getRGB(0, 0, width, height, null, 0, width);
-	setTexturePixelsUnlocked(pixels, width, height, width);
-      }
-    else if (paint instanceof GradientPaint)
-      {
-	GradientPaint gp = (GradientPaint) paint;
-	Point2D p1 = gp.getPoint1();
-	Point2D p2 = gp.getPoint2();
-	Color c1 = gp.getColor1();
-	Color c2 = gp.getColor2();
-	setGradientUnlocked(p1.getX(), p1.getY(), p2.getX(), p2.getY(), c1.getRed(),
-	            c1.getGreen(), c1.getBlue(), c1.getAlpha(), c2.getRed(),
-	            c2.getGreen(), c2.getBlue(), c2.getAlpha(), gp.isCyclic());
-      }
-    else
-      throw new java.lang.UnsupportedOperationException();
-  }
-
   public void setTransform(AffineTransform tx)
   {
     transform = tx;
@@ -796,17 +699,6 @@ public class GdkGraphics2D extends Graphics2D
 	double[] m = new double[6];
 	transform.getMatrix(m);
 	cairoSetMatrix(m);
-      }
-  }
-
-  public void setTransformUnlocked(AffineTransform tx)
-  {
-    transform = tx;
-    if (transform != null)
-      {
-	double[] m = new double[6];
-	transform.getMatrix(m);
-	cairoSetMatrixUnlocked(m);
       }
   }
 
@@ -899,42 +791,18 @@ public class GdkGraphics2D extends Graphics2D
       }
   }
 
-  public void setStrokeUnlocked(Stroke st)
-  {
-    stroke = st;
-    if (stroke instanceof BasicStroke)
-      {
-	BasicStroke bs = (BasicStroke) stroke;
-	cairoSetLineCapUnlocked(bs.getEndCap());
-	cairoSetLineWidthUnlocked(bs.getLineWidth());
-	cairoSetLineJoinUnlocked(bs.getLineJoin());
-	cairoSetMiterLimitUnlocked(bs.getMiterLimit());
-	float[] dashes = bs.getDashArray();
-	if (dashes != null)
-	  {
-	    double[] double_dashes = new double[dashes.length];
-	    for (int i = 0; i < dashes.length; i++)
-	      double_dashes[i] = dashes[i];
-	    cairoSetDashUnlocked(double_dashes, double_dashes.length,
-                                 (double) bs.getDashPhase());
-	  }
-	else
-	  cairoSetDashUnlocked(new double[0], 0, 0.0);
-      }
-  }
-
   ////////////////////////////////////////////////
   ////// Implementation of Graphics Methods //////
   ////////////////////////////////////////////////
 
   public void setPaintMode()
   {
-    setComposite(java.awt.AlphaComposite.SrcOver);
+    setComposite(AlphaComposite.SrcOver);
   }
 
   public void setXORMode(Color c)
   {
-    setComposite(new gnu.java.awt.BitwiseXORComposite(c));
+    // FIXME: implement
   }
 
   public void setColor(Color c)
@@ -948,25 +816,9 @@ public class GdkGraphics2D extends Graphics2D
                       fg.getBlue() / 255.0, fg.getAlpha() / 255.0);
   }
 
-  public void setColorUnlocked(Color c)
-  {
-    if (c == null)
-      c = Color.BLACK;
-
-    fg = c;
-    paint = c;
-    cairoSetRGBAColorUnlocked(fg.getRed() / 255.0, fg.getGreen() / 255.0,
-                      fg.getBlue() / 255.0, fg.getAlpha() / 255.0);
-  }
-
   public Color getColor()
   {
     return fg;
-  }
-
-  public Color getColorUnlocked()
-  {
-    return getColor();
   }
 
   public void clipRect(int x, int y, int width, int height)
@@ -1094,11 +946,6 @@ public class GdkGraphics2D extends Graphics2D
     if (c == null)
       c = Color.WHITE;
     bg = c;
-  }
-
-  public void setBackgroundUnlocked(Color c)
-  {
-    setBackground(c);
   }
 
   public Color getBackground()
@@ -1290,7 +1137,10 @@ public class GdkGraphics2D extends Graphics2D
 	                   (int) (a.getAlpha() * ((float) c.getAlpha()))));
       }
     else
-      throw new java.lang.UnsupportedOperationException();
+      {
+        // FIXME: implement general Composite support
+        throw new java.lang.UnsupportedOperationException();
+      }
   }
 
   public void setRenderingHint(RenderingHints.Key hintKey, Object hintValue)
@@ -1349,36 +1199,6 @@ public class GdkGraphics2D extends Graphics2D
 
 	else if (hints.containsValue(RenderingHints.VALUE_ALPHA_INTERPOLATION_DEFAULT))
 	  cairoSurfaceSetFilter(4);
-      }
-
-    shiftDrawCalls = hints.containsValue(RenderingHints.VALUE_STROKE_NORMALIZE)
-                     || hints.containsValue(RenderingHints.VALUE_STROKE_DEFAULT);
-  }
-
-  public void setRenderingHintsUnlocked(Map hints)
-  {
-    this.hints = new RenderingHints(getDefaultHints());
-    this.hints.add(new RenderingHints(hints));
-
-    if (hints.containsKey(RenderingHints.KEY_INTERPOLATION))
-      {
-	if (hints.containsValue(RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR))
-	  cairoSurfaceSetFilterUnlocked(0);
-
-	else if (hints.containsValue(RenderingHints.VALUE_INTERPOLATION_BILINEAR))
-	  cairoSurfaceSetFilterUnlocked(1);
-      }
-
-    if (hints.containsKey(RenderingHints.KEY_ALPHA_INTERPOLATION))
-      {
-	if (hints.containsValue(RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED))
-	  cairoSurfaceSetFilterUnlocked(2);
-
-	else if (hints.containsValue(RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY))
-	  cairoSurfaceSetFilterUnlocked(3);
-
-	else if (hints.containsValue(RenderingHints.VALUE_ALPHA_INTERPOLATION_DEFAULT))
-	  cairoSurfaceSetFilterUnlocked(4);
       }
 
     shiftDrawCalls = hints.containsValue(RenderingHints.VALUE_STROKE_NORMALIZE)
@@ -1655,11 +1475,6 @@ public class GdkGraphics2D extends Graphics2D
       font = 
         ((ClasspathToolkit)(Toolkit.getDefaultToolkit()))
         .getFont(f.getName(), f.getAttributes());    
-  }
-
-  public void setFontUnlocked(Font f)
-  {
-    setFont (f);
   }
 
   public String toString()

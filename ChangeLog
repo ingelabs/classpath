@@ -1,3 +1,58 @@
+2006-05-25  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* INSTALL: Bump GTK requirement to 2.8 or higher.  Do not mention
+	Cairo version requirement.  Do not mention --enable-gtk-cairo
+	configure option.
+	* NEWS: Add entry for GdkGraphics2D.
+	* configure.ac: Remove --enable-gtk-cairo and explicit checks for
+	Cairo library and headers.
+	* .externalToolBuilders/Configure.launch: Remove
+	--enable-gtk-cairo from configure line.
+	* gnu/classpath/Configuration.java.in (GTK_CAIRO_ENABLED): Remove
+	field.
+	* gnu/java/awt/BitwiseXORComposite.java: Fix javadoc typo.
+	* gnu/java/awt/peer/gtk/GdkFontPeer.java,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c : Remove
+	useGraphics2D references.  Always assume Graphics2D is enabled.
+	* gnu/java/awt/peer/gtk/GdkGraphics.java,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics.c: Remove.
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c: Remove
+	Unlocked method variants.  Remove GTK_CAIRO_ENABLED and
+	useGraphics2D references.  Always assume Graphics2D is enabled.
+	* gnu/java/awt/peer/gtk/GdkTextLayout.java: Remove instanceof
+	Graphics2D check.  Always assume Graphics2D is enabled.
+	* gnu/java/awt/peer/gtk/GtkCanvasPeer.java,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCanvasPeer.c
+	(realize): Remove method.
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	(isRealized): Remove method.
+	(realize): Implement as a native method.  Remove useGraphics2D
+	references.  Always assume Graphics2D is enabled.
+	* gnu/java/awt/peer/gtk/GtkImage.java,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c: Replace
+	GdkGraphics references with GdkGraphics2D references.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkToolkit.c: Remove
+	useGraphics2D references.  Always assume Graphics2D is enabled.
+	* include/Makefile.am (GTKPEER_H_FILES): Remove
+	gnu_java_awt_peer_gtk_GdkGraphics.h.
+	* include/gnu_java_awt_peer_gtk_GdkFontPeer.h: Regenerate.
+	* include/gnu_java_awt_peer_gtk_GdkGraphics.h: Remove.
+	* include/gnu_java_awt_peer_gtk_GdkGraphics2D.h: Regenerate.
+	* include/gnu_java_awt_peer_gtk_GtkCanvasPeer.h: Likewise.
+	* include/gnu_java_awt_peer_gtk_GtkComponentPeer.h: Likewise.
+	* native/jawt/Makefile.am (AM_LDFLAGS): Remove CAIRO_LIBS.
+	* native/jni/gtk-peer/Makefile.am (libgtkpeer_la_SOURCES): Remove
+	gnu_java_awt_peer_gtk_GdkGraphics.c.  Include
+	gnu_java_awt_peer_gtk_GdkGraphics2D.c unconditionally.
+	(AM_LDFLAGS): Remove CAIRO_LIBS.
+	(AM_CFLAGS): Remove CAIRO_CFLAGS.
+	* native/jni/gtk-peer/gtkcairopeer.h: Remove.  Move declarations
+	to ...
+	* native/jni/gtk-peer/gtkpeer.h: Add Graphics2D declarations.
+
 2006-05-25  Lillian Angel  <langel@redhat.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
