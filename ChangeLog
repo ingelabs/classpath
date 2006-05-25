@@ -1,3 +1,10 @@
+2006-05-25  Lillian Angel  <langel@redhat.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetCursorUnlocked):
+	Added check to prevent assertion error. If widget->window is null, then
+	use the parent widget's window to set the cursor on.
+
 2006-05-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java (TreeCancelEditingAction):
