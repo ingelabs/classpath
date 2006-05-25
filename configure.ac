@@ -383,7 +383,7 @@ if test "x${COMPILE_JNI}" = xyes; then
     AC_CHECK_LIB([Xtst], [XTestQueryExtension], [true],
        	  [AC_MSG_ERROR([libXtst NOT found, required for GdkRobot])],
        	  [${X_LIBS}])
-    PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.4 gthread-2.0 >= 2.2 gdk-pixbuf-2.0)
+    PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.8 gthread-2.0 >= 2.2 gdk-pixbuf-2.0)
     PKG_CHECK_MODULES(FREETYPE2, freetype2)
     PKG_CHECK_MODULES(PANGOFT2, pangoft2)
 
