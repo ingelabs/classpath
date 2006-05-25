@@ -54,6 +54,49 @@ exception statement from your version. */
 
 struct state_table *cp_gtk_native_graphics2d_state_table;
 
+/*
+ * AWT applications may call Graphics methods from threads other than
+ * the GDK main thread, so we must call XFlush after each batch of
+ * drawing operations, otherwise animations flicker.  Flushing after
+ * every graphics operation is excessive and negatively affects
+ * performance (PR 26486).  We set the maximum frequency to 50 times
+ * per second, or a minimum period of 20 milliseconds between calls to
+ * XFlush.  See gnu.classpath.examples.awt.AnimationApplet for an
+ * example applet that requires these XFlush calls.
+ */
+
+static short flush_scheduled = 0;
+
+static gboolean flush (gpointer data __attribute__((unused)))
+{
+  gdk_threads_enter ();
+
+  cp_gtk_print_current_thread ();
+  g_print ("flush\n");
+
+  XFlush (GDK_DISPLAY ());
+  flush_scheduled = 0;
+
+  gdk_threads_leave ();
+
+  return FALSE;
+}
+
+/* The minimum time period between calls to XFlush, in
+   milliseconds. */
+#define MINIMUM_FLUSH_PERIOD 20
+
+/* schedule_flush must be called with the GDK lock held. */
+static void
+schedule_flush ()
+{
+  if (!flush_scheduled)
+    {
+      g_timeout_add (MINIMUM_FLUSH_PERIOD, flush, NULL);
+      flush_scheduled = 1;
+    }
+}
+
 JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GdkGraphics2D_initStaticState 
   (JNIEnv *env, jclass clazz)
@@ -331,6 +374,8 @@ end_drawing_operation (JNIEnv *env, struct graphics2d * gr)
 	memcpy (gr->javabuf, gr->javabuf_copy, gr->width * gr->height * 4);
       (*env)->ReleasePrimitiveArrayCritical (env, gr->jarray, gr->javabuf, JNI_COMMIT);
     }
+
+  schedule_flush ();
 }
 
 
@@ -566,8 +611,6 @@ Java_gnu_java_awt_peer_gtk_GdkGraphics2D_gdkDrawDrawable
   cairo_matrix_translate (&matrix, (double)x, (double)y);
   if (src->pattern)
     cairo_pattern_set_matrix (src->pattern, &matrix);
-
-  gdk_flush();
 
   end_drawing_operation(env, dst);
 
