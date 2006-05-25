@@ -71,9 +71,6 @@ static gboolean flush (gpointer data __attribute__((unused)))
 {
   gdk_threads_enter ();
 
-  cp_gtk_print_current_thread ();
-  g_print ("flush\n");
-
   XFlush (GDK_DISPLAY ());
   flush_scheduled = 0;
 
