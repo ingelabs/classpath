@@ -1,5 +1,10 @@
 2006-05-26  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* native/jawt/Makefile.am (nativeexeclib_LTLIBRARIES): Rename
+	libjawtgnu.la libjawt.la.
+
+2006-05-26  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	* native/jni/gtk-peer/Makefile.am (libgtkpeer_la_SOURCES): Remove
 	gtkcairopeer.h.
 
