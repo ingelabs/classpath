@@ -42,6 +42,7 @@ import gnu.classpath.NotImplementedException;
 
 import java.awt.event.ComponentEvent;
 import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
@@ -132,33 +133,7 @@ public class Window extends Container implements Accessible
     // cycle roots.
     focusCycleRoot = true;
     setLayout(new BorderLayout());
-
-    addWindowFocusListener (new WindowAdapter ()
-      {
-        public void windowGainedFocus (WindowEvent event)
-        {
-          if (windowFocusOwner != null)
-            {
-              // FIXME: move this section and the other similar
-              // sections in Component into a separate method.
-              EventQueue eq = Toolkit.getDefaultToolkit ().getSystemEventQueue ();
-              synchronized (eq)
-                {
-                  KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager ();
-                  Component currentFocusOwner = manager.getGlobalPermanentFocusOwner ();
-                  if (currentFocusOwner != null)
-                    {
-                      eq.postEvent (new FocusEvent (currentFocusOwner, FocusEvent.FOCUS_LOST,
-                                                    false, windowFocusOwner));
-                      eq.postEvent (new FocusEvent (windowFocusOwner, FocusEvent.FOCUS_GAINED,
-                                                    false, currentFocusOwner));
-                    }
-                  else
-                    eq.postEvent (new FocusEvent (windowFocusOwner, FocusEvent.FOCUS_GAINED, false));
-                }
-            }
-        }
-      });
+    addWindowFocusListener();
     
     GraphicsEnvironment g = GraphicsEnvironment.getLocalGraphicsEnvironment();
     graphicsConfiguration = g.getDefaultScreenDevice().getDefaultConfiguration();
@@ -169,7 +144,68 @@ public class Window extends Container implements Accessible
     this();
     graphicsConfiguration = gc;
   }
+  
+  private void addWindowFocusListener()
+  {
+    addWindowFocusListener(new WindowAdapter()
+    {
+      public void windowGainedFocus(WindowEvent event)
+      {
+        EventQueue eq = Toolkit.getDefaultToolkit().getSystemEventQueue();
+        if (windowFocusOwner != null)
+          {
+            synchronized (eq)
+              {
+                KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                Component currentFocusOwner = manager.getGlobalPermanentFocusOwner();
+                if (currentFocusOwner != null)
+                  {
+                    eq.postEvent(new FocusEvent(currentFocusOwner,
+                                                FocusEvent.FOCUS_LOST, false,
+                                                windowFocusOwner));
+                    eq.postEvent(new FocusEvent(windowFocusOwner,
+                                                FocusEvent.FOCUS_GAINED, false,
+                                                currentFocusOwner));
+                  }
+                else
+                  eq.postEvent(new FocusEvent(windowFocusOwner,
+                                              FocusEvent.FOCUS_GAINED, false));
+              }
+          }
+        else
+          eq.postEvent(new FocusEvent(Window.this, FocusEvent.FOCUS_GAINED,
+                                      false));
+      }
 
+      public void windowLostFocus(WindowEvent event)
+      {
+        EventQueue eq = Toolkit.getDefaultToolkit().getSystemEventQueue();
+        if (windowFocusOwner != null)
+          {
+            synchronized (eq)
+              {
+                KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                Component currentFocusOwner = manager.getGlobalPermanentFocusOwner();
+                if (currentFocusOwner != null)
+                  {
+                    eq.postEvent(new FocusEvent(currentFocusOwner,
+                                                FocusEvent.FOCUS_GAINED, false,
+                                                windowFocusOwner));
+                    eq.postEvent(new FocusEvent(windowFocusOwner,
+                                                FocusEvent.FOCUS_LOST, false,
+                                                currentFocusOwner));
+                  }
+                else
+                  eq.postEvent(new FocusEvent(windowFocusOwner,
+                                              FocusEvent.FOCUS_LOST, false));
+              }
+          }
+        else
+          eq.postEvent(new FocusEvent(Window.this, FocusEvent.FOCUS_LOST, false));
+      }
+    });
+  }
+  
   /**
    * Initializes a new instance of <code>Window</code> with the specified
    * parent.  The window will initially be invisible.
