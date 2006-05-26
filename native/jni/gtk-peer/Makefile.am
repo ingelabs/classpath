@@ -39,7 +39,6 @@ libgtkpeer_la_SOURCES = gnu_java_awt_peer_gtk_GThreadNativeMethodRunner.c \
 			gthread-jni.c \
 			gdkfont.h \
 			gthread-jni.h \
-			gtkcairopeer.h \
 			gtk_jawt.c \
 			gtkpeer.h
 
