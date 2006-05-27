@@ -21,8 +21,46 @@ endif
 endif
 endif
 
+if CREATE_WRAPPERS
+bin_SCRIPTS =
+bin_PROGRAMS = appletviewer jarsigner keytool
+
+if FOUND_GCJ
+LIBJVM = -lgcj
+else
+if FOUND_CACAO
+LIBJVM = -lcacaovm
+else
+LIBJVM =
+endif
+endif
+
+appletviewer_SOURCES = toolwrapper.c
+appletviewer_CFLAGS = -Wall \
+	-DDATA_DIR="\"$(datadir)\"" \
+	-DPACKAGE="\"$(PACKAGE)\"" \
+	-DTOOLNAME="\"appletviewer\""
+appletviewer_LDFLAGS = $(LIBJVM)
+
+jarsigner_SOURCES = toolwrapper.c
+jarsigner_CFLAGS = -Wall \
+	-DDATA_DIR="\"$(datadir)\"" \
+	-DPACKAGE="\"$(PACKAGE)\"" \
+	-DTOOLNAME="\"jarsigner\""
+jarsigner_LDFLAGS = $(LIBJVM)
+
+keytool_SOURCES = toolwrapper.c
+keytool_CFLAGS = -Wall \
+	-DDATA_DIR="\"$(datadir)\"" \
+	-DPACKAGE="\"$(PACKAGE)\"" \
+	-DTOOLNAME="\"keytool\""
+keytool_LDFLAGS = $(LIBJVM)
+
+else
 bin_SCRIPTS = appletviewer jarsigner keytool
-EXTRA_DIST = appletviewer.in appletviewer.c jarsigner.in keytool.in
+bin_PROGRAMS =
+endif
+EXTRA_DIST = toolwrapper.c appletviewer.in jarsigner.in keytool.in
 
 # All our example java source files
 TOOLS_JAVA_FILES = $(srcdir)/gnu/classpath/tools/*.java $(srcdir)/gnu/classpath/tools/*/*.java $(srcdir)/gnu/classpath/tools/*/*/*.java

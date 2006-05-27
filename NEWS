@@ -11,6 +11,8 @@ New in release 0.92 (UNRELEASED)
   * jar
   * native2ascii
   * serialver
+  A new configure option --enable-tool-wrappers causes wrapper
+  binaries to be built for VMs that support the JNI Invocation API.
 
 New in release 0.91 (May 15, 2006)
 

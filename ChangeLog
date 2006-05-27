@@ -1,3 +1,13 @@
+2006-05-27  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* configure.ac (FOUND_CACAO): New automake conditional.
+	Add --enable-tool-wrappers.
+	* NEWS: Introduce the --enable-tool-wrappers option.
+	* tools/Makefile.am[CREATE_WRAPPERS]: Build wrapper binaries.
+	* tools/appletviewer.c: Remove file.  Make tool-indepedent and
+	rename ...
+	* tools/toolwrapper.c: New file.
+
 2006-05-27  Dalibor Topic  <robilad@kaffe.org>
 
 	* java/awt/Graphics2D.java: Use full class name for 

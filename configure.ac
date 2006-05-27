@@ -232,6 +232,7 @@ AC_ARG_WITH([vm],
 	    ])
 
 AC_SUBST(VM_BINARY)
+AM_CONDITIONAL(FOUND_CACAO, test "x`basename $VM_BINARY`" = xcacao)
 
 dnl -----------------------------------------------------------
 dnl Regenerate headers at build time (disabled by default)
@@ -245,6 +246,20 @@ AC_ARG_ENABLE([regen-headers],
               esac],
               [REGENERATE_JNI_HEADERS=no])
 AM_CONDITIONAL(CREATE_JNI_HEADERS, test "x${REGENERATE_JNI_HEADERS}" = xyes)
+
+dnl -----------------------------------------------------------
+dnl Enable tool wrapper binaries (disabled by default)
+dnl -----------------------------------------------------------
+AC_ARG_ENABLE([tool-wrappers],
+              [AS_HELP_STRING(--enable-tool-wrappers,create tool wrapper binaries [default=no])],
+              [case x"${enableval}" in
+                xyes) COMPILE_WRAPPERS=yes ;;
+                xno) COMPILE_WRAPPERS=no ;;
+		x) COMPILE_WRAPPERS=yes ;;
+                *) COMPILE_WRAPPERS=yes ;;
+              esac],
+              [COMPILE_WRAPPERS=no])
+AM_CONDITIONAL(CREATE_WRAPPERS, test "x${COMPILE_WRAPPERS}" = xyes)
 
 AC_PROG_LN_S
 AC_PROG_INSTALL
@@ -695,15 +710,20 @@ scripts/classpath.spec
 lib/Makefile
 lib/gen-classlist.sh
 lib/copy-vmresources.sh
-tools/appletviewer
 tools/Makefile
-tools/jarsigner
-tools/keytool
 examples/Makefile
 examples/Makefile.jawt])
-AC_CONFIG_COMMANDS([gen-classlist],[chmod 755 lib/gen-classlist.sh])
-AC_CONFIG_COMMANDS([copy-vmresources],[chmod 755 lib/copy-vmresources.sh])
+
+if test "x${COMPILE_WRAPPERS}" = xno
+then
+AC_CONFIG_FILES([tools/appletviewer
+tools/jarsigner
+tools/keytool])
 AC_CONFIG_COMMANDS([appletviewer],[chmod 755 tools/appletviewer])
 AC_CONFIG_COMMANDS([jarsigner],[chmod 755 tools/jarsigner])
 AC_CONFIG_COMMANDS([keytool],[chmod 755 tools/keytool])
+fi
+
+AC_CONFIG_COMMANDS([gen-classlist],[chmod 755 lib/gen-classlist.sh])
+AC_CONFIG_COMMANDS([copy-vmresources],[chmod 755 lib/copy-vmresources.sh])
 AC_OUTPUT
