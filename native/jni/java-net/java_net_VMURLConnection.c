@@ -48,7 +48,8 @@ static magic_t cookie;
 #endif /* HAVE_MAGIC_H */
 
 void
-Java_java_net_VMURLConnection_init (JNIEnv *env, jclass klass)
+Java_java_net_VMURLConnection_init (JNIEnv *env __attribute__ ((__unused__)),
+				    jclass klass __attribute__ ((__unused__)))
 {
 #ifdef HAVE_MAGIC_H
   cookie = magic_open (MAGIC_MIME);
@@ -62,13 +63,14 @@ Java_java_net_VMURLConnection_init (JNIEnv *env, jclass klass)
 #endif /* HAVE_MAGIC_H */
 }
 
+#ifdef HAVE_MAGIC_H
 jstring
 Java_java_net_VMURLConnection_guessContentTypeFromBuffer (JNIEnv *env,
-							  jclass klass,
+							  jclass klass
+							  __attribute__ ((__unused__)),
 							  jbyteArray bytes,
 							  jint valid)
 {
-#ifdef HAVE_MAGIC_H
   jbyte *elements;
   const char *result;
 
@@ -85,6 +87,16 @@ Java_java_net_VMURLConnection_guessContentTypeFromBuffer (JNIEnv *env,
     return NULL;
   return (*env)->NewStringUTF (env, result);
 #else
+jstring
+Java_java_net_VMURLConnection_guessContentTypeFromBuffer (JNIEnv *env
+							  __attribute__ ((__unused__)),
+							  jclass klass
+							  __attribute__ ((__unused__)),
+							  jbyteArray bytes
+							  __attribute__ ((__unused__)),
+							  jint valid
+							  __attribute__ ((__unused__)))
+{
   return NULL;
 #endif /* HAVE_MAGIC_H */
 }
