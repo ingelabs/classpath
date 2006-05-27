@@ -1,5 +1,9 @@
 2006-05-27  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* NEWS: Announce libjawtgnu.so-to-libjawt.so rename.
+
+2006-05-27  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	* configure.ac (FOUND_CACAO): New automake conditional.
 	Add --enable-tool-wrappers.
 	* NEWS: Introduce the --enable-tool-wrappers option.
