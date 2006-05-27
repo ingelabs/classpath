@@ -88,6 +88,7 @@
 	
 2006-05-25  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c
 	(flush): Remove debugging printfs.
 
 2006-05-25  Thomas Fitzsimmons  <fitzsim@redhat.com>
