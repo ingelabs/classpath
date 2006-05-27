@@ -1,3 +1,15 @@
+2006-05-26  Tom Tromey  <tromey@redhat.com>
+
+	* configure.ac: Check for magic.h and -lmagic.
+	* vm/reference/java/net/VMURLConnection.java: New file.
+	* include/java_net_VMURLConnection.h: New file.
+	* include/Makefile.am (H_FILES): Add VMURLConnection.h.
+	($(top_srcdir)/include/java_net_VMURLConnection.h): New target.
+	* native/jni/java-net/Makefile.am (libjavanet_la_SOURCES):
+	Mention new file.
+	(libjavanet_la_LIBADD): Add $(LIBMAGIC).
+	* native/jni/java-net/java_net_VMURLConnection.c: New file.
+
 2006-05-26  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* tools/Makefile.am (installcheck-binSCRIPTS): Do nothing.

@@ -289,7 +289,8 @@ if test "x${COMPILE_JNI}" = xyes; then
 		    sys/select.h \
 		    crt_externs.h \
                     fcntl.h \
-		    sys/mman.h])
+		    sys/mman.h \
+		    magic.h])
 
   AC_EGREP_HEADER(uint32_t, stdint.h, AC_DEFINE(HAVE_INT32_DEFINED, 1, [Define to 1 if you have uint32_t]))
   AC_EGREP_HEADER(uint32_t, inttypes.h, AC_DEFINE(HAVE_INT32_DEFINED, 1, [Define to 1 if you have uint32_t]))
@@ -306,6 +307,10 @@ if test "x${COMPILE_JNI}" = xyes; then
                   fcntl \
 		  mmap munmap mincore msync madvise getpagesize sysconf \
 		  ])
+
+  LIBMAGIC=
+  AC_CHECK_LIB(magic, magic_open, LIBMAGIC=-lmagic)
+  AC_SUBST(LIBMAGIC)
 
   AC_HEADER_TIME
   AC_STRUCT_TM

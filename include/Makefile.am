@@ -135,6 +135,7 @@ $(top_srcdir)/include/java_lang_VMSystem.h \
 $(top_srcdir)/include/java_lang_reflect_VMArray.h \
 $(top_srcdir)/include/java_net_VMInetAddress.h \
 $(top_srcdir)/include/java_net_VMNetworkInterface.h \
+$(top_srcdir)/include/java_net_VMURLConnection.h \
 $(top_srcdir)/include/java_nio_VMDirectByteBuffer.h \
 $(top_srcdir)/include/java_nio_MappedByteBufferImpl.h \
 $(top_srcdir)/include/java_util_VMTimeZone.h
@@ -196,6 +197,8 @@ $(top_srcdir)/include/java_net_VMInetAddress.h: $(top_srcdir)/vm/reference/java/
 	$(JAVAH) -o $@ java.net.VMInetAddress
 $(top_srcdir)/include/java_net_VMNetworkInterface.h: $(top_srcdir)/vm/reference/java/net/VMNetworkInterface.java
 	$(JAVAH) -o $@ java.net.VMNetworkInterface
+$(top_srcdir)/include/java_net_VMURLConnection.h: $(top_srcdir)/vm/reference/java/net/VMURLConnection.java
+	$(JAVAH) -o $@ java.net.VMURLConnection
 $(top_srcdir)/include/java_nio_VMDirectByteBuffer.h: $(top_srcdir)/vm/reference/java/nio/VMDirectByteBuffer.java
 	$(JAVAH) -o $@ java.nio.VMDirectByteBuffer
 $(top_srcdir)/include/java_nio_MappedByteBufferImpl.h: $(top_srcdir)/java/nio/MappedByteBufferImpl.java
