@@ -1,3 +1,8 @@
+2006-05-27  Dalibor Topic  <robilad@kaffe.org>
+
+	* java/awt/Graphics2D.java: Use full class name for 
+	PrinterJob in javadoc.
+
 2006-05-27  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* native/jni/qt-peer/eventmethods.h (callVoidMethod): Silence warning.
