@@ -1,5 +1,9 @@
 2006-05-26  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* tools/Makefile.am (installcheck-binSCRIPTS): Do nothing.
+
+2006-05-26  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	* native/jawt/Makefile.am (nativeexeclib_LTLIBRARIES): Rename
 	libjawtgnu.la libjawt.la.
 
