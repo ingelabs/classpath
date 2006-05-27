@@ -1,5 +1,11 @@
 2006-05-26  Tom Tromey  <tromey@redhat.com>
 
+	PR classpath/27685:
+	* java/math/BigInteger.java (modPow): Correctly handle negative
+	exponent.
+
+2006-05-26  Tom Tromey  <tromey@redhat.com>
+
 	* configure.ac: Check for magic.h and -lmagic.
 	* vm/reference/java/net/VMURLConnection.java: New file.
 	* include/java_net_VMURLConnection.h: New file.
