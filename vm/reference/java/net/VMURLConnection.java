@@ -43,7 +43,7 @@ import gnu.classpath.Configuration;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class VMURLConnection
+final class VMURLConnection
 {
   public static final int LENGTH = 1024;
 
