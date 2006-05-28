@@ -1,5 +1,24 @@
 2006-05-28  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* java/util/logging/FileHandler.java (PROPERTY_PREFIX): New constant.
+	(PATTERN_KEY): Likewise.
+	(DEFAULT_PATTERN): Likewise.
+	(LIMIT_KEY): Likewise.
+	(DEFAULT_LIMIT): Likewise.
+	(COUNT_KEY): Likewise.
+	(DEFAULT_COUNT): Likewise.
+	(APPEND_KEY): Likewise.
+	(DEFAULT_APPEND): Likewise.
+	(FileHandler()): Use pattern value as set in logging.properties.
+	Use constants defined above.
+	(FileHandler(1)): Use constants defined above.
+	(FileHandler(2)): Likewise.
+	(FileHandler(3)): Likewise.
+	(FileHandler(4)): Likewise.
+	(createFileStream): Likewise.
+
+2006-05-28  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* java/util/logging/FileHandler.java: Reverted previous patch.
 	* java/util/logging/LogManager.java: Likewise.
 
