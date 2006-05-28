@@ -1,5 +1,10 @@
 2006-05-28  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* java/util/logging/FileHandler.java: Reverted previous patch.
+	* java/util/logging/LogManager.java: Likewise.
+
+2006-05-28  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* java/util/logging/FileHandler.java (PATTERN_KEY): New constant.
 	(DEFAULT_PATTERN): Likewise.
 	(FileHandler()): Use configured pattern property if any; otherwise use a
