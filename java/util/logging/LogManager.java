@@ -777,6 +777,22 @@ public class LogManager
   }
 
   /**
+   * Returns the value of a configuration property as a String.
+   * <p>
+   * This function is a helper used by the Classpath implementation of
+   * java.util.logging, it is <em>not</em> specified in the logging API.
+   * 
+   * @param name the name of the configuration property to fetch.
+   * @param defaultValue the value that will be returned if the property is not
+   *          defined.
+   */
+  static String getStringProperty(String name, String defaultValue)
+  {
+    String result = getLogManager().getProperty(name);
+    return result == null ? defaultValue : result;
+  }
+
+  /**
    * An instance of <code>LoggingPermission("control")</code>
    * that is shared between calls to <code>checkAccess()</code>.
    */

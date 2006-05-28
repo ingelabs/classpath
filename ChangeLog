@@ -1,3 +1,11 @@
+2006-05-28  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* java/util/logging/FileHandler.java (PATTERN_KEY): New constant.
+	(DEFAULT_PATTERN): Likewise.
+	(FileHandler()): Use configured pattern property if any; otherwise use a
+	default value as per RI documentation.
+	* java/util/logging/LogManager.java (getStringProperty): New method.
+
 2006-05-27  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* NEWS: Announce libjawtgnu.so-to-libjawt.so rename.

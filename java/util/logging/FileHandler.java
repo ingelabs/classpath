@@ -192,6 +192,17 @@ public class FileHandler
   extends StreamHandler
 {
   /**
+   * The name of the property to set for specifying a file naming (incl. path)
+   * pattern to use with rotating log files.
+   */
+  private static final String PATTERN_KEY = "java.util.logging.FileHandler.pattern";
+  /**
+   * The default pattern to use when the <code>PATTERN_KEY</code> property was
+   * not specified in the logging.properties file.
+   */
+  private static final String DEFAULT_PATTERN = "%h/java%u.log";
+
+  /**
    * The number of bytes a log file is approximately allowed to reach
    * before it is closed and the handler switches to the next file in
    * the rotating set.  A value of zero means that files can grow
@@ -252,8 +263,7 @@ public class FileHandler
   public FileHandler()
     throws IOException, SecurityException
   {
-    this(/* pattern: use configiguration */ null,
-
+    this(LogManager.getStringProperty(PATTERN_KEY, DEFAULT_PATTERN),
 	 LogManager.getIntProperty("java.util.logging.FileHandler.limit",
 				   /* default */ 0),
 
