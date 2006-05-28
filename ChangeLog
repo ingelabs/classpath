@@ -1,3 +1,16 @@
+2006-05-28  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* gnu/java/lang/management/OperatingSystemMXBeanImpl.java:
+	New class implementing the OS bean.
+	* gnu/java/lang/management/package.html:
+	New file to document the gnu.java.lang.management package.
+	* java/lang/management/ManagementFactory.java:
+	New class to provide access to the OS bean.
+	* java/lang/management/OperatingSystemMXBean.java:
+	New interface.
+	* java/lang/management/package.html:
+	New file to document the java.lang.management package.
+	
 2006-05-28  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* tools/gnu/classpath/tools/keytool/ImportCmd.java (GKR): New constant.
