@@ -1,5 +1,27 @@
 2006-05-28  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* tools/gnu/classpath/tools/keytool/ImportCmd.java (GKR): New constant.
+	(JKS): Likewise.
+	(LIB): Likewise.
+	(SECURITY): Likewise.
+	(CACERTS): Likewise.
+	(CACERTS_GKR): Likewise.
+	(gkrCaCertsPathName): New field.
+	(jksCaCertsPathName): Likewise.
+	(selfSignedCertificate): Likewise.
+	(start): Initialize trusted certificate key stores if -trustcacerts is
+	specified.
+	(ensureReplyIsOurs): Initialize selfSignedCertificate.
+	(orderChain): Implemented.
+	(findTrustAndUpdate): Check a cacerts.gkr (GKR) and a cacert (JKS) trusted
+	certificate key stores if -trustcacerts option is specified.
+	(findTrustInCACerts): Removed.
+	(getCertPathParameters): New method.
+	(validate): New method.
+	* resource/gnu/classpath/tools/keytool/messages.properties: Added message.
+
+2006-05-28  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* java/util/logging/FileHandler.java (PROPERTY_PREFIX): New constant.
 	(PATTERN_KEY): Likewise.
 	(DEFAULT_PATTERN): Likewise.
