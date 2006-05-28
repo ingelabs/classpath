@@ -1,3 +1,9 @@
+2006-05-29  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* java/util/logging/FileHandler.java (FileHandler): Set the instance field
+	pattern to the default value when null.
+	Pass field pattern, and not parameter with same name to createFileStream.
+
 2006-05-28  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* gnu/java/lang/management/OperatingSystemMXBeanImpl.java:

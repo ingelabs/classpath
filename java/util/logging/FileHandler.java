@@ -380,14 +380,14 @@ public class FileHandler
     if ((limit <0) || (count < 1))
       throw new IllegalArgumentException();
 
-    this.pattern = pattern;
+    this.pattern = pattern != null ? pattern : DEFAULT_PATTERN;
     this.limit = limit;
     this.count = count;
     this.append = append;
     this.written = 0;
     this.logFiles = new LinkedList ();
 
-    setOutputStream (createFileStream (pattern, limit, count, append,
+    setOutputStream (createFileStream (this.pattern, limit, count, append,
                                        /* generation */ 0));
   }
 
