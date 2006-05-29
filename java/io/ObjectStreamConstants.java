@@ -200,7 +200,6 @@ public interface ObjectStreamConstants
    * @since 1.2
    */
   byte SC_BLOCK_DATA = 0x08;
-  byte SC_ENUM = 0x10;
 
   /**
    * Flag used in <code>ObjectStreamClass</code> to designate that the class
