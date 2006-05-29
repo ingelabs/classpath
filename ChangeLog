@@ -1,5 +1,10 @@
 2006-05-29  Sven de Marothy  <sven@physto.se>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c
+	(setPixels): Remove superfluous return statement.	
+
+2006-05-29  Sven de Marothy  <sven@physto.se>
+
 	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
 	* gnu/java/awt/peer/gtk/CairoSurface.java
@@ -10,7 +15,6 @@
 	* include/gnu_java_awt_peer_gtk_ComponentGraphics.h
 	* native/jni/gtk-peer/cairographics2d.h
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoGraphics2D.c
-	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphics.c
 	New files.
 

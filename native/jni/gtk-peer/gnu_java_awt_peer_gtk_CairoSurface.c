@@ -169,7 +169,6 @@ Java_gnu_java_awt_peer_gtk_CairoSurface_setPixels
 #endif
 
   (*env)->ReleaseIntArrayElements (env, jpixels, jpixdata, 0);
-  return jpixels;
 }
 
 JNIEXPORT void JNICALL
