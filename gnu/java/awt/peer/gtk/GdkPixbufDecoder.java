@@ -504,19 +504,19 @@ public class GdkPixbufDecoder extends gnu.java.awt.image.ImageDecoder
       int width = ras.getWidth();
       int height = ras.getHeight();
       ColorModel model = image.getColorModel();
-      int[] pixels = GdkGraphics2D.findSimpleIntegerArray (image.getColorModel(), ras);
+      int[] pixels = CairoGraphics2D.findSimpleIntegerArray (image.getColorModel(), ras);
       
       if (pixels == null)
         {
-          BufferedImage img = new BufferedImage(width, height, 
-                                                (model != null && model.hasAlpha() ? 
-                                                 BufferedImage.TYPE_INT_ARGB
-                                                 : BufferedImage.TYPE_INT_RGB));
+	  BufferedImage img;
+	  if(model != null && model.hasAlpha())
+	    img = CairoSurface.getBufferedImage(width, height);
+	  img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
           int[] pix = new int[4];
           for (int y = 0; y < height; ++y)
             for (int x = 0; x < width; ++x)
               img.setRGB(x, y, model.getRGB(ras.getPixel(x, y, pix)));
-          pixels = GdkGraphics2D.findSimpleIntegerArray (img.getColorModel(), 
+          pixels = CairoGraphics2D.findSimpleIntegerArray (img.getColorModel(), 
                                                          img.getRaster());
           model = img.getColorModel();
         }
@@ -586,9 +586,10 @@ public class GdkPixbufDecoder extends gnu.java.awt.image.ImageDecoder
       
       if (bufferedImage == null)
         {
-          bufferedImage = new BufferedImage (width, height, (model != null && model.hasAlpha() ? 
-                                                             BufferedImage.TYPE_INT_ARGB
-                                                             : BufferedImage.TYPE_INT_RGB));
+	  if(model != null && model.hasAlpha())
+	    bufferedImage = new BufferedImage (width, height, BufferedImage.TYPE_INT_ARGB);
+	  else
+	    bufferedImage = new BufferedImage (width, height, BufferedImage.TYPE_INT_RGB);
         }
 
       int pixels2[];

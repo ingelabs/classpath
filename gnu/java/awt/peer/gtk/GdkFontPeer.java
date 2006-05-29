@@ -90,9 +90,12 @@ public class GdkFontPeer extends ClasspathFontPeer
   native void getFontMetrics(double [] metrics);
   native void getTextMetrics(String str, double [] metrics);
 
+  native void releasePeerGraphicsResource();
+
+
   protected void finalize ()
   {
-    GdkGraphics2D.releasePeerGraphicsResource(this);
+    releasePeerGraphicsResource();
     dispose ();
   }
 

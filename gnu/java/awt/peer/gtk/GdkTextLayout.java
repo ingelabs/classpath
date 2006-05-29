@@ -80,10 +80,17 @@ public class GdkTextLayout
   private native void getExtents(double[] inkExtents,
                                  double[] logExtents);
   private native void indexToPos(int idx, double[] pos);
+
   private native void initState ();
+
   private native void dispose ();
+
+  private native void cairoDrawGdkTextLayout(CairoGraphics2D g, float x, float y);
+
   static native void initStaticState();
+
   private final int native_state = GtkGenericPeer.getUniqueInteger ();
+
   protected void finalize ()
   {
     dispose ();
@@ -201,9 +208,7 @@ public class GdkTextLayout
 
   public void draw (Graphics2D g2, float x, float y)
   {
-    // we share pango structures directly with GdkGraphics2D 
-    GdkGraphics2D gg2 = (GdkGraphics2D) g2;
-    gg2.drawGdkTextLayout(this, x, y);
+    cairoDrawGdkTextLayout((CairoGraphics2D)g2, x, y);
   }
 
   public TextHitInfo getStrongCaret (TextHitInfo hit1, 

@@ -121,6 +121,25 @@ Java_gnu_java_awt_peer_gtk_GdkFontPeer_dispose
 }
 
 
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GdkFontPeer_releasePeerGraphicsResource
+   (JNIEnv *env, jobject java_font)
+{
+  struct peerfont *pfont = NULL;
+
+  gdk_threads_enter();
+
+  pfont = (struct peerfont *) NSA_GET_FONT_PTR (env, java_font);
+  g_assert (pfont != NULL);
+  if (pfont->graphics_resource != NULL)
+    {
+      cairo_font_face_destroy ((cairo_font_face_t *) pfont->graphics_resource);
+      pfont->graphics_resource = NULL;
+    }
+
+  gdk_threads_leave();
+}
+
 JNIEXPORT jobject JNICALL
 Java_gnu_java_awt_peer_gtk_GdkFontPeer_getGlyphVector
   (JNIEnv *env, jobject self, 

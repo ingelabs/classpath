@@ -1,9 +1,11 @@
 nativeexeclib_LTLIBRARIES = libgtkpeer.la
 
 # GTK JNI sources.
-libgtkpeer_la_SOURCES = gnu_java_awt_peer_gtk_GThreadNativeMethodRunner.c \
+libgtkpeer_la_SOURCES = gnu_java_awt_peer_gtk_CairoSurface.c \
+			gnu_java_awt_peer_gtk_CairoGraphics2D.c \
+			gnu_java_awt_peer_gtk_ComponentGraphics.c \
+			gnu_java_awt_peer_gtk_GThreadNativeMethodRunner.c \
 			gnu_java_awt_peer_gtk_GdkFontPeer.c \
-			gnu_java_awt_peer_gtk_GdkGraphics2D.c \
 			gnu_java_awt_peer_gtk_GdkGraphicsEnvironment.c \
 			gnu_java_awt_peer_gtk_GdkPixbufDecoder.c \
 			gnu_java_awt_peer_gtk_GdkRobotPeer.c \

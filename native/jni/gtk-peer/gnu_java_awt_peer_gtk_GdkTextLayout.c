@@ -47,6 +47,7 @@
 #include "native_state.h"
 #include "gdkfont.h"
 #include "gnu_java_awt_peer_gtk_GdkTextLayout.h"
+#include "cairographics2d.h"
 
 struct state_table *cp_gtk_native_text_layout_state_table;
 
@@ -59,6 +60,9 @@ typedef struct gp
   double sx;
   double sy;
 } generalpath ;
+
+static void paint_glyph_run(cairo_t *cr, cairo_glyph_t **glyphs,
+			    gint *n_glyphs, PangoLayoutRun *run);
 
 JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GdkTextLayout_initStaticState 
@@ -205,6 +209,104 @@ Java_gnu_java_awt_peer_gtk_GdkTextLayout_dispose
   g_free(tl);
 
   gdk_threads_leave ();
+}
+
+/**
+ * Draw this textlayout on a cairo surface
+ */
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GdkTextLayout_cairoDrawGdkTextLayout
+   (JNIEnv *env, jobject obj, jobject cairographics, jfloat x, jfloat y)
+{
+  /* 
+   * FIXME: Some day we expect either cairo or pango will know how to make
+   * a pango layout paint to a cairo surface. that day is not yet here.
+   */
+
+  cairo_t *cr;
+  struct cairographics2d *gr = NULL;
+  struct textlayout *tl = NULL;
+  PangoLayoutIter *i = NULL;
+  PangoLayoutRun *run = NULL;
+  cairo_glyph_t *glyphs = NULL;
+  gint n_glyphs = 0;
+
+  g_assert (cairographics != NULL);
+
+  cr = CairoGraphics2D_getCairoT(env, cairographics);
+  tl = (struct textlayout *)NSA_GET_TEXT_LAYOUT_PTR (env, obj);
+
+  g_assert (cr != NULL);
+  g_assert (tl != NULL);
+  g_assert (tl->pango_layout != NULL);
+
+  gdk_threads_enter ();
+
+  i = pango_layout_get_iter (tl->pango_layout);
+  g_assert (i != NULL);
+
+  cairo_translate (cr, x, y);
+
+  do 
+    {
+      run = pango_layout_iter_get_run (i);
+      if (run != NULL)
+	paint_glyph_run (cr, &glyphs, &n_glyphs, run);
+    } 
+  while (pango_layout_iter_next_run (i));
+  
+  if (glyphs != NULL)
+    g_free (glyphs);
+
+  cairo_translate (cr, -x, -y);
+  
+  pango_layout_iter_free (i);
+
+  gdk_threads_leave ();
+}
+
+static void
+paint_glyph_run(cairo_t *cr,
+		cairo_glyph_t **glyphs,
+		gint *n_glyphs,
+		PangoLayoutRun *run)
+{
+  gint i = 0;
+  gint x = 0, y = 0;
+
+  g_assert (cr != NULL);
+  g_assert (glyphs != NULL);
+  g_assert (n_glyphs != NULL);
+  g_assert (run != NULL);
+
+  if (run->glyphs != NULL && run->glyphs->num_glyphs > 0)
+    {
+      if (*n_glyphs < run->glyphs->num_glyphs)
+	{
+	  *glyphs = g_realloc(*glyphs, 
+			      (sizeof(cairo_glyph_t) 
+			       * run->glyphs->num_glyphs));
+	  *n_glyphs = run->glyphs->num_glyphs;
+	}
+      
+      g_assert (*glyphs != NULL);
+
+      for (i = 0; i < run->glyphs->num_glyphs; ++i)
+	{	  
+	  (*glyphs)[i].index = run->glyphs->glyphs[i].glyph;
+
+	  (*glyphs)[i].x =
+	    ((double) (x + run->glyphs->glyphs[i].geometry.x_offset)) 
+	    / ((double) PANGO_SCALE);
+
+	  (*glyphs)[i].y =
+	    ((double) (y + run->glyphs->glyphs[i].geometry.y_offset)) 
+	    / ((double) PANGO_SCALE);
+	  
+	  x += run->glyphs->glyphs[i].geometry.width;
+	}
+      cairo_show_glyphs (cr, *glyphs, run->glyphs->num_glyphs);
+    }
 }
 
 /* GetOutline code follows ****************************/

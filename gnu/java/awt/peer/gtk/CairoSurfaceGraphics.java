@@ -1,5 +1,5 @@
-/* GdkGraphicsEnvironment.java -- information about the graphics environment
-   Copyright (C) 2004, 2005  Free Software Foundation, Inc.
+/* CairoSurfaceGraphics.java
+   Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,67 +38,64 @@ exception statement from your version. */
 
 package gnu.java.awt.peer.gtk;
 
-import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.Point;
 import java.awt.Graphics2D;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.HeadlessException;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBuffer;
-import java.util.Locale;
+import java.awt.GraphicsConfiguration;
+import java.awt.image.*;
 
-public class GdkGraphicsEnvironment extends GraphicsEnvironment
+/**
+ * Implementation of Graphics2D on a Cairo surface.
+ */
+public class CairoSurfaceGraphics extends CairoGraphics2D
 {
-  public GdkGraphicsEnvironment ()
+  private CairoSurface surface;
+  private long cairo_t;
+  
+  /**
+   * Create a graphics context from a cairo surface
+   */
+  public CairoSurfaceGraphics(CairoSurface surface)
   {
+    this.surface = surface;
+    cairo_t = surface.newCairoContext();
+    setup( cairo_t );
+    setClip(0, 0, surface.width, surface.height);
   }
 
-  public GraphicsDevice[] getScreenDevices ()
+  /**
+   * Creates another context from a surface.
+   * Used by create().
+   */ 
+  private CairoSurfaceGraphics(CairoSurfaceGraphics copyFrom)
   {
-    // FIXME: Support multiple screens, since GDK can.
-    return new GraphicsDevice[] { new GdkScreenGraphicsDevice (this) };
-  }
-
-  public GraphicsDevice getDefaultScreenDevice ()
-  {
-    if (GraphicsEnvironment.isHeadless ())
-      throw new HeadlessException ();
-
-    return new GdkScreenGraphicsDevice (this);
-  }
-
-  public Graphics2D createGraphics (BufferedImage image)
-  {
-    DataBuffer db = image.getRaster().getDataBuffer();
-    if(db instanceof CairoSurface)
-      return ((CairoSurface)db).getGraphics();
-
-    return new BufferedImageGraphics( image );
+    surface = copyFrom.surface;
+    cairo_t = surface.newCairoContext();
+    copy( copyFrom, cairo_t );
+    setClip(0, 0, surface.width, surface.height);
   }
   
-  private native int nativeGetNumFontFamilies();
-  private native void nativeGetFontFamilies(String[] family_names);
-
-  public Font[] getAllFonts ()
+  public Graphics create()
   {
-    throw new java.lang.UnsupportedOperationException ();
+    return new CairoSurfaceGraphics(this);
   }
-
-  public String[] getAvailableFontFamilyNames ()
+  
+  public GraphicsConfiguration getDeviceConfiguration()
   {
-    String[] family_names;
-    int array_size;
-    
-    array_size = nativeGetNumFontFamilies();
-    family_names = new String[array_size];
-    
-    nativeGetFontFamilies(family_names);
-    return family_names;
+    throw new UnsupportedOperationException();
   }
-
-  public String[] getAvailableFontFamilyNames (Locale l)
+  
+  public void copyArea(int x, int y, int width, int height, int dx, int dy)
   {
-    throw new java.lang.UnsupportedOperationException ();
+    // FIXME: Adjust parameters so that clipping on the edges occurs.
+    
+    if( x + dx + width >= surface.width || y + dy + height >= surface.height)
+      return;
+    if( x + dx <= 0 || y + dy <= 0)
+      return;
+    
+    surface.copyAreaNative(x, y, width, height, dx, dy, surface.width*4);
   }
 }

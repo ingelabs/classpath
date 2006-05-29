@@ -1,0 +1,279 @@
+/* gnu_java_awt_peer_gtk_CairoSurface.c
+   Copyright (C)  2006 Free Software Foundation, Inc.
+
+This file is part of GNU Classpath.
+
+GNU Classpath is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2, or (at your option)
+any later version.
+
+GNU Classpath is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with GNU Classpath; see the file COPYING.  If not, write to the
+Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+02110-1301 USA.
+
+Linking this library statically or dynamically with other modules is
+making a combined work based on this library.  Thus, the terms and
+conditions of the GNU General Public License cover the whole
+combination.
+
+As a special exception, the copyright holders of this library give you
+permission to link this library with independent modules to produce an
+executable, regardless of the license terms of these independent
+modules, and to copy and distribute the resulting executable under
+terms of your choice, provided that you also meet, for each linked
+independent module, the terms and conditions of the license of that
+module.  An independent module is a module which is not derived from
+or based on this library.  If you modify this library, you may extend
+this exception to your version of the library, but you are not
+obligated to do so.  If you do not wish to do so, delete this
+exception statement from your version. */
+
+#include "jcl.h"
+#include "gtkpeer.h"
+#include <cairo-xlib.h>
+#include <gdk/gdkx.h>
+
+#include "gnu_java_awt_peer_gtk_CairoSurface.h"
+#include "cairographics2d.h"
+
+/**
+ * Field names in CairoSurface.java
+ */
+#define SURFACE "surfacePointer"
+#define BUFFER "bufferPointer"
+
+/* prototypes */
+static void *getNativeObject( JNIEnv *env, jobject obj, const char *pointer );
+static void setNativeObject( JNIEnv *env, jobject obj, void *ptr, const char *pointer );
+
+/**
+ * Creates a cairo surface, ARGB32, native ordering, premultiplied alpha.
+ */
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_CairoSurface_create (JNIEnv *env, jobject obj, jint width, jint height, jint stride)
+{
+  cairo_surface_t* surface;
+  void *data = g_malloc(stride * height * 4);
+  memset(data, 0, stride * height * 4);
+  setNativeObject(env, obj, data, BUFFER);
+
+  surface = cairo_image_surface_create_for_data
+    (data, CAIRO_FORMAT_ARGB32, width, height, stride);
+
+  setNativeObject(env, obj, surface, SURFACE);
+}
+
+/**
+ * Destroy the surface
+ */
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_CairoSurface_destroy (JNIEnv *env, jobject obj)
+{
+  void *buffer;
+  cairo_surface_t* surface = (cairo_surface_t *)getNativeObject(env, obj, SURFACE);
+  if( surface != NULL )
+    cairo_surface_destroy(surface);
+
+  buffer = getNativeObject(env, obj, BUFFER);
+  if( buffer != NULL )
+    g_free(buffer);
+}
+
+/**
+ * Gets a pixel
+ */
+JNIEXPORT jint JNICALL 
+Java_gnu_java_awt_peer_gtk_CairoSurface_nativeGetElem (JNIEnv *env, jobject obj, jint i)
+{
+  jint *pixeldata = (jint *)getNativeObject(env, obj, BUFFER);
+
+  if( pixeldata == NULL )
+    return 0;
+
+  return pixeldata[i];
+}
+
+/**
+ * Sets a pixel
+ */
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_CairoSurface_nativeSetElem 
+(JNIEnv *env, jobject obj, jint i, jint val)
+{
+  jint *pixeldata = (jint *)getNativeObject(env, obj, BUFFER);
+
+  if( pixeldata == NULL )
+    return;
+
+  pixeldata[i] = val;
+}
+
+/**
+ * Gets all pixels in an array
+ */
+JNIEXPORT jintArray JNICALL 
+Java_gnu_java_awt_peer_gtk_CairoSurface_getPixels
+(JNIEnv *env, jobject obj, int size)
+{
+  jint *pixeldata, *jpixdata, i;
+  jintArray jpixels;
+  
+  pixeldata = (jint *)getNativeObject(env, obj, BUFFER);
+  g_assert(pixeldata != NULL);
+
+  jpixels = (*env)->NewIntArray (env, size);
+  jpixdata = (*env)->GetIntArrayElements (env, jpixels, NULL);
+  memcpy (jpixdata, pixeldata, size);
+
+#ifndef WORDS_BIGENDIAN
+  /* convert pixels from 0xBBGGRRAA to 0xAARRGGBB */
+  for (i = 0; i < size; ++i)
+    {
+      jpixdata[i] = SWAPU32 ((unsigned)jpixdata[i]);
+    }
+#endif
+
+  (*env)->ReleaseIntArrayElements (env, jpixels, jpixdata, 0);
+  return jpixels;
+}
+
+/**
+ * Sets all pixels by an array.
+ */
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_CairoSurface_setPixels
+(JNIEnv *env, jobject obj, jintArray jpixels)
+{
+  jint *pixeldata, *jpixdata, i;
+  
+  pixeldata = (jint *)getNativeObject(env, obj, BUFFER);
+  g_assert(pixeldata != NULL);
+
+  jpixdata = (*env)->GetIntArrayElements (env, jpixels, NULL);
+  int size = (*env)->GetArrayLength( env, jpixels );
+  memcpy (pixeldata, jpixdata, size);
+
+#ifndef WORDS_BIGENDIAN
+  /* convert pixels from 0xBBGGRRAA to 0xAARRGGBB */
+  for (i = 0; i < size; ++i)
+    {
+      jpixdata[i] = SWAPU32 ((unsigned)jpixdata[i]);
+    }
+#endif
+
+  (*env)->ReleaseIntArrayElements (env, jpixels, jpixdata, 0);
+  return jpixels;
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_CairoSurface_drawSurface 
+   (JNIEnv *env, jobject obj, jobject context, jdoubleArray java_matrix)
+{
+  cairo_t *cr;
+  jdouble *native_matrix = NULL;
+  cairo_surface_t* surface = (cairo_surface_t *)getNativeObject(env, obj, SURFACE);
+  g_assert(surface != NULL);
+
+  cr = CairoGraphics2D_getCairoT(env, context);
+  g_assert(cr != NULL);
+
+  native_matrix = (*env)->GetDoubleArrayElements (env, java_matrix, NULL);
+  g_assert (native_matrix != NULL);
+  g_assert ((*env)->GetArrayLength (env, java_matrix) == 6);
+
+ {
+   cairo_matrix_t mat;
+   cairo_pattern_t *p;
+   cairo_matrix_init_identity (&mat);
+   cairo_matrix_init (&mat, 
+                      native_matrix[0], native_matrix[1],
+                      native_matrix[2], native_matrix[3],
+                      native_matrix[4], native_matrix[5]);
+
+   p = cairo_pattern_create_for_surface (surface);
+   cairo_pattern_set_matrix (p, &mat);
+
+   cairo_set_source(cr, p);
+   cairo_paint(cr);
+ }
+  
+ (*env)->ReleaseDoubleArrayElements (env, java_matrix, native_matrix, 0);
+}
+
+/**
+ * Create and return a cairo context for drawing to the surface.
+ */
+JNIEXPORT jlong JNICALL 
+Java_gnu_java_awt_peer_gtk_CairoSurface_newCairoContext (JNIEnv *env, jobject obj)
+{
+  cairo_surface_t* surface = (cairo_surface_t *)getNativeObject(env, obj, SURFACE);
+  g_assert(surface != NULL);
+  cairo_t *ptr = cairo_create(surface);
+  g_assert(ptr != NULL);
+
+  return (jlong)ptr;
+}
+
+/**
+ * copyArea.
+ */
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_CairoSurface_copyAreaNative (JNIEnv *env, jobject obj, 
+							jint x, jint y, jint w, jint h, 
+							jint dx, jint dy, jint stride)
+{
+  int row;
+  long srcOffset, dstOffset;
+  jint *pixeldata = (jint *)getNativeObject(env, obj, BUFFER);
+
+  if( pixeldata == NULL )
+    return;
+
+  srcOffset = x + y * stride;
+  dstOffset = (x + dx) + (y + dy) * stride;
+  for( row = 0; row < h; row++)
+    {
+      memcpy(pixeldata + dstOffset, pixeldata + srcOffset, w * 4);
+      srcOffset += stride;
+      dstOffset += stride;
+    }
+}
+
+/*
+ * Sets the native object field.
+ */
+static void 
+setNativeObject( JNIEnv *env, jobject obj, void *ptr, const char *pointer )
+{   
+  jclass cls;
+  jlong value;
+  jfieldID nofid;
+  cls = (*env)->GetObjectClass( env, obj );
+  value = ((jlong)ptr); 
+  nofid = (*env)->GetFieldID( env, cls, pointer, "J" );
+  (*env)->SetLongField( env, obj, nofid, value );
+  (*env)->DeleteLocalRef( env, cls );
+}
+
+/**
+ * Gets the native object field.
+ */
+static void *
+getNativeObject( JNIEnv *env, jobject obj, const char *pointer )
+{
+  jclass cls;
+  jlong value;
+  jfieldID nofid;
+  cls = (*env)->GetObjectClass( env, obj );
+  nofid = (*env)->GetFieldID( env, cls, pointer, "J" );
+  value = (*env)->GetLongField( env, obj, nofid );
+  (*env)->DeleteLocalRef( env, cls );
+  return (void *) value;
+}

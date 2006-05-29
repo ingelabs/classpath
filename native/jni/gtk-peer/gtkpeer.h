@@ -101,53 +101,6 @@ extern struct state_table *cp_gtk_native_graphics2d_state_table;
 #define SWAPU32(w)							\
   (((w) << 24) | (((w) & 0xff00) << 8) | (((w) >> 8) & 0xff00) | ((w) >> 24))
 
-/* 
-   A graphics2d struct is both simpler and uglier than a graphics
-   struct. 
-
-   Most of the graphics2d drawing state is held in the referenced cairo_t
-   and corresponding cairo_surface_t, so we can ignore it.
-
-   In addition to the cairo_t, we need to hold an extra reference to the
-   underlying GdkDrawable so its refcount matches the lifecycle of the java
-   Graphics object which is peering with us; also a reference to a byte
-   buffer and cairo_surface_t which contain the pattern you're drawing from
-   (if it exists).
-
-   Finally, it is possible that we are using a non-RENDER capable X server,
-   therefore we will be drawing to an cairo_surface_t which is actually a
-   pixbuf. When this is the case, the pointer to a GdkPixbuf will be
-   non-NULL and any drawing operation needs to be bracketed by pixbuf
-   load/save operations. If the GdkPixbuf pointer is NULL, we will treat
-   the cairo_surface_t as RENDER-capable.
- */
-struct graphics2d
-{
-  cairo_t *cr;
-  cairo_surface_t *surface;
-  GdkDrawable *drawable;
-  GdkWindow *win;
-  GdkPixbuf *drawbuf;
-  char *pattern_pixels;
-  cairo_surface_t *pattern_surface;
-  cairo_pattern_t *pattern;
-  gboolean debug;
-  enum 
-    { 
-      MODE_DRAWABLE_WITH_RENDER,
-      MODE_DRAWABLE_NO_RENDER,
-      MODE_JAVA_ARRAY
-    } 
-  mode;
-
-  /* Support for MODE_JAVA_ARRAY */
-  jintArray jarray;
-  jint width, height;
-  jint *javabuf;
-  jint *javabuf_copy;
-  jboolean isCopy;
-};
-
 /* New-style event masks. */
 #define AWT_BUTTON1_DOWN_MASK (1 << 10)
 #define AWT_BUTTON2_DOWN_MASK (1 << 11)

@@ -1,3 +1,65 @@
+2006-05-29  Sven de Marothy  <sven@physto.se>
+
+	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	* gnu/java/awt/peer/gtk/CairoSurface.java
+	* gnu/java/awt/peer/gtk/CairoSurfaceGraphics.java
+	* gnu/java/awt/peer/gtk/ComponentGraphics.java
+	* include/gnu_java_awt_peer_gtk_CairoGraphics2D.h
+	* include/gnu_java_awt_peer_gtk_CairoSurface.h
+	* include/gnu_java_awt_peer_gtk_ComponentGraphics.h
+	* native/jni/gtk-peer/cairographics2d.h
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoGraphics2D.c
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphics.c
+	New files.
+
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c
+	* include/gnu_java_awt_peer_gtk_GdkGraphics2D.h
+	Removed
+
+	* include/gnu_java_awt_peer_gtk_GdkFontPeer.h
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c
+	* gnu/java/awt/peer/gtk/GdkFontPeer.java
+	(releasePeerGraphicsResource): Moved to Font peer class.
+
+	* gnu/java/awt/peer/gtk/GdkGraphicsEnvironment.java
+	(createGraphics): Use new context classes.
+
+	* gnu/java/awt/peer/gtk/GdkPixbufDecoder.java:
+	Use native BufferedImages where possible.
+
+	* gnu/java/awt/peer/gtk/GdkTextLayout.java
+	* include/gnu_java_awt_peer_gtk_GdkTextLayout.h
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkTextLayout.c
+	Move GdkGraphics2D.drawGdkTextLayout to the GdkTextLayout class,
+	renamed to cairoDrawGdkTextLayout.
+	
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
+	(getGraphics): Use ComponentGraphics context.
+	(createImage): Use native BufferedImage.
+	
+	* gnu/java/awt/peer/gtk/GtkImage.java:
+	* include/gnu_java_awt_peer_gtk_GtkImage.h
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c
+	Remove pixmap support. (GtkImage(int, int) constructor, getGraphics)
+	Remove drawing methods.
+		
+	* gnu/java/awt/print/JavaPrinterGraphics.java:
+	Use CairoSurface instead of GtkImage.
+	
+	* include/Makefile.am
+	* native/jni/gtk-peer/Makefile.am
+	Update for new files.
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkClipboard.c
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkFramePeer.c
+	Remove superfluous GtkImage code for GdkPixmaps. 
+
+	* native/jni/gtk-peer/gtkpeer.h
+	Remove graphics2d structure.
+	
 2006-05-29  Mark Wielaard  <mark@klomp.org>
 
 	* java/io/ObjectStreamConstants.java: Removed double declaration

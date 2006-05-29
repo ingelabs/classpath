@@ -207,13 +207,7 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public Image createImage (int width, int height)
   {
-    Image image;
-    image = new BufferedImage (width, height, BufferedImage.TYPE_INT_RGB);
-
-    Graphics g = image.getGraphics();
-    g.setColor(getBackground());
-    g.fillRect(0, 0, width, height);
-    return image;
+    return CairoSurface.getBufferedImage(width, height);
   }
 
   public void disable () 
@@ -240,7 +234,7 @@ public class GtkComponentPeer extends GtkGenericPeer
   // never return null.
   public Graphics getGraphics ()
   {
-    return new GdkGraphics2D (this);
+    return ComponentGraphics.getComponentGraphics(this);
   }
 
   public Point getLocationOnScreen () 
