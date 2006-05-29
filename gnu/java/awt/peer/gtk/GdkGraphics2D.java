@@ -152,15 +152,17 @@ public class GdkGraphics2D extends Graphics2D
 
   GdkGraphics2D(GdkGraphics2D g)
   {
+    Color foreground;
+    
     paint = g.paint;
     stroke = g.stroke;
     setRenderingHints(g.hints);
 
     if (g.fg.getAlpha() != -1)
-      fg = new Color(g.fg.getRed(), g.fg.getGreen(), g.fg.getBlue(),
+      foreground = new Color(g.fg.getRed(), g.fg.getGreen(), g.fg.getBlue(),
                      g.fg.getAlpha());
     else
-      fg = new Color(g.fg.getRGB());
+      foreground = new Color(g.fg.getRGB());
 
     if (g.bg != null)
       {
@@ -185,7 +187,7 @@ public class GdkGraphics2D extends Graphics2D
     component = g.component;
     copyState(g);
 
-    setColor(fg);
+    setColor(foreground);
     setBackground(bg);
     setPaint(paint);
     setStroke(stroke);
