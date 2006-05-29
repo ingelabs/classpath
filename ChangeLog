@@ -1,3 +1,7 @@
+2006-05-29  Carsten Neumann  <cn-develop@gmx.net>
+
+	* java/io/ObjectStreamConstants.java: Added API docs.
+
 2006-05-29  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/java/awt/peer/gtk/GdkGraphics2D.java (setColor):
