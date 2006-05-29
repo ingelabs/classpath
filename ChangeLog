@@ -1,3 +1,11 @@
+2006-05-29  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java (translate):
+	Rewritten. 
+	* examples/gnu/classpath/examples/swing/FillRect.java (paintComponent):
+	Optionally paint with translation. (createContent): Added option
+	to test painting with translation
+
 2006-05-29  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* java/util/logging/FileHandler.java (FileHandler): Set the instance field

@@ -746,10 +746,35 @@ public class GdkGraphics2D extends Graphics2D
   {
     transform(AffineTransform.getScaleInstance(sx, sy));
   }
-
+  
+  /**
+   * Translate the system of the co-ordinates. As translation is a frequent
+   * operation, it is done in an optimised way, unlike scaling and rotating.
+   */
   public void translate(double tx, double ty)
   {
-    transform(AffineTransform.getTranslateInstance(tx, ty));
+    // 200 -> 140
+    if (transform != null)
+      transform.translate(tx, ty);
+    else
+      transform = AffineTransform.getTranslateInstance(tx, ty);
+
+    if (clip != null)
+      {
+        // FIXME: this should actuall try to transform the shape
+        // rather than degrade to bounds.
+        Rectangle2D r;
+
+        if (clip instanceof Rectangle2D)
+          r = (Rectangle2D) clip;
+        else
+          r = clip.getBounds2D();
+
+        r.setRect(r.getX() - tx, r.getY() - ty, r.getWidth(), r.getHeight());
+        clip = r;
+      }
+
+    setTransform(transform);
   }
 
   public void translate(int x, int y)

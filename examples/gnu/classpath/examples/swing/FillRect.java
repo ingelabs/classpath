@@ -37,6 +37,7 @@ public class FillRect
   LCDCanvas lcd;
   Worker worker;
   JLabel label;
+  JCheckBox translate;
 
   int     nx = 64;
   int     ny = 64;
@@ -48,6 +49,11 @@ public class FillRect
   long    lastMillis = System.currentTimeMillis();
 
   boolean enableRepaints = true;
+  
+  /**
+   * If true, test translation.
+   */
+  boolean testTranslation = false;
 
   public void actionPerformed(ActionEvent e) 
   {
@@ -71,8 +77,22 @@ public class FillRect
     lcd   = new LCDCanvas();
     label = new JLabel();
     label.setText("paintComponent took 00 msec. (00000 fillRect calls)");
+    
+    translate = new JCheckBox("translate");
+    translate.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent event)
+      {
+        testTranslation = translate.isSelected();
+      }
+    });
+    
+    JPanel bottom = new JPanel();
+    bottom.add(label);
+    bottom.add(translate);
+    
     p.add(lcd, BorderLayout.CENTER);
-    p.add(label, BorderLayout.SOUTH);
+    p.add(bottom, BorderLayout.SOUTH);
     add(p);
   }
 
@@ -123,6 +143,9 @@ public class FillRect
       g.fillRect(0, 0, sx, sy);
 
       Color pixelColor = null;
+      
+      int dx, dy;
+      
       for (int ix = 0; ix < nx; ix++)
         {
           for (int iy = 0; iy < ny; iy++)
@@ -131,9 +154,19 @@ public class FillRect
                 pixelColor = activePixel;
               else
                 pixelColor = passivePixel;
-
+               
+              dx = 4 * ix;
+              dy = 4 * iy;
               g.setColor(pixelColor);
-              g.fillRect(4 * ix, 4 * iy, 3, 3);
+              
+              if (testTranslation)
+                {
+                  g.translate(dx, dy);
+                  g.fillRect(0, 0, 3, 3);
+                  g.translate(-dx, -dy);
+                }
+              else
+                g.fillRect(dx, dy, 3, 3);
             }
         }
 
