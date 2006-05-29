@@ -1,3 +1,22 @@
+2006-05-29  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoGraphics2D.c
+	(Java_gnu_java_awt_peer_gtk_CairoGraphics2D_init): Mark unused
+	arguments.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c
+	(Java_gnu_java_awt_peer_gtk_CairoSurface_setPixels): Declare size
+	early. Remove unused return statement in void function.
+	(Java_gnu_java_awt_peer_gtk_CairoSurface_newCairoContext): Declare
+	ptr early.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphics.c
+	(Java_gnu_java_awt_peer_gtk_ComponentGraphics_hasXRender): Mark
+	unused arguments.
+	(Java_gnu_java_awt_peer_gtk_ComponentGraphics_initState): Likewise.
+	(Java_gnu_java_awt_peer_gtk_ComponentGraphics_start_1gdk_1drawing):
+	Likewise.
+	(Java_gnu_java_awt_peer_gtk_ComponentGraphics_end_1gdk_1drawing):
+	Likewise.
+
 2006-05-29  Sven de Marothy  <sven@physto.se>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c

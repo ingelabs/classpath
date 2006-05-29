@@ -152,12 +152,13 @@ Java_gnu_java_awt_peer_gtk_CairoSurface_setPixels
 (JNIEnv *env, jobject obj, jintArray jpixels)
 {
   jint *pixeldata, *jpixdata, i;
+  int size;
   
   pixeldata = (jint *)getNativeObject(env, obj, BUFFER);
   g_assert(pixeldata != NULL);
 
   jpixdata = (*env)->GetIntArrayElements (env, jpixels, NULL);
-  int size = (*env)->GetArrayLength( env, jpixels );
+  size = (*env)->GetArrayLength( env, jpixels );
   memcpy (pixeldata, jpixdata, size);
 
 #ifndef WORDS_BIGENDIAN
@@ -213,8 +214,9 @@ JNIEXPORT jlong JNICALL
 Java_gnu_java_awt_peer_gtk_CairoSurface_newCairoContext (JNIEnv *env, jobject obj)
 {
   cairo_surface_t* surface = (cairo_surface_t *)getNativeObject(env, obj, SURFACE);
+  cairo_t *ptr;
   g_assert(surface != NULL);
-  cairo_t *ptr = cairo_create(surface);
+  ptr = cairo_create(surface);
   g_assert(ptr != NULL);
 
   return (jlong)ptr;

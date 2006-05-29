@@ -83,7 +83,9 @@ cairo_t *CairoGraphics2D_getCairoT(JNIEnv *env, jobject cairographics2dobj)
  */
 JNIEXPORT jlong JNICALL
 Java_gnu_java_awt_peer_gtk_CairoGraphics2D_init
-  (JNIEnv *env, jobject obj, jlong cairo_t_pointer)
+  (JNIEnv *env __attribute__ ((unused)),
+   jobject obj __attribute__ ((unused)),
+   jlong cairo_t_pointer)
 {
   struct cairographics2d *g = NULL;
   g_assert( cairo_t_pointer != NULL);

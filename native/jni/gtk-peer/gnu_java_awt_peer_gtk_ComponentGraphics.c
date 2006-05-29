@@ -74,7 +74,8 @@ grab_current_drawable (GtkWidget *widget, GdkDrawable **draw, GdkWindow **win)
  * Returns whether the XRender extension is supported
  */
 JNIEXPORT jboolean JNICALL 
-Java_gnu_java_awt_peer_gtk_ComponentGraphics_hasXRender (JNIEnv *env, jclass cls)
+Java_gnu_java_awt_peer_gtk_ComponentGraphics_hasXRender
+  (JNIEnv *env __attribute__ ((unused)), jclass cls __attribute__ ((unused)))
 { 
   int ev = 0, err = 0; 
   if( XRenderQueryExtension (GDK_DISPLAY (), &ev, &err) )
@@ -84,8 +85,8 @@ Java_gnu_java_awt_peer_gtk_ComponentGraphics_hasXRender (JNIEnv *env, jclass cls
 
 
 JNIEXPORT jlong JNICALL 
-Java_gnu_java_awt_peer_gtk_ComponentGraphics_initState (JNIEnv *env, jobject obj,
-							jobject peer)
+Java_gnu_java_awt_peer_gtk_ComponentGraphics_initState
+  (JNIEnv *env, jobject obj __attribute__ ((unused)), jobject peer)
 {
   Drawable draw;
   Display * dpy;
@@ -135,13 +136,15 @@ Java_gnu_java_awt_peer_gtk_ComponentGraphics_initState (JNIEnv *env, jobject obj
 }
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_ComponentGraphics_start_1gdk_1drawing (JNIEnv *env, jobject obj)
+Java_gnu_java_awt_peer_gtk_ComponentGraphics_start_1gdk_1drawing
+  (JNIEnv *env __attribute__ ((unused)), jobject obj __attribute__ ((unused)))
 {
   gdk_threads_enter();
 }
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_ComponentGraphics_end_1gdk_1drawing (JNIEnv *env, jobject obj)
+Java_gnu_java_awt_peer_gtk_ComponentGraphics_end_1gdk_1drawing
+  (JNIEnv *env __attribute__ ((unused)), jobject obj __attribute__ ((unused)))
 {
   gdk_threads_leave();
 }
