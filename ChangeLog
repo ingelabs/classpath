@@ -1,5 +1,10 @@
 2006-05-29  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java (setColor):
+	Take no action if this color is already set.
+
+2006-05-29  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* gnu/java/awt/peer/gtk/GdkGraphics2D.java (translate):
 	Rewritten. 
 	* examples/gnu/classpath/examples/swing/FillRect.java (paintComponent):

@@ -834,6 +834,9 @@ public class GdkGraphics2D extends Graphics2D
   {
     if (c == null)
       c = Color.BLACK;
+    
+    if (c.equals(fg))
+      return;
 
     fg = c;
     paint = c;
