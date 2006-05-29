@@ -1,3 +1,7 @@
+2006-05-29  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* tools/Makefile.am [FOUND_CACAO] (LIBJVM): Define to -ljvm.
+
 2006-05-29  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoGraphics2D.c
