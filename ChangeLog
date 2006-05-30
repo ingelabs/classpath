@@ -1,5 +1,35 @@
 2006-05-30  Mark Wielaard  <mark@klomp.org>
 
+	* native/jni/classpath/jcl.h (JLONG_TO_PTR): New macro.
+	(PTR_TO_JLONG): Likewise.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoGraphics2D.c
+	(getPointer): Use new conversion macros.
+	(Java_gnu_java_awt_peer_gtk_CairoGraphics2D_init): Likewise.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c
+	(Java_gnu_java_awt_peer_gtk_CairoSurface_newCairoContext):
+	Likewise.
+	(setNativeObject): Likewise.
+	(getNativeObject): Likewise.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphics.c
+	(cp_java_awt_peer_gtk_ComponentGraphics_grab_current_drawable):
+	Mark static.
+	(Java_gnu_java_awt_peer_gtk_ComponentGraphics_initState):
+	Correctly cast XID and pointer values.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphicsCopy.c
+	(Java_gnu_java_awt_peer_gtk_ComponentGraphicsCopy_getPixbuf):
+	Mark unused variables.
+	(Java_gnu_java_awt_peer_gtk_ComponentGraphicsCopy_copyPixbuf):
+	Likewise.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkTextLayout.c
+	(Java_gnu_java_awt_peer_gtk_GdkTextLayout_cairoDrawGdkTextLayout):
+	Remove unused cairographics2d struct.
+	(_moveTo, _lineTo, _quadTo, _curveTo): Mark arguments const.
+	(Java_gnu_java_awt_peer_gtk_GtkImage_initFromBuffer):
+	Use new conversion macros.
+	* native/jni/midi-dssi/dssi_data.h: Move conversion macros to jcl.h.
+
+2006-05-30  Mark Wielaard  <mark@klomp.org>
+
 	* include/Makefile.am (gnu_java_nio_VMChannel.h): Added.
 
 2006-05-29  Audrius Meskauskas  <AudriusA@Bioinformatics.org>

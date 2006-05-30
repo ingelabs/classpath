@@ -57,7 +57,8 @@ void cp_java_awt_peer_gtk_ComponentGraphics_grab_current_drawable(GtkWidget *wid
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_ComponentGraphicsCopy_getPixbuf
-   (JNIEnv *env, jobject obj, jobject peer, jobject image)
+   (JNIEnv *env, jobject obj __attribute__((unused)),
+    jobject peer, jobject image)
 {
   gint width, height;
   GdkPixbuf *pixbuf;
@@ -94,8 +95,10 @@ Java_gnu_java_awt_peer_gtk_ComponentGraphicsCopy_getPixbuf
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_ComponentGraphicsCopy_copyPixbuf
-  (JNIEnv *env, jobject obj, jobject peer, jobject image,
-   int x, int y, int width, int height)
+  (JNIEnv *env, jobject obj __attribute__((unused)),
+   jobject peer, jobject image,
+   int x __attribute__((unused)), int y __attribute__((unused)),
+   int width __attribute__((unused)), int height __attribute__((unused)))
 {
   gint pwidth, pheight;
   GdkPixbuf *pixbuf;

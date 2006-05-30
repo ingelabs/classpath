@@ -1,5 +1,5 @@
 /* gnu_java_awt_GdkTextLayout.c
-   Copyright (C) 2004, 2005 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2005, 2006 Free Software Foundation, Inc.
    
    This file is part of GNU Classpath.
    
@@ -224,7 +224,6 @@ Java_gnu_java_awt_peer_gtk_GdkTextLayout_cairoDrawGdkTextLayout
    */
 
   cairo_t *cr;
-  struct cairographics2d *gr = NULL;
   struct textlayout *tl = NULL;
   PangoLayoutIter *i = NULL;
   PangoLayoutRun *run = NULL;
@@ -312,7 +311,7 @@ paint_glyph_run(cairo_t *cr,
 /* GetOutline code follows ****************************/
 /********* Freetype callback functions *****************************/
 
-static int _moveTo( FT_Vector* to,
+static int _moveTo( const FT_Vector* to,
 		    void *p)
 {
   JNIEnv *env;
@@ -335,7 +334,7 @@ static int _moveTo( FT_Vector* to,
   return 0;
 }
 
-static int _lineTo( FT_Vector*  to,
+static int _lineTo( const FT_Vector*  to,
 		    void *p)
 {
   JNIEnv *env;
@@ -357,8 +356,8 @@ static int _lineTo( FT_Vector*  to,
   return 0;
 }
 
-static int _quadTo( FT_Vector*  cp,
-		    FT_Vector*  to,
+static int _quadTo( const FT_Vector*  cp,
+		    const FT_Vector*  to,
 		    void *p)
 {
   JNIEnv *env;
@@ -382,9 +381,9 @@ static int _quadTo( FT_Vector*  cp,
   return 0;
 }
 
-static int _curveTo( FT_Vector*  cp1,
-		     FT_Vector*  cp2,
-		     FT_Vector*  to,
+static int _curveTo( const FT_Vector*  cp1,
+		     const FT_Vector*  cp2,
+		     const FT_Vector*  to,
 		     void *p)
 {
   JNIEnv *env;

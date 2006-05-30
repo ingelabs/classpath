@@ -55,7 +55,7 @@ exception statement from your version. */
 #include "gnu_java_awt_peer_gtk_ComponentGraphics.h"
 
 
-void 
+static void 
 cp_java_awt_peer_gtk_ComponentGraphics_grab_current_drawable(GtkWidget *widget,
 	GdkDrawable **draw, GdkWindow **win)
 {  
@@ -117,7 +117,7 @@ Java_gnu_java_awt_peer_gtk_ComponentGraphics_initState
   g_assert (drawable != NULL);
 
   draw = gdk_x11_drawable_get_xid(drawable);
-  g_assert (draw != NULL);
+  g_assert (draw != (XID) 0);
   
   dpy = gdk_x11_drawable_get_xdisplay(drawable);
   g_assert (dpy != NULL);
@@ -133,7 +133,7 @@ Java_gnu_java_awt_peer_gtk_ComponentGraphics_initState
 
   gdk_threads_leave();
 
-  return (jlong)cr;
+  return PTR_TO_JLONG(cr);
 }
 
 JNIEXPORT void JNICALL 

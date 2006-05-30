@@ -219,7 +219,7 @@ Java_gnu_java_awt_peer_gtk_CairoSurface_newCairoContext (JNIEnv *env, jobject ob
   ptr = cairo_create(surface);
   g_assert(ptr != NULL);
 
-  return (jlong)ptr;
+  return PTR_TO_JLONG(ptr);
 }
 
 /**
@@ -265,7 +265,7 @@ setNativeObject( JNIEnv *env, jobject obj, void *ptr, const char *pointer )
   jlong value;
   jfieldID nofid;
   cls = (*env)->GetObjectClass( env, obj );
-  value = ((jlong)ptr); 
+  value = PTR_TO_JLONG(ptr); 
   nofid = (*env)->GetFieldID( env, cls, pointer, "J" );
   (*env)->SetLongField( env, obj, nofid, value );
   (*env)->DeleteLocalRef( env, cls );
@@ -284,5 +284,5 @@ getNativeObject( JNIEnv *env, jobject obj, const char *pointer )
   nofid = (*env)->GetFieldID( env, cls, pointer, "J" );
   value = (*env)->GetLongField( env, obj, nofid );
   (*env)->DeleteLocalRef( env, cls );
-  return (void *) value;
+  return JLONG_TO_PTR(void, value);
 }

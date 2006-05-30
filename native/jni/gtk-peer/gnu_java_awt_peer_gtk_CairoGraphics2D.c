@@ -64,7 +64,7 @@ getPointer(JNIEnv *env, jobject obj)
   value = (*env)->GetLongField( env, obj, nofid );
   (*env)->DeleteLocalRef( env, cls );
 
-  return (struct cairographics2d *) value;
+  return JLONG_TO_PTR(struct cairographics2d, value);
 }
 
 /**
@@ -88,15 +88,16 @@ Java_gnu_java_awt_peer_gtk_CairoGraphics2D_init
    jlong cairo_t_pointer)
 {
   struct cairographics2d *g = NULL;
-  g_assert( cairo_t_pointer != NULL);
+  cairo_t *cr = JLONG_TO_PTR(cairo_t, cairo_t_pointer);
+  g_assert(cr != NULL);
 
   g = (struct cairographics2d *) g_malloc (sizeof (struct cairographics2d));
 
   g_assert (g != NULL);
   memset (g, 0, sizeof(struct cairographics2d));
-  g->cr = (cairo_t *)cairo_t_pointer;
+  g->cr = cr;
   
-  return ((jlong)g);
+  return PTR_TO_JLONG(g);
 }
 
 /**

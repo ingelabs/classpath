@@ -267,8 +267,9 @@ Java_gnu_java_awt_peer_gtk_GtkImage_initFromBuffer(JNIEnv *env, jobject obj,
   jclass cls;
   jfieldID field;
   GdkPixbuf *pixbuf;
+  const guchar *bp = JLONG_TO_PTR(const guchar, bufferPointer);
 
-  g_assert( bufferPointer != NULL );
+  g_assert(bp != NULL);
   cls = (*env)->GetObjectClass( env, obj );
   field = (*env)->GetFieldID( env, cls, "width", "I" );
   g_assert( field != 0 );
@@ -278,7 +279,7 @@ Java_gnu_java_awt_peer_gtk_GtkImage_initFromBuffer(JNIEnv *env, jobject obj,
   g_assert( field != 0 );
   height = (*env)->GetIntField( env, obj, field );
 
-  pixbuf = gdk_pixbuf_new_from_data( (const guchar *)bufferPointer,
+  pixbuf = gdk_pixbuf_new_from_data( bp,
 				     GDK_COLORSPACE_RGB, TRUE, 8,
 				     width, height, width * 4, NULL, NULL );
   g_assert( pixbuf != NULL );
