@@ -122,9 +122,13 @@ JNIEXPORT jintArray JNICALL
 Java_gnu_java_awt_peer_gtk_CairoSurface_getPixels
 (JNIEnv *env, jobject obj, int size)
 {
-  jint *pixeldata, *jpixdata, i;
+  jint *pixeldata, *jpixdata;
   jintArray jpixels;
-  
+
+#ifndef WORDS_BIGENDIAN
+  int i;
+#endif
+
   pixeldata = (jint *)getNativeObject(env, obj, BUFFER);
   g_assert(pixeldata != NULL);
 
@@ -151,9 +155,13 @@ JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_CairoSurface_setPixels
 (JNIEnv *env, jobject obj, jintArray jpixels)
 {
-  jint *pixeldata, *jpixdata, i;
+  jint *pixeldata, *jpixdata;
   int size;
-  
+
+#ifndef WORDS_BIGENDIAN
+  int i;
+#endif
+
   pixeldata = (jint *)getNativeObject(env, obj, BUFFER);
   g_assert(pixeldata != NULL);
 
