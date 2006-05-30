@@ -219,12 +219,14 @@ public abstract class CairoGraphics2D extends Graphics2D
     paint = g.paint;
     stroke = g.stroke;
     setRenderingHints(g.hints);
+    
+    Color foreground;
 
     if (g.fg.getAlpha() != -1)
-      fg = new Color(g.fg.getRed(), g.fg.getGreen(), g.fg.getBlue(),
+      foreground = new Color(g.fg.getRed(), g.fg.getGreen(), g.fg.getBlue(),
                      g.fg.getAlpha());
     else
-      fg = new Color(g.fg.getRGB());
+      foreground = new Color(g.fg.getRGB());
 
     if (g.bg != null)
       {
@@ -247,7 +249,7 @@ public abstract class CairoGraphics2D extends Graphics2D
 
     font = g.font;
 
-    setColor(fg);
+    setColor(foreground);
     setBackground(bg);
     setPaint(paint);
     setStroke(stroke);
@@ -467,11 +469,35 @@ public abstract class CairoGraphics2D extends Graphics2D
     transform(AffineTransform.getScaleInstance(sx, sy));
   }
 
+  /**
+   * Translate the system of the co-ordinates. As translation is a frequent
+   * operation, it is done in an optimised way, unlike scaling and rotating.
+   */
   public void translate(double tx, double ty)
   {
-    transform(AffineTransform.getTranslateInstance(tx, ty));
-  }
+    if (transform != null)
+      transform.translate(tx, ty);
+    else
+      transform = AffineTransform.getTranslateInstance(tx, ty);
 
+    if (clip != null)
+      {
+        // FIXME: this should actuall try to transform the shape
+        // rather than degrade to bounds.
+        Rectangle2D r;
+
+        if (clip instanceof Rectangle2D)
+          r = (Rectangle2D) clip;
+        else
+          r = clip.getBounds2D();
+
+        r.setRect(r.getX() - tx, r.getY() - ty, r.getWidth(), r.getHeight());
+        clip = r;
+      }
+
+    setTransform(transform);
+  }
+  
   public void translate(int x, int y)
   {
     translate((double) x, (double) y);
@@ -610,10 +636,13 @@ public abstract class CairoGraphics2D extends Graphics2D
     if (c == null)
       c = Color.BLACK;
 
-    fg = c;
-    paint = c;
-    cairoSetRGBAColor(fg.getRed() / 255.0, fg.getGreen() / 255.0,
-                      fg.getBlue() / 255.0, fg.getAlpha() / 255.0);
+    if (! c.equals(fg))
+      {
+        fg = c;
+        paint = c;
+        cairoSetRGBAColor(fg.getRed() / 255.0, fg.getGreen() / 255.0,
+                          fg.getBlue() / 255.0, fg.getAlpha() / 255.0);
+      }
   }
 
   public Color getColor()

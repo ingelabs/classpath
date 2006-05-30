@@ -1,3 +1,12 @@
+2006-05-29  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(copy): Do not reuse the fd field.
+	(setColor): Do not set the color if the parameter
+	matches fd field.
+	(translate(double, double): Rewritten to use
+	AffineTransform.translate. 
+
 2006-05-30  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/peer/gtk/ComponentGraphicsCopy.java
