@@ -64,10 +64,7 @@ public class GdkFontPeer extends ClasspathFontPeer
   
   static 
   {
-    if (Configuration.INIT_LOAD_LIBRARY)
-      {
-        System.loadLibrary("gtkpeer");
-      }
+    System.loadLibrary("gtkpeer");
 
     initStaticState ();
 
