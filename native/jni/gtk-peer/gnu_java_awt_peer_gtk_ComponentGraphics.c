@@ -150,3 +150,37 @@ Java_gnu_java_awt_peer_gtk_ComponentGraphics_end_1gdk_1drawing
   gdk_threads_leave();
 }
 
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_ComponentGraphics_copyAreaNative
+  (JNIEnv *env, jobject obj, jobject peer,
+   jint x, jint y, jint w, jint h, jint dx, jint dy)
+{
+  GdkPixbuf *pixbuf;
+  Drawable draw;
+  Display * dpy;
+  Visual * vis;
+  GdkDrawable *drawable;
+  GdkWindow *win;
+  GtkWidget *widget = NULL;
+  void *ptr = NULL;
+
+  gdk_threads_enter();
+
+  ptr = NSA_GET_PTR (env, peer);
+  g_assert (ptr != NULL);
+
+  widget = GTK_WIDGET (ptr);
+  g_assert (widget != NULL);
+
+  cp_java_awt_peer_gtk_ComponentGraphics_grab_current_drawable (widget, &drawable, &win);
+  g_assert (drawable != NULL);
+
+  pixbuf = gdk_pixbuf_new( GDK_COLORSPACE_RGB, TRUE, 8, w, h );
+  gdk_pixbuf_get_from_drawable( pixbuf, drawable, NULL, x, y, 0, 0, w, h );
+  gdk_draw_pixbuf (drawable, NULL, pixbuf,
+		   0, 0, x + dx, y + dy, 
+		   w, h, 
+		   GDK_RGB_DITHER_NORMAL, 0, 0);
+  gdk_threads_leave();
+}
+

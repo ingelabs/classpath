@@ -70,9 +70,11 @@ public class ComponentGraphics extends CairoGraphics2D
     this.component = component;
     cairo_t = initState(component);
     setup( cairo_t );
-    setColor(component.awtComponent.getForeground());
     setBackground(component.awtComponent.getBackground());
     setClip(component.awtComponent.getBounds());
+    setColor( new Color( 255, 255, 255, 255 ) );
+    fill(component.awtComponent.getBounds());
+    setColor(component.awtComponent.getForeground());
   }
 
   private ComponentGraphics(ComponentGraphics cg)
@@ -102,6 +104,10 @@ public class ComponentGraphics extends CairoGraphics2D
    */
   public static native boolean hasXRender();
 
+
+  private native void copyAreaNative(GtkComponentPeer component, int x, int y, 
+				     int width, int height, int dx, int dy);
+
   /**
    * Returns a Graphics2D object for a component, either an instance of this 
    * class (if xrender is supported), or a context which copies.
@@ -127,7 +133,35 @@ public class ComponentGraphics extends CairoGraphics2D
   
   public void copyArea(int x, int y, int width, int height, int dx, int dy)
   {
-    // FIXME
+    Rectangle r = component.awtComponent.getBounds();
+
+    // Return if outside the component
+    if( x + dx > r.width || y + dy > r.height )
+      return;
+
+    if( x + dx + width < 0 || y + dy + height < 0 )
+      return;
+
+    // Clip edges if necessary 
+    if( x + dx < 0 ) // left
+      {
+	width = x + dx + width;
+	x = -dx;
+      }
+
+    if( y + dy < 0 ) // top
+      {
+	height = y + dy + height;
+	y = -dy;
+      }
+
+    if( x + dx + width >= r.width ) // right
+      width = r.width - dx - x;
+
+    if( y + dy + height >= r.height ) // bottom
+      height = r.height - dy - y;
+
+    copyAreaNative(component, x, y, width, height, dx, dy);
   }
 
   /**
