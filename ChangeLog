@@ -3,6 +3,11 @@
 	* java/awt/Container.java:
 	(removeAll): Reimplemented, added note.
 
+2006-05-30  Robert Schuster  <robertschuster@fsfe.org>
+
+        * java/awt/Container.java:
+        (removeAll): Implemented different removal mechanism, added note.
+
 2006-05-30  Lillian Angel  <langel@redhat.com>
 
 	PR 27785
