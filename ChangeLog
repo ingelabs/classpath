@@ -1,3 +1,11 @@
+2006-05-30  Lillian Angel  <langel@redhat.com>
+
+	PR 27785
+	* java/awt/Component.java:
+	(translateEvent): Added handling to translate WindowEvents
+	* java/awt/Window.java:
+	Removed unneeded imports.
+
 2006-05-30  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/gtk-peer/Makefile.am (libgtkpeer_la_SOURCES): Add
