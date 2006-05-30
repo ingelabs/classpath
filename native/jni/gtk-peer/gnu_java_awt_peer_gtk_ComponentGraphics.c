@@ -152,13 +152,10 @@ Java_gnu_java_awt_peer_gtk_ComponentGraphics_end_1gdk_1drawing
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_ComponentGraphics_copyAreaNative
-  (JNIEnv *env, jobject obj, jobject peer,
+  (JNIEnv *env, jobject obj __attribute__((unused)), jobject peer,
    jint x, jint y, jint w, jint h, jint dx, jint dy)
 {
   GdkPixbuf *pixbuf;
-  Drawable draw;
-  Display * dpy;
-  Visual * vis;
   GdkDrawable *drawable;
   GdkWindow *win;
   GtkWidget *widget = NULL;
