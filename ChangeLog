@@ -1,3 +1,7 @@
+2006-05-30  Mark Wielaard  <mark@klomp.org>
+
+	* include/Makefile.am (gnu_java_nio_VMChannel.h): Added.
+
 2006-05-29  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
