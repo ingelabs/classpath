@@ -457,8 +457,15 @@ public class Container extends Component
   {
     synchronized (getTreeLock ())
       {
-        while (ncomponents > 0)
+        // In order to allow the same bad tricks to be used as in RI
+        // this code has to stay exactly that way: In a real-life app
+        // a Container subclass implemented its own vector for
+        // subcomponents, supplied additional addXYZ() methods
+        // and overrode remove(int) (but not removeAll).
+        for ( int i=0; i<ncomponents; i++)
           remove(0);
+        
+        ncomponents = 0;
       }
   }
 
