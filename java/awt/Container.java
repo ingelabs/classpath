@@ -461,11 +461,40 @@ public class Container extends Component
         // this code has to stay exactly that way: In a real-life app
         // a Container subclass implemented its own vector for
         // subcomponents, supplied additional addXYZ() methods
-        // and overrode remove(int) (but not removeAll).
-        for ( int i=0; i<ncomponents; i++)
-          remove(0);
+        // and overrode remove(int) and removeAll (the latter calling
+        // super.removeAll() ).
+        // By doing it this way, user code cannot prevent the correct
+        // removal of components.
+        for ( int index = 0; index < ncomponents; index++)
+          {
+            Component r = component[index];
+
+            ComponentListener[] list = r.getComponentListeners();
+            for (int j = 0; j < list.length; j++)
+              r.removeComponentListener(list[j]);
+            
+            r.removeNotify();
+
+            if (layoutMgr != null)
+              layoutMgr.removeLayoutComponent(r);
+
+            r.parent = null;
+
+            if (isShowing ())
+              {
+                // Post event to notify of removing the component.
+                ContainerEvent ce
+                  = new ContainerEvent(this,
+                                       ContainerEvent.COMPONENT_REMOVED,
+                                       r);
+                
+                getToolkit().getSystemEventQueue().postEvent(ce);
+              }
+            }
+          
+          invalidate();
         
-        ncomponents = 0;
+          ncomponents = 0;
       }
   }
 
