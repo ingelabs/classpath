@@ -640,9 +640,19 @@ public abstract class CairoGraphics2D extends Graphics2D
       {
         fg = c;
         paint = c;
-        cairoSetRGBAColor(fg.getRed() / 255.0, fg.getGreen() / 255.0,
-                          fg.getBlue() / 255.0, fg.getAlpha() / 255.0);
+        updateColor();
       }
+  }
+  
+  /**
+   * Set the current fg value as the cairo color.
+   */
+  void updateColor()
+  {
+    if (fg == null)
+      fg = Color.BLACK;
+    cairoSetRGBAColor(fg.getRed() / 255.0, fg.getGreen() / 255.0,
+                      fg.getBlue() / 255.0, fg.getAlpha() / 255.0);
   }
 
   public Color getColor()
@@ -821,7 +831,7 @@ public abstract class CairoGraphics2D extends Graphics2D
       cairoSetRGBAColor(bg.getRed() / 255.0, bg.getGreen() / 255.0,
 			bg.getBlue() / 255.0, 1.0);
     fillRect(x, y, width, height);
-    setColor(fg);
+    updateColor();
   }
 
   public void draw3DRect(int x, int y, int width, int height, boolean raised)
@@ -1308,8 +1318,8 @@ public abstract class CairoGraphics2D extends Graphics2D
 
     drawPixels(pixels, r.getWidth(), r.getHeight(), r.getWidth(), i2u);
 
-    // Cairo seems loosing the current color.
-    setColor(fg);
+    // Cairo seems loosing the current color which must be restored.
+    updateColor();
     
     return true;
   }

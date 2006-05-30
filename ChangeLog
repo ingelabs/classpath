@@ -1,3 +1,11 @@
+2006-05-29  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(clearRect): Do not reuse the fd field, call updateColor.
+	(drawRaster): Likewise.
+	(setColor): Call updateColor.
+	(updateColor): New method.
+
 2006-05-30  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/classpath/jcl.h (JLONG_TO_PTR): New macro.
