@@ -1025,8 +1025,8 @@ public abstract class CairoGraphics2D extends Graphics2D
 			      invertedXform, bgcolor);
 	  }
 	else
-	  return this.drawImage(GdkPixbufDecoder.createBufferedImage(img
-								     .getSource()),
+	  return this.drawImage(Toolkit.getDefaultToolkit().
+				createImage(img.getSource()),
 				xform, bgcolor, obs);
       }
     catch (NoninvertibleTransformException e)

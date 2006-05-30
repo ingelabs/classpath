@@ -116,49 +116,57 @@ public class GtkImage extends Image
   private static GtkImage errorImage;
 
   /**
+   * Lock that should be held for all gdkpixbuf operations. We don't use
+   * the global gdk_threads_enter/leave functions in most places since
+   * most gdkpixbuf operations can be done in parallel to drawing and 
+   * manipulating gtk widgets.
+   */
+  static Object pixbufLock = new Object();
+
+  /**
    * Allocate a PixBuf from a given ARGB32 buffer pointer.
    */
   private native void initFromBuffer( long bufferPointer );
 
   /**
    * Returns a copy of the pixel data as a java array.
-   * Should be called with the GdkPixbufDecoder.pixbufLock held.
+   * Should be called with the pixbufLock held.
    */
   native int[] getPixels();
 
   /**
    * Sets the pixel data from a java array.
-   * Should be called with the GdkPixbufDecoder.pixbufLock held.
+   * Should be called with the pixbufLock held.
    */
   private native void setPixels(int[] pixels);
 
   /**
    * Loads an image using gdk-pixbuf from a file.
-   * Should be called with the GdkPixbufDecoder.pixbufLock held.
+   * Should be called with the pixbufLock held.
    */
   private native boolean loadPixbuf(String name);
 
   /**
    * Loads an image using gdk-pixbuf from data.
-   * Should be called with the GdkPixbufDecoder.pixbufLock held.
+   * Should be called with the pixbufLock held.
    */
   private native boolean loadImageFromData(byte[] data);
 
   /**
    * Allocates a Gtk Pixbuf
-   * Should be called with the GdkPixbufDecoder.pixbufLock held.
+   * Should be called with the pixbufLock held.
    */
   private native void createPixbuf();
 
   /**
    * Frees the above.
-   * Should be called with the GdkPixbufDecoder.pixbufLock held.
+   * Should be called with the pixbufLock held.
    */
   private native void freePixbuf();
 
   /**
    * Sets the pixbuf to scaled copy of src image. hints are rendering hints.
-   * Should be called with the GdkPixbufDecoder.pixbufLock held.
+   * Should be called with the pixbufLock held.
    */
   private native void createScaledPixbuf(GtkImage src, int hints);
 
@@ -203,7 +211,7 @@ public class GtkImage extends Image
     try
       {
 	String path = f.getCanonicalPath();
-	synchronized(GdkPixbufDecoder.pixbufLock)
+	synchronized(pixbufLock)
 	  {
 	    if (loadPixbuf(f.getCanonicalPath()) != true)
 	      throw new IllegalArgumentException("Couldn't load image: "
@@ -232,7 +240,7 @@ public class GtkImage extends Image
    */
   public GtkImage (byte[] data)
   {
-    synchronized(GdkPixbufDecoder.pixbufLock)
+    synchronized(pixbufLock)
       {
 	if (loadImageFromData (data) != true)
 	  throw new IllegalArgumentException ("Couldn't load image.");
@@ -271,7 +279,7 @@ public class GtkImage extends Image
 	throw new IllegalArgumentException ("Couldn't load image.");
       }
     byte[] array = baos.toByteArray();
-    synchronized(GdkPixbufDecoder.pixbufLock)
+    synchronized(pixbufLock)
       {
 	if (loadImageFromData(array) != true)
 	  throw new IllegalArgumentException ("Couldn't load image.");
@@ -294,7 +302,7 @@ public class GtkImage extends Image
     observers = null;
 
     // Use the GDK scaling method.
-    synchronized(GdkPixbufDecoder.pixbufLock)
+    synchronized(pixbufLock)
       {
 	createScaledPixbuf(src, hints);
       }
@@ -307,7 +315,7 @@ public class GtkImage extends Image
   GtkImage (Pointer pixbuf)
   {
     this.pixbuf = pixbuf;
-    synchronized(GdkPixbufDecoder.pixbufLock)
+    synchronized(pixbufLock)
       {
 	createFromPixbuf();
       }
@@ -348,7 +356,7 @@ public class GtkImage extends Image
 
   /**
    * Native helper function for constructor that takes a pixbuf Pointer.
-   * Should be called with the GdkPixbufDecoder.pixbufLock held.
+   * Should be called with the pixbufLock held.
    */
   private native void createFromPixbuf();
 
@@ -370,7 +378,7 @@ public class GtkImage extends Image
 
     isLoaded = true;
     deliver();
-    synchronized(GdkPixbufDecoder.pixbufLock)
+    synchronized(pixbufLock)
       {
 	createPixbuf();
 	setPixels(pixels);
@@ -413,7 +421,7 @@ public class GtkImage extends Image
       return null;
 
     int[] pixels;
-    synchronized(GdkPixbufDecoder.pixbufLock)
+    synchronized(pixbufLock)
       {
 	pixels = getPixels();
       }
@@ -458,7 +466,7 @@ public class GtkImage extends Image
       {
 	observers = new Vector();
 	isLoaded = false;
-	synchronized(GdkPixbufDecoder.pixbufLock)
+	synchronized(pixbufLock)
 	  {
 	    freePixbuf();
 	  }
@@ -470,7 +478,7 @@ public class GtkImage extends Image
   {
     if (isLoaded)
       {
-	synchronized(GdkPixbufDecoder.pixbufLock)
+	synchronized(pixbufLock)
 	  {
 	    freePixbuf();
 	  }

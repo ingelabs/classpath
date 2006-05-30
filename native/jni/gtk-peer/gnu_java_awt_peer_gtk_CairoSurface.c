@@ -167,7 +167,7 @@ Java_gnu_java_awt_peer_gtk_CairoSurface_setPixels
 
   jpixdata = (*env)->GetIntArrayElements (env, jpixels, NULL);
   size = (*env)->GetArrayLength( env, jpixels );
-  memcpy (pixeldata, jpixdata, size);
+  memcpy (pixeldata, jpixdata, size * sizeof( jint ));
 
 #ifndef WORDS_BIGENDIAN
   /* convert pixels from 0xBBGGRRAA to 0xAARRGGBB */

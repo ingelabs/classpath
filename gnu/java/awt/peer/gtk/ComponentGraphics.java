@@ -72,8 +72,8 @@ public class ComponentGraphics extends CairoGraphics2D
     setup( cairo_t );
     setBackground(component.awtComponent.getBackground());
     setClip(component.awtComponent.getBounds());
-    setColor( new Color( 255, 255, 255, 255 ) );
-    fill(component.awtComponent.getBounds());
+//     setColor( new Color( 255, 255, 255, 255 ) );
+//     fill(component.awtComponent.getBounds());
     setColor(component.awtComponent.getForeground());
   }
 

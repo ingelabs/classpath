@@ -145,6 +145,39 @@ public class CairoSurface extends DataBuffer
   }
 
   /**
+   * Create a cairo_surface_t from a GtkImage instance.
+   * (data is copied, not shared)
+   */
+  CairoSurface(GtkImage image)
+  {
+    super(DataBuffer.TYPE_INT, image.width * image.height);
+
+    if(image.width <= 0 || image.height <= 0)
+      throw new IllegalArgumentException("Image must be at least 1x1 pixels.");
+
+    width = image.width;
+    height = image.height;
+
+    create(width, height, width * 4);
+    
+    if(surfacePointer == 0 || bufferPointer == 0)
+      throw new Error("Could not allocate bitmap.");
+    
+    // Copy the pixel data from the GtkImage.
+    int[] data = image.getPixels();
+
+    // Swap ordering, since Gtk is weird.
+    for(int i = 0; i < data.length; i++ )
+      {
+	int temp = (data[i] & 0x000000FF) << 16;
+	data[i] = (data[i] & 0xFFFFFF00) | ((data[i] & 0x00FF0000) >> 16);
+	data[i] = (data[i] & 0xFF00FFFF) | temp;
+      }
+
+    setPixels( data );
+  }
+
+  /**
    * Dispose of the native data.
    */
   public void dispose()
@@ -166,8 +199,25 @@ public class CairoSurface extends DataBuffer
    */    
   public static BufferedImage getBufferedImage(int width, int height)
   {
+    return getBufferedImage(new CairoSurface(width, height));
+  }
+
+  /**
+   * Returns a BufferedImage backed by a Cairo surface, 
+   * created from a GtkImage.
+   */    
+  public static BufferedImage getBufferedImage(GtkImage image)
+  {
+    return getBufferedImage(new CairoSurface(image));
+  }
+
+  /**
+   * Returns a BufferedImage backed by a Cairo surface.
+   */    
+  public static BufferedImage getBufferedImage(CairoSurface surface)
+  {
     WritableRaster raster = Raster.createPackedRaster
-      (new CairoSurface(width, height), width, height, width, 
+      (surface, surface.width, surface.height, surface.width, 
        new int[]{ 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000 },
        new Point(0,0));
 

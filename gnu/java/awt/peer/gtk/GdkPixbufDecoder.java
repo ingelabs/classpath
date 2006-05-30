@@ -683,43 +683,4 @@ public class GdkPixbufDecoder extends gnu.java.awt.image.ImageDecoder
       return getBufferedImage ();
     }
   }
-
-  // remaining helper class and static method is a convenience for the Gtk
-  // peers, for loading a BufferedImage in off a disk file without going
-  // through the whole imageio system. 
-
-  public static BufferedImage createBufferedImage (String filename)
-  {
-    GdkPixbufReader r = new GdkPixbufReader (getReaderSpi(), 
-                                             "png", // reader auto-detects, doesn't matter
-                                             new GdkPixbufDecoder (filename));
-    return r.getBufferedImage ();
-  }
-
-  public static BufferedImage createBufferedImage (URL u)
-  {
-    GdkPixbufReader r = new GdkPixbufReader (getReaderSpi(), 
-                                             "png", // reader auto-detects, doesn't matter
-                                             new GdkPixbufDecoder (u));
-    return r.getBufferedImage ();
-  }
-
-  public static BufferedImage createBufferedImage (byte[] imagedata, int imageoffset,
-                                                   int imagelength)
-  {
-    GdkPixbufReader r = new GdkPixbufReader (getReaderSpi(), 
-                                             "png", // reader auto-detects, doesn't matter
-                                             new GdkPixbufDecoder (imagedata,
-                                                                   imageoffset,
-                                                                   imagelength));
-    return r.getBufferedImage ();
-  }
-  
-  public static BufferedImage createBufferedImage (ImageProducer producer)
-  {
-    GdkPixbufReader r = new GdkPixbufReader (getReaderSpi(), "png" /* ignored */, null);
-    producer.startProduction(r);
-    return r.getBufferedImage ();
-  }
-
 }

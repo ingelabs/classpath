@@ -160,7 +160,7 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
     Image image;
     try
       {
-        image = GdkPixbufDecoder.createBufferedImage(filename);
+	image = CairoSurface.getBufferedImage( new GtkImage( filename ) );
       }
     catch (IllegalArgumentException iae)
       {
@@ -174,8 +174,8 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
     Image image;
     try
       {
-        image = GdkPixbufDecoder.createBufferedImage(url);
-    }
+	image = CairoSurface.getBufferedImage( new GtkImage( url ) );
+      }
     catch (IllegalArgumentException iae)
       {
 	image = null;
@@ -188,7 +188,7 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
     Image image;
     try
       {
-        image = GdkPixbufDecoder.createBufferedImage(producer);
+	image = CairoSurface.getBufferedImage( new GtkImage( producer ) );
       }
     catch (IllegalArgumentException iae)
       {
@@ -203,9 +203,9 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
     Image image;
     try
       {
-        image = GdkPixbufDecoder.createBufferedImage(imagedata,
-                                                     imageoffset,
-                                                     imagelength);
+	byte[] data = new byte[ imagelength ];
+	System.arraycopy(imagedata, imageoffset, data, 0, imagelength);
+	image = CairoSurface.getBufferedImage( new GtkImage( data ) );
       }
     catch (IllegalArgumentException iae)
       {
@@ -222,7 +222,7 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
    */  
   public ImageProducer createImageProducer(URL url)
   {
-    return new GdkPixbufDecoder(url);  
+    return createImage( url ).getSource();
   }
 
   /**
