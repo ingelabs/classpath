@@ -1,3 +1,9 @@
+2006-05-30  Roman Kennke <kennke@aicas.com>
+
+	* gnu/java/awt/java2d/TexturePaintContext.java: New file.
+	* java/awt/TexturePaint.java
+	(createContext): Implemented.
+
 2006-05-30  Robert Schuster  <robertschuster@fsfe.org>
 
 	* java/awt/Container.java:
