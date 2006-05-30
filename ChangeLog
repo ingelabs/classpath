@@ -1,3 +1,7 @@
+2006-05-30  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkImage.java: Fix constructor javadoc.
+
 2006-05-29  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java

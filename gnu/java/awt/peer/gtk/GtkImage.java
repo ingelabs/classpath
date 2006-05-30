@@ -116,7 +116,7 @@ public class GtkImage extends Image
   private static GtkImage errorImage;
 
   /**
-   * Allocate a PixBuf from a given ARGB32 buffer pointer
+   * Allocate a PixBuf from a given ARGB32 buffer pointer.
    */
   private native void initFromBuffer( long bufferPointer );
 
@@ -317,7 +317,9 @@ public class GtkImage extends Image
   }
 
   /**
-   * Wraps a buffer with a GtkImage. Buffer must be 
+   * Wraps a buffer with a GtkImage.
+   *
+   * @param bufferPointer a pointer to an ARGB32 buffer
    */
   GtkImage(int width, int height, long bufferPointer)
   {
