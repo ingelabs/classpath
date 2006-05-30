@@ -4,6 +4,14 @@
 	(Java_gnu_java_awt_peer_gtk_ComponentGraphics_copyAreaNative):
 	Mark unused parameters, remove unused variables.
 
+2006-05-30  Sven de Marothy  <sven@physto.se>
+
+	* gnu/java/awt/peer/gtk/ComponentGraphics.java
+	(copyArea): Implemented.
+	* include/gnu_java_awt_peer_gtk_ComponentGraphics.h
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphics.c:
+	(copyAreaNative): New method.
+
 2006-05-30  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c
