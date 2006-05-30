@@ -182,8 +182,6 @@ jint cp_gtk_state_to_awt_mods (guint state);
 
 /* Image helpers */
 GdkPixbuf *cp_gtk_image_get_pixbuf (JNIEnv *env, jobject obj);
-GdkPixmap *cp_gtk_image_get_pixmap (JNIEnv *env, jobject obj);
-jboolean cp_gtk_image_is_offscreen (JNIEnv *env, jobject obj);
 
 /* JNI initialization functions */
 void cp_gtk_button_init_jni (void);

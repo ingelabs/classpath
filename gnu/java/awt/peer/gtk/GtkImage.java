@@ -111,6 +111,16 @@ public class GtkImage extends Image
 						       0xFF000000);
 
   /**
+   * The singleton GtkImage that is returned on errors by GtkToolkit.
+   */
+  private static GtkImage errorImage;
+
+  /**
+   * Allocate a PixBuf from a given ARGB32 buffer pointer
+   */
+  private native void initFromBuffer( long bufferPointer );
+
+  /**
    * Returns a copy of the pixel data as a java array.
    * Should be called with the GdkPixbufDecoder.pixbufLock held.
    */
@@ -306,8 +316,18 @@ public class GtkImage extends Image
     props = new Hashtable();
   }
 
-  // The singleton GtkImage that is returned on errors by GtkToolkit.
-  private static GtkImage errorImage;
+  /**
+   * Wraps a buffer with a GtkImage. Buffer must be 
+   */
+  GtkImage(int width, int height, long bufferPointer)
+  {
+    this.width = width;
+    this.height = height;
+    props = new Hashtable();
+    isLoaded = true;
+    observers = null;
+    initFromBuffer( bufferPointer );
+  }
 
   /**
    * Returns an empty GtkImage with the errorLoading flag set.

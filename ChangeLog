@@ -1,3 +1,28 @@
+2006-05-30  Sven de Marothy  <sven@physto.se>
+
+	* gnu/java/awt/peer/gtk/ComponentGraphicsCopy.java
+	* include/gnu_java_awt_peer_gtk_ComponentGraphicsCopy.h
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphicsCopy.c
+	New files.
+	* include/Makefile.am
+	* native/jni/gtk-peer/Makefile.am
+	Add new files.
+	* gnu/java/awt/peer/gtk/CairoSurface.java
+	(getSharedGtkImage): New method.
+	* gnu/java/awt/peer/gtk/CairoSurfaceGraphics.java
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c
+	Fix copyArea.
+	* gnu/java/awt/peer/gtk/ComponentGraphics.java
+	Support a non-xrender context.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphics.c
+	Plug memory leak.
+	* gnu/java/awt/peer/gtk/GtkImage.java
+	* include/gnu_java_awt_peer_gtk_GtkImage.h
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c
+	(initFromBuffer): New method.	
+	* native/jni/gtk-peer/gtkpeer.h: 
+	Remove declarations of previouslyremoved methods.
+
 2006-05-29  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* tools/Makefile.am [FOUND_CACAO] (LIBJVM): Define to -ljvm.

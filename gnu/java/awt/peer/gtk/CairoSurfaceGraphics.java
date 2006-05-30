@@ -51,7 +51,7 @@ import java.awt.image.*;
  */
 public class CairoSurfaceGraphics extends CairoGraphics2D
 {
-  private CairoSurface surface;
+  protected CairoSurface surface;
   private long cairo_t;
   
   /**
@@ -89,13 +89,32 @@ public class CairoSurfaceGraphics extends CairoGraphics2D
   
   public void copyArea(int x, int y, int width, int height, int dx, int dy)
   {
-    // FIXME: Adjust parameters so that clipping on the edges occurs.
-    
-    if( x + dx + width >= surface.width || y + dy + height >= surface.height)
+    // Return if outside the surface
+    if( x + dx > surface.width || y + dy > surface.height )
       return;
-    if( x + dx <= 0 || y + dy <= 0)
+
+    if( x + dx + width < 0 || y + dy + height < 0 )
       return;
-    
-    surface.copyAreaNative(x, y, width, height, dx, dy, surface.width*4);
+
+    // Clip edges if necessary 
+    if( x + dx < 0 ) // left
+      {
+	width = x + dx + width;
+	x = -dx;
+      }
+
+    if( y + dy < 0 ) // top
+      {
+	height = y + dy + height;
+	y = -dy;
+      }
+
+    if( x + dx + width >= surface.width ) // right
+      width = surface.width - dx - x;
+
+    if( y + dy + height >= surface.height ) // bottom
+      height = surface.height - dy - y;
+
+    surface.copyAreaNative(x, y, width, height, dx, dy, surface.width * 4);
   }
 }

@@ -226,25 +226,33 @@ Java_gnu_java_awt_peer_gtk_CairoSurface_newCairoContext (JNIEnv *env, jobject ob
  * copyArea.
  */
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_CairoSurface_copyAreaNative (JNIEnv *env, jobject obj, 
-							jint x, jint y, jint w, jint h, 
-							jint dx, jint dy, jint stride)
+Java_gnu_java_awt_peer_gtk_CairoSurface_copyAreaNative (JNIEnv *env, 
+							jobject obj, 
+							jint x, jint y, 
+							jint w, jint h, 
+							jint dx, jint dy, 
+							jint stride)
 {
   int row;
-  long srcOffset, dstOffset;
+  int srcOffset, dstOffset;
+  jint *temp;
   jint *pixeldata = (jint *)getNativeObject(env, obj, BUFFER);
+  g_assert( pixeldata != NULL );
 
-  if( pixeldata == NULL )
-    return;
+  temp = g_malloc( w * 4 );
+  g_assert( temp != NULL );
 
-  srcOffset = x + y * stride;
-  dstOffset = (x + dx) + (y + dy) * stride;
+  srcOffset = x + y * (stride >> 2);
+  dstOffset = (x + dx) + (y + dy) * (stride >> 2);
   for( row = 0; row < h; row++)
     {
-      memcpy(pixeldata + dstOffset, pixeldata + srcOffset, w * 4);
-      srcOffset += stride;
-      dstOffset += stride;
+      memcpy( temp, pixeldata + srcOffset, w * 4 );
+      memcpy( pixeldata + dstOffset, temp, w * 4 );
+      srcOffset += (stride >> 2);
+      dstOffset += (stride >> 2);
     }
+
+  g_free( temp );
 }
 
 /*

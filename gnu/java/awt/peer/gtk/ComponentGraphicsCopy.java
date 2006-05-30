@@ -1,5 +1,5 @@
-/* ComponentGraphics.java --
-   Copyright (C) 2006  Free Software Foundation, Inc.
+/* ComponentGraphicsCopy.java
+   Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -39,95 +39,52 @@ exception statement from your version. */
 package gnu.java.awt.peer.gtk;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
-import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImagingOpException;
+import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
+import java.awt.image.ImageObserver;
 
 /**
- * ComponentGraphics - context for drawing directly to a component,
- * as this is an X drawable, it requires that we use GTK locks.
+ * Implementation of Graphics2D for Components for servers which 
+ * do not have xrender.
  *
- * This context draws directly to the drawable and requires xrender.
+ * A mirrored GtkImage of the component is stored in memory
+ * and copied back. Yay.
  */
-public class ComponentGraphics extends CairoGraphics2D
+public class ComponentGraphicsCopy extends CairoSurfaceGraphics
 {
   private GtkComponentPeer component;
-  private long cairo_t;
-
-  private ComponentGraphics(GtkComponentPeer component)
-  {
-    this.component = component;
-    cairo_t = initState(component);
-    setup( cairo_t );
-    setColor(component.awtComponent.getForeground());
-    setBackground(component.awtComponent.getBackground());
-    setClip(component.awtComponent.getBounds());
-  }
-
-  private ComponentGraphics(ComponentGraphics cg)
-  {
-    component = cg.component;
-    cairo_t = initState(component);
-    copy( cg, cairo_t );
-  }
 
   /**
-   * Creates a cairo_t for the component surface and return it.
+   * GtkImage sharing its data buffer with this Cairo surface.
    */
-  private native long initState(GtkComponentPeer component);
-
-  /**
-   * Grab lock
-   */
-  private native void start_gdk_drawing();
-
-  /**
-   * Release lock
-   */
-  private native void end_gdk_drawing();
-
-  /**
-   * Query if the system has the XRender extension.
-   */
-  public static native boolean hasXRender();
-
-  /**
-   * Returns a Graphics2D object for a component, either an instance of this 
-   * class (if xrender is supported), or a context which copies.
-   */
-  public static Graphics2D getComponentGraphics(GtkComponentPeer component)
-  {
-    if( hasXRender() )
-      return new ComponentGraphics(component);
-
-    Rectangle r = component.awtComponent.getBounds();
-    return new ComponentGraphicsCopy(r.width, r.height, component);
-  }
-
-  public GraphicsConfiguration getDeviceConfiguration()
-  {
-    return component.getGraphicsConfiguration();
-  }
-
-  public Graphics create()
-  {
-    return new ComponentGraphics(this);
-  }
+  private GtkImage gtkimage;
   
-  public void copyArea(int x, int y, int width, int height, int dx, int dy)
-  {
-    // FIXME
+  private int width, height;
+
+  native void getPixbuf( GtkComponentPeer component, GtkImage image );
+
+  native void copyPixbuf( GtkComponentPeer component, GtkImage image, 
+			  int x, int y, int w, int h );
+
+  public ComponentGraphicsCopy(int width, int height, 
+			       GtkComponentPeer component)
+  { 
+    super( new CairoSurface( width, height ) );
+    this.component = component;
+    this.width = width;
+    this.height = height;
+    gtkimage = surface.getSharedGtkImage();
+    getPixbuf( component, gtkimage );
   }
 
   /**
@@ -136,38 +93,37 @@ public class ComponentGraphics extends CairoGraphics2D
    */
   public void draw(Shape s)
   {
-    start_gdk_drawing();
     super.draw(s);
-    end_gdk_drawing();
+    Rectangle r = s.getBounds();
+    copyPixbuf(component, gtkimage, r.x, r.y, r.width, r.height);
   }
 
   public void fill(Shape s)
   {
-    start_gdk_drawing();
     super.fill(s);
-    end_gdk_drawing();
+    Rectangle r = s.getBounds();
+    copyPixbuf(component, gtkimage, r.x, r.y, r.width, r.height);
   }
 
   public void drawRenderedImage(RenderedImage image, AffineTransform xform)
   {
-    start_gdk_drawing();
     super.drawRenderedImage(image, xform);
-    end_gdk_drawing();
+    copyPixbuf(component, gtkimage, 0, 0, width, height);
   }
 
   protected boolean drawImage(Image img, AffineTransform xform,
 			      Color bgcolor, ImageObserver obs)
   {
-    start_gdk_drawing();
     boolean rv = super.drawImage(img, xform, bgcolor, obs);
-    end_gdk_drawing();
+    copyPixbuf(component, gtkimage, 0, 0, width, height);
     return rv;
   }
 
   public void drawGlyphVector(GlyphVector gv, float x, float y)
   {
-    start_gdk_drawing();
     super.drawGlyphVector(gv, x, y);
-    end_gdk_drawing();
+    Rectangle r = gv.getPixelBounds(getFontRenderContext(), x , y);
+    copyPixbuf(component, gtkimage, r.x, r.y, r.width, r.height);
   }
 }
+

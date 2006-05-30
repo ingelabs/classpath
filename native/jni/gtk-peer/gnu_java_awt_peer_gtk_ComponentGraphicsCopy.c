@@ -1,4 +1,4 @@
-/* gnu_java_awt_peer_gtk_ComponentGraphics.c
+/* gnu_java_awt_peer_gtk_ComponentGraphicsCopy.c
    Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -41,7 +41,6 @@ exception statement from your version. */
 #include <gdk/gdktypes.h>
 #include <gdk/gdkprivate.h>
 #include <gdk/gdkx.h>
-#include <X11/extensions/Xrender.h>
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gdk-pixbuf/gdk-pixdata.h>
@@ -52,53 +51,20 @@ exception statement from your version. */
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "gnu_java_awt_peer_gtk_ComponentGraphics.h"
+#include "gnu_java_awt_peer_gtk_ComponentGraphicsCopy.h"
 
+void cp_java_awt_peer_gtk_ComponentGraphics_grab_current_drawable(GtkWidget *widget, GdkDrawable **draw, GdkWindow **win);
 
-void 
-cp_java_awt_peer_gtk_ComponentGraphics_grab_current_drawable(GtkWidget *widget,
-	GdkDrawable **draw, GdkWindow **win)
-{  
-  g_assert (widget != NULL);
-  g_assert (draw != NULL);
-  g_assert (win != NULL);
-
-  *win = widget->window;
-
-  *draw = *win;
-  gdk_window_get_internal_paint_info (*win, draw, 0, 0); 
-  /*  g_object_ref (*draw); */
-  /* FIXME: Unref this. */
-}
-
-/**
- * Returns whether the XRender extension is supported
- */
-JNIEXPORT jboolean JNICALL 
-Java_gnu_java_awt_peer_gtk_ComponentGraphics_hasXRender
-  (JNIEnv *env __attribute__ ((unused)), jclass cls __attribute__ ((unused)))
-{ 
-  int ev = 0, err = 0; 
-  if( XRenderQueryExtension (GDK_DISPLAY (), &ev, &err) )
-    return JNI_TRUE;
-  return JNI_FALSE;
-}
-
-
-JNIEXPORT jlong JNICALL 
-Java_gnu_java_awt_peer_gtk_ComponentGraphics_initState
-  (JNIEnv *env, jobject obj __attribute__ ((unused)), jobject peer)
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_ComponentGraphicsCopy_getPixbuf
+   (JNIEnv *env, jobject obj, jobject peer, jobject image)
 {
-  Drawable draw;
-  Display * dpy;
-  Visual * vis;
+  gint width, height;
+  GdkPixbuf *pixbuf;
   GdkDrawable *drawable;
-  cairo_surface_t *surface;
   GdkWindow *win;
   GtkWidget *widget = NULL;
   void *ptr = NULL;
-  int width, height;
-  cairo_t *cr;
 
   gdk_threads_enter();
 
@@ -111,42 +77,55 @@ Java_gnu_java_awt_peer_gtk_ComponentGraphics_initState
   cp_java_awt_peer_gtk_ComponentGraphics_grab_current_drawable (widget, &drawable, &win);
   g_assert (drawable != NULL);
 
-  width = widget->allocation.width;
-  height = widget->allocation.height;
+  pixbuf = cp_gtk_image_get_pixbuf( env, image );
+  g_assert( pixbuf != NULL);
 
+  width = gdk_pixbuf_get_width( pixbuf );
+  height = gdk_pixbuf_get_height( pixbuf );
+
+  gdk_pixbuf_get_from_drawable( pixbuf, /* destination pixbuf */
+				drawable, 
+				NULL, /* colormap */
+				0, 0, 0, 0,
+				width, height );
+  gdk_threads_leave();
+}
+
+
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_ComponentGraphicsCopy_copyPixbuf
+  (JNIEnv *env, jobject obj, jobject peer, jobject image,
+   int x, int y, int width, int height)
+{
+  gint pwidth, pheight;
+  GdkPixbuf *pixbuf;
+  GdkDrawable *drawable;
+  GdkWindow *win;
+  GtkWidget *widget = NULL;
+  void *ptr = NULL;
+
+  gdk_threads_enter();
+
+  ptr = NSA_GET_PTR (env, peer);
+  g_assert (ptr != NULL);
+
+  widget = GTK_WIDGET (ptr);
+  g_assert (widget != NULL);
+
+  cp_java_awt_peer_gtk_ComponentGraphics_grab_current_drawable (widget, &drawable, &win);
   g_assert (drawable != NULL);
 
-  draw = gdk_x11_drawable_get_xid(drawable);
-  g_assert (draw != NULL);
-  
-  dpy = gdk_x11_drawable_get_xdisplay(drawable);
-  g_assert (dpy != NULL);
-  
-  vis = gdk_x11_visual_get_xvisual(gdk_drawable_get_visual(drawable));
-  g_assert (vis != NULL);
-  
-  surface = cairo_xlib_surface_create (dpy, draw, vis, width, height);
-  g_assert (surface != NULL);
+  pixbuf = cp_gtk_image_get_pixbuf( env, image );
+  g_assert( pixbuf != NULL);
 
-  cr = cairo_create (surface);
-  g_assert(cr != NULL);
+  pwidth = gdk_pixbuf_get_width( pixbuf );
+  pheight = gdk_pixbuf_get_height( pixbuf );
 
-  gdk_threads_leave();
+  gdk_draw_pixbuf (drawable, NULL, pixbuf,
+		   0, 0, 0, 0, 
+		   pwidth, pheight, 
+		   GDK_RGB_DITHER_NORMAL, 0, 0);
 
-  return (jlong)cr;
-}
-
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_ComponentGraphics_start_1gdk_1drawing
-  (JNIEnv *env __attribute__ ((unused)), jobject obj __attribute__ ((unused)))
-{
-  gdk_threads_enter();
-}
-
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_ComponentGraphics_end_1gdk_1drawing
-  (JNIEnv *env __attribute__ ((unused)), jobject obj __attribute__ ((unused)))
-{
   gdk_threads_leave();
 }
 

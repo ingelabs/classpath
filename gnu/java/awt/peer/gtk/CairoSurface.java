@@ -154,6 +154,14 @@ public class CairoSurface extends DataBuffer
   }
 
   /**
+   * Return a GtkImage which shares its data with this Cairo surface.
+   */
+  public GtkImage getSharedGtkImage()
+  {
+    return new GtkImage( width, height, bufferPointer );
+  }
+
+  /**
    * Returns a BufferedImage backed by a Cairo surface.
    */    
   public static BufferedImage getBufferedImage(int width, int height)
