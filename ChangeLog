@@ -1,3 +1,11 @@
+2006-05-31  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/table/JTableHeader.java
+	(getColumnHeaderRenderer): New method,
+	(getAccessibleColumnHeaderRenderer): Delegate part to new 
+	getColumnHeaderRenderer() method,
+	(getLocale): Implemented.
+
 2006-05-31  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphics.c
