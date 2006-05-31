@@ -1,3 +1,7 @@
+2006-05-31  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/ListSelectionModel.java: Added API docs all over.
+
 2006-05-31  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* examples/gnu/classpath/examples/swing/FillRect.java 
