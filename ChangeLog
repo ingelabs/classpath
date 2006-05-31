@@ -1,3 +1,9 @@
+2006-05-31  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* examples/gnu/classpath/examples/swing/FillRect.java 
+	(paintComponent): Optionally paint lines rather than rectangles.
+	(createContent): Added option to test line painting.
+
 2006-05-31  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/event/EventListenerList.java

@@ -20,9 +20,20 @@ Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 
 package gnu.classpath.examples.swing;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /** 
  * @author Norman Hendrich
@@ -38,8 +49,9 @@ public class FillRect
   Worker worker;
   JLabel label;
   JCheckBox translate;
+  JCheckBox lines;
 
-  int     nx = 64;
+  int     nx = 128;
   int     ny = 64;
   int     matrix[][], future[][];
   int     generation = 0;
@@ -54,6 +66,11 @@ public class FillRect
    * If true, test translation.
    */
   boolean testTranslation = false;
+  
+  /**
+   * If true, paint lines rather than rectangles
+   */
+  boolean paintLines;
 
   public void actionPerformed(ActionEvent e) 
   {
@@ -65,7 +82,7 @@ public class FillRect
 
   public FillRect()
   {
-    setSize(64, 64);
+    setSize(nx, ny);
     createContent();
   }
 
@@ -76,7 +93,7 @@ public class FillRect
     JPanel p = new JPanel(new BorderLayout());
     lcd   = new LCDCanvas();
     label = new JLabel();
-    label.setText("paintComponent took 00 msec. (00000 fillRect calls)");
+    label.setText("not running");
     
     translate = new JCheckBox("translate");
     translate.addActionListener(new ActionListener()
@@ -87,12 +104,22 @@ public class FillRect
       }
     });
     
+    lines = new JCheckBox("lines");
+    lines.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent event)
+      {
+        paintLines = lines.isSelected();
+      }
+    });
+    
     JPanel bottom = new JPanel();
-    bottom.add(label);
+    bottom.add(lines);
     bottom.add(translate);
     
     p.add(lcd, BorderLayout.CENTER);
     p.add(bottom, BorderLayout.SOUTH);
+    p.add(label, BorderLayout.NORTH);
     add(p);
   }
 
@@ -143,37 +170,64 @@ public class FillRect
       g.fillRect(0, 0, sx, sy);
 
       Color pixelColor = null;
-      
+
       int dx, dy;
-      
-      for (int ix = 0; ix < nx; ix++)
+
+      if (paintLines)
         {
-          for (int iy = 0; iy < ny; iy++)
-            {
-              if (matrix[ix][iy] != 0)
-                pixelColor = activePixel;
-              else
-                pixelColor = passivePixel;
-               
-              dx = 4 * ix;
-              dy = 4 * iy;
-              g.setColor(pixelColor);
-              
-              if (testTranslation)
-                {
-                  g.translate(dx, dy);
-                  g.fillRect(0, 0, 3, 3);
-                  g.translate(-dx, -dy);
-                }
-              else
-                g.fillRect(dx, dy, 3, 3);
-            }
+          for (int ix = 0; ix < nx; ix++)
+            for (int iy = 0; iy < ny; iy++)
+              {
+                if (matrix[ix][iy] != 0)
+                  pixelColor = activePixel;
+                else
+                  pixelColor = passivePixel;
+
+                dx = 4 * ix;
+                dy = 4 * iy;
+                g.setColor(pixelColor);
+
+                if (testTranslation)
+                  {
+                    g.translate(dx, dy);
+                    g.drawLine(0, 0, 5, 5);
+                    g.translate(- dx, - dy);
+                  }
+                else
+                  g.drawLine(dx, dy, dx + 5, dy + 5);
+              }
         }
+      else
+        for (int ix = 0; ix < nx; ix++)
+          {
+            for (int iy = 0; iy < ny; iy++)
+              {
+                if (matrix[ix][iy] != 0)
+                  pixelColor = activePixel;
+                else
+                  pixelColor = passivePixel;
+
+                dx = 4 * ix;
+                dy = 4 * iy;
+                g.setColor(pixelColor);
+
+                if (testTranslation)
+                  {
+                    g.translate(dx, dy);
+                    g.fillRect(0, 0, 3, 3);
+                    g.translate(- dx, - dy);
+                  }
+                else
+                  g.fillRect(dx, dy, 3, 3);
+              }
+          }
 
       long t2 = System.currentTimeMillis();
 
-      label.setText("paintComponent took " + (t2 - t1) + " msec. "
-                    +  "(" + (nx * ny + 1) + " fillRect calls)");
+      label.setText("paintComponent took " + (t2 - t1) + " msec. " + "("
+                    + (nx * ny + 1) + " "
+                    + (paintLines ? "drawLine" : "fillRect") + " calls)");
+
     }
 
     public Dimension getPreferredSize()
