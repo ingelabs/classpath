@@ -1,3 +1,13 @@
+2006-05-31  Thomas Fitzsimmons  <fitzsim@redhat.com>
+	    Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* configure.ac: Check for libXrender when the GTK peers are
+	enabled, and set HAVE_XRENDER accordingly. Add -lXrender to
+	X_EXTRA_LIBS.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphics.c
+	(Java_gnu_java_awt_peer_gtk_ComponentGraphics_hasXRender)
+	[HAVE_XRENDER]: Call XRenderQueryExtension conditionally.
+
 2006-05-31  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicProgressBarUI.java

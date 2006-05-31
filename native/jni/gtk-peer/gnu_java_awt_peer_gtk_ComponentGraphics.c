@@ -77,10 +77,12 @@ cp_java_awt_peer_gtk_ComponentGraphics_grab_current_drawable(GtkWidget *widget,
 JNIEXPORT jboolean JNICALL 
 Java_gnu_java_awt_peer_gtk_ComponentGraphics_hasXRender
   (JNIEnv *env __attribute__ ((unused)), jclass cls __attribute__ ((unused)))
-{ 
+{
+#if HAVE_XRENDER
   int ev = 0, err = 0; 
   if( XRenderQueryExtension (GDK_DISPLAY (), &ev, &err) )
     return JNI_TRUE;
+#endif
   return JNI_FALSE;
 }
 
