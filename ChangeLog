@@ -1,5 +1,14 @@
 2006-05-31  Roman Kennke <kennke@aicas.com>
 
+	* javax/swing/JTabbedPane.java
+	(AccessibleJTabbedPane.stateChanged): Implemented.
+	(Page.getAccessibleStateSet): Implemented.
+	(Page.getAccessibleIndexInParent): Implemented.
+	(getAccessibleContext): Add AccessibleJTabbedPane object
+	as ChangeListener to the JTabbedPane.
+
+2006-05-31  Roman Kennke <kennke@aicas.com>
+
 	* javax/swing/JMenuItem.java
 	(getAccessibleContext): Register accessible object as ChangeListener
 	to the JMenuItem.
