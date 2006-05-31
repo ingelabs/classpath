@@ -1092,8 +1092,6 @@ public abstract class CairoGraphics2D extends Graphics2D
     if (img == null)
       return false;
 
-    Image subImage;
-
     int sourceWidth = sx2 - sx1;
     int sourceHeight = sy2 - sy1;
 
@@ -1107,27 +1105,28 @@ public abstract class CairoGraphics2D extends Graphics2D
     double scaleX = destWidth / (double) sourceWidth;
     double scaleY = destHeight / (double) sourceHeight;
 
-    // Get the subimage of the source enclosed in the 
-    // rectangle specified by sx1, sy1, sx2, sy2
-	
-    if (img instanceof BufferedImage)
-      {
-	BufferedImage b = (BufferedImage) img;
-	subImage = b.getSubimage(sx1, sy1, sx2, sy2);
-      }
-    else
-      {
-	CropImageFilter filter = new CropImageFilter(sx1, sx2, sx2, sy2);
-	FilteredImageSource src = new FilteredImageSource(img.getSource(),
-	                                                  filter);
-
-	subImage = Toolkit.getDefaultToolkit().createImage(src);
-      }
-
     // FIXME: Avoid using an AT if possible here - it's at least twice as slow.
-    return drawImage(subImage,
-                     new AffineTransform(scaleX, 0, 0, scaleY, dx1, dy1),
-                     bgcolor, observer);
+    
+    Shape oldClip = getClip();
+    int cx, cy, cw, ch;
+    if( dx1 < dx2 ) 
+      { cx = dx1; cw = dx2 - dx1; }
+    else
+      { cx = dx2; cw = dx1 - dx2; }
+    if( dy1 < dy2 ) 
+      { cy = dy1; ch = dy2 - dy1; }
+    else
+      { cy = dy2; ch = dy1 - dy2; }
+    
+    setClip( cx, cy, cw, ch );
+
+    AffineTransform tx = new AffineTransform();
+    tx.translate( dx1 - sx1*scaleX, dy1 - sy1*scaleY );
+    tx.scale( scaleX, scaleY );
+
+    boolean retval = drawImage(img, tx, bgcolor, observer);
+    setClip( oldClip );
+    return retval;
   }
 
   public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,

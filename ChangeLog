@@ -1,5 +1,10 @@
 2006-05-30  Sven de Marothy  <sven@physto.se>
 
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(drawImage): Clip scaled image to dest rectangle.
+
+2006-05-30  Sven de Marothy  <sven@physto.se>
+
 	* gnu/java/awt/peer/gtk/CairoSurface.java:
 	(CairoSurface): Convert pixels properly.
 	* gnu/java/awt/peer/gtk/ComponentGraphics.java
