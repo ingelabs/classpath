@@ -1,3 +1,22 @@
+2006-05-30  Sven de Marothy  <sven@physto.se>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(drawImage): Use Toolkit to convert to BufferedImage.
+	* gnu/java/awt/peer/gtk/CairoSurface.java
+	(CairoSurface(GtkImage)): New Constructor.
+	(getBufferedImage): New method.
+	* gnu/java/awt/peer/gtk/ComponentGraphics.java
+	Don't fill background - FIXME.
+	* gnu/java/awt/peer/gtk/GdkPixbufDecoder.java:
+	Remove unused methods.
+	* gnu/java/awt/peer/gtk/GtkImage.java:
+	(pixbuflock): New field. Methods change to use this lock.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java
+	(createImage): Use Cairo-backed surfaces via GtkImage instead of 
+	GtkPixbufDecoder.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c
+	(setPixels): Correct length in bytes.
+
 2006-05-30  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java (static): Call
