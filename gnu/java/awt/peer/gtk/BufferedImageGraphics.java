@@ -119,7 +119,16 @@ public class BufferedImageGraphics extends CairoGraphics2D
   private void updateBufferedImage(int x, int y, int width, int height)
   {
     int[] pixels = surface.getPixels(imageWidth * imageHeight * 4);
-
+    if( x > imageWidth || y > imageHeight )
+      return;
+    // Clip edges.
+    if( x < 0 ){ width = width + x; x = 0; }
+    if( y < 0 ){ height = height + y; y = 0; }
+    if( x + width > imageWidth ) 
+      width = imageWidth - x;
+    if( y + height > imageHeight ) 
+      height = imageHeight - y;
+    
     int index = 0;
     for (int j = y; j < y + height; ++j)
       for (int i = x; i < x + width; ++i)

@@ -1,3 +1,9 @@
+2006-05-30  Sven de Marothy  <sven@physto.se>
+
+	Should fix PR 27835
+	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java
+	(updateBufferedImage): Keep within image bounds.
+
 2006-05-31  Thomas Fitzsimmons  <fitzsim@redhat.com>
 	    Andreas Tobler  <a.tobler@schweiz.ch>
 
