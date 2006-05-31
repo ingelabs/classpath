@@ -140,106 +140,27 @@ Java_gnu_java_awt_peer_gtk_CairoGraphics2D_setGradient
    jboolean cyclic)
 {
   struct cairographics2d *gr = NULL;
-  cairo_surface_t *surf = NULL;
-  cairo_t *cr2 = NULL;
-  cairo_matrix_t mat;
+  cairo_pattern_t* pattern;
+  cairo_extend_t extend;
 
   gr = getPointer (env, obj);
-  g_assert (gr != NULL);
+  g_assert( gr != NULL );
 
-  if (cyclic == JNI_TRUE)
-    surf = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 3, 2);
-  else
-    surf = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 2, 2);      
-  g_assert (surf != NULL);
+  pattern = cairo_pattern_create_linear(x1, y1, x2, y2);
+  g_assert( pattern != NULL );
 
-  cr2 = cairo_create (surf);
-  
-  cairo_identity_matrix (cr2);
+  cairo_pattern_add_color_stop_rgba(pattern, 0.0, r1 / 255.0, g1 / 255.0, 
+				    b1 / 255.0, a1 / 255.0);
 
-  cairo_set_source_rgba (cr2, r1 / 255.0, g1 / 255.0, b1 / 255.0, a1 / 255.0);
-  cairo_rectangle (cr2, 0, 0, 1, 2);
-  cairo_fill (cr2);
-    
-  cairo_set_source_rgba (cr2, r2 / 255.0, g2 / 255.0, b2 / 255.0, a2 / 255.0);
-  cairo_rectangle (cr2, 1, 0, 1, 2);
-  cairo_fill (cr2);
+  cairo_pattern_add_color_stop_rgba(pattern, 1.0, r2 / 255.0, g2 / 255.0, 
+				    b2 / 255.0, a2 / 255.0);
 
-  if (cyclic == JNI_TRUE)
-    {
-      cairo_set_source_rgba (cr2, r1 / 255.0, g1 / 255.0, b1 / 255.0, a1 / 255.0);
-      cairo_rectangle (cr2, 2, 0, 1, 2);
-      cairo_fill (cr2);
-    }
+  extend = (cyclic == JNI_TRUE) ? CAIRO_EXTEND_REFLECT : CAIRO_EXTEND_NONE;
 
-  cairo_matrix_init_identity (&mat);
+  cairo_pattern_set_extend( pattern, extend );
 
-  /* 
-     consider the vector [x2 - x1, y2 - y1] = [p,q]
-
-     this is a line in space starting at an 'origin' x1, y1.
-
-     it can also be thought of as a "transformed" unit vector in either the
-     x or y directions. we have just *drawn* our gradient as a unit vector
-     (well, a 2-3x unit vector) in the x dimension. so what we want to know
-     is which transformation turns our existing unit vector into [p,q].
-
-     which means solving for M in 
- 
-     [p,q] = M[1,0]
-
-     [p,q] = |a b| [1,0]
-             |c d|      
-
-     [p,q] = [a,c], with b = d = 0.
-
-     what does this mean? it means that our gradient is 1-dimensional; as
-     you move through the x axis of our 2 or 3 pixel gradient from logical
-     x positions 0 to 1, the transformation of your x coordinate under the
-     matrix M causes you to accumulate both x and y values in fill
-     space. the y value of a gradient coordinate is ignored, since the
-     gradient is one dimensional. which is correct.
-
-     unfortunately we want the opposite transformation, it seems, because of
-     the way cairo is going to use this transformation. I'm a bit confused by
-     that, but it seems to work right, so we take reciprocals of values and
-     negate offsets. oh well.
-     
-   */
-  {
-    double a = (x2 - x1 == 0.) ? 0. : ((cyclic ? 3.0 : 2.0) / (x2 - x1));
-    double c = (y2 - y1 == 0.) ? 0. : (1. / (y2 - y1));
-    double dx = (x1 == 0.) ? 0. : 1. / x1;
-    double dy = (y1 == 0.) ? 0. : 1. / y1;
-    cairo_pattern_t *p;
-    
-    cairo_matrix_init (&mat,
-                       a, 0.,
-                       c, 0.,
-                       dx, dy);
-    
-    p = cairo_pattern_create_for_surface (surf);
-    cairo_pattern_set_matrix (p, &mat);
-    cairo_pattern_set_filter (p, CAIRO_FILTER_BILINEAR);
-  }
-
-  /* FIXME: repeating gradients (not to mention hold gradients) don't seem to work. */
-  /*   cairo_surface_set_repeat (surf, cyclic ? 1 : 0); */
-
-  if (gr->pattern)
-    cairo_pattern_destroy (gr->pattern);
-  
-  if (gr->pattern_surface)
-    cairo_surface_destroy (gr->pattern_surface);
-
-  if (gr->pattern_pixels)
-    g_free (gr->pattern_pixels);
-  
-  gr->pattern_pixels = NULL;  
-  gr->pattern_surface = surf;  
-  gr->pattern = cairo_pattern_create_for_surface(surf);
-
-  cairo_set_source (gr->cr, gr->pattern);
+  gr->pattern = pattern;
+  cairo_set_source(gr->cr, gr->pattern);
 }
 
 JNIEXPORT void JNICALL
