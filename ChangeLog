@@ -1,4 +1,4 @@
-2006-05-30  Sven de Marothy  <sven@physto.se>
+2006-05-31  Sven de Marothy  <sven@physto.se>
 
 	Should fix PR 27835
 	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java
