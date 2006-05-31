@@ -55,10 +55,9 @@ exception statement from your version. */
 #include "gnu_java_awt_peer_gtk_ComponentGraphics.h"
 
 
-static void 
-cp_java_awt_peer_gtk_ComponentGraphics_grab_current_drawable(GtkWidget *widget,
-	GdkDrawable **draw, GdkWindow **win)
-{  
+void cp_gtk_grab_current_drawable(GtkWidget *widget, GdkDrawable **draw,
+				  GdkWindow **win)
+{
   g_assert (widget != NULL);
   g_assert (draw != NULL);
   g_assert (win != NULL);
@@ -110,7 +109,7 @@ Java_gnu_java_awt_peer_gtk_ComponentGraphics_initState
   widget = GTK_WIDGET (ptr);
   g_assert (widget != NULL);
 
-  cp_java_awt_peer_gtk_ComponentGraphics_grab_current_drawable (widget, &drawable, &win);
+  cp_gtk_grab_current_drawable (widget, &drawable, &win);
   g_assert (drawable != NULL);
 
   width = widget->allocation.width;
@@ -171,7 +170,7 @@ Java_gnu_java_awt_peer_gtk_ComponentGraphics_copyAreaNative
   widget = GTK_WIDGET (ptr);
   g_assert (widget != NULL);
 
-  cp_java_awt_peer_gtk_ComponentGraphics_grab_current_drawable (widget, &drawable, &win);
+  cp_gtk_grab_current_drawable (widget, &drawable, &win);
   g_assert (drawable != NULL);
 
   pixbuf = gdk_pixbuf_new( GDK_COLORSPACE_RGB, TRUE, 8, w, h );

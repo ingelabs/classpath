@@ -1,3 +1,21 @@
+2006-05-31  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphics.c
+	(cp_gtk_grab_current_drawable): Rename
+	cp_java_awt_peer_gtk_ComponentGraphics_grab_current_drawable to
+	cp_gtk_grab_current_drawable, remove static declaration.
+	(Java_gnu_java_awt_peer_gtk_ComponentGraphics_initState): Renamed above
+	function.
+	(Java_gnu_java_awt_peer_gtk_ComponentGraphics_copyAreaNative): Likewise.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphicsCopy.c:
+	Remove prototype of
+	cp_java_awt_peer_gtk_ComponentGraphics_grab_current_drawable.
+	(Java_gnu_java_awt_peer_gtk_ComponentGraphicsCopy_getPixbuf): Rename
+	function.
+	(Java_gnu_java_awt_peer_gtk_ComponentGraphicsCopy_copyPixbuf): Likewise.
+	* native/jni/gtk-peer/gtkpeer.h: Add prototype for
+	cp_gtk_grab_current_drawable here.
+
 2006-05-31  Sven de Marothy  <sven@physto.se>
 
 	Should fix PR 27835

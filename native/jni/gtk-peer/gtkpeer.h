@@ -183,6 +183,10 @@ jint cp_gtk_state_to_awt_mods (guint state);
 /* Image helpers */
 GdkPixbuf *cp_gtk_image_get_pixbuf (JNIEnv *env, jobject obj);
 
+/* Component Graphics helpers */
+void cp_gtk_grab_current_drawable(GtkWidget *widget, GdkDrawable **draw,
+				  GdkWindow **win);
+
 /* JNI initialization functions */
 void cp_gtk_button_init_jni (void);
 void cp_gtk_checkbox_init_jni (void);

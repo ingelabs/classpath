@@ -53,8 +53,6 @@ exception statement from your version. */
 
 #include "gnu_java_awt_peer_gtk_ComponentGraphicsCopy.h"
 
-void cp_java_awt_peer_gtk_ComponentGraphics_grab_current_drawable(GtkWidget *widget, GdkDrawable **draw, GdkWindow **win);
-
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_ComponentGraphicsCopy_getPixbuf
    (JNIEnv *env, jobject obj __attribute__((unused)),
@@ -75,7 +73,7 @@ Java_gnu_java_awt_peer_gtk_ComponentGraphicsCopy_getPixbuf
   widget = GTK_WIDGET (ptr);
   g_assert (widget != NULL);
 
-  cp_java_awt_peer_gtk_ComponentGraphics_grab_current_drawable (widget, &drawable, &win);
+  cp_gtk_grab_current_drawable (widget, &drawable, &win);
   g_assert (drawable != NULL);
 
   pixbuf = cp_gtk_image_get_pixbuf( env, image );
@@ -115,7 +113,7 @@ Java_gnu_java_awt_peer_gtk_ComponentGraphicsCopy_copyPixbuf
   widget = GTK_WIDGET (ptr);
   g_assert (widget != NULL);
 
-  cp_java_awt_peer_gtk_ComponentGraphics_grab_current_drawable (widget, &drawable, &win);
+  cp_gtk_grab_current_drawable (widget, &drawable, &win);
   g_assert (drawable != NULL);
 
   pixbuf = cp_gtk_image_get_pixbuf( env, image );
