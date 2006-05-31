@@ -189,7 +189,7 @@ Java_gnu_java_awt_peer_gtk_CairoSurface_drawSurface
   cairo_surface_t* surface = (cairo_surface_t *)getNativeObject(env, obj, SURFACE);
   g_assert(surface != NULL);
 
-  cr = CairoGraphics2D_getCairoT(env, context);
+  cr = cp_gtk_get_cairo_t(env, context);
   g_assert(cr != NULL);
 
   native_matrix = (*env)->GetDoubleArrayElements (env, java_matrix, NULL);
