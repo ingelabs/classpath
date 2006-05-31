@@ -1037,7 +1037,7 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   public void drawRenderedImage(RenderedImage image, AffineTransform xform)
   {
-    drawRaster(image.getColorModel(), image.getData(), xform, bg);
+    drawRaster(image.getColorModel(), image.getData(), xform, null);
   }
 
   public void drawRenderableImage(RenderableImage image, AffineTransform xform)
@@ -1047,18 +1047,18 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   public boolean drawImage(Image img, AffineTransform xform, ImageObserver obs)
   {
-    return drawImage(img, xform, bg, obs);
+    return drawImage(img, xform, null, obs);
   }
 
   public void drawImage(BufferedImage image, BufferedImageOp op, int x, int y)
   {
     Image filtered = op.filter(image, null);
-    drawImage(filtered, new AffineTransform(1f, 0f, 0f, 1f, x, y), bg, null);
+    drawImage(filtered, new AffineTransform(1f, 0f, 0f, 1f, x, y), null, null);
   }
 
   public boolean drawImage(Image img, int x, int y, ImageObserver observer)
   {
-    return drawImage(img, new AffineTransform(1f, 0f, 0f, 1f, x, y), bg,
+    return drawImage(img, new AffineTransform(1f, 0f, 0f, 1f, x, y), null,
                      observer);
   }
 
@@ -1082,7 +1082,7 @@ public abstract class CairoGraphics2D extends Graphics2D
   public boolean drawImage(Image img, int x, int y, int width, int height,
                            ImageObserver observer)
   {
-    return drawImage(img, x, y, width, height, bg, observer);
+    return drawImage(img, x, y, width, height, null, observer);
   }
 
   public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
@@ -1117,11 +1117,6 @@ public abstract class CairoGraphics2D extends Graphics2D
       }
     else
       {
-	// FIXME: This code currently doesn't work. Null Pointer 
-	// exception is thrown in this case. This happens 
-	// because img.getSource() always returns null, since source gets 
-	// never initialized when it is created with the help of 
-	// createImage(int width, int height). 
 	CropImageFilter filter = new CropImageFilter(sx1, sx2, sx2, sy2);
 	FilteredImageSource src = new FilteredImageSource(img.getSource(),
 	                                                  filter);
@@ -1139,7 +1134,7 @@ public abstract class CairoGraphics2D extends Graphics2D
                            int sx1, int sy1, int sx2, int sy2,
                            ImageObserver observer)
   {
-    return drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, bg, observer);
+    return drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null, observer);
   }
 
   ///////////////////////// TEXT METHODS ////////////////////////////////////
@@ -1249,6 +1244,13 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   ///////////////////////// PRIVATE METHODS ///////////////////////////////////
 
+  /**
+   * All the drawImage() methods eventually get delegated here if the image
+   * is not a Cairo surface.
+   *
+   * @param bgcolor - if non-null draws the background color before 
+   * drawing the image.
+   */
   private boolean drawRaster(ColorModel cm, Raster r,
                              AffineTransform imageToUser, Color bgcolor)
   {
@@ -1317,7 +1319,7 @@ public abstract class CairoGraphics2D extends Graphics2D
 
     drawPixels(pixels, r.getWidth(), r.getHeight(), r.getWidth(), i2u);
 
-    // Cairo seems loosing the current color which must be restored.
+    // Cairo seems to lose the current color which must be restored.
     updateColor();
     
     return true;
