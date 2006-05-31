@@ -1,3 +1,14 @@
+2006-05-31  Roman Kennke <kennke@aicas.com>
+
+	* javax/swing/JMenuItem.java
+	(getAccessibleContext): Register accessible object as ChangeListener
+	to the JMenuItem.
+	(AccessibleJMenuItem.armed): New field.
+	(AccessibleJMenuItem.focusOwner): New field.
+	(AccessibleJMenuItem.pressed): New field.
+	(AccessibleJMenuItem.selected): New field.
+	(stateChanged): Implemented.
+
 2006-05-31  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/ListSelectionModel.java: Added API docs all over.
