@@ -1,3 +1,8 @@
+2006-05-31  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/event/EventListenerList.java
+	(getListenerList): Updated API docs.
+
 2006-05-30  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
