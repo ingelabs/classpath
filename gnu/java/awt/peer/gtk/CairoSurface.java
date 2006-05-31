@@ -166,12 +166,22 @@ public class CairoSurface extends DataBuffer
     // Copy the pixel data from the GtkImage.
     int[] data = image.getPixels();
 
-    // Swap ordering, since Gtk is weird.
+    // Swap ordering from GdkPixbuf to Cairo
     for(int i = 0; i < data.length; i++ )
       {
-	int temp = (data[i] & 0x000000FF) << 16;
-	data[i] = (data[i] & 0xFFFFFF00) | ((data[i] & 0x00FF0000) >> 16);
-	data[i] = (data[i] & 0xFF00FFFF) | temp;
+	int alpha = (data[i] & 0xFF000000) >> 24;
+	if( alpha == 0 ) // I do not know why we need this, but it works.
+	  data[i] = 0;
+	else
+	  {
+	    int r = (((data[i] & 0x00FF0000) >> 16) );
+	    int g = (((data[i] & 0x0000FF00) >> 8) );
+	    int b = ((data[i] & 0x000000FF) );
+	    data[i] = (( alpha << 24 ) & 0xFF000000) 
+	      | (( b << 16 ) & 0x00FF0000)
+	      | (( g << 8 )  & 0x0000FF00)
+	      | ( r  & 0x000000FF);
+	  }
       }
 
     setPixels( data );
