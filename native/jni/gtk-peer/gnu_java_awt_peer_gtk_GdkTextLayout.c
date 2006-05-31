@@ -232,7 +232,7 @@ Java_gnu_java_awt_peer_gtk_GdkTextLayout_cairoDrawGdkTextLayout
 
   g_assert (cairographics != NULL);
 
-  cr = CairoGraphics2D_getCairoT(env, cairographics);
+  cr = cp_gtk_get_cairo_t(env, cairographics);
   tl = (struct textlayout *)NSA_GET_TEXT_LAYOUT_PTR (env, obj);
 
   g_assert (cr != NULL);

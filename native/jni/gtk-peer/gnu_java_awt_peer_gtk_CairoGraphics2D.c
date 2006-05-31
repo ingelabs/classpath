@@ -71,7 +71,8 @@ getPointer(JNIEnv *env, jobject obj)
  * Returns the cairo_t * associated with a CairoGraphics2D object,
  * This is used by GdkTextLayout.
  */
-cairo_t *CairoGraphics2D_getCairoT(JNIEnv *env, jobject cairographics2dobj)
+cairo_t *cp_gtk_get_cairo_t(JNIEnv *env,
+			    jobject cairographics2dobj)
 {
   struct cairographics2d *gr = getPointer(env, cairographics2dobj);
   g_assert(gr != NULL);

@@ -1,8 +1,19 @@
+2006-06-01  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* native/jni/gtk-peer/cairographics2d.h: Rename/prefix function
+	CairoGraphics2D_getCairoT to cp_gtk_get_cairo_t correctly.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c
+	(Java_gnu_java_awt_peer_gtk_CairoSurface_drawSurface): Rename function
+	CairoGraphics2D_getCairoT to cp_gtk_get_cairo_t.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkTextLayout.c
+	(Java_gnu_java_awt_peer_gtk_GdkTextLayout_cairoDrawGdkTextLayout):
+	Likewise.
+
 2006-05-31  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/table/JTableHeader.java
 	(getColumnHeaderRenderer): New method,
-	(getAccessibleColumnHeaderRenderer): Delegate part to new 
+	(getAccessibleColumnHeaderRenderer): Delegate part to new
 	getColumnHeaderRenderer() method,
 	(getLocale): Implemented.
 

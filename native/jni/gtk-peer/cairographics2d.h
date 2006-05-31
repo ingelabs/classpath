@@ -113,6 +113,7 @@ struct cairographics2d
   char *pattern_pixels;
 };
 
-cairo_t *CairoGraphics2D_getCairoT(JNIEnv *env, jobject cairographics2dobj);
+cairo_t *cp_gtk_get_cairo_t(JNIEnv *env,
+			    jobject cairographics2dobj);
 
 #endif
