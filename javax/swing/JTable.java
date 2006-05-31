@@ -609,9 +609,31 @@ public class JTable
       getModel().addTableModelListener(this);
       getSelectionModel().addListSelectionListener(this);
       getColumnModel().addColumnModelListener(this);
-      getCellEditor().addCellEditorListener(this);
+      TableCellEditor editor = getCellEditor();
+      if (editor != null)
+        editor.addCellEditorListener(this);
     }
 
+    /**
+     * Returns the accessible role for the <code>JTable</code> component.
+     *
+     * @return {@link AccessibleRole#TABLE}.
+     */
+    public AccessibleRole getAccessibleRole()
+    {
+      return AccessibleRole.TABLE;
+    }
+    
+    /**
+     * Returns the accessible table.
+     * 
+     * @return <code>this</code>.
+     */
+    public AccessibleTable getAccessibleTable()
+    {
+      return this;
+    }
+    
     /**
      * Returns the number of selected items in this table.
      */
@@ -2742,6 +2764,8 @@ public class JTable
    */
   public AccessibleContext getAccessibleContext()
   {
+    if (accessibleContext == null)
+      accessibleContext = new AccessibleJTable();
     return accessibleContext;
   }
 

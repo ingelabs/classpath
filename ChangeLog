@@ -1,3 +1,12 @@
+2006-05-31  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JTable.java
+	(AccessibleJTable.AccessibleJTable()): Check for null editor,
+	(AccessibleJTable.getAccessibleRole()): Overridden to return correct 
+	value,
+	(AccessibleJTable.getAccessibleTable()): Likewise,
+	(getAccessibleContext): Create new context if required.
+
 2006-05-31  Roman Kennke <kennke@aicas.com>
 
 	* javax/swing/JTabbedPane.java
