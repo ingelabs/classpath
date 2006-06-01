@@ -81,7 +81,7 @@ public class BufferedImageGraphics extends CairoGraphics2D
   CairoSurface surface;
 
   /**
-   * Cache BufferedImageGraphics instances.
+   * Cache BufferedImageGraphics surfaces.
    */
   static WeakHashMap bufferedImages = new WeakHashMap();
 
@@ -134,7 +134,7 @@ public class BufferedImageGraphics extends CairoGraphics2D
     // get pixels
 
     if(db instanceof CairoSurface)
-      pixels = ((CairoSurface)db).getPixels(imageWidth * imageHeight * 4);
+      pixels = ((CairoSurface)db).getPixels(imageWidth * imageHeight);
     else
       {
 	if( hasFastCM )
@@ -142,7 +142,7 @@ public class BufferedImageGraphics extends CairoGraphics2D
 	    pixels = ((DataBufferInt)db).getData();
 	    if( !hasAlpha )
 	      for(int i = 0; i < pixels.length; i++)
-		pixels[i] |= 0xFF000000;
+		pixels[i] &= 0xFFFFFFFF;
 	  }
 	else
 	  pixels = CairoGraphics2D.findSimpleIntegerArray
@@ -181,14 +181,13 @@ public class BufferedImageGraphics extends CairoGraphics2D
     if( y + height > imageHeight ) 
       height = imageHeight - y;
 
-    if( hasFastCM )
-      {
-	System.arraycopy(pixels, y * imageWidth, 
-			 ((DataBufferInt)image.getRaster().getDataBuffer()).
-			 getData(), y * imageWidth, height * imageWidth);
-	return;
-      }
-    image.setRGB(x, y, width, height, pixels, x + y * imageWidth, imageWidth);
+    if( !hasFastCM )
+      image.setRGB(x, y, width, height, pixels, 
+		   x + y * imageWidth, imageWidth);
+    else
+      System.arraycopy(pixels, y * imageWidth, 
+		       ((DataBufferInt)image.getRaster().getDataBuffer()).
+		       getData(), y * imageWidth, height * imageWidth);
   }
 
   /**
@@ -274,3 +273,4 @@ public class BufferedImageGraphics extends CairoGraphics2D
     updateBufferedImage(0, 0, imageWidth, imageHeight);
   }
 }
+
