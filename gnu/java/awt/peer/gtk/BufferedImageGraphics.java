@@ -50,8 +50,12 @@ import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
+import java.awt.image.DataBufferInt;
+import java.awt.image.ColorModel;
+import java.awt.image.DirectColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.ImageObserver;
+import java.util.WeakHashMap;
 
 /**
  * Implementation of Graphics2D on a Cairo surface.
@@ -74,20 +78,55 @@ public class BufferedImageGraphics extends CairoGraphics2D
   /**
    * The cairo surface that we actually draw on.
    */
-  private CairoSurface surface;
+  CairoSurface surface;
+
+  /**
+   * Cache BufferedImageGraphics instances.
+   */
+  static WeakHashMap bufferedImages = new WeakHashMap();
 
   /**
    * Its corresponding cairo_t.
    */
   private long cairo_t;
-  
+
+  /**
+   * Colormodels we recognize for fast copying.
+   */  
+  static ColorModel rgb32 = new DirectColorModel(32, 0xFF0000, 0xFF00, 0xFF);
+  static ColorModel argb32 = new DirectColorModel(32, 0xFF0000, 0xFF00, 0xFF,
+						  0xFF000000);
+  private boolean hasFastCM;
+  private boolean hasAlpha;
+
+
   public BufferedImageGraphics(BufferedImage bi)
   {
     this.image = bi;
     imageWidth = bi.getWidth();
     imageHeight = bi.getHeight();
+    if(bi.getColorModel().equals(rgb32))
+      {
+	hasFastCM = true;
+	hasAlpha = false;
+      }
+    else if(bi.getColorModel().equals(argb32))
+      {
+	hasFastCM = true;
+	hasAlpha = false;
+      }
+    else
+      hasFastCM = false;
 
-    surface = new CairoSurface( imageWidth, imageHeight );
+    // Cache surfaces.
+    if( bufferedImages.get( bi ) != null )
+      surface = (CairoSurface)bufferedImages.get( bi );
+    else
+      {
+	surface = new CairoSurface( imageWidth, imageHeight );
+	bufferedImages.put(bi, surface);
+      }
+
     cairo_t = surface.newCairoContext();
 
     DataBuffer db = bi.getRaster().getDataBuffer();
@@ -97,18 +136,30 @@ public class BufferedImageGraphics extends CairoGraphics2D
     if(db instanceof CairoSurface)
       pixels = ((CairoSurface)db).getPixels(imageWidth * imageHeight * 4);
     else
-      pixels = CairoGraphics2D.findSimpleIntegerArray (image.getColorModel(),
-						       image.getData());
+      {
+	if( hasFastCM )
+	  {
+	    pixels = ((DataBufferInt)db).getData();
+	    if( !hasAlpha )
+	      for(int i = 0; i < pixels.length; i++)
+		pixels[i] |= 0xFF000000;
+	  }
+	else
+	  pixels = CairoGraphics2D.findSimpleIntegerArray
+	    (image.getColorModel(),image.getData());
+      }
     surface.setPixels( pixels );
 
     setup( cairo_t );
     setClip(0, 0, imageWidth, imageHeight);
   }
   
-  private BufferedImageGraphics(BufferedImageGraphics copyFrom)
+  BufferedImageGraphics(BufferedImageGraphics copyFrom)
   {
-
+    surface = copyFrom.surface;
     cairo_t = surface.newCairoContext();
+    imageWidth = copyFrom.imageWidth;
+    imageHeight = copyFrom.imageHeight;
     copy( copyFrom, cairo_t );
     setClip(0, 0, surface.width, surface.height);
   }
@@ -118,7 +169,7 @@ public class BufferedImageGraphics extends CairoGraphics2D
    */
   private void updateBufferedImage(int x, int y, int width, int height)
   {  
-    int[] pixels = surface.getPixels(imageWidth * imageHeight * 4);
+    int[] pixels = surface.getPixels(imageWidth * imageHeight);
 
     if( x > imageWidth || y > imageHeight )
       return;
@@ -130,6 +181,13 @@ public class BufferedImageGraphics extends CairoGraphics2D
     if( y + height > imageHeight ) 
       height = imageHeight - y;
 
+    if( hasFastCM )
+      {
+	System.arraycopy(pixels, y * imageWidth, 
+			 ((DataBufferInt)image.getRaster().getDataBuffer()).
+			 getData(), y * imageWidth, height * imageWidth);
+	return;
+      }
     image.setRGB(x, y, width, height, pixels, x + y * imageWidth, imageWidth);
   }
 
@@ -138,7 +196,7 @@ public class BufferedImageGraphics extends CairoGraphics2D
    */  
   public Graphics create()
   {
-    return new BufferedImageGraphics( this );
+    return new BufferedImageGraphics(this);
   }
   
   public GraphicsConfiguration getDeviceConfiguration()
@@ -148,7 +206,34 @@ public class BufferedImageGraphics extends CairoGraphics2D
   
   public void copyArea(int x, int y, int width, int height, int dx, int dy)
   {
-    // FIXME
+    // Return if outside the surface
+    if( x + dx > surface.width || y + dy > surface.height )
+      return;
+
+    if( x + dx + width < 0 || y + dy + height < 0 )
+      return;
+
+    // Clip edges if necessary 
+    if( x + dx < 0 ) // left
+      {
+	width = x + dx + width;
+	x = -dx;
+      }
+
+    if( y + dy < 0 ) // top
+      {
+	height = y + dy + height;
+	y = -dy;
+      }
+
+    if( x + dx + width >= surface.width ) // right
+      width = surface.width - dx - x;
+
+    if( y + dy + height >= surface.height ) // bottom
+      height = surface.height - dy - y;
+
+    surface.copyAreaNative(x, y, width, height, dx, dy, surface.width * 4);
+    updateBufferedImage(x + dx, y + dy, width, height);
   }
 
   /**
@@ -186,7 +271,6 @@ public class BufferedImageGraphics extends CairoGraphics2D
   public void drawGlyphVector(GlyphVector gv, float x, float y)
   {
     super.drawGlyphVector(gv, x, y);
-    Rectangle r = gv.getPixelBounds(getFontRenderContext(), x , y);
-    updateBufferedImage(r.x, r.y, r.width, r.height);
+    updateBufferedImage(0, 0, imageWidth, imageHeight);
   }
 }

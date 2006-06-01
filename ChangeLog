@@ -14,6 +14,14 @@
 	
 2006-06-01  Sven de Marothy  <sven@physto.se>
 
+	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java
+	(BufferedImageGraphics): Cache surfaces.
+	(updateBufferedImage): Copy directly for certain color models.
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(drawImage): Reimplement.
+
+2006-06-01  Sven de Marothy  <sven@physto.se>
+
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c
 	(setPixels): Don't swap, correct size.
 

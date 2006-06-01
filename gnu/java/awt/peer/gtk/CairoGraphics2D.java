@@ -186,6 +186,10 @@ public abstract class CairoGraphics2D extends Graphics2D
    */
   private static BasicStroke draw3DRectStroke = new BasicStroke();
 
+  static ColorModel rgb32 = new DirectColorModel(32, 0xFF0000, 0xFF00, 0xFF);
+  static ColorModel argb32 = new DirectColorModel(32, 0xFF0000, 0xFF00, 0xFF, 
+						  0xFF000000);
+
   /**
    * Constructor does nothing.
    */
@@ -1006,33 +1010,77 @@ public abstract class CairoGraphics2D extends Graphics2D
     try
       {
 	invertedXform = xform.createInverse();
-	if (img instanceof BufferedImage)
-	  {
-	    // draw an image which has actually been loaded 
-	    // into memory fully
-	    BufferedImage b = (BufferedImage) img;
-	    DataBuffer db = b.getRaster().getDataBuffer();
-	    if(db instanceof CairoSurface)
-	      {
-		double[] i2u = new double[6];
-		invertedXform.getMatrix(i2u);
-		((CairoSurface)db).drawSurface(this, i2u);
-		return true;
-	      }
-
-	    return drawRaster(b.getColorModel(), b.getTile(0, 0),
-			      invertedXform, bgcolor);
-	  }
-	else
-	  return this.drawImage(Toolkit.getDefaultToolkit().
-				createImage(img.getSource()),
-				xform, bgcolor, obs);
       }
     catch (NoninvertibleTransformException e)
       {
 	throw new ImagingOpException("Unable to invert transform "
 				     + xform.toString());
       }
+
+    // Unrecognized image - convert to a BufferedImage and come back.
+    if( !(img instanceof BufferedImage) )
+      return this.drawImage(Toolkit.getDefaultToolkit().
+			    createImage(img.getSource()),
+			    xform, bgcolor, obs);
+
+    BufferedImage b = (BufferedImage) img;
+    DataBuffer db;
+    double[] i2u = new double[6];
+    int width = b.getWidth();
+    int height = b.getHeight();
+
+    // If this BufferedImage has a BufferedImageGraphics object, 
+    // use the cached CairoSurface that BIG is drawing onto
+    if( BufferedImageGraphics.bufferedImages.get( b ) != null )
+      db = (DataBuffer)BufferedImageGraphics.bufferedImages.get( b );
+    else
+      db = b.getRaster().getDataBuffer();
+
+    invertedXform.getMatrix(i2u);
+
+    if(db instanceof CairoSurface)
+      {
+	((CairoSurface)db).drawSurface(this, i2u);
+	return true;
+      }
+	    
+    if( bgcolor != null )
+      {
+	// Fill a rectangle with the background color 
+	// to composite the image onto.
+	Paint oldPaint = paint;
+	AffineTransform oldTransform = transform;
+	setPaint( bgcolor );
+	setTransform( invertedXform );
+	fillRect(0, 0, width, height);
+	setTransform( oldTransform );
+	setPaint( oldPaint );
+      }
+
+    int[] pixels;
+
+    // Shortcut for easy color models.
+    if( b.getColorModel().equals(rgb32) )
+      {
+	pixels = ((DataBufferInt)db).getData();
+	for(int i = 0; i < pixels.length; i++)
+	  pixels[i] |= 0xFF000000;
+      }
+    else if( b.getColorModel().equals(argb32) )
+      {
+	pixels = ((DataBufferInt)db).getData();
+      }
+    else
+      {
+	pixels = b.getRGB(0, 0, width, height,
+			  null, 0, width);
+      }
+
+    drawPixels(pixels, width, height, width, i2u);
+
+    // Cairo seems to lose the current color which must be restored.
+    updateColor();
+    return true;
   }
 
   public void drawRenderedImage(RenderedImage image, AffineTransform xform)
