@@ -1,3 +1,10 @@
+2006-06-01  Sven de Marothy  <sven@physto.se>
+
+	PR 27854
+	* gnu/java/awt/Buffers.java (getData): Reimplement.
+	* gnu/java/awt/peer/gtk/CairoSurface.java
+	(getElem, setElem): Call native methods.
+
 2006-06-01  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/javax/swing/text/html/ImageViewIconFactory.java: New file.

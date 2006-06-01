@@ -239,9 +239,9 @@ public class CairoSurface extends DataBuffer
    */
   public int getElem(int bank, int i)
   {
-    if(bank != 0 || i <= 0 || i >= width*height)
-      throw new IndexOutOfBoundsException();
-    return getElem(i);
+    if(bank != 0 || i < 0 || i >= width*height)
+      throw new IndexOutOfBoundsException(i+" size: "+width*height);
+    return nativeGetElem(i);
   }
   
   /**
@@ -249,9 +249,9 @@ public class CairoSurface extends DataBuffer
    */
   public void setElem(int bank, int i, int val)
   {
-    if(bank != 0 || i <= 0 || i >= width*height)
-      throw new IndexOutOfBoundsException();
-    setElem(i, val);
+    if(bank != 0 || i < 0 || i >= width*height)
+      throw new IndexOutOfBoundsException(i+" size: "+width*height);
+    nativeSetElem(i, val);
   }
 
   /**
