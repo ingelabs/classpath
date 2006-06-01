@@ -451,7 +451,7 @@ class AppletTag
         else
           {
             String dirname = documentbase.getFile();
-            if (!new File(dirname).isFile())
+            if (dirname.indexOf(".") < 0)
               fullcodebase = new URL(documentbase + File.separator);
             else
               {

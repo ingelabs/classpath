@@ -1,3 +1,10 @@
+2006-06-01  Lillian Angel  <langel@redhat.com>
+
+	* tools/gnu/classpath/tools/appletviewer/AppletTag.java
+	(prependCodebase): Fixed check. No dirname was ever considered to 
+	be a file, so every applet fell into the if-statement causing a lot
+	of classloading problems with the applets.
+
 2006-06-01  Sven de Marothy  <sven@physto.se>
 
 	Patch submitted by Boris Dusek.
