@@ -1,3 +1,64 @@
+2006-06-01  Roman Kennke <kennke@aicas.com>
+
+	* javax/swing/JTable.java
+	(AccessibleJTableCell.getAccessibleRow): Added comment explaining
+	why the behaviour is like it is.
+	(AccessibleJTableCell.getAccessibleStateSet): Implemented.
+	(AccessibleJTableHeader): New inner class.
+	(AccessibleJTableHeaderCell): New inner class.
+	(AccessibleJTable.lastSelectedRow): New field.
+	(AccessibleJTable.lastSelectedColumn): New field.
+	(AccessibleJTable.caption): New field.
+	(AccessibleJTable.summary): New field.
+	(AccessibleJTable.rowDescriptions): New field.
+	(AccessibleJTable.columnDescriptions): New field.
+	(AccessibleJTable): Initialize lastSelectedRow and lastSelectedColumn.
+	(AccessibleJTable.getAccessibleSelection(int)): Implemented.
+	(AccessibleJTable.isAccessibleChildSelected): Implemented.
+	(AccessibleJTable.addAccessibleSelection): Implemented.
+	(AccessibleJTable.removeAccessibleSelection): Implemented.
+	(AccessibleJTable.clearAccessibleSelection): Implemented.
+	(AccessibleJTable.selectAllAccessibleSelection): Implemented.
+	(AccessibleJTable.valueChange): Implemented.
+	(AccessibleJTable.tableRowsInserted): Implemented.
+	(AccessibleJTable.tableRowsDeleted): Implemented.
+	(AccessibleJTable.handleRowChange): New helper method.
+	(AccessibleJTable.columnAdded): Implemented.
+	(AccessibleJTable.columnMarginChanged): Implemented.
+	(AccessibleJTable.columnMoved): Implemented.
+	(AccessibleJTable.columnRemoved): Implemented.
+	(AccessibleJTable.columnSelectionChanged): Implemented.
+	(AccessibleJTable.handleColumnChange): New helper method.
+	(AccessibleJTable.editingCanceled): Implemented.
+	(AccessibleJTable.editingStopped): Implemented.
+	(AccessibleJTable.getAccessibleRow): Implemented.
+	(AccessibleJTable.getAccessibleColumn): Implemented.
+	(AccessibleJTable.getAccessibleIndex): Implemented.
+	(AccessibleJTable.getAccessibleCaption): Implemented.
+	(AccessibleJTable.setAccessibleCaption): Implemented.
+	(AccessibleJTable.getAccessibleSummary): Implemented.
+	(AccessibleJTable.setAccessibleSummary): Implemented.
+	(AccessibleJTable.getAccessibleRowCount): Implemented.
+	(AccessibleJTable.getAccessibleColumnCount): Implemented.
+	(AccessibleJTable.getAccessibleAt): Implemented.
+	(AccessibleJTable.getAccessibleRowExtentAt): Implemented.
+	(AccessibleJTable.getAccessibleColumnExtentAt): Implemented.
+	(AccessibleJTable.getAccessibleRowHeader): Implemented.
+	(AccessibleJTable.setAccessibleRowHeader): Implemented.
+	(AccessibleJTable.getAccessibleColumnHeader): Implemented.
+	(AccessibleJTable.setAccessibleColumnHeader): Implemented.
+	(AccessibleJTable.getAccessibleRowDescription): Implemented.
+	(AccessibleJTable.setAccessibleRowDescription): Implemented.
+	(AccessibleJTable.getAccessibleColumnDescription): Implemented.
+	(AccessibleJTable.setAccessibleColumnDescription): Implemented.
+	(AccessibleJTable.isAccessibleSelected): Implemented.
+	(AccessibleJTable.isAccessibleRowSelected): Implemented.
+	(AccessibleJTable.isAccessibleColumnSelected): Implemented.
+	(AccessibleJTable.getSelectedAccessibleRows): Implemented.
+	(AccessibleJTable.getSelectedAccessibleColumns): Implemented.
+	(getAccessibleContext): Register listeners for the accessibility
+	class on the JTable.
+
 2006-06-01  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java:
