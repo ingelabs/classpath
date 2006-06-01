@@ -146,24 +146,12 @@ Java_gnu_java_awt_peer_gtk_CairoSurface_setPixels
   jint *pixeldata, *jpixdata;
   int size;
 
-#ifndef WORDS_BIGENDIAN
-  int i;
-#endif
-
   pixeldata = (jint *)getNativeObject(env, obj, BUFFER);
   g_assert(pixeldata != NULL);
 
   jpixdata = (*env)->GetIntArrayElements (env, jpixels, NULL);
   size = (*env)->GetArrayLength( env, jpixels );
   memcpy (pixeldata, jpixdata, size * sizeof( jint ));
-
-#ifndef WORDS_BIGENDIAN
-  /* convert pixels from 0xBBGGRRAA to 0xAARRGGBB */
-  for (i = 0; i < size; ++i)
-    {
-      jpixdata[i] = SWAPU32 ((unsigned)jpixdata[i]);
-    }
-#endif
 
   (*env)->ReleaseIntArrayElements (env, jpixels, jpixdata, 0);
 }
