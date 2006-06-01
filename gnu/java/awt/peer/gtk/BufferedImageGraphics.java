@@ -117,8 +117,9 @@ public class BufferedImageGraphics extends CairoGraphics2D
    * Update a rectangle of the bufferedImage. This can be improved upon a lot.
    */
   private void updateBufferedImage(int x, int y, int width, int height)
-  {
+  {  
     int[] pixels = surface.getPixels(imageWidth * imageHeight * 4);
+
     if( x > imageWidth || y > imageHeight )
       return;
     // Clip edges.
@@ -128,11 +129,8 @@ public class BufferedImageGraphics extends CairoGraphics2D
       width = imageWidth - x;
     if( y + height > imageHeight ) 
       height = imageHeight - y;
-    
-    int index = 0;
-    for (int j = y; j < y + height; ++j)
-      for (int i = x; i < x + width; ++i)
-	image.setRGB(i, j, pixels[ i + j*imageWidth ]);
+
+    image.setRGB(x, y, width, height, pixels, x + y * imageWidth, imageWidth);
   }
 
   /**

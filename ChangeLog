@@ -7,6 +7,13 @@
 
 2006-06-01  Sven de Marothy  <sven@physto.se>
 
+	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java
+	(updateBufferedImage): Simplify.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c
+	(getPixels): Don't swap.
+
+2006-06-01  Sven de Marothy  <sven@physto.se>
+
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoGraphics2D.c
 	(setGradient): Reimplement.
 	
