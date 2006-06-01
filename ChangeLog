@@ -1,5 +1,20 @@
 2006-06-01  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/basic/BasicButtonUI.java: Minor source code style 
+	fixes,
+	* javax/swing/plaf/basic/BasicDirectoryModel.java: Likewise,
+	* javax/swing/plaf/basic/BasicFileChooserUI.java: Likewise,
+	* javax/swing/plaf/basic/BasicIconFactory.java: Likewise,
+	* javax/swing/plaf/basic/BasicListUI.java: Likewise,
+	* javax/swing/plaf/basic/BasicOptionPaneUI.java: Likewise,
+	* javax/swing/plaf/basic/BasicRootPaneUI.java: Likewise,
+	* javax/swing/plaf/basic/BasicScrollPaneUI.java: Likewise,
+	* javax/swing/plaf/basic/BasicSpinnerUI.java: Likewise,
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java: Likewise,
+	* javax/swing/plaf/basic/BasicTextAreaUI.java: Likewise.
+	
+2006-06-01  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/JComboBox.java: Minor source code formatting fixes,
 	* javax/swing/JEditorPane.java: Likewise,
 	* javax/swing/JFormattedTextField.java: Likewise,
