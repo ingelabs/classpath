@@ -1,3 +1,17 @@
+2006-06-01  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JComboBox.java: Minor source code formatting fixes,
+	* javax/swing/JEditorPane.java: Likewise,
+	* javax/swing/JFormattedTextField.java: Likewise,
+	* javax/swing/JLayeredPane.java: Likewise,
+	* javax/swing/JScrollPane.java: Likewise,
+	* javax/swing/JSlider.java: Likewise,
+	* javax/swing/JSpinner.java: Likewise,
+	* javax/swing/JTree.java: Likewise,
+	* javax/swing/JViewport.java: Likewise,
+	* javax/swing/UIDefaults.java: Likewise,
+	* javax/swing/UIManager.java: Likewise.
+	
 2006-06-01  Sven de Marothy  <sven@physto.se>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c
