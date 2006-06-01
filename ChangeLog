@@ -1,3 +1,8 @@
+2006-06-02  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* tools/jarsigner.in: Use @VM_BINARY@.
+	* tools/keytool.in: Likewise.
+
 2006-06-01  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java:
