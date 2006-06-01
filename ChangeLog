@@ -1,3 +1,9 @@
+2006-06-01  Sven de Marothy  <sven@physto.se>
+
+	Patch submitted by Boris Dusek.
+	* native/jni/qt-peer/qtmenupeer.cpp
+	Fix segfault
+
 2006-06-01  Roman Kennke <kennke@aicas.com>
 
 	* javax/swing/JTable.java
