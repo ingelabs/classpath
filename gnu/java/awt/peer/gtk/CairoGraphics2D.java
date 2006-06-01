@@ -572,8 +572,8 @@ public abstract class CairoGraphics2D extends Graphics2D
 	int width = (int) tp.getAnchorRect().getWidth();
 	int height = (int) tp.getAnchorRect().getHeight();
 
-	double scaleX = width / (double) img.getWidth();
-	double scaleY = width / (double) img.getHeight();
+	double scaleX = (width+1) / (double) img.getWidth();
+	double scaleY = (height+1) / (double) img.getHeight();
 
 	AffineTransform at = new AffineTransform(scaleX, 0, 0, scaleY, 0, 0);
 	AffineTransformOp op = new AffineTransformOp(at, getRenderingHints());

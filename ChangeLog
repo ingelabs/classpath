@@ -1,5 +1,10 @@
 2006-06-01  Sven de Marothy  <sven@physto.se>
 
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java:
+	(setPaint): Scale +1 pixel larger.
+
+2006-06-01  Sven de Marothy  <sven@physto.se>
+
 	PR 27854
 	* gnu/java/awt/Buffers.java (getData): Reimplement.
 	* gnu/java/awt/peer/gtk/CairoSurface.java
