@@ -130,7 +130,7 @@ Java_gnu_java_awt_peer_gtk_CairoSurface_getPixels
 
   jpixels = (*env)->NewIntArray (env, size);
   jpixdata = (*env)->GetIntArrayElements (env, jpixels, NULL);
-  memcpy (jpixdata, pixeldata, size);
+  memcpy (jpixdata, pixeldata, size * sizeof( jint ));
 
   (*env)->ReleaseIntArrayElements (env, jpixels, jpixdata, 0);
   return jpixels;

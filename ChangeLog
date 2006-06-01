@@ -1,3 +1,8 @@
+2006-06-01  Sven de Marothy  <sven@physto.se>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c
+	(setPixels): Don't swap, correct size.
+
 2006-05-31  Anthony Green  <green@redhat.com>
 
 	PR 27828
