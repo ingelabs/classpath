@@ -11,6 +11,7 @@ extern "C"
 #endif
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkTextLayout_setText (JNIEnv *env, jobject, jstring);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkTextLayout_setFont (JNIEnv *env, jobject, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkTextLayout_getExtents (JNIEnv *env, jobject, jdoubleArray, jdoubleArray);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkTextLayout_indexToPos (JNIEnv *env, jobject, jint, jdoubleArray);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkTextLayout_initState (JNIEnv *env, jobject);

@@ -1122,6 +1122,8 @@ public abstract class CairoGraphics2D extends Graphics2D
   {
     double scaleX = width / (double) img.getWidth(observer);
     double scaleY = height / (double) img.getHeight(observer);
+    if( scaleX == 0 || scaleY == 0 )
+      return true;
 
     return drawImage(img, new AffineTransform(scaleX, 0f, 0f, scaleY, x, y),
                      bgcolor, observer);

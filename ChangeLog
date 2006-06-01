@@ -1,5 +1,16 @@
 2006-06-01  Sven de Marothy  <sven@physto.se>
 
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(drawImage): Check for zero size.
+	* gnu/java/awt/peer/gtk/GdkTextLayout.java:
+	(setFont): Declare new native method.
+	(GdkTextLayout): Read some attributes.
+	* include/gnu_java_awt_peer_gtk_GdkTextLayout.h
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkTextLayout.c
+	(setFont): New native method.
+	
+2006-06-01  Sven de Marothy  <sven@physto.se>
+
 	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java
 	(updateBufferedImage): Fix some errors.
 

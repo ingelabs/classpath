@@ -97,8 +97,6 @@ Java_gnu_java_awt_peer_gtk_GdkTextLayout_setText
   gchar *str = NULL;
   gint len = 0;
 
-  gdk_threads_enter ();
-
   g_assert(self != NULL);
   g_assert(text != NULL);
 
@@ -110,9 +108,33 @@ Java_gnu_java_awt_peer_gtk_GdkTextLayout_setText
   str = (gchar *)(*env)->GetStringUTFChars (env, text, NULL);
   g_assert (str != NULL);
 
-  pango_layout_set_text (tl->pango_layout, text, len);
+  gdk_threads_enter ();
+
+  pango_layout_set_text (tl->pango_layout, str, len);
 
   (*env)->ReleaseStringUTFChars (env, text, str);
+
+  gdk_threads_leave ();  
+}
+
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GdkTextLayout_setFont (JNIEnv *env, jobject obj, jobject font)
+{
+  struct textlayout *tl;
+  struct peerfont *pf;
+
+  g_assert(obj != NULL);
+  g_assert(font != NULL);
+
+  tl = (struct textlayout *)NSA_GET_TEXT_LAYOUT_PTR (env, obj);
+  g_assert(tl != NULL);
+  g_assert(tl->pango_layout != NULL);
+  pf = (struct peerfont *)NSA_GET_FONT_PTR (env, font);
+  g_assert(pf != NULL);
+  
+  gdk_threads_enter ();
+
+  pango_layout_set_font_description(tl->pango_layout, pf->desc);
 
   gdk_threads_leave ();  
 }
@@ -213,6 +235,7 @@ Java_gnu_java_awt_peer_gtk_GdkTextLayout_dispose
 
 /**
  * Draw this textlayout on a cairo surface
+ * FIXME: Seems completely broken.
  */
 JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GdkTextLayout_cairoDrawGdkTextLayout
