@@ -1,5 +1,12 @@
 2006-06-02  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* tools/gnu/classpath/tools/keytool/Command.java (shutdownThread): New field.
+	(Command): Add the shutdown hook.
+	(doCommand): Remove the shutdown hook.
+	(ShutdownHook): New class.
+
+2006-06-02  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* tools/jarsigner.in: Use @VM_BINARY@.
 	* tools/keytool.in: Likewise.
 
