@@ -1,3 +1,10 @@
+2006-06-01  Lillian Angel  <langel@redhat.com>
+
+	PR 24458
+	* java/awt/DefaultKeyboardFocusManager.java
+	(dispatchEvent): Fixed to getFocusOwner, if that fails it tries
+	to get the focused window.
+
 2006-06-01  Miriam Schuster  <schmir11@web.de>
 
 	* Makefile.am: Add fallback if "mozilla-plugin" is not available.
