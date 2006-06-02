@@ -1,3 +1,13 @@
+2006-06-01  Keith Seitz  <keiths@redhat.com>
+
+	From Martin Platter  <motse@complang.tuwien.ac.at>:
+	* gnu/classpath/jdwp/processor/EventRequestCommandSet.java
+	(executeSet): Fix buffer underflow reading reference ID.
+	* gnu/classpath/jdwp/processor/ThreadGroupReferenceCommandSet.java
+	(executeParent): Fix  NPE if ThreadGroup is top-level ThreadGroup. 
+	* gnu/classpath/jdwp/processor/ClassTypeCommandSet.java
+	(executeSuperclass): Handle case of Object with ID zero.
+
 2006-06-02  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* tools/gnu/classpath/tools/keytool/StorePasswdCmd.java: Fixed typo.
