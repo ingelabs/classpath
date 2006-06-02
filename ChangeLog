@@ -1,3 +1,9 @@
+2006-06-02  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* configure.ac: Add -lX11 and -lXtst to XTEST_LIBS.
+	(XTEST_LIBS): New, substitute.
+	* native/jni/gtk-peer/Makefile.am (AM_LDFLAGS): Add XTEST_LIBS.
+
 2006-06-02  Roman Kennke <kennke@aicas.com>
 
 	PR 26738

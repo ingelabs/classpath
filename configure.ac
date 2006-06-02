@@ -400,9 +400,11 @@ if test "x${COMPILE_JNI}" = xyes; then
         AC_MSG_ERROR([GTK+ peers requested but no X library available])
     fi
     dnl We explicitly want the XTest Extension for Robot support.
-    AC_CHECK_LIB([Xtst], [XTestQueryExtension], [true],
-       	  [AC_MSG_ERROR([libXtst NOT found, required for GdkRobot])],
-       	  [${X_LIBS}])
+    AC_CHECK_LIB([Xtst], [XTestQueryExtension],
+    		 [XTEST_LIBS="$XTEST_LIBS -lX11 -lXtst"],
+		 [AC_MSG_ERROR([libXtst NOT found, required for GdkRobot])],
+		 [${X_LIBS}])
+
     PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.8 gthread-2.0 >= 2.2 gdk-pixbuf-2.0)
     PKG_CHECK_MODULES(FREETYPE2, freetype2)
     PKG_CHECK_MODULES(PANGOFT2, pangoft2)
@@ -419,6 +421,7 @@ if test "x${COMPILE_JNI}" = xyes; then
     AC_SUBST(FREETYPE2_CFLAGS)
     AC_SUBST(PANGOFT2_LIBS)
     AC_SUBST(PANGOFT2_CFLAGS)
+    AC_SUBST(XTEST_LIBS)
   fi
 
   dnl Check for AWT related Qt4
