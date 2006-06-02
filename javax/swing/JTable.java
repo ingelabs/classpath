@@ -2781,12 +2781,6 @@ public class JTable
    */
   public void columnSelectionChanged (ListSelectionEvent event)
   {
-    // Does not make sense for the table with the single column.
-    if (getColumnCount() < 2)
-      return;
-    
-    int x0 = 0;
-    
     // We must limit the indices to the bounds of the JTable's model, because
     // we might get values of -1 or greater then columnCount in the case
     // when columns get removed.
@@ -2794,17 +2788,39 @@ public class JTable
                                     event.getFirstIndex()));
     int idxn = Math.max(0, Math.min(getColumnCount() - 1,
                                     event.getLastIndex()));
-    int i;
 
-    for (i = 0; i < idx0; i++)
-      x0 += columnModel.getColumn(i).getWidth();
-    
-    int xn = x0;
-    
-    for (i = idx0; i <= idxn; i++)
-      xn += columnModel.getColumn(i).getWidth();
-    
-    repaint(x0, 0, xn-x0, getHeight());
+    int minRow = 0;
+    int maxRow = getRowCount() - 1;
+    if (getRowSelectionAllowed())
+      {
+        minRow = selectionModel.getMinSelectionIndex();
+        maxRow = selectionModel.getMaxSelectionIndex();
+        int leadRow = selectionModel.getLeadSelectionIndex();
+        if (minRow == -1 && maxRow == -1)
+          {
+            minRow = leadRow;
+            maxRow = leadRow;
+          }
+        else
+          {
+            // In this case we need to repaint also the range to leadRow, not
+            // only between min and max.
+            if (leadRow != -1)
+              {
+                minRow = Math.min(minRow, leadRow);
+                maxRow = Math.max(maxRow, leadRow);
+              }
+          }
+      }
+    if (minRow != -1 && maxRow != -1)
+      {
+        Rectangle first = getCellRect(minRow, idx0, false);
+        Rectangle last = getCellRect(maxRow, idxn, false);
+        Rectangle dirty = SwingUtilities.computeUnion(first.x, first.y,
+                                                      first.width,
+                                                      first.height, last);
+        repaint(dirty);
+      }
   }
  
   /**
@@ -2913,9 +2929,10 @@ public class JTable
     int last = Math.max(0, Math.min(getRowCount() - 1, event.getLastIndex()));
     Rectangle rect1 = getCellRect(first, 0, false);
     Rectangle rect2 = getCellRect(last, getColumnCount() - 1, false);
-    SwingUtilities.computeUnion(rect2.x, rect2.y, rect2.width, rect2.height,
-                                rect1);
-    repaint(rect1);
+    Rectangle dirty = SwingUtilities.computeUnion(rect2.x, rect2.y,
+                                                  rect2.width, rect2.height,
+                                                  rect1);
+    repaint(dirty);
   }
 
  /**

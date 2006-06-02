@@ -1,3 +1,12 @@
+2006-06-02  Roman Kennke <kennke@aicas.com>
+
+	* javax/swing/JTable.java
+	(columnSelectionChanged): Don't return when there's only one
+	column (might still need repainting). Correctly calculate
+	repaint rectangle.
+	(valueChanged): Use return value of SwingUtilities.computeUnion
+	as dirty region.
+
 2006-06-01  Keith Seitz  <keiths@redhat.com>
 
 	From Martin Platter  <motse@complang.tuwien.ac.at>:
