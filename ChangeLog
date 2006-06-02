@@ -1,3 +1,8 @@
+2006-06-01  Miriam Schuster  <schmir11@web.de>
+
+	* Makefile.am: Add fallback if "mozilla-plugin" is not available.
+	Fallbacks used: "firefox-plugin" and "xulrunner-plugin".
+
 2006-06-02  Roman Kennke <kennke@aicas.com>
 
 	* javax/swing/JTable.java
