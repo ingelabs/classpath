@@ -44,6 +44,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.*;
 
 /**
@@ -87,34 +88,13 @@ public class CairoSurfaceGraphics extends CairoGraphics2D
     throw new UnsupportedOperationException();
   }
   
-  public void copyArea(int x, int y, int width, int height, int dx, int dy)
+  protected Rectangle2D getRealBounds()
   {
-    // Return if outside the surface
-    if( x + dx > surface.width || y + dy > surface.height )
-      return;
+    return new Rectangle2D.Double(0.0, 0.0, surface.width, surface.height);
+  }
 
-    if( x + dx + width < 0 || y + dy + height < 0 )
-      return;
-
-    // Clip edges if necessary 
-    if( x + dx < 0 ) // left
-      {
-	width = x + dx + width;
-	x = -dx;
-      }
-
-    if( y + dy < 0 ) // top
-      {
-	height = y + dy + height;
-	y = -dy;
-      }
-
-    if( x + dx + width >= surface.width ) // right
-      width = surface.width - dx - x;
-
-    if( y + dy + height >= surface.height ) // bottom
-      height = surface.height - dy - y;
-
+  public void copyAreaImpl(int x, int y, int width, int height, int dx, int dy)
+  {
     surface.copyAreaNative(x, y, width, height, dx, dy, surface.width);
   }
 }

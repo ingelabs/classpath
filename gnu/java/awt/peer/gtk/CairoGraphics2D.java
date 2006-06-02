@@ -292,7 +292,11 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   public abstract GraphicsConfiguration getDeviceConfiguration();
 
-  public abstract void copyArea(int x, int y, int width, int height, int dx, int dy);
+  protected abstract void copyAreaImpl(int x, int y, 
+				       int width, int height, int dx, int dy);
+
+
+  protected abstract Rectangle2D getRealBounds();
 
   ////// Native Methods ////////////////////////////////////////////////////
 
@@ -907,6 +911,60 @@ public abstract class CairoGraphics2D extends Graphics2D
                             int arcHeight)
   {
     fill(new RoundRectangle2D.Double(x, y, width, height, arcWidth, arcHeight));
+  }
+
+  /**
+   * CopyArea - performs clipping to the native surface as a convenience 
+   * (requires getRealBounds). Then calls copyAreaImpl.
+   */
+  public void copyArea(int ox, int oy, int owidth, int oheight, 
+		       int odx, int ody)
+  {
+    Point2D pos = transform.transform(new Point2D.Double(ox, oy),
+				      (Point2D) null);
+    Point2D dim = transform.transform(new Point2D.Double(ox + owidth, 
+							 oy + oheight),
+				      (Point2D) null);
+    Point2D p2 = transform.transform(new Point2D.Double(ox + odx, oy + ody),
+				     (Point2D) null);
+    int x = (int)pos.getX();
+    int y = (int)pos.getY();
+    int width = (int)(dim.getX() - pos.getX());
+    int height = (int)(dim.getY() - pos.getY());
+    int dx = (int)(p2.getX() - pos.getX());
+    int dy = (int)(p2.getY() - pos.getY());
+
+    Rectangle2D r = getRealBounds();
+
+    if( width < 0 || height < 0 )
+      return;
+    // Return if outside the surface
+    if( x + dx > r.getWidth() || y + dy > r.getHeight() )
+      return;
+
+    if( x + dx + width < r.getX() || y + dy + height < r.getY() )
+      return;
+
+    // Clip edges if necessary 
+    if( x + dx < r.getX() ) // left
+      {
+	width = x + dx + width;
+	x = (int)r.getX() - dx;
+      }
+
+    if( y + dy < r.getY() ) // top
+      {
+	height = y + dy + height;
+	y = (int)r.getY() - dy;
+      }
+
+    if( x + dx + width >= r.getWidth() ) // right
+      width = (int)r.getWidth() - dx - x;
+
+    if( y + dy + height >= r.getHeight() ) // bottom
+      height = (int)r.getHeight() - dy - y;
+
+    copyAreaImpl(x, y, width, height, dx, dy);
   }
 
   ///////////////////////// RENDERING HINTS ///////////////////////////////////

@@ -1,3 +1,16 @@
+2006-06-02  Sven de Marothy  <sven@physto.se>
+
+	PR 27879 
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(copyArea): Implement.
+	(copyAreaImpl, getRealBounds): New methods.
+	* gnu/java/awt/peer/gtk/CairoSurfaceGraphics.java
+	* gnu/java/awt/peer/gtk/ComponentGraphics.java
+	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java
+	(copyAreaImpl, getRealBounds): Implement.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c
+	(nativeCopyArea): Reimplement.	
+	
 2006-06-02  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* configure.ac: Add -lX11 and -lXtst to XTEST_LIBS.

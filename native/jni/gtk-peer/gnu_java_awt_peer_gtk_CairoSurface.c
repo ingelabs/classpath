@@ -240,18 +240,17 @@ Java_gnu_java_awt_peer_gtk_CairoSurface_copyAreaNative (JNIEnv *env,
   jint *pixeldata = (jint *)getNativeObject(env, obj, BUFFER);
   g_assert( pixeldata != NULL );
 
-  temp = g_malloc( w * sizeof( jint ) );
+  temp = g_malloc( h * w * 4 );
   g_assert( temp != NULL );
 
-  srcOffset = x + y * stride;
-  dstOffset = (x + dx) + (y + dy) * stride;
-  for( row = 0; row < h; row++)
-    {
-      memcpy( temp, pixeldata + srcOffset, w * sizeof(jint) );
-      memcpy( pixeldata + dstOffset, temp, w * sizeof(jint) );
-      srcOffset += stride;
-      dstOffset += stride;
-    }
+  srcOffset = x + (y * stride);
+  dstOffset = (x + dx) + ((y + dy) * stride);
+
+  for( row = 0; row < h; row++ )
+    memcpy( temp + (w * row), pixeldata + srcOffset + (stride * row), w * 4 );
+
+  for( row = 0; row < h; row++ )
+    memcpy( pixeldata + dstOffset + (stride * row), temp + (w * row), w * 4 );
 
   g_free( temp );
 }

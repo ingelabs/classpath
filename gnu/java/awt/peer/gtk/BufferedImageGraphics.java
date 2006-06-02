@@ -48,6 +48,7 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferInt;
@@ -204,35 +205,14 @@ public class BufferedImageGraphics extends CairoGraphics2D
   {
     return null;
   }
-  
-  public void copyArea(int x, int y, int width, int height, int dx, int dy)
+
+  protected Rectangle2D getRealBounds()
   {
-    // Return if outside the surface
-    if( x + dx > surface.width || y + dy > surface.height )
-      return;
-
-    if( x + dx + width < 0 || y + dy + height < 0 )
-      return;
-
-    // Clip edges if necessary 
-    if( x + dx < 0 ) // left
-      {
-	width = x + dx + width;
-	x = -dx;
-      }
-
-    if( y + dy < 0 ) // top
-      {
-	height = y + dy + height;
-	y = -dy;
-      }
-
-    if( x + dx + width >= surface.width ) // right
-      width = surface.width - dx - x;
-
-    if( y + dy + height >= surface.height ) // bottom
-      height = surface.height - dy - y;
-
+    return new Rectangle2D.Double(0.0, 0.0, imageWidth, imageHeight);
+  }
+  
+  public void copyAreaImpl(int x, int y, int width, int height, int dx, int dy)
+  {
     surface.copyAreaNative(x, y, width, height, dx, dy, surface.width);
     updateBufferedImage(x + dx, y + dy, width, height);
   }

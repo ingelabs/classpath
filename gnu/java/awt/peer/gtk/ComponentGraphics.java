@@ -49,6 +49,7 @@ import java.awt.Shape;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.awt.image.ImagingOpException;
@@ -132,36 +133,13 @@ public class ComponentGraphics extends CairoGraphics2D
     return new ComponentGraphics(this);
   }
   
-  public void copyArea(int x, int y, int width, int height, int dx, int dy)
+  protected Rectangle2D getRealBounds()
   {
-    Rectangle r = component.awtComponent.getBounds();
+    return component.awtComponent.getBounds();
+  }
 
-    // Return if outside the component
-    if( x + dx > r.width || y + dy > r.height )
-      return;
-
-    if( x + dx + width < 0 || y + dy + height < 0 )
-      return;
-
-    // Clip edges if necessary 
-    if( x + dx < 0 ) // left
-      {
-	width = x + dx + width;
-	x = -dx;
-      }
-
-    if( y + dy < 0 ) // top
-      {
-	height = y + dy + height;
-	y = -dy;
-      }
-
-    if( x + dx + width >= r.width ) // right
-      width = r.width - dx - x;
-
-    if( y + dy + height >= r.height ) // bottom
-      height = r.height - dy - y;
-
+  public void copyAreaImpl(int x, int y, int width, int height, int dx, int dy)
+  {
     copyAreaNative(component, x, y, width, height, dx, dy);
   }
 
