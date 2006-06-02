@@ -115,6 +115,6 @@ public class CairoSurfaceGraphics extends CairoGraphics2D
     if( y + dy + height >= surface.height ) // bottom
       height = surface.height - dy - y;
 
-    surface.copyAreaNative(x, y, width, height, dx, dy, surface.width * 4);
+    surface.copyAreaNative(x, y, width, height, dx, dy, surface.width);
   }
 }

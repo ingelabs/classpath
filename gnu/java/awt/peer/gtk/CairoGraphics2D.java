@@ -257,7 +257,6 @@ public abstract class CairoGraphics2D extends Graphics2D
     setPaint(paint);
     setStroke(stroke);
     setTransform(transform);
-    setClip(clip);
   }
 
   /**

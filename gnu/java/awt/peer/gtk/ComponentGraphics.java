@@ -80,6 +80,9 @@ public class ComponentGraphics extends CairoGraphics2D
     component = cg.component;
     cairo_t = initState(component);
     copy( cg, cairo_t );
+    setBackground(component.awtComponent.getBackground());
+    setClip(component.awtComponent.getBounds());
+    setColor(component.awtComponent.getForeground());
   }
 
   /**

@@ -54,6 +54,34 @@ exception statement from your version. */
 
 #include "gnu_java_awt_peer_gtk_ComponentGraphics.h"
 
+static short flush_scheduled = 0;
+
+static gboolean flush (gpointer data __attribute__((unused)))
+{
+  gdk_threads_enter ();
+
+  XFlush (GDK_DISPLAY ());
+  flush_scheduled = 0;
+
+  gdk_threads_leave ();
+
+  return FALSE;
+}
+
+/* The minimum time period between calls to XFlush, in
+   milliseconds. */
+#define MINIMUM_FLUSH_PERIOD 20
+
+/* schedule_flush must be called with the GDK lock held. */
+static void
+schedule_flush ()
+{
+  if (!flush_scheduled)
+    {
+      g_timeout_add (MINIMUM_FLUSH_PERIOD, flush, NULL);
+      flush_scheduled = 1;
+    }
+}
 
 void cp_gtk_grab_current_drawable(GtkWidget *widget, GdkDrawable **draw,
 				  GdkWindow **win)
@@ -148,6 +176,7 @@ JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_ComponentGraphics_end_1gdk_1drawing
   (JNIEnv *env __attribute__ ((unused)), jobject obj __attribute__ ((unused)))
 {
+  schedule_flush ();
   gdk_threads_leave();
 }
 

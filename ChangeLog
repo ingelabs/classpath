@@ -1,3 +1,17 @@
+2006-06-01  Sven de Marothy  <sven@physto.se>
+
+	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java
+	* gnu/java/awt/peer/gtk/CairoSurfaceGraphics.java
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c
+	(nativeCopyArea): Change stride parameter to use # of ints.
+	(setPixels): Add checks.
+	* gnu/java/awt/peer/gtk/ComponentGraphics.java
+	(ComponentGraphics): Set background, clip.
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(Cairographics2D): Don't set clip.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphics.c
+	Add flush.
+
 2006-06-01  Lillian Angel  <langel@redhat.com>
 
 	PR 24458

@@ -145,12 +145,29 @@ Java_gnu_java_awt_peer_gtk_CairoSurface_setPixels
 {
   jint *pixeldata, *jpixdata;
   int size;
+  int width, height;
+  jclass cls;
+  jfieldID field;
+
+  if( jpixels == NULL )
+    return;
+
+  cls = (*env)->GetObjectClass (env, obj);
+  field = (*env)->GetFieldID (env, cls, "width", "I");
+  g_assert (field != 0);
+  width = (*env)->GetIntField (env, obj, field);
+
+  field = (*env)->GetFieldID (env, cls, "height", "I");
+  g_assert (field != 0);
+  height = (*env)->GetIntField (env, obj, field);
 
   pixeldata = (jint *)getNativeObject(env, obj, BUFFER);
   g_assert(pixeldata != NULL);
-
+  
   jpixdata = (*env)->GetIntArrayElements (env, jpixels, NULL);
   size = (*env)->GetArrayLength( env, jpixels );
+  if( size > width * height ) size = width * height; // stop overflows.
+  
   memcpy (pixeldata, jpixdata, size * sizeof( jint ));
 
   (*env)->ReleaseIntArrayElements (env, jpixels, jpixdata, 0);
@@ -223,17 +240,17 @@ Java_gnu_java_awt_peer_gtk_CairoSurface_copyAreaNative (JNIEnv *env,
   jint *pixeldata = (jint *)getNativeObject(env, obj, BUFFER);
   g_assert( pixeldata != NULL );
 
-  temp = g_malloc( w * 4 );
+  temp = g_malloc( w * sizeof( jint ) );
   g_assert( temp != NULL );
 
-  srcOffset = x + y * (stride >> 2);
-  dstOffset = (x + dx) + (y + dy) * (stride >> 2);
+  srcOffset = x + y * stride;
+  dstOffset = (x + dx) + (y + dy) * stride;
   for( row = 0; row < h; row++)
     {
-      memcpy( temp, pixeldata + srcOffset, w * 4 );
-      memcpy( pixeldata + dstOffset, temp, w * 4 );
-      srcOffset += (stride >> 2);
-      dstOffset += (stride >> 2);
+      memcpy( temp, pixeldata + srcOffset, w * sizeof(jint) );
+      memcpy( pixeldata + dstOffset, temp, w * sizeof(jint) );
+      srcOffset += stride;
+      dstOffset += stride;
     }
 
   g_free( temp );

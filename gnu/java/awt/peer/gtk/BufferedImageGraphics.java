@@ -145,8 +145,10 @@ public class BufferedImageGraphics extends CairoGraphics2D
 		pixels[i] &= 0xFFFFFFFF;
 	  }
 	else
-	  pixels = CairoGraphics2D.findSimpleIntegerArray
-	    (image.getColorModel(),image.getData());
+	  {
+	    pixels = CairoGraphics2D.findSimpleIntegerArray
+	      (image.getColorModel(),image.getData());
+	  }
       }
     surface.setPixels( pixels );
 
@@ -231,7 +233,7 @@ public class BufferedImageGraphics extends CairoGraphics2D
     if( y + dy + height >= surface.height ) // bottom
       height = surface.height - dy - y;
 
-    surface.copyAreaNative(x, y, width, height, dx, dy, surface.width * 4);
+    surface.copyAreaNative(x, y, width, height, dx, dy, surface.width);
     updateBufferedImage(x + dx, y + dy, width, height);
   }
 
