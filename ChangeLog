@@ -1,5 +1,11 @@
 2006-06-03  Roman Kennke  <kennke@aicas.com>
 
+	PR 27418
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(damageRange): Added null check to avoid NPE.
+
+2006-06-03  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/PlainView.java
 	(updateDamage): Check for valid longestLine and initialize if
 	necessary.
