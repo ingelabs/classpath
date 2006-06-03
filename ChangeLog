@@ -1,3 +1,9 @@
+2006-06-03  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/PlainView.java
+	(updateDamage): Check for valid longestLine and initialize if
+	necessary.
+
 2006-06-03  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c: Use C
