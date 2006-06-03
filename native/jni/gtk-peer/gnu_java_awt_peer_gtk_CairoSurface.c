@@ -166,7 +166,7 @@ Java_gnu_java_awt_peer_gtk_CairoSurface_setPixels
   
   jpixdata = (*env)->GetIntArrayElements (env, jpixels, NULL);
   size = (*env)->GetArrayLength( env, jpixels );
-  if( size > width * height ) size = width * height; // stop overflows.
+  if( size > width * height ) size = width * height; /* stop overflows. */
   
   memcpy (pixeldata, jpixdata, size * sizeof( jint ));
 
