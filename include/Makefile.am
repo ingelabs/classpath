@@ -74,6 +74,7 @@ $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkTextAreaPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkTextFieldPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkToolkit.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkWindowPeer.h \
+$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkVolatileImage.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GThreadNativeMethodRunner.h
 
 QTPEER_H_FILES = \

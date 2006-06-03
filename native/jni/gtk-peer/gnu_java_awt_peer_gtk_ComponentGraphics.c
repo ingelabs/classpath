@@ -94,8 +94,6 @@ void cp_gtk_grab_current_drawable(GtkWidget *widget, GdkDrawable **draw,
 
   *draw = *win;
   gdk_window_get_internal_paint_info (*win, draw, 0, 0); 
-  /*  g_object_ref (*draw); */
-  /* FIXME: Unref this. */
 }
 
 /**
@@ -211,3 +209,38 @@ Java_gnu_java_awt_peer_gtk_ComponentGraphics_copyAreaNative
   gdk_threads_leave();
 }
 
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_ComponentGraphics_drawVolatile
+(JNIEnv *env, jobject obj __attribute__ ((unused)), jobject peer, 
+ jobject img, jint x, jint y, jint w, jint h)
+{
+  GdkPixmap *pixmap;
+  GtkWidget *widget = NULL;
+  void *ptr = NULL;
+  GdkGC *gc;
+
+  gdk_threads_enter();
+
+  ptr = NSA_GET_PTR (env, peer);
+  g_assert (ptr != NULL);
+
+  widget = GTK_WIDGET (ptr);
+  g_assert (widget != NULL);
+
+  while(widget->window != NULL)
+    widget = widget->window;
+  pixmap = cp_gtk_get_pixmap( env, img );
+ 
+
+  gc = gdk_gc_new( widget );
+  gdk_draw_drawable(widget,
+		    gc,
+		    pixmap,
+		    0, 0,
+		    x, y,
+		    w, h);
+
+  schedule_flush ();
+
+  gdk_threads_leave();
+}

@@ -110,6 +110,10 @@ public class ComponentGraphics extends CairoGraphics2D
   private native void copyAreaNative(GtkComponentPeer component, int x, int y, 
 				     int width, int height, int dx, int dy);
 
+  private native void drawVolatile(GtkComponentPeer component,
+				   Image vimg, int x, int y, 
+				   int width, int height);
+
   /**
    * Returns a Graphics2D object for a component, either an instance of this 
    * class (if xrender is supported), or a context which copies.
@@ -183,4 +187,32 @@ public class ComponentGraphics extends CairoGraphics2D
     super.drawGlyphVector(gv, x, y);
     end_gdk_drawing();
   }
+  
+  public boolean drawImage(Image img, int x, int y, ImageObserver observer)
+  {
+    if( img instanceof GtkVolatileImage )
+      {
+	((GtkVolatileImage)img).validate( null );
+	drawVolatile( component, img, x, y-20 ,
+		      ((GtkVolatileImage)img).width, 
+		      ((GtkVolatileImage)img).height );
+	return true;
+      }      
+    return super.drawImage( img, x, y, observer );
+  }
+  
+  public boolean drawImage(Image img, int x, int y, int width, int height,
+                           ImageObserver observer)
+  {
+    if( img instanceof GtkVolatileImage )
+      {
+	((GtkVolatileImage)img).validate( null );
+	drawVolatile( component, img, x, y-20, 
+		      width, height );
+	return true;
+      }      
+    return super.drawImage( img, x, y, width, height, observer );
+  }
+
 }
+

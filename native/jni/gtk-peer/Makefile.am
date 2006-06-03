@@ -39,6 +39,7 @@ libgtkpeer_la_SOURCES = gnu_java_awt_peer_gtk_CairoSurface.c \
 			gnu_java_awt_peer_gtk_GtkTextFieldPeer.c \
 			gnu_java_awt_peer_gtk_GtkToolkit.c \
 			gnu_java_awt_peer_gtk_GtkWindowPeer.c \
+			gnu_java_awt_peer_gtk_GtkVolatileImage.c \
 			cairographics2d.h \
 			gthread-jni.c \
 			gdkfont.h \
