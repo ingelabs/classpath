@@ -1,5 +1,14 @@
 2006-06-02  Sven de Marothy  <sven@physto.se>
 
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(cairoPreserveClip, cairoResetClip): New methods.
+	(setClip, clip): Reimplement.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoGraphics2D.c
+	* include/gnu_java_awt_peer_gtk_CairoGraphics2D.h
+	(cairoPreserveClip, cairoResetClip): New methods.
+	
+2006-06-02  Sven de Marothy  <sven@physto.se>
+
 	* gnu/java/awt/peer/gtk/VolatileImageGraphics.java
 	* include/gnu_java_awt_peer_gtk_GtkVolatileImage.h
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkVolatileImage.c

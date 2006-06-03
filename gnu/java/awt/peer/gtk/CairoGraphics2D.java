@@ -410,6 +410,16 @@ public abstract class CairoGraphics2D extends Graphics2D
    */
   private native void cairoClip();
 
+  /** 
+   * Save clip
+   */
+  private native void cairoPreserveClip();
+
+  /** 
+   * Save clip
+   */
+  private native void cairoResetClip();
+
   /**
    * Set interpolation types
    */
@@ -518,32 +528,10 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   public void clip(Shape s)
   {
-    // update it
-    if (clip == null || s == null)
-      clip = s;
-    else if (s instanceof Rectangle2D && clip instanceof Rectangle2D)
-      {
-	Rectangle2D r = (Rectangle2D) s;
-	Rectangle2D curr = (Rectangle2D) clip;
-	clip = curr.createIntersection(r);
-      }
-    else
-      throw new UnsupportedOperationException();
+    if( s == null )
+      setClip( originalClip );
 
-    // draw it
-    if (clip != null)
-      {
-	cairoNewPath();
-	if (clip instanceof Rectangle2D)
-	  {
-	    Rectangle2D r = (Rectangle2D) clip;
-	    cairoRectangle(r.getX(), r.getY(), r.getWidth(), r.getHeight());
-	  }
-	else
-	  walkPath(clip.getPathIterator(null), false);
-
-	cairoClip();
-      }
+    setClip(s);
   }
 
   public Paint getPaint()
@@ -706,17 +694,18 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   public void setClip(int x, int y, int width, int height)
   {
-    setClip(new Rectangle2D.Double((double) x, (double) y, (double) width,
-                                   (double) height));
+    if( width < 0 || height < 0 )
+      return;
+
+    setClip(new Rectangle2D.Double(x, y, width, height));
   }
 
   public void setClip(Shape s)
   {    
-    clip = s;
-
-    // The first time the clip is set, save it as the original clip to reset to on
-    // s == null. We can rely on this being non-null because the constructor in 
-    // subclasses is expected to set the initial clip properly.
+    // The first time the clip is set, save it as the original clip 
+    // to reset to on s == null. We can rely on this being non-null 
+    // because the constructor in subclasses is expected to set the 
+    // initial clip properly.
     if( firstClip )
       {
 	originalClip = s;
@@ -725,6 +714,10 @@ public abstract class CairoGraphics2D extends Graphics2D
 
     if (s == null)
       clip = originalClip;
+    else
+      clip = s;
+
+    cairoResetClip();
 
     cairoNewPath();
     if (clip instanceof Rectangle2D)
@@ -735,7 +728,6 @@ public abstract class CairoGraphics2D extends Graphics2D
     else
       walkPath(clip.getPathIterator(null), false);
     
-    // cairoClosePath ();
     cairoClip();
   }
 

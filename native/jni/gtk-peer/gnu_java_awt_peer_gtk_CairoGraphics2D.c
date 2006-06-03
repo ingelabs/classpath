@@ -590,11 +590,30 @@ JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoClip 
    (JNIEnv *env, jobject obj)
 {
-  struct cairographics2d *gr = getPointer (env, obj);
+  struct cairographics2d *gr = getPointer( env, obj );
+  g_assert( gr != NULL );
+
+  cairo_clip( gr->cr );
+}
+
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoResetClip 
+  (JNIEnv *env, jobject obj)
+{
+  struct cairographics2d *gr = getPointer( env, obj );
   g_assert (gr != NULL);
 
-  cairo_reset_clip (gr->cr);
-  cairo_clip (gr->cr);
+  cairo_reset_clip( gr->cr );
+}
+
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoPreserveClip 
+(JNIEnv *env, jobject obj)
+{
+  struct cairographics2d *gr = getPointer( env, obj );
+  g_assert (gr != NULL);
+
+  cairo_clip_preserve( gr->cr );
 }
 
 JNIEXPORT void JNICALL
