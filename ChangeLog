@@ -1,3 +1,20 @@
+2006-06-04  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/java/security/PolicyFile.java: Updated copyright year.
+	(logger): Increased visibility.
+	* gnu/java/security/x509/Util.java: Updated copyright year.
+	(hexDump): Fix javadoc @link.
+	* gnu/java/security/x509/ext/GeneralNames.java: Updated copyright year.
+	Removed unused import.
+	* gnu/java/security/sig/rsa/RSAPSSSignatureRawCodec.java: Fix javadoc @link.
+	* gnu/java/security/sig/ISignature.java (SOURCE_OF_RANDOMNESS): Likewise.
+	* gnu/java/security/util/ExpirableObject.java: Likewise.
+	(destroy): Likewise.
+	* gnu/java/security/util/SimpleList.java (SimpleList): Likewise.
+	* gnu/java/security/provider/PKIXCertPathValidatorImpl.java:
+	Updated copyright year.
+	(checkCRL): Fix javadoc @param.
+
 2006-06-03  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/lang/annotation/IncompleteAnnotationException.java:
