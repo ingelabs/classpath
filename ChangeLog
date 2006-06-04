@@ -1,3 +1,116 @@
+2006-03-01  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/math/BigDecimal.java:
+	(precision): Fixed overflow problem with large numbers.
+	(longValueExact): New method.
+	(intValueExact): Likewise.
+	(byteValueExact): Likewise.
+	(shortValueExact): Likewise.
+
+2006-03-01  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/math/BigDecimal.java:
+	(remainder(BigDecimal)): New method.
+	(divideAndRemainder(BigDecimal)): Likewise.
+	(divideToIntegralValue(BigDecimal)): Likewise.
+	(floor): New implementation method.
+
+2006-02-28  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/math/BigDecimal.java:
+	(divide(BigDecimal, int, RoundingMode)): New method.
+	(divide(BigDecimal, RoundingMode)): Likewise.
+	(divide(BigDecimal, int, int)): Removed incorrect throwing of exception
+	when the new scale is < 0.
+	(setScale(int, RoundingMode)): New method.
+	(ulp): Likewise.
+
+2006-02-27  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/math/BigDecimal.java: Replaced occurences of BigInteger.valueOf
+	with BigInteger.ZERO, BigInteger.ONE, BigInteger.TEN where appropriate.
+	(add(BigDecimal, MathContext)): New method.
+	(subtract(BigDecimal, MathContext)): Likewise.
+	(precision): Fixed to correctly handle BigIntegers with more than 19
+	digits.
+	(pow(int, MathContext)): New method.
+
+2006-02-27  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/math/BigDecimal.java: Added @throws clause to constructors.
+	(mathContext): Removed this unneeded field.
+	(BigDecimal(int, MathContext)): New constructor.
+	(BigDecimal(BigInteger, int, MathContext)): Likewise.
+	(multiply(BigDecimal, MathContext)): New method.
+	(negate(MathContext)): Likewise.
+	(plus(MathContext)): Likewise.
+	(numDigitsInLong): Fixed to properly handle negatives.
+
+2006-02-24  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/math/BigDecimal.java:
+	(BigDecimal(long, MathContext)): New constructor.
+	(BigDecimal(BigInteger, MathContext)): Likewise.
+	(BigDecimal(String, MathContext)): Likewise.
+	(BigDecimal(double, MathContext)): Likewise.
+	(round): Fixed a typo where the precision field was used instead of a
+	call to the precision method, and also store the new precision in the
+	returned BigDecimal.
+	(abs(MathContext)): New method.
+
+2006-02-24  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/math/BigDecimal.java
+	(toBigInteger): Fixed problem where this method couldn't handle 
+	negative values for scale.
+	(toBigIntegerExact): New method.
+	(stripTrailingZeros): Likewise.
+
+2006-02-23  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/math/BigDecimal.java:
+	(toString): Fixed a problem where the negative sign was being displayed
+	twice in the exponent.
+	(toEngineeringString): New method.
+	(toPlainString): Likewise.
+	(pow): Likewise.
+
+2006-02-23  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/math/BigDecimal.java:
+	(toString): Rewrote this method to behave as specified.  Added API
+	comments to explain behaviour.
+	(scaleByPowerOfTen): New method.
+
+2006-02-22  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/math/BigDecimal.java:
+	(BigDecimal(char[], int, int, MathContext)): New constructor.
+	(BigDecimal(char[], MathContext)): Likewise.
+	(BigDecimal(char[])): Likewise.
+	(BigDecimal(char[], int, int)): Likewise.
+	(BigDecimal(String)): Fixed handling of exponent and scale.
+
+2006-02-21  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/math/BigDecimal.java:
+	(mathContext): New field.
+	(precision): Likewise.
+	(BigDecimal(int)): New constructor.
+	(BigDecimal(long)): Likewise.
+	(BigDecimal(BigInteger)): Added API docs.
+	(BigDecimal(BigInteger, int)): Removed incorrect NumberFormatException
+	and added API docs.
+	(plus): New method.
+	(round): Likewise.
+	(precision): Likewise.
+	(valueOf): Likewise.
+	(numDigitsInLong): New implementation method.
+
+2006-02-21  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/math/MathContext.java: New class.
+
 2006-06-04  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphics.c:
