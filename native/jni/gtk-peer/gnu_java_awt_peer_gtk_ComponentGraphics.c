@@ -227,13 +227,10 @@ Java_gnu_java_awt_peer_gtk_ComponentGraphics_drawVolatile
   widget = GTK_WIDGET (ptr);
   g_assert (widget != NULL);
 
-  while(widget->window != NULL)
-    widget = GTK_WIDGET(widget->window);
   pixmap = cp_gtk_get_pixmap( env, img );
  
-
-  gc = gdk_gc_new(GDK_DRAWABLE(widget));
-  gdk_draw_drawable(GDK_DRAWABLE(widget),
+  gc = gdk_gc_new(GDK_DRAWABLE(widget->window));
+  gdk_draw_drawable(GDK_DRAWABLE(widget->window),
 		    gc,
 		    pixmap,
 		    0, 0,

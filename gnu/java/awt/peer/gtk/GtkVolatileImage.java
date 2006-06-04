@@ -127,7 +127,7 @@ public class GtkVolatileImage extends VolatileImage
   {
     if( needsUpdate )
       {
-	update( offScreen.getSharedGtkImage() );
+	update( offScreen.getGtkImage() );
 	needsUpdate = false;
 	return VolatileImage.IMAGE_RESTORED;
       }
