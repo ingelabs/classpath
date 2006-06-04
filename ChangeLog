@@ -1,3 +1,13 @@
+2006-03-20  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/lang/System.java:
+	(nanoTime()): Documented.
+
+2006-03-20  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/System.java:
+	(nanoTime()): Implemented.
+
 2006-03-01  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* java/math/BigDecimal.java:
