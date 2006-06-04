@@ -49,7 +49,7 @@ exception statement from your version. */
 
 /* prototypes */
 static void *getNativeObject( JNIEnv *env, jobject obj );
-static void setNativeObject( JNIEnv *env, jobject obj, void *ptr );
+/* static void setNativeObject( JNIEnv *env, jobject obj, void *ptr ); */
 
 GdkPixmap *cp_gtk_get_pixmap( JNIEnv *env, jobject obj);
 
@@ -57,7 +57,8 @@ GdkPixmap *cp_gtk_get_pixmap( JNIEnv *env, jobject obj);
  * Creates a cairo surface, ARGB32, native ordering, premultiplied alpha.
  */
 JNIEXPORT jlong JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkVolatileImage_init (JNIEnv *env, jobject obj, 
+Java_gnu_java_awt_peer_gtk_GtkVolatileImage_init (JNIEnv *env, 
+						  jobject obj __attribute__ ((__unused__)), 
 						  jobject peer,
 						  jint width, jint height)
 {
@@ -108,7 +109,8 @@ JNIEXPORT jintArray JNICALL
 Java_gnu_java_awt_peer_gtk_GtkVolatileImage_getPixels
 (JNIEnv *env, jobject obj)
 {
-  jint *pixeldata, *jpixdata;
+  /* jint *pixeldata, *jpixdata; */
+  jint *jpixdata;
   GdkPixmap *pixmap;
   jintArray jpixels;
   int width, height, depth, size;
@@ -124,7 +126,7 @@ Java_gnu_java_awt_peer_gtk_GtkVolatileImage_getPixels
   g_assert (field != 0);
   height = (*env)->GetIntField (env, obj, field);
 
-  pixmap = (jint *)getNativeObject(env, obj);
+  pixmap = GDK_PIXMAP(getNativeObject(env, obj));
   g_assert(pixmap != NULL);
 
   gdk_threads_enter();

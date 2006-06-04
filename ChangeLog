@@ -1,3 +1,13 @@
+2006-06-04  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphics.c:
+	(drawVolatile): Add casts.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkTextLayout.c:
+	(getOutline): Add casts.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkVolatileImage.c:
+	Comment out unused prototype.
+	(getPixels): Add appropriate cast and comment out unused variable.
+	
 2006-06-04  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* gnu/javax/crypto/sasl/SaslUtil.java: Remove unused import.
