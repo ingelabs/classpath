@@ -1,3 +1,73 @@
+2006-06-04  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/util/DuplicateFormatFlagsException.java,
+	* java/util/FormatFlagsConversionMismatchException.java,
+	* java/util/FormatterClosedException.java,
+	* java/util/IllegalFormatCodePointException.java,
+	* java/util/IllegalFormatConversionException.java,
+	* java/util/IllegalFormatException.java,
+	* java/util/IllegalFormatFlagsException.java,
+	* java/util/IllegalFormatPrecisionException.java,
+	* java/util/IllegalFormatWidthException.java,
+	* java/util/MissingFormatArgumentException.java,
+	* java/util/MissingFormatWidthException.java,
+	* java/util/UnknownFormatConversionException.java,
+	* java/util/UnknownFormatFlagsException.java:
+	Documented.
+
+2005-08-13  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/UnknownFormatConversionException.java
+	(serialVersionUID): New field.
+	(s): Renamed from 'conv' for serialization.
+	* java/util/MissingFormatWidthException.java (serialVersionUID):
+	New field.
+	(s): Renamed from 'width' for serialization.
+	* java/util/MissingFormatArgumentException.java
+	(serialVersionUID): New field.
+	(s): Renamed from 'spec' for serialization.
+	* java/util/IllegalFormatWidthException.java (serialVersionUID):
+	New field.
+	(w): Renamed from 'width' for serialization.
+	* java/util/IllegalFormatPrecisionException.java
+	(serialVersionUID): New field.
+	(p): Renamed from 'precision' for serialization.
+	* java/util/IllegalFormatFlagsException.java (serialVersionUID):
+	New field.
+	* java/util/IllegalFormatConversionException.java
+	(serialVersionUID): New field.
+	(c): Renamed from 'conv' for serialization.
+	(arg): Renamed from 'argClass' for serialization.
+	* java/util/IllegalFormatCodePointException.java
+	(serialVersionUID): New field.
+	(c): Renamed from 'codepoint' for serialization.
+	* java/util/FormatFlagsConversionMismatchException.java
+	(serialVersionUID): New field.
+	(f): Renamed from 'flags' for serialization.
+	(c): Renamed from 'conversion' for serialization.
+	* java/util/DuplicateFormatFlagsException.java (serialVersionUID):
+	New field.
+	* java/util/IllegalFormatException.java (serialVersionUID): New
+	field.
+	* java/util/FormatterClosedException.java (serialVersionUID): New
+	field.
+
+2005-04-20  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/DuplicateFormatFlagsException.java: New file.
+	* java/util/FormatFlagsConversionMismatchException.java: New file.
+	* java/util/FormatterClosedException.java: New file.
+	* java/util/IllegalFormatCodePointException.java: New file.
+	* java/util/IllegalFormatConversionException.java: New file.
+	* java/util/UnknownFormatFlagsException.java: New file.
+	* java/util/UnknownFormatConversionException.java: New file.
+	* java/util/MissingFormatWidthException.java: New file.
+	* java/util/MissingFormatArgumentException.java: New file.
+	* java/util/IllegalFormatWidthException.java: New file.
+	* java/util/IllegalFormatPrecisionException.java: New file.
+	* java/util/IllegalFormatFlagsException.java: New file.
+	* java/util/IllegalFormatException.java: New file.
+
 2006-06-04  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/peer/gtk/CairoSurface.java
