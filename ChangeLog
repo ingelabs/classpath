@@ -1,3 +1,42 @@
+2006-06-04  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/util/Formattable.java,
+	* java/util/FormattableFlags.java,
+	* java/util/Formatter.java:
+	Documented.
+
+2006-03-20  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/util/Formatter.java:
+	Make the class final.
+
+2005-09-26  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/Formatter.java (format): Set fmtLocale.
+	(applyLocalization): New method.
+	(basicIntegralConversion): Likewise.
+	(hexOrOctalConversion): Use it.
+	(decimalConversion): New method.
+	(format): Use decimalConversion, dateTimeConversion.
+	(genericFormat): Upper-case earlier.  Justify correctly.
+	(singleDateTimeConversion): New method.
+	(dateTimeConversion): Likewise.
+
+2005-09-25  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/Formatter.java (lineSeparator): Use SystemProperties.
+
+2005-09-24  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/FormattableFlags.java (PLUS, SPACE, ZERO, COMMA,
+	PAREN): New constants.
+	* java/util/Formattable.java: New file.
+	* java/util/Formatter.java: New file.
+
+2005-08-13  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/FormattableFlags.java: New file.
+
 2006-06-04  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
