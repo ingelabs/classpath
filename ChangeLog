@@ -1,5 +1,45 @@
 2006-06-04  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* gnu/javax/crypto/sasl/SaslUtil.java: Remove unused import.
+	* gnu/javax/crypto/sasl/srp/SRPRegistry.java (PASSWORD_DB): Fix javadoc @link.
+	* gnu/javax/crypto/sasl/srp/PasswordFile.java: Removed unused import.
+	* gnu/javax/crypto/prng/CSPRNG.java (FILE_SOURCES): Fix javadoc @see.
+	(getSystemInstance): Fix javadoc @link.
+	(counter): Increased visibility.
+	* gnu/javax/crypto/pad/TLS1.java: Remove unused import.
+	* gnu/javax/crypto/pad/IPad.java: Fix javadoc @link.
+	* gnu/javax/crypto/pad/PKCS1_V1_5.java (PKCS1_V1_5): Likewise.
+	* gnu/javax/crypto/pad/PKCS7.java (PKCS7): Likewise.
+	* gnu/javax/crypto/pad/TBC.java (TBC): Likewise.
+	* gnu/javax/crypto/mode/CTR.java: Remove unused import.
+	* gnu/javax/crypto/mode/BaseMode.java (defaultBlockSize): Fix javadoc @see.
+	* gnu/javax/crypto/key/dh/GnuDHPrivateKey.java (getEncoded): Fix javadoc @see.
+	* gnu/javax/crypto/jce/spec/TMMHParameterSpec.java: Fix javadoc @link.
+	* gnu/javax/crypto/keyring/AuthenticatedEntry.java: Remove unused imports.
+	* gnu/javax/crypto/keyring/CertificateEntry.java: Likewise.
+	* gnu/javax/crypto/keyring/CertPathEntry.java: Likewise.
+	* gnu/javax/crypto/keyring/EncryptedEntry.java: Likewise.
+	* gnu/javax/crypto/keyring/PublicKeyEntry.java: Likewise.
+	* gnu/javax/crypto/mac/OMAC.java: Likewise.
+	* gnu/javax/crypto/jce/key/AnubisSecretKeyFactoryImpl.java: Likewise.
+	* gnu/javax/crypto/jce/key/BlowfishSecretKeyFactoryImpl.java: Likewise.
+	* gnu/javax/crypto/jce/key/Cast5SecretKeyFactoryImpl.java: Likewise.
+	* gnu/javax/crypto/jce/key/KhazadSecretKeyFactoryImpl.java: Likewise.
+	* gnu/javax/crypto/jce/key/RijndaelSecretKeyFactoryImpl.java: Likewise.
+	* gnu/javax/crypto/jce/key/SerpentSecretKeyFactoryImpl.java: Likewise.
+	* gnu/javax/crypto/jce/key/SquareSecretKeyFactoryImpl.java: Likewise.
+	* gnu/javax/crypto/jce/key/TwofishSecretKeyFactoryImpl.java: Likewise.
+	* gnu/javax/crypto/jce/mac/OMacImpl.java: Likewise.
+	* gnu/javax/crypto/jce/prng/CSPRNGSpi.java: Likewise.
+	* gnu/javax/crypto/cipher/IBlockCipherSpi.java: Fix javadoc @link.
+	* gnu/javax/crypto/jce/cipher/CipherAdapter.java (CipherAdapter): Likewise.
+	* gnu/javax/crypto/cipher/BaseCipher.java: Remove unused import.
+	* gnu/javax/crypto/assembly/Cascade.java: Fix javadoc @link.
+	* gnu/javax/crypto/assembly/Direction.java: Likewise.
+	* gnu/javax/crypto/assembly/Transformer.java: Likewise.
+
+2006-06-04  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* gnu/java/security/PolicyFile.java: Updated copyright year.
 	(logger): Increased visibility.
 	* gnu/java/security/x509/Util.java: Updated copyright year.
