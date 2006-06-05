@@ -1,3 +1,29 @@
+2006-06-05  Lillian Angel  <langel@redhat.com>
+
+	* native/plugin/Makefile.am:
+	Fixed to use a set plugin directory in the .mozilla directory.
+	All applet logs are now stored here, instead of /tmp.
+	* native/plugin/gcjwebplugin.cc:
+	Added new fields for security warning.
+	(GCJ_NEW): Added code to generate a security warning for all pages
+	that spawn an appletviewer. This warning asks the user if they trust
+	the applet and if they would like to add it to a 'whitelist'. This
+	whitelist keeps track of all the addresses the user would like
+	to trust indefinitely.
+	(plugin_user_trusts_documentbase): New helper function.
+	(plugin_add_documentbase_to_whitelist): New helper function.
+	(plugin_ask_user_about_documentbase): New helper function.
+	(plugin_in_pipe_callback): Fixed check to determine if channel_error 
+	has been set.
+	(plugin_start_appletviewer): Likewise.
+	(plugin_create_applet_tag):  Reset all fields to null after they have been
+	freed.
+	(plugin_send_message_to_appletviewer): Fixed all error checks to determine 
+	if channel_error has been set.
+	(plugin_stop_appletviewer): Likewise.
+	(NP_Initialize): Likewise. Also, added code to determine if directory and file
+	should be created.	
+
 2006-06-05  Francis Kung  <fkung@redhat.com>
 	
 	PR 27507

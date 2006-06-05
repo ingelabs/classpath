@@ -49,6 +49,10 @@ exception statement from your version. */
 
 // GLib includes.
 #include <glib.h>
+#include <glib/gstdio.h>
+
+// GTK includes.
+#include <gtk/gtk.h>
 
 // gcjwebplugin includes.
 #include "config.h"
@@ -113,8 +117,23 @@ exception statement from your version. */
 #define PLUGIN_FILE_EXTS "class,jar,zip"
 #define PLUGIN_MIME_COUNT 1
 
-// Directory in which named pipes are created.
-#define PIPE_DIRECTORY "/tmp"
+// Security dialog messages.
+#define RESPONSE_TRUST_APPLET "Trust Applet"
+#define RESPONSE_TRUST_APPLET_ADD_TO_LIST "Trust Applet and Add to Whitelist"
+#define WHITELIST_FILENAME PLUGIN_DATA_DIRECTORY "/whitelist.txt"
+#define SECURITY_WARNING                                        \
+  "%s wants to load an applet.\n"                               \
+  "GNU Classpath's security implementation is not complete.\n"  \
+  "HOSTILE APPLETS WILL STEAL AND/OR DESTROY YOUR DATA!\n"
+#define SECURITY_DESCRIPTION                                            \
+  "If you do not know or trust the source of this applet, click"        \
+  " \"Cancel\".\n"                                                      \
+  "Click \"Trust Applet\" to load and run this applet now.\n"           \
+  "Click \"Trust Applet and Add To Whitelist\" to always load"          \
+  " and run this applet from now on, without asking.\n"                 \
+  "The whitelist is a list of the URLs from which you trust"            \
+  " applets.\n"                                                         \
+  "Your whitelist file is \"" WHITELIST_FILENAME "\"."
 
 // Documentbase retrieval required definition.
 static NS_DEFINE_IID (kIPluginTagInfo2IID, NS_IPLUGINTAGINFO2_IID);
@@ -173,6 +192,10 @@ typedef union
 static void plugin_data_new (GCJPluginData** data);
 // Documentbase retrieval.
 static gchar* plugin_get_documentbase (NPP instance);
+// Whitelist handling.
+static bool plugin_user_trusts_documentbase (char* documentbase);
+static bool plugin_ask_user_about_documentbase (char* documentbase);
+static void plugin_add_documentbase_to_whitelist (char* documentbase);
 // Callback used to monitor input pipe status.
 static gboolean plugin_in_pipe_callback (GIOChannel* source,
                                          GIOCondition condition,
@@ -195,6 +218,11 @@ static void plugin_data_destroy (GCJPluginData** data);
 static GMutex* plugin_instance_mutex = NULL;
 // A counter used to create uniquely named pipes.
 static gulong plugin_instance_counter = 0;
+// The user's documentbase whitelist.
+static GIOChannel* whitelist_file = NULL;
+// A global variable for reporting GLib errors.  This must be free'd
+// and set to NULL after each use.
+static GError* channel_error = NULL;
 
 // Functions prefixed by GCJ_ are instance functions.  They are called
 // by the browser and operate on instances of GCJPluginData.
@@ -224,7 +252,7 @@ GCJ_New (NPMIMEType pluginType, NPP instance, uint16 mode,
 
   NPError np_error = NPERR_NO_ERROR;
   GCJPluginData* data = NULL;
-  GError* channel_error = NULL;
+
   gchar* documentbase = NULL;
   gchar* read_message = NULL;
   gchar* applet_tag = NULL;
@@ -278,11 +306,18 @@ GCJ_New (NPMIMEType pluginType, NPP instance, uint16 mode,
       goto cleanup_appletviewer_mutex;
     }
 
+  if (!plugin_user_trusts_documentbase (documentbase))
+    {
+      PLUGIN_ERROR ("User does not trust applet.");
+      np_error = NPERR_GENERIC_ERROR;
+      goto cleanup_appletviewer_mutex;
+    }
+
   // Create appletviewer-to-plugin pipe which we refer to as the input
   // pipe.
 
   // data->in_pipe_name
-  data->in_pipe_name = g_strdup_printf (PIPE_DIRECTORY
+  data->in_pipe_name = g_strdup_printf (PLUGIN_DATA_DIRECTORY
                                         "/gcj-%s-appletviewer-to-plugin",
                                         data->instance_string);
   if (!data->in_pipe_name)
@@ -305,7 +340,7 @@ GCJ_New (NPMIMEType pluginType, NPP instance, uint16 mode,
   // output pipe.
 
   // data->out_pipe_name
-  data->out_pipe_name = g_strdup_printf (PIPE_DIRECTORY
+  data->out_pipe_name = g_strdup_printf (PLUGIN_DATA_DIRECTORY
                                          "/gcj-%s-plugin-to-appletviewer",
                                          data->instance_string);
 
@@ -342,15 +377,18 @@ GCJ_New (NPMIMEType pluginType, NPP instance, uint16 mode,
                                                      "w", &channel_error);
   if (!data->out_to_appletviewer)
     {
-      PLUGIN_ERROR_TWO ("Failed to create output channel",
-                        channel_error->message);
+      if (channel_error)
+        {
+          PLUGIN_ERROR_TWO ("Failed to create output channel",
+                            channel_error->message);
+          g_error_free (channel_error);
+          channel_error = NULL;
+        }
+      else
+        PLUGIN_ERROR ("Failed to create output channel");
+        
       np_error = NPERR_GENERIC_ERROR;
       goto cleanup_out_to_appletviewer;
-    }
-  if (channel_error)
-    {
-      g_error_free (channel_error);
-      channel_error = NULL;
     }
 
   // Watch for hangup and error signals on the output pipe.
@@ -366,15 +404,18 @@ GCJ_New (NPMIMEType pluginType, NPP instance, uint16 mode,
                                                       "r", &channel_error);
   if (!data->in_from_appletviewer)
     {
-      PLUGIN_ERROR_TWO ("Failed to create input channel",
-                        channel_error->message);
+      if (channel_error)
+        {
+          PLUGIN_ERROR_TWO ("Failed to create input channel",
+                            channel_error->message);
+          g_error_free (channel_error);
+          channel_error = NULL;
+        }
+      else
+        PLUGIN_ERROR ("Failed to create input channel");
+        
       np_error = NPERR_GENERIC_ERROR;
       goto cleanup_in_from_appletviewer;
-    }
-  if (channel_error)
-    {
-      g_error_free (channel_error);
-      channel_error = NULL;
     }
 
   // Watch for hangup and error signals on the input pipe.
@@ -390,15 +431,18 @@ GCJ_New (NPMIMEType pluginType, NPP instance, uint16 mode,
                               &channel_error)
       != G_IO_STATUS_NORMAL)
     {
-      PLUGIN_ERROR_TWO ("Receiving confirmation from appletviewer failed",
-                        channel_error->message);
+      if (channel_error)
+        {
+          PLUGIN_ERROR_TWO ("Receiving confirmation from appletviewer failed",
+                            channel_error->message);
+          g_error_free (channel_error);
+          channel_error = NULL;
+        }
+      else
+        PLUGIN_ERROR ("Receiving confirmation from appletviewer failed");
+          
       np_error = NPERR_GENERIC_ERROR;
       goto cleanup_in_watch_source;
-    }
-  if (channel_error)
-    {
-      g_error_free (channel_error);
-      channel_error = NULL;
     }
 
   PLUGIN_DEBUG ("GCJ_New: got confirmation that appletviewer is running.");
@@ -480,7 +524,6 @@ GCJ_New (NPMIMEType pluginType, NPP instance, uint16 mode,
   instance->pdata = NULL;
 
  cleanup_done:
-
   g_free (tag_message);
   tag_message = NULL;
   g_free (applet_tag);
@@ -602,6 +645,7 @@ GCJ_SetWindow (NPP instance, NPWindow* window)
                                                           window->width);
 		  plugin_send_message_to_appletviewer (data, width_message);
                   g_free (width_message);
+                  width_message = NULL;
 
                   // Store the new width.
                   data->window_width = window->width;
@@ -619,6 +663,7 @@ GCJ_SetWindow (NPP instance, NPWindow* window)
                                                            window->height);
 		  plugin_send_message_to_appletviewer (data, height_message);
                   g_free (height_message);
+                  height_message = NULL;
 
                   // Store the new height.
                   data->window_height = window->height;
@@ -651,6 +696,7 @@ GCJ_SetWindow (NPP instance, NPWindow* window)
                                                (gulong) window->window);
       plugin_send_message_to_appletviewer (data, window_message);
       g_free (window_message);
+      window_message = NULL;
 
       g_mutex_unlock (data->appletviewer_mutex);
 
@@ -833,6 +879,175 @@ plugin_get_documentbase (NPP instance)
   return documentbase_copy;
 }
 
+// plugin_user_trusts_documentbase returns true if the given
+// documentbase is in the documentbase whitelist.  Otherwise it asks
+// the user if he trusts the given documentbase by calling
+// plugin_ask_user_about_documentbase.
+static bool
+plugin_user_trusts_documentbase (char* documentbase)
+{
+  bool applet_in_whitelist = false;
+
+  // Check if documentbase is in whitelist.
+  while (true)
+    {
+      gchar* whitelist_entry = NULL;
+      gchar* newline_documentbase = NULL;
+
+      // If reading fails, break out of this loop with
+      // applet_in_whitelist still set to false.
+      if (g_io_channel_read_line (whitelist_file, &whitelist_entry,
+                                  NULL, NULL, &channel_error)
+          != G_IO_STATUS_NORMAL)
+        {
+          if (channel_error)
+            {
+              PLUGIN_ERROR_TWO ("Failed to read line from whitelist file",
+                                channel_error->message);
+              g_error_free (channel_error);
+              channel_error = NULL;
+            }
+          else
+            PLUGIN_ERROR ("Failed to open whitelist file.");
+          g_free (whitelist_entry);
+          whitelist_entry = NULL;
+          break;
+        }
+
+      newline_documentbase = g_strdup_printf ("%s\n", documentbase);
+      if (!strcmp (newline_documentbase, whitelist_entry))
+        {
+          applet_in_whitelist = true;
+          g_free (newline_documentbase);
+          newline_documentbase = NULL;
+          g_free (whitelist_entry);
+          whitelist_entry = NULL;
+          break;
+        }
+      g_free (whitelist_entry);
+      whitelist_entry = NULL;
+      g_free (newline_documentbase);
+      newline_documentbase = NULL;
+    }
+
+  return applet_in_whitelist ? true
+    : plugin_ask_user_about_documentbase (documentbase);
+}
+
+// plugin_add_documentbase_to_whitelist adds the given documentbase to
+// the user's documentbase whitelist.
+static void
+plugin_add_documentbase_to_whitelist (char* documentbase)
+{
+  gsize bytes_written = 0;
+  char* newline_documentbase = NULL;
+  GIOStatus status = G_IO_STATUS_NORMAL;
+
+  newline_documentbase = g_strdup_printf ("%s\n", documentbase);
+  status = g_io_channel_write_chars (whitelist_file,
+                                     newline_documentbase, -1, &bytes_written,
+                                     &channel_error);
+  g_free (newline_documentbase);
+  newline_documentbase = NULL;
+
+  if (status != G_IO_STATUS_NORMAL)
+    {
+      if (channel_error)
+        {
+          PLUGIN_ERROR_TWO ("Error writing to whitelist file",
+                            channel_error->message);
+          g_error_free (channel_error);
+          channel_error = NULL;
+        }
+      else
+        PLUGIN_ERROR ("Error writing to whitelist file.");
+    }
+
+  if (g_io_channel_flush (whitelist_file, &channel_error)
+      != G_IO_STATUS_NORMAL)
+    {
+      if (channel_error)
+        {
+          PLUGIN_ERROR_TWO ("Failed to write whitelist file",
+                            channel_error->message);
+          g_error_free (channel_error);
+          channel_error = NULL;
+        }
+      else
+        PLUGIN_ERROR ("Failed to write whitelist file.");
+    }
+
+  if (g_io_channel_shutdown (whitelist_file, TRUE, &channel_error)
+      != G_IO_STATUS_NORMAL)
+    {
+      if (channel_error)
+        {
+          PLUGIN_ERROR_TWO ("Failed to close whitelist file",
+                            channel_error->message);
+          g_error_free (channel_error);
+          channel_error = NULL;
+        }
+      else
+        PLUGIN_ERROR ("Failed to close whitelist file.");
+    }
+}
+
+// plugin_ask_user_about_documentbase puts up a dialog box that asks if the
+// user trusts applets from this documentbase.  The user has three
+// options: "Cancel", "Trust Applet" and "Trust Applet and Add to
+// Whitelist".  If the user selects Cancel (the default) then a
+// generic error code is returned from GCJ_New, telling the browser
+// that the applet failed to load.  If the user selects "Trust Applet"
+// then plugin loading proceeds.  If the user selects "Trust Applet
+// and Add to Whitelist" then this documentbase is added to the user's
+// applet whitelist and plugin loading proceeds.
+static bool
+plugin_ask_user_about_documentbase (char* documentbase)
+{
+  GtkWidget* dialog = NULL;
+  GtkWidget* ok_button = NULL;
+  GtkWidget* cancel_button = NULL;
+  GtkWidget* whitelist_button = NULL;
+  gint dialog_response = GTK_RESPONSE_NONE;
+
+  dialog = gtk_message_dialog_new (NULL,
+                                   GTK_DIALOG_MODAL,
+                                   GTK_MESSAGE_WARNING,
+                                   GTK_BUTTONS_NONE,
+                                   SECURITY_WARNING,
+                                   documentbase);
+  gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog),
+                                            SECURITY_DESCRIPTION);
+
+  cancel_button = gtk_dialog_add_button (GTK_DIALOG (dialog),
+                                         GTK_STOCK_CANCEL,
+                                         GTK_RESPONSE_CANCEL);
+  ok_button = gtk_dialog_add_button (GTK_DIALOG (dialog),
+                                     RESPONSE_TRUST_APPLET,
+                                     GTK_RESPONSE_OK);
+  whitelist_button = gtk_dialog_add_button (GTK_DIALOG (dialog),
+                                            RESPONSE_TRUST_APPLET_ADD_TO_LIST,
+                                            GTK_RESPONSE_APPLY);
+  gtk_widget_grab_focus (cancel_button);
+
+  gtk_widget_show_all (dialog);
+  dialog_response = gtk_dialog_run (GTK_DIALOG (dialog));
+  gtk_widget_destroy (dialog);
+  if (dialog_response == GTK_RESPONSE_CANCEL)
+    {
+      // The user does not trust this documentbase.
+      return false;
+    }
+  else if (dialog_response == GTK_RESPONSE_APPLY)
+    {
+      // The user wants this documentbase added to his documentbase
+      // whitelist.
+      plugin_add_documentbase_to_whitelist (documentbase);
+    }
+  // The user trusts this documentbase.
+  return true;
+}
+
 // plugin_in_pipe_callback is called when data is available on the
 // input pipe, or when the appletviewer crashes or is killed.  It may
 // be called after data has been destroyed in which case it simply
@@ -858,7 +1073,6 @@ plugin_in_pipe_callback (GIOChannel* source,
 
       if (condition & G_IO_IN)
         {
-          GError* channel_error = NULL;
           gchar* message = NULL;
 
           if (g_io_channel_read_line (data->in_from_appletviewer,
@@ -866,8 +1080,15 @@ plugin_in_pipe_callback (GIOChannel* source,
                                       &channel_error)
               != G_IO_STATUS_NORMAL)
             {
-              PLUGIN_ERROR_TWO ("Failed to read line from input channel",
-                                channel_error->message);
+              if (channel_error)
+                {
+                  PLUGIN_ERROR_TWO ("Failed to read line from input channel",
+                                    channel_error->message);
+                  g_error_free (channel_error);
+                  channel_error = NULL;
+                }
+              else
+                PLUGIN_ERROR ("Failed to read line from input channel");
             }
           else
             {
@@ -897,12 +1118,6 @@ plugin_in_pipe_callback (GIOChannel* source,
                   parts = NULL;
                 }
               g_print ("  PIPE: plugin read %s\n", message);
-            }
-
-          if (channel_error)
-            {
-              g_error_free (channel_error);
-              channel_error = NULL;
             }
 
           g_free (message);
@@ -965,7 +1180,6 @@ plugin_start_appletviewer (GCJPluginData* data)
 
   if (!data->appletviewer_alive)
     {
-      GError* spawn_error = NULL;
       gchar* command_line[3] = { NULL, NULL, NULL };
 
       command_line[0] = g_strdup (APPLETVIEWER_EXECUTABLE);
@@ -977,22 +1191,27 @@ plugin_start_appletviewer (GCJPluginData* data)
       command_line[2] = NULL;
 
       if (!g_spawn_async (NULL, command_line, NULL, (GSpawnFlags) 0,
-                          NULL, NULL, NULL, &spawn_error))
+                          NULL, NULL, NULL, &channel_error))
         {
-          PLUGIN_ERROR_TWO ("Failed to spawn applet viewer",
-                            spawn_error->message);
+          if (channel_error)
+            {
+              PLUGIN_ERROR_TWO ("Failed to spawn applet viewer",
+                                channel_error->message);
+              g_error_free (channel_error);
+              channel_error = NULL;
+            }
+          else
+            PLUGIN_ERROR ("Failed to spawn applet viewer");
           goto cleanup;
         }
 
     cleanup:
       g_free (command_line[0]);
+      command_line[0] = NULL;
       g_free (command_line[1]);
+      command_line[1] = NULL;
       g_free (command_line[2]);
-      if (spawn_error)
-        {
-          g_error_free (spawn_error);
-          spawn_error = NULL;
-        }
+      command_line[2] = NULL;
     }
 
   PLUGIN_DEBUG ("plugin_start_appletviewer return");
@@ -1015,30 +1234,35 @@ plugin_create_applet_tag (int16 argc, char* argn[], char* argv[])
           gchar* code = g_strdup_printf ("CODE=\"%s\" ", argv[i]);
 	  applet_tag = g_strconcat (applet_tag, code, NULL);
           g_free (code);
+          code = NULL;
 	}
       else if (!g_ascii_strcasecmp (argn[i], "codebase"))
 	{
           gchar* codebase = g_strdup_printf ("CODEBASE=\"%s\" ", argv[i]);
 	  applet_tag = g_strconcat (applet_tag, codebase, NULL);
           g_free (codebase);
+          codebase = NULL;
 	}
       else if (!g_ascii_strcasecmp (argn[i], "archive"))
 	{
           gchar* archive = g_strdup_printf ("ARCHIVE=\"%s\" ", argv[i]);
 	  applet_tag = g_strconcat (applet_tag, archive, NULL);
           g_free (archive);
+          archive = NULL;
 	}
       else if (!g_ascii_strcasecmp (argn[i], "width"))
 	{
           gchar* width = g_strdup_printf ("WIDTH=\"%s\" ", argv[i]);
 	  applet_tag = g_strconcat (applet_tag, width, NULL);
           g_free (width);
+          width = NULL;
 	}
       else if (!g_ascii_strcasecmp (argn[i], "height"))
 	{
           gchar* height = g_strdup_printf ("HEIGHT=\"%s\" ", argv[i]);
 	  applet_tag = g_strconcat (applet_tag, height, NULL);
           g_free (height);
+          height = NULL;
 	}
       else
         {
@@ -1046,10 +1270,14 @@ plugin_create_applet_tag (int16 argc, char* argn[], char* argv[])
           // characters will pass through the pipe.
           if (argv[i] != '\0')
             {
-              gchar* escaped = g_strescape (argv[i], NULL);
+              gchar* escaped = NULL;
+
+              escaped = g_strescape (argv[i], NULL);
               parameters = g_strconcat (parameters, "<PARAM NAME=\"", argn[i],
                                         "\" VALUE=\"", escaped, "\">", NULL);
+
               g_free (escaped);
+              escaped = NULL;
             }
         }
     }
@@ -1073,7 +1301,6 @@ plugin_send_message_to_appletviewer (GCJPluginData* data, gchar const* message)
 
   if (data->appletviewer_alive)
     {
-      GError* channel_error = NULL;
       gchar* newline_message = NULL;
       gsize bytes_written = 0;
 
@@ -1086,27 +1313,34 @@ plugin_send_message_to_appletviewer (GCJPluginData* data, gchar const* message)
       if (g_io_channel_write_chars (data->out_to_appletviewer,
                                     newline_message, -1, &bytes_written,
                                     &channel_error)
-          != G_IO_STATUS_NORMAL)
-        PLUGIN_ERROR_TWO ("Failed to write bytes to output channel",
-                          channel_error->message);
-
-      if (channel_error)
+            != G_IO_STATUS_NORMAL)
         {
-          g_error_free (channel_error);
-          channel_error = NULL;
-        }
+          if (channel_error)
+            {
+              PLUGIN_ERROR_TWO ("Failed to write bytes to output channel",
+                                channel_error->message);
+              g_error_free (channel_error);
+              channel_error = NULL;
+            }
+          else
+            PLUGIN_ERROR ("Failed to write bytes to output channel");
+        }            
 
       if (g_io_channel_flush (data->out_to_appletviewer, &channel_error)
           != G_IO_STATUS_NORMAL)
-        PLUGIN_ERROR_TWO ("Failed to flush bytes to output channel",
-                          channel_error->message);
-
-      if (channel_error)
         {
-          g_error_free (channel_error);
-          channel_error = NULL;
+          if (channel_error)
+            {
+              PLUGIN_ERROR_TWO ("Failed to flush bytes to output channel",
+                                channel_error->message);
+              g_error_free (channel_error);
+              channel_error = NULL;
+            }
+          else
+            PLUGIN_ERROR ("Failed to flush bytes to output channel");
         }
       g_free (newline_message);
+      newline_message = NULL;
 
       g_print ("  PIPE: plugin wrote %s\n", message);
     }
@@ -1135,7 +1369,6 @@ plugin_stop_appletviewer (GCJPluginData* data)
   if (data->appletviewer_alive)
     {
       // Shut down the appletviewer.
-      GError* channel_error = NULL;
       gsize bytes_written = 0;
 
       if (data->out_to_appletviewer)
@@ -1143,36 +1376,45 @@ plugin_stop_appletviewer (GCJPluginData* data)
           if (g_io_channel_write_chars (data->out_to_appletviewer, "shutdown",
                                         -1, &bytes_written, &channel_error)
               != G_IO_STATUS_NORMAL)
-            PLUGIN_ERROR_TWO ("Failed to write shutdown message to"
-                              " appletviewer", channel_error->message);
-
-          if (channel_error)
             {
-              g_error_free (channel_error);
-              channel_error = NULL;
+              if (channel_error)
+                {
+                  PLUGIN_ERROR_TWO ("Failed to write shutdown message to"
+                                    " appletviewer", channel_error->message);
+                  g_error_free (channel_error);
+                  channel_error = NULL;
+                }
+              else
+                PLUGIN_ERROR ("Failed to write shutdown message to");
             }
 
           if (g_io_channel_flush (data->out_to_appletviewer, &channel_error)
               != G_IO_STATUS_NORMAL)
-            PLUGIN_ERROR_TWO ("Failed to write shutdown message to"
-                              " appletviewer", channel_error->message);
-
-          if (channel_error)
             {
-              g_error_free (channel_error);
-              channel_error = NULL;
+              if (channel_error)
+                {
+                  PLUGIN_ERROR_TWO ("Failed to write shutdown message to"
+                                    " appletviewer", channel_error->message);
+                  g_error_free (channel_error);
+                  channel_error = NULL;
+                }
+              else
+                PLUGIN_ERROR ("Failed to write shutdown message to");
             }
 
           if (g_io_channel_shutdown (data->out_to_appletviewer,
                                      TRUE, &channel_error)
               != G_IO_STATUS_NORMAL)
-            PLUGIN_ERROR_TWO ("Failed to shut down appletviewer"
-                              " output channel", channel_error->message);
-
-          if (channel_error)
             {
-              g_error_free (channel_error);
-              channel_error = NULL;
+              if (channel_error)
+                {
+                  PLUGIN_ERROR_TWO ("Failed to shut down appletviewer"
+                                    " output channel", channel_error->message);
+                  g_error_free (channel_error);
+                  channel_error = NULL;
+                }
+              else
+                PLUGIN_ERROR ("Failed to shut down appletviewer");
             }
         }
 
@@ -1181,13 +1423,16 @@ plugin_stop_appletviewer (GCJPluginData* data)
           if (g_io_channel_shutdown (data->in_from_appletviewer,
                                      TRUE, &channel_error)
               != G_IO_STATUS_NORMAL)
-            PLUGIN_ERROR_TWO ("Failed to shut down appletviewer"
-                              " input channel", channel_error->message);
-
-          if (channel_error)
             {
-              g_error_free (channel_error);
-              channel_error = NULL;
+              if (channel_error)
+                {
+                  PLUGIN_ERROR_TWO ("Failed to shut down appletviewer"
+                                    " input channel", channel_error->message);
+                  g_error_free (channel_error);
+                  channel_error = NULL;
+                }
+              else
+                PLUGIN_ERROR ("Failed to shut down appletviewer");
             }
         }
     }
@@ -1307,6 +1552,43 @@ NP_Initialize (NPNetscapeFuncs* browserTable, NPPluginFuncs* pluginTable)
       return NPERR_INVALID_FUNCTABLE_ERROR;
     }
 
+  // Make sure the plugin data directory exists, creating it if
+  // necessary.
+  if (!g_file_test (PLUGIN_DATA_DIRECTORY,
+                    (GFileTest) (G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR)))
+    {
+      int file_error = 0;
+
+      file_error = g_mkdir (PLUGIN_DATA_DIRECTORY, 0700);
+      if (file_error != 0)
+        {
+          PLUGIN_ERROR_TWO ("Failed to create data directory "
+                            PLUGIN_DATA_DIRECTORY " ",
+                            strerror (errno));
+          return NPERR_GENERIC_ERROR;
+        }
+    }
+
+  // Open the user's documentbase whitelist.
+  whitelist_file = g_io_channel_new_file (WHITELIST_FILENAME,
+                                          "a+", &channel_error);
+  if (!whitelist_file)
+    {
+      if (channel_error)
+        {
+          PLUGIN_ERROR_TWO ("Failed to open whitelist file "
+                            WHITELIST_FILENAME " ",
+                            channel_error->message);
+          g_error_free (channel_error);
+          channel_error = NULL;
+        }
+      else
+        PLUGIN_ERROR ("Failed to open whitelist file "
+                      WHITELIST_FILENAME);
+
+      return NPERR_GENERIC_ERROR;
+    }
+
   // Store in a local table the browser functions that we may use.
   browserFunctions.version = browserTable->version;
   browserFunctions.size = browserTable->size;
@@ -1404,6 +1686,8 @@ NP_Shutdown (void)
   // Free mutex.
   g_mutex_free (plugin_instance_mutex);
   plugin_instance_mutex = NULL;
+
+  g_io_channel_close (whitelist_file);
 
   PLUGIN_DEBUG ("NP_Shutdown return");
 
