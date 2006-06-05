@@ -8,6 +8,8 @@
 	has failed.
 	(plugin_failed): New helper function. Shows a warning if the appletviewer
 	has not been installed.
+	(NP_Initialize): Added code to make sure this function is only called
+	once.
 
 2006-06-05  Lillian Angel  <langel@redhat.com>
 
