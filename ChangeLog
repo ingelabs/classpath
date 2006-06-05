@@ -1,3 +1,8 @@
+2006-06-05  Sven de Marothy  <sven@physto.se>
+
+	*  gnu/java/awt/peer/gtk/ComponentGraphics.java
+	(ComponentGraphics): Use 0,0 as clip origin.
+	
 2006-06-04  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/util/Formattable.java,

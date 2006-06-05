@@ -71,8 +71,9 @@ public class ComponentGraphics extends CairoGraphics2D
     this.component = component;
     cairo_t = initState(component);
     setup( cairo_t );
+    Rectangle bounds = component.awtComponent.getBounds();
+    setClip( new Rectangle( 0, 0, bounds.width, bounds.height) );
     setBackground(component.awtComponent.getBackground());
-    setClip(component.awtComponent.getBounds());
     setColor(component.awtComponent.getForeground());
   }
 
@@ -81,8 +82,9 @@ public class ComponentGraphics extends CairoGraphics2D
     component = cg.component;
     cairo_t = initState(component);
     copy( cg, cairo_t );
+    Rectangle bounds = component.awtComponent.getBounds();
+    setClip( new Rectangle( 0, 0, bounds.width, bounds.height) );
     setBackground(component.awtComponent.getBackground());
-    setClip(component.awtComponent.getBounds());
     setColor(component.awtComponent.getForeground());
   }
 
