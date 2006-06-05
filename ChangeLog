@@ -1,3 +1,7 @@
+2006-06-05  Tom Tromey  <tromey@redhat.com>
+
+	* NEWS: Mention VMURLConnection.
+
 2006-06-05  Lillian Angel  <langel@redhat.com>
 
 	* native/plugin/gcjwebplugin.cc:
