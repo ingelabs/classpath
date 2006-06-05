@@ -134,12 +134,19 @@ exception statement from your version. */
   "The whitelist is a list of the URLs from which you trust"            \
   " applets.\n"                                                         \
   "Your whitelist file is \"" WHITELIST_FILENAME "\"."
+#define FAILURE_MESSAGE                                                     \
+  "This page wants to load an applet.\n"                                    \
+  "There is no appletviewer installed in \"" APPLETVIEWER_EXECUTABLE "\"."  \
 
 // Documentbase retrieval required definition.
 static NS_DEFINE_IID (kIPluginTagInfo2IID, NS_IPLUGINTAGINFO2_IID);
 
 // Browser function table.
 static NPNetscapeFuncs browserFunctions;
+
+// Keeps track of initialization. NP_INITIALIZE should only be
+// called once.
+bool initialized = false;
 
 // GCJPluginData stores all the data associated with a single plugin
 // instance.  A separate plugin instance is created for each <APPLET>
@@ -192,6 +199,8 @@ typedef union
 static void plugin_data_new (GCJPluginData** data);
 // Documentbase retrieval.
 static gchar* plugin_get_documentbase (NPP instance);
+// plugin failure handling.
+static bool plugin_failed ();
 // Whitelist handling.
 static bool plugin_user_trusts_documentbase (char* documentbase);
 static bool plugin_ask_user_about_documentbase (char* documentbase);
@@ -204,7 +213,7 @@ static gboolean plugin_in_pipe_callback (GIOChannel* source,
 static gboolean plugin_out_pipe_callback (GIOChannel* source,
                                           GIOCondition condition,
                                           gpointer plugin_data);
-static void plugin_start_appletviewer (GCJPluginData* data);
+static NPError plugin_start_appletviewer (GCJPluginData* data);
 static gchar* plugin_create_applet_tag (int16 argc, char* argn[],
                                         char* argv[]);
 static void plugin_send_message_to_appletviewer (GCJPluginData* data,
@@ -368,7 +377,15 @@ GCJ_New (NPMIMEType pluginType, NPP instance, uint16 mode,
   // watch callbacks.
   g_mutex_lock (data->appletviewer_mutex);
 
-  plugin_start_appletviewer (data);
+  np_error = plugin_start_appletviewer (data);
+  
+  // If the appletviewer is not installed, then a dialog box will
+  // show up and the plugin will be killed.
+  if (np_error != NPERR_NO_ERROR)
+    {
+      if (plugin_failed ())
+        goto cleanup_applet_failure; 
+  	}
 
   // Create plugin-to-appletviewer channel.  The default encoding for
   // the file is UTF-8.
@@ -492,7 +509,8 @@ GCJ_New (NPMIMEType pluginType, NPP instance, uint16 mode,
   // cleanup_out_pipe:
   // Delete output pipe.
   unlink (data->out_pipe_name);
-
+ 
+ cleanup_applet_failure:
  cleanup_out_pipe_name:
   g_free (data->out_pipe_name);
   data->out_pipe_name = NULL;
@@ -879,6 +897,32 @@ plugin_get_documentbase (NPP instance)
   return documentbase_copy;
 }
 
+// This function shows a error message if the appletviewer has
+// not been installed. It returns true, if the user presses the
+// ok button.
+static bool
+plugin_failed ()
+{
+  GtkWidget* dialog = NULL;
+  GtkWidget* ok_button = NULL;
+
+  dialog = gtk_message_dialog_new (NULL,
+                                   GTK_DIALOG_MODAL,
+                                   GTK_MESSAGE_WARNING,
+                                   GTK_BUTTONS_NONE,
+                                   FAILURE_MESSAGE);
+  ok_button = gtk_dialog_add_button (GTK_DIALOG (dialog),
+                                     GTK_STOCK_OK,
+                                     GTK_RESPONSE_OK);
+  gtk_widget_show_all (dialog);
+  if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_OK)
+    {
+      gtk_widget_destroy (dialog);
+      return true;	  
+    }
+  return false;
+}
+
 // plugin_user_trusts_documentbase returns true if the given
 // documentbase is in the documentbase whitelist.  Otherwise it asks
 // the user if he trusts the given documentbase by calling
@@ -1173,11 +1217,12 @@ plugin_out_pipe_callback (GIOChannel* source,
   return FALSE;
 }
 
-static void
+static NPError
 plugin_start_appletviewer (GCJPluginData* data)
 {
   PLUGIN_DEBUG ("plugin_start_appletviewer");
-
+  NPError error = NPERR_NO_ERROR;
+  
   if (!data->appletviewer_alive)
     {
       gchar* command_line[3] = { NULL, NULL, NULL };
@@ -1202,6 +1247,7 @@ plugin_start_appletviewer (GCJPluginData* data)
             }
           else
             PLUGIN_ERROR ("Failed to spawn applet viewer");
+          error = NPERR_GENERIC_ERROR;
           goto cleanup;
         }
 
@@ -1215,6 +1261,7 @@ plugin_start_appletviewer (GCJPluginData* data)
     }
 
   PLUGIN_DEBUG ("plugin_start_appletviewer return");
+  return error;
 }
 
 // Build up the applet tag string that we'll send to the applet
@@ -1516,14 +1563,16 @@ NPError
 NP_Initialize (NPNetscapeFuncs* browserTable, NPPluginFuncs* pluginTable)
 {
   PLUGIN_DEBUG ("NP_Initialize");
-
-  if ((browserTable == NULL) || (pluginTable == NULL))
+  
+  if (initialized)
+    return NPERR_NO_ERROR;
+  else if ((browserTable == NULL) || (pluginTable == NULL))
     {
       PLUGIN_ERROR ("Browser or plugin function table is NULL.");
 
       return NPERR_INVALID_FUNCTABLE_ERROR;
     }
-
+    
   // Ensure that the major version of the plugin API that the browser
   // expects is not more recent than the major version of the API that
   // we've implemented.
@@ -1585,7 +1634,7 @@ NP_Initialize (NPNetscapeFuncs* browserTable, NPPluginFuncs* pluginTable)
       else
         PLUGIN_ERROR ("Failed to open whitelist file "
                       WHITELIST_FILENAME);
-
+                      
       return NPERR_GENERIC_ERROR;
     }
 
@@ -1621,7 +1670,8 @@ NP_Initialize (NPNetscapeFuncs* browserTable, NPPluginFuncs* pluginTable)
   pluginTable->print = NewNPP_PrintProc (GCJ_Print);
   pluginTable->urlnotify = NewNPP_URLNotifyProc (GCJ_URLNotify);
   pluginTable->getvalue = NewNPP_GetValueProc (GCJ_GetValue);
-
+  
+  initialized = true;
   plugin_instance_mutex = g_mutex_new ();
 
   PLUGIN_DEBUG ("NP_Initialize: using " APPLETVIEWER_EXECUTABLE ".");

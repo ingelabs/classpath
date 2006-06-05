@@ -1,5 +1,16 @@
 2006-06-05  Lillian Angel  <langel@redhat.com>
 
+	* native/plugin/gcjwebplugin.cc:
+	Added new field to keep track of initialization.
+	(plugin_start_appletviewer): Fixed to return an error value, if
+	an error was encountered when loading the appletviewer.
+	(GCJ_NEW): Added call to plugin_failed if the loading of the appletviewer
+	has failed.
+	(plugin_failed): New helper function. Shows a warning if the appletviewer
+	has not been installed.
+
+2006-06-05  Lillian Angel  <langel@redhat.com>
+
 	* native/plugin/Makefile.am:
 	Fixed to use a set plugin directory in the .mozilla directory.
 	All applet logs are now stored here, instead of /tmp.
