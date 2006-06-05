@@ -1,3 +1,12 @@
+2006-06-05  Francis Kung  <fkung@redhat.com>
+	
+	PR 27507
+	* gnu/java/awt/peer/gtk/GtkImage.java
+	(getSource): Added check to determine if in
+	errorLoading state.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java
+	(createImage): Added check to prevent NPE.
+
 2006-06-05  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/text/html/HTMLEditorKit.java (HTMLFactory.create):
