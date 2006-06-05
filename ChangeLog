@@ -1,3 +1,10 @@
+2006-06-05  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/text/html/HTMLEditorKit.java (HTMLFactory.create):
+	Create the ImageView, when applicable.
+	* gnu/javax/swing/text/html/CombinedAttributes.java,
+	javax/swing/text/html/ImageView.java: New files.
+
 2006-06-05  Roman Kennke  <kennke@aicas.com>
 
 	PR 27834
