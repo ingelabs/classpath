@@ -1,3 +1,14 @@
+2006-06-06  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicTableUI.java
+	(getMaximumSize): Don't return null. Fixed calculation of
+	table height.
+	(getMinimumSize): Don't return null. Fixed calculation of
+	table height.
+	(getPreferredSize): Fixed calculation of with and height. Added
+	API docs.
+	(getHeight): New helper method.
+
 2006-06-06  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JComponent.java
