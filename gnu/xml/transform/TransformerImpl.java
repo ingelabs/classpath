@@ -238,7 +238,7 @@ class TransformerImpl
       outputProperties.getProperty(OutputKeys.CDATA_SECTION_ELEMENTS);
     boolean indent =
       "yes".equals(outputProperties.getProperty(OutputKeys.INDENT));
-    if (created)
+    if (created && parent instanceof DomDocument)
       {
         // Discover document element
         DomDocument resultDoc = (DomDocument) parent;
