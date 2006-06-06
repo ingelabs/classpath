@@ -1,3 +1,12 @@
+2006-06-06  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java
+	(ShowSystemMenuAction): New class.
+	(installKeyboardActions): Implemented.
+	(uninstallKeyboardActions): Implemented.
+	* javax/swing/plaf/metal/MetalInternalFrameUI.java
+	(installKeyboardActions): Overridden to remove showSystemMenu action.
+
 2006-06-06  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/transform/TransformerImpl.java: Check type of created
