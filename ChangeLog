@@ -1,3 +1,8 @@
+2006-06-06  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/transform/TransformerImpl.java: Check type of created
+	  document (more cases).
+
 2006-06-06  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/javax/swing/text/html/htmlAttributeSet.java

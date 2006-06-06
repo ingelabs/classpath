@@ -320,7 +320,7 @@ class TransformerImpl
       }
     if (indent)
       {
-        if (created)
+        if (created && parent instanceof DomDocument)
           {
             DomDocument domDoc = (DomDocument) parent;
             domDoc.setBuilding(true);
@@ -332,7 +332,7 @@ class TransformerImpl
           (Document) parent :
           parent.getOwnerDocument();
         reindent(resultDoc, parent, 0);
-        if (created)
+        if (created && parent instanceof DomDocument)
           {
             DomDocument domDoc = (DomDocument) parent;
             domDoc.setBuilding(false);
