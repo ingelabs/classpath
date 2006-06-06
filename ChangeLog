@@ -27,13 +27,6 @@
 
 2006-06-06  Roman Kennke  <kennke@aicas.com>
 
-	PR 27651
-	* javax/swing/JTree.java
-	(JTree(TreeModel)): Call updateUI() before setModel().
-	(setModel): Don't call updateUI here.
-
-2006-06-06  Roman Kennke  <kennke@aicas.com>
-
 	PR 27523
 	* javax/swing/MenuSelectionManager.java
 	(processKeyEvent): Added check to avoid
