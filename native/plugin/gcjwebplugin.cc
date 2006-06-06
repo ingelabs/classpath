@@ -1563,7 +1563,7 @@ plugin_data_destroy (GCJPluginData** data)
 // The field 'initialized' is set to true once this function has
 // finished. If 'initialized' is already true at the beginning of
 // this function, then it is evident that NP_Initialize has already
-// been called. There is no need to call this function more than twice and
+// been called. There is no need to call this function more than once and
 // this workaround avoids any duplicate calls.
 NPError
 NP_Initialize (NPNetscapeFuncs* browserTable, NPPluginFuncs* pluginTable)
