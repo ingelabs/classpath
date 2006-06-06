@@ -1,3 +1,43 @@
+2006-06-06  Robert Schuster  <robertschuster@fsfe.org>
+
+	* include/gnu_java_awt_peer_gtk_GdkGraphicsEnvironment.h: Regenerated.
+	* include/gnu_java_awt_peer_gtk_GdkScreenGraphicsDevice.h: New file.
+	* include/Makefile.am: Added
+	gnu_java_awt_peer_gtk_GdkScreenGraphicsDevice.
+	* gnu/java/awt/peer/gtk/GdkGraphicsConfiguration.java:
+	(GdkGraphicsConfiguration): Rewritten.
+	(getColorModel): Rewritten.
+	(getColorModel(int)): Rewritten.
+	(getBounds): Rewritten.
+	(createCompatibleVolatileImage): Implemented.
+	* gnu/java/awt/peer/gtk/GdkGraphicsEnvironment.java: Added static
+	initializer.
+	(getDefaultScreenDevice): Rewritten.
+	(nativeGetDefaultScreenDevice): New method.
+	(getScreenDevices): Rewritten.
+	(nativeGetScreenDevices): New method.
+	(nativeInitState): New method.
+	* gnu/java/awt/peer/gtk/GdkScreenGraphicsDevice.java: Entirely
+	rewritten.
+	(X11DisplayMode): New inner class.
+	* native/jni/gtk-peer/Makefile.am: Added gdkdisplay.h and
+	gnu_java_awt_peer_gtk_GdkScreenGraphicsDevice.c
+	* native/jni/gtk-peer/gdkdisplay.h: New file.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphicsEnvironment.c:
+	(Java_gnu_java_awt_peer_gtk_GdkGraphicsEnvironment_initStaticState):
+	New function.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphicsEnvironment_nativeInitState):
+	New function.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphicsEnvironment
+	_nativeGetScreenDevices):
+	New function.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphicsEnvironment
+	_nativeGetDefaultScreenDevice):
+	New function.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkScreenGraphicsDevice.c:
+	New file.
+	* configure.ac: Added check for Xrandr library.
+
 2006-06-06  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicTableUI.java
