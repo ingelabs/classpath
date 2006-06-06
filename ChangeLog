@@ -1,5 +1,11 @@
 2006-06-06  Roman Kennke  <kennke@aicas.com>
 
+	PR 27522
+	* javax/swing/JMenuBar.java
+	(processKeyBindingHelper): Added null check to prevent NPE.
+
+2006-06-06  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicInternalFrameUI.java
 	(ShowSystemMenuAction): New class.
 	(installKeyboardActions): Implemented.
