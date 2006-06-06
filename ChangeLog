@@ -1,5 +1,12 @@
 2006-06-06  Tom Tromey  <tromey@redhat.com>
 
+	* javax/swing/text/html/HTMLDocument.java (SpecialAction.start):
+	Implement.
+	(SpecialAction.end): Removed.
+	(IsindexAction.end): Likewise.
+
+2006-06-06  Tom Tromey  <tromey@redhat.com>
+
 	* include/jni.h (JDK1_1InitArgs): New struct.
 	(JDK1_1AttachArgs): Likewise.
 
