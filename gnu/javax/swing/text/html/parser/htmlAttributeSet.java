@@ -97,26 +97,29 @@ public class htmlAttributeSet
     final Enumeration enumeration = super.getAttributeNames();
 
     return new Enumeration()
+    {
+      public boolean hasMoreElements()
       {
-        public boolean hasMoreElements()
-        {
-          return enumeration.hasMoreElements();
-        }
+        return enumeration.hasMoreElements();
+      }
 
-        public Object nextElement()
-        {
-          Object key = enumeration.nextElement();
-          HTML.Attribute hKey = HTML.getAttributeKey((String) key);
-          if (hKey != null)
-            return hKey;
-          else
-            return key;
-        }
-      };
+      public Object nextElement()
+      {
+        Object key = enumeration.nextElement();
+        if (key instanceof String)
+          {
+            HTML.Attribute hKey = HTML.getAttributeKey((String) key);
+            if (hKey != null)
+              return hKey;
+          }
+        return key;
+      }
+    };
   }
 
   /**
    * Set the parent set, containing the default values.
+   * 
    * @param a_parent
    */
   public void setResolveParent(AttributeSet a_parent)
