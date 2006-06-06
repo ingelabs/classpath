@@ -78,7 +78,7 @@ public class GdkGraphicsEnvironment extends GraphicsEnvironment
         devices = nativeGetScreenDevices();
       }
     
-    return devices.clone();
+    return (GraphicsDevice[]) devices.clone();
   }
   
   private native GdkScreenGraphicsDevice[] nativeGetScreenDevices();
