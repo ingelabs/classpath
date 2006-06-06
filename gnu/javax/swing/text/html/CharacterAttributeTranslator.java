@@ -86,7 +86,6 @@ public class CharacterAttributeTranslator
   private static Color getColor(String colorName)
   {
     colorName = colorName.toLowerCase();
-    System.out.println("CharacterAttributeTranslator.java.getColor:"+colorName);
     try
       {
         if (colorName.startsWith("rgb"))
