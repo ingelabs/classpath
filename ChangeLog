@@ -1,5 +1,9 @@
 2006-06-06  Robert Schuster  <robertschuster@fsfe.org>
 
+	* configure.ac: Added missing [ to expression.
+
+2006-06-06  Robert Schuster  <robertschuster@fsfe.org>
+
 	* configure.ac: Added missing { to expression.
 
 2006-06-06  Robert Schuster  <robertschuster@fsfe.org>
