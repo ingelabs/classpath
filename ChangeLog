@@ -1,3 +1,15 @@
+2006-06-06  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JTable.java
+	(AccessibleJTableHeaderCell.header): New field,
+	(AccessibleJTableHeaderCell.columnIndex): Likewise,
+	(AccessibleJTableHeaderCell.AccessibleJTableHeaderCell()): Initialise,
+	(AccessibleJTableHeaderCell.getColumnHeaderRenderer): New method,
+	(AccessibleJTableHeaderCell.getAccessibleContext): Implemented,
+	(AccessibleJTableHeaderCell.getAccessibleRole): Implemented,
+	(AccessibleJTable.getAccessibleChild(int)): Overridden,
+	(AccessibleJTable.getAccessibleAt): Reimplemented.
+
 2006-06-05  Sven de Marothy  <sven@physto.se>
 
 	* include/gnu_java_awt_peer_gtk_ComponentGraphics.h
