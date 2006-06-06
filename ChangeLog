@@ -1,3 +1,11 @@
+2006-06-06  Tom Tromey  <tromey@redhat.com>
+
+	* java/security/UnresolvedPermission.java (getUnresolvedType): New
+	method.
+	(getUnresolvedName): New method.
+	(getUnresolvedActions): New method.
+	(getUnresolvedCerts): New method.
+
 2006-06-06  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/javax/swing/text/html/CharacterAttributeTranslator.java
