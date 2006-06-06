@@ -1604,9 +1604,9 @@ typedef struct JDK1_1InitArgs
   jint verifyMode;
   const char *classpath;
 
-  jint (*vfprintf) (FILE *file, const char *fmt, va_list args);
-  void (*exit) (jint value);
-  void (*abort) ();
+  jint (JNICALL *vfprintf) (FILE *file, const char *fmt, va_list args);
+  void (JNICALL *exit) (jint value);
+  void (JNICALL *abort) (void);
 
   jint enableClassGC;
   jint enableVerboseGC;

@@ -1,3 +1,8 @@
+2006-06-06  Mark Wielaard  <mark@klomp.org>
+
+	* include/jni.h (JDK1_1InitArgs): Mark pointer-to-function types
+	with JNICALL.
+
 2006-06-06  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalSplitPaneDivider.java
