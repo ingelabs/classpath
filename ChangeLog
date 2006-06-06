@@ -1,3 +1,7 @@
+2006-06-06  Robert Schuster  <robertschuster@fsfe.org>
+
+	* java/awt/BufferedImage.java: Added fourth 8 to bits4 field.
+
 2006-06-06  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JTable.java
@@ -919,6 +923,11 @@
 	* gnu/java/awt/java2d/TexturePaintContext.java: New file.
 	* java/awt/TexturePaint.java
 	(createContext): Implemented.
+
+2006-05-30  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/table/DefaultTableMode.java: Initialize dataVector
+	field early.
 
 2006-05-30  Robert Schuster  <robertschuster@fsfe.org>
 
