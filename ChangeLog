@@ -1,3 +1,10 @@
+2006-06-06  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JComponent.java
+	(getInputMap(int)): Throw IllegalArgumentException for unknown 
+	condition argument, and added API docs,
+	(getInputMap()): Added API docs.
+
 2006-06-06  Robert Schuster  <robertschuster@fsfe.org>
 
 	* java/awt/BufferedImage.java: Added fourth 8 to bits4 field.
