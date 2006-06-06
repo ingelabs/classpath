@@ -1,5 +1,11 @@
 2006-06-06  Tom Tromey  <tromey@redhat.com>
 
+	* javax/swing/text/StyleContext.java (registerStaticAttributeKey):
+	Javadoc fix.
+	(writeAttributeSet): Implemented.
+
+2006-06-06  Tom Tromey  <tromey@redhat.com>
+
 	* javax/swing/text/html/HTMLDocument.java (SpecialAction.start):
 	Implement.
 	(SpecialAction.end): Removed.
