@@ -1,3 +1,18 @@
+2006-06-06  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(installKeyboardActions): Use shared input map. Correctly
+	install the input/action maps in the component's input/action
+	map hierarchies.
+	(getActionMap): New helper method for fetching an ActionMap from
+	the UIManager or creating a default one if there is none supplied
+	by the UIManager.
+	(createActionMap): Add the TransferHandler's actions here. Made
+	method private.
+	(getInputMap): Leave out unnecessary method parameter. Load
+	shared input map.
+	* javax/swing/plaf/basic/SharedUIDefaults.java: New file.
+
 2006-06-06  Robert Schuster  <robertschuster@fsfe.org>
 
 	* configure.ac: Added missing [ to expression.
