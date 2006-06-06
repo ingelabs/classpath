@@ -1,3 +1,11 @@
+2006-06-06  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalSplitPaneDivider.java
+	(paint): If has focus, paint special background color,
+	* javax/swing/plaf/basic/BasicSplitPaneUI.java
+	(FocusHandler.focusGained): Implemented,
+	(FocusHandler.focusLost): Implemented.
+
 2006-06-06  Tom Tromey  <tromey@redhat.com>
 
 	* javax/swing/text/StyleContext.java (registerStaticAttributeKey):

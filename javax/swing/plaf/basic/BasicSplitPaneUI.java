@@ -680,7 +680,9 @@ public class BasicSplitPaneUI extends SplitPaneUI
      */
     public void focusGained(FocusEvent ev)
     {
-      // FIXME: implement.
+      // repaint the divider because its background color may change due to
+      // the focus state...
+      divider.repaint();
     }
 
     /**
@@ -690,7 +692,9 @@ public class BasicSplitPaneUI extends SplitPaneUI
      */
     public void focusLost(FocusEvent ev)
     {
-      // FIXME: implement.
+      // repaint the divider because its background color may change due to
+      // the focus state...
+      divider.repaint();
     }
   }
 
