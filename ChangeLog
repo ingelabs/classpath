@@ -1,3 +1,12 @@
+2006-06-06  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/javax/swing/text/html/htmlAttributeSet.java
+	(clone): New method. (copyAttributes): New method.
+	(getResolveParent): Comment fix. (getAttribute):
+	Rewritten. (addAttribute): Rewritten.
+	* gnu/javax/swing/text/html/SmallHtmlAttributeSet.java:
+	New file.
+
 2006-06-06  Roman Kennke  <kennke@aicas.com>
 
 	PR 27522
