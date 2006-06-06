@@ -1,3 +1,9 @@
+2006-06-06  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/javax/swing/text/html/CharacterAttributeTranslator.java
+	(getColor): Added support for "rgb(red, green, blue)" notation.
+	(translateTag): Use Boolean.TRUE, not new Boolean().
+
 2006-06-06  Roman Kennke  <kennke@aicas.com>
 
 	PR 27651
