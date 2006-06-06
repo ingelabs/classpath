@@ -1,3 +1,16 @@
+2006-06-05  Sven de Marothy  <sven@physto.se>
+
+	* include/gnu_java_awt_peer_gtk_ComponentGraphics.h
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphics.c
+	* gnu/java/awt/peer/gtk/ComponentGraphics.java
+	(initFromVolatile): New method.
+	* gnu/java/awt/peer/gtk/GtkVolatileImage.java
+	* gnu/java/awt/peer/gtk/VolatileImageGraphics.java
+	Reimplement.
+	* include/gnu_java_awt_peer_gtk_GtkVolatileImage.h
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkVolatileImage.c
+	(copyArea, drawVolatileImage): New methods.
+	
 2006-06-05  Tania Bento  <tbento@redhat.com>
 
 	* javax/swing/JFrame.java

@@ -146,25 +146,51 @@ Java_gnu_java_awt_peer_gtk_GtkVolatileImage_getPixels
 }
 
 /**
- * Update the pixels.
+ * Copy area
  */
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkVolatileImage_update
-(JNIEnv *env, jobject obj, jobject gtkimage)
+Java_gnu_java_awt_peer_gtk_GtkVolatileImage_copyArea
+(JNIEnv *env, jobject obj, jint x, jint y, jint w, jint h, jint dx, jint dy)
 {
-  GdkPixmap *pixmap = getNativeObject(env, obj);
   GdkPixbuf *pixbuf;
+  GdkPixmap* pixmap = getNativeObject(env, obj);
+
+  g_assert (pixmap != NULL);
 
   gdk_threads_enter();
-  g_assert( pixmap != NULL );
-
-  pixbuf = cp_gtk_image_get_pixbuf (env, gtkimage);
-  g_assert( pixbuf != NULL );
-
+  
+  pixbuf = gdk_pixbuf_new( GDK_COLORSPACE_RGB, TRUE, 8, w, h );
+  gdk_pixbuf_get_from_drawable( pixbuf, pixmap, NULL, x, y, 0, 0, w, h );
   gdk_draw_pixbuf (pixmap, NULL, pixbuf,
-		   0, 0, 0, 0,  /* src and dest x, y */
-		   -1, -1, /* full width, height */
+		   0, 0, x + dx, y + dy, 
+		   w, h, 
 		   GDK_RGB_DITHER_NORMAL, 0, 0);
+  gdk_threads_leave();
+}
+
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkVolatileImage_drawVolatile
+(JNIEnv *env, jobject obj, jlong ptr, jint x, jint y, jint w, jint h)
+{
+  GdkPixmap *dst, *src;
+  GdkGC *gc;
+
+  src = JLONG_TO_PTR(GdkPixmap, ptr);
+  dst = getNativeObject(env, obj);
+  g_assert (src != NULL);
+  g_assert (dst != NULL);
+
+  gdk_threads_enter();
+ 
+  gc = gdk_gc_new( dst );
+  gdk_draw_drawable(dst,
+		    gc,
+		    src,
+		    0, 0,
+		    x, y,
+		    w, h);
+  g_object_unref( gc );
+
   gdk_threads_leave();
 }
 
