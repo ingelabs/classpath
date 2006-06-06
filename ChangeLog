@@ -1,5 +1,9 @@
 2006-06-06  Robert Schuster  <robertschuster@fsfe.org>
 
+	* configure.ac: Added missing { to expression.
+
+2006-06-06  Robert Schuster  <robertschuster@fsfe.org>
+
 	* include/gnu_java_awt_peer_gtk_GdkGraphicsEnvironment.h: Regenerated.
 	* include/gnu_java_awt_peer_gtk_GdkScreenGraphicsDevice.h: New file.
 	* include/Makefile.am: Added
