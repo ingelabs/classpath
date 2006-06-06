@@ -1,3 +1,17 @@
+2006-06-06  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JSplitPane.java
+	(AccessibleJSplitPane): API doc fixes,
+	(setDividerLocation): Likewise,
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Additions to SplitPane.ancestorInputMap,
+	* javax/swing/plaf/basic/BasicSplitPaneUI.java
+	(getInputMap): New method,
+	(getActionMap): New method,
+	(createActionMap): New method,
+	(installKeyboardActions): Implemented,
+	(uninstallKeyboardActions): Implemented.
+
 2006-06-06  Roman Kennke  <kennke@aicas.com>
 
 	PR 27523
