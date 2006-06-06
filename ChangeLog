@@ -1,5 +1,10 @@
 2006-06-06  Tom Tromey  <tromey@redhat.com>
 
+	* include/jni.h (JDK1_1InitArgs): New struct.
+	(JDK1_1AttachArgs): Likewise.
+
+2006-06-06  Tom Tromey  <tromey@redhat.com>
+
 	* java/security/UnresolvedPermission.java (getUnresolvedType): New
 	method.
 	(getUnresolvedName): New method.
