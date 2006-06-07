@@ -2410,6 +2410,9 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
    */
   public Rectangle getTabBounds(JTabbedPane pane, int i)
   {
+    // Need to re-layout container if tab does not exist.
+    if (i >= rects.length)
+      layoutManager.layoutContainer(pane);
     return rects[i];
   }
 

@@ -1,5 +1,12 @@
 2006-06-07  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	(getTabBounds): If this method is called with a tab index
+	that is not in the rects array, we need to re-layout the container
+	so it is created.
+
+2006-06-07  Lillian Angel  <langel@redhat.com>
+
 	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java
 	(FreetypeGlyphVector): Removed assignment. Caused compilation error.
 	* java/lang/String.java
