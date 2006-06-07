@@ -1,3 +1,54 @@
+2006-06-06  Roman Kennke  <kennke@aicas.com>
+
+	PR 27920
+	* javax/swing/JTree.java
+	(JTree()): Initialize with default model.
+	(JTree(TreeModel)): Clear expanded state hashtable. Added comment
+	on the updateUI() / setModel() order.
+	(setModel): Correctly (un-)setup the listeners. Clear the expanded
+	paths.
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(BasicTreeUI()): Initialize listeners in installListeners().
+	(setModel): Complete editing on model change. Correctly resetup
+	the listeners. Update the layout cache accordingly.
+	(setShowRootHandles): Complete editing and update layout. Do not
+	call back into the JTree, this could cause cycles.
+	(prepareForUIInstall): Implemented. Moved some init code from
+	installUI() to this method.
+	(completeUIInstall): Implemented. Moved some init code from
+	installUI() to this method.
+	(createDefaultCellEditor): Check for type of renderer, and install
+	with null renderer when not DefaultTreeCellRenderer.
+	(updateLayoutCacheExpandedNodes): Added null check for tree root
+	to avoid NPE.
+	(updateRenderer): Call updateEditor().
+	(installListeners): Initialize the listeners here. Added some null
+	checks to avoid NPEs.
+	(installUI): Moved some init code to prepareForUIInstall() and
+	completeUIInstall().
+	(completeEditing): Return immediately if editing component is null
+	or if the setting is to not stop editing on complete editing.
+	(checkForClickInExpandControl): Call handleExpandControlClick()
+	instead of toggleExpandState() directly.
+	(isLocationInExpandControl): Rewritten to correctly determine the
+	expand click location.
+	(MouseHandler.mousePressed): Rewritten to make better use of the
+	instance methods of BasicTreeUI to handle the click.
+	(PropertyHandler.propertyChange): Handle model and cell renderer
+	updates.
+	* javax/swing/tree/DefaultTreeCellEditor.java
+	(DefaultTreeCellEditor): Removed initialization of the icon. This
+	is done so that the constructor can deal with null renderer as the
+	RI does. Maybe this needs more fixing.
+	* javax/swing/tree/TreePath.java
+	(isDescendant): Fixed this method. The previous version did too
+	much and compared the wrong things, which lead to a ClassCastException
+	in equals().
+	* javax/swing/tree/VariableHeightLayoutCache.java
+	(update): Do nothing when model is null.
+	(setModel): Clear the tables and update the layout. Added null
+	check to prevent NPE.
+
 2006-06-05  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/peer/gtk/GdkGlyphVector: Removed file.
