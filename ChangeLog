@@ -1,3 +1,10 @@
+2006-06-07  Tom Tromey  <tromey@redhat.com>
+
+	PR classpath/27905:
+	* gnu/java/nio/charset/Provider.java (loadExtended): Now synchronized.
+	Added missing charsets.
+	(charsetForName): Don't check 'extendedLoaded'.
+
 2006-06-07  Roman Kennke  <kennke@aicas.com>
 
 	PR 27833
