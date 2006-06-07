@@ -49,7 +49,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Label;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -307,17 +306,6 @@ public class BasicTreeUI
     nodeDimensions = createNodeDimensions();
     configureLayoutCache();
 
-    propertyChangeListener = createPropertyChangeListener();
-    focusListener = createFocusListener();
-    treeSelectionListener = createTreeSelectionListener();
-    mouseListener = createMouseListener();
-    keyListener = createKeyListener();
-    selectionModelPropertyChangeListener = createSelectionModelPropertyChangeListener();
-    componentListener = createComponentListener();
-    cellEditorListener = createCellEditorListener();
-    treeExpansionListener = createTreeExpansionListener();
-    treeModelListener = createTreeModelListener();
-
     editingRow = - 1;
     lastSelectedRow = - 1;
   }
@@ -513,9 +501,22 @@ public class BasicTreeUI
    */
   protected void setModel(TreeModel model)
   {
-    tree.setModel(model);
+    completeEditing();
+
+    if (treeModel != null && treeModelListener != null)
+      treeModel.removeTreeModelListener(treeModelListener);
+
     treeModel = tree.getModel();
-    treeState.setModel(treeModel);
+
+    if (treeModel != null && treeModelListener != null)
+      treeModel.addTreeModelListener(treeModelListener);
+
+    if (treeState != null)
+      {
+        treeState.setModel(treeModel);
+        updateLayoutCacheExpandedNodes();
+        updateSize();
+      }
   }
 
   /**
@@ -555,7 +556,13 @@ public class BasicTreeUI
    */
   protected void setShowsRootHandles(boolean newValue)
   {
-    tree.setShowsRootHandles(newValue);
+    completeEditing();
+    updateDepthOffset();
+    if (treeState != null)
+      {
+        treeState.invalidateSizes();
+        updateSize();
+      }
   }
 
   /**
@@ -822,9 +829,12 @@ public class BasicTreeUI
    * default/listeners have been installed.
    */
   protected void prepareForUIInstall()
-  throws NotImplementedException
   {
-    // TODO: Implement this properly.
+    lastSelectedRow = -1;
+    preferredSize = new Dimension();
+    largeModel = tree.isLargeModel();
+    preferredSize = new Dimension();
+    setModel(tree.getModel());
   }
 
   /**
@@ -832,9 +842,15 @@ public class BasicTreeUI
    * installed.
    */
   protected void completeUIInstall()
-  throws NotImplementedException
   {
-    // TODO: Implement this properly.
+    setShowsRootHandles(tree.getShowsRootHandles());
+    updateRenderer();
+    updateDepthOffset();
+    setSelectionModel(tree.getSelectionModel());
+    treeState = createLayoutCache();
+    treeSelectionModel.setRowMapper(treeState);
+    configureLayoutCache();
+    updateSize();
   }
 
   /**
@@ -997,15 +1013,14 @@ public class BasicTreeUI
    */
   protected TreeCellEditor createDefaultCellEditor()
   {
-    if (currentCellRenderer != null)
-      return new DefaultTreeCellEditor(
-                                       tree,
-                                       (DefaultTreeCellRenderer) currentCellRenderer,
-                                       cellEditor);
-    return new DefaultTreeCellEditor(
-                                     tree,
-                                     (DefaultTreeCellRenderer) createDefaultCellRenderer(),
-                                     cellEditor);
+    DefaultTreeCellEditor ed;
+    if (currentCellRenderer != null
+        && currentCellRenderer instanceof DefaultTreeCellRenderer)
+      ed = new DefaultTreeCellEditor(tree,
+                                (DefaultTreeCellRenderer) currentCellRenderer);
+    else
+      ed = new DefaultTreeCellEditor(tree, null);
+    return ed;
   }
 
   /**
@@ -1102,7 +1117,7 @@ public class BasicTreeUI
    */
   protected void updateLayoutCacheExpandedNodes()
   {
-    if (treeModel != null)
+    if (treeModel != null && treeModel.getRoot() != null)
       updateExpandedDescendants(new TreePath(treeModel.getRoot()));
   }
 
@@ -1161,6 +1176,8 @@ public class BasicTreeUI
 
     if (currentCellRenderer == null)
       currentCellRenderer = createDefaultCellRenderer();
+
+    updateCellEditor();
   }
 
   /**
@@ -1317,16 +1334,41 @@ public class BasicTreeUI
    */
   protected void installListeners()
   {
+    propertyChangeListener = createPropertyChangeListener();
     tree.addPropertyChangeListener(propertyChangeListener);
+
+    focusListener = createFocusListener();
     tree.addFocusListener(focusListener);
+
+    treeSelectionListener = createTreeSelectionListener();
     tree.addTreeSelectionListener(treeSelectionListener);
+
+    mouseListener = createMouseListener();
     tree.addMouseListener(mouseListener);
+
+    keyListener = createKeyListener();
     tree.addKeyListener(keyListener);
-    tree.addPropertyChangeListener(selectionModelPropertyChangeListener);
+
+    selectionModelPropertyChangeListener =
+      createSelectionModelPropertyChangeListener();
+    if (treeSelectionModel != null
+        && selectionModelPropertyChangeListener != null)
+      {
+        treeSelectionModel.addPropertyChangeListener
+                                        (selectionModelPropertyChangeListener);
+      }
+
+    componentListener = createComponentListener();
     tree.addComponentListener(componentListener);
+
+    treeExpansionListener = createTreeExpansionListener();
     tree.addTreeExpansionListener(treeExpansionListener);
+
+    treeModelListener = createTreeModelListener();
     if (treeModel != null)
       treeModel.addTreeModelListener(treeModelListener);
+
+    cellEditorListener = createCellEditorListener();
   }
 
   /**
@@ -1337,25 +1379,12 @@ public class BasicTreeUI
   public void installUI(JComponent c)
   {
     tree = (JTree) c;
-    treeModel = tree.getModel();
 
     prepareForUIInstall();
-    super.installUI(c);
     installDefaults();
     installComponents();
     installKeyboardActions();
     installListeners();
-
-    setCellEditor(createDefaultCellEditor());
-    createdCellEditor = true;
-    isEditing = false;
-
-    setModel(tree.getModel());
-    treeSelectionModel = tree.getSelectionModel();
-    setRootVisible(tree.isRootVisible());
-    treeState.setRootVisible(tree.isRootVisible());
-    updateExpandedDescendants(new TreePath(new Object[] { treeModel.getRoot() }));
-
     completeUIInstall();
   }
   
@@ -1613,6 +1642,9 @@ public class BasicTreeUI
   protected void completeEditing(boolean messageStop, boolean messageCancel,
                                  boolean messageTree)
   {
+    if (! stopEditingInCompleteEditing || editingComponent == null)
+      return;
+
     if (messageStop)
       {
         getCellEditor().stopCellEditing();
@@ -1698,7 +1730,7 @@ public class BasicTreeUI
                                               int mouseY)
   {
     if (isLocationInExpandControl(path, mouseX, mouseY))
-      toggleExpandState(path);
+      handleExpandControlClick(path, mouseX, mouseY);
   }
 
   /**
@@ -1717,16 +1749,17 @@ public class BasicTreeUI
                                               int mouseY)
   {
     boolean cntlClick = false;
-    int row = getRowForPath(tree, path);
-
-    if (! isLeaf(row))
+    if (! treeModel.isLeaf(path.getLastPathComponent()))
       {
-        Rectangle bounds = getPathBounds(tree, path);
+        int width = 8; // Only guessing.
+        Icon expandedIcon = getExpandedIcon();
+        if (expandedIcon != null)
+          width = expandedIcon.getIconWidth();
 
-        if (hasControlIcons()
-            && (mouseX < bounds.x)
-            && (mouseX > (bounds.x - getCurrentControlIcon(path).getIconWidth() - gap)))
-          cntlClick = true;
+        Insets i = tree.getInsets();
+        int left = getRowX(tree.getRowForPath(path), path.getPathCount() - 1)
+                   -getRightChildIndent() - width / 2 + i.left;
+        cntlClick = mouseX >= left && mouseX <= left + width;
       }
     return cntlClick;
   }
@@ -2203,94 +2236,29 @@ public class BasicTreeUI
      */
     public void mousePressed(MouseEvent e)
     {
-      // Any mouse click cancels the previous waiting edit action, initiated
-      // by the single click on the selected node.
-      if (startEditTimer != null)
+
+      if (tree != null && tree.isEnabled())
         {
-          startEditTimer.stop();
-          startEditTimer = null;
-        }
+          // Maybe stop editing and return.
+          if (isEditing(tree) && tree.getInvokesStopCellEditing()
+              && !stopEditing(tree))
+            return;
 
-      Point click = e.getPoint();
-      TreePath path = getClosestPathForLocation(tree, click.x, click.y);
+          int x = e.getX();
+          int y = e.getY();
+          TreePath path = getClosestPathForLocation(tree, x, y);
 
-      if (path != null)
-        {
-          Rectangle bounds = getPathBounds(tree, path);
-          int row = getRowForPath(tree, path);
-          
-          // Cancel the editing session if clicked on the different row.
-          if (tree.isEditing() && row != editingRow)
-            cancelEditing(tree);
-          
-          boolean cntlClick = isLocationInExpandControl(path, click.x, click.y);
-
-          boolean isLeaf = isLeaf(row);
-
-          TreeCellRenderer tcr = getCellRenderer();
-          Icon icon;
-          if (isLeaf)
-            icon = UIManager.getIcon("Tree.leafIcon");
-          else if (tree.isExpanded(path))
-            icon = UIManager.getIcon("Tree.openIcon");
-          else
-            icon = UIManager.getIcon("Tree.closedIcon");
-
-          if (tcr instanceof DefaultTreeCellRenderer)
+          if (path != null)
             {
-              Icon tmp = ((DefaultTreeCellRenderer) tcr).getIcon();
-              if (tmp != null)
-                icon = tmp;
-            }
+              Rectangle bounds = getPathBounds(tree, path);
+              if (SwingUtilities.isLeftMouseButton(e))
+                checkForClickInExpandControl(path, x, y);
 
-          // add gap*2 for the space before and after the text
-          if (icon != null)
-            bounds.width += icon.getIconWidth() + gap * 2;
-
-          boolean inBounds = bounds.contains(click.x, click.y);
-          if ((inBounds || cntlClick) && tree.isVisible(path))
-            {
-              if (inBounds)
+              if (x > bounds.x && x <= (bounds.x + bounds.width))
                 {
-                  TreePath currentLead = tree.getLeadSelectionPath();
-                  if (currentLead != null && currentLead.equals(path)
-                      && e.getClickCount() == 1 && tree.isEditable())
-                    {
-                      // Schedule the editing session.
-                      final TreePath editPath = path;
-
-                      if (startEditTimer != null)
-                        startEditTimer.stop();
-
-                      startEditTimer = new Timer(WAIT_TILL_EDITING,
-                        new ActionListener()
-                          {
-                            public void actionPerformed(ActionEvent e)
-                              {
-                                startEditing(editPath, EDIT);
-                              }
-                          });
-                      startEditTimer.setRepeats(false);
-                      startEditTimer.start();
-                    }
-                  else
-                    {
-                      if (e.getClickCount() == 2 && ! isLeaf(row))
-                        toggleExpandState(path);
-                      else
-                        selectPathForEvent(path, e);
-                    }
+                  if (! startEditing(path, e))
+                    selectPathForEvent(path, e);
                 }
-
-              if (cntlClick)
-                {
-                  handleExpandControlClick(path, click.x, click.y);
-                  if (cellEditor != null)
-                    cellEditor.cancelCellEditing();
-                  tree.scrollPathToVisible(path);
-                }
-              else if (tree.isEditable())
-                startEditing(path, e);
             }
         }
     }
@@ -2555,8 +2523,14 @@ public class BasicTreeUI
         }
       else if (property.equals(JTree.TREE_MODEL_PROPERTY))
         {
-          treeModel = tree.getModel();
-          treeModel.addTreeModelListener(treeModelListener);
+          setModel(tree.getModel());
+        }
+      else if (property.equals(JTree.CELL_RENDERER_PROPERTY))
+        {
+          setCellRenderer(tree.getCellRenderer());
+          // Update layout.
+          if (treeState != null)
+            treeState.invalidateSizes();
         }
     }
   }
