@@ -1,3 +1,73 @@
+2006-06-07  Roman Kennke  <kennke@aicas.com>
+
+	PR 27902
+	* gnu/regexp/BacktrackStack.java
+	* gnu/regexp/CharIndexed.java
+	* gnu/regexp/CharIndexedCharArray.java
+	* gnu/regexp/CharIndexedCharSequence.java
+	* gnu/regexp/CharIndexedInputStream.java
+	* gnu/regexp/CharIndexedString.java
+	* gnu/regexp/CharIndexedStringBuffer.java
+	* gnu/regexp/RE.java
+	* gnu/regexp/REException.java
+	* gnu/regexp/REFilterInputStream.java
+	* gnu/regexp/REMatch.java
+	* gnu/regexp/REMatchEnumeration.java
+	* gnu/regexp/RESyntax.java
+	* gnu/regexp/REToken.java
+	* gnu/regexp/RETokenAny.java
+	* gnu/regexp/RETokenBackRef.java
+	* gnu/regexp/RETokenChar.java
+	* gnu/regexp/RETokenEnd.java
+	* gnu/regexp/RETokenEndOfPreviousMatch.java
+	* gnu/regexp/RETokenEndSub.java
+	* gnu/regexp/RETokenIndependent.java
+	* gnu/regexp/RETokenLookAhead.java
+	* gnu/regexp/RETokenLookBehind.java
+	* gnu/regexp/RETokenNamedProperty.java
+	* gnu/regexp/RETokenOneOf.java
+	* gnu/regexp/RETokenPOSIX.java
+	* gnu/regexp/RETokenRange.java
+	* gnu/regexp/RETokenRepeated.java
+	* gnu/regexp/RETokenStart.java
+	* gnu/regexp/RETokenWordBoundary.java
+	* gnu/regexp/UncheckedRE.java
+	* gnu/java/util/regex/BacktrackStack.java
+	* gnu/java/util/regex/CharIndexed.java
+	* gnu/java/util/regex/CharIndexedCharArray.java
+	* gnu/java/util/regex/CharIndexedCharSequence.java
+	* gnu/java/util/regex/CharIndexedInputStream.java
+	* gnu/java/util/regex/CharIndexedString.java
+	* gnu/java/util/regex/CharIndexedStringBuffer.java
+	* gnu/java/util/regex/RE.java
+	* gnu/java/util/regex/REException.java
+	* gnu/java/util/regex/REFilterInputStream.java
+	* gnu/java/util/regex/REMatch.java
+	* gnu/java/util/regex/REMatchEnumeration.java
+	* gnu/java/util/regex/RESyntax.java
+	* gnu/java/util/regex/REToken.java
+	* gnu/java/util/regex/RETokenAny.java
+	* gnu/java/util/regex/RETokenBackRef.java
+	* gnu/java/util/regex/RETokenChar.java
+	* gnu/java/util/regex/RETokenEnd.java
+	* gnu/java/util/regex/RETokenEndOfPreviousMatch.java
+	* gnu/java/util/regex/RETokenEndSub.java
+	* gnu/java/util/regex/RETokenIndependent.java
+	* gnu/java/util/regex/RETokenLookAhead.java
+	* gnu/java/util/regex/RETokenLookBehind.java
+	* gnu/java/util/regex/RETokenNamedProperty.java
+	* gnu/java/util/regex/RETokenOneOf.java
+	* gnu/java/util/regex/RETokenPOSIX.java
+	* gnu/java/util/regex/RETokenRange.java
+	* gnu/java/util/regex/RETokenRepeated.java
+	* gnu/java/util/regex/RETokenStart.java
+	* gnu/java/util/regex/RETokenWordBoundary.java
+	* gnu/java/util/regex/UncheckedRE.java
+	Moved gnu.regexp classes to gnu.java.util.regex package.
+	* java/util/regex/Matcher.java
+	* java/util/regex/Pattern.java
+	Adjusted import statements for new package name for gnu regexp.
+
 2006-06-07  Tom Tromey  <tromey@redhat.com>
 
 	PR classpath/27905:
