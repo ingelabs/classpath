@@ -41,6 +41,7 @@ $(top_srcdir)/include/gnu_java_awt_peer_gtk_CairoSurface.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_CairoGraphics2D.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_ComponentGraphics.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_ComponentGraphicsCopy.h \
+$(top_srcdir)/include/gnu_java_awt_peer_gtk_FreetypeGlyphVector.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkFontPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGraphicsEnvironment.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkPixbufDecoder.h \

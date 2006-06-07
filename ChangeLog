@@ -1,3 +1,22 @@
+2006-06-05  Sven de Marothy  <sven@physto.se>
+
+	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java
+	* include/gnu_java_awt_peer_gtk_FreetypeGlyphVector.h
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_FreetypeGlyphVector.c
+	New files.
+
+	* gnu/java/awt/peer/gtk/GdkFontPeer.java
+	(getGlyphVector): Removed native method.
+	(createGlyphVector, getStringBounds): Use new GV class.
+
+	* include/Makefile.am
+	* native/jni/gtk-peer/Makefile.am
+	Add new files.
+
+	* include/gnu_java_awt_peer_gtk_GdkFontPeer.h
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c
+	(getGlyphVector): Removed native method.
+	
 2006-06-07  Chris Burdess  <dog@gnu.org>
 
 	* gnu/classpath/debug/TeeInputStream.java,

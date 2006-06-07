@@ -47,8 +47,10 @@ import java.awt.FontMetrics;
 import java.awt.Toolkit;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
+import java.awt.font.GlyphMetrics;
 import java.awt.font.LineMetrics;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Point2D;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.Locale;
@@ -234,23 +236,18 @@ public class GdkFontPeer extends ClasspathFontPeer
     return -1;
   }
   
-  private native GdkGlyphVector getGlyphVector(String txt, 
-                                               Font f, 
-                                               FontRenderContext ctx);
-
   public GlyphVector createGlyphVector (Font font, 
                                         FontRenderContext ctx, 
                                         CharacterIterator i)
   {
-    return getGlyphVector(buildString (i), font, ctx);
+    return new FreetypeGlyphVector(font, buildString (i), ctx);
   }
 
   public GlyphVector createGlyphVector (Font font, 
                                         FontRenderContext ctx, 
                                         int[] glyphCodes)
   {
-    return null;
-    //    return new GdkGlyphVector (font, this, ctx, glyphCodes);
+    return new FreetypeGlyphVector(font, glyphCodes, ctx);
   }
 
   public byte getBaselineFor (Font font, char c)
@@ -338,7 +335,9 @@ public class GdkFontPeer extends ClasspathFontPeer
   public Rectangle2D getStringBounds (Font font, CharacterIterator ci, 
                                       int begin, int limit, FontRenderContext frc)
   {
-    GdkGlyphVector gv = getGlyphVector(buildString (ci, begin, limit), font, frc);
+    GlyphVector gv = new FreetypeGlyphVector( font, 
+					      buildString(ci, begin, limit),
+					      frc);
     return gv.getVisualBounds();
   }
 
@@ -373,5 +372,4 @@ public class GdkFontPeer extends ClasspathFontPeer
     // the metrics cache.
     return Toolkit.getDefaultToolkit().getFontMetrics (font);
   }
-
 }
