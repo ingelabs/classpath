@@ -1,3 +1,12 @@
+2006-06-07  Chris Burdess  <dog@gnu.org>
+
+	* gnu/classpath/debug/TeeInputStream.java,
+	  gnu/classpath/debug/TeeOutputStream.java,
+	  gnu/classpath/debug/TeeReader.java,
+	  gnu/classpath/debug/TeeWriter.java: New classes for debugging streams.
+	* gnu/xml/stream/XMLParser.java: Use tee streams for debugging. Don't
+	  read more characters than absolutely necessary in tryRead method.
+
 2006-06-07  Robert Schuster  <robertschuster@fsfe.org>
 
 	* examples/gnu/classpath/examples/swing/Demo.java:

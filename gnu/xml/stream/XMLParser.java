@@ -56,6 +56,8 @@ package gnu.xml.stream;
 import java.io.BufferedInputStream;
 import java.io.EOFException;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
@@ -86,6 +88,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import gnu.java.net.CRLFInputStream;
+import gnu.classpath.debug.TeeInputStream;
+import gnu.classpath.debug.TeeReader;
 
 /**
  * An XML parser.
@@ -420,6 +424,21 @@ public class XMLParser
         ids = new HashSet();
         idrefs = new HashSet();
       }
+    String debug = System.getProperty("gnu.xml.debug.input");
+    if (debug != null)
+      {
+        try
+          {
+            File file = File.createTempFile(debug, ".xml");
+            in = new TeeInputStream(in, new FileOutputStream(file));
+          }
+        catch (IOException e)
+          {
+            RuntimeException e2 = new RuntimeException();
+            e2.initCause(e);
+            throw e2;
+          }
+      }
     pushInput(new Input(in, null, null, systemId, null, null, false, true));
   }
 
@@ -478,6 +497,21 @@ public class XMLParser
         validationStack = new LinkedList();
         ids = new HashSet();
         idrefs = new HashSet();
+      }
+    String debug = System.getProperty("gnu.xml.debug.input");
+    if (debug != null)
+      {
+        try
+          {
+            File file = File.createTempFile(debug, ".xml");
+            reader = new TeeReader(reader, new FileWriter(file));
+          }
+        catch (IOException e)
+          {
+            RuntimeException e2 = new RuntimeException();
+            e2.initCause(e);
+            throw e2;
+          }
       }
     pushInput(new Input(null, reader, null, systemId, null, null, false, true));
   }
@@ -1332,6 +1366,15 @@ public class XMLParser
         return false;
       }
     count += l2;
+    // check the characters we received first before doing additional reads
+    for (int i = 0; i < count; i++)
+      {
+        if (chars[i] != tmpBuf[i])
+          {
+            reset();
+            return false;
+          }
+      }
     while (count < len)
       {
         // force read
@@ -1341,15 +1384,14 @@ public class XMLParser
             reset();
             return false;
           }
-        tmpBuf[count++] = (char) c;
-      }
-    for (int i = 0; i < len; i++)
-      {
-        if (chars[i] != tmpBuf[i])
+        tmpBuf[count] = (char) c;
+        // check each character as it is read
+        if (chars[count] != tmpBuf[count])
           {
             reset();
             return false;
           }
+        count++;
       }
     return true;
   }
@@ -5073,7 +5115,6 @@ public class XMLParser
     void mark(int len)
       throws IOException
     {
-      //System.out.println("  mark:"+len);
       markOffset = offset;
       markLine = line;
       markColumn = column;
@@ -5116,7 +5157,9 @@ public class XMLParser
     {
       int ret;
       if (unicodeReader != null)
-        ret = unicodeReader.read(b, off, len);
+        {
+          ret = unicodeReader.read(b, off, len);
+        }
       else
         {
           byte[] b2 = new byte[len];
