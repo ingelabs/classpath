@@ -1,3 +1,16 @@
+2006-06-07  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(completeUIUninstall): Implemented.
+	(uninstallUI): Moved some bits to completeUIUninstall(). Complete
+	editing before uninstalling anything.
+	(isToggleEvent): Implemented.
+	(selectPathForEvent): Make use of isToggleEvent().
+	(ComponentHandler.componentMoved): Implemented.
+	(ComponentHandler.startTimer): Implemented.
+	(ComponentHandler.getScrollPane): Implemented.
+	(ComponentHandler.actionPerformed): Implemented.
+
 2006-06-07  Francis Kung  <fkung@redhat.com>
 
 	* javax/swing/JMenuBar.java:

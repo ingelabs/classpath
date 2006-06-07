@@ -858,9 +858,8 @@ public class BasicTreeUI
    * uninstalled.
    */
   protected void completeUIUninstall()
-  throws NotImplementedException
   {
-    // TODO: Implement this properly.
+    tree = null;
   }
 
   /**
@@ -1405,11 +1404,12 @@ public class BasicTreeUI
    */
   public void uninstallUI(JComponent c)
   {
+    completeEditing();
+
     prepareForUIUninstall();
     uninstallDefaults();
     uninstallKeyboardActions();
     uninstallListeners();
-    tree = null;
     uninstallComponents();
     completeUIUninstall();
   }
@@ -1841,10 +1841,15 @@ public class BasicTreeUI
    *         the event.
    */
   protected boolean isToggleEvent(MouseEvent event)
-  throws NotImplementedException
   {
-    // FIXME: Not implemented.
-    return true;
+    boolean toggle = false;
+    if (SwingUtilities.isLeftMouseButton(event))
+      {
+        int clickCount = tree.getToggleClickCount();
+        if (clickCount > 0 && event.getClickCount() == clickCount)
+          toggle = true;
+      }
+    return toggle;
   }
 
   /**
@@ -1889,7 +1894,8 @@ public class BasicTreeUI
       {
         // This is an ordinary event that just selects the clicked row.
         tree.setSelectionPath(path);
-        tree.setAnchorSelectionPath(path);
+        if (isToggleEvent(event))
+          toggleExpandState(path);
       }
   }
 
@@ -2026,9 +2032,33 @@ public class BasicTreeUI
      * @param e the event that occurs when moving the component
      */
     public void componentMoved(ComponentEvent e)
-    throws NotImplementedException
     {
-      // TODO: What should be done here, if anything?
+      if (timer == null)
+        {
+          JScrollPane scrollPane = getScrollPane();
+          if (scrollPane == null)
+            updateSize();
+          else
+            {
+              // Determine the scrollbar that is adjusting, if any, and
+              // start the timer for that. If no scrollbar is adjusting,
+              // we simply call updateSize().
+              scrollBar = scrollPane.getVerticalScrollBar();
+              if (scrollBar == null || !scrollBar.getValueIsAdjusting())
+                {
+                  // It's not the vertical scrollbar, try the horizontal one.
+                  scrollBar = scrollPane.getHorizontalScrollBar();
+                  if (scrollBar != null && scrollBar.getValueIsAdjusting())
+                    startTimer();
+                  else
+                    updateSize();
+                }
+              else
+                {
+                  startTimer();
+                }
+            }
+        }
     }
 
     /**
@@ -2036,9 +2066,13 @@ public class BasicTreeUI
      * the bounds
      */
     protected void startTimer()
-    throws NotImplementedException
     {
-      // TODO: Implement this properly.
+      if (timer == null)
+        {
+          timer = new Timer(200, this);
+          timer.setRepeats(true);
+        }
+      timer.start();
     }
 
     /**
@@ -2047,10 +2081,14 @@ public class BasicTreeUI
      * @return JScrollPane housing the JTree, or null if one isn't found.
      */
     protected JScrollPane getScrollPane()
-    throws NotImplementedException
     {
-      // FIXME: Not implemented.
-      return null;
+      JScrollPane found = null;
+      Component p = tree.getParent();
+      while (p != null && !(p instanceof JScrollPane))
+        p = p.getParent();
+      if (p instanceof JScrollPane)
+        found = (JScrollPane) p;
+      return found;
     }
 
     /**
@@ -2060,9 +2098,15 @@ public class BasicTreeUI
      * @param ae is the action performed
      */
     public void actionPerformed(ActionEvent ae)
-    throws NotImplementedException
     {
-      // TODO: Implement this properly.
+      if (scrollBar == null || !scrollBar.getValueIsAdjusting())
+        {
+          if (timer != null)
+            timer.stop();
+          updateSize();
+          timer = null;
+          scrollBar = null;
+        }
     }
   }
 
@@ -3448,9 +3492,8 @@ public class BasicTreeUI
    * Prepares for the UI to uninstall.
    */
   protected void prepareForUIUninstall()
-  throws NotImplementedException
   {
-    // TODO: Implement this properly.
+    // Nothing to do here yet.
   }
 
   /**
