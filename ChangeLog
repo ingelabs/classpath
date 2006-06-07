@@ -8,6 +8,26 @@
 
 2006-06-06  Mark Wielaard  <mark@klomp.org>
 
+	PR 27917
+	* gnu/java/awt/peer/gtk/CairoSurface.java (finalize): Call dispose.
+	* gnu/java/awt/peer/gtk/ComponentGraphics.java: Override dispose to
+	call disposeSurface.
+	(disposeSurface): New native method.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoGraphics2D.c
+	(Java_gnu_java_awt_peer_gtk_CairoGraphics2D_disposeNative): Free
+	pattern_pixels.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c
+	(Java_gnu_java_awt_peer_gtk_CairoSurface_drawSurface): Call
+	cairo_pattern_destroy.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphics.c
+	(Java_gnu_java_awt_peer_gtk_ComponentGraphics_disposeSurface):
+	New function to destroy the surface.
+	* include/gnu_java_awt_peer_gtk_CairoGraphics2D.h: Regenerated.
+	* include/gnu_java_awt_peer_gtk_CairoSurface.h: Likewise.
+	* include/gnu_java_awt_peer_gtk_ComponentGraphics.h: Likewise.
+
+2006-06-06  Mark Wielaard  <mark@klomp.org>
+
 	* include/jni.h (JDK1_1InitArgs): Mark pointer-to-function types
 	with JNICALL.
 
