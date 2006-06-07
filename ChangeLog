@@ -1,3 +1,8 @@
+2006-06-07  Francis Kung  <fkung@redhat.com>
+
+	* javax/swing/JMenuBar.java:
+	(getSubElements): Do not return null values.
+
 2006-06-07  Roman Kennke  <kennke@aicas.com>
 
 	PR 27902
