@@ -1,3 +1,9 @@
+2006-06-07  Robert Schuster  <robertschuster@fsfe.org>
+
+	* examples/gnu/classpath/examples/swing/Demo.java:
+	(mkMenuBar): Put look and feel radio buttons into 
+	appropriate button group.
+
 2006-06-07  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/stream/SAXParser.java,
