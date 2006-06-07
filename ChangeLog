@@ -1,5 +1,9 @@
 2006-06-05  Sven de Marothy  <sven@physto.se>
 
+	* gnu/java/awt/peer/gtk/GdkGlyphVector: Removed file.
+
+2006-06-05  Sven de Marothy  <sven@physto.se>
+
 	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java
 	* include/gnu_java_awt_peer_gtk_FreetypeGlyphVector.h
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_FreetypeGlyphVector.c
