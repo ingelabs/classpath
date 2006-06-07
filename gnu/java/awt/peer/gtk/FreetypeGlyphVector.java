@@ -102,7 +102,6 @@ public class FreetypeGlyphVector extends GlyphVector
    */
   public FreetypeGlyphVector(Font f, int[] codes, FontRenderContext frc)
   {
-    this.s = s;
     this.font = f;
     this.frc = frc;
     if( !(font.getPeer() instanceof GdkFontPeer ) )

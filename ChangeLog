@@ -1,3 +1,12 @@
+2006-06-07  Lillian Angel  <langel@redhat.com>
+
+	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java
+	(FreetypeGlyphVector): Removed assignment. Caused compilation error.
+	* java/lang/String.java
+	(codePointCount): Fixed check to match API. Shouldn't throw exception
+	if end == count. end is 1 more than the endIndex, so end == count is 
+	possible.
+
 2006-06-07  Gary Benson  <gbenson@redhat.com>
 
 	PR 24895
