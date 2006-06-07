@@ -188,6 +188,11 @@ public class FreetypeGlyphVector extends GlyphVector
 	Rectangle2D r = gm.getBounds2D();
 	glyphTransforms[ i ] = AffineTransform.getTranslateInstance(x, 0);
 	x += gm.getAdvanceX();
+	if( i > 0 )
+	  {
+	    Point2D p = getKerning( glyphCodes[ i - 1 ], glyphCodes[ i ] );
+	    x += p.getX();
+	  }
       }
   }
 

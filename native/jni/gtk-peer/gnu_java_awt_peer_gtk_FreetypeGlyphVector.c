@@ -115,7 +115,6 @@ Java_gnu_java_awt_peer_gtk_FreetypeGlyphVector_getKerning
   font = getFont(env, obj);
   ft_face = pango_fc_font_lock_face( font );
   g_assert (ft_face != NULL);
-
   FT_Get_Kerning( ft_face, rightGlyph, leftGlyph, FT_KERNING_DEFAULT, &kern );
 
   pango_fc_font_unlock_face( font );
@@ -123,7 +122,7 @@ Java_gnu_java_awt_peer_gtk_FreetypeGlyphVector_getKerning
   values[0].d = (jdouble)kern.x/64.0;
   values[1].d = (jdouble)kern.y/64.0;
 
-  cls = (*env)->FindClass (env, "java/awt/geom/Point2D.Double");
+  cls = (*env)->FindClass (env, "java/awt/geom/Point2D$Double");
   method = (*env)->GetMethodID (env, cls, "<init>", "(DD)V");
   return (*env)->NewObjectA(env, cls, method, values);
 }
@@ -136,7 +135,6 @@ Java_gnu_java_awt_peer_gtk_FreetypeGlyphVector_getMetricsNative
   jdouble *values;
   jdoubleArray retArray = NULL;
   PangoFcFont *font;
-  FT_BBox acbox;
 
   font = getFont(env, obj);
   ft_face = pango_fc_font_lock_face( font );
