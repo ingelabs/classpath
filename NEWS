@@ -27,6 +27,9 @@ Runtime interface changes:
   URLConnection.guessContentTypeFromStream.  The reference
   implementation uses libmagic (and falls back to doing nothing if
   libmagic is not available).
+* The method gnu.java.io.PlatformHelper.toCanonicalForm() has been
+  replaced with a JNI implementation of VMFile.toCanonicalForm() for
+  GNU/Posix systems.
 
 New in release 0.91 (May 15, 2006)
 

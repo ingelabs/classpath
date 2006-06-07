@@ -321,6 +321,7 @@ if test "x${COMPILE_JNI}" = xyes; then
 		  strerror_r \
                   fcntl \
 		  mmap munmap mincore msync madvise getpagesize sysconf \
+		  lstat readlink \
 		  ])
 
   LIBMAGIC=

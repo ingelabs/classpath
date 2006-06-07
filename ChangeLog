@@ -1,3 +1,15 @@
+2006-06-07  Gary Benson  <gbenson@redhat.com>
+
+	PR 24895
+	* native/jni/java-io/java_io_VMFile.c
+	(Java_java_io_VMFile_toCanonicalForm): New method.
+	* configure.ac: Added checks for lstat and readlink.
+	* include/java_io_VMFile.h: Added new method.
+	* vm/reference/java/io/VMFile.java: Use new method.
+	* gnu/java/io/PlatformHelper.java (toCanonicalForm): Removed.
+	* NEWS: Documented the above.
+	* java/io/File.java: Javadoc fix.
+
 2006-06-06  Roman Kennke  <kennke@aicas.com>
 
 	PR 27920
