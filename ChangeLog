@@ -1,3 +1,8 @@
+2006-06-07  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/peer/qt/QtToolkit.java (initToolkit): Load
+	libqtpeer.so unconditionally.
+
 2006-06-07  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/util/InputMismatchException.java:
