@@ -65,6 +65,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
+import java.awt.geom.Area;
 import java.awt.geom.Line2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.NoninvertibleTransformException;
@@ -528,10 +529,42 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   public void clip(Shape s)
   {
-    if( s == null )
-      setClip( originalClip );
+    // Do not touch clip when s == null.
+    if (s == null)
+      return;
 
-    setClip(s);
+    // If the current clip is still null, initialize it.
+    if (clip == null)
+      clip = originalClip;
+    
+    // This is so common, let's optimize this. 
+    else if (clip instanceof Rectangle2D && s instanceof Rectangle2D)
+      {
+        Rectangle2D clipRect = (Rectangle2D) clip;
+        Rectangle2D r = (Rectangle2D) s;
+        Rectangle2D.intersect(clipRect, r, clipRect);
+        // Call setClip so that subclasses get notified.
+        setClip(clipRect);
+      }
+   else
+     {
+       Area current;
+       if (clip instanceof Area)
+         current = (Area) clip;
+       else
+         current = new Area(clip);
+
+       Area intersect;
+       if (s instanceof Area)
+         intersect = (Area) s;
+       else
+         intersect = new Area(s);
+
+       current.intersect(intersect);
+       clip = current;
+       // Call setClip so that the native side gets notified.
+       setClip(clip);
+     }
   }
 
   public Paint getPaint()

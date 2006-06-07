@@ -1,3 +1,10 @@
+2006-06-07  Roman Kennke  <kennke@aicas.com>
+
+	PR 27833
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(clip(Shape)): Implemented correctly, so that the current shape
+	gets intersected by the parameter shape.
+
 2006-06-07  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/math/BigDecimal.java:
@@ -33,7 +40,7 @@
 	* NEWS: Documented the above.
 	* java/io/File.java: Javadoc fix.
 
-2006-06-06  Roman Kennke  <kennke@aicas.com>
+2006-06-07  Roman Kennke  <kennke@aicas.com>
 
 	PR 27920
 	* javax/swing/JTree.java
@@ -84,11 +91,11 @@
 	(setModel): Clear the tables and update the layout. Added null
 	check to prevent NPE.
 
-2006-06-05  Sven de Marothy  <sven@physto.se>
+2006-06-07  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/peer/gtk/GdkGlyphVector: Removed file.
 
-2006-06-05  Sven de Marothy  <sven@physto.se>
+2006-06-07  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java
 	* include/gnu_java_awt_peer_gtk_FreetypeGlyphVector.h
