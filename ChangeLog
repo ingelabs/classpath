@@ -1,3 +1,7 @@
+2006-06-07  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* native/jawt/Makefile.am (AM_LDFLAGS): Add XTEST_LIBS.
+
 2006-06-07  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java
