@@ -576,6 +576,19 @@ class TransformerImpl
           }
         catch (IOException e)
           {
+            if (errorListener != null)
+              {
+                try
+                  {
+                    errorListener.error(new TransformerException(e));
+                  }
+                catch (TransformerException e2)
+                  {
+                    e2.printStackTrace(System.err);
+                  }
+              }
+            else
+              e.printStackTrace(System.err);
           }
       }
   }

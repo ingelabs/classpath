@@ -4250,97 +4250,131 @@ public class XMLParser
   public static void main(String[] args)
     throws Exception
   {
+    boolean validating = false;
+    boolean namespaceAware = false;
     boolean xIncludeAware = false;
-    if (args.length > 1 && "-x".equals(args[1]))
-      xIncludeAware = true;
-    XMLParser p = new XMLParser(new java.io.FileInputStream(args[0]),
-                                absolutize(null, args[0]),
-                                true, // validating
-                                true, // namespaceAware
-                                true, // coalescing,
-                                true, // replaceERefs
-                                true, // externalEntities
-                                true, // supportDTD
-                                true, // baseAware
-                                true, // stringInterning
-                                true, // extendedEventTypes
-                                null,
-                                null);
-    XMLStreamReader reader = p;
-    if (xIncludeAware)
-      reader = new XIncludeFilter(p, args[0], true, true, true);
-    try
+    int pos = 0;
+    while (pos < args.length && args[pos].startsWith("-"))
       {
-        int event;
-        //do
-        while (reader.hasNext())
+        if ("-x".equals(args[pos]))
+          xIncludeAware = true;
+        else if ("-v".equals(args[pos]))
+          validating = true;
+        else if ("-n".equals(args[pos]))
+          namespaceAware = true;
+        pos++;
+      }
+    if (pos >= args.length)
+      {
+        System.out.println("Syntax: XMLParser [-n] [-v] [-x] <file> [<file2> [...]]");
+        System.out.println("\t-n: use namespace aware mode");
+        System.out.println("\t-v: use validating parser");
+        System.out.println("\t-x: use XInclude aware mode");
+        System.exit(2);
+      }
+    while (pos < args.length)
+      {
+        XMLParser p = new XMLParser(new java.io.FileInputStream(args[pos]),
+                                    absolutize(null, args[pos]),
+                                    validating, // validating
+                                    namespaceAware, // namespaceAware
+                                    true, // coalescing,
+                                    true, // replaceERefs
+                                    true, // externalEntities
+                                    true, // supportDTD
+                                    true, // baseAware
+                                    true, // stringInterning
+                                    true, // extendedEventTypes
+                                    null,
+                                    null);
+        XMLStreamReader reader = p;
+        if (xIncludeAware)
+          reader = new XIncludeFilter(p, args[pos], true, true, true);
+        try
           {
-            event = reader.next();
-            Location loc = reader.getLocation();
-            System.out.print(loc.getLineNumber()+":"+loc.getColumnNumber()+" ");
-            switch (event)
+            int event;
+            //do
+            while (reader.hasNext())
               {
-              case XMLStreamConstants.START_DOCUMENT:
-                System.out.println("START_DOCUMENT version="+reader.getVersion()+
-                                   " encoding="+reader.getEncoding());
-                break;
-              case XMLStreamConstants.END_DOCUMENT:
-                System.out.println("END_DOCUMENT");
-                break;
-              case XMLStreamConstants.START_ELEMENT:
-                System.out.println("START_ELEMENT "+reader.getName());
-                int l = reader.getNamespaceCount();
-                for (int i = 0; i < l; i++)
-                  System.out.println("\tnamespace "+reader.getNamespacePrefix(i)+
-                                     "='"+reader.getNamespaceURI(i)+"'");
-                l = reader.getAttributeCount();
-                for (int i = 0; i < l; i++)
-                  System.out.println("\tattribute "+reader.getAttributeName(i)+
-                                     "='"+reader.getAttributeValue(i)+"'");
-                break;
-              case XMLStreamConstants.END_ELEMENT:
-                System.out.println("END_ELEMENT "+reader.getName());
-                break;
-              case XMLStreamConstants.CHARACTERS:
-                System.out.println("CHARACTERS '"+encodeText(reader.getText())+"'");
-                break;
-              case XMLStreamConstants.CDATA:
-                System.out.println("CDATA '"+encodeText(reader.getText())+"'");
-                break;
-              case XMLStreamConstants.SPACE:
-                System.out.println("SPACE '"+encodeText(reader.getText())+"'");
-                break;
-              case XMLStreamConstants.DTD:
-                System.out.println("DTD "+reader.getText());
-                break;
-              case XMLStreamConstants.ENTITY_REFERENCE:
-                System.out.println("ENTITY_REFERENCE "+reader.getText());
-                break;
-              case XMLStreamConstants.COMMENT:
-                System.out.println("COMMENT '"+encodeText(reader.getText())+"'");
-                break;
-              case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                System.out.println("PROCESSING_INSTRUCTION "+reader.getPITarget()+
-                                   " "+reader.getPIData());
-                break;
-              case START_ENTITY:
-                System.out.println("START_ENTITY "+reader.getText());
-                break;
-              case END_ENTITY:
-                System.out.println("END_ENTITY "+reader.getText());
-                break;
-              default:
-                System.out.println("Unknown event: "+event);
+                event = reader.next();
+                Location loc = reader.getLocation();
+                System.out.print(loc.getLineNumber() + ":" + 
+                                 loc.getColumnNumber() + " ");
+                switch (event)
+                  {
+                  case XMLStreamConstants.START_DOCUMENT:
+                    System.out.println("START_DOCUMENT version=" +
+                                       reader.getVersion() +
+                                       " encoding=" +
+                                       reader.getEncoding());
+                    break;
+                  case XMLStreamConstants.END_DOCUMENT:
+                    System.out.println("END_DOCUMENT");
+                    break;
+                  case XMLStreamConstants.START_ELEMENT:
+                    System.out.println("START_ELEMENT " +
+                                       reader.getName());
+                    int l = reader.getNamespaceCount();
+                    for (int i = 0; i < l; i++)
+                      System.out.println("\tnamespace " +
+                                         reader.getNamespacePrefix(i) + "='" +
+                                         reader.getNamespaceURI(i)+"'");
+                    l = reader.getAttributeCount();
+                    for (int i = 0; i < l; i++)
+                      System.out.println("\tattribute " +
+                                         reader.getAttributeName(i) + "='" +
+                                         reader.getAttributeValue(i) + "'");
+                    break;
+                  case XMLStreamConstants.END_ELEMENT:
+                    System.out.println("END_ELEMENT " + reader.getName());
+                    break;
+                  case XMLStreamConstants.CHARACTERS:
+                    System.out.println("CHARACTERS '" +
+                                       encodeText(reader.getText()) + "'");
+                    break;
+                  case XMLStreamConstants.CDATA:
+                    System.out.println("CDATA '" +
+                                       encodeText(reader.getText()) + "'");
+                    break;
+                  case XMLStreamConstants.SPACE:
+                    System.out.println("SPACE '" +
+                                       encodeText(reader.getText()) + "'");
+                    break;
+                  case XMLStreamConstants.DTD:
+                    System.out.println("DTD " + reader.getText());
+                    break;
+                  case XMLStreamConstants.ENTITY_REFERENCE:
+                    System.out.println("ENTITY_REFERENCE " + reader.getText());
+                    break;
+                  case XMLStreamConstants.COMMENT:
+                    System.out.println("COMMENT '" +
+                                       encodeText(reader.getText()) + "'");
+                    break;
+                  case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                    System.out.println("PROCESSING_INSTRUCTION " +
+                                       reader.getPITarget() + " " +
+                                       reader.getPIData());
+                    break;
+                  case START_ENTITY:
+                    System.out.println("START_ENTITY " + reader.getText());
+                    break;
+                  case END_ENTITY:
+                    System.out.println("END_ENTITY " + reader.getText());
+                    break;
+                  default:
+                    System.out.println("Unknown event: " + event);
+                  }
               }
           }
-      }
-    catch (XMLStreamException e)
-      {
-        Location l = reader.getLocation();
-        System.out.println("At line "+l.getLineNumber()+
-                           ", column "+l.getColumnNumber()+
-                           " of "+l.getSystemId());
-        throw e;
+        catch (XMLStreamException e)
+          {
+            Location l = reader.getLocation();
+            System.out.println("At line "+l.getLineNumber()+
+                               ", column "+l.getColumnNumber()+
+                               " of "+l.getSystemId());
+            throw e;
+          }
+        pos++;
       }
   }
 

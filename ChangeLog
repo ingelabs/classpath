@@ -1,3 +1,11 @@
+2006-06-07  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/stream/SAXParser.java,
+	  gnu/xml/stream/XMLParser.java: Add command line options for setting
+	  parsing parameters (for simpler debugging).
+	* gnu/xml/transform/TransformerImpl.java: Try to ensure that I/O error
+	  closing output stream is propagated to application.
+
 2006-06-06  Mark Wielaard  <mark@klomp.org>
 
 	* include/jni.h (JDK1_1InitArgs): Mark pointer-to-function types
