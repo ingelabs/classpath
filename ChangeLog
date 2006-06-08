@@ -1,3 +1,8 @@
+2006-06-08  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicProgressBarUI.java
+	(paintString): Fixed to paint string at the correct location.
+
 2006-06-08  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java
