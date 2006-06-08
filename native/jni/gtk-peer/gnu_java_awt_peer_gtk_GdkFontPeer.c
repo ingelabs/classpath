@@ -59,8 +59,6 @@ enum java_awt_font_baseline {
   java_awt_font_HANGING_BASELINE = 2
 };
 
-static PangoAttrList *attrs = NULL;
-
 JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GdkFontPeer_initStaticState 
   (JNIEnv *env, jclass clazz)

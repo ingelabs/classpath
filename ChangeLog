@@ -1,3 +1,8 @@
+2006-06-08  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c
+	(attrs): Removed unused static.
+
 2006-06-08  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicScrollPaneUI.java
