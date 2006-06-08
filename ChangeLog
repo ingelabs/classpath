@@ -1,3 +1,10 @@
+2006-06-08  Tom Fitzsimmons  <fitzsim@redhat.com>
+	    Lillian Angel  <langel@redhat.com>
+
+	* native/plugin/gcjwebplugin.cc
+	(NP_Shutdown): Added code to free plugin mutex and whitelist file.
+	Also, reset initialized field.
+
 2006-06-08  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicProgressBarUI.java

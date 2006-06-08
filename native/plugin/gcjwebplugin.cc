@@ -1740,11 +1740,20 @@ NP_Shutdown (void)
   PLUGIN_DEBUG ("NP_Shutdown");
 
   // Free mutex.
-  g_mutex_free (plugin_instance_mutex);
-  plugin_instance_mutex = NULL;
+  if (plugin_instance_mutex)
+    {
+      g_mutex_free (plugin_instance_mutex);
+      plugin_instance_mutex = NULL;
+    }
 
-  g_io_channel_close (whitelist_file);
-
+  if (whitelist_file)
+    {
+      g_io_channel_close (whitelist_file);
+      whitelist_file = NULL;
+    }
+  
+  initialized = false;
+  
   PLUGIN_DEBUG ("NP_Shutdown return");
 
   return NPERR_NO_ERROR;
