@@ -1,3 +1,12 @@
+2006-06-08  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicScrollPaneUI.java
+	(getInputMap): New method,
+	(getActionMap): New method,
+	(createActionMap): New method,
+	(installKeyboardActions): Implemented,
+	(uninstallKeyboardActions): Implemented.
+
 2006-06-08  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/border/MatteBorder.java:
