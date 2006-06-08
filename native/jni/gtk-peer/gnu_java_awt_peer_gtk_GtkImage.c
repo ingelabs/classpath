@@ -117,9 +117,13 @@ Java_gnu_java_awt_peer_gtk_GtkImage_loadImageFromData
 
   if (pixbuf == NULL)
     {
+      g_object_unref (loader);
       createRawData (env, obj, NULL);
       return JNI_FALSE;
     }
+
+  g_object_ref (pixbuf);
+  g_object_unref (loader);
 
   width =  gdk_pixbuf_get_width (pixbuf);
   height = gdk_pixbuf_get_height (pixbuf);

@@ -1,5 +1,12 @@
 2006-06-08  Mark Wielaard  <mark@klomp.org>
 
+	PR 27917
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c
+	(Java_gnu_java_awt_peer_gtk_GtkImage_loadImageFromData): Ref pixbuf
+	and unref loader.
+
+2006-06-08  Mark Wielaard  <mark@klomp.org>
+
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c
 	(attrs): Removed unused static.
 
