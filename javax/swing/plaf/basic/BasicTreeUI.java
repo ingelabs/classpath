@@ -1325,6 +1325,31 @@ public class BasicTreeUI
     am.put(action.getValue(Action.NAME), action);
     action = new TreeIncrementAction(1, "selectNextChangeLead");
     am.put(action.getValue(Action.NAME), action);
+
+    // TreeTraverseAction.
+    action = new TreeTraverseAction(-1, "selectParent");
+    am.put(action.getValue(Action.NAME), action);
+    action = new TreeTraverseAction(1, "selectChild");
+    am.put(action.getValue(Action.NAME), action);
+    
+    // TreeToggleAction.
+    action = new TreeToggleAction("toggleAndAnchor");
+    am.put(action.getValue(Action.NAME), action);
+
+    // TreePageAction.
+    action = new TreePageAction(-1, "scrollUpChangeSelection");
+    am.put(action.getValue(Action.NAME), action);
+    action = new TreePageAction(-1, "scrollUpExtendSelection");
+    am.put(action.getValue(Action.NAME), action);
+    action = new TreePageAction(-1, "scrollUpChangeLead");
+    am.put(action.getValue(Action.NAME), action);
+    action = new TreePageAction(1, "scrollDownChangeSelection");
+    am.put(action.getValue(Action.NAME), action);
+    action = new TreePageAction(1, "scrollDownExtendSelection");
+    am.put(action.getValue(Action.NAME), action);
+    action = new TreePageAction(1, "scrollDownChangeLead");
+    am.put(action.getValue(Action.NAME), action);
+
     return am;
   }
 
@@ -3035,6 +3060,7 @@ public class BasicTreeUI
     public TreePageAction(int direction, String name)
     {
       this.direction = direction;
+      putValue(Action.NAME, name);
     }
 
     /**
@@ -3043,9 +3069,95 @@ public class BasicTreeUI
      * @param e is the event that occured
      */
     public void actionPerformed(ActionEvent e)
-    throws NotImplementedException
     {
-      // TODO: Implement this properly.
+      String command = (String) getValue(Action.NAME);
+      boolean extendSelection = command.equals("scrollUpExtendSelection")
+                                || command.equals("scrollDownExtendSelection");
+      boolean changeSelection = command.equals("scrollUpChangeSelection")
+                                || command.equals("scrollDownChangeSelection");
+
+      // Disable change lead, unless we are in discontinuous mode.
+      if (!extendSelection && !changeSelection
+          && tree.getSelectionModel().getSelectionMode() !=
+            TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION)
+        {
+          changeSelection = true;
+        }
+
+      int rowCount = getRowCount(tree);
+      if (rowCount > 0 && treeSelectionModel != null)
+        {
+          Dimension maxSize = tree.getSize();
+          TreePath lead = tree.getLeadSelectionPath();
+          TreePath newPath = null;
+          Rectangle visible = tree.getVisibleRect();
+          if (direction == -1) // The RI handles -1 as up.
+            {
+              newPath = getClosestPathForLocation(tree, visible.x, visible.y);
+              if (newPath.equals(lead)) // Corner case, adjust one page up.
+                {
+                  visible.y = Math.max(0, visible.y - visible.height);
+                  newPath = getClosestPathForLocation(tree, visible.x,
+                                                      visible.y);
+                }
+            }
+          else // +1 is down.
+            {
+              visible.y = Math.min(maxSize.height,
+                                   visible.y + visible.height - 1);
+              newPath = getClosestPathForLocation(tree, visible.x, visible.y);
+              if (newPath.equals(lead)) // Corner case, adjust one page down.
+                {
+                  visible.y = Math.min(maxSize.height,
+                                       visible.y + visible.height - 1);
+                  newPath = getClosestPathForLocation(tree, visible.x,
+                                                      visible.y);
+                }
+            }
+
+          // Determine new visible rect.
+          Rectangle newVisible = getPathBounds(tree, newPath);
+          newVisible.x = visible.x;
+          newVisible.width = visible.width;
+          if (direction == -1)
+            {
+              newVisible.height = visible.height;
+            }
+          else
+            {
+              newVisible.y -= (visible.height - newVisible.height);
+              newVisible.height = visible.height;
+            }
+
+          if (extendSelection)
+            {
+              // Extend selection.
+              TreePath anchorPath = tree.getAnchorSelectionPath();
+              if (anchorPath == null)
+                {
+                  tree.setSelectionPath(newPath);
+                }
+              else
+                {
+                  int newIndex = getRowForPath(tree, newPath);
+                  int anchorIndex = getRowForPath(tree, anchorPath);
+                  tree.setSelectionInterval(Math.min(anchorIndex, newIndex),
+                                            Math.max(anchorIndex, newIndex));
+                  tree.setAnchorSelectionPath(anchorPath);
+                  tree.setLeadSelectionPath(newPath);
+                }
+            }
+          else if (changeSelection)
+            {
+              tree.setSelectionPath(newPath);
+            }
+          else // Change lead.
+            {
+              tree.setLeadSelectionPath(newPath);
+            }
+
+          tree.scrollRectToVisible(newVisible);
+        }
     }
 
     /**
@@ -3054,10 +3166,8 @@ public class BasicTreeUI
      * @return true if the action is enabled.
      */
     public boolean isEnabled()
-    throws NotImplementedException
     {
-      // FIXME: Not implemented.
-      return false;
+      return (tree != null) && tree.isEnabled();
     }
   }// TreePageAction
 
@@ -3113,13 +3223,13 @@ public class BasicTreeUI
       extends AbstractAction
   {
     /**
-     * Constructor
+     * Creates a new TreeToggleAction.
      * 
      * @param name is the name of <code>Action</code> field
      */
     public TreeToggleAction(String name)
     {
-      // Nothing to do here.
+      putValue(Action.NAME, name);
     }
 
     /**
@@ -3128,9 +3238,18 @@ public class BasicTreeUI
      * @param e the event that occured
      */
     public void actionPerformed(ActionEvent e)
-    throws NotImplementedException
     {
-      // TODO: Implement this properly.
+      int selected = tree.getLeadSelectionRow();
+      if (selected != -1 && isLeaf(selected))
+        {
+          TreePath anchorPath = tree.getAnchorSelectionPath();
+          TreePath leadPath = tree.getLeadSelectionPath();
+          toggleExpandState(getPathForRow(tree, selected));
+          // Need to do this, so that the toggling doesn't mess up the lead
+          // and anchor.
+          tree.setLeadSelectionPath(leadPath);
+          tree.setAnchorSelectionPath(anchorPath);
+        }
     }
 
     /**
@@ -3139,10 +3258,8 @@ public class BasicTreeUI
      * @return true if the action is enabled, false otherwise
      */
     public boolean isEnabled()
-    throws NotImplementedException
     {
-      // FIXME: Not implemented.
-      return false;
+      return (tree != null) && tree.isEnabled();
     }
   } // TreeToggleAction
 
@@ -3167,6 +3284,7 @@ public class BasicTreeUI
     public TreeTraverseAction(int direction, String name)
     {
       this.direction = direction;
+      putValue(Action.NAME, name);
     }
 
     /**
@@ -3180,7 +3298,8 @@ public class BasicTreeUI
       if (current == null)
         return;
 
-      if (e.getActionCommand().equals("selectParent"))
+      String command = (String) getValue(Action.NAME);
+      if (command.equals("selectParent"))
         {
           if (current == null)
             return;
@@ -3200,7 +3319,7 @@ public class BasicTreeUI
                 tree.setSelectionPath(parent);
             }
         }
-      else if (e.getActionCommand().equals("selectChild"))
+      else if (command.equals("selectChild"))
         {
           Object node = current.getLastPathComponent();
           int nc = treeModel.getChildCount(node);
@@ -3225,10 +3344,8 @@ public class BasicTreeUI
      * @return true if the action is enabled, false otherwise
      */
     public boolean isEnabled()
-    throws NotImplementedException
     {
-      // TODO: Implement this properly
-      return false;
+      return (tree != null) && tree.isEnabled();
     }
   }
 

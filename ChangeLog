@@ -1,6 +1,20 @@
 2006-06-08  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java
+	(createDefaultActions): Added new actions.
+	(TreePageAction.TreePageAction): Set action name.
+	(TreePageAction.actionPerformed): Implemented.
+	(TreePageAction.isEnabled): Implemented.
+	(TreeToggleAction.TreePageAction): Set action name.
+	(TreeToggleAction.actionPerformed): Implemented.
+	(TreeToggleAction.isEnabled): Implemented.
+	(TreeTraverseAction.TreeTraverseAction): Set action name.
+	(TreeTraverseAction.actionPerformed): Use action name as command.
+	(TreeTraverseAction.isEnabled): Implemented.
+
+2006-06-08  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java
 	(installKeyboardActions): Rewritten to correctly install the UI
 	input and action maps.
 	(getActionMap): New helper method.
