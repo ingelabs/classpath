@@ -657,7 +657,7 @@ public final class Bidi
                                      ? prevStrong
                                      : embeddingDirection);
                     for (int j = neutralStart; j < i; ++j)
-                      types[i] = override;
+                      types[j] = override;
                   }
                 prevStrong = newStrong;
                 neutralStart = -1;
