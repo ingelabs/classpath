@@ -1,3 +1,14 @@
+2006-06-08  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/LightweightDispatcher.java
+	(handleMouseEvent): Replaced calls to AWTUtilities.convertPoint()
+	with convertPointToChild(). This is more efficient and avoids
+	problems with getLocationOnScreen().
+	(findTarget): Check for component beeing showing() early.
+	Simplified AWTUtilities.convertPoint() to a simple substraction
+	operation.
+	(convertPointToChild): New helper method.
+
 2006-06-08  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* native/plugin/gcjwebplugin.cc (SECURITY_DESCRIPTION): Update
