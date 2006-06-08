@@ -120,7 +120,7 @@ exception statement from your version. */
 // Security dialog messages.
 #define RESPONSE_TRUST_APPLET "Trust Applet"
 #define RESPONSE_TRUST_APPLET_ADD_TO_LIST "Trust Applet and Add to Whitelist"
-#define WHITELIST_FILENAME PLUGIN_DATA_DIRECTORY "/whitelist.txt"
+#define WHITELIST_FILENAME DATA_DIRECTORY "/whitelist.txt"
 #define SECURITY_WARNING                                        \
   "%s wants to load an applet.\n"                               \
   "GNU Classpath's security implementation is not complete.\n"  \
@@ -326,7 +326,7 @@ GCJ_New (NPMIMEType pluginType, NPP instance, uint16 mode,
   // pipe.
 
   // data->in_pipe_name
-  data->in_pipe_name = g_strdup_printf (PLUGIN_DATA_DIRECTORY
+  data->in_pipe_name = g_strdup_printf (DATA_DIRECTORY
                                         "/gcj-%s-appletviewer-to-plugin",
                                         data->instance_string);
   if (!data->in_pipe_name)
@@ -349,7 +349,7 @@ GCJ_New (NPMIMEType pluginType, NPP instance, uint16 mode,
   // output pipe.
 
   // data->out_pipe_name
-  data->out_pipe_name = g_strdup_printf (PLUGIN_DATA_DIRECTORY
+  data->out_pipe_name = g_strdup_printf (DATA_DIRECTORY
                                          "/gcj-%s-plugin-to-appletviewer",
                                          data->instance_string);
 
@@ -1608,16 +1608,16 @@ NP_Initialize (NPNetscapeFuncs* browserTable, NPPluginFuncs* pluginTable)
 
   // Make sure the plugin data directory exists, creating it if
   // necessary.
-  if (!g_file_test (PLUGIN_DATA_DIRECTORY,
+  if (!g_file_test (DATA_DIRECTORY,
                     (GFileTest) (G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR)))
     {
       int file_error = 0;
 
-      file_error = g_mkdir (PLUGIN_DATA_DIRECTORY, 0700);
+      file_error = g_mkdir (DATA_DIRECTORY, 0700);
       if (file_error != 0)
         {
           PLUGIN_ERROR_TWO ("Failed to create data directory "
-                            PLUGIN_DATA_DIRECTORY " ",
+                            DATA_DIRECTORY " ",
                             strerror (errno));
           return NPERR_GENERIC_ERROR;
         }
