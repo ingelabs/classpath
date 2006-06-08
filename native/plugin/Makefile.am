@@ -4,7 +4,6 @@ libgcjwebplugin_la_SOURCES = gcjwebplugin.cc
 
 libgcjwebplugin_la_CXXFLAGS = \
 	-Wall -DAPPLETVIEWER_EXECUTABLE="\"$(bindir)/appletviewer\"" \
-	-DDATA_DIRECTORY="\"$(HOME)/.gcjwebplugin\"" \
 	$(MOZILLA_CFLAGS) $(GLIB_CFLAGS) $(GTK_CFLAGS)
 
 libgcjwebplugin_la_LDFLAGS = -avoid-version \

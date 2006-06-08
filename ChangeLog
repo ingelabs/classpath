@@ -1,6 +1,19 @@
 2006-06-08  Lillian Angel  <langel@redhat.com>
 
 	* native/plugin/Makefile.am:
+	Removed DATA_DIRECTORY.
+	* native/plugin/gcjwebplugin.cc:
+	Added new global fields for whitelist_file
+	and data_directory. Removed WHITELIST_FILE.
+	(NP_Initialize): Initialized new fields. Also,
+	Changed to use new fields.
+	(NP_Shutdown): Freed data_directory.
+	(GCJ_New): Changed to use new fields.
+	(plugin_ask_user_about_documentbase): Likewise.
+
+2006-06-08  Lillian Angel  <langel@redhat.com>
+
+	* native/plugin/Makefile.am:
 	Changed DATA_DIRECTORY to be ~/.gcjwebplugin.
 	* native/plugin/gcjwebplugin.cc:
 	Changed all instances of PLUGIN_DATA_DIRECTORY
