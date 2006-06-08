@@ -1,3 +1,17 @@
+2006-06-08  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(installKeyboardActions): Rewritten to correctly install the UI
+	input and action maps.
+	(getActionMap): New helper method.
+	(createDefaultActionMap): New helper method.
+	(TreeHomeAction.TreeHomeAction()): Implemented.
+	(TreeHomeAction.actionPerformed): Implemented.
+	(TreeHomeAction.isEnabled): Implemented.
+	(TreeIncrementAction.TreeIncrementAction()): Implemented.
+	(TreeIncrementAction.actionPerformed): Use action name as command.
+	(TreeIncrementAction.isEnabled): Implemented.
+
 2006-06-08  Mark Wielaard  <mark@klomp.org>
 
 	PR 27917

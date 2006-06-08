@@ -80,7 +80,6 @@ import javax.swing.JComponent;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
-import javax.swing.KeyStroke;
 import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -96,7 +95,6 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.plaf.ActionMapUIResource;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.InputMapUIResource;
 import javax.swing.plaf.TreeUI;
 import javax.swing.tree.AbstractLayoutCache;
 import javax.swing.tree.DefaultTreeCellEditor;
@@ -1256,40 +1254,78 @@ public class BasicTreeUI
    */
   protected void installKeyboardActions()
   {
-    InputMap focusInputMap = (InputMap) UIManager.get("Tree.focusInputMap");
-    InputMapUIResource parentInputMap = new InputMapUIResource();
-    ActionMap parentActionMap = new ActionMapUIResource();
+    InputMap focusInputMap =
+      (InputMap) SharedUIDefaults.get("Tree.focusInputMap");
+    SwingUtilities.replaceUIInputMap(tree, JComponent.WHEN_FOCUSED,
+                                     focusInputMap);
+    InputMap ancestorInputMap =
+      (InputMap) SharedUIDefaults.get("Tree.ancestorInputMap");
+    SwingUtilities.replaceUIInputMap(tree,
+                                 JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
+                                 ancestorInputMap);
+
     action = new TreeAction();
-    Object keys[] = focusInputMap.allKeys();
 
-    for (int i = 0; i < keys.length; i++)
+    SwingUtilities.replaceUIActionMap(tree, getActionMap());
+  }
+
+  /**
+   * Creates and returns the shared action map for JTrees.
+   *
+   * @return the shared action map for JTrees
+   */
+  private ActionMap getActionMap()
+  {
+    ActionMap am = (ActionMap) UIManager.get("Tree.actionMap");
+    if (am == null)
       {
-        parentInputMap.put(
-                           KeyStroke.getKeyStroke(
-                                                  ((KeyStroke) keys[i]).getKeyCode(),
-                                                  convertModifiers(((KeyStroke) keys[i]).getModifiers())),
-                           (String) focusInputMap.get((KeyStroke) keys[i]));
-
-        parentInputMap.put(
-                           KeyStroke.getKeyStroke(
-                                                  ((KeyStroke) keys[i]).getKeyCode(),
-                                                  ((KeyStroke) keys[i]).getModifiers()),
-                           (String) focusInputMap.get((KeyStroke) keys[i]));
-
-        parentActionMap.put(
-                            (String) focusInputMap.get((KeyStroke) keys[i]),
-                            new ActionListenerProxy(
-                                                    action,
-                                                    (String) focusInputMap.get((KeyStroke) keys[i])));
-
+        am = createDefaultActions();
+        UIManager.getLookAndFeelDefaults().put("Tree.actionMap", am);
       }
+    return am;
+  }
 
-    parentInputMap.setParent(tree.getInputMap(
-                                              JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).getParent());
-    parentActionMap.setParent(tree.getActionMap().getParent());
-    tree.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).setParent(
-                                                                              parentInputMap);
-    tree.getActionMap().setParent(parentActionMap);
+  /**
+   * Creates the default actions when there are none specified by the L&F.
+   *
+   * @return the default actions
+   */
+  private ActionMap createDefaultActions()
+  {
+    ActionMapUIResource am = new ActionMapUIResource();
+    Action action;
+
+    action= new TreeAction();
+    am.put(action.getValue(Action.NAME), action);
+
+    // TreeHomeAction.
+    action= new TreeHomeAction(-1, "selectFirst");
+    am.put(action.getValue(Action.NAME), action);
+    action= new TreeHomeAction(-1, "selectFirstChangeLead");
+    am.put(action.getValue(Action.NAME), action);
+    action= new TreeHomeAction(-1, "selectFirstExtendSelection");
+    am.put(action.getValue(Action.NAME), action);
+    action= new TreeHomeAction(1, "selectLast");
+    am.put(action.getValue(Action.NAME), action);
+    action= new TreeHomeAction(1, "selectLastChangeLead");
+    am.put(action.getValue(Action.NAME), action);
+    action= new TreeHomeAction(1, "selectLastExtendSelection");
+    am.put(action.getValue(Action.NAME), action);
+
+    // TreeIncrementAction.
+    action = new TreeIncrementAction(-1, "selectPrevious");
+    am.put(action.getValue(Action.NAME), action);
+    action = new TreeIncrementAction(-1, "selectPreviousExtendSelection");
+    am.put(action.getValue(Action.NAME), action);
+    action = new TreeIncrementAction(-1, "selectPreviousChangeLead");
+    am.put(action.getValue(Action.NAME), action);
+    action = new TreeIncrementAction(1, "selectNext");
+    am.put(action.getValue(Action.NAME), action);
+    action = new TreeIncrementAction(1, "selectNextExtendSelection");
+    am.put(action.getValue(Action.NAME), action);
+    action = new TreeIncrementAction(1, "selectNextChangeLead");
+    am.put(action.getValue(Action.NAME), action);
+    return am;
   }
 
   /**
@@ -2695,15 +2731,16 @@ public class BasicTreeUI
     protected int direction;
 
     /**
-     * Constructor
+     * Creates a new TreeHomeAction instance.
      * 
-     * @param direction - it is home or end
-     * @param name is the name of the direction
+     * @param dir the direction to go to, <code>-1</code> for home,
+     *        <code>1</code> for end
+     * @param name the name of the action
      */
-    public TreeHomeAction(int direction, String name)
-    throws NotImplementedException
+    public TreeHomeAction(int dir, String name)
     {
-      // TODO: Implement this properly
+      direction = dir;
+      putValue(Action.NAME, name);
     }
 
     /**
@@ -2712,9 +2749,62 @@ public class BasicTreeUI
      * @param e is the event that occured
      */
     public void actionPerformed(ActionEvent e)
-    throws NotImplementedException
     {
-      // TODO: Implement this properly
+      if (tree != null)
+        {
+          String command = (String) getValue(Action.NAME);
+          if (command.equals("selectFirst"))
+            {
+              ensureRowsAreVisible(0, 0);
+              tree.setSelectionInterval(0, 0);
+            }
+          if (command.equals("selectFirstChangeLead"))
+            {
+              ensureRowsAreVisible(0, 0);
+              tree.setLeadSelectionPath(getPathForRow(tree, 0));
+            }
+          if (command.equals("selectFirstExtendSelection"))
+            {
+              ensureRowsAreVisible(0, 0);
+              TreePath anchorPath = tree.getAnchorSelectionPath();
+              if (anchorPath == null)
+                tree.setSelectionInterval(0, 0);
+              else
+                {
+                  int anchorRow = getRowForPath(tree, anchorPath);
+                  tree.setSelectionInterval(0, anchorRow);
+                  tree.setAnchorSelectionPath(anchorPath);
+                  tree.setLeadSelectionPath(getPathForRow(tree, 0));
+                }
+            }
+          else if (command.equals("selectLast"))
+            {
+              int end = getRowCount(tree) - 1;
+              ensureRowsAreVisible(end, end);
+              tree.setSelectionInterval(end, end);
+            }
+          else if (command.equals("selectLastChangeLead"))
+            {
+              int end = getRowCount(tree) - 1;
+              ensureRowsAreVisible(end, end);
+              tree.setLeadSelectionPath(getPathForRow(tree, end));
+            }
+          else if (command.equals("selectLastExtendSelection"))
+            {
+              int end = getRowCount(tree) - 1;
+              ensureRowsAreVisible(end, end);
+              TreePath anchorPath = tree.getAnchorSelectionPath();
+              if (anchorPath == null)
+                tree.setSelectionInterval(end, end);
+              else
+                {
+                  int anchorRow = getRowForPath(tree, anchorPath);
+                  tree.setSelectionInterval(end, anchorRow);
+                  tree.setAnchorSelectionPath(anchorPath);
+                  tree.setLeadSelectionPath(getPathForRow(tree, end));
+                }
+            }
+        }
     }
 
     /**
@@ -2723,10 +2813,8 @@ public class BasicTreeUI
      * @return true if the action is enabled.
      */
     public boolean isEnabled()
-    throws NotImplementedException
     {
-      // TODO: Implement this properly
-      return false;
+      return (tree != null) && tree.isEnabled();
     }
   }
 
@@ -2735,22 +2823,24 @@ public class BasicTreeUI
    * up or down based on direction.
    */
   public class TreeIncrementAction
-      extends AbstractAction
+    extends AbstractAction
   {
 
-    /** Specifies the direction to adjust the selection by. */
+    /**
+     * Specifies the direction to adjust the selection by.
+     */
     protected int direction;
 
     /**
-     * Constructor
+     * Creates a new TreeIncrementAction.
      * 
-     * @param direction up or down
+     * @param dir up or down, <code>-1</code> for up, <code>1</code> for down
      * @param name is the name of the direction
      */
-    public TreeIncrementAction(int direction, String name)
-    throws NotImplementedException
+    public TreeIncrementAction(int dir, String name)
     {
-      // TODO: Implement this properly
+      direction = dir;
+      putValue(Action.NAME, name);
     }
 
     /**
@@ -2775,7 +2865,7 @@ public class BasicTreeUI
       boolean hasNext = nextRow < rows;
       boolean hasPrev = prevRow >= 0 && rows > 0;
       TreePath newPath;
-      String command = e.getActionCommand();
+      String command = (String) getValue(Action.NAME);
 
       if (command.equals("selectPreviousChangeLead") && hasPrev)
         {
@@ -2838,10 +2928,8 @@ public class BasicTreeUI
      * @return true if the action is enabled.
      */
     public boolean isEnabled()
-    throws NotImplementedException
     {
-      // TODO: Implement this properly
-      return false;
+      return (tree != null) && tree.isEnabled();
     }
   }
 
