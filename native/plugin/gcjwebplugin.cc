@@ -1761,6 +1761,12 @@ NP_Shutdown (void)
       g_free (data_directory);
       data_directory = NULL;
     }
+    
+  if (whitelist_filename)
+    {
+      g_free (whitelist_filename);
+      whitelist_filename = NULL;
+    }
   
   initialized = false;
   

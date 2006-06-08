@@ -1,5 +1,10 @@
 2006-06-08  Lillian Angel  <langel@redhat.com>
 
+	* native/plugin/gcjwebplugin.cc:
+	(NP_Shutdown): Freed whitelist_filename.
+
+2006-06-08  Lillian Angel  <langel@redhat.com>
+
 	* native/plugin/Makefile.am:
 	Removed DATA_DIRECTORY.
 	* native/plugin/gcjwebplugin.cc:
