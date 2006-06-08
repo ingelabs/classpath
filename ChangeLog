@@ -1,3 +1,10 @@
+2006-06-08  Sven de Marothy  <sven@physto.se>
+
+	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java
+	(defaultLayout): Do kerning.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_FreetypeGlyphVector.c
+	(getKerning): Correct class name, removed unused variable.
+
 2006-06-07  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/peer/qt/QtToolkit.java (initToolkit): Load
