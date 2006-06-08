@@ -126,8 +126,7 @@ exception statement from your version. */
   "GNU Classpath's security implementation is not complete.\n"  \
   "HOSTILE APPLETS WILL STEAL AND/OR DESTROY YOUR DATA!\n"
 #define SECURITY_DESCRIPTION                                            \
-  "If you do not know or trust the source of this applet, click"        \
-  " \"Cancel\".\n"                                                      \
+  "Click \"Cancel\" if you do not trust the source of this applet.\n"   \
   "Click \"Trust Applet\" to load and run this applet now.\n"           \
   "Click \"Trust Applet and Add To Whitelist\" to always load"          \
   " and run this applet from now on, without asking.\n"                 \
