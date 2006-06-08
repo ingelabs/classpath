@@ -1,5 +1,12 @@
 2006-06-08  Robert Schuster  <robertschuster@fsfe.org>
 
+	* javax/swing/border/MatteBorder.java:
+	(MatteBorder(int,int,int,int,Icon)): Removed if-statement and exception
+	throwing.
+	(paintBorder): Added if-statement to abort painting early.
+
+2006-06-08  Robert Schuster  <robertschuster@fsfe.org>
+
         Fixes PR27864.
         * gnu/xml/dom/DomIterator.java:
         (successor): Changed expression.
