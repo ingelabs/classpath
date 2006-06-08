@@ -1,3 +1,8 @@
+2006-06-09  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/lang/management/RuntimeMXBean.java:
+	New file.
+	
 2006-06-08  Lillian Angel  <langel@redhat.com>
 
 	* native/plugin/gcjwebplugin.cc:
