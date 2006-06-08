@@ -1,3 +1,9 @@
+2006-06-08  Robert Schuster  <robertschuster@fsfe.org>
+
+        Fixes PR27864.
+        * gnu/xml/dom/DomIterator.java:
+        (successor): Changed expression.
+
 2006-06-08  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java
