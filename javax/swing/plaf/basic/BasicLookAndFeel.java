@@ -1069,14 +1069,14 @@ public abstract class BasicLookAndFeel extends LookAndFeel
         "PAGE_DOWN", "positiveBlockIncrement",
         "END",  "maxScroll",
         "HOME",  "minScroll",
-        "LEFT",  "positiveUnitIncrement",
+        "LEFT",  "negativeUnitIncrement",
         "KP_UP", "negativeUnitIncrement",
         "KP_DOWN", "positiveUnitIncrement",
         "UP",  "negativeUnitIncrement",
-        "RIGHT", "negativeUnitIncrement",
-        "KP_LEFT", "positiveUnitIncrement",
+        "RIGHT", "positiveUnitIncrement",
+        "KP_LEFT", "negativeUnitIncrement",
         "DOWN",  "positiveUnitIncrement",
-        "KP_RIGHT", "negativeUnitIncrement"
+        "KP_RIGHT", "positiveUnitIncrement"
       }),
       "ScrollBar.foreground", new ColorUIResource(light),
       "ScrollBar.maximumThumbSize", new DimensionUIResource(4096, 4096),

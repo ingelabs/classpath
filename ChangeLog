@@ -1,5 +1,18 @@
 2006-06-09  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Corrected 'ScrollBar.focusInputMap' entry,
+	* javax/swing/plaf/basic/BasicScrollBarUI.java
+	(installKeyboardActions): Implemented,
+	(uninstallKeyboardActions): Implemented,
+	(getInputMap): New method,
+	(getActionMap): New method,
+	(createActionMap): New method,
+	(installUI): Call installKeyboardActions(),
+	(uninstallUI): Call uninstallKeyboardActions().
+	
+2006-06-09  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/basic/BasicScrollPaneUI.java
 	(getActionMap): Use correct key to store action map.
 
