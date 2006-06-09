@@ -1287,12 +1287,22 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   public void drawGlyphVector(GlyphVector gv, float x, float y)
   {
-    int n = gv.getNumGlyphs ();
-    int[] codes = gv.getGlyphCodes (0, n, null);
-    float[] positions = gv.getGlyphPositions (0, n, null);
-    
-    setFont (gv.getFont ());
-    cairoDrawGlyphVector( (GdkFontPeer)getFont().getPeer(), x, y, n, codes, positions);
+    if (gv instanceof FreetypeGlyphVector)
+      {
+        int n = gv.getNumGlyphs ();
+        int[] codes = gv.getGlyphCodes (0, n, null);
+        float[] positions = gv.getGlyphPositions (0, n, null);
+
+        setFont (gv.getFont ());
+        cairoDrawGlyphVector( (GdkFontPeer)getFont().getPeer(), x, y, n, codes,
+                              positions);
+      }
+    else
+      {
+        translate(x, y);
+        fill(gv.getOutline());
+        translate(-x, -y);
+      }
   }
 
   public void drawString(AttributedCharacterIterator ci, float x, float y)

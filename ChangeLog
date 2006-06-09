@@ -1,3 +1,9 @@
+2006-06-08  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(drawGlyphVector): Added fallback for non-FreetypeGlyphVector
+	implementations.
+
 2006-06-09  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/image/BufferedImage.java
