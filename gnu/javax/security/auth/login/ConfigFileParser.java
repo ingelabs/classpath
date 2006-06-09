@@ -264,7 +264,7 @@ public final class ConfigFileParser
     if (cn.startsWith(".") || cn.endsWith("."))
       abort("MODULE_CLASS MUST NOT start or end with a '.'");
 
-    String[] tokens = cn.split(".");
+    String[] tokens = cn.split("\\.");
     for (int i = 0; i < tokens.length; i++)
       {
         String t = tokens[i];

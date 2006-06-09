@@ -1,3 +1,9 @@
+2006-06-09  Kazuya Ujihara  <ujihara@aurora.dti.ne.jp>
+
+	PR classpath/27966:
+	* gnu/javax/security/auth/login/ConfigFileParser.java
+	(validateClassName): Quote '.' in regexp.
+
 2006-06-09  Tom Tromey  <tromey@redhat.com>
 
 	PR classpath/23863:
