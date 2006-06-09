@@ -39,13 +39,15 @@ exception statement from your version. */
 package javax.swing.text.html;
 
 import gnu.classpath.NotImplementedException;
-
 import gnu.javax.swing.text.html.CharacterAttributeTranslator;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Stack;
 import java.util.Vector;
+
+import javax.swing.JEditorPane;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -59,9 +61,15 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.html.HTML.Tag;
 
 /**
- * TODO: Add more comments here 
+ * Represents the HTML document that is constructed by defining the text and
+ * other components (images, buttons, etc) in HTML language. This class can
+ * becomes the default document for {@link JEditorPane} after setting its
+ * content type to "text/html". HTML document also serves as an intermediate
+ * data structure when it is needed to parse HTML and then obtain the content of
+ * the certain types of tags. This class also has methods for modifying the HTML
+ * content.
  * 
- * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
+ * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  * @author Anthony Balkissoon (abalkiss@redhat.com)
  * @author Lillian Angel (langel@redhat.com)
  */
@@ -727,11 +735,17 @@ public class HTMLDocument extends DefaultStyledDocument
       } 
     }
     
+    /**
+     * Inserts the elements that are represented by ths single tag with 
+     * attributes (only). The closing tag, even if present, mut follow
+     * immediately after the starting tag without providing any additional
+     * information. Hence the {@link TagAction#end} method need not be
+     * overridden and still does nothing.
+     */
     public class SpecialAction extends TagAction
     {
       /**
-       * This method is called when a start tag is seen for one of the types
-       * of tags associated with this Action.
+       * The functionality is delegated to {@link HTMLReader#addSpecialElement}
        */
       public void start(HTML.Tag t, MutableAttributeSet a)
       {
@@ -1407,10 +1421,19 @@ public class HTMLDocument extends DefaultStyledDocument
      * @param a the attribute set specifying the special content
      */
     protected void addSpecialElement(HTML.Tag t, MutableAttributeSet a)
-      throws NotImplementedException
     {
-      // FIXME: Implement
-      print ("HTMLReader.addSpecialElement not implemented yet");
+      a.addAttribute(StyleConstants.NameAttribute, t);
+      
+      // Migrate from the rather htmlAttributeSet to the faster, lighter and 
+      // unchangeable alternative implementation.
+      AttributeSet copy = a.copyAttributes();
+      
+      // TODO: Figure out why we must always insert this single character
+      // (otherwise the element does not appear). Either fix or add explaining
+      // comment or at least report a normal bug.
+      ElementSpec spec = new ElementSpec(copy, ElementSpec.ContentType, 
+                                         new char[] {' '}, 0, 1 );
+      parseBuffer.add(spec);
     }
     
     void printBuffer()

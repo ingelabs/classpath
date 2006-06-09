@@ -1,3 +1,11 @@
+2006-06-09  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/javax/swing/text/html/parser/SmallHtmlAttributeSet.java
+	(constructor): Do not lowercase the values.
+	* javax/swing/text/html/HTMLDocument.java
+	(HTMLReader.addSpecialElement): Implemented.
+	* examples/gnu/classpath/examples/swing/HtmlDemo.java: New file.
+
 2006-06-09  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	On behalf of Matthew Wringe <mwringe@redhat.com>
