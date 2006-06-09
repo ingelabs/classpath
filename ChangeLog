@@ -1,4 +1,14 @@
-2006-06-08  Sven de Marothy  <sven@physto.se>
+2006-06-09  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/java2d/AbstractGraphics2D.java
+	(drawImage): Fixed scaling.
+	(fillShape): Removed offset handling.
+	(fillShapeImpl): Limit scanlining to device bounds.
+	(getSegments): Removed offset handling.
+	* gnu/java/awt/java2d/PolyEdge.java
+	(toString): Include isClip flag in output.
+
+2006-06-09  Sven de Marothy  <sven@physto.se>
 
 	* java/awt/font/TextLayout.java
 	(getOutline): Allow null transform.
@@ -56,7 +66,7 @@
 	(struct _Jv_reent): _freelist now a _Jv_Bigint**.  Removed
 	_allocation_map, num.  Added _max_k.
 
-2006-06-08  Roman Kennke  <kennke@aicas.com>
+2006-06-09  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
 	(drawGlyphVector): Added fallback for non-FreetypeGlyphVector
