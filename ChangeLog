@@ -1,3 +1,11 @@
+2006-06-09  Tom Tromey  <tromey@redhat.com>
+
+	* lib/Makefile.am (install-data-local): Copy 'sun' files.
+	(uninstall-local): Delete 'sun' directory.
+	(glibj.zip): Include 'sun' classes.
+	(clean-local): Delete 'sun' directory.
+	* lib/gen-classlist.sh.in: Search 'sun' subdirectories.
+
 2006-06-09  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/java2d/AbstractGraphics2D.java
