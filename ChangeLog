@@ -1,3 +1,9 @@
+2006-06-09  Francis Kung  <fkung@redhat.com>
+
+	* javax/swing/plaf/basic/BasicComboBoxRenderer.java:
+	(getPreferredSize): Return correct height for null or empty 
+	items.
+
 2006-06-09  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/datatransfer/DataFlavor.java
