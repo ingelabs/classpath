@@ -1,5 +1,10 @@
 2006-06-09  Jeroen Frijters  <jeroen@frijters.net>
 
+	* gnu/java/awt/font/opentype/truetype/VirtualMachine.java
+	(executeInstruction): Added NOT support.
+
+2006-06-09  Jeroen Frijters  <jeroen@frijters.net>
+
 	* sun/reflect/annotation/AnnotationInvocationHandler.java:
 	New file.
 
