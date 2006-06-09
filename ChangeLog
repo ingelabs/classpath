@@ -1,3 +1,19 @@
+2006-06-09  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/datatransfer/DataFlavor.java
+	(readExternal): Mark as stub,
+	(writeExternal): Likewise,
+	* java/awt/dnd/DropTargetContext.java
+	(dropComplete): Mark as stub,
+	(acceptDrag): Likewise,
+	(rejectDrag): Likewise,
+	(acceptDrop): Likewise,
+	(rejectDrop): Likewise,
+	(getCurrentDataFlavors): Likewise,
+	(getTransferable): Likewise,
+	* java/awt/dnd/DropTargetDropEvent.java
+	(dropComplete): Mark as stub.
+
 2006-06-09  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/javax/swing/text/html/parser/SmallHtmlAttributeSet.java
