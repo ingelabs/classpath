@@ -1,3 +1,17 @@
+2006-06-08  Sven de Marothy  <sven@physto.se>
+
+	* java/text/Bidi.java: Treat WS as neutral for rules N1 & N2.
+	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java
+	New constructor for bidirectionality.
+	(getGlyphMetrics): Return whitespace glyphs.
+	(getLogicalBounds): Offset rectangles to correct positions.
+	* gnu/java/awt/peer/gtk/GdkFontPeer.java
+	(getBaselineFor): Default to ROMAN_BASELINE.
+	(GdkFontLineMetrics): Guess some values for underline and 
+	strikethrough.
+	(layoutGlyphVector): Use bidirectionality.
+	* java/awt/font/TextLayout.java: Implement, mostly.
+	
 2006-06-09  Anthony Green  <green@redhat.com>
 
 	PR classpath/27888:

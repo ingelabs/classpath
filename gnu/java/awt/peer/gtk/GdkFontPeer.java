@@ -252,18 +252,24 @@ public class GdkFontPeer extends ClasspathFontPeer
 
   public byte getBaselineFor (Font font, char c)
   {
-    throw new UnsupportedOperationException ();
+    // FIXME: Actually check.
+    return Font.ROMAN_BASELINE;
   }
 
-  protected class GdkFontLineMetrics extends LineMetrics
+  private static class GdkFontLineMetrics extends LineMetrics
   {
-    FontMetrics fm;
-    int nchars; 
+    private FontMetrics fm;
+    private int nchars; 
+    private float strikethroughOffset, strikethroughThickness,
+      underlineOffset, underlineThickness;
 
-    public GdkFontLineMetrics (FontMetrics m, int n)
+    public GdkFontLineMetrics (GdkFontPeer fp, FontMetrics m, int n)
     {
       fm = m;
       nchars = n;
+      strikethroughOffset = 0f;
+      strikethroughThickness = underlineThickness = ((float)fp.size) / 12f;
+      underlineOffset = 0f;
     }
 
     public float getAscent()
@@ -272,7 +278,8 @@ public class GdkFontPeer extends ClasspathFontPeer
     }
   
     public int getBaselineIndex()
-    {
+    {      
+      // FIXME
       return Font.ROMAN_BASELINE;
     }
     
@@ -303,7 +310,7 @@ public class GdkFontPeer extends ClasspathFontPeer
   public LineMetrics getLineMetrics (Font font, CharacterIterator ci, 
                                      int begin, int limit, FontRenderContext rc)
   {
-    return new GdkFontLineMetrics (getFontMetrics (font), limit - begin);
+    return new GdkFontLineMetrics (this, getFontMetrics (font), limit - begin);
   }
 
   public Rectangle2D getMaxCharBounds (Font font, FontRenderContext rc)
@@ -350,20 +357,15 @@ public class GdkFontPeer extends ClasspathFontPeer
                                         char[] chars, int start, int limit, 
                                         int flags)
   {
-    int nchars = (limit - start) + 1;
-    char[] nc = new char[nchars];
-
-    for (int i = 0; i < nchars; ++i)
-      nc[i] = chars[start + i];
-
-    return createGlyphVector (font, frc, 
-                              new StringCharacterIterator (new String (nc)));
+    return new FreetypeGlyphVector( font, new String( chars, start, 
+						      limit - start),
+				    frc, flags);
   }
 
   public LineMetrics getLineMetrics (Font font, String str, 
                                      FontRenderContext frc)
   {
-    return new GdkFontLineMetrics (getFontMetrics (font), str.length ());
+    return new GdkFontLineMetrics (this, getFontMetrics (font), str.length ());
   }
 
   public FontMetrics getFontMetrics (Font font)

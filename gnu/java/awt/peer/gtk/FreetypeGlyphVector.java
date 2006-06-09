@@ -82,9 +82,24 @@ public class FreetypeGlyphVector extends GlyphVector
   private AffineTransform[] glyphTransforms;
 
   /**
+   * Keep track of which glyphs are whitespace, since we don't have
+   * reporting from the peers yet. TextLayout needs this for justification.
+   */
+  private boolean[] whiteSpace;
+
+  /**
    * Create a glyphvector from a given (Freetype) font and a String.
    */
   public FreetypeGlyphVector(Font f, String s, FontRenderContext frc)
+  {
+    this(f, s, frc, Font.LAYOUT_LEFT_TO_RIGHT);
+  }
+
+  /**
+   * Create a glyphvector from a given (Freetype) font and a String.
+   */
+  public FreetypeGlyphVector(Font f, String s, FontRenderContext frc,
+			     int flags)
   {
     this.s = s;
     this.font = f;
@@ -94,6 +109,14 @@ public class FreetypeGlyphVector extends GlyphVector
     peer = (GdkFontPeer)font.getPeer();
 
     getGlyphs();
+    if( flags == Font.LAYOUT_RIGHT_TO_LEFT )
+      {
+	// reverse the glyph ordering.
+	int[] temp = new int[ nGlyphs ];
+	for(int i = 0; i < nGlyphs; i++)
+	  temp[ i ] = glyphCodes[ nGlyphs - i - 1];
+	glyphCodes = temp;
+      }
     performDefaultLayout();
   }
 
@@ -180,10 +203,12 @@ public class FreetypeGlyphVector extends GlyphVector
    */
   public void performDefaultLayout()
   {
+    whiteSpace = new boolean[ nGlyphs ]; 
     glyphTransforms = new AffineTransform[ nGlyphs ]; 
     double x = 0;
     for(int i = 0; i < nGlyphs; i++)
       {
+	whiteSpace[i] = Character.isWhitespace( glyphCodes[ i ] );
 	GlyphMetrics gm = getGlyphMetrics( i );
 	Rectangle2D r = gm.getBounds2D();
 	glyphTransforms[ i ] = AffineTransform.getTranslateInstance(x, 0);
@@ -237,17 +262,20 @@ public class FreetypeGlyphVector extends GlyphVector
 
   /**
    * Returns the metrics of a single glyph.
+   * FIXME: Not all glyph types are supported.
    */
   public GlyphMetrics getGlyphMetrics(int glyphIndex)
   {
     double[] val = getMetricsNative( glyphCodes[ glyphIndex ] );
     if( val == null )
       return null;
+    byte type = whiteSpace[ glyphIndex ] ? 
+      GlyphMetrics.WHITESPACE : GlyphMetrics.STANDARD;
     
     return new GlyphMetrics( true, (float)val[1], (float)val[2], 
 			     new Rectangle2D.Double( val[3], val[4], 
 						     val[5], val[6] ),
-			     GlyphMetrics.STANDARD );
+			     type );
   }
 
   /**
@@ -319,7 +347,12 @@ public class FreetypeGlyphVector extends GlyphVector
 
     Rectangle2D rect = (Rectangle2D)getGlyphLogicalBounds( 0 );
     for( int i = 1; i < nGlyphs; i++ )
-      rect = rect.createUnion( (Rectangle2D)getGlyphLogicalBounds( i ) );
+      {
+	Rectangle2D r2 = (Rectangle2D)getGlyphLogicalBounds( i );
+	Point2D p = getGlyphPosition( i );
+	r2.setRect( p.getX(), p.getY(), r2.getWidth(), r2.getHeight() );
+	rect = rect.createUnion( r2 );
+      }
 
     return rect;
   }
