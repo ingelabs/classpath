@@ -2,6 +2,7 @@
 
 	* gnu/javax/crypto/pad/BasePad.java (selfTest): Re-factored to allow more
 	flexible self-test by sub-classes.
+	(test1BlockSize): New method.
 
 2006-06-09  David Gilbert  <david.gilbert@object-refinery.com>
 
