@@ -1,3 +1,10 @@
+2006-06-09  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/image/BufferedImage.java
+	(BufferedImage(int, int, int)): Added API docs,
+	(getProperty(String)): Return correct value for undefined properties,
+	(getPropertyNames()): Added comments and removed FIXME.
+
 2006-06-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* native/plugin/gcjwebplugin.cc (PLUGIN_ERROR_THREE): New macro.
