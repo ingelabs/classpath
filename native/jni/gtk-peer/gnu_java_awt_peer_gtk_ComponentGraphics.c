@@ -186,7 +186,11 @@ Java_gnu_java_awt_peer_gtk_ComponentGraphics_disposeSurface
 
   surface = cairo_get_target (gr->cr);
   if (surface != NULL)
-    cairo_surface_destroy (surface);
+    {
+      gdk_threads_enter();
+      cairo_surface_destroy (surface);
+      gdk_threads_leave();
+    }
 }
 
 JNIEXPORT jlong JNICALL 

@@ -1,3 +1,9 @@
+2006-06-09  Sven de Marothy  <sven@physto.se>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphics.c
+	(Java_gnu_java_awt_peer_gtk_ComponentGraphics_disposeSurface):
+	Use GTK locks while disposing (Xlib) surface.
+
 2006-06-09  Tom Tromey  <tromey@redhat.com>
 
 	* lib/Makefile.am (install-data-local): Copy 'sun' files.
@@ -16,7 +22,7 @@
 	* gnu/java/awt/java2d/PolyEdge.java
 	(toString): Include isClip flag in output.
 
-2006-06-09  Sven de Marothy  <sven@physto.se>
+2006-06-08  Sven de Marothy  <sven@physto.se>
 
 	* java/awt/font/TextLayout.java
 	(getOutline): Allow null transform.
