@@ -63,6 +63,7 @@ import java.awt.TexturePaint;
 import java.awt.Toolkit;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
+import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Area;
@@ -1271,8 +1272,8 @@ public abstract class CairoGraphics2D extends Graphics2D
   {
     if (str == null || str.length() == 0)
       return;
-
-    drawGlyphVector(getFont().createGlyphVector(null, str), x, y);
+    (new TextLayout( str, getFont(), getFontRenderContext() )).
+      draw(this, x, y);
   }
 
   public void drawString(String str, int x, int y)
