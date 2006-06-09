@@ -49,12 +49,8 @@ import java.util.Set;
  */
 public class PadFactory implements Registry
 {
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
-  // Constructor(s)
-  // -------------------------------------------------------------------------
+  /** Collection of padding algorithm names --cached for speed. */
+  private static Set names;
 
   /** Trivial constructor to enforce Singleton pattern. */
   private PadFactory()
@@ -104,6 +100,10 @@ public class PadFactory implements Registry
       {
         result = new TLS1();
       }
+    else if (pad.equals(ISO10126_PAD))
+      {
+        result = new ISO10126();
+      }
 
     if (result != null && !result.selfTest())
       {
@@ -114,24 +114,25 @@ public class PadFactory implements Registry
   }
 
   /**
-   * <p>Returns a {@link java.util.Set} of names of padding algorithms
-   * supported by this <i>Factory</i>.</p>
+   * Returns a {@link java.util.Set} of names of padding algorithms
+   * supported by this <i>Factory</i>.
    *
    * @return a {@link Set} of padding algorithm names (Strings).
    */
   public static final Set getNames()
   {
-    HashSet hs = new HashSet();
-    hs.add(PKCS5_PAD);
-    hs.add(PKCS7_PAD);
-    hs.add(TBC_PAD);
-    hs.add(EME_PKCS1_V1_5_PAD);
-    hs.add(SSL3_PAD);
-    hs.add(TLS1_PAD);
-
-    return Collections.unmodifiableSet(hs);
+    if (names == null)
+      {
+        HashSet hs = new HashSet();
+        hs.add(PKCS5_PAD);
+        hs.add(PKCS7_PAD);
+        hs.add(TBC_PAD);
+        hs.add(EME_PKCS1_V1_5_PAD);
+        hs.add(SSL3_PAD);
+        hs.add(TLS1_PAD);
+        hs.add(ISO10126_PAD);
+        names = Collections.unmodifiableSet(hs);
+      }
+    return names;
   }
-
-  // Instance methods
-  // -------------------------------------------------------------------------
 }

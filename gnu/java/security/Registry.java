@@ -177,6 +177,9 @@ public interface Registry
   /** TLSv1 padding scheme. */
   String TLS1_PAD = "tls1";
 
+  /** ISO 10126-2 padding scheme. */
+  String ISO10126_PAD = "iso10126";
+
   // Pseudo-random number generators..........................................
 
   /** (Apparently) RC4 keystream PRNG. */

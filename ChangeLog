@@ -1,5 +1,15 @@
 2006-06-09  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	On behalf of Matthew Wringe <mwringe@redhat.com>
+	* gnu/java/security/Registry.java (ISO10126_PAD): New constant.
+	* gnu/javax/crypto/pad/ISO10126.java: New class.
+	* gnu/javax/crypto/pad/PadFactory.java (names): New field.
+	(getInstance): Added support for ISO-10126 scheme.
+	(getNames): Likewise.
+	Cache result for speed.
+
+2006-06-09  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* gnu/javax/crypto/pad/BasePad.java (selfTest): Re-factored to allow more
 	flexible self-test by sub-classes.
 	(test1BlockSize): New method.
