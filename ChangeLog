@@ -1,5 +1,20 @@
 2006-06-09  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JTabbedPane.java
+	(setSelectedIndex): Don't change the visibility of the components,
+	this is done by the UI class.
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	(TabbedPaneLayout.layoutContainer): Change visibility of component
+	here, depending on the selected index. Only do this if the new
+	selected component is not null. Some programs seem to expect
+	this.
+	(visibleComponent): New field.
+	(getVisibleComponent): Changed to return visibleComponent field.
+	(setVisibleComponent): Changed to set the visibility of
+	the old and new visible component.
+
+2006-06-09  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComponent.java
 	(paintChildrenOptimized): Paint component with a new Graphics
 	object to protect the other painting code from modifications
