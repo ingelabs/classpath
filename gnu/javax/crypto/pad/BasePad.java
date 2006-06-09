@@ -98,42 +98,66 @@ public abstract class BasePad implements IPad
     blockSize = -1;
   }
 
+  /**
+   * A default implementation of a correctness test that exercises the padder
+   * implementation, using block sizes varying from 2 to 256 bytes.
+   * 
+   * @return <code>true</code> if the concrete implementation correctly unpads
+   *         what it pads for all tested block sizes. Returns <code>false</code>
+   *         if the test fails for any block size.
+   */
   public boolean selfTest()
+  {
+    final byte[] in = new byte[1024];
+    for (int bs = 2; bs < 256; bs++)
+      if (! test1BlockSize(bs, in))
+        return false;
+    return true;
+  }
+
+  /**
+   * The basic symmetric test for a padder given a specific block size.
+   * <p>
+   * The code ensures that the implementation is capable of unpadding what it
+   * pads.
+   * 
+   * @param size the block size to test.
+   * @param buffer a work buffer. It is exposed as an argument for this method
+   *          to reduce un-necessary object allocations.
+   * @return <code>true</code> if the test passes; <code>false</code>
+   *         otherwise.
+   */
+  protected boolean test1BlockSize(int size, byte[] buffer)
   {
     byte[] padBytes;
     final int offset = 5;
-    final int limit = 1024;
-    final byte[] in = new byte[limit];
-    for (int bs = 2; bs < 256; bs++)
+    final int limit = buffer.length;
+
+    this.init(size);
+    for (int i = 0; i < limit - offset - blockSize; i++)
       {
-        this.init(bs);
-        for (int i = 0; i < limit - offset - blockSize; i++)
+        padBytes = pad(buffer, offset, i);
+        if (((i + padBytes.length) % blockSize) != 0)
           {
-            padBytes = pad(in, offset, i);
-            if (((i + padBytes.length) % blockSize) != 0)
+            new RuntimeException(name()).printStackTrace(System.err);
+            return false;
+          }
+        System.arraycopy(padBytes, 0, buffer, offset + i, padBytes.length);
+        try
+          {
+            if (padBytes.length != unpad(buffer, offset, i + padBytes.length))
               {
                 new RuntimeException(name()).printStackTrace(System.err);
                 return false;
               }
-
-            System.arraycopy(padBytes, 0, in, offset + i, padBytes.length);
-            try
-              {
-                if (padBytes.length != unpad(in, offset, i + padBytes.length))
-                  {
-                    new RuntimeException(name()).printStackTrace(System.err);
-                    return false;
-                  }
-              }
-            catch (WrongPaddingException x)
-              {
-                x.printStackTrace(System.err);
-                return false;
-              }
           }
-        this.reset();
+        catch (WrongPaddingException x)
+          {
+            x.printStackTrace(System.err);
+            return false;
+          }
       }
-
+    this.reset();
     return true;
   }
 

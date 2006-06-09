@@ -1,3 +1,8 @@
+2006-06-09  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/javax/crypto/pad/BasePad.java (selfTest): Re-factored to allow more
+	flexible self-test by sub-classes.
+
 2006-06-09  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicLookAndFeel.java
