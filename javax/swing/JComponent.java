@@ -2039,19 +2039,10 @@ public abstract class JComponent extends Container implements Serializable
           continue;
 
         boolean translated = false;
-        try
-          {
-            g.clipRect(bounds.x, bounds.y, bounds.width, bounds.height);
-            g.translate(bounds.x, bounds.y);
-            translated = true;
-            children[i].paint(g);
-          }
-        finally
-          {
-            if (translated)
-              g.translate(-bounds.x, -bounds.y);
-            g.setClip(oldClip);
-          }
+        Graphics g2 = g.create(bounds.x, bounds.y, bounds.width,
+                               bounds.height);
+        children[i].paint(g2);
+        g2.dispose();
       }
     g.setClip(originalClip);
   }
@@ -2184,7 +2175,7 @@ public abstract class JComponent extends Container implements Serializable
     // Paint on the offscreen buffer.
     Component root = getRoot(this);
     Image buffer = rm.getOffscreenBuffer(this, root.getWidth(),
-                                         root.getHeight());
+                                                 root.getHeight());
     //Rectangle targetClip = SwingUtilities.convertRectangle(this, r, root);
     Point translation = SwingUtilities.convertPoint(this, 0, 0, root);
     Graphics g2 = buffer.getGraphics();

@@ -1,3 +1,11 @@
+2006-06-09  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JComponent.java
+	(paintChildrenOptimized): Paint component with a new Graphics
+	object to protect the other painting code from modifications
+	done in that object, and avoid cleanup ops on possibly dispose()ed
+	Graphics object.
+
 2006-06-09  Sven de Marothy  <sven@physto.se>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphics.c
