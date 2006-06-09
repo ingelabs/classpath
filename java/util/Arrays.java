@@ -97,7 +97,7 @@ public class Arrays
     int mid = 0;
     while (low <= hi)
       {
-        mid = (low + hi) >> 1;
+        mid = (low + hi) >>> 1;
         final byte d = a[mid];
         if (d == key)
           return mid;
@@ -131,7 +131,7 @@ public class Arrays
     int mid = 0;
     while (low <= hi)
       {
-        mid = (low + hi) >> 1;
+        mid = (low + hi) >>> 1;
         final char d = a[mid];
         if (d == key)
           return mid;
@@ -165,7 +165,7 @@ public class Arrays
     int mid = 0;
     while (low <= hi)
       {
-        mid = (low + hi) >> 1;
+        mid = (low + hi) >>> 1;
         final short d = a[mid];
         if (d == key)
           return mid;
@@ -199,7 +199,7 @@ public class Arrays
     int mid = 0;
     while (low <= hi)
       {
-        mid = (low + hi) >> 1;
+        mid = (low + hi) >>> 1;
         final int d = a[mid];
         if (d == key)
           return mid;
@@ -233,7 +233,7 @@ public class Arrays
     int mid = 0;
     while (low <= hi)
       {
-        mid = (low + hi) >> 1;
+        mid = (low + hi) >>> 1;
         final long d = a[mid];
         if (d == key)
           return mid;
@@ -268,7 +268,7 @@ public class Arrays
     int mid = 0;
     while (low <= hi)
       {
-        mid = (low + hi) >> 1;
+        mid = (low + hi) >>> 1;
         final int r = Float.compare(a[mid], key);
         if (r == 0)
           return mid;
@@ -303,7 +303,7 @@ public class Arrays
     int mid = 0;
     while (low <= hi)
       {
-        mid = (low + hi) >> 1;
+        mid = (low + hi) >>> 1;
         final int r = Double.compare(a[mid], key);
         if (r == 0)
           return mid;
@@ -369,7 +369,7 @@ public class Arrays
     int mid = 0;
     while (low <= hi)
       {
-        mid = (low + hi) >> 1;
+        mid = (low + hi) >>> 1;
         final int d = Collections.compare(key, a[mid], c);
         if (d == 0)
           return mid;
