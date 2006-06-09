@@ -477,7 +477,8 @@ public final class TextLayout implements Cloneable
 	Rectangle2D r = runs[i].getLogicalBounds();
 	x += r.getWidth();
       }
-    gp.transform( tx );
+    if( tx != null )
+      gp.transform( tx );
     return gp;
   }
 

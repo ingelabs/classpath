@@ -1,5 +1,10 @@
 2006-06-08  Sven de Marothy  <sven@physto.se>
 
+	* java/awt/font/TextLayout.java
+	(getOutline): Allow null transform.
+
+2006-06-08  Sven de Marothy  <sven@physto.se>
+
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
 	(drawString): Use TextLayout instead of GlyphVector.
 
