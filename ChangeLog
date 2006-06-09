@@ -1,3 +1,8 @@
+2006-06-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* native/plugin/gcjwebplugin.cc (PLUGIN_ERROR_THREE): New macro.
+	(NP_Initialize): Use PLUGIN_ERROR_THREE in place of g_strconcat.
+
 2006-06-09  Francis Kung  <fkung@redhat.com>
 
 	* javax/swing/plaf/basic/BasicComboBoxRenderer.java:

@@ -79,6 +79,10 @@ exception statement from your version. */
   g_printerr ("%s:%d: thread %p: Error: %s: %s\n", __FILE__, __LINE__,  \
               g_thread_self (), first, second)
 
+#define PLUGIN_ERROR_THREE(first, second, third)                        \
+  g_printerr ("%s:%d: thread %p: Error: %s: %s: %s\n", __FILE__,        \
+              __LINE__, g_thread_self (), first, second, third)
+
 // Plugin information passed to about:plugins.
 #define PLUGIN_NAME "GCJ Web Browser Plugin"
 #define PLUGIN_DESC "The " PLUGIN_NAME " executes Java applets."
@@ -1621,9 +1625,9 @@ NP_Initialize (NPNetscapeFuncs* browserTable, NPPluginFuncs* pluginTable)
       file_error = g_mkdir (data_directory, 0700);
       if (file_error != 0)
         {
-          PLUGIN_ERROR_TWO (g_strconcat("Failed to create data directory ", 
-                            data_directory, NULL),
-                            strerror (errno));
+          PLUGIN_ERROR_THREE ("Failed to create data directory",
+                              data_directory,
+                              strerror (errno));
           return NPERR_GENERIC_ERROR;
         }
     }
@@ -1635,16 +1639,16 @@ NP_Initialize (NPNetscapeFuncs* browserTable, NPPluginFuncs* pluginTable)
     {
       if (channel_error)
         {
-          PLUGIN_ERROR_TWO (g_strconcat("Failed to open whitelist file ",
-                            whitelist_filename, NULL),
-                            channel_error->message);
+          PLUGIN_ERROR_THREE ("Failed to open whitelist file",
+                              whitelist_filename,
+                              channel_error->message);
           g_error_free (channel_error);
           channel_error = NULL;
         }
       else
-        PLUGIN_ERROR (g_strconcat("Failed to open whitelist file ",
-                      whitelist_filename, NULL));
-                      
+        PLUGIN_ERROR_TWO ("Failed to open whitelist file",
+                          whitelist_filename);
+
       return NPERR_GENERIC_ERROR;
     }
 
