@@ -73,9 +73,9 @@ public class VolatileImageGraphics extends ComponentGraphics
   private VolatileImageGraphics(VolatileImageGraphics copy)
   {
     this.owner = copy.owner;
-    initFromVolatile( owner.nativePointer, owner.width, owner.height );
-    setClip( new Rectangle( 0, 0, owner.width, owner.height) );
+    cairo_t = initFromVolatile(owner.nativePointer, owner.width, owner.height);
     copy( copy, cairo_t );
+    setClip(0, 0, owner.width, owner.height);
   }
 
   public void copyAreaImpl(int x, int y, int width, int height, int dx, int dy)
@@ -117,6 +117,11 @@ public class VolatileImageGraphics extends ComponentGraphics
 	return true;
       }      
     return super.drawImage( img, x, y, width, height, observer );
+  }
+
+  protected Rectangle2D getRealBounds()
+  {
+    return new Rectangle2D.Double(0, 0, owner.width, owner.height);
   }
 }
 

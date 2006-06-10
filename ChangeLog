@@ -1,16 +1,17 @@
 2006-06-10  Roman Kennke  <kennke@aicas.com>
 
+	* gnu/java/awt/peer/gtk/VolatileImageGraphics.java
+	(VolatileImageGraphics(VolatileImageGraphics)): Initialize native
+	context correctly.
+	(getRealBounds): Overridden to return the correct bounds.
+
+2006-06-10  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/metal/MetalButtonUI.java
 	(update): Fixed to paint the gradient under the correct conditions.
 	(updateWidthGradient): Removed.
 	(isToolbarButton): New helper method.
 	(isDrawingGradient): New helper method.
-
-2006-06-09  Roman Kennke  <kennke@aicas.com>
-
-	* gnu/java/awt/peer/gtk/VolatileImageGraphics.java
-	(VolatileImageGraphics): Call setup() here to initialize native
-	context.
 
 2006-06-09  Roman Kennke  <kennke@aicas.com>
 
