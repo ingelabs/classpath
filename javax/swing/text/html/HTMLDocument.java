@@ -1437,8 +1437,10 @@ public class HTMLDocument extends DefaultStyledDocument
       // TODO: Figure out why we must always insert this single character
       // (otherwise the element does not appear). Either fix or add explaining
       // comment or at least report a normal bug.
-      ElementSpec spec = new ElementSpec(copy, ElementSpec.ContentType, 
-                                         new char[] {' '}, 0, 1 );
+      DefaultStyledDocument.ElementSpec spec;
+      spec = new DefaultStyledDocument.ElementSpec(copy,
+	DefaultStyledDocument.ElementSpec.ContentType, 
+        new char[] {' '}, 0, 1 );
       parseBuffer.add(spec);
     }
     

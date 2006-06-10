@@ -1,5 +1,10 @@
 2006-06-10  Mark Wielaard  <mark@klomp.org>
 
+	* javax/swing/text/html/HTMLDocument.java (addSpecialElement):
+	Qualify ElementSpec.
+
+2006-06-10  Mark Wielaard  <mark@klomp.org>
+
 	* lib/.cvsignore: Add sun.
 	* lib/Makefile.am (dist-hook): Likewise.
 
