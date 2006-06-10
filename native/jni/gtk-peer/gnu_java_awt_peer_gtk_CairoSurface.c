@@ -74,7 +74,8 @@ Java_gnu_java_awt_peer_gtk_CairoSurface_create (JNIEnv *env, jobject obj, jint w
  */
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_CairoSurface_destroy
-(JNIEnv *env, jobject obj, jlong surfacePointer, jlong bufferPointer)
+(JNIEnv *env __attribute__((unused)), jobject obj __attribute__((unused)),
+ jlong surfacePointer, jlong bufferPointer)
 {
   void *buffer;
   cairo_surface_t* surface = JLONG_TO_PTR(void, surfacePointer);
@@ -91,7 +92,8 @@ Java_gnu_java_awt_peer_gtk_CairoSurface_destroy
  */
 JNIEXPORT jint JNICALL 
 Java_gnu_java_awt_peer_gtk_CairoSurface_nativeGetElem
-(JNIEnv *env, jobject obj, jlong bufferPointer, jint i)
+(JNIEnv *env __attribute__((unused)), jobject obj __attribute__((unused)),
+ jlong bufferPointer, jint i)
 {
   jint *pixeldata = JLONG_TO_PTR(void, bufferPointer);
 
@@ -106,7 +108,8 @@ Java_gnu_java_awt_peer_gtk_CairoSurface_nativeGetElem
  */
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_CairoSurface_nativeSetElem 
-(JNIEnv *env, jobject obj, jlong bufferPointer, jint i, jint val)
+(JNIEnv *env __attribute__((unused)), jobject obj __attribute__((unused)),
+ jlong bufferPointer, jint i, jint val)
 {
   jint *pixeldata = JLONG_TO_PTR(void, bufferPointer);
 
@@ -121,7 +124,8 @@ Java_gnu_java_awt_peer_gtk_CairoSurface_nativeSetElem
  */
 JNIEXPORT jintArray JNICALL 
 Java_gnu_java_awt_peer_gtk_CairoSurface_nativeGetPixels
-(JNIEnv *env, jobject obj, jlong bufferPointer, int size)
+(JNIEnv *env __attribute((unused)), jobject obj __attribute((unused)),
+ jlong bufferPointer, int size)
 {
   jint *pixeldata, *jpixdata;
   jintArray jpixels;
@@ -176,15 +180,14 @@ Java_gnu_java_awt_peer_gtk_CairoSurface_nativeSetPixels
 
 JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_CairoSurface_nativeDrawSurface 
-(JNIEnv *env, jobject obj, jlong surfacePointer, jlong context,
- jdoubleArray java_matrix)
+(JNIEnv *env __attribute__((unused)), jobject obj __attribute__((unused)),
+ jlong surfacePointer, jlong context, jdoubleArray java_matrix)
 {
-  cairo_t *cr;
+  struct cairographics2d *gr = JLONG_TO_PTR(struct cairographics2d, context);
+  cairo_t *cr = gr->cr;
   jdouble *native_matrix = NULL;
   cairo_surface_t* surface = JLONG_TO_PTR(void, surfacePointer);
   g_assert(surface != NULL);
-
-  cr = cp_gtk_get_cairo_t(env, context);
   g_assert(cr != NULL);
 
   native_matrix = (*env)->GetDoubleArrayElements (env, java_matrix, NULL);
@@ -213,7 +216,8 @@ Java_gnu_java_awt_peer_gtk_CairoSurface_nativeDrawSurface
 
 JNIEXPORT jlong JNICALL 
 Java_gnu_java_awt_peer_gtk_CairoSurface_getFlippedBuffer 
-(JNIEnv *env, jobject obj, jlong bufferPointer, jint size)
+(JNIEnv *env __attribute__((unused)), jobject obj __attribute__((unused)),
+ jlong bufferPointer, jint size)
 {
   jint *dst;
   jint *src = JLONG_TO_PTR(void, bufferPointer);
@@ -239,7 +243,8 @@ Java_gnu_java_awt_peer_gtk_CairoSurface_getFlippedBuffer
  */
 JNIEXPORT jlong JNICALL 
 Java_gnu_java_awt_peer_gtk_CairoSurface_nativeNewCairoContext
-(JNIEnv *env, jobject obj, jlong surfacePointer)
+(JNIEnv *env __attribute((unused)), jobject obj __attribute((unused)),
+ jlong surfacePointer)
 {
   cairo_surface_t* surface = JLONG_TO_PTR(cairo_surface_t, surfacePointer);
   cairo_t *ptr;
@@ -255,7 +260,8 @@ Java_gnu_java_awt_peer_gtk_CairoSurface_nativeNewCairoContext
  */
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_CairoSurface_copyAreaNative2
-(JNIEnv *env, jobject obj, jlong bufferPointer,
+(JNIEnv *env __attribute__((unused)), jobject obj __attribute__((unused)),
+ jlong bufferPointer,
  jint x, jint y, jint w, jint h, jint dx, jint dy, jint stride)
 {
   int row;

@@ -1,3 +1,28 @@
+2006-06-10  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/gtk-peer/cairographics2d.h (cp_gtk_get_cairo_t):
+	Removed.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoGraphics2D.c
+	Mark all unused parameters.
+	(cp_gtk_get_cairo_t): Removed.
+	(Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoSetMatrix):
+	Don't mix declerations and statements.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c:
+	Mark all unused parameters.
+	(Java_gnu_java_awt_peer_gtk_CairoSurface_nativeDrawSurface):
+	Get cairographics2d pointer directly.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkTextLayout.c
+	(Java_gnu_java_awt_peer_gtk_GdkTextLayout_cairoDrawGdkTextLayout):
+	Use jlong to pass pointer.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkVolatileImage.c:
+	Mark all unused parameters.
+	* include/gnu_java_awt_peer_gtk_CairoGraphics2D.h: Regenerated.
+	* include/gnu_java_awt_peer_gtk_CairoSurface.h: Regenerated.
+	* include/gnu_java_awt_peer_gtk_ComponentGraphics.h: Regenerated.
+	* include/gnu_java_awt_peer_gtk_GdkTextLayout.h: Regenerated.
+	* include/gnu_java_awt_peer_gtk_GtkVolatileImage.h: Regenerated.
+	* include/java_io_VMFile.h: Regenerated.
+
 2006-06-10  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/peer/gtk/VolatileImageGraphics.java
