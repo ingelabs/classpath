@@ -2174,8 +2174,13 @@ public abstract class JComponent extends Container implements Serializable
 
     // Paint on the offscreen buffer.
     Component root = getRoot(this);
-    Image buffer = rm.getOffscreenBuffer(this, root.getWidth(),
+    Image buffer = rm.getVolatileOffscreenBuffer(this, root.getWidth(),
                                                  root.getHeight());
+    // The volatile offscreen buffer may be null when that's not supported
+    // by the AWT backend. Fall back to normal backbuffer in this case.
+    if (buffer == null)
+      buffer = rm.getOffscreenBuffer(this, root.getWidth(), root.getHeight());
+
     //Rectangle targetClip = SwingUtilities.convertRectangle(this, r, root);
     Point translation = SwingUtilities.convertPoint(this, 0, 0, root);
     Graphics g2 = buffer.getGraphics();

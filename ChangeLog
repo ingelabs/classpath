@@ -1,5 +1,13 @@
 2006-06-10  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/RepaintManager.java
+	(getVolatileOffscreenBuffer): Store the created buffer.
+	* javax/swing/JComponent.java
+	(paintDoubleBuffered): Try to use a volatile offscreen buffer
+	for better performance.
+
+2006-06-10  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/java/awt/peer/gtk/VolatileImageGraphics.java
 	(VolatileImageGraphics(VolatileImageGraphics)): Initialize native
 	context correctly.
