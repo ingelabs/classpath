@@ -184,10 +184,10 @@ clean-local:
 
 dist-hook:
 	mkdir -p $(distdir)
-	cp -pdfR $(top_srcdir)/gnu $(top_srcdir)/java $(top_srcdir)/javax $(top_srcdir)/org $(top_srcdir)/vm $(top_srcdir)/resource $(distdir)/..
+	cp -pdfR $(top_srcdir)/gnu $(top_srcdir)/java $(top_srcdir)/javax $(top_srcdir)/org $(top_srcdir)/sun $(top_srcdir)/vm $(top_srcdir)/resource $(distdir)/..
 # Delete not wanted files.
-	$(FIND) $(distdir)/../gnu $(distdir)/../java $(distdir)/../javax $(distdir)/../org $(distdir)/../vm $(distdir)/../resource -name CVS -print | xargs rm -fr
-	$(FIND) $(distdir)/../gnu $(distdir)/../java $(distdir)/../javax $(distdir)/../org $(distdir)/../vm $(distdir)/../resource -name .cvsignore -print | xargs rm -f
-	$(FIND) $(distdir)/../gnu $(distdir)/../java $(distdir)/../javax $(distdir)/../org $(distdir)/../vm -name class-dependencies.conf -print | xargs rm -f
+	$(FIND) $(distdir)/../gnu $(distdir)/../java $(distdir)/../javax $(distdir)/../org $(distdir)/../sun $(distdir)/../vm $(distdir)/../resource -name CVS -print | xargs rm -fr
+	$(FIND) $(distdir)/../gnu $(distdir)/../java $(distdir)/../javax $(distdir)/../org $(distdir)/../sun $(distdir)/../vm $(distdir)/../resource -name .cvsignore -print | xargs rm -f
+	$(FIND) $(distdir)/../gnu $(distdir)/../java $(distdir)/../javax $(distdir)/../org $(distdir)/../sun $(distdir)/../vm -name class-dependencies.conf -print | xargs rm -f
 	rm -f $(distdir)/../gnu/classpath/Configuration.java
 	rm -f $(distdir)/../gnu/java/locale/LocaleData.java
