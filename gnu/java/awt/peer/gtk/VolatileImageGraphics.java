@@ -75,7 +75,7 @@ public class VolatileImageGraphics extends ComponentGraphics
     this.owner = copy.owner;
     cairo_t = initFromVolatile(owner.nativePointer, owner.width, owner.height);
     copy( copy, cairo_t );
-    setClip(0, 0, owner.width, owner.height);
+    clipRect(0, 0, owner.width, owner.height);
   }
 
   public void copyAreaImpl(int x, int y, int width, int height, int dx, int dy)

@@ -1,3 +1,10 @@
+2006-06-10  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/gtk/VolatileImageGraphics.java
+	(VolatileImageGraphics(VolatileImageGraphics)): Use clipRect()
+	instead of setClip(), so that an already present clip is intersected
+	and not resetted.
+
 2006-06-10  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/awt/peer/gtk/GdkFontPeer.java (GdkFontLineMetrics):
