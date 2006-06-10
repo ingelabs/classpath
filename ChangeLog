@@ -1,4 +1,25 @@
-2006-06-09  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+2006-06-10  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	* gnu/java/awt/peer/gtk/CairoSurface.java
+	* gnu/java/awt/peer/gtk/CairoSurfaceGraphics.java
+	* gnu/java/awt/peer/gtk/ComponentGraphics.java
+	* gnu/java/awt/peer/gtk/GtkVolatileImage.java
+	* native/jni/gtk-peer/cairographics2d.h
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoGraphics2D.c
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphics.c
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkVolatileImage.c:
+	Changed method signatures and calls to pass native pointers directly
+	into the JNI code, in order to avoid costly lookups on each
+	JNI call.
+	* include/gnu_java_awt_peer_gtk_CairoGraphics2D.h,
+	* include/gnu_java_awt_peer_gtk_CairoSurface.h,
+	* include/gnu_java_awt_peer_gtk_ComponentGraphics.h,
+	* include/gnu_java_awt_peer_gtk_GtkVolatileImage.h:
+	Regenerated
+
+2006-06-10  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	PR 27973
 	* javax/swing/text/DefaultStyledDocument.java 

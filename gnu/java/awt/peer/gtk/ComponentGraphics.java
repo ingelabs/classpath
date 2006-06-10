@@ -104,8 +104,8 @@ public class ComponentGraphics extends CairoGraphics2D
    */
   public void dispose()
   {
-    disposeSurface(nativePointer);
     super.dispose();
+    disposeSurface(nativePointer);
   }
 
   /**
@@ -138,7 +138,7 @@ public class ComponentGraphics extends CairoGraphics2D
 				     int width, int height, int dx, int dy);
 
   private native void drawVolatile(GtkComponentPeer component,
-				   Image vimg, int x, int y, 
+				   long vimg, int x, int y, 
 				   int width, int height);
 
   /**
@@ -219,9 +219,9 @@ public class ComponentGraphics extends CairoGraphics2D
   {
     if( img instanceof GtkVolatileImage )
       {
-	drawVolatile( component, img, x, y - 20,
-		      ((GtkVolatileImage)img).width, 
-		      ((GtkVolatileImage)img).height );
+        GtkVolatileImage vimg = (GtkVolatileImage) img;
+	drawVolatile( component, vimg.nativePointer,
+                      x, y - 20, vimg.width, vimg.height );
 	return true;
       }      
     return super.drawImage( img, x, y, observer );
@@ -232,7 +232,8 @@ public class ComponentGraphics extends CairoGraphics2D
   {
     if( img instanceof GtkVolatileImage )
       {
-	drawVolatile( component, img, x, y - 20, 
+        GtkVolatileImage vimg = (GtkVolatileImage) img;
+	drawVolatile( component, vimg.nativePointer, x, y - 20, 
 		      width, height );
 	return true;
       }      
