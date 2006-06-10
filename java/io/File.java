@@ -82,7 +82,7 @@ public class File implements Serializable, Comparable
   
   /**
    * This is the string that is used to separate the host name from the
-   * path name in paths than include the host name.  It is the value of
+   * path name in paths that include the host name.  It is the value of
    * the <code>path.separator</code> system property.
    */
   public static final String pathSeparator
