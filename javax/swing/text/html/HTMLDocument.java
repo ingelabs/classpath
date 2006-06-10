@@ -648,17 +648,25 @@ public class HTMLDocument extends DefaultStyledDocument
       } 
     }
     
-    public class HiddenAction extends TagAction
+    /**
+     * This action indicates that the content between starting and closing HTML
+     * elements (like script - /script) should not be visible. The content is
+     * still inserted and can be accessed when iterating the HTML document. The
+     * parser will only fire
+     * {@link javax.swing.text.html.HTMLEditorKit.ParserCallback#handleText} for
+     * the hidden tags, regardless from that html tags the hidden section may
+     * contain.
+     */
+    public class HiddenAction
+        extends TagAction
     {
       /**
        * This method is called when a start tag is seen for one of the types
        * of tags associated with this Action.
        */
       public void start(HTML.Tag t, MutableAttributeSet a)
-        throws NotImplementedException
       {
-        // FIXME: Implement.
-        print ("HiddenAction.start not implemented");
+        blockOpen(t, a);
       }
       
       /**
@@ -666,10 +674,8 @@ public class HTMLDocument extends DefaultStyledDocument
        * with this Action.
        */
       public void end(HTML.Tag t)
-        throws NotImplementedException
       {
-        // FIXME: Implement.
-        print ("HiddenAction.end not implemented");
+        blockClose(t);
       } 
     }
     
