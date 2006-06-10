@@ -268,8 +268,9 @@ public class GdkFontPeer extends ClasspathFontPeer
       fm = m;
       nchars = n;
       strikethroughOffset = 0f;
-      strikethroughThickness = underlineThickness = ((float)fp.size) / 12f;
       underlineOffset = 0f;
+      strikethroughThickness = ((float)fp.getSize(null)) / 12f;
+      underlineThickness = strikethroughThickness;
     }
 
     public float getAscent()

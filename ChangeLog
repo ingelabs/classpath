@@ -1,5 +1,10 @@
 2006-06-10  Mark Wielaard  <mark@klomp.org>
 
+	* gnu/java/awt/peer/gtk/GdkFontPeer.java (GdkFontLineMetrics):
+	Call getSize() to avoid accessor method.
+
+2006-06-10  Mark Wielaard  <mark@klomp.org>
+
 	* javax/swing/text/html/HTMLDocument.java (addSpecialElement):
 	Qualify ElementSpec.
 
