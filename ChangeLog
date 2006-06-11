@@ -1,3 +1,20 @@
+2006-06-11  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* doc/tools.texinfo: Added text for new -cacert command.
+	Re-structured sections.
+	* resource/gnu/classpath/tools/keytool/messages.properties: Added messages
+	for -cacert command.
+	* tools/gnu/classpath/tools/keytool/Main.java (CACERT_CMD): New constant.
+	(_CACERT): Likewise.
+	(shutdownThread): New field.
+	(Main): Install shutdown thread.
+	(main): Uninstall shutdown thread.
+	(start): Handle new -cacert command.
+	(getParser): Likewise.
+	(teardown): Increased visibility.
+	(ShutdownHook): New inner class.
+	* tools/gnu/classpath/tools/keytool/CACertCmd.java: New file.
+
 2006-06-11  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java

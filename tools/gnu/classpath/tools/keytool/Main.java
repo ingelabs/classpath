@@ -74,6 +74,7 @@ public class Main
   static final String STOREPASSWD_CMD = "storepasswd"; //$NON-NLS-1$
   static final String KEYPASSWD_CMD = "keypasswd"; //$NON-NLS-1$
   static final String DELETE_CMD = "delete"; //$NON-NLS-1$
+  static final String CACERT_CMD = "cacert"; //$NON-NLS-1$
 
   static final String _GENKEY = "-" + GENKEY_CMD; //$NON-NLS-1$
   static final String _IMPORT = "-" + IMPORT_CMD; //$NON-NLS-1$
@@ -88,6 +89,7 @@ public class Main
   static final String _KEYPASSWD = "-" + KEYPASSWD_CMD; //$NON-NLS-1$
   static final String _DELETE = "-" + DELETE_CMD; //$NON-NLS-1$
   static final String _HELP = "-help"; //$NON-NLS-1$
+  static final String _CACERT = "-" + CACERT_CMD; //$NON-NLS-1$
 
   static final String ALIAS_OPT = "alias"; //$NON-NLS-1$
   static final String SIGALG_OPT = "sigalg"; //$NON-NLS-1$
@@ -119,10 +121,14 @@ public class Main
   private int gnuCallbacksNdx = -2;
   /** The command line parser. */
   private Parser cmdLineParser;
+  /** The shutdown hook. */
+  private ShutdownHook shutdownThread;
 
   private Main()
   {
     super();
+    shutdownThread = new ShutdownHook();
+    Runtime.getRuntime().addShutdownHook(shutdownThread);
   }
 
   public static final void main(String[] args)
@@ -157,6 +163,8 @@ public class Main
     finally
       {
         tool.teardown();
+        if (tool.shutdownThread != null)
+          Runtime.getRuntime().removeShutdownHook(tool.shutdownThread);
       }
 
     log.exiting(Main.class.getName(), "main", Integer.valueOf(result)); //$NON-NLS-1$
@@ -213,6 +221,8 @@ public class Main
           cmd = new KeyPasswdCmd();
         else if (_DELETE.equals(opt))
           cmd = new DeleteCmd();
+        else if (_CACERT.equals(opt))
+          cmd = new CACertCmd();
         else if (_HELP.equals(opt))
           throw new OptionException(""); //$NON-NLS-1$
         else
@@ -260,13 +270,15 @@ public class Main
                                    Messages.getString("Main.32"))); //$NON-NLS-1$
     cmdGroup.add(new NoParseOption(DELETE_CMD,
                                    Messages.getString("Main.33"))); //$NON-NLS-1$
+    cmdGroup.add(new NoParseOption(CACERT_CMD,
+                                   Messages.getString("Main.5"))); //$NON-NLS-1$
     result.add(cmdGroup);
 
     log.exiting(this.getClass().getName(), "getParser", result); //$NON-NLS-1$
     return result;
   }
 
-  private void teardown()
+  void teardown()
   {
     log.entering(this.getClass().getName(), "teardown"); //$NON-NLS-1$
 
@@ -307,6 +319,15 @@ public class Main
     public void parsed(String argument) throws OptionException
     {
       // do nothing
+    }
+  }
+
+  private class ShutdownHook
+      extends Thread
+  {
+    public void run()
+    {
+      teardown();
     }
   }
 }
