@@ -56,6 +56,9 @@ public class FreetypeGlyphVector extends GlyphVector
   private Font font;
   private GdkFontPeer peer; // ATTN: Accessed from native code.
 
+  private Rectangle2D logicalBounds;
+
+  private float[] glyphPositions;
   /**
    * The string represented by this GlyphVector.
    */
@@ -203,6 +206,9 @@ public class FreetypeGlyphVector extends GlyphVector
    */
   public void performDefaultLayout()
   {
+    logicalBounds = null; // invalidate caches.
+    glyphPositions = null;
+
     whiteSpace = new boolean[ nGlyphs ]; 
     glyphTransforms = new AffineTransform[ nGlyphs ]; 
     double x = 0;
@@ -303,6 +309,9 @@ public class FreetypeGlyphVector extends GlyphVector
   public float[] getGlyphPositions(int beginGlyphIndex, int numEntries, 
 				   float[] positionReturn)
   {
+    if( glyphPositions != null )
+      return glyphPositions;
+
     float[] rval;
 
     if( positionReturn == null )
@@ -317,6 +326,7 @@ public class FreetypeGlyphVector extends GlyphVector
 	rval[i * 2 + 1] = (float)p.getY();
       }
 
+    glyphPositions = rval;
     return rval;
   }
 
@@ -344,6 +354,8 @@ public class FreetypeGlyphVector extends GlyphVector
   {
     if( nGlyphs == 0 )
       return new Rectangle2D.Double(0, 0, 0, 0);
+    if( logicalBounds != null )
+      return logicalBounds;
 
     Rectangle2D rect = (Rectangle2D)getGlyphLogicalBounds( 0 );
     for( int i = 1; i < nGlyphs; i++ )
@@ -354,6 +366,7 @@ public class FreetypeGlyphVector extends GlyphVector
 	rect = rect.createUnion( r2 );
       }
 
+    logicalBounds = rect;
     return rect;
   }
 
@@ -413,6 +426,8 @@ public class FreetypeGlyphVector extends GlyphVector
     // FIXME: Scaling, etc.?
     glyphTransforms[ glyphIndex ].setToTranslation( newPos.getX(), 
 						    newPos.getY() );
+    logicalBounds = null;
+    glyphPositions = null;
   }
 
   /**
@@ -421,5 +436,7 @@ public class FreetypeGlyphVector extends GlyphVector
   public void setGlyphTransform(int glyphIndex, AffineTransform newTX)
   {
     glyphTransforms[ glyphIndex ].setTransform( newTX );
+    logicalBounds = null;
+    glyphPositions = null;
   }
 }

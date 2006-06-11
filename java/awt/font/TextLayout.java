@@ -391,11 +391,12 @@ public final class TextLayout implements Cloneable
     double advance = 0;
 
     // go to first run
-    while( runIndices[i + 1][1] < firstEndpoint ) 
-      {
-	advance += runs[i].getLogicalBounds().getWidth();
-	i++;
-      }
+    if( i > 0 )
+      while( runIndices[i + 1][1] < firstEndpoint ) 
+	{
+	  advance += runs[i].getLogicalBounds().getWidth();
+	  i++;
+	}
 
     int j = 0; // index into the run.
     if( runIndices[i][1] - runIndices[i][0] > 1 )

@@ -1,3 +1,10 @@
+2006-06-11  Sven de Marothy  <sven@physto.se>
+
+	* java/awt/font/TextLayout.java
+	(getLogicalHighlightShape): Add check.
+	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java
+	(getLogicalBounds, getGlyphPositions): Cache bounds, positions.
+
 2006-06-11  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* gnu/javax/security/auth/login/ConfigFileParser.java (validateClassName):
