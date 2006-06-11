@@ -86,7 +86,6 @@ Java_gnu_java_awt_peer_gtk_FreetypeGlyphVector_getGlyphs
   (JNIEnv *env, jobject obj, jintArray codepoints)
 {
   FT_Face ft_face;
-  jint glyph_index;
   jintArray retArray;
   PangoFcFont *font;
   jint *values, *cpvals;

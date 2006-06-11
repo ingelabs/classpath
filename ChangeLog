@@ -1,5 +1,11 @@
 2006-06-11  Mark Wielaard  <mark@klomp.org>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_FreetypeGlyphVector.c
+	(Java_gnu_java_awt_peer_gtk_FreetypeGlyphVector_getGlyphs):
+	Remove unused variable glyph_index.
+
+2006-06-11  Mark Wielaard  <mark@klomp.org>
+
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java (drawImage):
 	Don't recurse, return false if not an BufferedImage and no image
 	source available.
