@@ -140,7 +140,11 @@ public interface RuntimeMXBean
    * virtual machine.  It may include a number of system
    * attributes and may differ between instances of the
    * same virtual machine (for example, it might include
-   * the process identifier).
+   * the process identifier or the host name of the machine
+   * on which it is running).  The intention is that this
+   * name refers to the precise entity that the other data 
+   * supplied by this bean refers to, rather than the VM
+   * in general.
    *
    * @return the name of this virtual machine.
    */

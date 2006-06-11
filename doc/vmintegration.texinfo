@@ -202,6 +202,7 @@ implementation.
 * gnu.java.nio::
 * java.lang.reflect::
 * gnu.java.lang::
+* gnu.java.lang.management::
 * Classpath Callbacks::
 @end menu
 
@@ -1206,7 +1207,7 @@ which the VM uses to generate a new non-primitive array of a
 particular class and size.  The default implementation simply passes
 the job down to the standard JNI function, @code{NewObjectArray}.
 
-@node gnu.java.lang, Classpath Callbacks, java.lang.reflect, Classpath Hooks
+@node gnu.java.lang, gnu.java.lang.management, java.lang.reflect, Classpath Hooks
 @section @code{gnu.java.lang}
 
 @code{gnu.java.lang} provides VM interfaces for the GNU
@@ -1258,7 +1259,59 @@ method calls the @code{VMInstrumentationImpl.redefineClasses} native method
 which must be implemented by the VM. The implementation should call the
 @code{InstrumentationImpl.callTransformers} method.
 
-@node Classpath Callbacks, , gnu.java.lang, Classpath Hooks
+@node gnu.java.lang.management, Classpath Callbacks, gnu.java.lang, Classpath Hooks
+@section @code{gnu.java.lang.management}
+
+@code{gnu.java.lang.management} provides the VM interfaces for the GNU
+implementations of the management beans.  
+
+@menu
+* gnu.java.lang.management.VMRuntimeMXBeanImpl::
+@end menu
+
+@node gnu.java.lang.management.VMRuntimeMXBeanImpl,,,gnu.java.lang.management
+@subsection @code{gnu.java.lang.management.VMRuntimeMXBeanImpl}
+
+The @code{gnu.java.lang.management.RuntimeMXBeanImpl} provides an
+implementation of the @code{java.lang.management.RuntimeMXBean} interface,
+and is supported by VM functionality in the form of
+@code{gnu.java.lang.management.VMRuntimeMXBeanImpl}.  This provides a
+series of methods, which should be implemented by the virtual machine
+in order to provide the required information for the bean.  The VM
+methods are generally representative of information that is only
+available from the virtual machine, such as the command-line arguments
+it was given at startup.
+
+The methods are as follows:
+
+@itemize @bullet
+@item @code{(getInputArguments())} -- The VM should supply
+a @code{String} array containing each of the command-line
+arguments, excluding those that are directed at the
+@code{main()} method.  The reference implementation expects
+this to be a native method.
+@item @code{(getName())} -- The VM developer should choose
+an appropriate name for the virtual machine.  This name can
+be instance-specific e.g. it can include things like the
+process identifier or host name of the machine, which only
+apply to the current running instance.  Thus, the intention is
+that this name refers to the entity that the other information
+refers to, rather than the VM in general.  The reference
+implementation supplies a default concatenation of the VM
+name and version.
+@item @code{(getStartTime())} -- This should return the number
+of milliseconds at which the virtual machine was started.
+The uptime property of the bean is provided relative to this
+value.  Again, the reference implementation also expects
+this method to be native.
+@end itemize
+
+The virtual machine also needs to provide either the
+@code{sun.boot.class.path} or @code{java.boot.class.path}
+property in order to support the optional boot class path
+retrieval functionality.
+
+@node Classpath Callbacks, , gnu.java.lang.management, Classpath Hooks
 Some of the classes you implement for the VM will need to call back to
 package-private methods in Classpath:
 

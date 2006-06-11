@@ -1,3 +1,16 @@
+2006-06-11  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* NEWS:
+	Mention new VM interface and use of properties.
+	* doc/vmintegration.texinfo:
+	Update with new gnu.java.lang.management section.
+	* gnu/java/lang/management/RuntimeMXBeanImpl.java:
+	New file.
+	* java/lang/management/ManagementFactory.java:
+	(getRuntimeMXBean()): Implemented.
+	* vm/reference/gnu/java/lang/management/RuntimeMXBeanImpl.java:
+	New VM interface file.
+	
 2006-06-11  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	PR Classpath/26065

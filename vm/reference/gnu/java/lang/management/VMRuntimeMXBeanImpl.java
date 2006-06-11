@@ -1,4 +1,4 @@
-/* ManagementFactory.java - Factory for obtaining system beans.
+/* VMRuntimeMXBeanImpl.java - VM implementation of an runtime bean
    Copyright (C) 2006 Free Software Foundation
 
 This file is part of GNU Classpath.
@@ -35,67 +35,55 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package java.lang.management;
+package gnu.java.lang.management;
 
-import gnu.java.lang.management.OperatingSystemMXBeanImpl;
-import gnu.java.lang.management.RuntimeMXBeanImpl;
+import gnu.classpath.SystemProperties;
 
 /**
- * <p>
- * Provides access to the system's management beans via a series
- * of static methods.  
- * </p>
- * <p>
- * An instance of a system management bean can be obtained by
- * using one of the following methods:
- * </p>
- * <ol>
- * <li>Calling the appropriate static method of this factory.
- * </li>
- * </ol>
+ * Provides access to information about the virtual machine.
  *
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.5
  */
-public class ManagementFactory
+final class VMRuntimeMXBeanImpl
 {
 
   /**
-   * The operating system management bean.
-   */
-  private static OperatingSystemMXBean osBean;
-
-  /**
-   * The runtime management bean.
-   */
-  private static RuntimeMXBean runtimeBean;
-
-  /**
-   * Returns the operating system management bean for the
-   * operating system on which the virtual machine is running.
+   * Returns the command-line arguments supplied
+   * to the virtual machine, excluding those supplied
+   * to <code>main()</code>.
    *
-   * @return an instance of {@link OperatingSystemMXBean} for
-   *         the underlying operating system.
+   * @return the command-line arguments.
    */
-  public static OperatingSystemMXBean getOperatingSystemMXBean()
+  static native String[] getInputArguments();
+
+  /**
+   * Returns a developer-chosen name for the virtual
+   * machine, which may differ over different running
+   * instances of the same virtual machine binary.
+   * For example, this may include the particular
+   * process identifier used by this instance or
+   * the host name of the machine on which it is
+   * running.  The intention is that this name refers
+   * to the precise entity that the other data supplied
+   * by the bean refers to, rather than the VM in general.
+   *
+   * @return the custom name of the VM.
+   */
+  static String getName()
   {
-    if (osBean == null)
-      osBean = new OperatingSystemMXBeanImpl();
-    return osBean;
+    return SystemProperties.getProperty("java.vm.name") + " " +
+      SystemProperties.getProperty("java.vm.version");
   }
 
   /**
-   * Returns the runtime management bean for the
-   * running virtual machine.
+   * The time in milliseconds at which the virtual
+   * machine was started.  This method is only executed
+   * once (for efficency), as the value is not expected
+   * to change.
    *
-   * @return an instance of {@link RuntimeMXBean} for
-   *         this virtual machine.
+   * @return the VM start time.
    */
-  public static RuntimeMXBean getRuntimeMXBean()
-  {
-    if (runtimeBean == null)
-      runtimeBean = new RuntimeMXBeanImpl();
-    return runtimeBean;
-  }
+  static native long getStartTime();
 
 }
