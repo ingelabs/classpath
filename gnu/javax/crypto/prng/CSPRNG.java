@@ -38,6 +38,7 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.prng;
 
+import gnu.classpath.Configuration;
 import gnu.java.security.Properties;
 import gnu.java.security.Registry;
 import gnu.java.security.hash.HashFactory;
@@ -68,6 +69,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * <p>An entropy pool-based pseudo-random number generator based on the PRNG
@@ -84,18 +87,7 @@ import java.util.StringTokenizer;
  */
 public class CSPRNG extends BasePRNG
 {
-
-  // Constants and fields.
-  // -------------------------------------------------------------------------
-
-  private static final boolean DEBUG = false;
-
-  private static void debug(String msg)
-  {
-    System.err.print(">>> CSPRNG: ");
-    System.err.println(msg);
-  }
-
+  private static final Logger log = Logger.getLogger(CSPRNG.class.getName());
   /**
    * Property name for the list of files to read for random values. The
    * mapped value is a list with the following values:
@@ -480,34 +472,25 @@ public class CSPRNG extends BasePRNG
   public void setup(Map attrib)
   {
     List list = null;
-
-    if (DEBUG)
-      {
-        debug(String.valueOf(attrib));
-      }
+    if (Configuration.DEBUG)
+      log.fine("attrib=" + String.valueOf(attrib));
     try
       {
         list = (List) attrib.get(FILE_SOURCES);
-        if (DEBUG)
-          {
-            debug(String.valueOf(list));
-          }
+        if (Configuration.DEBUG)
+          log.fine("list=" + String.valueOf(list));
         if (list != null)
           {
             files.clear();
             for (Iterator it = list.iterator(); it.hasNext();)
               {
                 List l = (List) it.next();
-                if (DEBUG)
-                  {
-                    debug("l=" + l);
-                  }
+                if (Configuration.DEBUG)
+                  log.fine("l=" + l);
                 if (l.size() != 4)
                   {
-                    if (DEBUG)
-                      {
-                        debug("file list too small: " + l.size());
-                      }
+                    if (Configuration.DEBUG)
+                      log.fine("file list too small: " + l.size());
                     throw new IllegalArgumentException("invalid file list");
                   }
                 Double quality = (Double) l.get(0);
@@ -520,37 +503,28 @@ public class CSPRNG extends BasePRNG
       }
     catch (ClassCastException cce)
       {
-        if (DEBUG)
-          {
-            debug("bad file list: " + cce.getMessage());
-            cce.printStackTrace();
-          }
+        if (Configuration.DEBUG)
+          log.log(Level.FINE, "bad file list", cce);
         throw new IllegalArgumentException("invalid file list");
       }
 
     try
       {
         list = (List) attrib.get(URL_SOURCES);
-        if (DEBUG)
-          {
-            debug(String.valueOf(list));
-          }
+        if (Configuration.DEBUG)
+          log.fine("list=" + String.valueOf(list));
         if (list != null)
           {
             urls.clear();
             for (Iterator it = list.iterator(); it.hasNext();)
               {
                 List l = (List) it.next();
-                if (DEBUG)
-                  {
-                    debug("l=" + l);
-                  }
+                if (Configuration.DEBUG)
+                  log.fine("l=" + l);
                 if (l.size() != 4)
                   {
-                    if (DEBUG)
-                      {
-                        debug("URL list too small: " + l.size());
-                      }
+                    if (Configuration.DEBUG)
+                      log.fine("URL list too small: " + l.size());
                     throw new IllegalArgumentException("invalid URL list");
                   }
                 Double quality = (Double) l.get(0);
@@ -563,37 +537,28 @@ public class CSPRNG extends BasePRNG
       }
     catch (ClassCastException cce)
       {
-        if (DEBUG)
-          {
-            debug("bad URL list: " + cce.getMessage());
-            cce.printStackTrace();
-          }
+        if (Configuration.DEBUG)
+          log.log(Level.FINE, "bad URL list", cce);
         throw new IllegalArgumentException("invalid URL list");
       }
 
     try
       {
         list = (List) attrib.get(PROGRAM_SOURCES);
-        if (DEBUG)
-          {
-            debug(String.valueOf(list));
-          }
+        if (Configuration.DEBUG)
+          log.fine("list=" + String.valueOf(list));
         if (list != null)
           {
             progs.clear();
             for (Iterator it = list.iterator(); it.hasNext();)
               {
                 List l = (List) it.next();
-                if (DEBUG)
-                  {
-                    debug("l=" + l);
-                  }
+                if (Configuration.DEBUG)
+                  log.fine("l=" + l);
                 if (l.size() != 4)
                   {
-                    if (DEBUG)
-                      {
-                        debug("program list too small: " + l.size());
-                      }
+                    if (Configuration.DEBUG)
+                      log.fine("program list too small: " + l.size());
                     throw new IllegalArgumentException("invalid program list");
                   }
                 Double quality = (Double) l.get(0);
@@ -606,31 +571,24 @@ public class CSPRNG extends BasePRNG
       }
     catch (ClassCastException cce)
       {
-        if (DEBUG)
-          {
-            debug("bad program list: " + cce.getMessage());
-            cce.printStackTrace();
-          }
+        if (Configuration.DEBUG)
+          log.log(Level.FINE, "bad program list", cce);
         throw new IllegalArgumentException("invalid program list");
       }
 
     try
       {
         list = (List) attrib.get(OTHER_SOURCES);
-        if (DEBUG)
-          {
-            debug(String.valueOf(list));
-          }
+        if (Configuration.DEBUG)
+          log.fine("list=" + String.valueOf(list));
         if (list != null)
           {
             other.clear();
             for (Iterator it = list.iterator(); it.hasNext();)
               {
                 EntropySource src = (EntropySource) it.next();
-                if (DEBUG)
-                  {
-                    debug("src=" + src);
-                  }
+                if (Configuration.DEBUG)
+                  log.fine("src=" + src);
                 if (src == null)
                   {
                     throw new NullPointerException("null source in source list");
@@ -674,16 +632,12 @@ public class CSPRNG extends BasePRNG
 
   public void fillBlock() throws LimitReachedException
   {
-    if (DEBUG)
-      {
-        debug("fillBlock");
-      }
+    if (Configuration.DEBUG)
+      log.fine("fillBlock");
     if (getQuality() < 100.0)
       {
-        if (DEBUG)
-          {
-            debug("doing slow poll");
-          }
+        if (Configuration.DEBUG)
+          log.fine("doing slow poll");
         slowPoll();
       }
 
@@ -759,10 +713,10 @@ public class CSPRNG extends BasePRNG
       {
         throw new ArrayIndexOutOfBoundsException();
       }
-    if (DEBUG)
+    if (Configuration.DEBUG)
       {
-        debug("adding random bytes:");
-        debug(Util.toString(buf, off, len));
+        log.fine("adding random bytes:");
+        log.fine(Util.toString(buf, off, len));
       }
     final int count = off + len;
     for (int i = off; i < count; i++)
@@ -785,10 +739,8 @@ public class CSPRNG extends BasePRNG
    */
   public synchronized void addRandomByte(byte b)
   {
-    if (DEBUG)
-      {
-        debug("adding byte " + Integer.toHexString(b));
-      }
+    if (Configuration.DEBUG)
+      log.fine("adding byte " + Integer.toHexString(b));
     pool[index++] ^= b;
     if (index >= pool.length)
       {
@@ -802,18 +754,14 @@ public class CSPRNG extends BasePRNG
 
   synchronized void addQuality(double quality)
   {
-    if (DEBUG)
-      {
-        debug("adding quality " + quality);
-      }
+    if (Configuration.DEBUG)
+      log.fine("adding quality " + quality);
     if (this.quality < 100)
       {
         this.quality += quality;
       }
-    if (DEBUG)
-      {
-        debug("quality now " + this.quality);
-      }
+    if (Configuration.DEBUG)
+      log.fine("quality now " + this.quality);
   }
 
   synchronized double getQuality()
@@ -923,11 +871,9 @@ public class CSPRNG extends BasePRNG
 
   private void slowPoll() throws LimitReachedException
   {
-    if (DEBUG)
-      {
-        debug("poller is alive? "
-              + (pollerThread == null ? false : pollerThread.isAlive()));
-      }
+    if (Configuration.DEBUG)
+      log.fine("poller is alive? "
+               + (pollerThread == null ? false : pollerThread.isAlive()));
     if (pollerThread == null || !pollerThread.isAlive())
       {
         boolean interrupted = false;
@@ -951,12 +897,9 @@ public class CSPRNG extends BasePRNG
         // and there in insufficient randomness, throw an exception.
         if (!interrupted && blocking && quality < 100.0)
           {
-            if (DEBUG)
-              {
-                debug("insufficient quality: " + quality);
-              }
-            throw new LimitReachedException(
-                                            "insufficient randomness was polled");
+            if (Configuration.DEBUG)
+              log.fine("insufficient quality: " + quality);
+            throw new LimitReachedException("insufficient randomness was polled");
           }
       }
   }
@@ -1054,11 +997,11 @@ public class CSPRNG extends BasePRNG
     public void run()
     {
       running = true;
-      if (DEBUG)
+      if (Configuration.DEBUG)
         {
-          debug("files: " + files);
-          debug("URLs: " + urls);
-          debug("progs: " + progs);
+          log.fine("files: " + files);
+          log.fine("URLs: " + urls);
+          log.fine("progs: " + progs);
         }
       Iterator files_it = files.iterator();
       Iterator urls_it = urls.iterator();
@@ -1080,10 +1023,8 @@ public class CSPRNG extends BasePRNG
               try
                 {
                   List l = (List) files_it.next();
-                  if (DEBUG)
-                    {
-                      debug(l.toString());
-                    }
+                  if (Configuration.DEBUG)
+                    log.fine(l.toString());
                   double qual = ((Double) l.get(0)).doubleValue();
                   int offset = ((Integer) l.get(1)).intValue();
                   int count = ((Integer) l.get(2)).intValue();
@@ -1100,18 +1041,13 @@ public class CSPRNG extends BasePRNG
                       pool.addRandomBytes(buf, 0, len);
                       pool.addQuality(qual * ((double) len / (double) count));
                     }
-                  if (DEBUG)
-                    {
-                      debug("got " + len + " bytes from " + src);
-                    }
+                  if (Configuration.DEBUG)
+                    log.fine("got " + len + " bytes from " + src);
                 }
               catch (Exception x)
                 {
-                  if (DEBUG)
-                    {
-                      debug(x.toString());
-                      x.printStackTrace();
-                    }
+                  if (Configuration.DEBUG)
+                    log.throwing(this.getClass().getName(), "run", x);
                 }
             }
 
@@ -1125,10 +1061,8 @@ public class CSPRNG extends BasePRNG
               try
                 {
                   List l = (List) urls_it.next();
-                  if (DEBUG)
-                    {
-                      debug(l.toString());
-                    }
+                  if (Configuration.DEBUG)
+                    log.fine(l.toString());
                   double qual = ((Double) l.get(0)).doubleValue();
                   int offset = ((Integer) l.get(1)).intValue();
                   int count = ((Integer) l.get(2)).intValue();
@@ -1145,18 +1079,13 @@ public class CSPRNG extends BasePRNG
                       pool.addRandomBytes(buf, 0, len);
                       pool.addQuality(qual * ((double) len / (double) count));
                     }
-                  if (DEBUG)
-                    {
-                      debug("got " + len + " bytes from " + src);
-                    }
+                  if (Configuration.DEBUG)
+                    log.fine("got " + len + " bytes from " + src);
                 }
               catch (Exception x)
                 {
-                  if (DEBUG)
-                    {
-                      debug(x.toString());
-                      x.printStackTrace();
-                    }
+                  if (Configuration.DEBUG)
+                    log.throwing(this.getClass().getName(), "run", x);
                 }
             }
 
@@ -1171,10 +1100,8 @@ public class CSPRNG extends BasePRNG
               try
                 {
                   List l = (List) prog_it.next();
-                  if (DEBUG)
-                    {
-                      debug(l.toString());
-                    }
+                  if (Configuration.DEBUG)
+                    log.finer(l.toString());
                   double qual = ((Double) l.get(0)).doubleValue();
                   int offset = ((Integer) l.get(1)).intValue();
                   int count = ((Integer) l.get(2)).intValue();
@@ -1195,18 +1122,13 @@ public class CSPRNG extends BasePRNG
                     }
                   proc.destroy();
                   proc.waitFor();
-                  if (DEBUG)
-                    {
-                      debug("got " + len + " bytes from " + src);
-                    }
+                  if (Configuration.DEBUG)
+                    log.fine("got " + len + " bytes from " + src);
                 }
               catch (Exception x)
                 {
-                  if (DEBUG)
-                    {
-                      debug(x.toString());
-                      x.printStackTrace();
-                    }
+                  if (Configuration.DEBUG)
+                    log.throwing(this.getClass().getName(), "run", x);
                   try
                     {
                       if (proc != null)
@@ -1238,18 +1160,13 @@ public class CSPRNG extends BasePRNG
                     }
                   pool.addRandomBytes(buf, 0, buf.length);
                   pool.addQuality(src.quality());
-                  if (DEBUG)
-                    {
-                      debug("got " + buf.length + " bytes from " + src);
-                    }
+                  if (Configuration.DEBUG)
+                    log.fine("got " + buf.length + " bytes from " + src);
                 }
               catch (Exception x)
                 {
-                  if (DEBUG)
-                    {
-                      debug(x.toString());
-                      x.printStackTrace();
-                    }
+                  if (Configuration.DEBUG)
+                    log.throwing(this.getClass().getName(), "run", x);
                 }
             }
         }

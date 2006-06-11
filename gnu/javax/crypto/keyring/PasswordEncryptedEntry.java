@@ -38,6 +38,7 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.keyring;
 
+import gnu.classpath.Configuration;
 import gnu.java.security.Registry;
 import gnu.java.security.prng.IRandom;
 import gnu.java.security.prng.LimitReachedException;
@@ -132,7 +133,8 @@ public class PasswordEncryptedEntry extends MaskableEnvelopeEntry implements
   public void decrypt(char[] password) throws IllegalArgumentException,
       WrongPaddingException
   {
-    log.entering(this.getClass().getName(), "decrypt");
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "decrypt");
     if (isMasked() && payload != null)
       {
         long tt = - System.currentTimeMillis();
@@ -162,23 +164,27 @@ public class PasswordEncryptedEntry extends MaskableEnvelopeEntry implements
             throw new IllegalArgumentException("decryption failed");
           }
         tt += System.currentTimeMillis();
-        log.finer("Decrypted in " + tt + "ms.");
+        log.fine("Decrypted in " + tt + "ms.");
       }
-    else
-      log.finer("Skip decryption; " + (isMasked() ? "null payload" : "unmasked"));
-    log.exiting(this.getClass().getName(), "decrypt");
+    else if (Configuration.DEBUG)
+      log.fine("Skip decryption; " + (isMasked() ? "null payload" : "unmasked"));
+
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "decrypt");
   }
 
   public void encrypt(char[] password) throws IOException
   {
-    log.entering(this.getClass().getName(), "encrypt", String.valueOf(password));
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "encrypt", String.valueOf(password));
     long tt = - System.currentTimeMillis();
     long t1 = - System.currentTimeMillis();
 
     byte[] salt = new byte[8];
     PRNG.getInstance().nextBytes(salt);
     t1 += System.currentTimeMillis();
-    log.finer("-- Generated salt in " + t1 + "ms.");
+    if (Configuration.DEBUG)
+      log.fine("-- Generated salt in " + t1 + "ms.");
     properties.put("salt", Util.toString(salt));
     IMode mode = getMode(password, IMode.ENCRYPTION);
     IPad pad = PadFactory.getInstance("PKCS7");
@@ -188,11 +194,13 @@ public class PasswordEncryptedEntry extends MaskableEnvelopeEntry implements
     for (Iterator it = entries.iterator(); it.hasNext();)
       {
         Entry entry = (Entry) it.next();
-        log.finer("-- About to encode one " + entry);
+        if (Configuration.DEBUG)
+          log.fine("-- About to encode one " + entry);
         t1 = - System.currentTimeMillis();
         entry.encode(out2);
         t1 += System.currentTimeMillis();
-        log.finer("-- Encoded an Entry in " + t1 + "ms.");
+        if (Configuration.DEBUG)
+          log.fine("-- Encoded an Entry in " + t1 + "ms.");
       }
     byte[] plaintext = bout.toByteArray();
     byte[] padding = pad.pad(plaintext, 0, plaintext.length);
@@ -212,8 +220,11 @@ public class PasswordEncryptedEntry extends MaskableEnvelopeEntry implements
     setMasked(true);
 
     tt += System.currentTimeMillis();
-    log.finer("Encrypted in " + tt + "ms.");
-    log.exiting(this.getClass().getName(), "encrypt");
+    if (Configuration.DEBUG)
+      {
+        log.fine("Encrypted in " + tt + "ms.");
+        log.exiting(this.getClass().getName(), "encrypt");
+      }
   }
 
   public void encode(DataOutputStream out, char[] password) throws IOException
@@ -226,7 +237,8 @@ public class PasswordEncryptedEntry extends MaskableEnvelopeEntry implements
   {
     if (payload == null)
       {
-        log.fine("Null payload: " + this);
+        if (Configuration.DEBUG)
+          log.fine("Null payload: " + this);
         throw new IllegalStateException("not encrypted");
       }
   }

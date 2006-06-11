@@ -38,12 +38,13 @@ exception statement from your version.  */
 
 package gnu.java.security.sig.rsa;
 
+import gnu.classpath.Configuration;
 import gnu.java.security.hash.HashFactory;
 import gnu.java.security.hash.IMessageDigest;
 import gnu.java.security.util.Util;
 
-import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.logging.Logger;
 
 /**
  * <p>An implementation of the EMSA-PSS encoding/decoding scheme.</p>
@@ -70,26 +71,7 @@ import java.util.Arrays;
  */
 public class EMSA_PSS implements Cloneable
 {
-
-  // Debugging methods and variables
-  // -------------------------------------------------------------------------
-
-  private static final String NAME = "emsa-pss";
-
-  private static final boolean DEBUG = false;
-
-  private static final int debuglevel = 5;
-
-  private static final PrintWriter err = new PrintWriter(System.out, true);
-
-  private static void debug(String s)
-  {
-    err.println(">>> " + NAME + ": " + s);
-  }
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
+  private static final Logger log = Logger.getLogger(EMSA_PSS.class.getName());
   /** The underlying hash function to use with this instance. */
   private IMessageDigest hash;
 
@@ -202,10 +184,10 @@ public class EMSA_PSS implements Cloneable
     System.arraycopy(salt, 0, DB, emLen - sLen - hLen - 1, sLen);
     // 9. Let dbMask = MGF(H, emLen - hLen - 1).
     byte[] dbMask = MGF(H, emLen - hLen - 1);
-    if (DEBUG && debuglevel > 8)
+    if (Configuration.DEBUG)
       {
-        debug("dbMask (encode): " + Util.toString(dbMask));
-        debug("DB (encode): " + Util.toString(DB));
+        log.fine("dbMask (encode): " + Util.toString(dbMask));
+        log.fine("DB (encode): " + Util.toString(DB));
       }
     // 10. Let maskedDB = DB XOR dbMask.
     for (i = 0; i < DB.length; i++)
@@ -244,12 +226,12 @@ public class EMSA_PSS implements Cloneable
    */
   public boolean decode(byte[] mHash, byte[] EM, int emBits, int sLen)
   {
-    if (DEBUG && debuglevel > 8)
+    if (Configuration.DEBUG)
       {
-        debug("mHash: " + Util.toString(mHash));
-        debug("EM: " + Util.toString(EM));
-        debug("emBits: " + String.valueOf(emBits));
-        debug("sLen: " + String.valueOf(sLen));
+        log.fine("mHash: " + Util.toString(mHash));
+        log.fine("EM: " + Util.toString(EM));
+        log.fine("emBits: " + String.valueOf(emBits));
+        log.fine("sLen: " + String.valueOf(sLen));
       }
     if (sLen < 0)
       {
@@ -262,19 +244,15 @@ public class EMSA_PSS implements Cloneable
     // 2. Let mHash = Hash(M), an octet string of length hLen.
     if (hLen != mHash.length)
       {
-        if (DEBUG && debuglevel > 8)
-          {
-            debug("hLen != mHash.length; hLen: " + String.valueOf(hLen));
-          }
+        if (Configuration.DEBUG)
+          log.fine("hLen != mHash.length; hLen: " + String.valueOf(hLen));
         throw new IllegalArgumentException("wrong hash");
       }
     // 3. If emBits < 8.hLen + 8.sLen + 9, output 'decoding error' and stop.
     if (emBits < (8 * hLen + 8 * sLen + 9))
       {
-        if (DEBUG && debuglevel > 8)
-          {
-            debug("emBits < (8hLen + 8sLen + 9); sLen: " + String.valueOf(sLen));
-          }
+        if (Configuration.DEBUG)
+          log.fine("emBits < (8hLen + 8sLen + 9); sLen: " + String.valueOf(sLen));
         throw new IllegalArgumentException("decoding error");
       }
     int emLen = (emBits + 7) / 8;
@@ -282,10 +260,8 @@ public class EMSA_PSS implements Cloneable
     //    output 'inconsistent' and stop.
     if ((EM[EM.length - 1] & 0xFF) != 0xBC)
       {
-        if (DEBUG && debuglevel > 8)
-          {
-            debug("EM does not end with 0xBC");
-          }
+        if (Configuration.DEBUG)
+          log.fine("EM does not end with 0xBC");
         return false;
       }
     // 5. Let maskedDB be the leftmost emLen ? hLen ? 1 octets of EM, and let
@@ -294,10 +270,8 @@ public class EMSA_PSS implements Cloneable
     //    maskedDB are not all equal to zero, output 'inconsistent' and stop.
     if ((EM[0] & (0xFF << (8 - (8 * emLen - emBits)))) != 0)
       {
-        if (DEBUG && debuglevel > 8)
-          {
-            debug("Leftmost 8emLen - emBits bits of EM are not 0s");
-          }
+        if (Configuration.DEBUG)
+          log.fine("Leftmost 8emLen - emBits bits of EM are not 0s");
         return false;
       }
     byte[] DB = new byte[emLen - hLen - 1];
@@ -314,10 +288,10 @@ public class EMSA_PSS implements Cloneable
       }
     // 9. Set the leftmost 8.emLen ? emBits bits of DB to zero.
     DB[0] &= (0xFF >>> (8 * emLen - emBits));
-    if (DEBUG && debuglevel > 8)
+    if (Configuration.DEBUG)
       {
-        debug("dbMask (decode): " + Util.toString(dbMask));
-        debug("DB (decode): " + Util.toString(DB));
+        log.fine("dbMask (decode): " + Util.toString(dbMask));
+        log.fine("DB (decode): " + Util.toString(DB));
       }
     // 10. If the emLen -hLen -sLen -2 leftmost octets of DB are not zero or
     //     if the octet at position emLen -hLen -sLen -1 is not equal to 0x01,
@@ -329,20 +303,16 @@ public class EMSA_PSS implements Cloneable
       {
         if (DB[i] != 0)
           {
-            if (DEBUG && debuglevel > 8)
-              {
-                debug("DB[" + String.valueOf(i) + "] != 0x00");
-              }
+            if (Configuration.DEBUG)
+              log.fine("DB[" + String.valueOf(i) + "] != 0x00");
             return false;
           }
       }
     if (DB[i] != 0x01)
       { // i == emLen -hLen -sLen -2
-        if (DEBUG && debuglevel > 8)
-          {
-            debug("DB's byte at position (emLen -hLen -sLen -2); i.e. "
-                  + String.valueOf(i) + " is not 0x01");
-          }
+        if (Configuration.DEBUG)
+          log.fine("DB's byte at position (emLen -hLen -sLen -2); i.e. "
+                   + String.valueOf(i) + " is not 0x01");
         return false;
       }
     // 11. Let salt be the last sLen octets of DB.

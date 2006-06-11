@@ -38,16 +38,17 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.jce.prng;
 
+import gnu.classpath.Configuration;
 import gnu.java.security.Registry;
+import gnu.java.security.prng.LimitReachedException;
 import gnu.javax.crypto.cipher.IBlockCipher;
 import gnu.javax.crypto.prng.ICMGenerator;
-import gnu.java.security.prng.LimitReachedException;
 
-import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.security.SecureRandomSpi;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.logging.Logger;
 
 /**
  * <p>An <em>Adapter</em> class around {@link ICMGenerator} to allow using this
@@ -55,26 +56,7 @@ import java.util.Random;
  */
 public class ICMRandomSpi extends SecureRandomSpi
 {
-
-  // Debugging methods and variables
-  // -------------------------------------------------------------------------
-
-  private static final String NAME = "ICMRandomSpi";
-
-  private static final boolean DEBUG = false;
-
-  private static final int debuglevel = 0;
-
-  private static final PrintWriter err = new PrintWriter(System.out, true);
-
-  private static void debug(String s)
-  {
-    err.println(">>> " + NAME + ": " + s);
-  }
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
+  private static final Logger log = Logger.getLogger(ICMRandomSpi.class.getName());
   /** Class-wide prng to generate random material for the underlying prng.*/
   private static final ICMGenerator prng; // blank final
   static
@@ -106,8 +88,8 @@ public class ICMRandomSpi extends SecureRandomSpi
 
   private static void resetLocalPRNG()
   {
-    if (DEBUG && debuglevel > 8)
-      debug(">>> resetLocalPRNG()");
+    if (Configuration.DEBUG)
+      log.entering(ICMRandomSpi.class.getName(), "resetLocalPRNG");
     HashMap attributes = new HashMap();
     attributes.put(ICMGenerator.CIPHER, Registry.AES_CIPHER);
     byte[] key = new byte[128 / 8]; // AES default key size
@@ -131,8 +113,8 @@ public class ICMRandomSpi extends SecureRandomSpi
     attributes.put(ICMGenerator.SEGMENT_INDEX, new BigInteger(1, index));
 
     prng.setup(attributes);
-    if (DEBUG && debuglevel > 8)
-      debug("<<< resetLocalPRNG()");
+    if (Configuration.DEBUG)
+      log.exiting(ICMRandomSpi.class.getName(), "resetLocalPRNG");
   }
 
   // Instance methods
@@ -142,25 +124,25 @@ public class ICMRandomSpi extends SecureRandomSpi
 
   public byte[] engineGenerateSeed(int numBytes)
   {
-    if (DEBUG && debuglevel > 8)
-      debug(">>> engineGenerateSeed()");
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "engineGenerateSeed");
     if (numBytes < 1)
       {
-        if (DEBUG && debuglevel > 8)
-          debug("<<< engineGenerateSeed()");
+        if (Configuration.DEBUG)
+          log.exiting(this.getClass().getName(), "engineGenerateSeed");
         return new byte[0];
       }
     byte[] result = new byte[numBytes];
     this.engineNextBytes(result);
-    if (DEBUG && debuglevel > 8)
-      debug("<<< engineGenerateSeed()");
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "engineGenerateSeed");
     return result;
   }
 
   public void engineNextBytes(byte[] bytes)
   {
-    if (DEBUG && debuglevel > 8)
-      debug(">>> engineNextBytes()");
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "engineNextBytes");
     if (!adaptee.isInitialised())
       {
         this.engineSetSeed(new byte[0]);
@@ -175,23 +157,22 @@ public class ICMRandomSpi extends SecureRandomSpi
           }
         catch (LimitReachedException x)
           { // reseed the generator
-            if (DEBUG)
+            if (Configuration.DEBUG)
               {
-                debug(LIMIT_REACHED_MSG + String.valueOf(x));
-                x.printStackTrace(err);
-                debug(RESEED);
+                log.fine(LIMIT_REACHED_MSG + String.valueOf(x));
+                log.fine(RESEED);
               }
             resetLocalPRNG();
           }
       }
-    if (DEBUG && debuglevel > 8)
-      debug("<<< engineNextBytes()");
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "engineNextBytes");
   }
 
   public void engineSetSeed(byte[] seed)
   {
-    if (DEBUG && debuglevel > 8)
-      debug(">>> engineSetSeed()");
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "engineSetSeed");
     // compute the total number of random bytes required to setup adaptee
     int materialLength = 0;
     materialLength += 16; // key material size
@@ -224,10 +205,10 @@ public class ICMRandomSpi extends SecureRandomSpi
               }
             catch (LimitReachedException x)
               {
-                if (DEBUG)
+                if (Configuration.DEBUG)
                   {
-                    debug(MSG + String.valueOf(x));
-                    debug(RETRY);
+                    log.fine(MSG + String.valueOf(x));
+                    log.fine(RETRY);
                   }
               }
           }
@@ -254,7 +235,7 @@ public class ICMRandomSpi extends SecureRandomSpi
     attributes.put(ICMGenerator.SEGMENT_INDEX, new BigInteger(1, index));
 
     adaptee.init(attributes);
-    if (DEBUG && debuglevel > 8)
-      debug("<<< engineSetSeed()");
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "engineSetSeed");
   }
 }

@@ -38,6 +38,7 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.keyring;
 
+import gnu.classpath.Configuration;
 import gnu.java.security.Registry;
 
 import java.io.DataInputStream;
@@ -77,7 +78,8 @@ public class GnuPublicKeyring extends BaseKeyring implements IPublicKeyring
 
   public boolean containsCertificate(String alias)
   {
-    log.entering(this.getClass().getName(), "containsCertificate", alias);
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "containsCertificate", alias);
     boolean result = false;
     if (containsAlias(alias))
       for (Iterator it = get(alias).iterator(); it.hasNext();)
@@ -86,14 +88,16 @@ public class GnuPublicKeyring extends BaseKeyring implements IPublicKeyring
             result = true;
             break;
           }
-    log.exiting(this.getClass().getName(), "containsCertificate",
-                Boolean.valueOf(result));
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "containsCertificate",
+                  Boolean.valueOf(result));
     return result;
   }
 
   public Certificate getCertificate(String alias)
   {
-    log.entering(this.getClass().getName(), "getCertificate", alias);
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "getCertificate", alias);
     Certificate result = null;
     if (containsAlias(alias))
       for (Iterator it = get(alias).iterator(); it.hasNext();)
@@ -105,29 +109,33 @@ public class GnuPublicKeyring extends BaseKeyring implements IPublicKeyring
               break;
             }
         }
-    log.exiting(this.getClass().getName(), "getCertificate", result);
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "getCertificate", result);
     return result;
   }
 
   public void putCertificate(String alias, Certificate cert)
   {
-    log.entering(this.getClass().getName(), "putCertificate",
-                 new Object[] { alias, cert });
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "putCertificate",
+                   new Object[] { alias, cert });
     if (! containsCertificate(alias))
       {
         Properties p = new Properties();
         p.put("alias", fixAlias(alias));
         add(new CertificateEntry(cert, new Date(), p));
       }
-    else
-      log.finer("Keyring already contains alias: " + alias);
+    else if (Configuration.DEBUG)
+      log.fine("Keyring already contains alias: " + alias);
 
-    log.exiting(this.getClass().getName(), "putCertificate");
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "putCertificate");
   }
 
   protected void load(InputStream in, char[] password) throws IOException
   {
-    log.entering(this.getClass().getName(), "load");
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "load");
     if (in.read() != USAGE)
       throw new MalformedKeyringException("incompatible keyring usage");
 
@@ -136,14 +144,17 @@ public class GnuPublicKeyring extends BaseKeyring implements IPublicKeyring
 
     DataInputStream dis = new DataInputStream(in);
     keyring = PasswordAuthenticatedEntry.decode(dis, password);
-    log.exiting(this.getClass().getName(), "load");
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "load");
   }
 
   protected void store(OutputStream out, char[] password) throws IOException
   {
-    log.entering(this.getClass().getName(), "store");
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "store");
     out.write(USAGE);
     keyring.encode(new DataOutputStream(out), password);
-    log.exiting(this.getClass().getName(), "store");
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "store");
   }
 }

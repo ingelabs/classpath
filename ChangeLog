@@ -1,3 +1,58 @@
+2006-06-11  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	PR Classpath/26065
+	* gnu/javax/security/auth/login/GnuConfiguration.java: Condition all trace/
+	debug code based on Configuration.DEBUG.
+	Use logger instead of STDOUT and ot STDERR.
+	* gnu/javax/security/auth/login/ConfigFileParser.java: Likewise.
+	* gnu/javax/crypto/sasl/SaslOutputStream.java: Likewise.
+	* gnu/javax/crypto/sasl/SaslInputStream.java: Likewise.
+	* gnu/javax/crypto/sasl/srp/SRPServer.java: Likewise.
+	* gnu/javax/crypto/sasl/srp/SRPClient.java: Likewise.
+	* gnu/javax/crypto/prng/CSPRNG.java: Likewise.
+	* gnu/javax/crypto/pad/TBC.java: Likewise.
+	* gnu/javax/crypto/pad/PKCS7.java: Likewise.
+	* gnu/javax/crypto/pad/PKCS1_V1_5.java: Likewise.
+	* gnu/javax/crypto/pad/BasePad.java: Likewise.
+	* gnu/javax/crypto/mac/OMAC.java: Likewise.
+	* gnu/javax/crypto/keyring/PasswordEncryptedEntry.java: Likewise.
+	* gnu/javax/crypto/keyring/PasswordAuthenticatedEntry.java: Likewise.
+	* gnu/javax/crypto/keyring/GnuPublicKeyring.java: Likewise.
+	* gnu/javax/crypto/keyring/GnuPrivateKeyring.java: Likewise.
+	* gnu/javax/crypto/keyring/EnvelopeEntry.java: Likewise.
+	* gnu/javax/crypto/keyring/Entry.java: Likewise.
+	* gnu/javax/crypto/key/srp6/SRPKeyPairGenerator.java: Likewise.
+	* gnu/javax/crypto/key/dh/GnuDHKeyPairGenerator.java: Likewise.
+	* gnu/javax/crypto/jce/prng/UMacRandomSpi.java: Likewise.
+	* gnu/javax/crypto/jce/prng/ICMRandomSpi.java: Likewise.
+	* gnu/javax/crypto/jce/keyring/GnuKeyring.java: Likewise.
+	* gnu/javax/crypto/cipher/Twofish.java: Likewise.
+	* gnu/javax/crypto/cipher/Khazad.java: Likewise.
+	* gnu/javax/crypto/cipher/Rijndael.java: Likewise.
+	* gnu/javax/crypto/cipher/BaseCipher.java: Likewise.
+	* gnu/javax/crypto/cipher/Anubis.java: Likewise.
+	* gnu/java/security/Properties.java: Likewise.
+	* gnu/java/security/x509/X509CRLEntry.java: Likewise.
+	* gnu/java/security/x509/X509CRL.java: Likewise.
+	* gnu/java/security/x509/ext/Extension.java: Likewise.
+	* gnu/java/security/util/Prime2.java: Likewise.
+	* gnu/java/security/util/Base64.java: Likewise.
+	* gnu/java/security/sig/rsa/RSAPSSSignature.java: Likewise.
+	* gnu/java/security/sig/rsa/EMSA_PSS.java: Likewise.
+	* gnu/java/security/provider/PKIXCertPathValidatorImpl.java: Likewise.
+	* gnu/java/security/pkcs/SignerInfo.java: Likewise.
+	* gnu/java/security/pkcs/PKCS7SignedData.java: Likewise.
+	* gnu/java/security/key/rsa/RSAKeyPairX509Codec.java: Likewise.
+	* gnu/java/security/key/rsa/RSAKeyPairPKCS8Codec.java: Likewise.
+	* gnu/java/security/key/rsa/RSAKeyPairGenerator.java: Likewise.
+	* gnu/java/security/key/rsa/GnuRSAPrivateKey.java: Likewise.
+	* gnu/java/security/key/dss/DSSPrivateKey.java: Likewise.
+	* gnu/java/security/key/dss/DSSKeyPairPKCS8Codec.java: Likewise.
+	* gnu/java/security/key/dss/DSSKeyPairGenerator.java: Likewise.
+	* gnu/java/security/jce/sig/SignatureAdapter.java: Likewise.
+	* gnu/java/security/jce/sig/EncodedKeyFactory.java: Likewise.
+	* gnu/java/security/hash/Whirlpool.java: Likewise.
+
 2006-06-11  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_FreetypeGlyphVector.c

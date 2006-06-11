@@ -38,6 +38,7 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.mac;
 
+import gnu.classpath.Configuration;
 import gnu.java.security.Registry;
 import gnu.java.security.util.Util;
 import gnu.javax.crypto.cipher.CipherFactory;
@@ -48,6 +49,7 @@ import java.security.InvalidKeyException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * <p>The One-Key CBC MAC, OMAC. This message authentication code is based on
@@ -62,18 +64,7 @@ import java.util.Map;
  */
 public class OMAC implements IMac
 {
-
-  // Constants and fields.
-  // ------------------------------------------------------------------------
-
-  private static final boolean DEBUG = false;
-
-  private static void debug(String msg)
-  {
-    System.out.print(">>> OMAC: ");
-    System.out.println(msg);
-  }
-
+  private static final Logger log = Logger.getLogger(OMAC.class.getName());
   private static final byte C1 = (byte) 0x87;
 
   private static final byte C2 = 0x1b;
@@ -157,12 +148,8 @@ public class OMAC implements IMac
 
     byte[] L = new byte[blockSize];
     cipher.encryptBlock(L, 0, L, 0);
-
-    if (DEBUG)
-      {
-        debug("L = " + Util.toString(L).toLowerCase());
-      }
-
+    if (Configuration.DEBUG)
+      log.fine("L = " + Util.toString(L).toLowerCase());
     if (Lu != null)
       {
         Arrays.fill(Lu, (byte) 0);
@@ -214,11 +201,8 @@ public class OMAC implements IMac
                                                    + blockSize);
           }
       }
-    if (DEBUG)
-      {
-        debug("Lu = " + Util.toString(Lu).toLowerCase());
-      }
-
+    if (Configuration.DEBUG)
+      log.fine("Lu = " + Util.toString(Lu).toLowerCase());
     msb = (Lu[0] & 0x80) != 0;
     for (int i = 0; i < blockSize; i++)
       {
@@ -239,11 +223,8 @@ public class OMAC implements IMac
             Lu2[Lu2.length - 1] ^= C2;
           }
       }
-    if (DEBUG)
-      {
-        debug("Lu2 = " + Util.toString(Lu2).toLowerCase());
-      }
-
+    if (Configuration.DEBUG)
+      log.fine("Lu2 = " + Util.toString(Lu2).toLowerCase());
     if (M != null)
       {
         Arrays.fill(M, (byte) 0);

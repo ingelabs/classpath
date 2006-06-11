@@ -38,8 +38,11 @@ exception statement from your version.  */
 
 package gnu.java.security.hash;
 
+import gnu.classpath.Configuration;
 import gnu.java.security.Registry;
 import gnu.java.security.util.Util;
+
+import java.util.logging.Logger;
 
 /**
  * Whirlpool, a new 512-bit hashing function operating on messages less than
@@ -61,16 +64,7 @@ import gnu.java.security.util.Util;
  */
 public final class Whirlpool extends BaseHash
 {
-  // Debugging methods and variables
-  // -------------------------------------------------------------------------
-
-  private static final boolean DEBUG = false;
-
-  private static final int debuglevel = 3;
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
+  private static final Logger log = Logger.getLogger(Whirlpool.class.getName());
   private static final int BLOCK_SIZE = 64; // inner block size in bytes
 
   /** The digest of the 0-bit long message. */
@@ -183,95 +177,87 @@ public final class Whirlpool extends BaseHash
                 ^ (T7[i++] & 0x00000000000000FFL);
 
       time = System.currentTimeMillis() - time;
-      if (DEBUG && debuglevel > 8)
+      if (Configuration.DEBUG)
         {
-          System.out.println("==========");
-          System.out.println();
-          System.out.println("Static data");
-          System.out.println();
-          
-          System.out.println();
-          System.out.println("T0[]:");
+          log.fine("Static data");
+          log.fine("T0[]:");
+          StringBuilder sb;
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 4; j++)
-                System.out.print("0x" + Util.toString(T0[i * 4 + j]) + ", ");
+                sb.append("0x").append(Util.toString(T0[i * 4 + j])).append(", ");
 
-              System.out.println();
+              log.fine(sb.toString());
             }
-          System.out.println();
-          System.out.println("T1[]:");
+          log.fine("T1[]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 4; j++)
-                System.out.print("0x" + Util.toString(T1[i * 4 + j]) + ", ");
+                sb.append("0x").append(Util.toString(T1[i * 4 + j])).append(", ");
 
-              System.out.println();
+              log.fine(sb.toString());
             }
-          System.out.println();
-          System.out.println("T2[]:");
+          log.fine("T2[]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 4; j++)
-                System.out.print("0x" + Util.toString(T2[i * 4 + j]) + ", ");
+                sb.append("0x").append(Util.toString(T2[i * 4 + j])).append(", ");
 
-              System.out.println();
+              log.fine(sb.toString());
             }
-          System.out.println();
-          System.out.println("T3[]:");
+          log.fine("T3[]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 4; j++)
-                System.out.print("0x" + Util.toString(T3[i * 4 + j]) + ", ");
+                sb.append("0x").append(Util.toString(T3[i * 4 + j])).append(", ");
 
-              System.out.println();
+              log.fine(sb.toString());
             }
-          System.out.println();
-          System.out.println("T4[]:");
+          log.fine("\nT4[]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 4; j++)
-                System.out.print("0x" + Util.toString(T4[i * 4 + j]) + ", ");
+                sb.append("0x").append(Util.toString(T4[i * 4 + j])).append(", ");
 
-              System.out.println();
+              log.fine(sb.toString());
             }
-          System.out.println();
-          System.out.println("T5[]:");
+          log.fine("T5[]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 4; j++)
-                System.out.print("0x" + Util.toString(T5[i * 4 + j]) + ", ");
+                sb.append("0x").append(Util.toString(T5[i * 4 + j])).append(", ");
 
-              System.out.println();
+              log.fine(sb.toString());
             }
-          System.out.println();
-          System.out.println("T6[]:");
+          log.fine("T6[]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 4; j++)
-                System.out.print("0x" + Util.toString(T5[i * 4 + j]) + ", ");
+                sb.append("0x").append(Util.toString(T5[i * 4 + j])).append(", ");
 
-              System.out.println();
+              log.fine(sb.toString());
             }
-          System.out.println();
-          System.out.println("T7[]:");
+          log.fine("T7[]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 4; j++)
-                System.out.print("0x" + Util.toString(T5[i * 4 + j]) + ", ");
+                sb.append("0x").append(Util.toString(T5[i * 4 + j])).append(", ");
 
-              System.out.println();
+              log.fine(sb.toString());
             }
-          System.out.println();
-          System.out.println("rc[]:");
+          log.fine("rc[]:");
           for (i = 0; i < R; i++)
-            System.out.println("0x" + Util.toString(rc[i]));
+            log.fine("0x" + Util.toString(rc[i]));
 
-          System.out.println();
-
-          System.out.println();
-          System.out.println("Total initialization time: " + time + " ms.");
-          System.out.println();
+          log.fine("Total initialization time: " + time + " ms.");
         }
     }
 

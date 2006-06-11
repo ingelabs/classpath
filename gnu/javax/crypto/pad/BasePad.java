@@ -38,18 +38,19 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.pad;
 
+import gnu.classpath.Configuration;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
- * <p>An abstract class to facilitate implementing padding algorithms.</p>
+ * An abstract class to facilitate implementing padding algorithms.
  */
 public abstract class BasePad implements IPad
 {
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
+  private static final Logger log = Logger.getLogger(BasePad.class.getName());
   /** The canonical name prefix of the padding algorithm. */
   protected String name;
-
   /** The block size, in bytes, for this instance. */
   protected int blockSize;
 
@@ -139,7 +140,10 @@ public abstract class BasePad implements IPad
         padBytes = pad(buffer, offset, i);
         if (((i + padBytes.length) % blockSize) != 0)
           {
-            new RuntimeException(name()).printStackTrace(System.err);
+            if (Configuration.DEBUG)
+              log.log(Level.SEVERE,
+                      "Length of padded text MUST be a multiple of " + blockSize,
+                      new RuntimeException(name()));
             return false;
           }
         System.arraycopy(padBytes, 0, buffer, offset + i, padBytes.length);
@@ -147,13 +151,17 @@ public abstract class BasePad implements IPad
           {
             if (padBytes.length != unpad(buffer, offset, i + padBytes.length))
               {
-                new RuntimeException(name()).printStackTrace(System.err);
+                if (Configuration.DEBUG)
+                  log.log(Level.SEVERE,
+                          "IPad [" + name() + "] failed symmetric operation",
+                          new RuntimeException(name()));
                 return false;
               }
           }
         catch (WrongPaddingException x)
           {
-            x.printStackTrace(System.err);
+            if (Configuration.DEBUG)
+              log.throwing(this.getClass().getName(), "test1BlockSize", x);
             return false;
           }
       }

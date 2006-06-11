@@ -38,6 +38,8 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.keyring;
 
+import gnu.classpath.Configuration;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -179,7 +181,8 @@ public abstract class Entry
       {
         throw new IOException("corrupt length");
       }
-    log.finest("About to instantiate new payload byte array for " + this);
+    if (Configuration.DEBUG)
+      log.fine("About to instantiate new payload byte array for " + this);
     payload = new byte[len];
     in.readFully(payload);
   }

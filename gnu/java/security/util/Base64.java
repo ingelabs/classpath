@@ -38,8 +38,10 @@ exception statement from your version.  */
 
 package gnu.java.security.util;
 
-import java.io.PrintWriter;
+import gnu.classpath.Configuration;
+
 import java.io.UnsupportedEncodingException;
+import java.util.logging.Logger;
 
 /**
  * Most of this implementation is from Robert Harder's public domain Base64
@@ -47,26 +49,7 @@ import java.io.UnsupportedEncodingException;
  */
 public class Base64
 {
-
-  // Debugging methods and variables
-  // -------------------------------------------------------------------------
-
-  private static final String NAME = "Base64";
-
-  private static final boolean DEBUG = true;
-
-  private static final int debuglevel = 9;
-
-  private static final PrintWriter err = new PrintWriter(System.out, true);
-
-  private static void debug(String s)
-  {
-    err.println(">>> " + NAME + ": " + s);
-  }
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
+  private static final Logger log = Logger.getLogger(Base64.class.getName());
   /** Maximum line length (76) of Base64 output. */
   private static final int MAX_LINE_LENGTH = 76;
 
@@ -383,12 +366,12 @@ public class Base64
       }
     catch (Exception x)
       {
-        if (DEBUG && debuglevel > 8)
+        if (Configuration.DEBUG)
           {
-            debug("" + src[sOffset] + ": " + (DECODABET[src[sOffset]]));
-            debug("" + src[sOffset + 1] + ": " + (DECODABET[src[sOffset + 1]]));
-            debug("" + src[sOffset + 2] + ": " + (DECODABET[src[sOffset + 2]]));
-            debug("" + src[sOffset + 3] + ": " + (DECODABET[src[sOffset + 3]]));
+            log.fine("" + src[sOffset    ] + ": " + (DECODABET[src[sOffset    ]]));
+            log.fine("" + src[sOffset + 1] + ": " + (DECODABET[src[sOffset + 1]]));
+            log.fine("" + src[sOffset + 2] + ": " + (DECODABET[src[sOffset + 2]]));
+            log.fine("" + src[sOffset + 3] + ": " + (DECODABET[src[sOffset + 3]]));
           }
         return -1;
       }

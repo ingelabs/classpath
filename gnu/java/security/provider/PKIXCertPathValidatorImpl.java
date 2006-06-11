@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package gnu.java.security.provider;
 
+import gnu.classpath.Configuration;
 import gnu.java.security.OID;
 import gnu.java.security.Registry;
 import gnu.java.security.key.dss.DSSPublicKey;
@@ -81,6 +82,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * An implementation of the Public Key Infrastructure's X.509
@@ -94,17 +96,7 @@ import java.util.Set;
  */
 public class PKIXCertPathValidatorImpl extends CertPathValidatorSpi
 {
-
-  // Constants.
-  // -------------------------------------------------------------------------
-
-  private static final boolean DEBUG = false;
-  private static void debug (String msg)
-  {
-    System.err.print (">> PKIXCertPathValidatorImpl: ");
-    System.err.println (msg);
-  }
-
+  private static final Logger log = Logger.getLogger(PKIXCertPathValidatorImpl.class.getName());
   public static final String ANY_POLICY = "2.5.29.32.0";
 
   // Constructor.
@@ -603,7 +595,8 @@ public class PKIXCertPathValidatorImpl extends CertPathValidatorSpi
                                        boolean explicitPolicy)
     throws CertPathValidatorException
   {
-    if (DEBUG) debug("updatePolicyTree depth == " + depth);
+    if (Configuration.DEBUG)
+      log.fine("updatePolicyTree depth == " + depth);
     Set nodes = new HashSet();
     LinkedList stack = new LinkedList();
     Iterator current = null;
@@ -614,15 +607,18 @@ public class PKIXCertPathValidatorImpl extends CertPathValidatorSpi
         while (current.hasNext())
           {
             PolicyNodeImpl p = (PolicyNodeImpl) current.next();
-            if (DEBUG) debug("visiting node == " + p);
+            if (Configuration.DEBUG)
+              log.fine("visiting node == " + p);
             if (p.getDepth() == depth - 1)
               {
-                if (DEBUG) debug("added node");
+                if (Configuration.DEBUG)
+                  log.fine("added node");
                 nodes.add(p);
               }
             else
               {
-                if (DEBUG) debug("skipped node");
+                if (Configuration.DEBUG)
+                  log.fine("skipped node");
                 stack.addLast(current);
                 current = p.getChildren();
               }
@@ -646,16 +642,21 @@ public class PKIXCertPathValidatorImpl extends CertPathValidatorSpi
     else
       cp = Collections.EMPTY_LIST;
     boolean match = false;
-    if (DEBUG) debug("nodes are == " + nodes);
-    if (DEBUG) debug("cert policies are == " + cp);
+    if (Configuration.DEBUG)
+      {
+        log.fine("nodes are == " + nodes);
+        log.fine("cert policies are == " + cp);
+      }
     for (Iterator it = nodes.iterator(); it.hasNext(); )
       {
         PolicyNodeImpl parent = (PolicyNodeImpl) it.next();
-        if (DEBUG) debug("adding policies to " + parent);
+        if (Configuration.DEBUG)
+          log.fine("adding policies to " + parent);
         for (Iterator it2 = cp.iterator(); it2.hasNext(); )
           {
             OID policy = (OID) it2.next();
-            if (DEBUG) debug("trying to add policy == " + policy);
+            if (Configuration.DEBUG)
+              log.fine("trying to add policy == " + policy);
             if (policy.toString().equals(ANY_POLICY) &&
                 params.isAnyPolicyInhibited())
               continue;
@@ -691,13 +692,15 @@ public class PKIXCertPathValidatorImpl extends CertPathValidatorSpi
 
   private boolean checkExplicitPolicy (int depth, List explicitPolicies)
   {
-    if (DEBUG) debug ("checkExplicitPolicy depth=" + depth);
+    if (Configuration.DEBUG)
+      log.fine("checkExplicitPolicy depth=" + depth);
     for (Iterator it = explicitPolicies.iterator(); it.hasNext(); )
       {
         int[] i = (int[]) it.next();
         int caDepth = i[0];
         int limit = i[1];
-        if (DEBUG) debug ("  caDepth=" + caDepth + " limit=" + limit);
+        if (Configuration.DEBUG)
+          log.fine("  caDepth=" + caDepth + " limit=" + limit);
         if (depth - caDepth >= limit)
           return true;
       }

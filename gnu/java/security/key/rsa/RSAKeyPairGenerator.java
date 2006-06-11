@@ -38,6 +38,7 @@ exception statement from your version.  */
 
 package gnu.java.security.key.rsa;
 
+import gnu.classpath.Configuration;
 import gnu.java.security.Registry;
 import gnu.java.security.key.IKeyPairGenerator;
 import gnu.java.security.util.PRNG;
@@ -152,8 +153,8 @@ public class RSAKeyPairGenerator implements IKeyPairGenerator
    */
   public void setup(Map attributes)
   {
-    log.entering(this.getClass().getName(), "setup", attributes);
-
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "setup", attributes);
     // do we have a SecureRandom, or should we use our own?
     rnd = (SecureRandom) attributes.get(SOURCE_OF_RANDOMNESS);
 
@@ -181,8 +182,8 @@ public class RSAKeyPairGenerator implements IKeyPairGenerator
     Integer formatID = (Integer) attributes.get(PREFERRED_ENCODING_FORMAT);
     preferredFormat = formatID == null ? DEFAULT_ENCODING_FORMAT
                                        : formatID.intValue();
-
-    log.exiting(this.getClass().getName(), "setup");
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "setup");
   }
 
   /**
@@ -193,7 +194,8 @@ public class RSAKeyPairGenerator implements IKeyPairGenerator
    */
   public KeyPair generate()
   {
-    log.entering(this.getClass().getName(), "generate");
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "generate");
 
     BigInteger p, q, n, d;
 
@@ -243,7 +245,8 @@ public class RSAKeyPairGenerator implements IKeyPairGenerator
     PrivateKey secK = new GnuRSAPrivateKey(preferredFormat, p, q, e, d);
 
     KeyPair result = new KeyPair(pubK, secK);
-    log.exiting(this.getClass().getName(), "generate", result);
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "generate", result);
     return result;
   }
 

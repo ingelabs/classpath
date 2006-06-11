@@ -38,15 +38,7 @@ exception statement from your version. */
 
 package gnu.java.security.key.rsa;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.security.InvalidParameterException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.util.ArrayList;
-import java.util.logging.Logger;
-
+import gnu.classpath.Configuration;
 import gnu.java.security.OID;
 import gnu.java.security.Registry;
 import gnu.java.security.der.DER;
@@ -55,6 +47,15 @@ import gnu.java.security.der.DERValue;
 import gnu.java.security.der.DERWriter;
 import gnu.java.security.key.IKeyPairCodec;
 import gnu.java.security.util.DerUtil;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.security.InvalidParameterException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * An implementation of an {@link IKeyPairCodec} that knows how to encode /
@@ -122,7 +123,8 @@ public class RSAKeyPairPKCS8Codec
    */
   public byte[] encodePrivateKey(PrivateKey key)
   {
-    log.entering(this.getClass().getName(), "encodePrivateKey()", key);
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "encodePrivateKey()", key);
 
     if (! (key instanceof GnuRSAPrivateKey))
       throw new InvalidParameterException("Wrong key type");
@@ -190,8 +192,8 @@ public class RSAKeyPairPKCS8Codec
         y.initCause(x);
         throw y;
       }
-
-    log.exiting(this.getClass().getName(), "encodePrivateKey()", result);
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "encodePrivateKey()", result);
     return result;
   }
 
@@ -213,7 +215,8 @@ public class RSAKeyPairPKCS8Codec
    */
   public PrivateKey decodePrivateKey(byte[] input)
   {
-    log.entering(this.getClass().getName(), "decodePrivateKey()", input);
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "decodePrivateKey()", input);
 
     if (input == null)
       throw new InvalidParameterException("Input bytes MUST NOT be null");
@@ -287,7 +290,8 @@ public class RSAKeyPairPKCS8Codec
 
     PrivateKey result = new GnuRSAPrivateKey(Registry.PKCS8_ENCODING_ID, n, e,
                                              d, p, q, dP, dQ, qInv);
-    log.exiting(this.getClass().getName(), "decodePrivateKey()", result);
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "decodePrivateKey()", result);
     return result;
   }
 }

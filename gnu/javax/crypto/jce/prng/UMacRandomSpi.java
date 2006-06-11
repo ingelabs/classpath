@@ -38,15 +38,16 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.jce.prng;
 
+import gnu.classpath.Configuration;
 import gnu.java.security.Registry;
-import gnu.javax.crypto.cipher.IBlockCipher;
 import gnu.java.security.prng.LimitReachedException;
+import gnu.javax.crypto.cipher.IBlockCipher;
 import gnu.javax.crypto.prng.UMacGenerator;
 
-import java.io.PrintWriter;
 import java.security.SecureRandomSpi;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.logging.Logger;
 
 /**
  * <p>An <em>Adapter</em> class around {@link UMacGenerator} to allow using this
@@ -54,24 +55,7 @@ import java.util.Random;
  */
 public class UMacRandomSpi extends SecureRandomSpi
 {
-
-  // Debugging methods and variables
-  // -------------------------------------------------------------------------
-
-  private static final String NAME = "UMacRandomSpi";
-
-  private static final boolean DEBUG = false;
-
-  private static final PrintWriter err = new PrintWriter(System.out, true);
-
-  private static void debug(String s)
-  {
-    err.println(">>> " + NAME + ": " + s);
-  }
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
+  private static final Logger log = Logger.getLogger(UMacRandomSpi.class.getName());
   /** Class-wide prng to generate random material for the underlying prng.*/
   private static final UMacGenerator prng; // blank final
   static
@@ -181,10 +165,10 @@ public class UMacRandomSpi extends SecureRandomSpi
               }
             catch (LimitReachedException x)
               {
-                if (DEBUG)
+                if (Configuration.DEBUG)
                   {
-                    debug(MSG + String.valueOf(x));
-                    debug(RETRY);
+                    log.fine(MSG + String.valueOf(x));
+                    log.fine(RETRY);
                   }
               }
           }

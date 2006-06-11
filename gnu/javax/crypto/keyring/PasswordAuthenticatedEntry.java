@@ -38,6 +38,7 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.keyring;
 
+import gnu.classpath.Configuration;
 import gnu.java.security.Registry;
 import gnu.java.security.prng.IRandom;
 import gnu.java.security.prng.LimitReachedException;
@@ -146,10 +147,12 @@ public final class PasswordAuthenticatedEntry extends MaskableEnvelopeEntry
 
   public void verify(char[] password)
   {
-    log.entering(this.getClass().getName(), "verify");
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "verify");
     if (isMasked() && payload != null)
       {
-        log.finest("payload to verify: " + Util.dumpString(payload));
+        if (Configuration.DEBUG)
+          log.fine("payload to verify: " + Util.dumpString(payload));
         long tt = - System.currentTimeMillis();
         IMac m = null;
         try
@@ -184,16 +187,20 @@ public final class PasswordAuthenticatedEntry extends MaskableEnvelopeEntry
           }
 
         tt += System.currentTimeMillis();
-        log.finer("Verified in " + tt + "ms.");
+        if (Configuration.DEBUG)
+          log.fine("Verified in " + tt + "ms.");
       }
-    else
-      log.finer("Skip verification; " + (isMasked() ? "null payload" : "unmasked"));
-    log.exiting(this.getClass().getName(), "verify");
+    else if (Configuration.DEBUG)
+      log.fine("Skip verification; " + (isMasked() ? "null payload" : "unmasked"));
+
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "verify");
   }
 
   public void authenticate(char[] password) throws IOException
   {
-    log.entering(this.getClass().getName(), "authenticate");
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "authenticate");
     long tt = - System.currentTimeMillis();
     long t1 = - System.currentTimeMillis();
 
@@ -203,7 +210,8 @@ public final class PasswordAuthenticatedEntry extends MaskableEnvelopeEntry
     byte[] salt = new byte[8];
     PRNG.getInstance().nextBytes(salt);
     t1 += System.currentTimeMillis();
-    log.finer("-- Generated salt in " + t1 + "ms.");
+    if (Configuration.DEBUG)
+      log.fine("-- Generated salt in " + t1 + "ms.");
     properties.put("salt", Util.toString(salt));
     IMac m = getMac(password);
     ByteArrayOutputStream bout = new ByteArrayOutputStream(1024);
@@ -212,21 +220,27 @@ public final class PasswordAuthenticatedEntry extends MaskableEnvelopeEntry
     for (Iterator it = entries.iterator(); it.hasNext();)
       {
         Entry entry = (Entry) it.next();
-        log.finer("-- About to authenticate one " + entry);
+        if (Configuration.DEBUG)
+          log.fine("-- About to authenticate one " + entry);
         t1 = - System.currentTimeMillis();
         entry.encode(out2);
         t1 += System.currentTimeMillis();
-        log.finer("-- Authenticated an Entry in " + t1 + "ms.");
+        if (Configuration.DEBUG)
+          log.fine("-- Authenticated an Entry in " + t1 + "ms.");
       }
     bout.write(m.digest());
 
     payload = bout.toByteArray();
-    log.finest("authenticated payload: " + Util.dumpString(payload));
+    if (Configuration.DEBUG)
+      log.fine("authenticated payload: " + Util.dumpString(payload));
     setMasked(true);
 
     tt += System.currentTimeMillis();
-    log.finer("Authenticated in " + tt + "ms.");
-    log.exiting(this.getClass().getName(), "authenticate");
+    if (Configuration.DEBUG)
+      {
+        log.fine("Authenticated in " + tt + "ms.");
+        log.exiting(this.getClass().getName(), "authenticate");
+      }
   }
 
   public void encode(DataOutputStream out, char[] password) throws IOException
@@ -249,7 +263,8 @@ public final class PasswordAuthenticatedEntry extends MaskableEnvelopeEntry
 
   private IMac getMac(char[] password) throws MalformedKeyringException
   {
-    log.entering(this.getClass().getName(), "getMac");
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "getMac");
     String saltString = properties.get("salt");
     if (saltString == null)
       throw new MalformedKeyringException("no salt");
@@ -303,7 +318,8 @@ public final class PasswordAuthenticatedEntry extends MaskableEnvelopeEntry
       {
         throw new Error(shouldNotHappen.toString());
       }
-    log.exiting(this.getClass().getName(), "getMac");
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "getMac");
     return mac;
   }
 }

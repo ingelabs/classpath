@@ -38,10 +38,14 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.cipher;
 
+import gnu.classpath.Configuration;
+
 import java.security.InvalidKeyException;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * <p>A basic abstract class to facilitate implementing symmetric key block
@@ -49,10 +53,7 @@ import java.util.Map;
  */
 public abstract class BaseCipher implements IBlockCipher, IBlockCipherSpi
 {
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
+  private static final Logger log = Logger.getLogger(BaseCipher.class.getName());
   /** The canonical name prefix of the cipher. */
   protected String name;
 
@@ -263,7 +264,8 @@ public abstract class BaseCipher implements IBlockCipher, IBlockCipherSpi
       }
     catch (Exception x)
       {
-        x.printStackTrace(System.err);
+        if (Configuration.DEBUG)
+          log.log(Level.FINE, "Exception in testSymmetry() for " + name(), x);
         return false;
       }
   }
@@ -295,7 +297,8 @@ public abstract class BaseCipher implements IBlockCipher, IBlockCipherSpi
       }
     catch (Exception x)
       {
-        x.printStackTrace(System.err);
+        if (Configuration.DEBUG)
+          log.log(Level.FINE, "Exception in testKat() for " + name(), x);
         return false;
       }
   }

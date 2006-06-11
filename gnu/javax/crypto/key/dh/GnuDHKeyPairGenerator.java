@@ -38,18 +38,19 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.key.dh;
 
+import gnu.classpath.Configuration;
 import gnu.java.security.Registry;
 import gnu.java.security.hash.Sha160;
 import gnu.java.security.key.IKeyPairGenerator;
 import gnu.java.security.util.PRNG;
 
-import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.crypto.spec.DHGenParameterSpec;
 import javax.crypto.spec.DHParameterSpec;
@@ -66,26 +67,7 @@ import javax.crypto.spec.DHParameterSpec;
  */
 public class GnuDHKeyPairGenerator implements IKeyPairGenerator
 {
-
-  // Debugging methods and variables
-  // -------------------------------------------------------------------------
-
-  private static final String NAME = "dh";
-
-  private static final boolean DEBUG = false;
-
-  private static final int debuglevel = 5;
-
-  private static final PrintWriter err = new PrintWriter(System.out, true);
-
-  private static void debug(String s)
-  {
-    err.println(">>> " + NAME + ": " + s);
-  }
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
+  private static final Logger log = Logger.getLogger(GnuDHKeyPairGenerator.class.getName());
   /**
    * Property name of an optional {@link SecureRandom} instance to use. The
    * default is to use a classloader singleton from {@link PRNG}.
@@ -240,14 +222,14 @@ public class GnuDHKeyPairGenerator implements IKeyPairGenerator
         p = params[RFC2631.DH_PARAMS_P];
         j = params[RFC2631.DH_PARAMS_J];
         g = params[RFC2631.DH_PARAMS_G];
-        if (DEBUG && debuglevel > 0)
+        if (Configuration.DEBUG)
           {
-            debug("seed: 0x" + seed.toString(16));
-            debug("counter: " + counter.intValue());
-            debug("q: 0x" + q.toString(16));
-            debug("p: 0x" + p.toString(16));
-            debug("j: 0x" + j.toString(16));
-            debug("g: 0x" + g.toString(16));
+            log.fine("seed: 0x" + seed.toString(16));
+            log.fine("counter: " + counter.intValue());
+            log.fine("q: 0x" + q.toString(16));
+            log.fine("p: 0x" + p.toString(16));
+            log.fine("j: 0x" + j.toString(16));
+            log.fine("g: 0x" + g.toString(16));
           }
       }
 

@@ -38,12 +38,13 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.sasl;
 
+import gnu.classpath.Configuration;
 import gnu.java.security.util.Util;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.logging.Logger;
 
 import javax.security.sasl.Sasl;
 import javax.security.sasl.SaslClient;
@@ -55,41 +56,11 @@ import javax.security.sasl.SaslServer;
  */
 public class SaslInputStream extends InputStream
 {
-
-  // Debugging methods and variables
-  // -------------------------------------------------------------------------
-
-  private static final String NAME = "SaslOutputStream";
-
-  private static final String ERROR = "ERROR";
-
-  private static final String WARN = " WARN";
-
-  //   private static final String INFO =  " INFO";
-  private static final String TRACE = "DEBUG";
-
-  private static final boolean DEBUG = true;
-
-  private static final int debuglevel = 3;
-
-  private static final PrintWriter err = new PrintWriter(System.out, true);
-
-  private static void debug(String level, Object obj)
-  {
-    err.println("[" + level + "] " + NAME + ": " + String.valueOf(obj));
-  }
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
+  private static final Logger log = Logger.getLogger(SaslInputStream.class.getName());
   private SaslClient client;
-
   private SaslServer server;
-
   private int maxRawSendSize;
-
   private InputStream source;
-
   private byte[] internalBuf;
 
   // Constructor(s)
@@ -168,7 +139,6 @@ public class SaslInputStream extends InputStream
         else
           {
             byte[] tmp = new byte[internalBuf.length - 1];
-            //            System.arraycopy(internalBuf, 0, tmp, 0, tmp.length);
             System.arraycopy(internalBuf, 1, tmp, 0, tmp.length);
             internalBuf = tmp;
           }
@@ -241,32 +211,22 @@ public class SaslInputStream extends InputStream
    */
   public int read(byte[] b, int off, int len) throws IOException
   {
-    if (DEBUG && debuglevel > 8)
-      debug(TRACE, "==> read(b, " + String.valueOf(off) + ", "
-                   + String.valueOf(len) + ")");
-
-    if (b == null)
-      {
-        throw new NullPointerException("b");
-      }
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "read",
+                   new Object[] { b, Integer.valueOf(off), Integer.valueOf(len) });
     if ((off < 0) || (off > b.length) || (len < 0) || ((off + len) > b.length)
         || ((off + len) < 0))
-      {
-        throw new IndexOutOfBoundsException("off=" + String.valueOf(off)
-                                            + ", len=" + String.valueOf(len)
-                                            + ", b.length="
-                                            + String.valueOf(b.length));
-      }
+      throw new IndexOutOfBoundsException("off=" + off
+                                          + ", len=" + len
+                                          + ", b.length=" + b.length);
     if (len == 0)
       {
-        if (DEBUG && debuglevel > 8)
-          debug(TRACE, "<== read() --> 0");
+        if (Configuration.DEBUG)
+          log.exiting(this.getClass().getName(), "read", Integer.valueOf(0));
         return 0;
       }
-
-    if (DEBUG && debuglevel > 6)
-      debug(TRACE, "Available: " + String.valueOf(available()));
-
+    if (Configuration.DEBUG)
+      log.finer("Available: " + available());
     int result = 0;
     if (internalBuf == null || internalBuf.length < 1)
       try
@@ -274,21 +234,24 @@ public class SaslInputStream extends InputStream
           internalBuf = readSaslBuffer();
           if (internalBuf == null)
             {
-              if (DEBUG && debuglevel > 4)
-                debug(WARN, "Underlying stream empty. Returning -1");
-              if (DEBUG && debuglevel > 8)
-                debug(TRACE, "<== read() --> -1");
+              if (Configuration.DEBUG)
+                {
+                  log.finer("Underlying stream empty. Returning -1");
+                  log.exiting(this.getClass().getName(), "read",
+                              Integer.valueOf(-1));
+                }
               return -1;
             }
         }
       catch (InterruptedIOException x)
         {
-          if (DEBUG && debuglevel > 6)
-            debug(TRACE, x);
-          if (DEBUG && debuglevel > 4)
-            debug(WARN, "Reading thread was interrupted. Returning -1");
-          if (DEBUG && debuglevel > 8)
-            debug(TRACE, "<== read() --> -1");
+          if (Configuration.DEBUG)
+            {
+              log.finer("Reading thread was interrupted. Returning -1");
+              log.throwing(this.getClass().getName(), "read", x);
+              log.exiting(this.getClass().getName(), "read",
+                          Integer.valueOf(-1));
+            }
           return -1;
         }
 
@@ -328,8 +291,8 @@ public class SaslInputStream extends InputStream
               data = readSaslBuffer();
               if (data == null)
                 {
-                  if (DEBUG && debuglevel > 4)
-                    debug(WARN, "Underlying stream exhausted. Breaking...");
+                  if (Configuration.DEBUG)
+                    log.finer("Underlying stream exhausted. Breaking...");
                   break;
                 }
 
@@ -352,18 +315,16 @@ public class SaslInputStream extends InputStream
             }
           else
             { // nothing much we can do except return what we have
-              if (DEBUG && debuglevel > 4)
-                debug(WARN,
-                      "Not enough bytes in source to read a buffer. Breaking...");
+              if (Configuration.DEBUG)
+                log.finer("Not enough bytes in source to read a buffer. Breaking...");
               break;
             }
       }
-
-    if (DEBUG && debuglevel > 6)
-      debug(TRACE, "Remaining: "
-                   + (internalBuf == null ? 0 : internalBuf.length));
-    if (DEBUG && debuglevel > 8)
-      debug(TRACE, "<== read() --> " + String.valueOf(result));
+    if (Configuration.DEBUG)
+      {
+        log.finer("Remaining: " + (internalBuf == null ? 0 : internalBuf.length));
+        log.exiting(this.getClass().getName(), "read()", String.valueOf(result));
+      }
     return result;
   }
 
@@ -379,9 +340,8 @@ public class SaslInputStream extends InputStream
    */
   private byte[] readSaslBuffer() throws IOException
   {
-    if (DEBUG && debuglevel > 8)
-      debug(TRACE, "==> readSaslBuffer()");
-
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "readSaslBuffer()");
     int realLength; // check if we read as many bytes as we're supposed to
     byte[] result = new byte[4];
     try
@@ -389,32 +349,27 @@ public class SaslInputStream extends InputStream
         realLength = source.read(result);
         if (realLength == -1)
           {
-            if (DEBUG && debuglevel > 8)
-              debug(TRACE, "<== readSaslBuffer() --> null");
+            if (Configuration.DEBUG)
+              log.exiting(this.getClass().getName(), "readSaslBuffer");
             return null;
           }
       }
     catch (IOException x)
       {
-        if (DEBUG && debuglevel > 0)
-          debug(ERROR, x);
+        if (Configuration.DEBUG)
+          log.throwing(this.getClass().getName(), "readSaslBuffer", x);
         throw x;
       }
 
     if (realLength != 4)
-      {
-        throw new IOException("Was expecting 4 but found "
-                              + String.valueOf(realLength));
-      }
+      throw new IOException("Was expecting 4 but found " + realLength);
     int bufferLength = result[0] << 24 | (result[1] & 0xFF) << 16
                        | (result[2] & 0xFF) << 8 | (result[3] & 0xFF);
 
-    if (DEBUG && debuglevel > 6)
-      debug(TRACE, "SASL buffer size: " + bufferLength);
+    if (Configuration.DEBUG)
+      log.finer("SASL buffer size: " + bufferLength);
     if (bufferLength > maxRawSendSize || bufferLength < 0)
-      {
-        throw new SaslEncodingException("SASL buffer (security layer) too long");
-      }
+      throw new SaslEncodingException("SASL buffer (security layer) too long");
 
     result = new byte[bufferLength];
     try
@@ -423,37 +378,34 @@ public class SaslInputStream extends InputStream
       }
     catch (IOException x)
       {
-        if (DEBUG && debuglevel > 0)
-          debug(ERROR, x);
+        if (Configuration.DEBUG)
+          log.throwing(this.getClass().getName(), "readSaslBuffer", x);
         throw x;
       }
 
     if (realLength != bufferLength)
-      throw new IOException("Was expecting " + String.valueOf(bufferLength)
-                            + " but found " + String.valueOf(realLength));
-    if (DEBUG && debuglevel > 6)
-      debug(TRACE, "Incoming buffer (before security) (hex): "
-                   + Util.dumpString(result));
-    if (DEBUG && debuglevel > 6)
-      debug(TRACE, "Incoming buffer (before security) (str): \""
-                   + new String(result) + "\"");
-
+      throw new IOException("Was expecting " + bufferLength
+                            + " but found " + realLength);
+    if (Configuration.DEBUG)
+      {
+        log.finer("Incoming buffer (before security) (hex): "
+                  + Util.dumpString(result));
+        log.finer("Incoming buffer (before security) (str): \""
+                  + new String(result) + "\"");
+      }
     if (client != null)
-      {
-        result = client.unwrap(result, 0, realLength);
-      }
+      result = client.unwrap(result, 0, realLength);
     else
+      result = server.unwrap(result, 0, realLength);
+
+    if (Configuration.DEBUG)
       {
-        result = server.unwrap(result, 0, realLength);
+        log.finer("Incoming buffer (after security) (hex): "
+                  + Util.dumpString(result));
+        log.finer("Incoming buffer (after security) (str): \""
+                  + new String(result) + "\"");
+        log.exiting(this.getClass().getName(), "readSaslBuffer");
       }
-    if (DEBUG && debuglevel > 6)
-      debug(TRACE, "Incoming buffer (after security) (hex): "
-                   + Util.dumpString(result));
-    if (DEBUG && debuglevel > 6)
-      debug(TRACE, "Incoming buffer (after security) (str): \""
-                   + new String(result) + "\"");
-    if (DEBUG && debuglevel > 8)
-      debug(TRACE, "<== readSaslBuffer()");
     return result;
   }
 }

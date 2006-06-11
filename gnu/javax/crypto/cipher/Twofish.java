@@ -38,14 +38,15 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.cipher;
 
+import gnu.classpath.Configuration;
 import gnu.java.security.Registry;
 import gnu.java.security.util.Util;
 
-//import java.io.PrintWriter;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 /**
  * <p>Twofish is a balanced 128-bit Feistel cipher, consisting of 16 rounds. In
@@ -68,23 +69,7 @@ import java.util.Iterator;
  */
 public final class Twofish extends BaseCipher
 {
-
-  // Debugging methods and variables
-  // -------------------------------------------------------------------------
-
-  //   private static final String NAME = "twofish";
-  private static final boolean DEBUG = false;
-
-  private static final int debuglevel = 9;
-
-  //   private static final PrintWriter err = new PrintWriter(System.out, true);
-  //   private static void debug(String s) {
-  //      err.println(">>> "+NAME+": "+s);
-  //   }
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
+  private static final Logger log = Logger.getLogger(Twofish.class.getName());
   private static final int DEFAULT_BLOCK_SIZE = 16; // in bytes
 
   private static final int DEFAULT_KEY_SIZE = 16; // in bytes
@@ -265,62 +250,43 @@ public final class Twofish extends BaseCipher
 
       time = System.currentTimeMillis() - time;
 
-      if (DEBUG && debuglevel > 8)
+      if (Configuration.DEBUG)
         {
-          System.out.println("==========");
-          System.out.println();
-          System.out.println("Static Data");
-          System.out.println();
-          System.out.println("MDS[0][]:");
+          log.fine("Static Data");
+          log.fine("MDS[0][]:");
+          StringBuilder sb;
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 4; j++)
-                {
-                  System.out.print("0x" + Util.toString(MDS[0][i * 4 + j])
-                                   + ", ");
-                }
-              System.out.println();
+                sb.append("0x").append(Util.toString(MDS[0][i * 4 + j])).append(", ");
+              log.fine(sb.toString());
             }
-
-          System.out.println();
-          System.out.println("MDS[1][]:");
+          log.fine("MDS[1][]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 4; j++)
-                {
-                  System.out.print("0x" + Util.toString(MDS[1][i * 4 + j])
-                                   + ", ");
-                }
-              System.out.println();
+                sb.append("0x").append(Util.toString(MDS[1][i * 4 + j])).append(", ");
+              log.fine(sb.toString());
             }
-
-          System.out.println();
-          System.out.println("MDS[2][]:");
+          log.fine("MDS[2][]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 4; j++)
-                {
-                  System.out.print("0x" + Util.toString(MDS[2][i * 4 + j])
-                                   + ", ");
-                }
-              System.out.println();
+                sb.append("0x").append(Util.toString(MDS[2][i * 4 + j])).append(", ");
+              log.fine(sb.toString());
             }
-
-          System.out.println();
-          System.out.println("MDS[3][]:");
+          log.fine("MDS[3][]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 4; j++)
-                {
-                  System.out.print("0x" + Util.toString(MDS[3][i * 4 + j])
-                                   + ", ");
-                }
-              System.out.println();
+                sb.append("0x").append(Util.toString(MDS[3][i * 4 + j])).append(", ");
+              log.fine(sb.toString());
             }
-
-          System.out.println();
-          System.out.println("Total initialization time: " + time + " ms.");
-          System.out.println();
+          log.fine("Total initialization time: " + time + " ms.");
         }
     }
 
@@ -630,64 +596,49 @@ public final class Twofish extends BaseCipher
                                              ^ b3(k0)];
           }
       }
-
-    if (DEBUG && debuglevel > 7)
+    if (Configuration.DEBUG)
       {
-        System.out.println("S-box[]:");
+        StringBuilder sb;
+        log.fine("S-box[]:");
         for (i = 0; i < 64; i++)
           {
+            sb = new StringBuilder();
             for (j = 0; j < 4; j++)
-              {
-                System.out.print("0x" + Util.toString(sBox[i * 4 + j]) + ", ");
-              }
-            System.out.println();
+              sb.append("0x").append(Util.toString(sBox[i * 4 + j])).append(", ");
+            log.fine(sb.toString());
           }
-        System.out.println();
+        log.fine("");
         for (i = 0; i < 64; i++)
           {
+            sb = new StringBuilder();
             for (j = 0; j < 4; j++)
-              {
-                System.out.print("0x" + Util.toString(sBox[256 + i * 4 + j])
-                                 + ", ");
-              }
-            System.out.println();
+              sb.append("0x").append(Util.toString(sBox[256 + i * 4 + j])).append(", ");
+            log.fine(sb.toString());
           }
-        System.out.println();
+        log.fine("");
         for (i = 0; i < 64; i++)
           {
+            sb = new StringBuilder();
             for (j = 0; j < 4; j++)
-              {
-                System.out.print("0x" + Util.toString(sBox[512 + i * 4 + j])
-                                 + ", ");
-              }
-            System.out.println();
+              sb.append("0x").append(Util.toString(sBox[512 + i * 4 + j])).append(", ");
+            log.fine(sb.toString());
           }
-        System.out.println();
+        log.fine("");
         for (i = 0; i < 64; i++)
           {
+            sb = new StringBuilder();
             for (j = 0; j < 4; j++)
-              {
-                System.out.print("0x" + Util.toString(sBox[768 + i * 4 + j])
-                                 + ", ");
-              }
-            System.out.println();
+              sb.append("0x").append(Util.toString(sBox[768 + i * 4 + j])).append(", ");
+            log.fine(sb.toString());
           }
-        System.out.println();
-        System.out.println("User (odd, even) keys  --> S-Box keys:");
+        log.fine("User (odd, even) keys  --> S-Box keys:");
         for (i = 0; i < k64Cnt; i++)
-          {
-            System.out.println("0x" + Util.toString(k32o[i]) + "  0x"
-                               + Util.toString(k32e[i]) + " --> 0x"
-                               + Util.toString(sBoxKey[k64Cnt - 1 - i]));
-          }
-        System.out.println();
-        System.out.println("Round keys:");
+          log.fine("0x" + Util.toString(k32o[i]) + "  0x" + Util.toString(k32e[i])
+                   + " --> 0x" + Util.toString(sBoxKey[k64Cnt - 1 - i]));
+        log.fine("Round keys:");
         for (i = 0; i < ROUND_SUBKEYS + 2 * ROUNDS; i += 2)
-          {
-            System.out.println("0x" + Util.toString(subKeys[i]) + "  0x"
-                               + Util.toString(subKeys[i + 1]));
-          }
-        System.out.println();
+          log.fine("0x" + Util.toString(subKeys[i])
+                   + "  0x" + Util.toString(subKeys[i + 1]));
       }
 
     return new Object[] { sBox, subKeys };
@@ -704,12 +655,8 @@ public final class Twofish extends BaseCipher
     Object[] sk = (Object[]) sessionKey; // extract S-box and session key
     int[] sBox = (int[]) sk[0];
     int[] sKey = (int[]) sk[1];
-
-    if (DEBUG && debuglevel > 6)
-      {
-        System.out.println("PT=" + Util.toString(in, inOffset, bs));
-      }
-
+    if (Configuration.DEBUG)
+      log.fine("PT=" + Util.toString(in, inOffset, bs));
     int x0 = (in[inOffset++] & 0xFF) | (in[inOffset++] & 0xFF) << 8
              | (in[inOffset++] & 0xFF) << 16 | (in[inOffset++] & 0xFF) << 24;
     int x1 = (in[inOffset++] & 0xFF) | (in[inOffset++] & 0xFF) << 8
@@ -723,12 +670,9 @@ public final class Twofish extends BaseCipher
     x1 ^= sKey[INPUT_WHITEN + 1];
     x2 ^= sKey[INPUT_WHITEN + 2];
     x3 ^= sKey[INPUT_WHITEN + 3];
-    if (DEBUG && debuglevel > 6)
-      {
-        System.out.println("PTw=" + Util.toString(x0) + Util.toString(x1)
-                           + Util.toString(x2) + Util.toString(x3));
-      }
-
+    if (Configuration.DEBUG)
+      log.fine("PTw=" + Util.toString(x0) + Util.toString(x1)
+               + Util.toString(x2) + Util.toString(x3));
     int t0, t1;
     int k = ROUND_SUBKEYS;
     for (int R = 0; R < ROUNDS; R += 2)
@@ -739,36 +683,26 @@ public final class Twofish extends BaseCipher
         x2 = x2 >>> 1 | x2 << 31;
         x3 = x3 << 1 | x3 >>> 31;
         x3 ^= t0 + 2 * t1 + sKey[k++];
-        if (DEBUG && debuglevel > 6)
-          {
-            System.out.println("CT" + (R) + "=" + Util.toString(x0)
-                               + Util.toString(x1) + Util.toString(x2)
-                               + Util.toString(x3));
-          }
-
+        if (Configuration.DEBUG)
+          log.fine("CT" + (R) + "=" + Util.toString(x0) + Util.toString(x1)
+                   + Util.toString(x2) + Util.toString(x3));
         t0 = Fe32(sBox, x2, 0);
         t1 = Fe32(sBox, x3, 3);
         x0 ^= t0 + t1 + sKey[k++];
         x0 = x0 >>> 1 | x0 << 31;
         x1 = x1 << 1 | x1 >>> 31;
         x1 ^= t0 + 2 * t1 + sKey[k++];
-        if (DEBUG && debuglevel > 6)
-          {
-            System.out.println("CT" + (R + 1) + "=" + Util.toString(x0)
-                               + Util.toString(x1) + Util.toString(x2)
-                               + Util.toString(x3));
-          }
+        if (Configuration.DEBUG)
+          log.fine("CT" + (R + 1) + "=" + Util.toString(x0) + Util.toString(x1)
+                   + Util.toString(x2) + Util.toString(x3));
       }
     x2 ^= sKey[OUTPUT_WHITEN];
     x3 ^= sKey[OUTPUT_WHITEN + 1];
     x0 ^= sKey[OUTPUT_WHITEN + 2];
     x1 ^= sKey[OUTPUT_WHITEN + 3];
-    if (DEBUG && debuglevel > 6)
-      {
-        System.out.println("CTw=" + Util.toString(x0) + Util.toString(x1)
-                           + Util.toString(x2) + Util.toString(x3));
-      }
-
+    if (Configuration.DEBUG)
+      log.fine("CTw=" + Util.toString(x0) + Util.toString(x1)
+               + Util.toString(x2) + Util.toString(x3));
     out[outOffset++] = (byte) x2;
     out[outOffset++] = (byte) (x2 >>> 8);
     out[outOffset++] = (byte) (x2 >>> 16);
@@ -785,12 +719,8 @@ public final class Twofish extends BaseCipher
     out[outOffset++] = (byte) (x1 >>> 8);
     out[outOffset++] = (byte) (x1 >>> 16);
     out[outOffset] = (byte) (x1 >>> 24);
-
-    if (DEBUG && debuglevel > 6)
-      {
-        System.out.println("CT=" + Util.toString(out, outOffset - 15, 16));
-        System.out.println();
-      }
+    if (Configuration.DEBUG)
+      log.fine("CT=" + Util.toString(out, outOffset - 15, 16) + "\n");
   }
 
   public void decrypt(byte[] in, int inOffset, byte[] out, int outOffset,
@@ -804,12 +734,8 @@ public final class Twofish extends BaseCipher
     Object[] sk = (Object[]) sessionKey; // extract S-box and session key
     int[] sBox = (int[]) sk[0];
     int[] sKey = (int[]) sk[1];
-
-    if (DEBUG && debuglevel > 6)
-      {
-        System.out.println("CT=" + Util.toString(in, inOffset, bs));
-      }
-
+    if (Configuration.DEBUG)
+      log.fine("CT=" + Util.toString(in, inOffset, bs));
     int x2 = (in[inOffset++] & 0xFF) | (in[inOffset++] & 0xFF) << 8
              | (in[inOffset++] & 0xFF) << 16 | (in[inOffset++] & 0xFF) << 24;
     int x3 = (in[inOffset++] & 0xFF) | (in[inOffset++] & 0xFF) << 8
@@ -823,12 +749,9 @@ public final class Twofish extends BaseCipher
     x3 ^= sKey[OUTPUT_WHITEN + 1];
     x0 ^= sKey[OUTPUT_WHITEN + 2];
     x1 ^= sKey[OUTPUT_WHITEN + 3];
-    if (DEBUG && debuglevel > 6)
-      {
-        System.out.println("CTw=" + Util.toString(x2) + Util.toString(x3)
-                           + Util.toString(x0) + Util.toString(x1));
-      }
-
+    if (Configuration.DEBUG)
+      log.fine("CTw=" + Util.toString(x2) + Util.toString(x3)
+               + Util.toString(x0) + Util.toString(x1));
     int k = ROUND_SUBKEYS + 2 * ROUNDS - 1;
     int t0, t1;
     for (int R = 0; R < ROUNDS; R += 2)
@@ -839,36 +762,26 @@ public final class Twofish extends BaseCipher
         x1 = x1 >>> 1 | x1 << 31;
         x0 = x0 << 1 | x0 >>> 31;
         x0 ^= t0 + t1 + sKey[k--];
-        if (DEBUG && debuglevel > 6)
-          {
-            System.out.println("PT" + (ROUNDS - R) + "=" + Util.toString(x2)
-                               + Util.toString(x3) + Util.toString(x0)
-                               + Util.toString(x1));
-          }
-
+        if (Configuration.DEBUG)
+          log.fine("PT" + (ROUNDS - R) + "=" + Util.toString(x2)
+                   + Util.toString(x3) + Util.toString(x0) + Util.toString(x1));
         t0 = Fe32(sBox, x0, 0);
         t1 = Fe32(sBox, x1, 3);
         x3 ^= t0 + 2 * t1 + sKey[k--];
         x3 = x3 >>> 1 | x3 << 31;
         x2 = x2 << 1 | x2 >>> 31;
         x2 ^= t0 + t1 + sKey[k--];
-        if (DEBUG && debuglevel > 6)
-          {
-            System.out.println("PT" + (ROUNDS - R - 1) + "="
-                               + Util.toString(x2) + Util.toString(x3)
-                               + Util.toString(x0) + Util.toString(x1));
-          }
+        if (Configuration.DEBUG)
+          log.fine("PT" + (ROUNDS - R - 1) + "=" + Util.toString(x2)
+                   + Util.toString(x3) + Util.toString(x0) + Util.toString(x1));
       }
     x0 ^= sKey[INPUT_WHITEN];
     x1 ^= sKey[INPUT_WHITEN + 1];
     x2 ^= sKey[INPUT_WHITEN + 2];
     x3 ^= sKey[INPUT_WHITEN + 3];
-    if (DEBUG && debuglevel > 6)
-      {
-        System.out.println("PTw=" + Util.toString(x2) + Util.toString(x3)
-                           + Util.toString(x0) + Util.toString(x1));
-      }
-
+    if (Configuration.DEBUG)
+      log.fine("PTw=" + Util.toString(x2) + Util.toString(x3)
+               + Util.toString(x0) + Util.toString(x1));
     out[outOffset++] = (byte) x0;
     out[outOffset++] = (byte) (x0 >>> 8);
     out[outOffset++] = (byte) (x0 >>> 16);
@@ -885,12 +798,8 @@ public final class Twofish extends BaseCipher
     out[outOffset++] = (byte) (x3 >>> 8);
     out[outOffset++] = (byte) (x3 >>> 16);
     out[outOffset] = (byte) (x3 >>> 24);
-
-    if (DEBUG && debuglevel > 6)
-      {
-        System.out.println("PT=" + Util.toString(out, outOffset - 15, 16));
-        System.out.println();
-      }
+    if (Configuration.DEBUG)
+      log.fine("PT=" + Util.toString(out, outOffset - 15, 16) + "\n");
   }
 
   public boolean selfTest()

@@ -38,12 +38,12 @@ exception statement from your version.  */
 
 package gnu.java.security.key.dss;
 
+import gnu.classpath.Configuration;
 import gnu.java.security.Registry;
 import gnu.java.security.hash.Sha160;
 import gnu.java.security.key.IKeyPairGenerator;
 import gnu.java.security.util.PRNG;
 
-import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.PrivateKey;
@@ -51,6 +51,7 @@ import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.spec.DSAParameterSpec;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * <p>A key-pair generator for asymetric keys to use in conjunction with the DSS
@@ -63,26 +64,7 @@ import java.util.Map;
  */
 public class DSSKeyPairGenerator implements IKeyPairGenerator
 {
-
-  // Debugging methods and variables
-  // -------------------------------------------------------------------------
-
-  private static final String NAME = "dss";
-
-  private static final boolean DEBUG = false;
-
-  private static final int debuglevel = 5;
-
-  private static final PrintWriter err = new PrintWriter(System.out, true);
-
-  private static void debug(String s)
-  {
-    err.println(">>> " + NAME + ": " + s);
-  }
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
+  private static final Logger log = Logger.getLogger(DSSKeyPairGenerator.class.getName());
   /** The BigInteger constant 2. */
   private static final BigInteger TWO = new BigInteger("2");
 
@@ -361,14 +343,14 @@ public class DSSKeyPairGenerator implements IKeyPairGenerator
         p = params[FIPS186.DSA_PARAMS_P];
         e = params[FIPS186.DSA_PARAMS_E];
         g = params[FIPS186.DSA_PARAMS_G];
-        if (DEBUG && debuglevel > 0)
+        if (Configuration.DEBUG)
           {
-            debug("seed: " + seed.toString(16));
-            debug("counter: " + counter.intValue());
-            debug("q: " + q.toString(16));
-            debug("p: " + p.toString(16));
-            debug("e: " + e.toString(16));
-            debug("g: " + g.toString(16));
+            log.fine("seed: " + seed.toString(16));
+            log.fine("counter: " + counter.intValue());
+            log.fine("q: " + q.toString(16));
+            log.fine("p: " + p.toString(16));
+            log.fine("e: " + e.toString(16));
+            log.fine("g: " + g.toString(16));
           }
       }
 

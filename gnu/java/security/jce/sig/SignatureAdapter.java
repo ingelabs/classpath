@@ -38,6 +38,7 @@ exception statement from your version.  */
 
 package gnu.java.security.jce.sig;
 
+import gnu.classpath.Configuration;
 import gnu.java.security.sig.BaseSignature;
 import gnu.java.security.sig.ISignature;
 import gnu.java.security.sig.ISignatureCodec;
@@ -223,7 +224,8 @@ class SignatureAdapter extends SignatureSpi implements Cloneable
 
   public boolean engineVerify(byte[] sigBytes) throws SignatureException
   {
-    log.entering("SignatureAdapter", "engineVerify");
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "engineVerify");
 
     Object signature = codec.decodeSignature(sigBytes);
     boolean result = false;
@@ -235,8 +237,8 @@ class SignatureAdapter extends SignatureSpi implements Cloneable
       {
         throw new SignatureException(String.valueOf(x));
       }
-
-    log.exiting("SignatureAdapter", "engineVerify", new Boolean(result));
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "engineVerify", Boolean.valueOf(result));
     return result;
   }
 

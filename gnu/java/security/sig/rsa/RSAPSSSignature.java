@@ -38,18 +38,19 @@ exception statement from your version.  */
 
 package gnu.java.security.sig.rsa;
 
+import gnu.classpath.Configuration;
 import gnu.java.security.Registry;
 import gnu.java.security.hash.HashFactory;
 import gnu.java.security.hash.IMessageDigest;
 import gnu.java.security.sig.BaseSignature;
 import gnu.java.security.util.Util;
 
-import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.logging.Logger;
 
 /**
  * <p>The RSA-PSS signature scheme is a public-key encryption scheme combining
@@ -73,26 +74,7 @@ import java.security.interfaces.RSAPublicKey;
  */
 public class RSAPSSSignature extends BaseSignature
 {
-
-  // Debugging methods and variables
-  // -------------------------------------------------------------------------
-
-  private static final String NAME = "rsa-pss";
-
-  private static final boolean DEBUG = false;
-
-  private static final int debuglevel = 1;
-
-  private static final PrintWriter err = new PrintWriter(System.out, true);
-
-  private static void debug(String s)
-  {
-    err.println(">>> " + NAME + ": " + s);
-  }
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
+  private static final Logger log = Logger.getLogger(RSAPSSSignature.class.getName());
   /** The underlying EMSA-PSS instance for this object. */
   private EMSA_PSS pss;
 
@@ -201,10 +183,8 @@ public class RSAPSSSignature extends BaseSignature
     byte[] salt = new byte[sLen];
     this.nextRandomBytes(salt);
     byte[] EM = pss.encode(md.digest(), modBits - 1, salt);
-    if (DEBUG && debuglevel > 8)
-      {
-        debug("EM (sign): " + Util.toString(EM));
-      }
+    if (Configuration.DEBUG)
+      log.fine("EM (sign): " + Util.toString(EM));
     // 2. Convert the encoded message EM to an integer message representative
     //    m (see Section 1.2.2): m = OS2IP(EM).
     BigInteger m = new BigInteger(1, EM);
@@ -262,10 +242,8 @@ public class RSAPSSSignature extends BaseSignature
     int emBits = modBits - 1;
     int emLen = (emBits + 7) / 8;
     byte[] EM = m.toByteArray();
-    if (DEBUG && debuglevel > 8)
-      {
-        debug("EM (verify): " + Util.toString(EM));
-      }
+    if (Configuration.DEBUG)
+      log.fine("EM (verify): " + Util.toString(EM));
     if (EM.length > emLen)
       {
         return false;

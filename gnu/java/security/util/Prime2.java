@@ -38,37 +38,20 @@ exception statement from your version.  */
 
 package gnu.java.security.util;
 
-import java.io.PrintWriter;
+import gnu.classpath.Configuration;
+
 import java.lang.ref.WeakReference;
 import java.math.BigInteger;
 import java.util.Map;
 import java.util.WeakHashMap;
+import java.util.logging.Logger;
 
 /**
  * <p>A collection of prime number related utilities used in this library.</p>
  */
 public class Prime2
 {
-
-  // Debugging methods and variables
-  // -------------------------------------------------------------------------
-
-  private static final String NAME = "prime";
-
-  private static final boolean DEBUG = false;
-
-  private static final int debuglevel = 5;
-
-  private static final PrintWriter err = new PrintWriter(System.out, true);
-
-  private static void debug(String s)
-  {
-    err.println(">>> " + NAME + ": " + s);
-  }
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
+  private static final Logger log = Logger.getLogger(Prime2.class.getName());
   private static final int DEFAULT_CERTAINTY = 20; // XXX is this a good value?
 
   private static final BigInteger ZERO = BigInteger.ZERO;
@@ -116,7 +99,7 @@ public class Prime2
             }
         }
       time += System.currentTimeMillis();
-      if (DEBUG && debuglevel > 8)
+      if (Configuration.DEBUG)
         {
           StringBuffer sb;
           for (int i = 0; i < (SMALL_PRIME_COUNT / 10); i++)
@@ -126,13 +109,13 @@ public class Prime2
                 {
                   sb.append(String.valueOf(SMALL_PRIME[i * 10 + j])).append(" ");
                 }
-              debug(sb.toString());
+              log.fine(sb.toString());
             }
         }
-      if (DEBUG && debuglevel > 4)
+      if (Configuration.DEBUG)
         {
-          debug("Generating first " + String.valueOf(SMALL_PRIME_COUNT)
-                + " primes took: " + String.valueOf(time) + " ms.");
+          log.fine("Generating first " + String.valueOf(SMALL_PRIME_COUNT)
+                   + " primes took: " + String.valueOf(time) + " ms.");
         }
     }
 
@@ -169,17 +152,13 @@ public class Prime2
         prime = SMALL_PRIME[i];
         if (w.mod(prime).equals(ZERO))
           {
-            if (DEBUG && debuglevel > 4)
-              {
-                debug(prime.toString(16) + " | " + w.toString(16) + "...");
-              }
+            if (Configuration.DEBUG)
+              log.fine(prime.toString(16) + " | " + w.toString(16) + "...");
             return true;
           }
       }
-    if (DEBUG && debuglevel > 4)
-      {
-        debug(w.toString(16) + " has no small prime divisors...");
-      }
+    if (Configuration.DEBUG)
+      log.fine(w.toString(16) + " has no small prime divisors...");
     return false;
   }
 
@@ -361,8 +340,8 @@ public class Prime2
     for (int i = 0; i < SMALL_PRIME_COUNT; i++)
         if (w.equals(SMALL_PRIME[i]))
           {
-            if (DEBUG && debuglevel > 4)
-                debug(w.toString(16) + " is a small prime");
+            if (Configuration.DEBUG)
+              log.fine(w.toString(16) + " is a small prime");
             return true;
           }
 
@@ -370,16 +349,16 @@ public class Prime2
     WeakReference obj = (WeakReference) knownPrimes.get(w);
     if (obj != null && w.equals(obj.get()))
       {
-        if (DEBUG && debuglevel > 4)
-            debug("found in known primes");
+        if (Configuration.DEBUG)
+          log.fine("found in known primes");
         return true;
       }
 
     // trial division with first 1000 primes
     if (hasSmallPrimeDivisor(w))
       {
-        if (DEBUG && debuglevel > 4)
-            debug(w.toString(16) + " has a small prime divisor. Rejected...");
+        if (Configuration.DEBUG)
+          log.fine(w.toString(16) + " has a small prime divisor. Rejected...");
         return false;
       }
 
@@ -411,7 +390,7 @@ public class Prime2
 
   private static final void debugBI(String msg, BigInteger bn)
   {
-    if (DEBUG && debuglevel > 4)
-      debug("*** " + msg + ": 0x" + bn.toString(16));
+    if (Configuration.DEBUG)
+      log.fine("*** " + msg + ": 0x" + bn.toString(16));
   }
 }

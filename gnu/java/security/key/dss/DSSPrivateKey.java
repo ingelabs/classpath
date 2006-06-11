@@ -38,6 +38,7 @@ exception statement from your version.  */
 
 package gnu.java.security.key.dss;
 
+import gnu.classpath.Configuration;
 import gnu.classpath.SystemProperties;
 import gnu.java.security.Registry;
 import gnu.java.security.key.IKeyPairCodec;
@@ -53,11 +54,6 @@ import java.security.interfaces.DSAPrivateKey;
  */
 public class DSSPrivateKey extends DSSKey implements PrivateKey, DSAPrivateKey
 {
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
-  private static final boolean DEBUG = false;
-
   /**
    * <p>A randomly or pseudorandomly generated integer with <code>0 &lt; x &lt;
    * q</code>.</p>
@@ -210,7 +206,8 @@ public class DSSPrivateKey extends DSSKey implements PrivateKey, DSAPrivateKey
         String ls = SystemProperties.getProperty("line.separator");
         str = new StringBuilder(this.getClass().getName()).append("(")
         .append(super.toString()).append(",").append(ls)
-        .append("x=0x").append(DEBUG ? x.toString(16) : "**...*").append(ls)
+        .append("x=0x").append(Configuration.DEBUG ? x.toString(16)
+                                                   : "**...*").append(ls)
         .append(")").toString();
       }
 

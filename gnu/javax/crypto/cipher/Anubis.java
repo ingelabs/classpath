@@ -38,14 +38,15 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.cipher;
 
+import gnu.classpath.Configuration;
 import gnu.java.security.Registry;
 import gnu.java.security.util.Util;
 
-//import java.io.PrintWriter;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 /**
  * <p>Anubis is a 128-bit block cipher that accepts a variable-length key. The
@@ -65,23 +66,7 @@ import java.util.Iterator;
  */
 public final class Anubis extends BaseCipher
 {
-
-  // Debugging methods and variables
-  // -------------------------------------------------------------------------
-
-  //   private static final String NAME = "anubis";
-  private static final boolean DEBUG = false;
-
-  private static final int debuglevel = 9;
-
-  //   private static final PrintWriter err = new PrintWriter(System.out, true);
-  //   private static void debug(String s) {
-  //      err.println(">>> "+NAME+": "+s);
-  //   }
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
+  private static final Logger log = Logger.getLogger(Anubis.class.getName());
   private static final int DEFAULT_BLOCK_SIZE = 16; // in bytes
 
   private static final int DEFAULT_KEY_SIZE = 16; // in bytes
@@ -189,84 +174,62 @@ public final class Anubis extends BaseCipher
 
       time = System.currentTimeMillis() - time;
 
-      if (DEBUG && debuglevel > 8)
+      if (Configuration.DEBUG)
         {
-          System.out.println("==========");
-          System.out.println();
-          System.out.println("Static data");
-          System.out.println();
-
-          System.out.println();
-          System.out.println("T0[]:");
+          log.fine("Static data");
+          log.fine("T0[]:");
+          StringBuilder sb;
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (t = 0; t < 4; t++)
-                {
-                  System.out.print("0x" + Util.toString(T0[i * 4 + t]) + ", ");
-                }
-              System.out.println();
+                sb.append("0x").append(Util.toString(T0[i * 4 + t])).append(", ");
+              log.fine(sb.toString());
             }
-          System.out.println();
-          System.out.println("T1[]:");
+          log.fine("T1[]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (t = 0; t < 4; t++)
-                {
-                  System.out.print("0x" + Util.toString(T1[i * 4 + t]) + ", ");
-                }
-              System.out.println();
+                sb.append("0x").append(Util.toString(T1[i * 4 + t])).append(", ");
+              log.fine(sb.toString());
             }
-          System.out.println();
-          System.out.println("T2[]:");
+          log.fine("T2[]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (t = 0; t < 4; t++)
-                {
-                  System.out.print("0x" + Util.toString(T2[i * 4 + t]) + ", ");
-                }
-              System.out.println();
+                sb.append("0x").append(Util.toString(T2[i * 4 + t])).append(", ");
+              log.fine(sb.toString());
             }
-          System.out.println();
-          System.out.println("T3[]:");
+          log.fine("T3[]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (t = 0; t < 4; t++)
-                {
-                  System.out.print("0x" + Util.toString(T3[i * 4 + t]) + ", ");
-                }
-              System.out.println();
+                sb.append("0x").append(Util.toString(T3[i * 4 + t])).append(", ");
+              log.fine(sb.toString());
             }
-          System.out.println();
-          System.out.println("T4[]:");
+          log.fine("T4[]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (t = 0; t < 4; t++)
-                {
-                  System.out.print("0x" + Util.toString(T4[i * 4 + t]) + ", ");
-                }
-              System.out.println();
+                sb.append("0x").append(Util.toString(T4[i * 4 + t])).append(", ");
+              log.fine(sb.toString());
             }
-          System.out.println();
-          System.out.println("T5[]:");
+          log.fine("T5[]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (t = 0; t < 4; t++)
-                {
-                  System.out.print("0x" + Util.toString(T5[i * 4 + t]) + ", ");
-                }
-              System.out.println();
+                sb.append("0x").append(Util.toString(T5[i * 4 + t])).append(", ");
+              log.fine(sb.toString());
             }
-          System.out.println();
-          System.out.println("rc[]:");
+          log.fine("rc[]:");
           for (i = 0; i < 18; i++)
-            {
-              System.out.println("0x" + Util.toString(rc[i]));
-            }
-          System.out.println();
-
-          System.out.println();
-          System.out.println("Total initialization time: " + time + " ms.");
-          System.out.println();
+            log.fine("0x" + Util.toString(rc[i]));
+          log.fine("Total initialization time: " + time + " ms.");
         }
     }
 
@@ -315,12 +278,9 @@ public final class Anubis extends BaseCipher
         a1 = b1;
         a2 = b2;
         a3 = b3;
-        if (DEBUG && debuglevel > 6)
-          {
-            System.out.println("T" + r + "=" + Util.toString(a0)
-                               + Util.toString(a1) + Util.toString(a2)
-                               + Util.toString(a3));
-          }
+        if (Configuration.DEBUG)
+          log.fine("T" + r + "=" + Util.toString(a0) + Util.toString(a1)
+                   + Util.toString(a2) + Util.toString(a3));
       }
 
     // last round function
@@ -346,11 +306,8 @@ public final class Anubis extends BaseCipher
     out[j++] = (byte) (S[a2 & 0xFF] ^ (tt >>> 8));
     out[j] = (byte) (S[a3 & 0xFF] ^ tt);
 
-    if (DEBUG && debuglevel > 6)
-      {
-        System.out.println("T=" + Util.toString(out, j - 15, 16));
-        System.out.println();
-      }
+    if (Configuration.DEBUG)
+      log.fine("T=" + Util.toString(out, j - 15, 16) + "\n");
   }
 
   // Instance methods
@@ -517,29 +474,26 @@ public final class Anubis extends BaseCipher
           }
       }
 
-    if (DEBUG && debuglevel > 8)
+    if (Configuration.DEBUG)
       {
-        System.out.println();
-        System.out.println("Key schedule");
-        System.out.println();
-        System.out.println("Ke[]:");
+        log.fine("Key schedule");
+        log.fine("Ke[]:");
+        StringBuilder sb;
         for (r = 0; r < R + 1; r++)
           {
-            System.out.print("#" + r + ": ");
+            sb = new StringBuilder("#").append(r).append(": ");
             for (j = 0; j < 4; j++)
-              System.out.print("0x" + Util.toString(Ke[r][j]) + ", ");
-            System.out.println();
+              sb.append("0x").append(Util.toString(Ke[r][j])).append(", ");
+            log.fine(sb.toString());
           }
-        System.out.println();
-        System.out.println("Kd[]:");
+        log.fine("Kd[]:");
         for (r = 0; r < R + 1; r++)
           {
-            System.out.print("#" + r + ": ");
+            sb = new StringBuilder("#").append(r).append(": ");
             for (j = 0; j < 4; j++)
-              System.out.print("0x" + Util.toString(Kd[r][j]) + ", ");
-            System.out.println();
+              sb.append("0x").append(Util.toString(Kd[r][j])).append(", ");
+            log.fine(sb.toString());
           }
-        System.out.println();
       }
 
     return new Object[] { Ke, Kd };

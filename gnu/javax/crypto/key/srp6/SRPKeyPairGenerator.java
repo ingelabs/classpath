@@ -38,16 +38,17 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.key.srp6;
 
+import gnu.classpath.Configuration;
 import gnu.java.security.Registry;
 import gnu.java.security.key.IKeyPairGenerator;
 import gnu.java.security.util.PRNG;
 import gnu.java.security.util.Prime2;
 
-import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.SecureRandom;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  *
@@ -60,26 +61,7 @@ import java.util.Map;
  */
 public class SRPKeyPairGenerator implements IKeyPairGenerator
 {
-
-  // Debugging methods and variables
-  // -------------------------------------------------------------------------
-
-  private static final String NAME = "srp";
-
-  private static final boolean DEBUG = false;
-
-  private static final int debuglevel = 5;
-
-  private static final PrintWriter err = new PrintWriter(System.out, true);
-
-  private static void debug(String s)
-  {
-    err.println(">>> " + NAME + ": " + s);
-  }
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
+  private static final Logger log = Logger.getLogger(SRPKeyPairGenerator.class.getName());
   private static final BigInteger ZERO = BigInteger.ZERO;
 
   private static final BigInteger ONE = BigInteger.ONE;
@@ -235,11 +217,11 @@ public class SRPKeyPairGenerator implements IKeyPairGenerator
         BigInteger q = params[0];
         N = params[1];
         g = params[2];
-        if (DEBUG && debuglevel > 0)
+        if (Configuration.DEBUG)
           {
-            debug("q: " + q.toString(16));
-            debug("N: " + N.toString(16));
-            debug("g: " + g.toString(16));
+            log.fine("q: " + q.toString(16));
+            log.fine("N: " + N.toString(16));
+            log.fine("g: " + g.toString(16));
           }
       }
 

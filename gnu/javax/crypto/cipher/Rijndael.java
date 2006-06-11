@@ -38,14 +38,15 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.cipher;
 
+import gnu.classpath.Configuration;
 import gnu.java.security.Registry;
 import gnu.java.security.util.Util;
 
-//import java.io.PrintWriter;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 /**
  * <p>Rijndael --pronounced Reindaal-- is the AES. It is a variable block-size
@@ -63,23 +64,7 @@ import java.util.Iterator;
  */
 public final class Rijndael extends BaseCipher
 {
-
-  // Debugging methods and variables
-  // -------------------------------------------------------------------------
-
-  //   private static final String NAME = "rijndael";
-  private static final boolean DEBUG = false;
-
-  private static final int debuglevel = 9;
-
-  //   private static final PrintWriter err = new PrintWriter(System.out, true);
-  //   private static void debug(String s) {
-  //      err.println(">>> "+NAME+": "+s);
-  //   }
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
+  private static final Logger log = Logger.getLogger(Rijndael.class.getName());
   private static final int DEFAULT_BLOCK_SIZE = 16; // in bytes
 
   private static final int DEFAULT_KEY_SIZE = 16; // in bytes
@@ -222,169 +207,134 @@ public final class Rijndael extends BaseCipher
         }
 
       time = System.currentTimeMillis() - time;
-
-      if (DEBUG && debuglevel > 8)
+      if (Configuration.DEBUG)
         {
-          System.out.println("==========");
-          System.out.println();
-          System.out.println("Static Data");
-          System.out.println();
-          System.out.println("S[]:");
+          log.fine("Static Data");
+          log.fine("S[]:");
+          StringBuilder sb;
           for (i = 0; i < 16; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 16; j++)
-                {
-                  System.out.print("0x" + Util.toString(S[i * 16 + j]) + ", ");
-                }
-              System.out.println();
+                sb.append("0x").append(Util.toString(S[i * 16 + j])).append(", ");
+              log.fine(sb.toString());
             }
-          System.out.println();
-          System.out.println("Si[]:");
+          log.fine("Si[]:");
           for (i = 0; i < 16; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 16; j++)
-                {
-                  System.out.print("0x" + Util.toString(Si[i * 16 + j]) + ", ");
-                }
-              System.out.println();
+                sb.append("0x").append(Util.toString(Si[i * 16 + j])).append(", ");
+              log.fine(sb.toString());
             }
 
-          System.out.println();
-          System.out.println("T1[]:");
+          log.fine("T1[]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 4; j++)
-                {
-                  System.out.print("0x" + Util.toString(T1[i * 4 + j]) + ", ");
-                }
-              System.out.println();
+                sb.append("0x").append(Util.toString(T1[i * 4 + j])).append(", ");
+              log.fine(sb.toString());
             }
-          System.out.println();
-          System.out.println("T2[]:");
+          log.fine("T2[]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 4; j++)
-                {
-                  System.out.print("0x" + Util.toString(T2[i * 4 + j]) + ", ");
-                }
-              System.out.println();
+                sb.append("0x").append(Util.toString(T2[i * 4 + j])).append(", ");
+              log.fine(sb.toString());
             }
-          System.out.println();
-          System.out.println("T3[]:");
+          log.fine("T3[]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 4; j++)
-                {
-                  System.out.print("0x" + Util.toString(T3[i * 4 + j]) + ", ");
-                }
-              System.out.println();
+                sb.append("0x").append(Util.toString(T3[i * 4 + j])).append(", ");
+              log.fine(sb.toString());
             }
-          System.out.println();
-          System.out.println("T4[]:");
+          log.fine("T4[]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 4; j++)
-                {
-                  System.out.print("0x" + Util.toString(T4[i * 4 + j]) + ", ");
-                }
-              System.out.println();
+                sb.append("0x").append(Util.toString(T4[i * 4 + j])).append(", ");
+              log.fine(sb.toString());
             }
-          System.out.println();
-          System.out.println("T5[]:");
+          log.fine("T5[]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 4; j++)
-                {
-                  System.out.print("0x" + Util.toString(T5[i * 4 + j]) + ", ");
-                }
-              System.out.println();
+                sb.append("0x").append(Util.toString(T5[i * 4 + j])).append(", ");
+              log.fine(sb.toString());
             }
-          System.out.println();
-          System.out.println("T6[]:");
+          log.fine("T6[]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 4; j++)
-                {
-                  System.out.print("0x" + Util.toString(T6[i * 4 + j]) + ", ");
-                }
-              System.out.println();
+                sb.append("0x").append(Util.toString(T6[i * 4 + j])).append(", ");
+              log.fine(sb.toString());
             }
-          System.out.println();
-          System.out.println("T7[]:");
+          log.fine("T7[]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 4; j++)
-                {
-                  System.out.print("0x" + Util.toString(T7[i * 4 + j]) + ", ");
-                }
-              System.out.println();
+                sb.append("0x").append(Util.toString(T7[i * 4 + j])).append(", ");
+              log.fine(sb.toString());
             }
-          System.out.println();
-          System.out.println("T8[]:");
+          log.fine("T8[]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 4; j++)
-                {
-                  System.out.print("0x" + Util.toString(T8[i * 4 + j]) + ", ");
-                }
-              System.out.println();
+                sb.append("0x").append(Util.toString(T8[i * 4 + j])).append(", ");
+              log.fine(sb.toString());
             }
 
-          System.out.println();
-          System.out.println("U1[]:");
+          log.fine("U1[]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 4; j++)
-                {
-                  System.out.print("0x" + Util.toString(U1[i * 4 + j]) + ", ");
-                }
-              System.out.println();
+                sb.append("0x").append(Util.toString(U1[i * 4 + j])).append(", ");
+              log.fine(sb.toString());
             }
-          System.out.println();
-          System.out.println("U2[]:");
+          log.fine("U2[]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 4; j++)
-                {
-                  System.out.print("0x" + Util.toString(U2[i * 4 + j]) + ", ");
-                }
-              System.out.println();
+                sb.append("0x").append(Util.toString(U2[i * 4 + j])).append(", ");
+              log.fine(sb.toString());
             }
-          System.out.println();
-          System.out.println("U3[]:");
+          log.fine("U3[]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 4; j++)
-                {
-                  System.out.print("0x" + Util.toString(U3[i * 4 + j]) + ", ");
-                }
-              System.out.println();
+                sb.append("0x").append(Util.toString(U3[i * 4 + j])).append(", ");
+              log.fine(sb.toString());
             }
-          System.out.println();
-          System.out.println("U4[]:");
+          log.fine("U4[]:");
           for (i = 0; i < 64; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 4; j++)
-                {
-                  System.out.println("0x" + Util.toString(U4[i * 4 + j]) + ", ");
-                }
-              System.out.println();
+                sb.append("0x").append(Util.toString(U4[i * 4 + j])).append(", ");
+              log.fine(sb.toString());
             }
 
-          System.out.println();
-          System.out.println("rcon[]:");
+          log.fine("rcon[]:");
           for (i = 0; i < 5; i++)
             {
+              sb = new StringBuilder();
               for (j = 0; j < 6; j++)
-                {
-                  System.out.print("0x" + Util.toString(rcon[i * 6 + j]) + ", ");
-                }
-              System.out.println();
+                sb.append("0x").append(Util.toString(rcon[i * 6 + j])).append(", ");
+              log.fine(sb.toString());
             }
-
-          System.out.println();
-          System.out.println("Total initialization time: " + time + " ms.");
-          System.out.println();
+          log.fine("Total initialization time: " + time + " ms.");
         }
     }
 
@@ -454,11 +404,8 @@ public final class Rijndael extends BaseCipher
           }
 
         System.arraycopy(a, 0, t, 0, BC);
-
-        if (DEBUG && debuglevel > 6)
-          {
-            System.out.println("CT" + r + "=" + Util.toString(t));
-          }
+        if (Configuration.DEBUG)
+          log.fine("CT" + r + "=" + Util.toString(t));
       }
 
     for (i = 0; i < BC; i++)
@@ -469,12 +416,8 @@ public final class Rijndael extends BaseCipher
         out[outOffset++] = (byte) (S[(t[(i + s2) % BC] >>> 8) & 0xFF] ^ (tt >>> 8));
         out[outOffset++] = (byte) (S[t[(i + s3) % BC] & 0xFF] ^ tt);
       }
-
-    if (DEBUG && debuglevel > 6)
-      {
-        System.out.println("CT=" + Util.toString(out, outOffset - bs + 1, bs));
-        System.out.println();
-      }
+    if (Configuration.DEBUG)
+      log.fine("CT=" + Util.toString(out, outOffset - bs, bs));
   }
 
   private static void rijndaelDecrypt(byte[] in, int inOffset, byte[] out,
@@ -510,11 +453,8 @@ public final class Rijndael extends BaseCipher
           }
 
         System.arraycopy(a, 0, t, 0, BC);
-
-        if (DEBUG && debuglevel > 6)
-          {
-            System.out.println("PT" + r + "=" + Util.toString(t));
-          }
+        if (Configuration.DEBUG)
+          log.fine("PT" + r + "=" + Util.toString(t));
       }
 
     for (i = 0; i < BC; i++)
@@ -525,12 +465,8 @@ public final class Rijndael extends BaseCipher
         out[outOffset++] = (byte) (Si[(t[(i + s2) % BC] >>> 8) & 0xFF] ^ (tt >>> 8));
         out[outOffset++] = (byte) (Si[t[(i + s3) % BC] & 0xFF] ^ tt);
       }
-
-    if (DEBUG && debuglevel > 6)
-      {
-        System.out.println("PT=" + Util.toString(out, outOffset - bs + 1, bs));
-        System.out.println();
-      }
+    if (Configuration.DEBUG)
+      log.fine("PT=" + Util.toString(out, outOffset - bs, bs));
   }
 
   private static void aesEncrypt(byte[] in, int i, byte[] out, int j, Object key)
@@ -565,15 +501,10 @@ public final class Rijndael extends BaseCipher
         t1 = a1;
         t2 = a2;
         t3 = a3;
-
-        if (DEBUG && debuglevel > 6)
-          {
-            System.out.println("CT" + r + "=" + Util.toString(t0)
-                               + Util.toString(t1) + Util.toString(t2)
-                               + Util.toString(t3));
-          }
+        if (Configuration.DEBUG)
+          log.fine("CT" + r + "=" + Util.toString(t0) + Util.toString(t1)
+                   + Util.toString(t2) + Util.toString(t3));
       }
-
     // last round is special
     Ker = Ke[ROUNDS];
     int tt = Ker[0];
@@ -596,12 +527,8 @@ public final class Rijndael extends BaseCipher
     out[j++] = (byte) (S[(t0 >>> 16) & 0xFF] ^ (tt >>> 16));
     out[j++] = (byte) (S[(t1 >>> 8) & 0xFF] ^ (tt >>> 8));
     out[j++] = (byte) (S[t2 & 0xFF] ^ tt);
-
-    if (DEBUG && debuglevel > 6)
-      {
-        System.out.println("CT=" + Util.toString(out, j - 15, 16));
-        System.out.println();
-      }
+    if (Configuration.DEBUG)
+      log.fine("CT=" + Util.toString(out, j - 16, 16));
   }
 
   private static void aesDecrypt(byte[] in, int i, byte[] out, int j, Object key)
@@ -636,15 +563,10 @@ public final class Rijndael extends BaseCipher
         t1 = a1;
         t2 = a2;
         t3 = a3;
-
-        if (DEBUG && debuglevel > 6)
-          {
-            System.out.println("PT" + r + "=" + Util.toString(t0)
-                               + Util.toString(t1) + Util.toString(t2)
-                               + Util.toString(t3));
-          }
+        if (Configuration.DEBUG)
+          log.fine("PT" + r + "=" + Util.toString(t0) + Util.toString(t1)
+                   + Util.toString(t2) + Util.toString(t3));
       }
-
     // last round is special
     Kdr = Kd[ROUNDS];
     int tt = Kdr[0];
@@ -667,12 +589,8 @@ public final class Rijndael extends BaseCipher
     out[j++] = (byte) (Si[(t2 >>> 16) & 0xFF] ^ (tt >>> 16));
     out[j++] = (byte) (Si[(t1 >>> 8) & 0xFF] ^ (tt >>> 8));
     out[j++] = (byte) (Si[t0 & 0xFF] ^ tt);
-
-    if (DEBUG && debuglevel > 6)
-      {
-        System.out.println("PT=" + Util.toString(out, j - 15, 16));
-        System.out.println();
-      }
+    if (Configuration.DEBUG)
+      log.fine("PT=" + Util.toString(out, j - 16, 16));
   }
 
   // Instance methods

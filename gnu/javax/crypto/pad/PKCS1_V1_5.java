@@ -38,12 +38,14 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.pad;
 
+import gnu.classpath.Configuration;
 import gnu.java.security.Registry;
 import gnu.java.security.sig.rsa.EME_PKCS1_V1_5;
 import gnu.java.security.util.PRNG;
 import gnu.java.security.util.Util;
 
-import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * <p>A padding algorithm implementation of the EME-PKCS1-V1.5 encoding/decoding
@@ -63,26 +65,7 @@ import java.io.PrintWriter;
  */
 public class PKCS1_V1_5 extends BasePad
 {
-
-  // Debugging methods and variables
-  // -------------------------------------------------------------------------
-
-  private static final String NAME = Registry.EME_PKCS1_V1_5_PAD;
-
-  private static final boolean DEBUG = false;
-
-  private static final int debuglevel = 9;
-
-  private static final PrintWriter err = new PrintWriter(System.out, true);
-
-  private static void debug(final String s)
-  {
-    err.println(">>> " + NAME + ": " + s);
-  }
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
+  private static final Logger log = Logger.getLogger(PKCS1_V1_5.class.getName());
   private EME_PKCS1_V1_5 codec;
 
   // Constructor(s)
@@ -117,10 +100,8 @@ public class PKCS1_V1_5 extends BasePad
     final byte[] EM = codec.encode(M);
     final byte[] result = new byte[blockSize - length];
     System.arraycopy(EM, 0, result, 0, result.length);
-    if (DEBUG && debuglevel > 8)
-      {
-        debug("padding: 0x" + Util.toString(result));
-      }
+    if (Configuration.DEBUG)
+      log.fine("padding: 0x" + Util.toString(result));
     return result;
   }
 
@@ -130,10 +111,8 @@ public class PKCS1_V1_5 extends BasePad
     final byte[] EM = new byte[length];
     System.arraycopy(in, offset, EM, 0, length);
     final int result = length - codec.decode(EM).length;
-    if (DEBUG && debuglevel > 8)
-      {
-        debug("padding length: " + String.valueOf(result));
-      }
+    if (Configuration.DEBUG)
+      log.fine("padding length: " + String.valueOf(result));
     return result;
   }
 
@@ -156,7 +135,10 @@ public class PKCS1_V1_5 extends BasePad
             p = pad(M, 0, j);
             if (j + p.length != blockSize)
               {
-                new RuntimeException(name()).printStackTrace(System.err);
+                if (Configuration.DEBUG)
+                  log.log(Level.SEVERE,
+                          "Length of padded text MUST be a multiple of " + blockSize,
+                          new RuntimeException(name()));
                 return false;
               }
 
@@ -166,13 +148,17 @@ public class PKCS1_V1_5 extends BasePad
               {
                 if (p.length != unpad(EM, 0, blockSize))
                   {
-                    new RuntimeException(name()).printStackTrace(System.err);
+                    if (Configuration.DEBUG)
+                      log.log(Level.SEVERE,
+                              "Failed symmetric operation",
+                              new RuntimeException(name()));
                     return false;
                   }
               }
             catch (WrongPaddingException x)
               {
-                x.printStackTrace(System.err);
+                if (Configuration.DEBUG)
+                  log.throwing(this.getClass().getName(), "selfTest", x);
                 return false;
               }
           }

@@ -38,10 +38,11 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.pad;
 
+import gnu.classpath.Configuration;
 import gnu.java.security.Registry;
 import gnu.java.security.util.Util;
 
-import java.io.PrintWriter;
+import java.util.logging.Logger;
 
 /**
  * <p>The implementation of the PKCS7 padding algorithm.</p>
@@ -60,28 +61,7 @@ import java.io.PrintWriter;
  */
 public final class PKCS7 extends BasePad
 {
-
-  // Debugging methods and variables
-  // -------------------------------------------------------------------------
-
-  private static final String NAME = "pkcs7";
-
-  private static final boolean DEBUG = false;
-
-  private static final int debuglevel = 9;
-
-  private static final PrintWriter err = new PrintWriter(System.out, true);
-
-  private static void debug(String s)
-  {
-    err.println(">>> " + NAME + ": " + s);
-  }
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
-  // Constructor(s)
-  // -------------------------------------------------------------------------
+  private static final Logger log = Logger.getLogger(PKCS7.class.getName());
 
   /**
    * Trivial package-private constructor for use by the <i>Factory</i> class.<p>
@@ -119,11 +99,8 @@ public final class PKCS7 extends BasePad
       {
         result[i++] = (byte) padLength;
       }
-
-    if (DEBUG && debuglevel > 8)
-      {
-        debug("padding: 0x" + Util.toString(result));
-      }
+    if (Configuration.DEBUG)
+      log.fine("padding: 0x" + Util.toString(result));
     return result;
   }
 
@@ -139,11 +116,8 @@ public final class PKCS7 extends BasePad
             throw new WrongPaddingException();
           }
       }
-
-    if (DEBUG && debuglevel > 8)
-      {
-        debug("padding length: " + String.valueOf(result));
-      }
+    if (Configuration.DEBUG)
+      log.fine("padding length: " + result);
     return result;
   }
 }

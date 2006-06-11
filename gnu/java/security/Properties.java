@@ -38,13 +38,15 @@ exception statement from your version.  */
 
 package gnu.java.security;
 
+import gnu.classpath.Configuration;
+
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.HashMap;
 import java.util.PropertyPermission;
+import java.util.logging.Logger;
 
 /**
  * <p>A global object containing build-specific properties that affect the
@@ -52,25 +54,7 @@ import java.util.PropertyPermission;
  */
 public final class Properties
 {
-
-  // Debugging methods and variables
-  // -------------------------------------------------------------------------
-
-  private static final String NAME = "Properties";
-
-  private static final boolean DEBUG = false;
-
-  //   private static final int debuglevel = 9;
-  private static final PrintWriter err = new PrintWriter(System.out, true);
-
-  private static void debug(final String s)
-  {
-    err.println(">>> " + NAME + ": " + s);
-  }
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
+  private static final Logger log = Logger.getLogger(Properties.class.getName());
   public static final String VERSION = "gnu.crypto.version";
 
   public static final String PROPERTIES_FILE = "gnu.crypto.properties.file";
@@ -300,9 +284,8 @@ public final class Properties
       }
     catch (SecurityException se)
       {
-        if (DEBUG)
-          debug("Reading property " + PROPERTIES_FILE
-                + " not allowed. Ignored.");
+        if (Configuration.DEBUG)
+          log.fine("Reading property " + PROPERTIES_FILE + " not allowed. Ignored.");
       }
     if (propFile != null)
       {
@@ -316,14 +299,14 @@ public final class Properties
           }
         catch (IOException ioe)
           {
-            if (DEBUG)
-              debug("IO error reading " + propFile + ": " + ioe.getMessage());
+            if (Configuration.DEBUG)
+              log.fine("IO error reading " + propFile + ": " + ioe.getMessage());
           }
         catch (SecurityException se)
           {
-            if (DEBUG)
-              debug("Security error reading " + propFile + ": "
-                    + se.getMessage());
+            if (Configuration.DEBUG)
+              log.fine("Security error reading " + propFile + ": "
+                       + se.getMessage());
           }
       }
 
@@ -350,8 +333,8 @@ public final class Properties
       }
     catch (SecurityException x)
       {
-        if (DEBUG)
-          debug("SecurityManager forbids reading system properties. Ignored");
+        if (Configuration.DEBUG)
+          log.fine("SecurityManager forbids reading system properties. Ignored");
       }
     if (s != null)
       {
@@ -360,14 +343,14 @@ public final class Properties
         // hide valid value set previously
         if (s.equals(TRUE) || s.equals(FALSE))
           {
-            if (DEBUG)
-              debug("Setting " + name + " to '" + s + "'");
+            if (Configuration.DEBUG)
+              log.fine("Setting " + name + " to '" + s + "'");
             props.put(name, s);
           }
         else
           {
-            if (DEBUG)
-              debug("Invalid value for -D" + name + ": " + s + ". Ignored");
+            if (Configuration.DEBUG)
+              log.fine("Invalid value for -D" + name + ": " + s + ". Ignored");
           }
       }
   }

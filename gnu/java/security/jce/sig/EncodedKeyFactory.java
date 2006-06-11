@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package gnu.java.security.jce.sig;
 
+import gnu.classpath.Configuration;
 import gnu.java.security.Registry;
 import gnu.java.security.key.dss.DSSPrivateKey;
 import gnu.java.security.key.dss.DSSPublicKey;
@@ -196,7 +197,8 @@ public class EncodedKeyFactory
   protected PublicKey engineGeneratePublic(KeySpec keySpec)
       throws InvalidKeySpecException
   {
-    log.entering(this.getClass().getName(), "engineGeneratePublic()", keySpec);
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "engineGeneratePublic()", keySpec);
 
     PublicKey result = null;
     if (keySpec instanceof DSAPublicKeySpec)
@@ -220,8 +222,9 @@ public class EncodedKeyFactory
           }
         catch (InvalidParameterException ignored)
           {
-            log.log(Level.FINE, "Exception in DSSPublicKey.valueOf(). Ignore",
-                    ignored);
+            if (Configuration.DEBUG)
+              log.log(Level.FINE, "Exception in DSSPublicKey.valueOf(). Ignore",
+                      ignored);
           }
 
         if (! ok) // try RSA
@@ -232,23 +235,25 @@ public class EncodedKeyFactory
             }
           catch (InvalidParameterException ignored)
             {
-              log.log(Level.FINE,
-                      "Exception in GnuRSAPublicKey.valueOf(). Ignore",
-                      ignored);
+              if (Configuration.DEBUG)
+                log.log(Level.FINE,
+                        "Exception in GnuRSAPublicKey.valueOf(). Ignore",
+                        ignored);
             }
 
           if (! ok) // try DH
             result = decodeDHPublicKey(input);
       }
-
-    log.exiting(this.getClass().getName(), "engineGeneratePublic()", result);
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "engineGeneratePublic()", result);
     return result;
   }
 
   protected PrivateKey engineGeneratePrivate(KeySpec keySpec)
       throws InvalidKeySpecException
   {
-    log.entering(this.getClass().getName(), "engineGeneratePrivate()", keySpec);
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "engineGeneratePrivate()", keySpec);
 
     PrivateKey result = null;
     if (keySpec instanceof DSAPrivateKeySpec)
@@ -272,8 +277,9 @@ public class EncodedKeyFactory
           }
         catch (InvalidParameterException ignored)
           {
-            log.log(Level.FINE, "Exception in DSSPrivateKey.valueOf(). Ignore",
-                    ignored);
+            if (Configuration.DEBUG)
+              log.log(Level.FINE, "Exception in DSSPrivateKey.valueOf(). Ignore",
+                      ignored);
           }
 
         if (! ok) // try RSA
@@ -284,16 +290,17 @@ public class EncodedKeyFactory
             }
           catch (InvalidParameterException ignored)
             {
-              log.log(Level.FINE,
-                      "Exception in GnuRSAPrivateKey.valueOf(). Ignore",
-                      ignored);
+              if (Configuration.DEBUG)
+                log.log(Level.FINE,
+                        "Exception in GnuRSAPrivateKey.valueOf(). Ignore",
+                        ignored);
             }
 
         if (! ok) // try DH
           result = decodeDHPrivateKey(input);
       }
-
-    log.exiting(this.getClass().getName(), "engineGeneratePrivate()", result);
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "engineGeneratePrivate()", result);
     return result;
   }
 

@@ -38,6 +38,8 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.keyring;
 
+import gnu.classpath.Configuration;
+
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -94,17 +96,20 @@ public abstract class EnvelopeEntry extends Entry
    */
   public void add(Entry entry)
   {
-    log.entering(this.getClass().getName(), "add", entry);
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "add", entry);
     if (! containsEntry(entry))
       {
         if (entry instanceof EnvelopeEntry)
           ((EnvelopeEntry) entry).setContainingEnvelope(this);
 
         entries.add(entry);
-        log.finest("Payload is " + (payload == null ? "" : "not ") + "null");
+        if (Configuration.DEBUG)
+          log.fine("Payload is " + (payload == null ? "" : "not ") + "null");
         makeAliasList();
       }
-    log.exiting(this.getClass().getName(), "add");
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "add");
   }
 
   /**
@@ -117,9 +122,11 @@ public abstract class EnvelopeEntry extends Entry
    */
   public boolean containsAlias(String alias)
   {
-    log.entering(this.getClass().getName(), "containsAlias", alias);
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "containsAlias", alias);
     String aliases = getAliasList();
-    log.finest("aliases = [" + aliases + "]");
+    if (Configuration.DEBUG)
+      log.fine("aliases = [" + aliases + "]");
     boolean result = false;
     if (aliases != null)
       {
@@ -131,7 +138,9 @@ public abstract class EnvelopeEntry extends Entry
               break;
             }
       }
-    log.exiting(this.getClass().getName(), "containsAlias", Boolean.valueOf(result));
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "containsAlias",
+                  Boolean.valueOf(result));
     return result;
   }
 
@@ -182,8 +191,8 @@ public abstract class EnvelopeEntry extends Entry
    */
   public List get(String alias)
   {
-    log.entering(this.getClass().getName(), "get", alias);
-
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "get", alias);
     List result = new LinkedList();
     for (Iterator it = entries.iterator(); it.hasNext();)
       {
@@ -199,13 +208,14 @@ public abstract class EnvelopeEntry extends Entry
                 MaskableEnvelopeEntry mee = (MaskableEnvelopeEntry) ee;
                 if (mee.isMasked())
                   {
-                    log.finer("Processing masked entry: " + mee);
+                    if (Configuration.DEBUG)
+                      log.fine("Processing masked entry: " + mee);
                     result.add(mee);
                     continue;
                   }
               }
-
-            log.finer("Processing unmasked entry: " + ee);
+            if (Configuration.DEBUG)
+              log.fine("Processing unmasked entry: " + ee);
             result.addAll(ee.get(alias));
           }
         else if (e instanceof PrimitiveEntry)
@@ -215,8 +225,8 @@ public abstract class EnvelopeEntry extends Entry
               result.add(e);
           }
       }
-
-    log.exiting(this.getClass().getName(), "get", result);
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "get", result);
     return result;
   }
 
@@ -247,7 +257,8 @@ public abstract class EnvelopeEntry extends Entry
    */
   public boolean remove(Entry entry)
   {
-    log.entering(this.getClass().getName(), "remove", entry);
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "remove", entry);
     boolean ret = false;
     for (Iterator it = entries.iterator(); it.hasNext();)
       {
@@ -278,12 +289,15 @@ public abstract class EnvelopeEntry extends Entry
       }
     if (ret)
       {
-        log.finest("State before: " + this);
+        if (Configuration.DEBUG)
+          log.fine("State before: " + this);
         payload = null;
         makeAliasList();
-        log.finest("State after: " + this);
+        if (Configuration.DEBUG)
+          log.fine("State after: " + this);
       }
-    log.exiting(this.getClass().getName(), "remove", Boolean.valueOf(ret));
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "remove", Boolean.valueOf(ret));
     return ret;
   }
 
@@ -298,7 +312,8 @@ public abstract class EnvelopeEntry extends Entry
    */
   public boolean remove(String alias)
   {
-    log.entering(this.getClass().getName(), "remove", alias);
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "remove", alias);
     boolean result = false;
     for (Iterator it = entries.iterator(); it.hasNext();)
       {
@@ -320,12 +335,15 @@ public abstract class EnvelopeEntry extends Entry
       }
     if (result)
       {
-        log.finest("State before: " + this);
+        if (Configuration.DEBUG)
+          log.fine("State before: " + this);
         payload = null;
         makeAliasList();
-        log.finest("State after: " + this);
+        if (Configuration.DEBUG)
+          log.fine("State after: " + this);
       }
-    log.exiting(this.getClass().getName(), "remove", Boolean.valueOf(result));
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "remove", Boolean.valueOf(result));
     return result;
   }
 
@@ -410,7 +428,8 @@ public abstract class EnvelopeEntry extends Entry
 
   private void makeAliasList()
   {
-    log.entering(this.getClass().getName(), "makeAliasList");
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "makeAliasList");
     if (! entries.isEmpty())
       {
         StringBuilder buf = new StringBuilder();
@@ -423,7 +442,7 @@ public abstract class EnvelopeEntry extends Entry
               aliasOrList = ((EnvelopeEntry) entry).getAliasList();
             else if (entry instanceof PrimitiveEntry)
               aliasOrList = ((PrimitiveEntry) entry).getAlias();
-            else
+            else if (Configuration.DEBUG)
               log.fine("Entry with no Alias. Ignored: " + entry);
 
             if (aliasOrList != null)
@@ -439,10 +458,12 @@ public abstract class EnvelopeEntry extends Entry
           }
         String aliasList = buf.toString();
         properties.put("alias-list", aliasList);
-        log.finer("alias-list=[" + aliasList + "]");
+        if (Configuration.DEBUG)
+          log.fine("alias-list=[" + aliasList + "]");
         if (containingEnvelope != null)
           containingEnvelope.makeAliasList();
       }
-    log.exiting(this.getClass().getName(), "makeAliasList");
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "makeAliasList");
   }
 }

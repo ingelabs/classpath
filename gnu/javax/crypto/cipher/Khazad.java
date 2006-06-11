@@ -38,14 +38,15 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.cipher;
 
+import gnu.classpath.Configuration;
 import gnu.java.security.Registry;
 import gnu.java.security.util.Util;
 
-//import java.io.PrintWriter;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 /**
  * <p>Khazad is a 64-bit (legacy-level) block cipher that accepts a 128-bit key.
@@ -65,23 +66,7 @@ import java.util.Iterator;
  */
 public final class Khazad extends BaseCipher
 {
-
-  // Debugging methods and variables
-  // -------------------------------------------------------------------------
-
-  //   private static final String NAME = "khazad";
-  private static final boolean DEBUG = false;
-
-  private static final int debuglevel = 9;
-
-  //   private static final PrintWriter err = new PrintWriter(System.out, true);
-  //   private static void debug(String s) {
-  //      err.println(">>> "+NAME+": "+s);
-  //   }
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
+  private static final Logger log = Logger.getLogger(Khazad.class.getName());
   private static final int DEFAULT_BLOCK_SIZE = 8; // in bytes
 
   private static final int DEFAULT_KEY_SIZE = 16; // in bytes
@@ -194,86 +179,78 @@ public final class Khazad extends BaseCipher
 
       time = System.currentTimeMillis() - time;
 
-      if (DEBUG && debuglevel > 8)
+      if (Configuration.DEBUG)
         {
-          System.out.println("==========");
-          System.out.println();
-          System.out.println("Static data");
-          System.out.println();
-
-          System.out.println();
-          System.out.println("T0[]:");
+          log.fine("Static data");
+          log.fine("T0[]:");
+          StringBuilder b;
           for (i = 0; i < 64; i++)
             {
+              b = new StringBuilder();
               for (j = 0; j < 4; j++)
-                System.out.print("0x" + Util.toString(T0[i * 4 + j]) + ", ");
-              System.out.println();
+                b.append("0x").append(Util.toString(T0[i * 4 + j])).append(", ");
+              log.fine(b.toString());
             }
-          System.out.println();
-          System.out.println("T1[]:");
+          log.fine("T1[]:");
           for (i = 0; i < 64; i++)
             {
+              b = new StringBuilder();
               for (j = 0; j < 4; j++)
-                System.out.print("0x" + Util.toString(T1[i * 4 + j]) + ", ");
-              System.out.println();
+                b.append("0x").append(Util.toString(T1[i * 4 + j])).append(", ");
+              log.fine(b.toString());
             }
-          System.out.println();
-          System.out.println("T2[]:");
+          log.fine("T2[]:");
           for (i = 0; i < 64; i++)
             {
+              b = new StringBuilder();
               for (j = 0; j < 4; j++)
-                System.out.print("0x" + Util.toString(T2[i * 4 + j]) + ", ");
-              System.out.println();
+                b.append("0x").append(Util.toString(T2[i * 4 + j])).append(", ");
+              log.fine(b.toString());
             }
-          System.out.println();
-          System.out.println("T3[]:");
+          log.fine("T3[]:");
           for (i = 0; i < 64; i++)
             {
+              b = new StringBuilder();
               for (j = 0; j < 4; j++)
-                System.out.print("0x" + Util.toString(T3[i * 4 + j]) + ", ");
-              System.out.println();
+                b.append("0x").append(Util.toString(T3[i * 4 + j])).append(", ");
+              log.fine(b.toString());
             }
-          System.out.println();
-          System.out.println("T4[]:");
+          log.fine("T4[]:");
           for (i = 0; i < 64; i++)
             {
+              b = new StringBuilder();
               for (j = 0; j < 4; j++)
-                System.out.print("0x" + Util.toString(T4[i * 4 + j]) + ", ");
-              System.out.println();
+                b.append("0x").append(Util.toString(T4[i * 4 + j])).append(", ");
+              log.fine(b.toString());
             }
-          System.out.println();
-          System.out.println("T5[]:");
+          log.fine("T5[]:");
           for (i = 0; i < 64; i++)
             {
+              b = new StringBuilder();
               for (j = 0; j < 4; j++)
-                System.out.print("0x" + Util.toString(T5[i * 4 + j]) + ", ");
-              System.out.println();
+                b.append("0x").append(Util.toString(T5[i * 4 + j])).append(", ");
+              log.fine(b.toString());
             }
-          System.out.println();
-          System.out.println("T6[]:");
+          log.fine("T6[]:");
           for (i = 0; i < 64; i++)
             {
+              b = new StringBuilder();
               for (j = 0; j < 4; j++)
-                System.out.print("0x" + Util.toString(T6[i * 4 + j]) + ", ");
-              System.out.println();
+                b.append("0x").append(Util.toString(T6[i * 4 + j])).append(", ");
+              log.fine(b.toString());
             }
-          System.out.println();
-          System.out.println("T7[]:");
+          log.fine("T7[]:");
           for (i = 0; i < 64; i++)
             {
+              b = new StringBuilder();
               for (j = 0; j < 4; j++)
-                System.out.print("0x" + Util.toString(T7[i * 4 + j]) + ", ");
-              System.out.println();
+                b.append("0x").append(Util.toString(T7[i * 4 + j])).append(", ");
+              log.fine(b.toString());
             }
-          System.out.println();
-          System.out.println("rc[]:");
+          log.fine("rc[]:");
           for (i = 0; i < R + 1; i++)
-            System.out.print("0x" + Util.toString(rc[i][0])
-                             + Util.toString(rc[i][1]));
-          System.out.println();
-
-          System.out.println("Total initialization time: " + time + " ms.");
-          System.out.println();
+            log.fine("0x" + Util.toString(rc[i][0]) + Util.toString(rc[i][1]));
+          log.fine("Total initialization time: " + time + " ms.");
         }
     }
 
@@ -313,12 +290,8 @@ public final class Khazad extends BaseCipher
              ^ T6[(a0 >>> 8) & 0xFF] ^ T7[a0 & 0xFF] ^ k1;
         a0 = b0;
         a1 = b1;
-
-        if (DEBUG && debuglevel > 6)
-          {
-            System.out.println("T" + r + "=" + Util.toString(a0)
-                               + Util.toString(a1));
-          }
+        if (Configuration.DEBUG)
+          log.fine("T" + r + "=" + Util.toString(a0) + Util.toString(a1));
       }
 
     // sigma(K[R]) o gamma applied to previous output
@@ -333,12 +306,8 @@ public final class Khazad extends BaseCipher
     out[j++] = (byte) (S[(a1 >>> 16) & 0xFF] ^ (k1 >>> 16));
     out[j++] = (byte) (S[(a1 >>> 8) & 0xFF] ^ (k1 >>> 8));
     out[j] = (byte) (S[a1 & 0xFF] ^ k1);
-
-    if (DEBUG && debuglevel > 6)
-      {
-        System.out.println("T=" + Util.toString(out, j - 7, 8));
-        System.out.println();
-      }
+    if (Configuration.DEBUG)
+      log.fine("T=" + Util.toString(out, j - 7, 8) + "\n");
   }
 
   // Instance methods
@@ -458,26 +427,17 @@ public final class Khazad extends BaseCipher
                            ^ T7[S[kr0 & 0xFF] & 0xFF];
           }
       }
-
-    if (DEBUG && debuglevel > 8)
+    if (Configuration.DEBUG)
       {
-        System.out.println();
-        System.out.println("Key schedule");
-        System.out.println();
-        System.out.println("Ke[]:");
+        log.fine("Key schedule");
+        log.fine("Ke[]:");
         for (r = 0; r < R + 1; r++)
-          {
-            System.out.println("#" + r + ": 0x" + Util.toString(Ke[r][0])
-                               + Util.toString(Ke[r][1]));
-          }
-        System.out.println();
-        System.out.println("Kd[]:");
+          log.fine("#" + r + ": 0x"
+                   + Util.toString(Ke[r][0]) + Util.toString(Ke[r][1]));
+        log.fine("Kd[]:");
         for (r = 0; r < R + 1; r++)
-          {
-            System.out.println("#" + r + ": 0x" + Util.toString(Kd[r][0])
-                               + Util.toString(Kd[r][1]));
-          }
-        System.out.println();
+          log.fine("#" + r + ": 0x"
+                   + Util.toString(Kd[r][0]) + Util.toString(Kd[r][1]));
       }
 
     return new Object[] { Ke, Kd };
