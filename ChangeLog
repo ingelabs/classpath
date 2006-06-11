@@ -1,3 +1,22 @@
+2006-06-11  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/awt/peer/gtk/GdkPixbufDecoder.java (streamImage):
+	Takes GdkPixbufWriter.
+	(GdkPixbufWriter): Implements Runnable.
+	(write(IIOMetadata,IIOImage,ImageWriteParam)): Start Thread for
+	data processing.
+	(DATADONE): New static final field.
+	(data): New field.
+	(write(byte[])): New method.
+	(run): Likewise.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkPixbufDecoder.c
+	(Java_gnu_java_awt_peer_gtk_GdkPixbufDecoder_initStaticState):
+	Get dataOutputWriteID from writeClass.
+	(stream_save_request): Change stream field to writer.
+	(save_to_stream): Remove FIXME, call writer.
+	(Java_gnu_java_awt_peer_gtk_GdkPixbufDecoder_streamImage):
+	Store writer.
+
 2006-06-11  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* NEWS:
