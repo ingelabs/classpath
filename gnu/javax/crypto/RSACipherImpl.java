@@ -215,10 +215,11 @@ public class RSACipherImpl extends CipherSpi
         if (dec[0] != 0x02)
           throw new BadPaddingException ("expected padding type 2");
         int i;
-        for (i = 1; i < dec.length && dec[i] != 0x00; i++);
-        int len = dec.length - i;
+        for (i = 1; i < dec.length && dec[i] != 0x00; i++)
+          ; // keep incrementing i
+        int len = dec.length - i - 1; // skip the 0x00 byte
         byte[] result = new byte[len];
-        System.arraycopy (dec, i, result, 0, len);
+        System.arraycopy (dec, i + 1, result, 0, len);
         pos = 0;
         return result;
       }
