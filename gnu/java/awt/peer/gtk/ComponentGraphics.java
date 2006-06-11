@@ -181,38 +181,69 @@ public class ComponentGraphics extends CairoGraphics2D
   public void draw(Shape s)
   {
     start_gdk_drawing();
-    super.draw(s);
-    end_gdk_drawing();
+    try
+      {
+	super.draw(s);
+      }
+    finally
+      {
+	end_gdk_drawing();
+      }
   }
 
   public void fill(Shape s)
   {
     start_gdk_drawing();
-    super.fill(s);
-    end_gdk_drawing();
+    try
+      {
+	super.fill(s);
+      }
+    finally
+      {
+	end_gdk_drawing();
+      }
   }
 
   public void drawRenderedImage(RenderedImage image, AffineTransform xform)
   {
     start_gdk_drawing();
-    super.drawRenderedImage(image, xform);
-    end_gdk_drawing();
+    try
+      {
+	super.drawRenderedImage(image, xform);
+      }
+    finally
+      {
+	end_gdk_drawing();
+      }
   }
 
   protected boolean drawImage(Image img, AffineTransform xform,
 			      Color bgcolor, ImageObserver obs)
   {
+    boolean rv;
     start_gdk_drawing();
-    boolean rv = super.drawImage(img, xform, bgcolor, obs);
-    end_gdk_drawing();
+    try
+      {
+	rv = super.drawImage(img, xform, bgcolor, obs);
+      }
+    finally
+      {
+	end_gdk_drawing();
+      }
     return rv;
   }
 
   public void drawGlyphVector(GlyphVector gv, float x, float y)
   {
     start_gdk_drawing();
-    super.drawGlyphVector(gv, x, y);
-    end_gdk_drawing();
+    try
+      {
+	super.drawGlyphVector(gv, x, y);
+      }
+    finally
+      {
+	end_gdk_drawing();
+      }
   }
   
   public boolean drawImage(Image img, int x, int y, ImageObserver observer)

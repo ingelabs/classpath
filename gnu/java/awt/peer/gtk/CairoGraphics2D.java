@@ -79,6 +79,7 @@ import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferInt;
 import java.awt.image.DirectColorModel;
 import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
 import java.awt.image.ImagingOpException;
 import java.awt.image.MultiPixelPackedSampleModel;
 import java.awt.image.Raster;
@@ -1100,11 +1101,14 @@ public abstract class CairoGraphics2D extends Graphics2D
 				     + xform.toString());
       }
 
-    // Unrecognized image - convert to a BufferedImage and come back.
+    // Unrecognized image - convert to a BufferedImage
     if( !(img instanceof BufferedImage) )
-      return this.drawImage(Toolkit.getDefaultToolkit().
-			    createImage(img.getSource()),
-			    xform, bgcolor, obs);
+      {
+	ImageProducer source = img.getSource();
+	if (source == null)
+	  return false;
+	img = Toolkit.getDefaultToolkit().createImage(source);
+      }
 
     BufferedImage b = (BufferedImage) img;
     DataBuffer db;

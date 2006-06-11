@@ -1,3 +1,15 @@
+2006-06-11  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java (drawImage):
+	Don't recurse, return false if not an BufferedImage and no image
+	source available.
+	* gnu/java/awt/peer/gtk/ComponentGraphics.java (draw): Add
+	end_gdk_drawing() to finally block.
+	(fill): Likewise.
+	(drawRenderedImage): Likewise.
+	(drawImage): Likewise.
+	(drawGlyphVector): Likewise.
+
 2006-06-11  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* doc/tools.texinfo: Added text for new -cacert command.
