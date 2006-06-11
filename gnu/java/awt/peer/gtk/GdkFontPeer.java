@@ -57,12 +57,18 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.nio.ByteBuffer;
+import java.util.HashMap;
 
 public class GdkFontPeer extends ClasspathFontPeer
 {
   static native void initStaticState();
   private final int native_state = GtkGenericPeer.getUniqueInteger ();
   private static ResourceBundle bundle;
+
+  /**
+   * Cache GlyphMetrics objects.
+   */
+  private HashMap metricsCache;
   
   static 
   {
@@ -145,6 +151,7 @@ public class GdkFontPeer extends ClasspathFontPeer
     super(name, style, size);    
     initState ();
     setFont (this.familyName, this.style, (int)this.size);
+    metricsCache = new HashMap();
   }
 
   public GdkFontPeer (String name, Map attributes)
@@ -152,6 +159,7 @@ public class GdkFontPeer extends ClasspathFontPeer
     super(name, attributes);
     initState ();
     setFont (this.familyName, this.style, (int)this.size);
+    metricsCache = new HashMap();
   }
 
   /**
@@ -374,5 +382,22 @@ public class GdkFontPeer extends ClasspathFontPeer
     // Get the font metrics through GtkToolkit to take advantage of
     // the metrics cache.
     return Toolkit.getDefaultToolkit().getFontMetrics (font);
+  }
+
+  /**
+   * Returns a cached GlyphMetrics object for a given glyphcode,
+   * or null if it doesn't exist in the cache.
+   */
+  GlyphMetrics getGlyphMetrics( int glyphCode )
+  {
+    return (GlyphMetrics)metricsCache.get( new Integer( glyphCode ) );
+  }
+
+  /**
+   * Put a GlyphMetrics object in the cache.
+   */ 
+  void putGlyphMetrics( int glyphCode, Object metrics )
+  {
+    metricsCache.put( new Integer( glyphCode ), metrics );
   }
 }

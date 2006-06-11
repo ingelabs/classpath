@@ -84,11 +84,7 @@ public class FreetypeGlyphVector extends GlyphVector
    */
   private AffineTransform[] glyphTransforms;
 
-  /**
-   * Keep track of which glyphs are whitespace, since we don't have
-   * reporting from the peers yet. TextLayout needs this for justification.
-   */
-  private boolean[] whiteSpace;
+  private GlyphMetrics[] metricsCache;
 
   /**
    * Create a glyphvector from a given (Freetype) font and a String.
@@ -147,21 +143,25 @@ public class FreetypeGlyphVector extends GlyphVector
   {
     nGlyphs = s.codePointCount( 0, s.length() );
     glyphCodes = new int[ nGlyphs ];
+    int[] codePoints = new int[ nGlyphs ];
     int stringIndex = 0;
+
     for(int i = 0; i < nGlyphs; i++)
       {
-	glyphCodes[i] = getGlyph( s.codePointAt(stringIndex) );
+	codePoints[i] = s.codePointAt( stringIndex );
 	// UTF32 surrogate handling
-	if( s.codePointAt( stringIndex ) != (int)s.charAt( stringIndex ) )
+	if( codePoints[i] != (int)s.charAt( stringIndex ) )
 	  stringIndex ++;
 	stringIndex ++;
       }
+
+   glyphCodes = getGlyphs( codePoints );
   }
 
   /**
    * Returns the glyph code within the font for a given character
    */
-  public native int getGlyph(int codepoint);
+  public native int[] getGlyphs(int[] codepoints);
 
   /**
    * Returns the kerning of a glyph pair
@@ -209,14 +209,12 @@ public class FreetypeGlyphVector extends GlyphVector
     logicalBounds = null; // invalidate caches.
     glyphPositions = null;
 
-    whiteSpace = new boolean[ nGlyphs ]; 
     glyphTransforms = new AffineTransform[ nGlyphs ]; 
     double x = 0;
+
     for(int i = 0; i < nGlyphs; i++)
       {
-	whiteSpace[i] = Character.isWhitespace( glyphCodes[ i ] );
 	GlyphMetrics gm = getGlyphMetrics( i );
-	Rectangle2D r = gm.getBounds2D();
 	glyphTransforms[ i ] = AffineTransform.getTranslateInstance(x, 0);
 	x += gm.getAdvanceX();
 	if( i > 0 )
@@ -266,22 +264,48 @@ public class FreetypeGlyphVector extends GlyphVector
 				   gm.getAdvanceX(), r.getHeight() );
   }
 
+  /*
+   * FIXME: Not all glyph types are supported.
+   * (The JDK doesn't really seem to do so either)
+   */
+  public void setupGlyphMetrics()
+  {
+    metricsCache = new GlyphMetrics[ nGlyphs ];
+
+    for(int i = 0; i < nGlyphs; i++)
+      {
+	GlyphMetrics gm = (GlyphMetrics)
+	  peer.getGlyphMetrics( glyphCodes[ i ] );
+	if( gm == null )
+	  {
+	    double[] val = getMetricsNative( glyphCodes[ i ] );
+	    if( val == null )
+	      gm = null;
+	    else
+	      {
+		gm = new GlyphMetrics( true, 
+				       (float)val[1], 
+				       (float)val[2], 
+				       new Rectangle2D.Double
+				       ( val[3], val[4], 
+					 val[5], val[6] ),
+				       GlyphMetrics.STANDARD );
+		peer.putGlyphMetrics( glyphCodes[ i ], gm );
+	      }
+	  }
+	metricsCache[ i ] = gm;
+      }
+  }
+
   /**
    * Returns the metrics of a single glyph.
-   * FIXME: Not all glyph types are supported.
    */
   public GlyphMetrics getGlyphMetrics(int glyphIndex)
   {
-    double[] val = getMetricsNative( glyphCodes[ glyphIndex ] );
-    if( val == null )
-      return null;
-    byte type = whiteSpace[ glyphIndex ] ? 
-      GlyphMetrics.WHITESPACE : GlyphMetrics.STANDARD;
-    
-    return new GlyphMetrics( true, (float)val[1], (float)val[2], 
-			     new Rectangle2D.Double( val[3], val[4], 
-						     val[5], val[6] ),
-			     type );
+    if( metricsCache == null )
+      setupGlyphMetrics();
+
+    return metricsCache[ glyphIndex ];
   }
 
   /**
@@ -406,7 +430,9 @@ public class FreetypeGlyphVector extends GlyphVector
   public Shape getOutline(float x, float y)
   {
     AffineTransform tx = AffineTransform.getTranslateInstance( x, y );
-    return tx.createTransformedShape( getOutline() );
+    GeneralPath gp = (GeneralPath)getOutline();
+    gp.transform( tx );
+    return gp;
   }
 
   /**
