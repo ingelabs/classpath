@@ -1,5 +1,12 @@
 2006-06-12  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JComponent.java
+	(paintDoubleBuffered): Correctly translate and clip the Graphics
+	instance.
+	(clipAndTranslateGraphics): New helper method.
+
+2006-06-12  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
 	(copy): Use getClip() to copy the clip. Make copied transform
 	null when original transform is null. Set clip here.

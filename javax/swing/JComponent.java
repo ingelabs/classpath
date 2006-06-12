@@ -2176,6 +2176,7 @@ public abstract class JComponent extends Container implements Serializable
     Component root = getRoot(this);
     Image buffer = rm.getVolatileOffscreenBuffer(this, root.getWidth(),
                                                  root.getHeight());
+
     // The volatile offscreen buffer may be null when that's not supported
     // by the AWT backend. Fall back to normal backbuffer in this case.
     if (buffer == null)
@@ -2184,8 +2185,8 @@ public abstract class JComponent extends Container implements Serializable
     //Rectangle targetClip = SwingUtilities.convertRectangle(this, r, root);
     Point translation = SwingUtilities.convertPoint(this, 0, 0, root);
     Graphics g2 = buffer.getGraphics();
-    g2.translate(translation.x, translation.y);
-    g2.setClip(r.x, r.y, r.width, r.height);
+    clipAndTranslateGraphics(root, this, g2);
+    g2.clipRect(r.x, r.y, r.width, r.height);
     g2 = getComponentGraphics(g2);
     isPaintingDoubleBuffered = true;
     try
@@ -2202,6 +2203,26 @@ public abstract class JComponent extends Container implements Serializable
     rm.commitBuffer(root, new Rectangle(translation.x + r.x,
                                         translation.y + r.y, r.width,
                                         r.height));
+  }
+
+  /**
+   * Clips and translates the Graphics instance for painting on the double
+   * buffer. This has to be done, so that it reflects the component clip of the
+   * target component.
+   *
+   * @param root the root component (top-level container usually)
+   * @param target the component to be painted
+   * @param g the Graphics instance
+   */
+  private void clipAndTranslateGraphics(Component root, Component target,
+                                        Graphics g)
+  {
+    Component parent = target.getParent();
+    if (parent != root)
+      clipAndTranslateGraphics(root, parent, g);
+
+    g.translate(target.getX(), target.getY());
+    g.clipRect(0, 0, target.getWidth(), target.getHeight());
   }
 
   /**
