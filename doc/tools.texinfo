@@ -40,7 +40,7 @@ Permission is granted to copy and distribute translations of this manual into an
 @contents
 
 @ifinfo
-@node Top, Security Tools, (dir), (dir)
+@node Top, Applet Tools, (dir), (dir)
 @top GNU Classpath Tools Guide
 
 This document contains important information you need to know in order to use
@@ -53,11 +53,17 @@ Software Development Kit (SDK).
 @end ifinfo
 
 @menu
+* Applet Tools::               Work with applets
 * Security Tools::             Work securely with Java applications
 * I18N Issues::                How to add support for non-English languages
 
 @detailmenu
  --- The Detailed Node Listing ---
+
+Applet Tools
+
+* appletviewer Tool::          Load applets
+* gcjwebplugin::               Load applets in a web browser
 
 Security Tools
 
@@ -115,7 +121,150 @@ I18N Issues
 
 @comment ----------------------------------------------------------------------
 
-@node Security Tools, I18N Issues, Top, Top
+@node Applet Tools, Security Tools, Top, Top
+@comment node-name, next, previous, up
+@chapter Applet Tools
+
+Two Applet Tools are available with GNU Classpath: @b{appletviewer}
+and @b{gcjwebplugin}.
+
+@menu
+* appletviewer Tool::          Load applets
+* gcjwebplugin::               Load applets in a web browser
+@end menu
+
+If while using these tools you think you found a bug, then please report it at @uref{http://www.gnu.org/software/classpath/bugs.html,classpath-bugs}.
+
+@comment ----------------------------------------------------------------------
+
+@node appletviewer Tool, gcjwebplugin, Applet Tools, Applet Tools
+@comment node-name, next, previous, up
+@section The @code{appletviewer} Tool
+
+@table @b
+
+@item SYNOPSIS
+@code{appletviewer [OPTION]... URL...}@*
+@code{appletviewer [OPTION]... -code CODE}@*
+@code{appletviewer [OPTION]... -plugin INPUT,OUTPUT}
+
+@item DESCRIPTION
+The @code{appletviewer} tool loads and runs an applet.
+
+Use the first form to test applets specified by tag.  The URL should
+resolve to an HTML document from which the @code{appletviewer} will
+extract applet tags.  The APPLET, EMBED and OBJECT tags are supported.
+If a given document contains multiple applet tags, all the applets
+will be loaded, with each applet appearing in its own window.
+Likewise, when multiple URLs are specified, each applet tag instance
+is given its own window.  If a given document contains no recognized
+tags the @code{appletviewer} does nothing.
+
+@example
+@code{appletviewer http://www.gnu.org/software/classpath/}
+@end example
+
+Use the second form to test an applet in development.  This form
+allows applet tag attributes to be supplied on the command line.  Only
+one applet may be specified using the @code{-code} option.  The
+@code{-code} option overrides the URL form -- any URLs specified will
+be ignored.
+
+@example
+@code{appletviewer -code Test.class -param datafile,data.txt}
+@end example
+
+@code{gcjwebplugin} uses the third form to communicate with the
+@code{appletviewer} through named pipes.
+
+@item URL OPTIONS
+@table @b
+@item -debug
+This option is not yet implemented but is provided for compatibility.
+
+@item -encoding CHARSET
+Use this option to specify an alternate character encoding for the
+specified HTML page.
+
+@end table
+
+@item APPLET TAG OPTIONS
+@table @b
+@item -code CODE
+Use the @code{-code} option to specify the value of the applet tag
+CODE attribute.
+
+@item -codebase CODEBASE
+Use the @code{-codebase} option to specify the value of the applet tag
+CODEBASE attribute.
+
+@item -archive ARCHIVE
+Use the @code{-archive} option to specify the value of the applet tag
+ARCHIVE attribute.
+
+@item -width WIDTH
+Use the @code{-width} option to specify the value of the applet tag
+WIDTH attribute.
+
+@item -height HEIGHT
+Use the @code{-height} option to specify the value of the applet tag
+HEIGHT attribute.
+
+@item -param NAME,VALUE
+Use the @code{-param} option to specify values for the NAME and VALUE
+attributes of an applet PARAM tag.
+
+@end table
+
+@item PLUGIN OPTION
+@table @b
+@item -plugin INPUT,OUTPUT
+@code{gcjwebplugin} uses the @code{-plugin} option to specify the
+named pipe the @code{appletviewer} should use for receiving commands
+(INPUT) and the one it should use for sending commands to
+@code{gcjwebplugin} (OUTPUT).
+
+@end table
+
+@item DEBUGGING OPTION
+@table @b
+@item -verbose
+Use the @code{-verbose} option to have the @code{appletviewer} print
+debugging messages.
+
+@end table
+
+@item STANDARD OPTIONS
+@table @b
+@item -help
+Use the @code{-help} option to have the @code{appletviewer} print a
+usage message, then exit.
+
+@item -version
+Use the @code{-version} option to have the @code{appletviewer} print
+its version, then exit.
+
+@item -JOPTION
+Use the @code{-J} option to pass OPTION to the virtual machine that
+will run the @code{appletviewer}.  Unlike other options, there must
+not be a space between the -J and OPTION.
+
+@end table
+@end table
+
+@comment ----------------------------------------------------------------------
+
+@node gcjwebplugin, , appletviewer Tool, Applet Tools
+@comment node-name, next, previous, up
+@section The @code{gcjwebplugin} Tool
+
+@code{gcjwebplugin} is a plugin that adds applet support to web
+browsers.  Currently @code{gcjwebplugin} only supports Mozilla-based
+browsers (e.g., Firefox, Galeon, Mozilla).
+
+@comment ----------------------------------------------------------------------
+
+@node Security Tools, I18N Issues, Applet Tools, Top
 @comment node-name, next, previous, up
 @chapter Security Tools
 

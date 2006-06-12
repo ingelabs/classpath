@@ -1,3 +1,10 @@
+2006-06-11  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* doc/tools.texinfo
+	(Applet Tools): New chapter.
+	(appletviewer Tool): New section.
+	(gcjwebplugin): New section.
+
 2006-06-11  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/awt/peer/gtk/GdkPixbufDecoder.java (streamImage):
