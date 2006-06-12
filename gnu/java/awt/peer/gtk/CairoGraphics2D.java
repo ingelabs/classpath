@@ -238,13 +238,10 @@ public abstract class CairoGraphics2D extends Graphics2D
           bg = new Color(g.bg.getRGB());
       }
 
-    if (g.clip == null)
-      clip = null;
-    else
-      clip = new Rectangle(g.getClipBounds());
+    clip = g.getClip();
 
     if (g.transform == null)
-      transform = new AffineTransform();
+      transform = null;
     else
       transform = new AffineTransform(g.transform);
 
@@ -254,7 +251,8 @@ public abstract class CairoGraphics2D extends Graphics2D
     setBackground(bg);
     setPaint(paint);
     setStroke(stroke);
-    setTransform(transform);
+    setTransformImpl(transform);
+    setClip(clip);
   }
 
   /**
@@ -435,43 +433,60 @@ public abstract class CairoGraphics2D extends Graphics2D
    */ 
   public void setTransform(AffineTransform tx)
   {
+    // Transform clip into target space using the old transform.
+    updateClip(transform);
+
+    // Update the native transform.
+    setTransformImpl(tx);
+
+    // Transform the clip back into user space using the inverse new transform.
+    try
+      {
+        updateClip(transform.createInverse());
+      }
+    catch (NoninvertibleTransformException ex)
+      {
+        // TODO: How can we deal properly with this?
+        ex.printStackTrace();
+      }
+
+    if (clip != null)
+      setClip(clip);
+  }
+
+  private void setTransformImpl(AffineTransform tx)
+  {
     transform = tx;
     if (transform != null)
       {
-	double[] m = new double[6];
-	transform.getMatrix(m);
-	cairoSetMatrix(nativePointer, m);
+        double[] m = new double[6];
+        transform.getMatrix(m);
+        cairoSetMatrix(nativePointer, m);
       }
   }
-  
+
   public void transform(AffineTransform tx)
   {
     if (transform == null)
       transform = new AffineTransform(tx);
     else
       transform.concatenate(tx);
-    setTransform(transform);
+
     if (clip != null)
       {
-	// FIXME: this should actuall try to transform the shape
-	// rather than degrade to bounds.
-	Rectangle2D r = clip.getBounds2D();
-	double[] coords = new double[]
-	  {
-	    r.getX(), r.getY(), r.getX() + r.getWidth(),
-	    r.getY() + r.getHeight()
-	  };
-	try
-	  {
-	    tx.createInverse().transform(coords, 0, coords, 0, 2);
-	    r.setRect(coords[0], coords[1], coords[2] - coords[0],
-	              coords[3] - coords[1]);
-	    clip = r;
-	  }
-	catch (java.awt.geom.NoninvertibleTransformException e)
-	  {
-	  }
+        try
+          {
+            AffineTransform clipTransform = tx.createInverse();
+            updateClip(clipTransform);
+          }
+        catch (NoninvertibleTransformException ex)
+          {
+            // TODO: How can we deal properly with this?
+            ex.printStackTrace();
+          }
       }
+
+    setTransformImpl(transform);
   }
 
   public void rotate(double theta)
@@ -504,18 +519,21 @@ public abstract class CairoGraphics2D extends Graphics2D
       {
         // FIXME: this should actuall try to transform the shape
         // rather than degrade to bounds.
-        Rectangle2D r;
-
         if (clip instanceof Rectangle2D)
-          r = (Rectangle2D) clip;
+          {
+            Rectangle2D r = (Rectangle2D) clip;
+            r.setRect(r.getX() - tx, r.getY() - ty, r.getWidth(),
+                      r.getHeight());
+          }
         else
-          r = clip.getBounds2D();
-
-        r.setRect(r.getX() - tx, r.getY() - ty, r.getWidth(), r.getHeight());
-        clip = r;
+          {
+            AffineTransform clipTransform =
+              AffineTransform.getTranslateInstance(-tx, -ty);
+            updateClip(clipTransform);
+          }
       }
 
-    setTransform(transform);
+    setTransformImpl(transform);
   }
   
   public void translate(int x, int y)
@@ -534,19 +552,27 @@ public abstract class CairoGraphics2D extends Graphics2D
   {
     // Do not touch clip when s == null.
     if (s == null)
-      return;
+      {
+        // The spec says this should clear the clip. The reference
+        // implementation throws a NullPointerException instead. I think,
+        // in this case we should conform to the specs, as it shouldn't
+        // affect compatibility.
+        setClip(null);
+        return;
+      }
 
     // If the current clip is still null, initialize it.
     if (clip == null)
-      clip = originalClip;
-    
-    // This is so common, let's optimize this. 
+      {
+        clip = getRealBounds();
+      }
+
+    // This is so common, let's optimize this.
     if (clip instanceof Rectangle2D && s instanceof Rectangle2D)
       {
         Rectangle2D clipRect = (Rectangle2D) clip;
         Rectangle2D r = (Rectangle2D) s;
         Rectangle2D.intersect(clipRect, r, clipRect);
-        // Call setClip so that subclasses get notified.
         setClip(clipRect);
       }
    else
@@ -691,15 +717,30 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   public void clipRect(int x, int y, int width, int height)
   {
-    clip(new Rectangle(x, y, width, height));
+    if (clip == null)
+      setClip(new Rectangle(x, y, width, height));
+    else if (clip instanceof Rectangle)
+      {
+        computeIntersection(x, y, width, height, (Rectangle) clip);
+        setClip(clip);
+      }
+    else
+      clip(new Rectangle(x, y, width, height));
   }
 
   public Shape getClip()
   {
     if (clip == null)
       return null;
-    else
+    else if (clip instanceof Rectangle2D)
       return clip.getBounds2D(); //getClipInDevSpace();
+    else
+      {
+        GeneralPath p = new GeneralPath();
+        PathIterator pi = clip.getPathIterator(new AffineTransform());
+        p.append(pi, false);
+        return p;
+      }
   }
 
   public Rectangle getClipBounds()
@@ -739,7 +780,7 @@ public abstract class CairoGraphics2D extends Graphics2D
   }
 
   public void setClip(Shape s)
-  {    
+  {
     // The first time the clip is set, save it as the original clip 
     // to reset to on s == null. We can rely on this being non-null 
     // because the constructor in subclasses is expected to set the 
@@ -750,23 +791,23 @@ public abstract class CairoGraphics2D extends Graphics2D
 	firstClip = false;
       }
 
-    if (s == null)
-      clip = originalClip;
-    else
-      clip = s;
+    clip = s;
     cairoResetClip(nativePointer);
 
-    cairoNewPath(nativePointer);
-    if (clip instanceof Rectangle2D)
+    if (clip != null)
       {
-	Rectangle2D r = (Rectangle2D) clip;
-	cairoRectangle(nativePointer, r.getX(), r.getY(), r.getWidth(),
-                       r.getHeight());
+        cairoNewPath(nativePointer);
+        if (clip instanceof Rectangle2D)
+          {
+            Rectangle2D r = (Rectangle2D) clip;
+            cairoRectangle(nativePointer, r.getX(), r.getY(), r.getWidth(),
+                           r.getHeight());
+          }
+        else
+          walkPath(clip.getPathIterator(null), false);
+        
+        cairoClip(nativePointer);
       }
-    else
-      walkPath(clip.getPathIterator(null), false);
-    
-    cairoClip(nativePointer);
   }
 
   public void setBackground(Color c)
@@ -1625,5 +1666,48 @@ public abstract class CairoGraphics2D extends Graphics2D
     // fast compared to all the normal copying and converting.
 
     return db.getData();
+  }
+
+  /**
+   * Helper method to transform the clip. This is called by the various
+   * transformation-manipulation methods to update the clip (which is in
+   * userspace) accordingly.
+   *
+   * The transform usually is the inverse transform that was applied to the
+   * graphics object.
+   *
+   * @param t the transform to apply to the clip
+   */
+  private void updateClip(AffineTransform t)
+  {
+    if (clip == null)
+      return;
+
+    if (! (clip instanceof GeneralPath))
+      clip = new GeneralPath(clip);
+
+    GeneralPath p = (GeneralPath) clip;
+    p.transform(t);
+  }
+
+  private static Rectangle computeIntersection(int x, int y, int w, int h,
+                                               Rectangle rect)
+  {
+    int x2 = (int) rect.x;
+    int y2 = (int) rect.y;
+    int w2 = (int) rect.width;
+    int h2 = (int) rect.height;
+
+    int dx = (x > x2) ? x : x2;
+    int dy = (y > y2) ? y : y2;
+    int dw = (x + w < x2 + w2) ? (x + w - dx) : (x2 + w2 - dx);
+    int dh = (y + h < y2 + h2) ? (y + h - dy) : (y2 + h2 - dy);
+
+    if (dw >= 0 && dh >= 0)
+      rect.setBounds(dx, dy, dw, dh);
+    else
+      rect.setBounds(0, 0, 0, 0);
+
+    return rect;
   }
 }

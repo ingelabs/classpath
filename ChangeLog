@@ -1,3 +1,26 @@
+2006-06-12  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(copy): Use getClip() to copy the clip. Make copied transform
+	null when original transform is null. Set clip here.
+	(setTransform): Correctly update the clip.
+	(setTransformImpl): New method. Updates the actual transform for
+	Cairo.
+	(transform): Correctly update the clip.
+	(translate): Correctly update the clip.
+	(clip): Handle null clip and argument correctly.
+	(clipRect): Avoid creating new Rectangle objects.
+	(getClip): Get the correct copy of the clip.
+	(setClip): Correctly handle null argument.
+	* gnu/java/awt/peer/gtk/CairoSurfaceGraphics.java
+	(CairoSurfaceGraphics): Don't set the clip here. The clip can either
+	be null or whatever has been set in copy().
+	* gnu/java/awt/peer/gtk/ComponentGraphics.java
+	(drawImage): Add translation to the image coordinates.
+	* gnu/java/awt/peer/gtk/VolatileImageGraphics.java
+	(VolatileImageGraphics): Don't set clip here. The clip can either
+	be null or whatever has been set in copy().
+
 2006-06-12  Keith Seitz  <keiths@redhat.com>
 
 	From Kyle Galloway  <kgallowa@redhat.com>:

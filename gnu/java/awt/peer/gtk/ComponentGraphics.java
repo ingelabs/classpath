@@ -277,11 +277,14 @@ public class ComponentGraphics extends CairoGraphics2D
   
   public boolean drawImage(Image img, int x, int y, ImageObserver observer)
   {
-    if( img instanceof GtkVolatileImage )
+    if (img instanceof GtkVolatileImage
+        && transform.getType() == AffineTransform.TYPE_TRANSLATION)
       {
+        x += transform.getTranslateX();
+        y += transform.getTranslateY();
         GtkVolatileImage vimg = (GtkVolatileImage) img;
 	drawVolatile( component, vimg.nativePointer,
-                      x, y - 20, vimg.width, vimg.height );
+                      x, y, vimg.width, vimg.height );
 	return true;
       }      
     return super.drawImage( img, x, y, observer );
@@ -290,10 +293,13 @@ public class ComponentGraphics extends CairoGraphics2D
   public boolean drawImage(Image img, int x, int y, int width, int height,
                            ImageObserver observer)
   {
-    if( img instanceof GtkVolatileImage )
+    if( img instanceof GtkVolatileImage
+        && transform.getType() == AffineTransform.TYPE_TRANSLATION)
       {
+        x += transform.getTranslateX();
+        y += transform.getTranslateY();
         GtkVolatileImage vimg = (GtkVolatileImage) img;
-	drawVolatile( component, vimg.nativePointer, x, y - 20, 
+	drawVolatile( component, vimg.nativePointer, x, y, 
 		      width, height );
 	return true;
       }      

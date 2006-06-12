@@ -64,7 +64,6 @@ public class CairoSurfaceGraphics extends CairoGraphics2D
     this.surface = surface;
     cairo_t = surface.newCairoContext();
     setup( cairo_t );
-    setClip(0, 0, surface.width, surface.height);
   }
 
   /**
@@ -76,7 +75,6 @@ public class CairoSurfaceGraphics extends CairoGraphics2D
     surface = copyFrom.surface;
     cairo_t = surface.newCairoContext();
     copy( copyFrom, cairo_t );
-    setClip(0, 0, surface.width, surface.height);
   }
   
   public Graphics create()
