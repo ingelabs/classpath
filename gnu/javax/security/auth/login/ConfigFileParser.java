@@ -267,7 +267,7 @@ public final class ConfigFileParser
     for (int i = 0; i < tokens.length; i++)
       {
         String t = tokens[i];
-        if (! Character.isJavaIdentifierStart(t.toCharArray()[0]))
+        if (! Character.isJavaIdentifierStart(t.charAt(0)))
           abort("Class name [" + cn
                 + "] contains an invalid sub-package identifier: " + t);
 

@@ -1,3 +1,8 @@
+2006-06-12  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/javax/security/auth/login/ConfigFileParser.java (validateClassName):
+	Use String.charAt().
+
 2006-06-11  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* doc/tools.texinfo
