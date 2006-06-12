@@ -526,7 +526,8 @@ public class GdkPixbufDecoder extends gnu.java.awt.image.ImageDecoder
           model = img.getColorModel();
         }
 
-      new Thread(this, "GdkPixbufWriter").start();
+      Thread workerThread = new Thread(this, "GdkPixbufWriter");
+      workerThread.start();
       processImageStarted(1);
       synchronized(pixbufLock)
 	{
@@ -536,7 +537,25 @@ public class GdkPixbufDecoder extends gnu.java.awt.image.ImageDecoder
       synchronized(data)
         {
           data.add(DATADONE);
+          data.notifyAll();
         }
+
+      while (workerThread.isAlive())
+        {
+	  try
+	    {
+	      workerThread.join();
+	    }
+	  catch (InterruptedException ioe)
+	    {
+	      // Ignored.
+	    }
+        }
+
+      if (exception != null)
+	throw exception;
+
+      processImageComplete();
     }    
 
     /**
@@ -551,6 +570,12 @@ public class GdkPixbufDecoder extends gnu.java.awt.image.ImageDecoder
      * The special object DATADONE is added when all data has been delivered.
      */
     private ArrayList data = new ArrayList();
+
+    /**
+     * Holds any IOException thrown by the run method that needs
+     * to be rethrown by the write method.
+     */
+    private IOException exception;
 
     /** Callback for streamImage native code. **/
     private void write(byte[] bs)
@@ -593,12 +618,13 @@ public class GdkPixbufDecoder extends gnu.java.awt.image.ImageDecoder
                     }
                   catch (IOException ioe)
                     {
-                      // Not much we can do now...
+                      // We are only interested in the first exception.
+                      if (exception == null)
+                        exception = ioe;
                     }
                 }
             }
         }
-      processImageComplete();
     }
   }
 
