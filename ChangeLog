@@ -1,3 +1,30 @@
+2006-06-12  Keith Seitz  <keiths@redhat.com>
+
+	From Kyle Galloway  <kgallowa@redhat.com>:
+	* gnu/classpath/jdwp/event/Event.java: Added constants for
+	type.
+	(getParameter): Changed parameter type from Class to int.
+	* gnu/classpath/jdwp/event/BreakpointEvent.java (getParameter):
+	Changed from Class type to constants.
+	* gnu/classpath/jdwp/event/ClassPrepareEventEvent.java (getParameter):
+	Likewise.
+	* gnu/classpath/jdwp/event/ThreadEndEvent.java (getParameter):
+	Likewise.
+	* gnu/classpath/jdwp/event/ThreadStartEvent.java (getParameter):
+	Likewise.
+	* gnu/classpath/jdwp/event/VmDeathEvent.java (getParameter):
+	Likewise.
+	* gnu/classpath/jdwp/event/VmInitEvent.java (getParameter):
+	Likewise.
+	* gnu/classpath/jdwp/event/ClassMatchFilter.java (matches):
+	Likewise.
+	* gnu/classpath/jdwp/event/ClassOnlyFilter.java (matches):
+	Likewise.
+	* gnu/classpath/jdwp/event/InstanceOnlyFilter.java (matches):
+	Likewise.
+	* gnu/classpath/jdwp/event/ThreadOnlyFilter.java (matches):
+	Likewise.
+
 2006-06-12  Lillian Angel  <langel@redhat.com>
 
 	* tools/gnu/classpath/tools/appletviewer/StandaloneAppletWindow.java

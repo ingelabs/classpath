@@ -83,11 +83,11 @@ public class BreakpointEvent
    * @param type  the type of parameter desired
    * @returns the desired parameter or null
    */
-  public Object getParameter(Class type)
+  public Object getParameter(int type)
   {
-    if (type == ThreadId.class)
+    if (type == EVENT_THREAD)
       return _thread;
-    else if (type == Location.class)
+    else if (type == EVENT_LOCATION)
       return _location;
 
     return null;

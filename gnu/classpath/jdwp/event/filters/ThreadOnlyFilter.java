@@ -88,7 +88,7 @@ public class ThreadOnlyFilter
    */
   public boolean matches (Event event)
   {
-    Object thread = event.getParameter (ThreadId.class);
+    Object thread = event.getParameter (Event.EVENT_THREAD);
     if (thread != null)
       {
 	Thread eventThread = (Thread) thread;
