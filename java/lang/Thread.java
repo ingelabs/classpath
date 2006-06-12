@@ -1203,7 +1203,7 @@ public class Thread implements Runnable
    * @author Andrew John Hughes <gnu_andrew@member.fsf.org>
    * @since 1.5
    * @see Thread#getUncaughtExceptionHandler()
-   * @see Thread#setUncaughtExceptionHander(java.lang.Thread.UncaughtExceptionHandler)
+   * @see Thread#setUncaughtExceptionHandler(UncaughtExceptionHandler)
    * @see Thread#getDefaultUncaughtExceptionHandler()
    * @see
    * Thread#setDefaultUncaughtExceptionHandler(java.lang.Thread.UncaughtExceptionHandler)
