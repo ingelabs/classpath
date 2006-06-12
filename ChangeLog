@@ -1,5 +1,10 @@
 2006-06-12  Lillian Angel  <langel@redhat.com>
 
+	* tools/gnu/classpath/tools/appletviewer/StandaloneAppletWindow.java
+	(StandaloneAppletWindow): Changed title of standalone window.
+
+2006-06-12  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
 	(layoutContainer): Added missing selectedComponent assignment.
 
