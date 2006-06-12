@@ -1,6 +1,11 @@
 2006-06-12  Keith Seitz  <keiths@redhat.com>
 
 	From Kyle Galloway  <kgallowa@redhat.com>:
+	* gnu/classpath/jdwp/event/SingleStepEvent.java: New file.
+
+2006-06-12  Keith Seitz  <keiths@redhat.com>
+
+	From Kyle Galloway  <kgallowa@redhat.com>:
 	* gnu/classpath/jdwp/event/MethodEntryEvent.java: New file.
 
 	* gnu/classpath/jdwp/event/MethodExitEvent.java: New file.
