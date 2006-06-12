@@ -67,6 +67,35 @@ public class ComponentGraphics extends CairoGraphics2D
   private GtkComponentPeer component;
   protected long cairo_t;
 
+  private static ThreadLocal hasLock = new ThreadLocal();
+  private static Integer ONE = Integer.valueOf(1);
+
+  private void lock()
+  {
+    Integer i = (Integer) hasLock.get();
+    if (i == null)
+      {
+	start_gdk_drawing();
+	hasLock.set(ONE);
+      }
+    else
+      hasLock.set(Integer.valueOf(i.intValue() + 1));
+  }
+
+  private void unlock()
+  {
+    Integer i = (Integer) hasLock.get();
+    if (i == null)
+      throw new IllegalStateException();
+    if (i == ONE)
+      {
+	hasLock.set(null);
+	end_gdk_drawing();
+      }
+    else
+      hasLock.set(Integer.valueOf(i.intValue() - 1));
+  }
+
   ComponentGraphics()
   {
   }
@@ -180,40 +209,40 @@ public class ComponentGraphics extends CairoGraphics2D
    */
   public void draw(Shape s)
   {
-    start_gdk_drawing();
+    lock();
     try
       {
 	super.draw(s);
       }
     finally
       {
-	end_gdk_drawing();
+	unlock();
       }
   }
 
   public void fill(Shape s)
   {
-    start_gdk_drawing();
+    lock();
     try
       {
 	super.fill(s);
       }
     finally
       {
-	end_gdk_drawing();
+	unlock();
       }
   }
 
   public void drawRenderedImage(RenderedImage image, AffineTransform xform)
   {
-    start_gdk_drawing();
+    lock();
     try
       {
 	super.drawRenderedImage(image, xform);
       }
     finally
       {
-	end_gdk_drawing();
+	unlock();
       }
   }
 
@@ -221,28 +250,28 @@ public class ComponentGraphics extends CairoGraphics2D
 			      Color bgcolor, ImageObserver obs)
   {
     boolean rv;
-    start_gdk_drawing();
+    lock();
     try
       {
 	rv = super.drawImage(img, xform, bgcolor, obs);
       }
     finally
       {
-	end_gdk_drawing();
+	unlock();
       }
     return rv;
   }
 
   public void drawGlyphVector(GlyphVector gv, float x, float y)
   {
-    start_gdk_drawing();
+    lock();
     try
       {
 	super.drawGlyphVector(gv, x, y);
       }
     finally
       {
-	end_gdk_drawing();
+	unlock();
       }
   }
   

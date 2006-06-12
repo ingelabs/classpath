@@ -1,3 +1,16 @@
+2006-06-12  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/awt/peer/gtk/ComponentGraphics.java (hasLock):
+	New static field.
+	(ONE): Likewise.
+	(lock): New method.
+	(unlock): Likewise.
+	(draw): Use lock() and unlock().
+	(fill): Likewise.
+	(drawRenderedImage): Likewise.
+	(drawImage): Likewise.
+	(drawGlyphVector): Likewise.
+
 2006-06-12  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
