@@ -1,5 +1,9 @@
 2006-06-12  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* doc/tools.texinfo: Replaced original author with "The GNU Classpath Team".
+
+2006-06-12  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* gnu/javax/security/auth/login/ConfigFileParser.java (validateClassName):
 	Use String.charAt().
 

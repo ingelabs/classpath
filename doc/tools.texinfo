@@ -23,7 +23,7 @@ Copyright (C) 2006 Free Software Foundation, Inc.
 
 @titlepage
 @title GNU Classpath Tools Guide
-@author Raif S. Naffah
+@author The GNU Classpath Team
 
 @page
 @vskip 0pt plus 1filll
