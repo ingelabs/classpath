@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package gnu.classpath.tools.keytool;
 
+import gnu.classpath.Configuration;
 import gnu.classpath.tools.getopt.ClasspathToolParser;
 import gnu.classpath.tools.getopt.Option;
 import gnu.classpath.tools.getopt.OptionException;
@@ -164,32 +165,38 @@ public class CACertCmd
   {
     setInputStreamParam(_certFileName);
     setKeyStoreParams(_providerClassName, _ksType, _ksPassword, _ksURL);
-    log.finer("-cacert handler will use the following options:"); //$NON-NLS-1$
-    log.finer("  -file=" + _certFileName); //$NON-NLS-1$
-    log.finer("  -storetype=" + storeType); //$NON-NLS-1$
-    log.finer("  -keystore=" + storeURL); //$NON-NLS-1$
-    log.finer("  -provider=" + provider); //$NON-NLS-1$
-    log.finer("  -v=" + verbose); //$NON-NLS-1$
+    if (Configuration.DEBUG)
+      {
+        log.fine("-cacert handler will use the following options:"); //$NON-NLS-1$
+        log.fine("  -file=" + _certFileName); //$NON-NLS-1$
+        log.fine("  -storetype=" + storeType); //$NON-NLS-1$
+        log.fine("  -keystore=" + storeURL); //$NON-NLS-1$
+        log.fine("  -provider=" + provider); //$NON-NLS-1$
+        log.fine("  -v=" + verbose); //$NON-NLS-1$
+      }
   }
 
   void start() throws CertificateException, KeyStoreException,
       NoSuchAlgorithmException, IOException
   {
-    log.entering(this.getClass().getName(), "start"); //$NON-NLS-1$
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "start"); //$NON-NLS-1$
     alias = getAliasFromFileName(_certFileName);
     if (store.containsAlias(alias))
       throw new IllegalArgumentException(Messages.getFormattedString("CACertCmd.0", //$NON-NLS-1$
                                                                      alias));
     x509Factory = CertificateFactory.getInstance("X.509"); //$NON-NLS-1$
     Certificate certificate = x509Factory.generateCertificate(inStream);
-    log.finest("certificate = " + certificate); //$NON-NLS-1$
+    if (Configuration.DEBUG)
+      log.fine("certificate = " + certificate); //$NON-NLS-1$
     store.setCertificateEntry(alias, certificate);
     saveKeyStore();
     if (verbose)
       System.out.println(Messages.getFormattedString("CACertCmd.1", //$NON-NLS-1$
                                                      new Object[] { _certFileName,
                                                                     alias }));
-    log.exiting(this.getClass().getName(), "start"); //$NON-NLS-1$
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "start"); //$NON-NLS-1$
   }
 
   // own methods --------------------------------------------------------------
@@ -199,7 +206,8 @@ public class CACertCmd
    */
   Parser getParser()
   {
-    log.entering(this.getClass().getName(), "getParser"); //$NON-NLS-1$
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "getParser"); //$NON-NLS-1$
     Parser result = new ClasspathToolParser(Main.CACERT_CMD, true);
     result.setHeader(Messages.getString("CACertCmd.2")); //$NON-NLS-1$
     result.setFooter(Messages.getString("CACertCmd.3")); //$NON-NLS-1$
@@ -258,7 +266,8 @@ public class CACertCmd
       }
     });
     result.add(options);
-    log.exiting(this.getClass().getName(), "getParser", result); //$NON-NLS-1$
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "getParser", result); //$NON-NLS-1$
     return result;
   }
 
@@ -276,7 +285,8 @@ public class CACertCmd
    */
   private String getAliasFromFileName(String fileName)
   {
-    log.entering(this.getClass().getName(), "getAliasFromFileName", fileName); //$NON-NLS-1$
+    if (Configuration.DEBUG)
+      log.entering(this.getClass().getName(), "getAliasFromFileName", fileName); //$NON-NLS-1$
     // get the basename
     fileName = new File(fileName).getName();
     // remove '.' if at start
@@ -296,7 +306,8 @@ public class CACertCmd
           chars[i] = '_';
       }
     String result = new String(chars);
-    log.exiting(this.getClass().getName(), "getAliasFromFileName", result); //$NON-NLS-1$
+    if (Configuration.DEBUG)
+      log.exiting(this.getClass().getName(), "getAliasFromFileName", result); //$NON-NLS-1$
     return result;
   }
 }
