@@ -1,6 +1,11 @@
 2006-06-12  Keith Seitz  <keiths@redhat.com>
 
 	From Kyle Galloway  <kgallowa@redhat.com>:
+	* gnu/classpath/jdwp/event/ExceptionEvent.java: New file.
+
+2006-06-12  Keith Seitz  <keiths@redhat.com>
+
+	From Kyle Galloway  <kgallowa@redhat.com>:
 	* gnu/classpath/jdwp/event/Event.java: Added constants for
 	type.
 	(getParameter): Changed parameter type from Class to int.
