@@ -535,7 +535,7 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
       
       Component selectedComponent = null;
       if (selectedIndex >= 0)
-        tabPane.getComponentAt(selectedIndex);
+        selectedComponent = tabPane.getComponentAt(selectedIndex);
       // The RI doesn't seem to change the component if the new selected
       // component == null. This is probably so that applications can add
       // one single component for every tab. 

@@ -1,6 +1,11 @@
 2006-06-12  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	(layoutContainer): Added missing selectedComponent assignment.
+
+2006-06-12  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
 	(layoutContainer): Added check to prevent exception.
 
 2006-06-12  Tom Tromey  <tromey@redhat.com>
