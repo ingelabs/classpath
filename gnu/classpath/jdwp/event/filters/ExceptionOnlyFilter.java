@@ -1,5 +1,5 @@
-/* ExceptionOnlyFilter.java -- 
-   Copyright (C) 2005 Free Software Foundation
+/* ExceptionOnlyFilter.java -- filter for excetions by caught/uncaught and type
+   Copyright (C) 2005, 2006 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -88,34 +88,29 @@ public class ExceptionOnlyFilter
     return _refId;
   }
 
-  /**
-   * Report caught exceptions?
-   *
-   * @return whether to report caught exceptions
-   */
-  public boolean forCaught ()
-  {
-    return _caught;
-  }
-
-  /**
-   * Report uncaught exceptions?
-   *
-   * @return whether to report uncaught exceptions
-   */
-  public boolean forUncaught ()
-  {
-    return _uncaught;
-  }
-
+  
   /**
    * Does the given event match the filter?
    *
    * @param event  the <code>Event</code> to scrutinize
    */
-  public boolean matches (Event event)
+  public boolean matches(Event event)
   {
-    // FIXME
-    throw new RuntimeException ("ExceptionOnlyFilter.matches not implemented");
+    boolean classMatch;
+    
+    try
+      {
+	Class klass = (Class) event.getParameter(Event.EVENT_EXCEPTION_CLASS);
+        classMatch = klass == _refId.getType();
+      }
+    catch (InvalidClassException ex)
+      {
+        classMatch = false;
+      }
+    
+    Boolean caught
+      = (Boolean) event.getParameter(Event.EVENT_EXCEPTION_CAUGHT);
+
+    return classMatch && (caught.booleanValue()) ? _caught : _uncaught;
   }
 }

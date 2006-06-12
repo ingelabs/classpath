@@ -1,6 +1,14 @@
 2006-06-12  Keith Seitz  <keiths@redhat.com>
 
 	From Kyle Galloway  <kgallowa@redhat.com>:
+	* gnu/classpath/jdwp/event/filters/ExceptionOnlyFilter.java
+	(forCaught): Removed unused/unnecessary method.
+	(forUncaught): Likewise.
+	(matches): Implement.
+
+2006-06-12  Keith Seitz  <keiths@redhat.com>
+
+	From Kyle Galloway  <kgallowa@redhat.com>:
 	* gnu/classpath/jdwp/event/ExceptionEvent.java: New file.
 
 2006-06-12  Keith Seitz  <keiths@redhat.com>
