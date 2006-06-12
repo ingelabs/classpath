@@ -112,11 +112,11 @@ public class CairoSurface extends DataBuffer
    * with an affine transform given by i2u.
    */
   public native void nativeDrawSurface(long surfacePointer, long contextPointer,
-                                       double[] i2u);
+                                       double[] i2u, double alpha);
 
-  public void drawSurface(long contextPointer, double[] i2u)
+  public void drawSurface(long contextPointer, double[] i2u, double alpha)
   {
-    nativeDrawSurface(surfacePointer, contextPointer, i2u);
+    nativeDrawSurface(surfacePointer, contextPointer, i2u, alpha);
   }
 
   /**

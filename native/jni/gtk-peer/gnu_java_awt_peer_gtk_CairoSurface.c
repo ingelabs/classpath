@@ -181,7 +181,7 @@ Java_gnu_java_awt_peer_gtk_CairoSurface_nativeSetPixels
 JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_CairoSurface_nativeDrawSurface 
 (JNIEnv *env __attribute__((unused)), jobject obj __attribute__((unused)),
- jlong surfacePointer, jlong context, jdoubleArray java_matrix)
+ jlong surfacePointer, jlong context, jdoubleArray java_matrix, double alpha)
 {
   struct cairographics2d *gr = JLONG_TO_PTR(struct cairographics2d, context);
   cairo_t *cr = gr->cr;
@@ -207,7 +207,11 @@ Java_gnu_java_awt_peer_gtk_CairoSurface_nativeDrawSurface
    cairo_pattern_set_matrix (p, &mat);
 
    cairo_set_source(cr, p);
-   cairo_paint(cr);
+   if (alpha == 1.0)
+     cairo_paint(cr);
+   else
+     cairo_paint_with_alpha(cr, alpha);
+
    cairo_pattern_destroy(p);
  }
   

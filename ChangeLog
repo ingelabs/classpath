@@ -1,3 +1,29 @@
+2006-06-12  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(drawPixels): Include alpha in parameter list.
+	(cairoFill): Include alpha in parameter list.
+	(setComposite): Don't modify the color.
+	(draw(Shape))): Use fill when the current composite has an alpha
+	of != 1.0, so that the stroked shaped will be composited.
+	(fill(Shape)): Call cairoFill() with alpha.
+	(drawImage): Call drawPixels or drawSurface with alpha.
+	(drawGlyphVector): When composite alpha is != 1.0, render the
+	outline using fill() to enable compositing for text.
+	(drawRaster): Call drawPixels with alpha.
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(nativeDrawSurface): Include alpha in parameter list.
+	(drawSurface): Include alpha in parameter list. Pass it to
+	nativeDrawSurface().
+	* include/gnu_java_awt_peer_gtk_CairoGraphics2D.h
+	* include/gnu_java_awt_peer_gtk_CairoSurface.h:
+	Regenerated.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoGraphics2D.c
+	(drawPixels): Handle possible alpha for compositing.
+	(cairoFill): Likewise.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c
+	(nativeDrawSurface): Handle possible alpha for compositing.
+
 2006-06-12  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/awt/peer/gtk/GdkPixbufDecoder.java (streamImage):

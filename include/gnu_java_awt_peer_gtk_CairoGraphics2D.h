@@ -12,7 +12,7 @@ extern "C"
 
 JNIEXPORT jlong JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_init (JNIEnv *env, jobject, jlong);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_disposeNative (JNIEnv *env, jobject, jlong);
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_drawPixels (JNIEnv *env, jobject, jlong, jintArray, jint, jint, jint, jdoubleArray);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_drawPixels (JNIEnv *env, jobject, jlong, jintArray, jint, jint, jint, jdoubleArray, jdouble);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_setGradient (JNIEnv *env, jobject, jlong, jdouble, jdouble, jdouble, jdouble, jint, jint, jint, jint, jint, jint, jint, jint, jboolean);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_setTexturePixels (JNIEnv *env, jobject, jlong, jintArray, jint, jint, jint);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoSetMatrix (JNIEnv *env, jobject, jlong, jdoubleArray);
@@ -32,7 +32,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoLineTo (J
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoRelLineTo (JNIEnv *env, jobject, jlong, jdouble, jdouble);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoCurveTo (JNIEnv *env, jobject, jlong, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoStroke (JNIEnv *env, jobject, jlong);
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoFill (JNIEnv *env, jobject, jlong);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoFill (JNIEnv *env, jobject, jlong, jdouble);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoClip (JNIEnv *env, jobject, jlong);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoPreserveClip (JNIEnv *env, jobject, jlong);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoResetClip (JNIEnv *env, jobject, jlong);

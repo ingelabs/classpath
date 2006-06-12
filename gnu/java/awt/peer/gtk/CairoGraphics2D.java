@@ -65,6 +65,7 @@ import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Area;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.PathIterator;
@@ -309,7 +310,7 @@ public abstract class CairoGraphics2D extends Graphics2D
    * @param i2u - affine transform array
    */
   private native void drawPixels(long pointer, int[] pixels, int w, int h,
-                                 int stride, double[] i2u);
+                                 int stride, double[] i2u, double alpha);
 
   private native void setGradient(long pointer, double x1, double y1,
                                   double x2, double y2,
@@ -406,7 +407,7 @@ public abstract class CairoGraphics2D extends Graphics2D
   /**
    * Fill current path
    */
-  private native void cairoFill(long pointer);
+  private native void cairoFill(long pointer, double alpha);
 
   /** 
    * Clip current path
@@ -802,9 +803,6 @@ public abstract class CairoGraphics2D extends Graphics2D
       {
 	AlphaComposite a = (AlphaComposite) comp;
 	cairoSetOperator(nativePointer, a.getRule());
-	Color c = getColor();
-	setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(),
-	                   (int) (a.getAlpha() * ((float) c.getAlpha()))));
       }
     else
       {
@@ -817,8 +815,21 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   public void draw(Shape s)
   {
-    if (stroke != null && ! (stroke instanceof BasicStroke))
+    if ((stroke != null && ! (stroke instanceof BasicStroke))
+        || (comp instanceof AlphaComposite
+            && ((AlphaComposite) comp).getAlpha() != 1.0))
       {
+        // FIXME: This is a hack to work around BasicStrokes's current
+        // limitations wrt cubic curves.
+        // See CubicSegment.getDisplacedSegments().
+        if (stroke instanceof BasicStroke)
+          {
+            PathIterator flatten = s.getPathIterator(new AffineTransform(),
+                                                       1.0);
+            GeneralPath p = new GeneralPath();
+            p.append(flatten, false);
+            s = p;
+          }
 	fill(stroke.createStrokedShape(s));
 	return;
       }
@@ -849,7 +860,10 @@ public abstract class CairoGraphics2D extends Graphics2D
     else
       walkPath(s.getPathIterator(null), false);
 
-    cairoFill(nativePointer);
+    double alpha = 1.0;
+    if (comp instanceof AlphaComposite)
+      alpha = ((AlphaComposite) comp).getAlpha();
+    cairoFill(nativePointer, alpha);
   }
 
   /**
@@ -1125,9 +1139,13 @@ public abstract class CairoGraphics2D extends Graphics2D
 
     invertedXform.getMatrix(i2u);
 
+    double alpha = 1.0;
+    if (comp instanceof AlphaComposite)
+      alpha = ((AlphaComposite) comp).getAlpha();
+
     if(db instanceof CairoSurface)
       {
-	((CairoSurface)db).drawSurface(nativePointer, i2u);
+	((CairoSurface)db).drawSurface(nativePointer, i2u, alpha);
 	return true;
       }
 	    
@@ -1163,7 +1181,7 @@ public abstract class CairoGraphics2D extends Graphics2D
 			  null, 0, width);
       }
 
-    drawPixels(nativePointer, pixels, width, height, width, i2u);
+    drawPixels(nativePointer, pixels, width, height, width, i2u, alpha);
 
     // Cairo seems to lose the current color which must be restored.
     updateColor();
@@ -1295,7 +1313,10 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   public void drawGlyphVector(GlyphVector gv, float x, float y)
   {
-    if (gv instanceof FreetypeGlyphVector)
+    double alpha = 1.0;
+    if (comp instanceof AlphaComposite)
+      alpha = ((AlphaComposite) comp).getAlpha();
+    if (gv instanceof FreetypeGlyphVector && alpha == 1.0)
       {
         int n = gv.getNumGlyphs ();
         int[] codes = gv.getGlyphCodes (0, n, null);
@@ -1463,8 +1484,11 @@ public abstract class CairoGraphics2D extends Graphics2D
       for (int i = 0; i < pixels.length; i++)
 	pixels[i] |= 0xFF000000;
 
+    double alpha = 1.0;
+    if (comp instanceof AlphaComposite)
+      alpha = ((AlphaComposite) comp).getAlpha();
     drawPixels(nativePointer, pixels, r.getWidth(), r.getHeight(),
-               r.getWidth(), i2u);
+               r.getWidth(), i2u, alpha);
 
     // Cairo seems to lose the current color which must be restored.
     updateColor();
