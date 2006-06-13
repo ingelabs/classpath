@@ -1151,10 +1151,6 @@ public class BasicSliderUI extends SliderUI
     Dimension d = getThumbSize();
     thumbRect.width = d.width;
     thumbRect.height = d.height;
-    if (slider.getOrientation() == JSlider.HORIZONTAL)
-      thumbRect.y = trackRect.y;
-    else
-      thumbRect.x = trackRect.x;
   }
 
   /**
@@ -1188,11 +1184,11 @@ public class BasicSliderUI extends SliderUI
     if (slider.getOrientation() == JSlider.HORIZONTAL)
       {
         thumbRect.x = xPositionForValue(value) - thumbRect.width / 2;
-        thumbRect.y = trackRect.y;
+        thumbRect.y = trackRect.y + 1;
       }
     else
       {
-        thumbRect.x = trackRect.x;
+        thumbRect.x = trackRect.x + 1;
         thumbRect.y = yPositionForValue(value) - thumbRect.height / 2;
       }
   }
@@ -1298,6 +1294,10 @@ public class BasicSliderUI extends SliderUI
         tickRect.y = trackRect.y + trackRect.height;
         tickRect.width = trackRect.width;
         tickRect.height = slider.getPaintTicks() ? getTickLength() : 0;
+        
+        // this makes our Mauve tests pass...can't explain it!
+        if (!slider.getPaintTicks())
+          tickRect.y--;
 
         if (tickRect.y + tickRect.height > contentRect.y + contentRect.height)
           tickRect.height = contentRect.y + contentRect.height - tickRect.y;
@@ -1309,30 +1309,52 @@ public class BasicSliderUI extends SliderUI
         tickRect.width = slider.getPaintTicks() ? getTickLength() : 0;
         tickRect.height = trackRect.height;
 
+        // this makes our Mauve tests pass...can't explain it!
+        if (!slider.getPaintTicks())
+          tickRect.x--;
+
         if (tickRect.x + tickRect.width > contentRect.x + contentRect.width)
           tickRect.width = contentRect.x + contentRect.width - tickRect.x;
       }
   }
 
   /**
-   * This method calculates the size and position of the labelRect. It must
-   * take into account the orientation of the slider.
+   * Calculates the <code>labelRect</code> field, taking into account the 
+   * orientation of the slider.
    */
   protected void calculateLabelRect()
   {
     if (slider.getOrientation() == JSlider.HORIZONTAL)
       {
-        labelRect.x = contentRect.x;
-        labelRect.y = tickRect.y + tickRect.height;
-        labelRect.width = contentRect.width;
+        if (slider.getPaintLabels())
+          {
+            labelRect.x = contentRect.x;
+            labelRect.y = tickRect.y + tickRect.height - 1;
+            labelRect.width = contentRect.width;
+          }
+        else
+          {
+            labelRect.x = trackRect.x;
+            labelRect.y = tickRect.y + tickRect.height;
+            labelRect.width = trackRect.width;
+          }
         labelRect.height = getHeightOfTallestLabel();
       }
     else
       {
-        labelRect.x = tickRect.x + tickRect.width;
-        labelRect.y = contentRect.y;
+        if (slider.getPaintLabels())
+          {
+            labelRect.x = tickRect.x + tickRect.width - 1;
+            labelRect.y = contentRect.y;
+            labelRect.height = contentRect.height;
+          }
+        else
+          {
+            labelRect.x = tickRect.x + tickRect.width;
+            labelRect.y = trackRect.y;
+            labelRect.height = trackRect.height;
+          }
         labelRect.width = getWidthOfWidestLabel();
-        labelRect.height = contentRect.height;
       }
   }
 
@@ -1643,7 +1665,7 @@ public class BasicSliderUI extends SliderUI
     int width;
     int height;
 
-    Point a = new Point(trackRect.x, trackRect.y);
+    Point a = new Point(trackRect.x, trackRect.y + 1);
     Point b = new Point(a);
     Point c = new Point(a);
     Point d = new Point(a);

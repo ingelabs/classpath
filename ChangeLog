@@ -1,3 +1,13 @@
+2006-06-13  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicSliderUI.java
+	(calculateThumbSize): Removed unnecessary code,
+	(calculateThumbLocation): Shift position by one,
+	(calculateTickRect): Shift position by one when ticks are displayed,
+	(calculateLabelRect): Calculate rect differently according to whether
+	or not the labels are visible,
+	(paintTrack): Shift track down one pixel.
+
 2006-06-13  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/image/PixelGrabber.java
