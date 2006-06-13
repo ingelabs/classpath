@@ -64,7 +64,7 @@ Java_gnu_java_awt_peer_gtk_CairoSurface_create (JNIEnv *env, jobject obj, jint w
   setNativeObject(env, obj, data, BUFFER);
 
   surface = cairo_image_surface_create_for_data
-    (data, CAIRO_FORMAT_ARGB32, width, height, stride);
+    (data, CAIRO_FORMAT_ARGB32, width, height, stride * 4);
 
   setNativeObject(env, obj, surface, SURFACE);
 }

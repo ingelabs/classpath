@@ -88,7 +88,7 @@ public class CairoSurface extends DataBuffer
   /**
    * Allocates and clears the buffer and creates the cairo surface.
    * @param width, height - the image size
-   * @param stride - the buffer row stride.
+   * @param stride - the buffer row stride. (in ints)
    */
   private native void create(int width, int height, int stride);
 
@@ -146,7 +146,7 @@ public class CairoSurface extends DataBuffer
    * The format will be ARGB32 with premultiplied alpha and native bit 
    * and word ordering.
    */
-  CairoSurface(int width, int height)
+  public CairoSurface(int width, int height)
   {
     super(DataBuffer.TYPE_INT, width * height);
 
@@ -156,7 +156,7 @@ public class CairoSurface extends DataBuffer
     this.width = width;
     this.height = height;
 
-    create(width, height, width * 4);
+    create(width, height, width);
 
     if(surfacePointer == 0 || bufferPointer == 0)
       throw new Error("Could not allocate bitmap.");
@@ -176,7 +176,7 @@ public class CairoSurface extends DataBuffer
     width = image.width;
     height = image.height;
 
-    create(width, height, width * 4);
+    create(width, height, width);
     
     if(surfacePointer == 0 || bufferPointer == 0)
       throw new Error("Could not allocate bitmap.");
