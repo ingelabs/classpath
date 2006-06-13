@@ -112,7 +112,8 @@ public class PixelGrabber implements ImageConsumer
    * in the grab rectangle will be stored at
    * <code>pix[(n - y) * scansize + (m - x) + off]</code>.
    *
-   * @param ip the ImageProducer from which to grab pixels
+   * @param ip the ImageProducer from which to grab pixels. This can
+   * be null.
    * @param x the x coordinate of the grab rectangle's top-left pixel,
    * specified relative to the top-left corner of the image produced
    * by <code>ip</code>
