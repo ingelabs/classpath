@@ -46,6 +46,7 @@ import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.Toolkit;
 import java.awt.Point;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
@@ -53,6 +54,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
 import java.awt.image.ImagingOpException;
 import java.awt.image.RenderedImage;
 
@@ -277,33 +279,84 @@ public class ComponentGraphics extends CairoGraphics2D
   
   public boolean drawImage(Image img, int x, int y, ImageObserver observer)
   {
-    if (img instanceof GtkVolatileImage
-        && transform.getType() == AffineTransform.TYPE_TRANSLATION)
+    // If it is a GtkVolatileImage with an "easy" transform then
+    // draw directly. Always pass a BufferedImage to super to avoid
+    // deadlock (see Note in CairoGraphics.drawImage()).
+    if (img instanceof GtkVolatileImage)
       {
-        x += transform.getTranslateX();
-        y += transform.getTranslateY();
         GtkVolatileImage vimg = (GtkVolatileImage) img;
-	drawVolatile( component, vimg.nativePointer,
-                      x, y, vimg.width, vimg.height );
-	return true;
-      }      
-    return super.drawImage( img, x, y, observer );
+	int type = transform.getType();
+	if (type == AffineTransform.TYPE_IDENTITY)
+	  {
+	    drawVolatile(component, vimg.nativePointer,
+			 x, y, vimg.width, vimg.height);
+	    return true;
+	  }
+	  else if (type == AffineTransform.TYPE_TRANSLATION)
+	  {
+	    x += transform.getTranslateX();
+	    y += transform.getTranslateY();
+	    drawVolatile(component, vimg.nativePointer,
+			 x, y, vimg.width, vimg.height);
+	    return true;
+	  }
+	else
+	  return super.drawImage(vimg.getSnapshot(), x, y, observer);
+      }
+
+    BufferedImage bimg;
+    if (img instanceof BufferedImage)
+      bimg = (BufferedImage) img;
+    else
+      {
+	ImageProducer source = img.getSource();
+        if (source == null)
+          return false;
+        bimg = (BufferedImage) Toolkit.getDefaultToolkit().createImage(source);
+      }
+    return super.drawImage(bimg, x, y, observer);
   }
   
   public boolean drawImage(Image img, int x, int y, int width, int height,
                            ImageObserver observer)
   {
-    if( img instanceof GtkVolatileImage
-        && transform.getType() == AffineTransform.TYPE_TRANSLATION)
+    // If it is a GtkVolatileImage with an "easy" transform then
+    // draw directly. Always pass a BufferedImage to super to avoid
+    // deadlock (see Note in CairoGraphics.drawImage()).
+    if (img instanceof GtkVolatileImage)
       {
-        x += transform.getTranslateX();
-        y += transform.getTranslateY();
         GtkVolatileImage vimg = (GtkVolatileImage) img;
-	drawVolatile( component, vimg.nativePointer, x, y, 
-		      width, height );
-	return true;
-      }      
-    return super.drawImage( img, x, y, width, height, observer );
+	int type = transform.getType();
+	if (type == AffineTransform.TYPE_IDENTITY)
+	  {
+	    drawVolatile(component, vimg.nativePointer,
+			 x, y, width, height);
+	    return true;
+	  }
+	  else if (type == AffineTransform.TYPE_TRANSLATION)
+	  {
+	    x += transform.getTranslateX();
+	    y += transform.getTranslateY();
+	    drawVolatile(component, vimg.nativePointer,
+			 x, y, width, height);
+	    return true;
+	  }
+	else
+	  return super.drawImage(vimg.getSnapshot(), x, y,
+				 width, height, observer);
+      }
+
+    BufferedImage bimg;
+    if (img instanceof BufferedImage)
+      bimg = (BufferedImage) img;
+    else
+      {
+	ImageProducer source = img.getSource();
+        if (source == null)
+          return false;
+        bimg = (BufferedImage) Toolkit.getDefaultToolkit().createImage(source);
+      }
+    return super.drawImage(bimg, x, y, width, height, observer);
   }
 
 }

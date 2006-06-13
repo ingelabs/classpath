@@ -1,3 +1,12 @@
+2006-06-13  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java (drawImage): Don't
+	allocate unused AffineTransform. Add comment about conversion to
+	BufferedImage.
+	* gnu/java/awt/peer/gtk/ComponentGraphics.java (drawImage):
+	Recognize identity transform as "easy". Always convert to
+	BufferedImage before calling super.
+
 2006-06-13  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/Component.java

@@ -1144,7 +1144,7 @@ public abstract class CairoGraphics2D extends Graphics2D
     // other way around. Therefore to get the "user -> pixel" transform 
     // that cairo wants from "image -> user" transform that we currently
     // have, we will need to invert the transformation matrix.
-    AffineTransform invertedXform = new AffineTransform();
+    AffineTransform invertedXform;
 
     try
       {
@@ -1157,6 +1157,9 @@ public abstract class CairoGraphics2D extends Graphics2D
       }
 
     // Unrecognized image - convert to a BufferedImage
+    // Note - this can get us in trouble when the gdk lock is re-acquired.
+    // for example by VolatileImage. See ComponentGraphics for how we work
+    // around this.
     if( !(img instanceof BufferedImage) )
       {
 	ImageProducer source = img.getSource();
