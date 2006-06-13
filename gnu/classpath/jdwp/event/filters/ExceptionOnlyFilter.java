@@ -61,7 +61,7 @@ public class ExceptionOnlyFilter
   /**
    * Constructs a new ExceptionOnlyFilter
    *
-   * @param  refId     ID of the exception to report
+   * @param  refId     ID of the exception to report(null for all exceptions)
    * @param  caught    Report caught exceptions
    * @param  uncaught  Report uncaught exceptions
    * @throws InvalidClassException if refid is invalid
@@ -70,8 +70,8 @@ public class ExceptionOnlyFilter
 			      boolean uncaught)
     throws InvalidClassException
   {
-    if (refId == null || refId.getReference().get () == null)
-      throw new InvalidClassException (refId.getId ());
+    if (refId != null && refId.getReference().get() == null)
+      throw new InvalidClassException(refId.getId());
 
     _refId = refId;
     _caught = caught;
@@ -91,26 +91,33 @@ public class ExceptionOnlyFilter
   
   /**
    * Does the given event match the filter?
-   *
-   * @param event  the <code>Event</code> to scrutinize
+   * 
+   * @param event the <code>Event</code> to scrutinize
    */
   public boolean matches(Event event)
   {
-    boolean classMatch;
-    
-    try
+    boolean classMatch = true;
+
+    // if not allowing all exceptions check if the exception matches
+    if (_refId != null)
       {
-	Class klass = (Class) event.getParameter(Event.EVENT_EXCEPTION_CLASS);
-        classMatch = klass == _refId.getType();
-      }
-    catch (InvalidClassException ex)
-      {
-        classMatch = false;
+        try
+          {
+            Class klass 
+              = (Class) event.getParameter(Event.EVENT_EXCEPTION_CLASS);
+            classMatch = klass == _refId.getType();
+          }
+        catch (InvalidClassException ex)
+          {
+            classMatch = false;
+          }
       }
     
-    Boolean caught
+    // check against the caught and uncaught options
+    Boolean caught 
       = (Boolean) event.getParameter(Event.EVENT_EXCEPTION_CAUGHT);
 
     return classMatch && (caught.booleanValue()) ? _caught : _uncaught;
   }
+  
 }
