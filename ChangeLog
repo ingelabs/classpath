@@ -1,3 +1,7 @@
+2006-06-12  Sven de Marothy  <sven@physto.se>
+
+	* java/awt/font/LineBreakMeasurer.java): Implement.
+
 2006-06-12  Keith Seitz  <keiths@redhat.com>
 
 	From Kyle Galloway  <kgallowa@redhat.com>:
