@@ -79,7 +79,9 @@ import javax.swing.plaf.IconUIResource;
 import javax.swing.plaf.InsetsUIResource;
 
 /**
- * BasicLookAndFeel
+ * A basic implementation of Swing's Look and Feel framework. This can serve
+ * as a base for custom look and feel implementations.
+ *
  * @author Andrew Selkirk
  */
 public abstract class BasicLookAndFeel extends LookAndFeel
@@ -126,8 +128,12 @@ public abstract class BasicLookAndFeel extends LookAndFeel
       Component target = ev.getComponent();
       if (target instanceof Container)
         target = ((Container) target).findComponentAt(ev.getPoint());
-      if (! m.isComponentPartOfCurrentMenu(target))
-        m.clearSelectedPath();
+      if (m.getSelectedPath().length > 0
+          && ! m.isComponentPartOfCurrentMenu(target))
+        {
+          m.clearSelectedPath();
+          ev.consume();
+        }
     }
 
   }
@@ -197,6 +203,9 @@ public abstract class BasicLookAndFeel extends LookAndFeel
    */
   private transient PopupHelper popupHelper;
 
+  /**
+   * Maps the audio actions for this l&f.
+   */
   private ActionMap audioActionMap;
 
   /**
@@ -425,9 +434,15 @@ public abstract class BasicLookAndFeel extends LookAndFeel
   }
 
   /**
-   * loadResourceBundle
-   * @param defaults TODO
+   * Loads the resource bundle in 'resources/basic' and adds the contained
+   * key/value pairs to the <code>defaults</code> table.
+   *
+   * @param defaults the UI defaults to load the resources into
    */
+  // FIXME: This method is not used atm and private and thus could be removed.
+  // However, I consider this method useful for providing localized
+  // descriptions and similar stuff and therefore think that we should use it
+  // instead and provide the resource bundles.
   private void loadResourceBundle(UIDefaults defaults)
   {
     ResourceBundle bundle;
@@ -446,7 +461,9 @@ public abstract class BasicLookAndFeel extends LookAndFeel
   }
 
   /**
-   * initComponentDefaults
+   * Populates the <code>defaults</code> table with UI default values for
+   * colors, fonts, keybindings and much more.
+   *
    * @param defaults  the defaults table (<code>null</code> not permitted).
    */
   protected void initComponentDefaults(UIDefaults defaults)

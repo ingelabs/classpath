@@ -1,3 +1,14 @@
+2006-06-13  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Component.java
+	(getGraphics): Translate child graphics correctly.
+	(dispatchEvent): Only dispatch event if it hasn't been consumed
+	yet by the global dispatcher.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	Added some API docs.
+	(PopupHelper.mousePressed): Consume the event after closing
+	opened menus.
+
 2006-06-13  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicCheckBoxUI.java: Source code formatting 
