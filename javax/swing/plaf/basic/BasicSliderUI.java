@@ -68,7 +68,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javax.swing.LookAndFeel;
-import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIManager;
@@ -483,9 +482,9 @@ public class BasicSliderUI extends SliderUI
         value = valueForYPosition(currentMouseY);
 
       if (direction == POSITIVE_SCROLL)
-        return (value > slider.getValue());
+        return value > slider.getValue();
       else
-        return (value < slider.getValue());
+        return value < slider.getValue();
     }
   }
 
@@ -1298,7 +1297,7 @@ public class BasicSliderUI extends SliderUI
         tickRect.x = trackRect.x;
         tickRect.y = trackRect.y + trackRect.height;
         tickRect.width = trackRect.width;
-        tickRect.height = (slider.getPaintTicks() ? getTickLength() : 0);
+        tickRect.height = slider.getPaintTicks() ? getTickLength() : 0;
 
         if (tickRect.y + tickRect.height > contentRect.y + contentRect.height)
           tickRect.height = contentRect.y + contentRect.height - tickRect.y;
@@ -1307,7 +1306,7 @@ public class BasicSliderUI extends SliderUI
       {
         tickRect.x = trackRect.x + trackRect.width;
         tickRect.y = trackRect.y;
-        tickRect.width = (slider.getPaintTicks() ? getTickLength() : 0);
+        tickRect.width = slider.getPaintTicks() ? getTickLength() : 0;
         tickRect.height = trackRect.height;
 
         if (tickRect.x + tickRect.width > contentRect.x + contentRect.width)
@@ -2226,12 +2225,12 @@ public class BasicSliderUI extends SliderUI
     // is.  This really shouldn't ever happen, but just in case, we'll return 
     // the middle.
     if (len == 0)
-      return ((max - min) / 2);
+      return (max - min) / 2;
 
     if (! drawInverted())
-      value = ((len - (yPos - trackRect.y)) * (max - min) / len + min);
+      value = (len - (yPos - trackRect.y)) * (max - min) / len + min;
     else
-      value = ((yPos - trackRect.y) * (max - min) / len + min);
+      value = (yPos - trackRect.y) * (max - min) / len + min;
 
     // If this isn't a legal value, then we'll have to move to one now.
     if (value > max)
@@ -2262,12 +2261,12 @@ public class BasicSliderUI extends SliderUI
     // is.  This really shouldn't ever happen, but just in case, we'll return 
     // the middle.
     if (len == 0)
-      return ((max - min) / 2);
+      return (max - min) / 2;
 
     if (! drawInverted())
-      value = ((xPos - trackRect.x) * (max - min) / len + min);
+      value = (xPos - trackRect.x) * (max - min) / len + min;
     else
-      value = ((len - (xPos - trackRect.x)) * (max - min) / len + min);
+      value = (len - (xPos - trackRect.x)) * (max - min) / len + min;
 
     // If this isn't a legal value, then we'll have to move to one now.
     if (value > max)

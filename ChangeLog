@@ -1,3 +1,24 @@
+2006-06-13  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicCheckBoxUI.java: Source code formatting 
+	changes only,
+	* javax/swing/plaf/basic/BasicComboBoxUI.java: Likewise,
+	* javax/swing/plaf/basic/BasicComboPopup.java: Likewise,
+	* javax/swing/plaf/basic/BasicFileChooserUI.java: Likewise,
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java: Likewise,
+	* javax/swing/plaf/basic/BasicLookAndFeel.java: Likewise,
+	* javax/swing/plaf/basic/BasicMenuItemUI.java: Likewise,
+	* javax/swing/plaf/basic/BasicOptionPaneUI.java: Likewise,
+	* javax/swing/plaf/basic/BasicProgressBarUI.java: Likewise,
+	* javax/swing/plaf/basic/BasicRadioButtonUI.java: Likewise,
+	* javax/swing/plaf/basic/BasicScrollBarUI.java: Likewise,
+	* javax/swing/plaf/basic/BasicSliderUI.java: Likewise,
+	* javax/swing/plaf/basic/BasicTableHeaderUI.java: Likewise,
+	* javax/swing/plaf/basic/BasicTableUI.java: Likewise,
+	* javax/swing/plaf/basic/BasicTextUI.java: Likewise,
+	* javax/swing/plaf/basic/BasicToolBarUI.java: Likewise,
+	* javax/swing/plaf/basic/BasicTreeUI.java: Likewise.
+
 2006-06-12  Sven de Marothy  <sven@physto.se>
 
 	* java/awt/font/LineBreakMeasurer.java): Implement.

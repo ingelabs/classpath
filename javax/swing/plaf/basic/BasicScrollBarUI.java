@@ -400,9 +400,9 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
         return false;
       
       if (direction == POSITIVE_SCROLL)
-	return (value > scrollbar.getValue());
+	return value > scrollbar.getValue();
       else
-	return (value < scrollbar.getValue());
+	return value < scrollbar.getValue();
     }
   }
 
@@ -727,7 +727,7 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
     int orientation = scrollbar.getOrientation();
     switch (orientation)
       {
-      case (JScrollBar.HORIZONTAL):
+      case JScrollBar.HORIZONTAL:
         incrButton = createIncreaseButton(EAST);
         decrButton = createDecreaseButton(WEST);
         break;
@@ -1357,9 +1357,9 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
     // If the length is 0, you shouldn't be able to even see where the thumb is.
     // This really shouldn't ever happen, but just in case, we'll return the middle.
     if (len == 0)
-      return ((max - min) / 2);
+      return (max - min) / 2;
 
-    value = ((yPos - trackRect.y) * (max - min) / len + min);
+    value = (yPos - trackRect.y) * (max - min) / len + min;
 
     // If this isn't a legal value, then we'll have to move to one now.
     if (value > max)
@@ -1390,9 +1390,9 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
     // If the length is 0, you shouldn't be able to even see where the slider is.
     // This really shouldn't ever happen, but just in case, we'll return the middle.
     if (len == 0)
-      return ((max - min) / 2);
+      return (max - min) / 2;
 
-    value = ((xPos - trackRect.x) * (max - min) / len + min);
+    value = (xPos - trackRect.x) * (max - min) / len + min;
 
     // If this isn't a legal value, then we'll have to move to one now.
     if (value > max)

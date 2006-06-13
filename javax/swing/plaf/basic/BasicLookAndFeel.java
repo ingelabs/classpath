@@ -509,7 +509,7 @@ public abstract class BasicLookAndFeel extends LookAndFeel
           return BasicIconFactory.getMenuItemCheckIcon();
         }
       },
-      "CheckBox.margin",new InsetsUIResource(2, 2, 2, 2),
+      "CheckBox.margin", new InsetsUIResource(2, 2, 2, 2),
       "CheckBox.textIconGap", new Integer(4),
       "CheckBox.textShiftOffset", new Integer(0),
       "CheckBoxMenuItem.acceleratorFont", new FontUIResource("Dialog",
@@ -599,7 +599,7 @@ public abstract class BasicLookAndFeel extends LookAndFeel
         "ctrl F4", "close",
         "KP_DOWN", "down",
         "ctrl F10", "maximize",
-        "ctrl alt shift F6","selectPreviousFrame"
+        "ctrl alt shift F6", "selectPreviousFrame"
       }),
       "DesktopIcon.border", new BorderUIResource.CompoundBorderUIResource(null,
                                                                           null),
@@ -1091,7 +1091,7 @@ public abstract class BasicLookAndFeel extends LookAndFeel
       "ScrollPane.ancestorInputMap", new UIDefaults.LazyInputMap(new Object[] {
         "PAGE_UP", "scrollUp",
         "KP_LEFT", "unitScrollLeft",
-        "ctrl PAGE_DOWN","scrollRight",
+        "ctrl PAGE_DOWN", "scrollRight",
         "PAGE_DOWN", "scrollDown",
         "KP_RIGHT", "unitScrollRight",
         "LEFT",  "unitScrollLeft",
@@ -1167,7 +1167,7 @@ public abstract class BasicLookAndFeel extends LookAndFeel
       "SplitPaneDivider.border", BasicBorders.getSplitPaneDividerBorder(),
       "SplitPaneDivider.draggingColor", new ColorUIResource(Color.DARK_GRAY),
       "TabbedPane.ancestorInputMap", new UIDefaults.LazyInputMap(new Object[] {
-        "ctrl PAGE_DOWN","navigatePageDown",
+        "ctrl PAGE_DOWN", "navigatePageDown",
         "ctrl PAGE_UP", "navigatePageUp",
         "ctrl UP", "requestFocus",
         "ctrl KP_UP", "requestFocus"
@@ -1220,13 +1220,13 @@ public abstract class BasicLookAndFeel extends LookAndFeel
         "COPY", "copy",
         "ctrl KP_UP", "selectPreviousRowChangeLead",
         "PASTE", "paste",
-        "shift PAGE_DOWN","scrollDownExtendSelection",
+        "shift PAGE_DOWN", "scrollDownExtendSelection",
         "PAGE_DOWN", "scrollDownChangeSelection",
         "END",  "selectLastColumn",
         "shift END", "selectLastColumnExtendSelection",
         "HOME",  "selectFirstColumn",
         "ctrl END", "selectLastRow",
-        "ctrl shift END","selectLastRowExtendSelection",
+        "ctrl shift END", "selectLastRowExtendSelection",
         "LEFT",  "selectPreviousColumn",
         "shift HOME", "selectFirstColumnExtendSelection",
         "UP",  "selectPreviousRow",
@@ -1234,7 +1234,7 @@ public abstract class BasicLookAndFeel extends LookAndFeel
         "ctrl HOME", "selectFirstRow",
         "shift LEFT", "selectPreviousColumnExtendSelection",
         "DOWN",  "selectNextRow",
-        "ctrl shift HOME","selectFirstRowExtendSelection",
+        "ctrl shift HOME", "selectFirstRowExtendSelection",
         "shift UP", "selectPreviousRowExtendSelection",
         "F2",  "startEditing",
         "shift RIGHT", "selectNextColumnExtendSelection",
