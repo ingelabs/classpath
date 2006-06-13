@@ -1,3 +1,17 @@
+2006-06-13  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Component.java
+	(dispatchEvent): Handle events even when consumed (this might be
+	picked up later in the dispatching chain).
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(PopupHelper.mousePressed): Don't consume event. Only close popup
+	when target component isn't flagged as DONT_CANCEL_POPUP.
+	(DONT_CANCEL_POPUP): New package private constant for flagging
+	special components that don't trigger popup closing.
+	* javax/swing/plaf/basic/BasicArrowButton.java
+	(BasicArrowButton): Set client property for not triggering closing
+	of popups.
+
 2006-06-13  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/image/PixelGrabber.java

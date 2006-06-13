@@ -2314,8 +2314,7 @@ public abstract class Component
 
     // Some subclasses in the AWT package need to override this behavior,
     // hence the use of dispatchEventImpl().
-    if (! e.isConsumed())
-      dispatchEventImpl(e);
+    dispatchEventImpl(e);
   }
 
   /**

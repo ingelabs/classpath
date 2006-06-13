@@ -132,7 +132,6 @@ public abstract class BasicLookAndFeel extends LookAndFeel
           && ! m.isComponentPartOfCurrentMenu(target))
         {
           m.clearSelectedPath();
-          ev.consume();
         }
     }
 
@@ -197,6 +196,14 @@ public abstract class BasicLookAndFeel extends LookAndFeel
   }
 
   static final long serialVersionUID = -6096995660290287879L;
+
+  /**
+   * This is a key for a client property that tells the PopupHelper that
+   * it shouldn't close popups when the mouse event target has this
+   * property set. This is used when the component handles popup closing
+   * itself.
+   */
+  static final String DONT_CANCEL_POPUP = "noCancelPopup";
 
   /**
    * Helps closing menu popups when user clicks outside of the menu area.
