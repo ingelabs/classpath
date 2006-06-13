@@ -1,3 +1,10 @@
+2006-06-13  Lillian Angel  <langel@redhat.com>
+
+	* native/plugin/gcjwebplugin.cc
+	(NP_Initialize): Removed code to create whitelist file.
+	(GCJ_New): Added code to create whitelist file.
+	(plugin_user_trusts_documentbase): Fixed error message.
+
 2006-06-13  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalIconFactory.java

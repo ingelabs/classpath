@@ -323,14 +323,34 @@ GCJ_New (NPMIMEType pluginType, NPP instance, uint16 mode,
                     " Browser not Mozilla-based?");
       goto cleanup_appletviewer_mutex;
     }
+    
+  // Open the user's documentbase whitelist.
+  whitelist_file = g_io_channel_new_file (whitelist_filename,
+                                          "a+", &channel_error);
+  if (!whitelist_file)
+    {
+      if (channel_error)
+        {
+          PLUGIN_ERROR_THREE ("Failed to open whitelist file",
+                              whitelist_filename,
+                              channel_error->message);
+          g_error_free (channel_error);
+          channel_error = NULL;
+        }
+      else
+        PLUGIN_ERROR_TWO ("Failed to open whitelist file",
+                          whitelist_filename);
 
+      return NPERR_GENERIC_ERROR;
+    }
+    
   if (!plugin_user_trusts_documentbase (documentbase))
     {
       PLUGIN_ERROR ("User does not trust applet.");
       np_error = NPERR_GENERIC_ERROR;
       goto cleanup_appletviewer_mutex;
     }
-
+    
   // Create appletviewer-to-plugin pipe which we refer to as the input
   // pipe.
 
@@ -959,7 +979,7 @@ plugin_user_trusts_documentbase (char* documentbase)
               channel_error = NULL;
             }
           else
-            PLUGIN_ERROR ("Failed to open whitelist file.");
+            PLUGIN_ERROR ("Failed to read line from whitelist file.");
           g_free (whitelist_entry);
           whitelist_entry = NULL;
           break;
@@ -1630,26 +1650,6 @@ NP_Initialize (NPNetscapeFuncs* browserTable, NPPluginFuncs* pluginTable)
                               strerror (errno));
           return NPERR_GENERIC_ERROR;
         }
-    }
-
-  // Open the user's documentbase whitelist.
-  whitelist_file = g_io_channel_new_file (whitelist_filename,
-                                          "a+", &channel_error);
-  if (!whitelist_file)
-    {
-      if (channel_error)
-        {
-          PLUGIN_ERROR_THREE ("Failed to open whitelist file",
-                              whitelist_filename,
-                              channel_error->message);
-          g_error_free (channel_error);
-          channel_error = NULL;
-        }
-      else
-        PLUGIN_ERROR_TWO ("Failed to open whitelist file",
-                          whitelist_filename);
-
-      return NPERR_GENERIC_ERROR;
     }
 
   // Store in a local table the browser functions that we may use.
