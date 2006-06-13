@@ -131,9 +131,6 @@ public class PixelGrabber implements ImageConsumer
   public PixelGrabber(ImageProducer ip, int x, int y, int w, int h,
 		      int pix[], int off, int scansize)
   {
-    if (ip == null)
-      throw new NullPointerException("The ImageProducer must not be null.");
-
     this.ip = ip;
     this.x = x;
     this.y = y;
@@ -222,7 +219,6 @@ public class PixelGrabber implements ImageConsumer
                 }
               catch (Exception ex)
                 {
-                  ex.printStackTrace();
                   imageComplete(ImageConsumer.IMAGEABORTED);
                 }
 	    }

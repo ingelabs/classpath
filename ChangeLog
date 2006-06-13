@@ -1,3 +1,10 @@
+2006-06-13  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/image/PixelGrabber.java
+	(PixelGrabber): Removed check to throw exception. JDK does
+	not do this.
+	(startGrabbing): Removed line to print stacktrace. 
+
 2006-06-13  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java (drawImage): Don't
