@@ -38,7 +38,6 @@ exception statement from your version. */
 
 package javax.swing;
 
-import java.applet.Applet;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -76,6 +75,12 @@ public class RepaintManager
    * The current repaint managers, indexed by their ThreadGroups.
    */
   static WeakHashMap currentRepaintManagers;
+
+  /**
+   * Used to disable merging of regions in commitBuffer(). This has caused
+   * problems and may either need to be reworked or removed.
+   */
+  private static final boolean MERGE_REGIONS = false;
 
   /**
    * A rectangle object to be reused in damaged regions calculation.
@@ -661,7 +666,7 @@ public class RepaintManager
       {
         // If the RepaintManager is not currently painting, then directly
         // blit the requested buffer on the screen.
-        if (! repaintUnderway)
+        if (! MERGE_REGIONS || ! repaintUnderway)
           {
             blitBuffer(root, rootRect);
           }

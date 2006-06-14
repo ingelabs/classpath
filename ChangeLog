@@ -1,5 +1,13 @@
 2006-06-14  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/RepaintManager.java
+	(MERGE_REGIONS): New constant flag.
+	(commitBuffer): Exclude the merging of regions by default. This
+	was causing painting artifacts in some applications, especially
+	when different areas of the GUI are updated synchronously.
+
+2006-06-14  Roman Kennke  <kennke@aicas.com>
+
 	* examples/gnu/classpath/examples/awt/AicasGraphicsBenchmark.java:
 	New file. This is a benchmark for AWT 1.1 style graphics operations.
 	* examples/gnu/classpath/examples/awt/palme.gif: New file.
