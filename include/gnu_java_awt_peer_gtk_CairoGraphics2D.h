@@ -37,6 +37,9 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoClip (JNI
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoPreserveClip (JNIEnv *env, jobject, jlong);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoResetClip (JNIEnv *env, jobject, jlong);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoSurfaceSetFilter (JNIEnv *env, jobject, jlong, jint);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoDrawLine (JNIEnv *env, jobject, jlong, jdouble, jdouble, jdouble, jdouble);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoDrawRect (JNIEnv *env, jobject, jlong, jdouble, jdouble, jdouble, jdouble);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoFillRect (JNIEnv *env, jobject, jlong, jdouble, jdouble, jdouble, jdouble);
 
 #ifdef __cplusplus
 }

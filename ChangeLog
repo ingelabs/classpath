@@ -1,3 +1,18 @@
+2006-06-14  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(cairoDrawLine): New native method.
+	(cairoDrawRect): New native method.
+	(cairoFillRect): New native method.
+	(drawLine): Use special native method.
+	(drawRect): Use special native method.
+	(fillRect): Use special native method.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoGraphics2D.c
+	(cairoDrawLine): New native method.
+	(cairoDrawRect): New native method.
+	(cairoFillRect): New native method.
+	* include/gnu_java_awt_peer_gtk_CairoGraphics2D.h: Regenerated.
+
 2006-06-14  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c

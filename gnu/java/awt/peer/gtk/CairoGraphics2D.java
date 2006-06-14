@@ -66,7 +66,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.Line2D;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
@@ -426,6 +425,46 @@ public abstract class CairoGraphics2D extends Graphics2D
    * Set interpolation types
    */
   private native void cairoSurfaceSetFilter(long pointer, int filter);
+
+  /**
+   * Draws a line from (x1,y1) to (x2,y2).
+   *
+   * @param pointer the native pointer
+   *
+   * @param x1 the x coordinate of the starting point
+   * @param y1 the y coordinate of the starting point
+   * @param x2 the x coordinate of the end point
+   * @param y2 the y coordinate of the end point
+   */
+  private native void cairoDrawLine(long pointer, double x1, double y1,
+                                    double x2, double y2);
+
+  /**
+   * Draws a rectangle at starting point (x,y) and with the specified width
+   * and height.
+   *
+   * @param pointer the native pointer
+   * @param x the x coordinate of the upper left corner
+   * @param y the y coordinate of the upper left corner
+   * @param w the width of the rectangle
+   * @param h the height of the rectangle
+   */
+  private native void cairoDrawRect(long pointer, double x, double y, double w,
+                                    double h);
+
+  /**
+   * Fills a rectangle at starting point (x,y) and with the specified width
+   * and height.
+   *
+   * @param pointer the native pointer
+   * @param x the x coordinate of the upper left corner
+   * @param y the y coordinate of the upper left corner
+   * @param w the width of the rectangle
+   * @param h the height of the rectangle
+   */
+  private native void cairoFillRect(long pointer, double x, double y, double w,
+                                    double h);
+
 
   ///////////////////////// TRANSFORMS ///////////////////////////////////
   /**
@@ -940,12 +979,15 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   public void drawLine(int x1, int y1, int x2, int y2)
   {
-    draw(new Line2D.Double(x1, y1, x2, y2));
+    cairoDrawLine(nativePointer, shifted(x1, shiftDrawCalls),
+                  shifted(y1, shiftDrawCalls), shifted(x2, shiftDrawCalls),
+                  shifted(y2, shiftDrawCalls));
   }
 
   public void drawRect(int x, int y, int width, int height)
   {
-    draw(new Rectangle(x, y, width, height));
+    cairoDrawRect(nativePointer, shifted(x, shiftDrawCalls),
+                  shifted(y, shiftDrawCalls), width, height);
   }
 
   public void fillArc(int x, int y, int width, int height, int startAngle,
@@ -958,7 +1000,7 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   public void fillRect(int x, int y, int width, int height)
   {
-    fill(new Rectangle(x, y, width, height));
+    cairoFillRect(nativePointer, x, y, width, height);
   }
 
   public void fillPolygon(int[] xPoints, int[] yPoints, int nPoints)

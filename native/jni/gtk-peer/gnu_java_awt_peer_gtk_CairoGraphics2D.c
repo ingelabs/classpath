@@ -665,6 +665,46 @@ Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoSurfaceSetFilter
     }
 }
 
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoDrawLine
+(JNIEnv *env __attribute__ ((unused)), jobject obj __attribute__ ((unused)),
+ jlong pointer, jdouble x1, jdouble y1, jdouble x2, jdouble y2)
+{
+  struct cairographics2d *gr = JLONG_TO_PTR(struct cairographics2d, pointer);
+  g_assert (gr != NULL);
+
+  cairo_new_path(gr->cr);
+  cairo_move_to(gr->cr, x1, y1);
+  cairo_line_to(gr->cr, x2, y2);
+  cairo_stroke(gr->cr);
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoDrawRect
+(JNIEnv *env __attribute__ ((unused)), jobject obj __attribute__ ((unused)),
+ jlong pointer, jdouble x, jdouble y, jdouble w, jdouble h)
+{
+  struct cairographics2d *gr = JLONG_TO_PTR(struct cairographics2d, pointer);
+  g_assert (gr != NULL);
+
+  cairo_new_path(gr->cr);
+  cairo_rectangle(gr->cr, x, y, w, h);
+  cairo_stroke(gr->cr);
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoFillRect
+(JNIEnv *env __attribute__ ((unused)), jobject obj __attribute__ ((unused)),
+ jlong pointer, jdouble x, jdouble y, jdouble w, jdouble h)
+{
+  struct cairographics2d *gr = JLONG_TO_PTR(struct cairographics2d, pointer);
+  g_assert (gr != NULL);
+
+  cairo_new_path(gr->cr);
+  cairo_rectangle(gr->cr, x, y, w, h);
+  cairo_fill(gr->cr);
+}
+
 
 /************************** FONT STUFF ****************************/
 static void
