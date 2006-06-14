@@ -2323,7 +2323,7 @@ public abstract class Component
    * 
    * @return false, no mouse events are ignored.
    */
-  boolean ignoreOldMouseEvents()
+  static boolean ignoreOldMouseEvents()
   {
     return false;
   }
@@ -4812,7 +4812,7 @@ p   * <li>the set of backward traversal keys
    *
    * @return an AWT 1.0 event representing e
    */
-  Event translateEvent (AWTEvent e)
+  static Event translateEvent (AWTEvent e)
   {
     Object target = e.getSource ();
     Event translated = null;

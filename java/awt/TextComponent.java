@@ -740,7 +740,7 @@ paramString()
    * 
    * @return true to ignore all old mouse events.
    */
-  boolean
+  static boolean
   ignoreOldMouseEvents()
   {
     return true;
