@@ -1,3 +1,10 @@
+2006-06-14  Tom Tromey  <tromey@redhat.com>
+
+	* gnu/java/net/loader/JarURLLoader.java (initialize): Skip our own
+	jar.
+	* gnu/java/net/IndexListParser.java (IndexListParser): Call clearAll
+	when index entry does not exist.
+
 2006-06-14  Tania Bento  <tbento@redhat.com>
 
 	* javax/swing/AbstractButton.java
