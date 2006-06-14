@@ -166,6 +166,11 @@ Java_gnu_java_awt_peer_gtk_GtkImage_getPixels(JNIEnv *env, jobject obj)
   rowstride = gdk_pixbuf_get_rowstride (pixbuf);
 
   result_array = (*env)->NewIntArray (env, (width * height));
+  if (result_array == NULL)
+    {
+      gdk_threads_leave ();
+      return NULL;
+    }
 
   dst = result_array_iter = 
     (*env)->GetIntArrayElements (env, result_array, NULL);

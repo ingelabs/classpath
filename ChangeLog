@@ -1,3 +1,9 @@
+2006-06-14  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c
+	(Java_gnu_java_awt_peer_gtk_GtkImage_getPixels): Return when array
+	cannot be allocated.
+
 2006-06-14  Tom Tromey  <tromey@redhat.com>
 
 	PR java/28024:
