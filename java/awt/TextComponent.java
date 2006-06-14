@@ -734,8 +734,17 @@ paramString()
     return null;
   }
   
-  
-
+  /**
+   * All old mouse events for this component should
+   * be ignored.
+   * 
+   * @return true to ignore all old mouse events.
+   */
+  boolean
+  ignoreOldMouseEvents()
+  {
+    return true;
+  }
 
 } // class TextComponent
 

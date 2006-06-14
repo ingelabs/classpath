@@ -1,3 +1,11 @@
+2006-06-14  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/Component.java
+	(ignoreOldMouseEvents): New helper function.
+	(translateEvent): Changed to be non-static and use new helper.
+	* java/awt/TextComponent.java
+	(ignoreOldMouseEvents): New helper function.
+
 2006-06-14  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/RepaintManager.java

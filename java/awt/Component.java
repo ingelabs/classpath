@@ -2318,6 +2318,17 @@ public abstract class Component
   }
 
   /**
+   * By default, no old mouse events should be ignored.
+   * This can be overridden by subclasses.
+   * 
+   * @return false, no mouse events are ignored.
+   */
+  boolean ignoreOldMouseEvents()
+  {
+    return false;
+  }
+  
+  /**
    * AWT 1.0 event handler.
    *
    * This method simply calls handleEvent and returns the result.
@@ -4801,7 +4812,7 @@ p   * <li>the set of backward traversal keys
    *
    * @return an AWT 1.0 event representing e
    */
-  static Event translateEvent (AWTEvent e)
+  Event translateEvent (AWTEvent e)
   {
     Object target = e.getSource ();
     Event translated = null;
@@ -4864,7 +4875,7 @@ p   * <li>the set of backward traversal keys
         if ((mods & InputEvent.ALT_DOWN_MASK) != 0)
           oldMods |= Event.ALT_MASK;
 
-        if (e instanceof MouseEvent)
+        if (e instanceof MouseEvent && !ignoreOldMouseEvents())
           {
             if (id == MouseEvent.MOUSE_PRESSED)
               oldID = Event.MOUSE_DOWN;
