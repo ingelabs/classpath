@@ -1,3 +1,18 @@
+2006-06-14  Tania Bento  <tbento@redhat.com>
+
+	* javax/swing/AbstractButton.java
+	(AbstractButton): Set focusable to false, not true.
+
+2006-06-14  Tania Bento  <tbento@redhat.com>
+
+	* javax/swing/JMenuItem.java
+	(init): Changed horizontalAlignment from JButton.LEFT to JButton.LEADING.
+
+2006-06-14  Tania Bento  <tbento@redhat.com>
+
+	* javax/swing/JCheckBoxMenuItem.java
+	(JCheckBoxMenuItem): Added check to set the selected state.
+
 2006-06-14  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
