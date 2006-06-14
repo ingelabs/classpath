@@ -1,3 +1,10 @@
+2006-06-14  Roman Kennke  <kennke@aicas.com>
+
+	* examples/gnu/classpath/examples/awt/AicasGraphicsBenchmark.java:
+	New file. This is a benchmark for AWT 1.1 style graphics operations.
+	* examples/gnu/classpath/examples/awt/palme.gif: New file.
+	* examples/gnu/classpath/examples/awt/aicas.gif: New file.
+
 2006-06-14  Tom Tromey  <tromey@redhat.com>
 
 	* java/io/File.java (getParent): Javadoc fix.
