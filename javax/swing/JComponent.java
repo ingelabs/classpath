@@ -671,6 +671,12 @@ public abstract class JComponent extends Container implements Serializable
   static boolean isPaintingDoubleBuffered = false;
 
   /**
+   * Indicates whether we are calling paintDoubleBuffered() from
+   * paintImmadiately (RepaintManager) or from paint() (AWT refresh).
+   */
+  static private boolean isRepainting = false;
+
+  /**
    * Listeners for events other than {@link PropertyChangeEvent} are
    * handled by this listener list. PropertyChangeEvents are handled in
    * {@link #changeSupport}.
@@ -1855,7 +1861,7 @@ public abstract class JComponent extends Container implements Serializable
       index < children.length; index++)
       {
         Component comp = children[index];
-        if (! comp.isVisible())
+        if (! comp.isVisible() || ! comp.isLightweight())
           continue;
 
         Rectangle compBounds = comp.getBounds();
@@ -2027,7 +2033,7 @@ public abstract class JComponent extends Container implements Serializable
         if (i == children.length - 1)
           paintingTile = false;
 
-        if (!children[i].isVisible())
+        if (!children[i].isVisible() || ! children[i].isLightweight())
           continue;
 
         Rectangle bounds = children[i].getBounds(rectCache);
@@ -2131,40 +2137,15 @@ public abstract class JComponent extends Container implements Serializable
    */
   void paintImmediately2(Rectangle r)
   {
+    isRepainting = true;
     RepaintManager rm = RepaintManager.currentManager(this);
     if (rm.isDoubleBufferingEnabled() && isDoubleBuffered())
       paintDoubleBuffered(r);
     else
       paintSimple(r);
+    isRepainting = false;
   }
 
-  /**
-   * Gets the root of the component given. If a parent of the 
-   * component is an instance of Applet, then the applet is 
-   * returned. The applet is considered the root for painting
-   * and adding/removing components. Otherwise, the root Window
-   * is returned if it exists.
-   * 
-   * @param comp - The component to get the root for.
-   * @return the parent root. An applet if it is a parent,
-   * or the root window. If neither exist, null is returned.
-   */
-  private Component getRoot(Component comp)
-  {
-      Applet app = null;
-      
-      while (comp != null)
-        {
-          if (app == null && comp instanceof Window)
-            return comp;
-          else if (comp instanceof Applet)
-            app = (Applet) comp;
-          comp = comp.getParent();
-        }
-      
-      return app;
-  }
-  
   /**
    * Performs double buffered repainting.
    */
@@ -2173,7 +2154,7 @@ public abstract class JComponent extends Container implements Serializable
     RepaintManager rm = RepaintManager.currentManager(this);
 
     // Paint on the offscreen buffer.
-    Component root = getRoot(this);
+    Component root = SwingUtilities.getRoot(this);
     Image buffer = rm.getVolatileOffscreenBuffer(this, root.getWidth(),
                                                  root.getHeight());
 
@@ -2183,7 +2164,6 @@ public abstract class JComponent extends Container implements Serializable
       buffer = rm.getOffscreenBuffer(this, root.getWidth(), root.getHeight());
 
     //Rectangle targetClip = SwingUtilities.convertRectangle(this, r, root);
-    Point translation = SwingUtilities.convertPoint(this, 0, 0, root);
     Graphics g2 = buffer.getGraphics();
     clipAndTranslateGraphics(root, this, g2);
     g2.clipRect(r.x, r.y, r.width, r.height);
@@ -2191,7 +2171,14 @@ public abstract class JComponent extends Container implements Serializable
     isPaintingDoubleBuffered = true;
     try
       {
-        paint(g2);
+        if (isRepainting) // Called from paintImmediately, go through paint().
+          paint(g2);
+        else // Called from paint() (AWT refresh), don't call it again.
+          {
+            paintComponent(g2);
+            paintBorder(g2);
+            paintChildren(g2);
+          }
       }
     finally
       {
@@ -2200,9 +2187,7 @@ public abstract class JComponent extends Container implements Serializable
       }
 
     // Paint the buffer contents on screen.
-    rm.commitBuffer(root, new Rectangle(translation.x + r.x,
-                                        translation.y + r.y, r.width,
-                                        r.height));
+    rm.commitBuffer(this, r);
   }
 
   /**
@@ -3654,7 +3639,7 @@ public abstract class JComponent extends Container implements Serializable
       {
         if ((found instanceof JComponent) && ((JComponent) found).isOpaque())
           break;
-        else if (!(found instanceof JComponent))
+        else if (!(found instanceof JComponent) && !found.isLightweight())
           break;
         Container p = found.getParent();
         if (p == null)

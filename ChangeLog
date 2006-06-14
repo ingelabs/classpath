@@ -1,3 +1,31 @@
+2006-06-14  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JComponent.java
+	(isRepainting): New flag.
+	(paintImmediately2): Set isRepainting flag.
+	(getRoot): Removed obsolete method.
+	(paintDoubleBuffered): Differenciate between paint calls from
+	RepaintManager and from AWT refresh. Call
+	RepaintManager.commitBuffer with this and local coordinates.
+	(findOpaqueParent): Stop searching at heavyweight component. These
+	are always opaque.
+	(paintChildrenOptimized): Don't paint heavyweight children. These
+	should care for themselves.
+	(paintChildrenWithOverlap): Don't paint heavyweight children. These
+	should care for themselves.
+	* javax/swing/RepaintManager.java
+	(getOffscreenBuffer): Associate offscreen buffer with toplevel
+	windows only.
+	(getVolatileOffscreenBuffer): Associate offscreen buffer with
+	toplevel windows only.
+	(getRoot): Removed obsolete method.
+	(commitBuffer): Blit buffer on nearest heavyweight.
+	(blitBuffer): New helper method.
+	(getHeavyweightParent): New helper method.
+	(commitRemainingBuffers): Call blitBuffer instead of commitBuffer.
+	* javax/swing/SwingUtilities.java
+	(convertRectangleToAncestor): New helper method.
+
 2006-06-14  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* gnu/javax/security/auth/login/ConfigFileTokenizer.java: Fixed a typo.
