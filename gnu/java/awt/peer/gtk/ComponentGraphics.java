@@ -359,5 +359,44 @@ public class ComponentGraphics extends CairoGraphics2D
     return super.drawImage(bimg, x, y, width, height, observer);
   }
 
+  public void drawLine(int x1, int y1, int x2, int y2)
+  {
+    lock();
+    try
+      {
+        super.drawLine(x1, y1, x2, y2);
+      }
+    finally
+      {
+        unlock();
+      }
+  }
+
+  public void drawRect(int x, int y, int width, int height)
+  {
+    lock();
+    try
+      {
+        super.drawRect(x, y, width, height);
+      }
+    finally
+      {
+        unlock();
+      }
+  }
+
+  public void fillRect(int x, int y, int width, int height)
+  {
+    lock();
+    try
+      {
+        super.fillRect(x, y, width, height);
+      }
+    finally
+      {
+        unlock();
+      }
+  }
+
 }
 

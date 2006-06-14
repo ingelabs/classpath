@@ -1,3 +1,10 @@
+2006-06-14  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/awt/peer/gtk/ComponentGraphics.java (drawLine): Lock and
+	call super.
+	(drawRect): Likewise.
+	(fillRect): Likewise.
+
 2006-06-14  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/Component.java
