@@ -148,7 +148,7 @@ public class JCheckBoxMenuItem
     setModel(new JToggleButton.ToggleButtonModel());
     this.state = state;
     if (state == true)
-      this.setVisible(true);
+      this.setSelected(true);
   }
 
   /**
