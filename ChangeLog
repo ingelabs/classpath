@@ -1,3 +1,9 @@
+2006-06-14  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/javax/security/auth/login/ConfigFileTokenizer.java: Fixed a typo.
+	Condition all trace/debug code based on Configuration.DEBUG.
+	Use logger instead of STDOUT and ot STDERR.
+
 2006-06-13  Lillian Angel  <langel@redhat.com>
 
 	* native/plugin/gcjwebplugin.cc
