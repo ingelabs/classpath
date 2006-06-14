@@ -49,8 +49,13 @@ package javax.management;
  * @since 1.5
  */
 public class MBeanException
-  extends Exception
+  extends JMException
 {
+
+  /**
+   * Compatible with JDK 1.5
+   */
+  private static final long serialVersionUID = 4066342430588744142L;
 
   /* Sun re-implemented causality -- don't know why, but
      serialization demands we do too... */

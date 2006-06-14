@@ -49,8 +49,13 @@ package javax.management;
  * @since 1.5
  */
 public class ReflectionException
-  extends Exception
+  extends JMException
 {
+
+  /**
+   * Compatible with JDK 1.5
+   */
+  private static final long serialVersionUID = 9170809325636915553L;
 
   /* Sun re-implemented causality -- don't know why, but
      serialization demands we do too... */

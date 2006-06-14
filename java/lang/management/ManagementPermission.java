@@ -80,6 +80,11 @@ public class ManagementPermission
 {
 
   /**
+   * Compatible with JDK 1.5
+   */
+  private static final long serialVersionUID = 1897496590799378737L;
+
+  /**
    * Constructs a new <code>ManagementPermission</code>
    * for one of the two permission targets, "monitor"
    * and "control".
