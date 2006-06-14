@@ -542,7 +542,8 @@ public class File implements Serializable, Comparable
   /**
    * This method returns a <code>String</code> the represents this file's
    * parent.  <code>null</code> is returned if the file has no parent.  The
-   * parent is determined via a simple operation which removes the
+   * parent is determined via a simple operation which removes the name
+   * after the last file separator character, as determined by the platform.
    *
    * @return The parent directory of this file
    */
