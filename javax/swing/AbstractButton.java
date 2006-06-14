@@ -866,7 +866,7 @@ public abstract class AbstractButton extends JComponent
     borderPainted = true;
     contentAreaFilled = true;
     focusPainted = true;
-    setFocusable(true);
+    setFocusable(false);
     setAlignmentX(CENTER_ALIGNMENT);
     setAlignmentY(CENTER_ALIGNMENT);
     setDisplayedMnemonicIndex(-1);
