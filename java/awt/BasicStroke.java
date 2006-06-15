@@ -260,7 +260,7 @@ public class BasicStroke implements Stroke
    */
   public Shape createStrokedShape(Shape s)
   {
-    PathIterator pi = s.getPathIterator( new AffineTransform() );
+    PathIterator pi = s.getPathIterator(null);
 
     if( dash == null )
       return solidStroke( pi );
