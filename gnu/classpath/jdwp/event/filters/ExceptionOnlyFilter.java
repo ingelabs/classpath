@@ -117,7 +117,7 @@ public class ExceptionOnlyFilter
     Boolean caught 
       = (Boolean) event.getParameter(Event.EVENT_EXCEPTION_CAUGHT);
 
-    return classMatch && (caught.booleanValue()) ? _caught : _uncaught;
+    return classMatch && ((caught.booleanValue()) ? _caught : _uncaught);
   }
   
 }

@@ -1,3 +1,8 @@
+2006-06-15  Kyle Galloway <kgallowa@redhat.com>
+
+    * gnu/classpath/jdwp/event/filters/ExceptionOnlyFilter.java
+    (matches): Added explicit brackets to return statement.
+
 2006-06-15  Tania Bento  <tbento@redhat.com>
 
 	* javax/swing/AbstractButton.java:
@@ -63,6 +68,7 @@
 	Added serialization UID and changed to extend
 	javax.management.JMException.
 	
+>>>>>>> 1.7826
 2006-06-14  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/Component.java
