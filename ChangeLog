@@ -1,5 +1,10 @@
 2006-06-15  Mark Wielaard  <mark@klomp.org>
 
+	* java/awt/geom/GeneralPath.java (closePath): Return if path already
+	closed.
+
+2006-06-15  Mark Wielaard  <mark@klomp.org>
+
 	* java/awt/BasicStroke.java (createStrokedShape): Call getPathIterator
 	with null argument.
 
