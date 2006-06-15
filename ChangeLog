@@ -1,3 +1,8 @@
+2006-06-15  Tania Bento  <tbento@redhat.com>
+
+	* javax/swing/AbstractButton.java:
+	(AbstractButton): 'Focusable' should be set to true and not false.
+
 2006-06-15  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/lang/management/ManagementFactory.java:
