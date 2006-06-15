@@ -240,6 +240,8 @@ public class BasicComboBoxUI extends ComboBoxUI
         comboBox.setLayout(createLayoutManager());
         comboBox.setFocusable(true);
         installKeyboardActions();
+        comboBox.putClientProperty(BasicLookAndFeel.DONT_CANCEL_POPUP,
+                                   Boolean.TRUE);
       }
   }
 
@@ -570,6 +572,10 @@ public class BasicComboBoxUI extends ComboBoxUI
           arrowButton.addMouseListener(popupMouseListener);
         if (popupMouseMotionListener != null)
           arrowButton.addMouseMotionListener(popupMouseMotionListener);
+        
+        // Mark the button as not closing the popup, we handle this ourselves.
+        arrowButton.putClientProperty(BasicLookAndFeel.DONT_CANCEL_POPUP,
+                                      Boolean.TRUE);
       }
   }
 

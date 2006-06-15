@@ -64,6 +64,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 import javax.swing.LookAndFeel;
 import javax.swing.MenuSelectionManager;
@@ -129,7 +130,9 @@ public abstract class BasicLookAndFeel extends LookAndFeel
       if (target instanceof Container)
         target = ((Container) target).findComponentAt(ev.getPoint());
       if (m.getSelectedPath().length > 0
-          && ! m.isComponentPartOfCurrentMenu(target))
+          && ! m.isComponentPartOfCurrentMenu(target)
+          && (((JComponent)target).getClientProperty(DONT_CANCEL_POPUP) == null
+          || !((JComponent)target).getClientProperty(DONT_CANCEL_POPUP).equals(Boolean.TRUE)))
         {
           m.clearSelectedPath();
         }

@@ -1,3 +1,14 @@
+2006-06-15  Francis Kung  <fkung@redhat.com>
+
+	* javax/swing/plaf/basic/BasicArrowButton.java:
+	(BasicArrowButton): move client property for not triggering out 
+	of consturctor
+	* javax/swing/plaf/basic/BasicComboBoxUI.java:
+	(configureArrowButton): set client property for not triggering
+	(installUI): set client property for not triggering
+	* javax/swing/plaf/basic/BasicLookAndFeel.java:
+	(PopupHelper.mousePressed): check client property for triggering
+
 2006-06-15  Roman Kennke  <kennke@aicas.com>
 
 	PR 28037
