@@ -1,3 +1,18 @@
+2006-06-15  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* configure.ac: Rename appletviewer to gappletviewer, jarsigner to
+	gjarsigner and keytool to gkeytool.
+	* doc/tools.texinfo: Add note about tool exectable names.
+	* tools/Makefile.am: Rename appletviewer to gappletviewer,
+	jarsigner to gjarsigner and keytool to gkeytool.
+	* tools/appletviewer.in: Rename ...
+	* tools/gappletviewer.in: New file.
+	* tools/jarsigner.in: Rename ...
+	* tools/gjarsigner.in: New file.
+	* tools/keytool.in: Rename ...
+	* tools/gkeytool.in: New file.
+	* tools/toolwrapper.c: Simplify TOOLS_ZIP macro.
+
 2006-06-15  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/management/AttributeList.java:

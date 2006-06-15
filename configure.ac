@@ -739,12 +739,12 @@ examples/Makefile.jawt])
 
 if test "x${COMPILE_WRAPPERS}" = xno
 then
-AC_CONFIG_FILES([tools/appletviewer
-tools/jarsigner
-tools/keytool])
-AC_CONFIG_COMMANDS([appletviewer],[chmod 755 tools/appletviewer])
-AC_CONFIG_COMMANDS([jarsigner],[chmod 755 tools/jarsigner])
-AC_CONFIG_COMMANDS([keytool],[chmod 755 tools/keytool])
+AC_CONFIG_FILES([tools/gappletviewer
+tools/gjarsigner
+tools/gkeytool])
+AC_CONFIG_COMMANDS([gappletviewer],[chmod 755 tools/gappletviewer])
+AC_CONFIG_COMMANDS([gjarsigner],[chmod 755 tools/gjarsigner])
+AC_CONFIG_COMMANDS([gkeytool],[chmod 755 tools/gkeytool])
 fi
 
 AC_CONFIG_COMMANDS([gen-classlist],[chmod 755 lib/gen-classlist.sh])

@@ -128,6 +128,9 @@ I18N Issues
 Two Applet Tools are available with GNU Classpath: @b{appletviewer}
 and @b{gcjwebplugin}.
 
+To avoid conflicts with other implementations, the appletviewer
+executable is called ``gappletviewer''.
+
 @menu
 * appletviewer Tool::          Load applets
 * gcjwebplugin::               Load applets in a web browser
@@ -269,6 +272,10 @@ browsers (e.g., Firefox, Galeon, Mozilla).
 @chapter Security Tools
 
 Two Security Tools are available with GNU Classpath: @b{jarsigner} and @b{keytool}.
+
+To avoid conflicts with other implementations, the jarsigner
+executable is called ``gjarsigner'' and the keytool executable is
+called ``gkeytool''.
 
 @menu
 * jarsigner Tool::             Sign and verify .JAR files
