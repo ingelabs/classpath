@@ -2139,11 +2139,31 @@ public abstract class JComponent extends Container implements Serializable
   {
     isRepainting = true;
     RepaintManager rm = RepaintManager.currentManager(this);
-    if (rm.isDoubleBufferingEnabled() && isDoubleBuffered())
+    if (rm.isDoubleBufferingEnabled() && isPaintingDoubleBuffered())
       paintDoubleBuffered(r);
     else
       paintSimple(r);
     isRepainting = false;
+  }
+
+  /**
+   * Returns true if we must paint double buffered, that is, when this
+   * component or any of it's ancestors are double buffered.
+   *
+   * @return true if we must paint double buffered, that is, when this
+   *         component or any of it's ancestors are double buffered
+   */
+  private boolean isPaintingDoubleBuffered()
+  {
+    boolean doubleBuffered = isDoubleBuffered();
+    Component parent = getParent();
+    while (! doubleBuffered && parent != null)
+      {
+        doubleBuffered = parent instanceof JComponent
+                         && ((JComponent) parent).isDoubleBuffered();
+        parent = parent.getParent();
+      }
+    return doubleBuffered;
   }
 
   /**

@@ -1,3 +1,11 @@
+2006-06-15  Roman Kennke  <kennke@aicas.com>
+
+	PR 28027
+	* javax/swing/JComponent.java
+	(paintImmediately2): Only paint component without double buffering
+	when all of it's parents have also double buffering disabled.
+	(isPaintingDoubleBuffered): New helper method.
+
 2006-06-15  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
