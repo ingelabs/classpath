@@ -1,4 +1,9 @@
-2006-06-15  Tania Bento  <tbento@redhta.com>
+2006-06-15  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/font/TextLayout.java:
+	DEFAULT_CARET_POLICY changed to be public static final.
+
+2006-06-15  Tania Bento  <tbento@redhat.com>
 
 	* javax/swing/plaf/metal/MetalScrollButton.java
 	(MetalScrollButton): Should set 'focusable' to false.

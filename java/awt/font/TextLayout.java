@@ -85,7 +85,7 @@ public final class TextLayout implements Cloneable
   /**
    * The default caret policy.
    */
-  static TextLayout.CaretPolicy DEFAULT_CARET_POLICY = new CaretPolicy();
+  public static final TextLayout.CaretPolicy DEFAULT_CARET_POLICY = new CaretPolicy();
 
   /**
    * Constructs a TextLayout.
