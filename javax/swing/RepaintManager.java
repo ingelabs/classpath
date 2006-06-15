@@ -711,7 +711,7 @@ public class RepaintManager
 
     // Make sure we have a sane clip at this point.
     g.clipRect(rootRect.x, rootRect.y, rootRect.width, rootRect.height);
-    g.drawImage(buffer, rootRect.x - bufferRect.x, rootRect.y - bufferRect.y,
+    g.drawImage(buffer, bufferRect.x - rootRect.x, bufferRect.y - rootRect.y,
                 root);
     g.dispose();
 

@@ -1,5 +1,11 @@
 2006-06-15  Roman Kennke  <kennke@aicas.com>
 
+	PR 28037
+	* javax/swing/RepaintManager.java
+	(blitBuffer): Substract coordinates the other way around.
+
+2006-06-15  Roman Kennke  <kennke@aicas.com>
+
 	PR 28027
 	* javax/swing/JComponent.java
 	(paintImmediately2): Only paint component without double buffering
