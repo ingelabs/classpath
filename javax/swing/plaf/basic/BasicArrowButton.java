@@ -95,6 +95,7 @@ public class BasicArrowButton extends JButton implements SwingConstants
   {
     super();
     setDirection(direction);
+    setFocusable(false);
   }
 
   /**
@@ -116,6 +117,7 @@ public class BasicArrowButton extends JButton implements SwingConstants
     this.shadow = shadow;
     this.darkShadow = darkShadow;
     this.highlight = highlight;
+    setFocusable(false);
   }
 
   /**
