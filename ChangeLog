@@ -10,6 +10,16 @@
 
 2006-06-15  Tania Bento  <tbento@redhat.com>
 
+	* javax/swing/JRadioButtonMenuItem.java
+	(JRadioButtonMenuItem): Should set 'focusable' to false.
+
+2006-06-15  Tania Bento  <tbento@redhat.com>
+
+	* javax/swing/JCheckBoxMenuItem.java
+	(JCheckBoxMenuItem): Should set 'focusable' to false.
+
+2006-06-15  Tania Bento  <tbento@redhat.com>
+
 	* javax/swing/AbstractButton.java:
 	(AbstractButton): 'Focusable' should be set to true and not false.
 
