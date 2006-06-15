@@ -71,6 +71,11 @@ public class ManagementFactory
   private static RuntimeMXBean runtimeBean;
 
   /**
+   * Private constructor to prevent instance creation.
+   */
+  private ManagementFactory() {}
+
+  /**
    * Returns the operating system management bean for the
    * operating system on which the virtual machine is running.
    *

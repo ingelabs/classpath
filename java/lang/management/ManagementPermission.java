@@ -75,7 +75,7 @@ import java.security.BasicPermission;
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.5
  */
-public class ManagementPermission
+public final class ManagementPermission
   extends BasicPermission
 {
 
