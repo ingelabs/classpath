@@ -1,3 +1,13 @@
+2006-06-15  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(draw(Shape)): Pass null transform to getPathIterator(),
+	(getClip): Likewise,
+	* gnu/java/print/PostscriptGraphics2D.java
+	(drawStringShape): Pass null transform to getPathIterator(),
+	(writeShape): Likewise,
+	* java/awt/Shape.java: Small updates to API docs.
+
 2006-06-14  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicComboBoxUI.java

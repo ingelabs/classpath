@@ -776,7 +776,7 @@ public abstract class CairoGraphics2D extends Graphics2D
     else
       {
         GeneralPath p = new GeneralPath();
-        PathIterator pi = clip.getPathIterator(new AffineTransform());
+        PathIterator pi = clip.getPathIterator(null);
         p.append(pi, false);
         return p;
       }
@@ -904,8 +904,7 @@ public abstract class CairoGraphics2D extends Graphics2D
         // See CubicSegment.getDisplacedSegments().
         if (stroke instanceof BasicStroke)
           {
-            PathIterator flatten = s.getPathIterator(new AffineTransform(),
-                                                       1.0);
+            PathIterator flatten = s.getPathIterator(null, 1.0);
             GeneralPath p = new GeneralPath();
             p.append(flatten, false);
             s = p;
