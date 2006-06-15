@@ -149,6 +149,7 @@ public class JCheckBoxMenuItem
     this.state = state;
     if (state == true)
       this.setSelected(true);
+    setFocusable(false);
   }
 
   /**
