@@ -53,6 +53,11 @@ public class AttributeList
 {
 
   /**
+   * Compatible with JDK 1.5
+   */
+  private static final long serialVersionUID = -4077085769279709076L;
+
+  /**
    * Constructs an empty list with an initial capacity of ten.
    *
    * @see java.util.ArrayList#ArrayList()
