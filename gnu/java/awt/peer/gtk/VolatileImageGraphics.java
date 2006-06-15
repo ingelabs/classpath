@@ -83,7 +83,7 @@ public class VolatileImageGraphics extends ComponentGraphics
 
   public GraphicsConfiguration getDeviceConfiguration()
   {
-    return null;
+    return owner.component.getGraphicsConfiguration();
   }
 
   public Graphics create()

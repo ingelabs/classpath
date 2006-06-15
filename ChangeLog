@@ -1,5 +1,15 @@
 2006-06-15  Mark Wielaard  <mark@klomp.org>
 
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
+	(getGraphicsConfiguration): Return default screen device.
+	* gnu/java/awt/peer/gtk/GtkVolatileImage.java (component):
+	New field.
+	(GtkVolatileImage): Record initiating component.
+	* gnu/java/awt/peer/gtk/VolatileImageGraphics.java
+	(getDeviceConfiguration): Return configuration of image component.
+
+2006-06-15  Mark Wielaard  <mark@klomp.org>
+
 	* java/awt/geom/GeneralPath.java (closePath): Return if path already
 	closed.
 
