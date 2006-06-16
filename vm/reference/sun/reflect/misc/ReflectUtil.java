@@ -64,7 +64,6 @@ public class ReflectUtil
    * @param declarer the declaring class of the member
    * @param ignored unknown parameter; always null
    * @param modifiers the modifiers on the member
-   * @return true if access is granted, false otherwise
    */
   public static void ensureMemberAccess(Class caller,
                                         Class declarer,
