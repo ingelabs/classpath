@@ -1,3 +1,7 @@
+2006-06-16  Tom Tromey  <tromey@redhat.com>
+
+	* external/jsr166: Removed files from cvs trunk.
+
 2006-06-16  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/FileDialog.java
@@ -233,7 +237,6 @@
 	Added serialization UID and changed to extend
 	javax.management.JMException.
 	
->>>>>>> 1.7826
 2006-06-14  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/Component.java
@@ -319,6 +322,7 @@
 	(Java_gnu_java_awt_peer_gtk_GtkImage_getPixels): Return when array
 	cannot be allocated.
 
+>>>>>>> 1.7848
 2006-06-14  Tom Tromey  <tromey@redhat.com>
 
 	PR java/28024:
