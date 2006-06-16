@@ -1,3 +1,13 @@
+2006-06-16  Francis Kung  <fkung@redhat.com>
+
+	* examples/gnu/classpath/examples/swing/Demo.java:
+	(mkButtonBar): Rename FillRect to JNIOverhead.
+	(mkMenuBar): Rename FillRect to JNIOverhead.
+	* examples/gnu/classpath/examples/swing/FillRect.java: Removed.
+	* examples/gnu/classpath/examples/java2d/J2dBenchmark.java: New file.
+	* examples/gnu/classpath/examples/java2d/JNIOverhead.java:
+	Moved from old FillRect.
+        
 2006-06-16  Tom Tromey  <tromey@redhat.com>
 
 	* tools/.cvsignore: Added new tool names.

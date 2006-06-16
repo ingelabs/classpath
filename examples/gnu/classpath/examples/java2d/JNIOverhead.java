@@ -1,4 +1,4 @@
-/* FillRect.java - demonstrator for classpath/gcj fillrect performance issue
+/* JNIOverhead.java - demonstrator for classpath/gcj fillrect performance issue
    Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath examples.
@@ -18,7 +18,9 @@ along with GNU Classpath; see the file COPYING.  If not, write to the
 Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301 USA. */
 
-package gnu.classpath.examples.swing;
+package gnu.classpath.examples.java2d;
+
+import gnu.classpath.examples.swing.DemoFactory;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -38,12 +40,12 @@ import javax.swing.SwingUtilities;
 /** 
  * @author Norman Hendrich
  */
-public class FillRect
+public class JNIOverhead
   extends JPanel
   implements ActionListener 
 {
 
-  static FillRect fillRectDemo;
+  static JNIOverhead fillRectDemo;
 
   LCDCanvas lcd;
   Worker worker;
@@ -80,7 +82,7 @@ public class FillRect
     }
   }
 
-  public FillRect()
+  public JNIOverhead()
   {
     setSize(nx, ny);
     createContent();
@@ -320,7 +322,7 @@ public class FillRect
   public static void main(String args[])
     throws Exception
   {
-    fillRectDemo = new FillRect();
+    fillRectDemo = new JNIOverhead();
     for (int i = 0; i < args.length; i++)
       {
         if ("-help".equals(args[i]))
@@ -371,7 +373,7 @@ public class FillRect
     {
       public JComponent createDemo()
       {
-        fillRectDemo = new FillRect();
+        fillRectDemo = new JNIOverhead();
         SwingUtilities.invokeLater
         (new Runnable()
          {
