@@ -65,7 +65,7 @@ public class ThreadOnlyFilter
   public ThreadOnlyFilter (ThreadId tid)
     throws InvalidThreadException
   {
-    if (tid.getReference().get () == null)
+    if (tid == null || tid.getReference().get () == null)
       throw new InvalidThreadException (tid.getId ());
 
     _tid = tid;

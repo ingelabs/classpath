@@ -1,3 +1,9 @@
+2006-06-16  Kyle Galloway  <kgallowa@redhat.com>
+
+	* gnu/classpath/jdwp/event/filters/ThreadOnlyFilter.java:
+	Added check for null ThreadId to avoid null pointer
+	exception.
+
 2006-06-16  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/DefaultComboBoxModel.java
