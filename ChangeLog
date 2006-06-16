@@ -1,5 +1,13 @@
 2006-06-16  Keith Seitz  <keiths@redhat.com>
 
+	* gnu/classpath/jdwp/event/EventManager.java (getDefault): Redo
+	instantiation so that EventManager is created when getDefault
+	is first called.
+	* gnu/classpath/jdwp/Jdwp.java (Thread): Force creation
+	of EventManager.
+
+2006-06-16  Keith Seitz  <keiths@redhat.com>
+
 	* gnu/classpath/jdwp/Jdwp.java (_initLock): New field.
 	(_initCount): New field.
 	(Jdwp): Don't set isDebugging until fully initialized.

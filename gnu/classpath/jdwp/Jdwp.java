@@ -315,6 +315,13 @@ public class Jdwp
 	System.exit (1);
       }
 
+    /* Force creation of the EventManager. If the event manager
+       has not been created when isDebugging is set, it is possible
+       that the VM will call Jdwp.notify (which uses EventManager)
+       while the EventManager is being created (or at least this is
+       a problem with gcj/gij). */
+    EventManager.getDefault();
+
     // Now we are finally ready and initialized
     isDebugging = true;
   }
