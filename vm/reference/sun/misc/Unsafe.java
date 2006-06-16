@@ -35,7 +35,7 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package gnu.classpath;
+package sun.misc;
 
 import java.lang.reflect.Field;
 
@@ -48,7 +48,7 @@ import java.lang.reflect.Field;
  * @author Tom Tromey (tromey@redhat.com)
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  */
-public final class Unsafe
+public class Unsafe
 {
   // Singleton class.
   private static Unsafe unsafe = new Unsafe();
@@ -279,7 +279,7 @@ public final class Unsafe
    * @param arrayClass the class for which the first element's address should
    *                   be obtained.
    * @return the offset of the first element of the array class.
-   * @see #arrayIndexScale(Class)
+   * @see arrayIndexScale(Class)
    */
   public native int arrayBaseOffset(Class arrayClass);
 

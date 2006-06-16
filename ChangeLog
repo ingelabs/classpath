@@ -1,3 +1,11 @@
+2006-06-16  Tom Tromey  <tromey@redhat.com>
+
+	* NEWS: Updated for JSR 166.
+	* vm/reference/sun/reflect/Reflection.java (verifyMemberAccess):
+	Removed.
+	(getCallerClass): Now static.
+	* vm/reference/sun/reflect/misc/ReflectUtil.java: New file.
+
 2006-06-16  Kyle Galloway  <kgallowa@redhat.com>
 
 	* gnu/classpath/jdwp/event/ExceptionEvent:

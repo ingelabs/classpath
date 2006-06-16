@@ -36,6 +36,10 @@ Runtime interface changes:
   time of the VM.  In addition, one of sun.boot.class.path
   or java.boot.class.path should be defined by the VM to
   support the optional boot class path access functionality.
+* The Unsafe class was moved back to the place expected by the JSR 166
+  reference implementation.  We've also added a couple other new VM
+  classes to support the JSR 166 code -- sun.reflect.Reflection and
+  sun.reflect.misc.ReflectUtil.
 
 New in release 0.91 (May 15, 2006)
 
