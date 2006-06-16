@@ -1,5 +1,14 @@
 2006-06-16  Lillian Angel  <langel@redhat.com>
 
+	* java/awt/FileDialog.java
+	(FileDialog): Implemented.
+	(FileDialog): Implemented.
+	(FileDialog): Implemented.
+	* java/awt/Font.java:
+	Added TYPE1_FONT constant field.
+
+2006-06-16  Lillian Angel  <langel@redhat.com>
+
 	* java/awt/font/TextLayout.java:
 	Removed unneeded imports.
 	* javax/swing/plaf/basic/BasicScrollBarUI.java:
