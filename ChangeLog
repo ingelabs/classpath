@@ -1,3 +1,17 @@
+2006-06-16  Keith Seitz  <keiths@redhat.com>
+
+	* gnu/classpath/jdwp/Jdwp.java (_initLock): New field.
+	(_initCount): New field.
+	(Jdwp): Don't set isDebugging until fully initialized.
+	(subcomponentInitialized): New method.
+	(run): Wait for PacketProcessor and JdwpConnection to
+	startup, then set isDebugging, and then let this thread
+	die.
+	* gnu/classpath/jdwp/transport/JdwpConnection.java
+	(run): Add synchronization notification.
+	* gnu/classpath/jdwp/processor/PacketProcessor.java
+	(run): Likewise.
+
 2006-06-16  Tom Tromey  <tromey@redhat.com>
 
 	* NEWS: Updated for JSR 166.
