@@ -71,6 +71,7 @@ public class SingleStepEvent
    * 
    * @param thread the thread where the exception occurred
    * @param location the location single stepped to
+   * @param instance the instance in which the single step occurred
    */
   public SingleStepEvent(Thread thread, Location location, Object instance)
   {

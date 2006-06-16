@@ -1,3 +1,14 @@
+2006-06-16  Kyle Galloway  <kgallowa@redhat.com>
+
+	* gnu/classpath/jdwp/event/ExceptionEvent:
+	Added Object instance to javadoc in constructor
+	* gnu/classpath/jdwp/event/MethodEntryEvent:
+	Ditto.
+	* gnu/classpath/jdwp/event/MethodExitEvent:
+	Ditto,
+	* gnu/classpath/jdwp/event/SingleStepEvent:
+	Ditto. 
+
 2006-06-16  Tom Tromey  <tromey@redhat.com>
 
 	* external/jsr166: Removed files from cvs trunk.

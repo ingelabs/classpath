@@ -68,6 +68,7 @@ public class MethodEntryEvent
    * 
    * @param thread the thread where the exception occurred
    * @param location the location single stepped to
+   * @param instance instance from which the method was called
    */
   public MethodEntryEvent(Thread thread, Location location, Object instance)
   {

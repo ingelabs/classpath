@@ -79,6 +79,7 @@ public class ExceptionEvent
    * @param thread the thread where the exception occurred
    * @param location the location where the exception was thrown
    * @param catchLocation the location where the exception was caught
+   * @param instance the instance that threw the exception
    */
   public ExceptionEvent(Throwable exception, Thread thread, Location location,
                         Location catchLocation, Object instance)
