@@ -1,5 +1,10 @@
 2006-06-16  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/DefaultComboBoxModel.java
+	(removeElementAt): Set new selected item by calling setSelectedItem().
+
+2006-06-16  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/DefaultButtonModel.java
 	(setSelected): Use 'this', not null, for the item in the ItemEvent.
 
