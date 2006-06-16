@@ -1,3 +1,23 @@
+2006-06-16  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/font/TextLayout.java:
+	Removed unneeded imports.
+	* javax/swing/plaf/basic/BasicScrollBarUI.java:
+	Added new thumbRollover field.
+	(mouseMoved): Added code to set thumbRollover field.
+	(isThumbRollover): New function.
+	(setThumbRollover): New function.
+	(getSupportsAbsolutePositioning): Implemented. This
+	needs to be changed once the feature has been 
+	implemented.
+	* javax/swing/plaf/basic/BasicSliderUI.java:
+	Added new dragging field.
+	(mouseDragged): Initialized dragging field.
+	(isDragging): New function.
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	(focusGained): Marked as not implemented.
+	(focusLost): Likewise.
+
 2006-06-16  Kyle Galloway  <kgallowa@redhat.com>
 
 	* gnu/classpath/jdwp/event/filters/ThreadOnlyFilter.java:

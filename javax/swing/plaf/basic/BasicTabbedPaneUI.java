@@ -98,6 +98,7 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
      * @param e The FocusEvent.
      */
     public void focusGained(FocusEvent e)
+      throws NotImplementedException
     {
       // FIXME: Implement.
     }
@@ -108,6 +109,7 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
      * @param e The FocusEvent.
      */
     public void focusLost(FocusEvent e)
+      throws NotImplementedException
     {
       // FIXME: Implement.
     }
