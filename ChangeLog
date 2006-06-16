@@ -1,5 +1,10 @@
 2006-06-16  Robert Schuster  <robertschuster@fsfe.org>
 
+	* javax/swing/plaf/metal/MetalMenuBarUI.java:
+	(update): Added subexpression to if-statement.
+
+2006-06-16  Robert Schuster  <robertschuster@fsfe.org>
+
 	* javax/swing/plaf/basic/BasicRadioButtonUI.java:
 	(installDefaults): Removed unneccessary code.
 	(paint): Removed complex if-cascade, revert to default icon if
@@ -162,6 +167,7 @@
 	Added serialization UID and changed to extend
 	javax.management.JMException.
 	
+>>>>>>> 1.7826
 2006-06-14  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/Component.java
@@ -340,6 +346,7 @@
 	compatibility with filters.
 	(getParameter): Modified to allow access to above. 
 
+>>>>>>> 1.7824
 2006-06-13  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/peer/gtk/CairoSurface.java
@@ -361,6 +368,7 @@
 	or not the labels are visible,
 	(paintTrack): Shift track down one pixel.
 
+>>>>>>> 1.7799
 2006-06-13  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/image/PixelGrabber.java
@@ -1131,6 +1139,7 @@
 	(TreeIncrementAction.actionPerformed): Use action name as command.
 	(TreeIncrementAction.isEnabled): Implemented.
 
+>>>>>>> 1.7796
 2006-06-08  Mark Wielaard  <mark@klomp.org>
 
 	PR 27917
