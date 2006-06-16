@@ -1,5 +1,9 @@
 2006-06-16  Tom Tromey  <tromey@redhat.com>
 
+	* tools/.cvsignore: Added new tool names.
+
+2006-06-16  Tom Tromey  <tromey@redhat.com>
+
 	* vm/reference/sun/reflect/misc/ReflectUtil.java: Moved...
 	* vm/reference/sun/misc/ReflectUtil.java: ...from here.
 

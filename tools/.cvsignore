@@ -5,3 +5,6 @@ Makefile
 tools.zip
 appletviewer
 .deps
+gappletviewer
+gjarsigner
+gkeytool
