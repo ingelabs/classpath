@@ -1358,7 +1358,7 @@ public abstract class CairoGraphics2D extends Graphics2D
     else
       { cy = dy2; ch = dy1 - dy2; }
     
-    setClip( cx, cy, cw, ch );
+    clipRect( cx, cy, cw, ch );
 
     AffineTransform tx = new AffineTransform();
     tx.translate( dx1 - sx1*scaleX, dy1 - sy1*scaleY );

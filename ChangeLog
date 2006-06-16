@@ -1,3 +1,10 @@
+2006-06-16  Roman Kennke  <kennke@aicas.com>
+
+	PR 28027
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(drawImage): Don't use setClip() but instead clipRect() to
+	intersect the current clip with a new one.
+
 2006-06-15  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* configure.ac: Rename appletviewer to gappletviewer, jarsigner to
