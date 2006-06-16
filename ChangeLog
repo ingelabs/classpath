@@ -355,7 +355,6 @@
 	(Java_gnu_java_awt_peer_gtk_GtkImage_getPixels): Return when array
 	cannot be allocated.
 
->>>>>>> 1.7848
 2006-06-14  Tom Tromey  <tromey@redhat.com>
 
 	PR java/28024:
@@ -449,7 +448,6 @@
 	compatibility with filters.
 	(getParameter): Modified to allow access to above. 
 
->>>>>>> 1.7824
 2006-06-13  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/peer/gtk/CairoSurface.java
@@ -471,7 +469,6 @@
 	or not the labels are visible,
 	(paintTrack): Shift track down one pixel.
 
->>>>>>> 1.7799
 2006-06-13  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/image/PixelGrabber.java
@@ -1242,7 +1239,6 @@
 	(TreeIncrementAction.actionPerformed): Use action name as command.
 	(TreeIncrementAction.isEnabled): Implemented.
 
->>>>>>> 1.7796
 2006-06-08  Mark Wielaard  <mark@klomp.org>
 
 	PR 27917
