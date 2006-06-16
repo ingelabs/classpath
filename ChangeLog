@@ -1,3 +1,9 @@
+2006-06-16  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/event/ListDataEvent.java: updated API docs, plus
+	(ListDataEvent): Handle case where index0 > index1,
+	(toString): Implemented.
+
 2006-06-16  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/plaf/metal/MetalMenuBarUI.java:
