@@ -1411,6 +1411,8 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
    * Returns true if the mouse is over the thumb.
    * 
    * @return true if the mouse is over the thumb.
+   * 
+   * @since 1.5
    */
   public boolean isThumbRollover()
   {
@@ -1422,6 +1424,8 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
    * whether or not the mouse is over the thumb.
    * 
    * @param active - true if the mouse is over the thumb.
+   * 
+   * @since 1.5
    */
   protected void setThumbRollover(boolean active)
   {
@@ -1434,6 +1438,8 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
    * 
    * @return true if the user can position the thumb with a mouse
    * click.
+   * 
+   * @since 1.5
    */
   public boolean getSupportsAbsolutePositioning()
   {

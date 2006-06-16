@@ -613,6 +613,8 @@ public class BasicSliderUI extends SliderUI
    * Returns true if the user is dragging the slider.
    * 
    * @return true if the slider is being dragged.
+   * 
+   * @since 1.5
    */
   protected boolean isDragging()
   {

@@ -106,6 +106,8 @@ private int mode;
    * parent. This dialog will have no title and will be for loading a file.
    * 
    * @param parent The parent dialog for this.
+   * 
+   * @since 1.5
    */
   public FileDialog(Dialog parent)
   {
@@ -118,6 +120,8 @@ private int mode;
    *
    * @param parent The parent dialog for this.
    * @param title The title for this dialog.
+   * 
+   * @since 1.5
    */
   public FileDialog(Dialog parent, String title)
   {
@@ -134,6 +138,8 @@ private int mode;
    *          <code>SAVE</code>.
    * @throws IllegalArgumentException - if illegal mode, if
    *           GraphicsEnvironment.isHeadless or if parent is null.
+   *           
+   * @since 1.5
    */
   public FileDialog(Dialog parent, String title, int mode)
   {

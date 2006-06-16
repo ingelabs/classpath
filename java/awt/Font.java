@@ -118,6 +118,8 @@ public class Font implements Serializable
   /**
    * Indicates to <code>createFont</code> that the supplied font data
    * is in Type1 format.
+   * 
+   * @since 1.5
    */
   public static final int TYPE1_FONT = 1;
 
