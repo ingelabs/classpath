@@ -1,3 +1,14 @@
+2006-06-17  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	On behalf of Vivek Lakshmanan <vivekl@redhat.com>
+	* gnu/javax/crypto/jce/cipher/CipherAdapter.java
+	(engineInit(int, Key, SecureRandom)): Seperate common initialization logic
+	into engineInitHandler and reuse the code in
+	engineInit(int, Key, AlgorithmSpec, SecureRandom).
+	(engineInitHandler): New method.
+	(engineInit(int, Key, AlgorithmParameterSpec, SecureRandom)): When param is
+	null, use random or default information when possible.
+
 2006-06-16  Francis Kung  <fkung@redhat.com>
 
 	* examples/gnu/classpath/examples/swing/Demo.java:

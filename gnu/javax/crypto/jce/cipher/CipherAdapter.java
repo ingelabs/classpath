@@ -38,6 +38,7 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.jce.cipher;
 
+import gnu.java.security.Registry;
 import gnu.javax.crypto.cipher.IBlockCipher;
 import gnu.javax.crypto.cipher.CipherFactory;
 import gnu.javax.crypto.jce.spec.BlockCipherParameterSpec;
@@ -246,6 +247,30 @@ class CipherAdapter extends CipherSpi
   protected void engineInit(int opmode, Key key, SecureRandom random)
       throws InvalidKeyException
   {
+    try
+      {
+        engineInit(opmode, key, (AlgorithmParameterSpec) null, random);
+      }
+    catch (InvalidAlgorithmParameterException e)
+      {
+        throw new InvalidKeyException(e.getMessage(), e);
+      }
+  }
+
+  /**
+   * Executes initialization logic after all parameters have been handled by the
+   * engineInit()s.
+   * 
+   * @param opmode the desired mode of operation for this instance.
+   * @param key the key material to use for initialization.
+   * @param random a source of randmoness to use if/when needed.
+   * @throws InvalidKeyException if <code>key</code> is invalid or the cipher
+   *           needs extra parameters which can not be derived from
+   *           <code>key</code>; e.g. an IV.
+   */
+  private void engineInitHandler(int opmode, Key key, SecureRandom random)
+      throws InvalidKeyException
+  {
     switch (opmode)
       {
       case Cipher.ENCRYPT_MODE:
@@ -279,12 +304,30 @@ class CipherAdapter extends CipherSpi
       InvalidAlgorithmParameterException
   {
     if (params == null)
-      {
-        byte[] iv = new byte[blockLen];
-        random.nextBytes(iv);
-        attributes.put(IMode.IV, iv);
+      {  
+        // All cipher modes require parameters (like an IV) except ECB. When
+        // these cant be derived from the given key then it must be generated
+        // randomly if in ENCRYPT or WRAP mode. Parameters that have defaults
+        // for our cipher must be set to these defaults.
+        if(! mode.name().toLowerCase().startsWith(Registry.ECB_MODE + "("))
+          {
+            switch (opmode)
+              {
+              case Cipher.ENCRYPT_MODE:
+              case Cipher.WRAP_MODE:
+                byte[] iv = new byte[blockLen];
+                random.nextBytes(iv);
+                attributes.put(IMode.IV, iv);
+                break;
+              default:
+                throw new InvalidAlgorithmParameterException(
+                    "Required algorithm parameters are missing for mode: "
+                    + mode.name());
+              } 
+          }
+        // Add default for block length etc.
         blockLen = cipher.defaultBlockSize();
-        attributes.put(IBlockCipher.CIPHER_BLOCK_SIZE, new Integer(blockLen));
+        attributes.put(IBlockCipher.CIPHER_BLOCK_SIZE, Integer.valueOf(blockLen));
         keyLen = 0;
       }
     else if (params instanceof BlockCipherParameterSpec)
@@ -304,7 +347,7 @@ class CipherAdapter extends CipherSpi
         attributes.put(IBlockCipher.CIPHER_BLOCK_SIZE, new Integer(blockLen));
         keyLen = 0;
       }
-    engineInit(opmode, key, random);
+    engineInitHandler(opmode, key, random);
   }
 
   protected void engineInit(int opmode, Key key, AlgorithmParameters params,
