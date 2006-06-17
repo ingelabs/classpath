@@ -143,7 +143,7 @@ public interface DynamicMBean
    *                             this exception.
    * @see #getAttribute(String)
    */
-  Object setAttribute(Attribute attribute)
+  void setAttribute(Attribute attribute)
     throws AttributeNotFoundException, InvalidAttributeValueException,
 	   MBeanException, ReflectionException;
 
