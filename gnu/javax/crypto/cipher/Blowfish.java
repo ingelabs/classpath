@@ -474,7 +474,7 @@ public class Blowfish extends BaseCipher
 
   public Iterator blockSizes()
   {
-    return Collections.singleton(new Integer(DEFAULT_BLOCK_SIZE)).iterator();
+    return Collections.singleton(Integer.valueOf(DEFAULT_BLOCK_SIZE)).iterator();
   }
 
   public Object makeKey(byte[] k, int bs)

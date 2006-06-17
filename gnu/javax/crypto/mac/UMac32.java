@@ -447,7 +447,7 @@ public class UMac32 extends BaseMac
     Map map = new HashMap();
     map.put(IBlockCipher.KEY_MATERIAL, K);
     //      map.put(IBlockCipher.CIPHER_BLOCK_SIZE, new Integer(128/8));
-    map.put(UMacGenerator.INDEX, new Integer(128));
+    map.put(UMacGenerator.INDEX, Integer.valueOf(128));
     //      map.put(UMacGenerator.CIPHER, Registry.AES_CIPHER);
     kdf.init(map);
     byte[] Kp = new byte[KEY_LEN];

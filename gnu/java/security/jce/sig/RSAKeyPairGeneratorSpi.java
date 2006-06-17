@@ -78,14 +78,14 @@ public class RSAKeyPairGeneratorSpi extends KeyPairGeneratorAdapter
   public void initialize(int keysize, SecureRandom random)
   {
     HashMap attributes = new HashMap();
-    attributes.put(RSAKeyPairGenerator.MODULUS_LENGTH, new Integer(keysize));
+    attributes.put(RSAKeyPairGenerator.MODULUS_LENGTH, Integer.valueOf(keysize));
     if (random != null)
       {
         attributes.put(RSAKeyPairGenerator.SOURCE_OF_RANDOMNESS, random);
       }
 
     attributes.put(RSAKeyPairGenerator.PREFERRED_ENCODING_FORMAT,
-                   new Integer(Registry.ASN1_ENCODING_ID));
+                   Integer.valueOf(Registry.ASN1_ENCODING_ID));
     adaptee.setup(attributes);
   }
 
@@ -109,7 +109,7 @@ public class RSAKeyPairGeneratorSpi extends KeyPairGeneratorAdapter
       }
 
     attributes.put(RSAKeyPairGenerator.PREFERRED_ENCODING_FORMAT,
-                   new Integer(Registry.ASN1_ENCODING_ID));
+                   Integer.valueOf(Registry.ASN1_ENCODING_ID));
     adaptee.setup(attributes);
   }
 }

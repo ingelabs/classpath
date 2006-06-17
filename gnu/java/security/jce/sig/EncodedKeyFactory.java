@@ -365,7 +365,7 @@ public class EncodedKeyFactory
     BigInteger p = spec.getP();
     BigInteger g = spec.getG();
     BigInteger y = spec.getY();
-    Object[] params = new Object[] {new Integer(Registry.X509_ENCODING_ID),
+    Object[] params = new Object[] {Integer.valueOf(Registry.X509_ENCODING_ID),
                                     null, p, g, y};
     Object obj = invokeConstructor("gnu.javax.crypto.key.dh.GnuDHPublicKey",
                                    params);
@@ -435,7 +435,7 @@ public class EncodedKeyFactory
     BigInteger p = spec.getP();
     BigInteger g = spec.getG();
     BigInteger x = spec.getX();
-    Object[] params = new Object[] {new Integer(Registry.PKCS8_ENCODING_ID),
+    Object[] params = new Object[] {Integer.valueOf(Registry.PKCS8_ENCODING_ID),
                                     null, p, g, x};
     Object obj = invokeConstructor("gnu.javax.crypto.key.dh.GnuDHPrivateKey",
                                    params);

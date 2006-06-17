@@ -481,7 +481,7 @@ public final class Twofish extends BaseCipher
   public Iterator blockSizes()
   {
     ArrayList al = new ArrayList();
-    al.add(new Integer(DEFAULT_BLOCK_SIZE));
+    al.add(Integer.valueOf(DEFAULT_BLOCK_SIZE));
 
     return Collections.unmodifiableList(al).iterator();
   }
@@ -489,10 +489,10 @@ public final class Twofish extends BaseCipher
   public Iterator keySizes()
   {
     ArrayList al = new ArrayList();
-    al.add(new Integer(8)); //   64-bit
-    al.add(new Integer(16)); // 128-bit
-    al.add(new Integer(24)); // 192-bit
-    al.add(new Integer(32)); // 256-bit
+    al.add(Integer.valueOf(8)); //   64-bit
+    al.add(Integer.valueOf(16)); // 128-bit
+    al.add(Integer.valueOf(24)); // 192-bit
+    al.add(Integer.valueOf(32)); // 256-bit
 
     return Collections.unmodifiableList(al).iterator();
   }

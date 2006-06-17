@@ -105,11 +105,11 @@ public final class Sequence extends AbstractList
       {
         if (start != end)
           {
-            sequence = new Integer[] { new Integer(start), new Integer(end) };
+            sequence = new Integer[] { Integer.valueOf(start), Integer.valueOf(end) };
           }
         else
           {
-            sequence = new Integer[] { new Integer(start) };
+            sequence = new Integer[] { Integer.valueOf(start) };
           }
       }
     else
@@ -117,9 +117,9 @@ public final class Sequence extends AbstractList
         LinkedList l = new LinkedList();
         for (int i = start; i != end; i += span)
           {
-            l.add(new Integer(i));
+            l.add(Integer.valueOf(i));
           }
-        l.add(new Integer(end));
+        l.add(Integer.valueOf(end));
         sequence = (Integer[]) l.toArray(new Integer[l.size()]);
       }
   }

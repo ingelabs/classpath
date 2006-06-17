@@ -313,7 +313,7 @@ public class PasswordEncryptedEntry extends MaskableEnvelopeEntry implements
       }
     HashMap modeAttr = new HashMap();
     modeAttr.put(IMode.KEY_MATERIAL, dk);
-    modeAttr.put(IMode.STATE, new Integer(state));
+    modeAttr.put(IMode.STATE, Integer.valueOf(state));
     modeAttr.put(IMode.IV, iv);
     try
       {

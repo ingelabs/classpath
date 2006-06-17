@@ -106,7 +106,7 @@ public class SecretKeyGeneratorImpl extends KeyGeneratorSpi
   protected void engineInit (int keySize, SecureRandom random)
   {
     keySize >>>= 3; // Use bytes.
-    if (!keySizes.contains (new Integer (keySize)))
+    if (! keySizes.contains(Integer.valueOf(keySize)))
       throw new InvalidParameterException ("unsupported key size: " + keySize);
     currentKeySize = keySize;
     this.random = random;

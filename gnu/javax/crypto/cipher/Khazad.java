@@ -328,7 +328,7 @@ public final class Khazad extends BaseCipher
   public Iterator blockSizes()
   {
     ArrayList al = new ArrayList();
-    al.add(new Integer(DEFAULT_BLOCK_SIZE));
+    al.add(Integer.valueOf(DEFAULT_BLOCK_SIZE));
 
     return Collections.unmodifiableList(al).iterator();
   }
@@ -336,7 +336,7 @@ public final class Khazad extends BaseCipher
   public Iterator keySizes()
   {
     ArrayList al = new ArrayList();
-    al.add(new Integer(DEFAULT_KEY_SIZE));
+    al.add(Integer.valueOf(DEFAULT_KEY_SIZE));
 
     return Collections.unmodifiableList(al).iterator();
   }

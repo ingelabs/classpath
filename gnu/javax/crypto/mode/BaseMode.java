@@ -178,7 +178,7 @@ public abstract class BaseMode implements IMode
   public Iterator blockSizes()
   {
     ArrayList al = new ArrayList();
-    al.add(new Integer(cipherBlockSize));
+    al.add(Integer.valueOf(cipherBlockSize));
 
     return Collections.unmodifiableList(al).iterator();
   }
@@ -320,10 +320,10 @@ public abstract class BaseMode implements IMode
 
         Map map = new HashMap();
         map.put(KEY_MATERIAL, k);
-        map.put(CIPHER_BLOCK_SIZE, new Integer(cipherBlockSize));
-        map.put(STATE, new Integer(ENCRYPTION));
+        map.put(CIPHER_BLOCK_SIZE, Integer.valueOf(cipherBlockSize));
+        map.put(STATE, Integer.valueOf(ENCRYPTION));
         map.put(IV, iv);
-        map.put(MODE_BLOCK_SIZE, new Integer(bs));
+        map.put(MODE_BLOCK_SIZE, Integer.valueOf(bs));
 
         mode.reset();
         mode.init(map);
@@ -333,7 +333,7 @@ public abstract class BaseMode implements IMode
           }
 
         mode.reset();
-        map.put(STATE, new Integer(DECRYPTION));
+        map.put(STATE, Integer.valueOf(DECRYPTION));
         mode.init(map);
         for (i = 0; i < blockCount; i++)
           {

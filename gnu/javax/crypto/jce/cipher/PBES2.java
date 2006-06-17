@@ -121,7 +121,7 @@ public abstract class PBES2 extends CipherAdapter
         throw new IllegalArgumentException("no such KDF: PBKDF2-" + macName);
       }
     HashMap attrib = new HashMap();
-    attrib.put(IPBE.ITERATION_COUNT, new Integer(key.getIterationCount()));
+    attrib.put(IPBE.ITERATION_COUNT, Integer.valueOf(key.getIterationCount()));
     attrib.put(IPBE.PASSWORD, key.getPassword());
     attrib.put(IPBE.SALT, key.getSalt());
     try

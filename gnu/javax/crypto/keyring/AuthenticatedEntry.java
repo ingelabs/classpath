@@ -210,7 +210,7 @@ public final class AuthenticatedEntry extends MaskableEnvelopeEntry implements
 
     HashMap macAttr = new HashMap();
     macAttr.put(IMac.MAC_KEY_MATERIAL, key);
-    macAttr.put(IMac.TRUNCATED_SIZE, new Integer(maclen));
+    macAttr.put(IMac.TRUNCATED_SIZE, Integer.valueOf(maclen));
     mac.init(macAttr);
     return mac;
   }

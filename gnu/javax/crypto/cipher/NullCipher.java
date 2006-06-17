@@ -88,10 +88,10 @@ public final class NullCipher extends BaseCipher
   public Iterator blockSizes()
   {
     ArrayList al = new ArrayList();
-    al.add(new Integer(64 / 8));
-    al.add(new Integer(128 / 8));
-    al.add(new Integer(192 / 8));
-    al.add(new Integer(256 / 8));
+    al.add(Integer.valueOf(64 / 8));
+    al.add(Integer.valueOf(128 / 8));
+    al.add(Integer.valueOf(192 / 8));
+    al.add(Integer.valueOf(256 / 8));
 
     return Collections.unmodifiableList(al).iterator();
   }
@@ -101,7 +101,7 @@ public final class NullCipher extends BaseCipher
     ArrayList al = new ArrayList();
     for (int n = 8; n < 64; n++)
       {
-        al.add(new Integer(n));
+        al.add(Integer.valueOf(n));
       }
 
     return Collections.unmodifiableList(al).iterator();

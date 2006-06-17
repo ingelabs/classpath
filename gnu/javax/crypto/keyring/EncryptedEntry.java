@@ -214,7 +214,7 @@ public class EncryptedEntry extends MaskableEnvelopeEntry implements Registry
 
     HashMap modeAttr = new HashMap();
     modeAttr.put(IMode.KEY_MATERIAL, key);
-    modeAttr.put(IMode.STATE, new Integer(state));
+    modeAttr.put(IMode.STATE, Integer.valueOf(state));
     modeAttr.put(IMode.IV, iv);
     try
       {

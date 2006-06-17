@@ -261,13 +261,13 @@ public class UHash32 extends BaseMac
     IRandom kdf4 = new UMacGenerator();
     Map map = new HashMap();
     map.put(IBlockCipher.KEY_MATERIAL, K);
-    map.put(UMacGenerator.INDEX, new Integer(0));
+    map.put(UMacGenerator.INDEX, Integer.valueOf(0));
     kdf1.init(map);
-    map.put(UMacGenerator.INDEX, new Integer(1));
+    map.put(UMacGenerator.INDEX, Integer.valueOf(1));
     kdf2.init(map);
-    map.put(UMacGenerator.INDEX, new Integer(2));
+    map.put(UMacGenerator.INDEX, Integer.valueOf(2));
     kdf3.init(map);
-    map.put(UMacGenerator.INDEX, new Integer(3));
+    map.put(UMacGenerator.INDEX, Integer.valueOf(3));
     kdf4.init(map);
 
     // need to generate all bytes for use later in a Toepliz construction

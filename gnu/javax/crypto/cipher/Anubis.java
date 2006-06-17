@@ -328,7 +328,7 @@ public final class Anubis extends BaseCipher
   public Iterator blockSizes()
   {
     ArrayList al = new ArrayList();
-    al.add(new Integer(DEFAULT_BLOCK_SIZE));
+    al.add(Integer.valueOf(DEFAULT_BLOCK_SIZE));
 
     return Collections.unmodifiableList(al).iterator();
   }
@@ -338,7 +338,7 @@ public final class Anubis extends BaseCipher
     ArrayList al = new ArrayList();
     for (int n = 4; n < 10; n++)
       {
-        al.add(new Integer(n * 32 / 8));
+        al.add(Integer.valueOf(n * 32 / 8));
       }
 
     return Collections.unmodifiableList(al).iterator();

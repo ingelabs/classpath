@@ -50,7 +50,7 @@ public interface PasswordProtectedEntry
   /**
    * The iteration count for password-based KDFs.
    */
-  Integer ITERATION_COUNT = new Integer(1000);
+  Integer ITERATION_COUNT = Integer.valueOf(1000);
 
   // Method.
   // ------------------------------------------------------------------------

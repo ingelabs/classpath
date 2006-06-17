@@ -200,12 +200,12 @@ public class EAX implements IAuthenticatedMode
     Integer modeSize = (Integer) attrib.get(MODE_BLOCK_SIZE);
     if (modeSize == null)
       {
-        modeSize = new Integer(cipherBlockSize);
+        modeSize = Integer.valueOf(cipherBlockSize);
       }
     HashMap ctrAttr = new HashMap();
     ctrAttr.put(KEY_MATERIAL, key);
     ctrAttr.put(IV, N);
-    ctrAttr.put(STATE, new Integer(ENCRYPTION));
+    ctrAttr.put(STATE, Integer.valueOf(ENCRYPTION));
     ctrAttr.put(MODE_BLOCK_SIZE, modeSize);
     ctr.reset();
     ctr.init(ctrAttr);

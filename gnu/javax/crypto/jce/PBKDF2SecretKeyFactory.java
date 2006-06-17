@@ -97,7 +97,7 @@ public abstract class PBKDF2SecretKeyFactory extends SecretKeyFactorySpi
       {
         ic = DEFAULT_ITERATION_COUNT;
       }
-    attr.put(IPBE.ITERATION_COUNT, new Integer(ic));
+    attr.put(IPBE.ITERATION_COUNT, Integer.valueOf(ic));
     kdf.init(attr);
     int len = ((PBEKeySpec) spec).getKeyLength();
     if (len <= 0)

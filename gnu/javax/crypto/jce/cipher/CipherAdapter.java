@@ -132,7 +132,7 @@ class CipherAdapter extends CipherSpi
     attributes = new HashMap();
     this.blockLen = blockLen;
     mode = ModeFactory.getInstance("ECB", cipher, blockLen);
-    attributes.put(IBlockCipher.CIPHER_BLOCK_SIZE, new Integer(blockLen));
+    attributes.put(IBlockCipher.CIPHER_BLOCK_SIZE, Integer.valueOf(blockLen));
   }
 
   /**
@@ -146,7 +146,7 @@ class CipherAdapter extends CipherSpi
     blockLen = cipher.defaultBlockSize();
     attributes = new HashMap();
     mode = ModeFactory.getInstance("ECB", cipher, blockLen);
-    attributes.put(IBlockCipher.CIPHER_BLOCK_SIZE, new Integer(blockLen));
+    attributes.put(IBlockCipher.CIPHER_BLOCK_SIZE, Integer.valueOf(blockLen));
   }
 
   // Instance methods implementing javax.crypto.CipherSpi.
@@ -162,7 +162,7 @@ class CipherAdapter extends CipherSpi
             try
               {
                 int bs = Integer.parseInt(modeName.substring(3));
-                attributes.put(IMode.MODE_BLOCK_SIZE, new Integer(bs / 8));
+                attributes.put(IMode.MODE_BLOCK_SIZE, Integer.valueOf(bs / 8));
               }
             catch (NumberFormatException nfe)
               {
@@ -274,10 +274,10 @@ class CipherAdapter extends CipherSpi
     switch (opmode)
       {
       case Cipher.ENCRYPT_MODE:
-        attributes.put(IMode.STATE, new Integer(IMode.ENCRYPTION));
+        attributes.put(IMode.STATE, Integer.valueOf(IMode.ENCRYPTION));
         break;
       case Cipher.DECRYPT_MODE:
-        attributes.put(IMode.STATE, new Integer(IMode.DECRYPTION));
+        attributes.put(IMode.STATE, Integer.valueOf(IMode.DECRYPTION));
         break;
       }
     if (!key.getFormat().equalsIgnoreCase("RAW"))
@@ -332,10 +332,8 @@ class CipherAdapter extends CipherSpi
       }
     else if (params instanceof BlockCipherParameterSpec)
       {
-        attributes.put(
-                       IBlockCipher.CIPHER_BLOCK_SIZE,
-                       new Integer(
-                                   ((BlockCipherParameterSpec) params).getBlockSize()));
+        attributes.put(IBlockCipher.CIPHER_BLOCK_SIZE,
+                       Integer.valueOf(((BlockCipherParameterSpec) params).getBlockSize()));
         attributes.put(IMode.IV, ((BlockCipherParameterSpec) params).getIV());
         keyLen = ((BlockCipherParameterSpec) params).getKeySize();
         blockLen = ((BlockCipherParameterSpec) params).getBlockSize();
@@ -344,7 +342,7 @@ class CipherAdapter extends CipherSpi
       {
         attributes.put(IMode.IV, ((IvParameterSpec) params).getIV());
         blockLen = cipher.defaultBlockSize();
-        attributes.put(IBlockCipher.CIPHER_BLOCK_SIZE, new Integer(blockLen));
+        attributes.put(IBlockCipher.CIPHER_BLOCK_SIZE, Integer.valueOf(blockLen));
         keyLen = 0;
       }
     engineInitHandler(opmode, key, random);

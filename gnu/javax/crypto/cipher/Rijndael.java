@@ -611,9 +611,9 @@ public final class Rijndael extends BaseCipher
   public Iterator blockSizes()
   {
     ArrayList al = new ArrayList();
-    al.add(new Integer(128 / 8));
-    al.add(new Integer(192 / 8));
-    al.add(new Integer(256 / 8));
+    al.add(Integer.valueOf(128 / 8));
+    al.add(Integer.valueOf(192 / 8));
+    al.add(Integer.valueOf(256 / 8));
 
     return Collections.unmodifiableList(al).iterator();
   }
@@ -621,9 +621,9 @@ public final class Rijndael extends BaseCipher
   public Iterator keySizes()
   {
     ArrayList al = new ArrayList();
-    al.add(new Integer(128 / 8));
-    al.add(new Integer(192 / 8));
-    al.add(new Integer(256 / 8));
+    al.add(Integer.valueOf(128 / 8));
+    al.add(Integer.valueOf(192 / 8));
+    al.add(Integer.valueOf(256 / 8));
 
     return Collections.unmodifiableList(al).iterator();
   }

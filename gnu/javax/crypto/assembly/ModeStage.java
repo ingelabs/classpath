@@ -99,8 +99,8 @@ class ModeStage extends Stage
   {
     Direction flow = (Direction) attributes.get(DIRECTION);
     attributes.put(IMode.STATE,
-                   new Integer(flow.equals(forward) ? IMode.ENCRYPTION
-                                                   : IMode.DECRYPTION));
+                   Integer.valueOf(flow.equals(forward) ? IMode.ENCRYPTION
+                                                        : IMode.DECRYPTION));
 
     delegate.init(attributes);
   }

@@ -725,12 +725,12 @@ public class DES extends BaseCipher
 
   public Iterator blockSizes()
   {
-    return Collections.singleton(new Integer(BLOCK_SIZE)).iterator();
+    return Collections.singleton(Integer.valueOf(BLOCK_SIZE)).iterator();
   }
 
   public Iterator keySizes()
   {
-    return Collections.singleton(new Integer(KEY_SIZE)).iterator();
+    return Collections.singleton(Integer.valueOf(KEY_SIZE)).iterator();
   }
 
   public Object makeKey(byte[] kb, int bs) throws InvalidKeyException

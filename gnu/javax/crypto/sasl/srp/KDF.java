@@ -88,8 +88,8 @@ public class KDF
     //      }
     final HashMap map = new HashMap();
     map.put(UMacGenerator.CIPHER, Registry.AES_CIPHER);
-    map.put(UMacGenerator.INDEX, new Integer(ndx));
-    map.put(IBlockCipher.CIPHER_BLOCK_SIZE, new Integer(AES_BLOCK_SIZE));
+    map.put(UMacGenerator.INDEX, Integer.valueOf(ndx));
+    map.put(IBlockCipher.CIPHER_BLOCK_SIZE, Integer.valueOf(AES_BLOCK_SIZE));
     final byte[] key = new byte[AES_KEY_SIZE];
     System.arraycopy(keyMaterial, 0, key, 0, AES_KEY_SIZE);
     map.put(IBlockCipher.KEY_MATERIAL, key);

@@ -214,7 +214,7 @@ public class ICMGenerator extends BasePRNG implements Cloneable
     HashMap map = new HashMap();
     if (cipherBlockSize != 0)
       { // only needed if new or changed
-        map.put(IBlockCipher.CIPHER_BLOCK_SIZE, new Integer(cipherBlockSize));
+        map.put(IBlockCipher.CIPHER_BLOCK_SIZE, Integer.valueOf(cipherBlockSize));
       }
     map.put(IBlockCipher.KEY_MATERIAL, key);
     try

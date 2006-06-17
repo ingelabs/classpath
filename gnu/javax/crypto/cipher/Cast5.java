@@ -866,7 +866,7 @@ public class Cast5 extends BaseCipher
   public Iterator blockSizes()
   {
     ArrayList al = new ArrayList();
-    al.add(new Integer(DEFAULT_BLOCK_SIZE));
+    al.add(Integer.valueOf(DEFAULT_BLOCK_SIZE));
 
     return Collections.unmodifiableList(al).iterator();
   }
@@ -876,7 +876,7 @@ public class Cast5 extends BaseCipher
     ArrayList al = new ArrayList();
     for (int n = 5; n < 17; n++)
       {
-        al.add(new Integer(n));
+        al.add(Integer.valueOf(n));
       }
 
     return Collections.unmodifiableList(al).iterator();

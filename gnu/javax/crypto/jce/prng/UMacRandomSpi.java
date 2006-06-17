@@ -90,7 +90,7 @@ public class UMacRandomSpi extends SecureRandomSpi
     rand.nextBytes(key);
     attributes.put(IBlockCipher.KEY_MATERIAL, key);
     int index = rand.nextInt() & 0xFF;
-    attributes.put(UMacGenerator.INDEX, new Integer(index));
+    attributes.put(UMacGenerator.INDEX, Integer.valueOf(index));
 
     prng.setup(attributes);
   }
@@ -184,7 +184,7 @@ public class UMacRandomSpi extends SecureRandomSpi
     System.arraycopy(material, 0, key, 0, 16);
     attributes.put(IBlockCipher.KEY_MATERIAL, key);
     // use a 1-byte index
-    attributes.put(UMacGenerator.INDEX, new Integer(material[16] & 0xFF));
+    attributes.put(UMacGenerator.INDEX, Integer.valueOf(material[16] & 0xFF));
 
     adaptee.init(attributes);
   }

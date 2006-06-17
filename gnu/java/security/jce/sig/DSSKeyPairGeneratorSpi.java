@@ -104,7 +104,7 @@ public class DSSKeyPairGeneratorSpi extends KeyPairGeneratorAdapter implements
       }
 
     attributes.put(DSSKeyPairGenerator.PREFERRED_ENCODING_FORMAT,
-                   new Integer(Registry.ASN1_ENCODING_ID));
+                   Integer.valueOf(Registry.ASN1_ENCODING_ID));
     try
       {
         adaptee.setup(attributes);
@@ -144,7 +144,7 @@ public class DSSKeyPairGeneratorSpi extends KeyPairGeneratorAdapter implements
       throws InvalidParameterException
   {
     HashMap attributes = new HashMap();
-    attributes.put(DSSKeyPairGenerator.MODULUS_LENGTH, new Integer(modlen));
+    attributes.put(DSSKeyPairGenerator.MODULUS_LENGTH, Integer.valueOf(modlen));
     if (random != null)
       attributes.put(DSSKeyPairGenerator.SOURCE_OF_RANDOMNESS, random);
 
@@ -152,7 +152,7 @@ public class DSSKeyPairGeneratorSpi extends KeyPairGeneratorAdapter implements
                    Boolean.valueOf(!genParams));
     attributes.put(DSSKeyPairGenerator.STRICT_DEFAULTS, Boolean.TRUE);
     attributes.put(DSSKeyPairGenerator.PREFERRED_ENCODING_FORMAT,
-                   new Integer(Registry.ASN1_ENCODING_ID));
+                   Integer.valueOf(Registry.ASN1_ENCODING_ID));
     try
       {
         adaptee.setup(attributes);

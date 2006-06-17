@@ -107,7 +107,7 @@ public class ICMRandomSpi extends SecureRandomSpi
       {
         ndxLen = rand.nextInt(limit + 1);
       }
-    attributes.put(ICMGenerator.SEGMENT_INDEX_LENGTH, new Integer(ndxLen));
+    attributes.put(ICMGenerator.SEGMENT_INDEX_LENGTH, Integer.valueOf(ndxLen));
     byte[] index = new byte[ndxLen];
     rand.nextBytes(index);
     attributes.put(ICMGenerator.SEGMENT_INDEX, new BigInteger(1, index));
@@ -220,7 +220,7 @@ public class ICMRandomSpi extends SecureRandomSpi
     // use AES cipher with 128-bit block size
     attributes.put(ICMGenerator.CIPHER, Registry.AES_CIPHER);
     // use an index the size of quarter of an AES block
-    attributes.put(ICMGenerator.SEGMENT_INDEX_LENGTH, new Integer(4));
+    attributes.put(ICMGenerator.SEGMENT_INDEX_LENGTH, Integer.valueOf(4));
     // specify the key
     byte[] key = new byte[16];
     System.arraycopy(material, 0, key, 0, 16);

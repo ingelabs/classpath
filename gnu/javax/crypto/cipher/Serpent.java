@@ -130,15 +130,15 @@ public class Serpent extends BaseCipher
 
   public Iterator blockSizes()
   {
-    return Collections.singleton(new Integer(DEFAULT_BLOCK_SIZE)).iterator();
+    return Collections.singleton(Integer.valueOf(DEFAULT_BLOCK_SIZE)).iterator();
   }
 
   public Iterator keySizes()
   {
     ArrayList keySizes = new ArrayList();
-    keySizes.add(new Integer(16));
-    keySizes.add(new Integer(24));
-    keySizes.add(new Integer(32));
+    keySizes.add(Integer.valueOf(16));
+    keySizes.add(Integer.valueOf(24));
+    keySizes.add(Integer.valueOf(32));
 
     return Collections.unmodifiableList(keySizes).iterator();
   }
