@@ -15,6 +15,49 @@
 	* native/jni/gconf-peer/Makefile.am: new Makefile needed to
 	build gconf-peer shared library.
 
+2006-06-17  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/java/security/jce/sig/DSSKeyPairGeneratorSpi.java:
+	Use Integer.valueOf() instead of new Integer().
+	* gnu/java/security/jce/sig/EncodedKeyFactory.java: Likewise.
+	* gnu/java/security/jce/sig/RSAKeyPairGeneratorSpi.java: Likewise.
+	* gnu/java/security/util/Sequence.java: Likewise.
+	* gnu/java/security/x509/ext/GeneralNames.java: Likewise.
+	* gnu/java/security/x509/X509Certificate.java: Likewise.
+	* gnu/javax/crypto/assembly/ModeStage.java: Likewise.
+	* gnu/javax/crypto/cipher/Anubis.java: Likewise.
+	* gnu/javax/crypto/cipher/Blowfish.java: Likewise.
+	* gnu/javax/crypto/cipher/Cast5.java: Likewise.
+	* gnu/javax/crypto/cipher/DES.java: Likewise.
+	* gnu/javax/crypto/cipher/Khazad.java: Likewise.
+	* gnu/javax/crypto/cipher/NullCipher.java: Likewise.
+	* gnu/javax/crypto/cipher/Rijndael.java: Likewise.
+	* gnu/javax/crypto/cipher/Serpent.java: Likewise.
+	* gnu/javax/crypto/cipher/Square.java: Likewise.
+	* gnu/javax/crypto/cipher/TripleDES.java: Likewise.
+	* gnu/javax/crypto/cipher/Twofish.java: Likewise.
+	* gnu/javax/crypto/jce/cipher/CipherAdapter.java: Likewise.
+	* gnu/javax/crypto/jce/cipher/PBES2.java: Likewise.
+	* gnu/javax/crypto/jce/key/SecretKeyGeneratorImpl.java: Likewise.
+	* gnu/javax/crypto/jce/PBKDF2SecretKeyFactory.java: Likewise.
+	* gnu/javax/crypto/jce/prng/ICMRandomSpi.java: Likewise.
+	* gnu/javax/crypto/jce/prng/UMacRandomSpi.java: Likewise.
+	* gnu/javax/crypto/jce/sig/DHKeyPairGeneratorSpi.java: Likewise.
+	* gnu/javax/crypto/keyring/AuthenticatedEntry.java: Likewise.
+	* gnu/javax/crypto/keyring/EncryptedEntry.java: Likewise.
+	* gnu/javax/crypto/keyring/PasswordAuthenticatedEntry.java: Likewise.
+	* gnu/javax/crypto/keyring/PasswordEncryptedEntry.java: Likewise.
+	* gnu/javax/crypto/keyring/PasswordProtectedEntry.java: Likewise.
+	* gnu/javax/crypto/mac/UHash32.java: Likewise.
+	* gnu/javax/crypto/mac/UMac32.java: Likewise.
+	* gnu/javax/crypto/mode/BaseMode.java: Likewise.
+	* gnu/javax/crypto/mode/EAX.java: Likewise.
+	* gnu/javax/crypto/prng/ICMGenerator.java: Likewise.
+	* gnu/javax/crypto/prng/UMacGenerator.java: Likewise.
+	* gnu/javax/crypto/sasl/srp/KDF.java: Likewise.
+	* gnu/javax/security/auth/callback/ConsoleCallbackHandler.java: Likewise.
+	* java/security/cert/X509CertSelector.java: Likewise.
+
 2006-06-17  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/management/DynamicMBean.java:
