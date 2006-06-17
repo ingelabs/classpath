@@ -1,3 +1,20 @@
+2006-0-12  Mario torre  <neugens at limasoftware.net>
+
+	* gnu/java/util/prefs/GConfBasedPreferences.java: new class.
+	* gnu/java/util/prefs/GConfBasedFactory.java: new class.
+	* gnu/java/util/prefs/gconf/GConfNativePeer.java: new class.
+	* gnu_java_util_prefs_gconf_GConfNativePeer.h: generated
+	header file.
+	* classpath/native/jni/gconf-peer/GConfNativePeer.c: new C file.
+	* configure.ac: update to introduce new files. Added options
+	to build gconf native peer used by the GConf preference backend.
+	* include/Makefile.am: update to introduce new files.
+	* native/jni/Makefile.am update to introduce new files.
+	* scripts/check_jni_methods.sh: added three new ignored file
+	from check.
+	* native/jni/gconf-peer/Makefile.am: new Makefile needed to
+	build gconf-peer shared library.
+
 2006-06-17  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/management/DynamicMBean.java:
@@ -25,7 +42,7 @@
 	* examples/gnu/classpath/examples/java2d/J2dBenchmark.java: New file.
 	* examples/gnu/classpath/examples/java2d/JNIOverhead.java:
 	Moved from old FillRect.
-        
+
 2006-06-16  Tom Tromey  <tromey@redhat.com>
 
 	* tools/.cvsignore: Added new tool names.

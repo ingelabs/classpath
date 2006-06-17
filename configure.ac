@@ -82,6 +82,25 @@ AC_ARG_ENABLE([core-jni],
               [COMPILE_CORE_JNI=yes])
 AM_CONDITIONAL(CREATE_CORE_JNI_LIBRARIES, test "x${COMPILE_CORE_JNI}" = xyes)
 
+dnl -----------------------------------------------------------
+dnl GConf native peer (enabled by default)
+dnl -----------------------------------------------------------
+AC_ARG_ENABLE([gconf-peer],
+              [AS_HELP_STRING(--disable-gconf-peer,compile GConf native peers (disabled by --disable-jni) [default=yes])],
+              [case "${enableval}" in
+                yes) COMPILE_GCONF_PEER=yes ;;
+                no) COMPILE_GCONF_PEER=no ;;
+                *) COMPILE_GCONF_PEER=yes ;;
+              esac],
+              [COMPILE_GCONF_PEER=yes])
+AM_CONDITIONAL(CREATE_GCONF_PEER_LIBRARIES, test "x${COMPILE_GCONF_PEER}" = xyes)
+
+dnl -----------------------------------------------------------
+dnl GTK native peer error checking
+dnl -----------------------------------------------------------
+AC_ARG_ENABLE([gconf-peers],,AC_MSG_ERROR([No --enable-gconf-peers (or --disable-gconf-peers) option; you want --enable-gconf-peer]))
+
+
 dnl ------------------------------------------------------------
 dnl Whether to compile with -Werror or not (disabled by default)
 dnl ------------------------------------------------------------
@@ -432,6 +451,13 @@ if test "x${COMPILE_JNI}" = xyes; then
     AC_SUBST(XTEST_LIBS)
   fi
 
+  dnl gconf-peer
+  if  test "x${COMPILE_GCONF_PEER}" = xyes; then
+    PKG_CHECK_MODULES(GCONF, gconf-2.0 >= 2.11.2)
+    AC_SUBST(GCONF_CFLAGS)
+    AC_SUBST(GCONF_LIBS)
+  fi
+
   dnl Check for AWT related Qt4
   if test "x${COMPILE_QT_PEER}" = xyes; then
     PKG_CHECK_MODULES(QT, QtCore QtGui >= 4.1.0, HAVE_QT4="yes", HAVE_QT4="no")
@@ -719,6 +745,7 @@ native/jni/java-net/Makefile
 native/jni/java-nio/Makefile
 native/jni/java-util/Makefile
 native/jni/gtk-peer/Makefile
+native/jni/gconf-peer/Makefile
 native/jni/qt-peer/Makefile
 native/jni/xmlj/Makefile
 native/jni/midi-alsa/Makefile
