@@ -42,7 +42,6 @@ import gnu.classpath.Configuration;
 import gnu.java.security.Registry;
 import gnu.java.security.key.IKeyPairGenerator;
 import gnu.java.security.util.PRNG;
-import gnu.java.security.util.Prime2;
 
 import java.math.BigInteger;
 import java.security.KeyPair;
@@ -210,7 +209,7 @@ public class RSAKeyPairGenerator implements IKeyPairGenerator
         nextRandomBytes(kb);
         p = new BigInteger(1, kb).setBit(0);
         if (p.compareTo(lower) >= 0 && p.compareTo(upper) <= 0
-            && Prime2.isProbablePrime(p) && p.gcd(e).equals(ONE))
+            && p.isProbablePrime(80) && p.gcd(e).equals(ONE))
           {
             break step1;
           }
@@ -223,7 +222,7 @@ public class RSAKeyPairGenerator implements IKeyPairGenerator
         nextRandomBytes(kb);
         q = new BigInteger(1, kb).setBit(0);
         n = p.multiply(q);
-        if (n.bitLength() == L && Prime2.isProbablePrime(q)
+        if (n.bitLength() == L && q.isProbablePrime(80)
             && q.gcd(e).equals(ONE))
           {
             break step2;

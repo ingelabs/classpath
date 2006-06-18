@@ -38,7 +38,6 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.key.srp6;
 
-import gnu.java.security.util.Prime2;
 import gnu.javax.crypto.sasl.srp.SRPRegistry;
 
 import java.math.BigInteger;
@@ -151,13 +150,13 @@ public class SRPAlgorithm
                                                + SRPRegistry.MINIMUM_MODULUS_BITLENGTH);
       }
     // 2. N should be a prime
-    if (!Prime2.passEulerCriterion(N))
+    if (! N.isProbablePrime(80))
       {
         throw new IllegalArgumentException("N should be prime but isn't");
       }
     // 3. N should be of the form 2*q + 1, where q is prime
     final BigInteger q = N.subtract(ONE).divide(TWO);
-    if (!Prime2.passEulerCriterion(q))
+    if (! q.isProbablePrime(80))
       {
         throw new IllegalArgumentException("(N-1)/2 should be prime but isn't");
       }

@@ -40,7 +40,6 @@ package gnu.java.security.key.dss;
 
 import gnu.java.security.hash.Sha160;
 import gnu.java.security.util.PRNG;
-import gnu.java.security.util.Prime2;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -183,7 +182,7 @@ public class FIPS186
             // probability of a non-prime number passing the test is at
             // most 1/2**80.
             // 5. If q is not prime, go to step 1.
-            if (Prime2.isProbablePrime(q))
+            if (q.isProbablePrime(80))
               {
                 break step1;
               }
@@ -228,7 +227,7 @@ public class FIPS186
               {
                 // 11. Perform a robust primality test on p.
                 // 12. If p passes the test performed in step 11, go to step 15.
-                if (Prime2.isProbablePrime(p))
+                if (p.isProbablePrime(80))
                   {
                     break algorithm;
                   }

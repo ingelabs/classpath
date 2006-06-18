@@ -40,7 +40,6 @@ package gnu.javax.crypto.key.dh;
 
 import gnu.java.security.hash.Sha160;
 import gnu.java.security.util.PRNG;
-import gnu.java.security.util.Prime2;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -157,7 +156,7 @@ public class RFC2631
             q = U.setBit(m - 1).setBit(0);
             // 6. Use a robust primality algorithm to test whether q is prime.
             // 7. If q is not prime then go to 4.
-            if (Prime2.isProbablePrime(q))
+            if (q.isProbablePrime(80))
               {
                 break step4;
               }
@@ -190,7 +189,7 @@ public class RFC2631
             // 16. If p > 2^(L-1) use a robust primality test to test whether p is
             //     prime. Else go to 18.
             //17. If p is prime output p, q, seed, counter and stop.
-            if (Prime2.isProbablePrime(p))
+            if (p.isProbablePrime(80))
               {
                 break algorithm;
               }

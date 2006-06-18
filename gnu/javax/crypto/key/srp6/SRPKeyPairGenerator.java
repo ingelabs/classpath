@@ -42,7 +42,6 @@ import gnu.classpath.Configuration;
 import gnu.java.security.Registry;
 import gnu.java.security.key.IKeyPairGenerator;
 import gnu.java.security.util.PRNG;
-import gnu.java.security.util.Prime2;
 
 import java.math.BigInteger;
 import java.security.KeyPair;
@@ -244,10 +243,10 @@ public class SRPKeyPairGenerator implements IKeyPairGenerator
             q = new BigInteger(1, qBytes);
             q = q.setBit(0).setBit(l - 2).clearBit(l - 1);
           }
-        while (!Prime2.isProbablePrime(q));
+        while (! q.isProbablePrime(80));
         p = q.multiply(TWO).add(ONE);
       }
-    while (p.bitLength() != l || !Prime2.isProbablePrime(p));
+    while (p.bitLength() != l || ! p.isProbablePrime(80));
 
     // compute g. from FIPS-186, Appendix 4: e == 2
     BigInteger p_minus_1 = p.subtract(ONE);
