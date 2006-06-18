@@ -1,5 +1,5 @@
 /* TextMeasurer.java
-   Copyright (C) 2003 Free Software Foundation, Inc.
+   Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -128,10 +128,6 @@ public final class TextMeasurer implements Cloneable
    */
   public TextLayout getLayout (int start, int limit)
   {
-//     AttributedCharacterIterator aci = (new AttributedString( text, 
-// 							     start, limit
-// 							     ) ).getIterator();
-//     return new TextLayout( aci, frc );
     return new TextLayout( totalLayout, start, limit );
   }
 

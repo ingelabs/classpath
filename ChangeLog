@@ -1,5 +1,11 @@
 2006-06-18  Sven de Marothy  <sven@physto.se>
 
+	* java/awt/GridBagLayout.java (AdjustForGravity): Implement.
+	* java/awt/font/TextMeasurer.java: Fix copyright date, 
+	remove commented-out code.
+
+2006-06-18  Sven de Marothy  <sven@physto.se>
+
 	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java
 	(FreetypeGlyphVector, clone): Implement cloning.
 	(getGlyphLogicalBounds): Bounds should be offset to the glyph position.
