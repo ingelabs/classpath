@@ -1,4 +1,20 @@
-2006-0-12  Mario torre  <neugens at limasoftware.net>
+2006-06-18  Sven de Marothy  <sven@physto.se>
+
+	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java
+	(FreetypeGlyphVector, clone): Implement cloning.
+	(getGlyphLogicalBounds): Bounds should be offset to the glyph position.
+	* java/awt/font/TextMeasurer.java: Implement.
+	* java/awt/font/LineBreakMeasurer.java: 
+	Reimplement to use TextMeasurer.
+	* java/awt/font/TextLayout.java
+	New constructors.
+	(getBlackboxBounds, getLogicalHighlightShape): Reimplement.
+	(getText, getFont): New private static methods.
+	(setCharIndices): New method.
+	* java/text/AttributedString.java
+	(AttributedString): Fix constructor to stop at end point.
+	
+2006-06-12  Mario torre  <neugens at limasoftware.net>
 
 	* gnu/java/util/prefs/GConfBasedPreferences.java: new class.
 	* gnu/java/util/prefs/GConfBasedFactory.java: new class.
