@@ -38,8 +38,6 @@ exception statement from your version. */
 
 package java.awt;
 
-import gnu.classpath.NotImplementedException;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -321,21 +319,129 @@ public class GridBagLayout
 	return new Point (col, row);
     }
 
-  /**
-   * Obsolete.
-   */
-  protected void AdjustForGravity (GridBagConstraints constraints, 
-				   Rectangle rect)
-  {
-    Insets insets = constraints.insets;
-    if (insets != null)
-      {
-	rect.x += insets.left;
-	rect.y += insets.top;
-	rect.width -= insets.left + insets.right;
-	rect.height -= insets.top + insets.bottom;
-      }
-  }
+    /**
+     * Move and resize a rectangle according to a set of grid bag
+     * constraints.  The x, y, width and height fields of the
+     * rectangle argument are adjusted to the new values.
+     *
+     * @param constraints position and size constraints
+     * @param r rectangle to be moved and resized
+     */
+    protected void AdjustForGravity (GridBagConstraints constraints,
+                                     Rectangle r)
+    {
+      Rectangle result = new Rectangle (0, 0, 0, 0);
+
+      // Calculate width and height.
+
+      // Adjust width and height for fill value.
+      switch (constraints.fill)
+        {
+        case GridBagConstraints.NONE:
+          result.width = 0;
+          result.height = 0;
+          break;
+        case GridBagConstraints.BOTH:
+          result.width = r.width;
+          result.height = r.height;
+          break;
+        case GridBagConstraints.HORIZONTAL:
+          result.width = r.width;
+          result.height = 0;
+          break;
+        case GridBagConstraints.VERTICAL:
+          result.width = 0;
+          result.height = r.height;
+          break;
+        }
+
+      // Adjust width and height for insets, and clamp to minimum
+      // values of ipadx and ipady.
+      result.width = Math.max(result.width
+                              - constraints.insets.left
+                              - constraints.insets.right,
+                              constraints.ipadx);
+      result.height = Math.max(result.height
+                               - constraints.insets.top
+                               - constraints.insets.bottom,
+                               constraints.ipady);
+
+      // Calculate x and y.
+
+      // Do not account for the internal padding when setting the
+      // result rectangle's x and y co-ordinates.
+      int rect_width = r.width - constraints.ipadx;
+      int rect_height = r.height - constraints.ipady;
+
+      int half_width = (rect_width + constraints.insets.left
+                        - constraints.insets.right) / 2;
+      int half_height = (rect_height + constraints.insets.top
+                         - constraints.insets.bottom) / 2;
+
+      // Adjust x and y for anchor value.
+      switch (constraints.anchor)
+        {
+        case GridBagConstraints.CENTER:
+          result.x = r.x + half_width;
+          result.y = r.y + half_height;
+          break;
+        case GridBagConstraints.NORTH:
+          result.x = r.x + half_width;
+          result.y = r.y + constraints.insets.top;
+          break;
+        case GridBagConstraints.NORTHEAST:
+          result.x = r.x + rect_width - constraints.insets.right;
+          result.y = r.y + constraints.insets.top;
+          break;
+        case GridBagConstraints.EAST:
+          result.x = r.x + rect_width - constraints.insets.right;
+          result.y = r.y + half_height;
+          break;
+        case GridBagConstraints.SOUTHEAST:
+          result.x = r.x + rect_width - constraints.insets.right;
+          result.y = r.y + rect_height - constraints.insets.bottom;
+          break;
+        case GridBagConstraints.SOUTH:
+          result.x = r.x + half_width;
+          result.y = r.y + rect_height - constraints.insets.bottom;
+          break;
+        case GridBagConstraints.SOUTHWEST:
+          result.x = r.x + constraints.insets.left;
+          result.y = r.y + rect_height - constraints.insets.bottom;
+          break;
+        case GridBagConstraints.WEST:
+          result.x = r.x + constraints.insets.left;
+          result.y = r.y + half_height;
+          break;
+        case GridBagConstraints.NORTHWEST:
+          result.x = r.x + constraints.insets.left;
+          result.y = r.y + constraints.insets.top;
+          break;
+        }
+
+       // Adjust x and y for fill, clamping values to the external
+       // padding boundaries where necessary.
+       switch (constraints.fill)
+         {
+         case GridBagConstraints.NONE:
+           break;
+         case GridBagConstraints.BOTH:
+           result.x = r.x + constraints.insets.left;
+           result.y = r.y + constraints.insets.top;
+           break;
+         case GridBagConstraints.HORIZONTAL:
+           result.x = r.x + constraints.insets.left;
+           break;
+         case GridBagConstraints.VERTICAL:
+           result.y = r.y + constraints.insets.top;
+           break;
+         }
+
+      r.x = result.x;
+      r.y = result.y;
+      r.width = result.width;
+      r.height = result.height;
+    }
 
     /**
      * Obsolete.
@@ -1081,10 +1187,18 @@ public class GridBagLayout
     }
 
     /**
+     * Move and resize a rectangle according to a set of grid bag
+     * constraints.  The x, y, width and height fields of the
+     * rectangle argument are adjusted to the new values.
+     *
+     * @param constraints position and size constraints
+     * @param r rectangle to be moved and resized
+     *
      * @since 1.4
      */
-    protected void adjustForGravity (GridBagConstraints gbc, Rectangle rect)
+    protected void adjustForGravity (GridBagConstraints constraints,
+                                     Rectangle r)
     {
-      AdjustForGravity (gbc, rect);
+      AdjustForGravity (constraints, r);
     }
 }
