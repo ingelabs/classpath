@@ -1,5 +1,9 @@
 2006-06-18  Tom Tromey  <tromey@redhat.com>
 
+	* native/jni/gconf-peer/.cvsignore: New file.
+
+2006-06-18  Tom Tromey  <tromey@redhat.com>
+
 	* tools/gnu/classpath/tools/getopt/Parser.java (handleLongOption):
 	Also handle short options.
 
