@@ -1,3 +1,9 @@
+2006-06-18  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	PR 28035
+	* java/rmi/server/UID.java (constructor): First increment
+	uidCounter, and then use the value.
+
 2006-06-18  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* java/awt/GridBagLayout.java (AdjustForGravity): Implement.
