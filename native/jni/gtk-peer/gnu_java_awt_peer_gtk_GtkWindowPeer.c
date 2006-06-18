@@ -246,7 +246,11 @@ exception statement from your version. */
 #define VK_COMPOSE 65312
 #define VK_ALT_GRAPH 65406
 #define VK_UNDEFINED 0
+#define VK_BEGIN 65368
+#define VK_CONTEXT_MENU 525
+#define VK_WINDOWS 524
 
+ 
 #define AWT_KEY_CHAR_UNDEFINED 0
 
 #define AWT_FRAME_STATE_NORMAL 0
@@ -721,14 +725,28 @@ keysym_to_awt_keycode (GdkEventKey *event)
       return VK_CUT;
       return VK_COPY;
       return VK_PASTE;
+      */
+    case GDK_Undo:
       return VK_UNDO;
+    case GDK_Redo:
       return VK_AGAIN;
+      /*
       return VK_FIND;
       return VK_PROPS;
       return VK_STOP;
       return VK_COMPOSE;
-      return VK_ALT_GRAPH;
       */
+    case GDK_ISO_Level3_Shift:
+      return VK_ALT_GRAPH;
+      /*
+	case VK_BEGIN:
+      */
+    case GDK_Menu:
+      return VK_CONTEXT_MENU;
+    case GDK_Super_L:
+    case GDK_Super_R:
+      return VK_WINDOWS;
+
     default:
       return VK_UNDEFINED;
     }
@@ -2115,14 +2133,27 @@ cp_gtk_awt_keycode_to_keysym (jint keyCode, jint keyLocation)
     case VK_CUT:
     case VK_COPY:
     case VK_PASTE:
+      */
     case VK_UNDO:
+      return GDK_Undo;
     case VK_AGAIN:
+      return GDK_Redo;
+      /*
     case VK_FIND:
     case VK_PROPS:
     case VK_STOP:
     case VK_COMPOSE:
-    case VK_ALT_GRAPH:
       */
+    case VK_ALT_GRAPH:
+      return GDK_ISO_Level3_Shift;
+      /*
+	case VK_BEGIN:
+      */
+    case VK_CONTEXT_MENU:
+      return GDK_Menu;
+    case VK_WINDOWS:
+      return GDK_Super_R;
+
     default:
       return GDK_VoidSymbol;
     }

@@ -1,3 +1,10 @@
+2006-06-18  Sven de Marothy  <sven@physto.se>
+
+	* java/awt/event/KeyEvent.java:
+	(VK_WINDOWS, VK_CONTEXT_MENU, VK_BEGIN): Add new keysym fields.
+	*  natve/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c:
+	Implement WINDOWS, ALT_GR and CONTEXT_MENU keysyms.
+
 2006-06-18  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* gnu/java/security/util/Prime2.java: Removed.
