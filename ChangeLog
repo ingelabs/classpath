@@ -1,3 +1,9 @@
+2006-06-18  Jim Huang  <jserv@kaffe.org>
+
+	PR classpath/28076:
+	* native/jni/gconf-peer/Makefile.am (libgconfpeer_la_LIBADD):
+	Fixed typo.
+
 2006-06-19  Mark Wielaard  <mark@klomp.org>
 
 	* include/Makefile.am: gnu_java_util_prefs_gconf_%.h should depend

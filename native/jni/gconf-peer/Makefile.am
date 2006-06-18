@@ -2,7 +2,7 @@ nativeexeclib_LTLIBRARIES = libgconfpeer.la
 
 libgconfpeer_la_SOURCES = GConfNativePeer.c
 
-libgtkpeer_la_LIBADD = $(top_builddir)/native/jni/classpath/native_state.lo \
+libgconfpeer_la_LIBADD = $(top_builddir)/native/jni/classpath/native_state.lo \
                        $(top_builddir)/native/jni/classpath/jcl.lo
 
 AM_LDFLAGS = @CLASSPATH_MODULE@ @GCONF_LIBS@ 
