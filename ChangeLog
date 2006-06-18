@@ -1,3 +1,23 @@
+2006-06-19  Mark Wielaard  <mark@klomp.org>
+
+	* include/Makefile.am: gnu_java_util_prefs_gconf_%.h should depend
+	on gnu/java/util/prefs/gconf/%.class.
+	* Java_gnu_java_util_prefs_gconf_GConfNativePeer_init_1class: Fix
+	chache typo, should be cache.
+	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1gconf_1client_1all_1keys):
+	Declare tmp early.
+	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1gconf_1client_1all_1nodes):
+	Likewise.
+	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1remove_1dir):
+	Don't return a value for void function.
+	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1add_1dir)
+	Likewise.
+	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1dir_1exists):
+	Mark clazz as unused.  Return JNI_FALSE, not NULL for jboolean
+	function.
+	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_finalize_1class):
+	Mark clazz ad unused.
+
 2006-06-18  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* gnu/java/security/hash/Whirlpool.java: Source formatting.

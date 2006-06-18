@@ -111,7 +111,7 @@ JNICALL Java_gnu_java_util_prefs_gconf_GConfNativePeer_init_1class
 	(JNIEnv *env, jclass clazz)
 {
 	if (reference_count == 0) {
-		Java_gnu_java_util_prefs_gconf_GConfNativePeer_init_1id_1chache
+		Java_gnu_java_util_prefs_gconf_GConfNativePeer_init_1id_1cache
 				(env, clazz);
 		return;
 	}
@@ -160,6 +160,7 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1gconf_1client_1all
 	const char 	*dir	 = NULL;
 	GError 		*err 	 = NULL;
 	GSList 		*entries = NULL;
+	GSList          *tmp;
 	
 	/* java.util.ArrayList */
 	jobject jlist = NULL;
@@ -190,7 +191,7 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1gconf_1client_1all
 		return NULL;
 	}
 
-	GSList* tmp = entries;
+	tmp = entries;
 	while (tmp != NULL) {
 		const char *_val = gconf_entry_get_key(tmp->data);		
 		_val = strrchr (_val, '/');	++_val;
@@ -219,6 +220,7 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1gconf_1client_1all
 	const char 	*dir	 = NULL;
 	GError 		*err 	 = NULL;
 	GSList 		*entries = NULL;
+	GSList		*tmp;
 	
 	/* java.util.ArrayList */
 	jobject jlist = NULL;
@@ -248,7 +250,7 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1gconf_1client_1all
 		return NULL;
 	}
 
-	GSList* tmp = entries;
+	tmp = entries;
 	while (tmp != NULL) {
 		const char *_val = tmp->data;
 		_val = strrchr (_val, '/');	++_val;
@@ -378,11 +380,10 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1remove_1dir
     const char *dir = NULL;
     
     dir = JCL_jstring_to_cstring (env, node);
-	if (dir == NULL) {
-		return NULL;
-	}
+    if (dir == NULL)
+      return;
 	
-	gconf_client_remove_dir (client, dir, NULL);
+    gconf_client_remove_dir (client, dir, NULL);
 	
     JCL_free_cstring (env, node, dir);
 }			/* Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1remove_1dir */
@@ -399,12 +400,11 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1add_1dir
     const char *dir	= NULL;
 
     dir = JCL_jstring_to_cstring (env, node);
-	if (dir == NULL) {
-		return NULL;
-	}
+    if (dir == NULL)
+      return;
 	
-	/* ignore errors */
-	gconf_client_add_dir (client, dir, GCONF_CLIENT_PRELOAD_ONELEVEL, NULL);
+    /* ignore errors */
+    gconf_client_add_dir (client, dir, GCONF_CLIENT_PRELOAD_ONELEVEL, NULL);
 
     JCL_free_cstring (env, node, dir);
 }			/* Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1add_1dir */
@@ -416,20 +416,19 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1add_1dir
  */
 JNIEXPORT jboolean JNICALL
 Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1dir_1exists
-    (JNIEnv *env, jclass clazz, jstring node)
+    (JNIEnv *env, jclass clazz __attribute__ ((unused)), jstring node)
 { 
     const char *dir	  = NULL;
-	jboolean    value = JNI_FALSE;
+    jboolean value = JNI_FALSE;
 	
     dir = JCL_jstring_to_cstring (env, node);
-	if (dir == NULL) {
-		return NULL;
-	}
+    if (dir == NULL)
+      return value;
 	
     /* we ignore errors here */
     value = gconf_client_dir_exists (client, dir, NULL);
 	
-	JCL_free_cstring (env, node, dir);
+    JCL_free_cstring (env, node, dir);
 
     return value;
 }           /* Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1dir_1exists */
@@ -441,7 +440,7 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1dir_1exists
  */
 JNIEXPORT void
 JNICALL Java_gnu_java_util_prefs_gconf_GConfNativePeer_finalize_1class
-	(JNIEnv *env, jclass clazz)
+	(JNIEnv *env, jclass clazz __attribute__ ((unused)))
 {
 	if (reference_count == 0) {
 		/* last reference, free all resources and return */
