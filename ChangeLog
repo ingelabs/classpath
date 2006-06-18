@@ -1,3 +1,21 @@
+2006-06-18  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/java/security/hash/Whirlpool.java: Source formatting.
+	* gnu/java/security/hash/Tiger.java: Likewise.
+	* gnu/java/security/hash/Sha512.java: Likewise.
+	* gnu/java/security/hash/Sha384.java: Likewise.
+	* gnu/java/security/hash/Sha256.java: Likewise.
+	* gnu/java/security/hash/Sha160.java: Likewise.
+	* gnu/java/security/hash/RipeMD160.java: Likewise.
+	* gnu/java/security/hash/RipeMD128.java: Likewise.
+	* gnu/java/security/hash/MD5.java: Likewise.
+	* gnu/java/security/hash/MD4.java: Likewise.
+	* gnu/java/security/hash/MD2.java: Likewise.
+	* gnu/java/security/hash/IMessageDigest.java: Likewise.
+	* gnu/java/security/hash/Haval.java: Likewise.
+	* gnu/java/security/hash/HashFactory.java: Likewise.
+	* gnu/java/security/hash/BaseHash.java: Likewise.
+
 2006-06-18  Sven de Marothy  <sven@physto.se>
 
 	* java/awt/event/KeyEvent.java:
