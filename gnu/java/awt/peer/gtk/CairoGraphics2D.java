@@ -1201,6 +1201,7 @@ public abstract class CairoGraphics2D extends Graphics2D
     // Note - this can get us in trouble when the gdk lock is re-acquired.
     // for example by VolatileImage. See ComponentGraphics for how we work
     // around this.
+    
     if( !(img instanceof BufferedImage) )
       {
 	ImageProducer source = img.getSource();
@@ -1217,6 +1218,7 @@ public abstract class CairoGraphics2D extends Graphics2D
 
     // If this BufferedImage has a BufferedImageGraphics object, 
     // use the cached CairoSurface that BIG is drawing onto
+    
     if( BufferedImageGraphics.bufferedImages.get( b ) != null )
       db = (DataBuffer)BufferedImageGraphics.bufferedImages.get( b );
     else
@@ -1247,24 +1249,7 @@ public abstract class CairoGraphics2D extends Graphics2D
 	setPaint( oldPaint );
       }
 
-    int[] pixels;
-
-    // Shortcut for easy color models.
-    if( b.getColorModel().equals(rgb32) )
-      {
-	pixels = ((DataBufferInt)db).getData();
-	for(int i = 0; i < pixels.length; i++)
-	  pixels[i] |= 0xFF000000;
-      }
-    else if( b.getColorModel().equals(argb32) )
-      {
-	pixels = ((DataBufferInt)db).getData();
-      }
-    else
-      {
-	pixels = b.getRGB(0, 0, width, height,
-			  null, 0, width);
-      }
+    int[] pixels = b.getRGB(0, 0, width, height, null, 0, width);
 
     drawPixels(nativePointer, pixels, width, height, width, i2u, alpha);
 

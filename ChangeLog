@@ -1,3 +1,9 @@
+2006-06-19  Lillian Angel  <langel@redhat.com>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(drawImage): Should always use getRGB to get the pixels.
+	getData returns an incorrect array of pixels.
+
 2006-06-19  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* gnu/java/security/jce/hash/HavalSpi.java: Source formatting.
