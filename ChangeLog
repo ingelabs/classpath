@@ -1,3 +1,9 @@
+2006-06-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	PR 28035
+	* java/rmi/server/UID.java (constructor): Synchronized
+	the whole constructor on the UID class.
+
 2006-06-19  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/RepaintManager.java

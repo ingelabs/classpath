@@ -101,16 +101,16 @@ public final class UID
    */
   public UID()
   {
-    time = System.currentTimeMillis();
-    unique = machineId;
-    if (time > last)
+    synchronized (UID.class)
       {
-        last = time;
-        count = uidCounter = Short.MIN_VALUE;
-      }
-    else
-      {
-        synchronized (UID.class)
+        time = System.currentTimeMillis();
+        unique = machineId;
+        if (time > last)
+          {
+            last = time;
+            count = uidCounter = Short.MIN_VALUE;
+          }
+        else
           {
             if (uidCounter == Short.MAX_VALUE)
               {
