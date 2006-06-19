@@ -1,5 +1,44 @@
 2006-06-19  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* gnu/java/security/jce/hash/HavalSpi.java: Source formatting.
+	* gnu/java/security/jce/hash/MD2Spi.java: Likewise.
+	* gnu/java/security/jce/hash/MD4Spi.java: Likewise.
+	* gnu/java/security/jce/hash/MD5Spi.java: Likewise.
+	* gnu/java/security/jce/hash/MessageDigestAdapter.java: Likewise.
+	* gnu/java/security/jce/hash/RipeMD128Spi.java: Likewise.
+	* gnu/java/security/jce/hash/RipeMD160Spi.java: Likewise.
+	* gnu/java/security/jce/hash/Sha160Spi.java: Likewise.
+	* gnu/java/security/jce/hash/Sha256Spi.java: Likewise.
+	* gnu/java/security/jce/hash/Sha384Spi.java: Likewise.
+	* gnu/java/security/jce/hash/Sha512Spi.java: Likewise.
+	* gnu/java/security/jce/hash/TigerSpi.java: Likewise.
+	* gnu/java/security/jce/hash/WhirlpoolSpi.java: Likewise.
+	* gnu/java/security/jce/prng/HavalRandomSpi.java: Likewise.
+	* gnu/java/security/jce/prng/MD2RandomSpi.java: Likewise.
+	* gnu/java/security/jce/prng/MD4RandomSpi.java: Likewise.
+	* gnu/java/security/jce/prng/MD5RandomSpi.java: Likewise.
+	* gnu/java/security/jce/prng/RipeMD128RandomSpi.java: Likewise.
+	* gnu/java/security/jce/prng/RipeMD160RandomSpi.java: Likewise.
+	* gnu/java/security/jce/prng/SecureRandomAdapter.java: Likewise.
+	* gnu/java/security/jce/prng/Sha160RandomSpi.java: Likewise.
+	* gnu/java/security/jce/prng/Sha256RandomSpi.java: Likewise.
+	* gnu/java/security/jce/prng/Sha384RandomSpi.java: Likewise.
+	* gnu/java/security/jce/prng/Sha512RandomSpi.java: Likewise.
+	* gnu/java/security/jce/prng/TigerRandomSpi.java: Likewise.
+	* gnu/java/security/jce/prng/WhirlpoolRandomSpi.java: Likewise.
+	* gnu/java/security/jce/sig/DSSKeyFactory.java: Likewise.
+	* gnu/java/security/jce/sig/DSSKeyPairGeneratorSpi.java: Likewise.
+	* gnu/java/security/jce/sig/DSSParameters.java: Likewise.
+	* gnu/java/security/jce/sig/DSSRawSignatureSpi.java: Likewise.
+	* gnu/java/security/jce/sig/EncodedKeyFactory.java: Likewise.
+	* gnu/java/security/jce/sig/KeyPairGeneratorAdapter.java: Likewise.
+	* gnu/java/security/jce/sig/RSAKeyFactory.java: Likewise.
+	* gnu/java/security/jce/sig/RSAKeyPairGeneratorSpi.java: Likewise.
+	* gnu/java/security/jce/sig/RSAPSSRawSignatureSpi.java: Likewise.
+	* gnu/java/security/jce/sig/SignatureAdapter.java: Likewise.
+
+2006-06-19  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* NEWS: Updated (delayed) for security tools and tools.texinfo.
 
 2006-06-19  Roman Kennke  <kennke@aicas.com>

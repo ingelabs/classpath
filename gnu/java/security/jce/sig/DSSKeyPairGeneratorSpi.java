@@ -52,32 +52,20 @@ import java.util.HashMap;
 
 /**
  * The implementation of a {@link java.security.KeyPairGenerator} adapter class
- * to wrap gnu.crypto DSS keypair generator instances.<p>
- *
- * In case the client does not explicitly initialize the KeyPairGenerator (via
- * a call to an <code>initialize()</code> method), the GNU Crypto provider
- * uses a default <i>modulus</i> size (keysize) of 1024 bits.<p>
+ * to wrap GNU DSS keypair generator instances.
+ * <p>
+ * In case the client does not explicitly initialize the KeyPairGenerator (via a
+ * call to an <code>initialize()</code> method), the GNU provider uses a
+ * default <i>modulus</i> size (keysize) of 1024 bits.
  */
-public class DSSKeyPairGeneratorSpi extends KeyPairGeneratorAdapter implements
-    DSAKeyPairGenerator
+public class DSSKeyPairGeneratorSpi
+    extends KeyPairGeneratorAdapter
+    implements DSAKeyPairGenerator
 {
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
-  // Constructor(s)
-  // -------------------------------------------------------------------------
-
   public DSSKeyPairGeneratorSpi()
   {
     super(Registry.DSS_KPG);
   }
-
-  // Class methods
-  // -------------------------------------------------------------------------
-
-  // Instance methods
-  // -------------------------------------------------------------------------
 
   public void initialize(int keysize, SecureRandom random)
   {
@@ -90,18 +78,14 @@ public class DSSKeyPairGeneratorSpi extends KeyPairGeneratorAdapter implements
     HashMap attributes = new HashMap();
     if (params != null)
       {
-        if (!(params instanceof DSAParameterSpec))
+        if (! (params instanceof DSAParameterSpec))
           throw new InvalidAlgorithmParameterException(
-              "Parameters argument is not a non-null instance, or " +
-              "sub-instance, of java.security.spec.DSAParameterSpec");
-
+              "Parameters argument is not a non-null instance, or "
+              + "sub-instance, of java.security.spec.DSAParameterSpec");
         attributes.put(DSSKeyPairGenerator.DSS_PARAMETERS, params);
       }
-
     if (random != null)
-      {
-        attributes.put(DSSKeyPairGenerator.SOURCE_OF_RANDOMNESS, random);
-      }
+      attributes.put(DSSKeyPairGenerator.SOURCE_OF_RANDOMNESS, random);
 
     attributes.put(DSSKeyPairGenerator.PREFERRED_ENCODING_FORMAT,
                    Integer.valueOf(Registry.ASN1_ENCODING_ID));
@@ -111,22 +95,17 @@ public class DSSKeyPairGeneratorSpi extends KeyPairGeneratorAdapter implements
       }
     catch (IllegalArgumentException x)
       {
-        InvalidAlgorithmParameterException y =
-            new InvalidAlgorithmParameterException();
-        y.initCause(x);
-        throw y;
+        throw new InvalidAlgorithmParameterException(x.getMessage(), x);
       }
   }
-
-  // java.security.interfaces.DSAKeyPairGenerator interface implementation -----
 
   public void initialize(DSAParams params, SecureRandom random)
       throws InvalidParameterException
   {
     if (params == null || !(params instanceof DSAParameterSpec))
       throw new InvalidParameterException(
-          "Parameters argument is either null or is not an instance, or " +
-          "sub-instance, of java.security.spec.DSAParameterSpec");
+          "Parameters argument is either null or is not an instance, or "
+          + "sub-instance, of java.security.spec.DSAParameterSpec");
     DSAParameterSpec spec = (DSAParameterSpec) params;
     try
       {
@@ -134,7 +113,7 @@ public class DSSKeyPairGeneratorSpi extends KeyPairGeneratorAdapter implements
       }
     catch (InvalidAlgorithmParameterException x)
       {
-        InvalidParameterException y = new InvalidParameterException();
+        InvalidParameterException y = new InvalidParameterException(x.getMessage());
         y.initCause(x);
         throw y;
       }
@@ -149,7 +128,7 @@ public class DSSKeyPairGeneratorSpi extends KeyPairGeneratorAdapter implements
       attributes.put(DSSKeyPairGenerator.SOURCE_OF_RANDOMNESS, random);
 
     attributes.put(DSSKeyPairGenerator.USE_DEFAULTS,
-                   Boolean.valueOf(!genParams));
+                   Boolean.valueOf(! genParams));
     attributes.put(DSSKeyPairGenerator.STRICT_DEFAULTS, Boolean.TRUE);
     attributes.put(DSSKeyPairGenerator.PREFERRED_ENCODING_FORMAT,
                    Integer.valueOf(Registry.ASN1_ENCODING_ID));
@@ -159,7 +138,7 @@ public class DSSKeyPairGeneratorSpi extends KeyPairGeneratorAdapter implements
       }
     catch (IllegalArgumentException x)
       {
-        InvalidParameterException y = new InvalidParameterException();
+        InvalidParameterException y = new InvalidParameterException(x.getMessage());
         y.initCause(x);
         throw y;
       }

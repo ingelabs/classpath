@@ -58,25 +58,24 @@ import java.util.logging.Logger;
 
 /**
  * The implementation of a generic {@link java.security.Signature} adapter class
- * to wrap gnu.crypto signature instances.<p>
- *
- * This class defines the <i>Service Provider Interface</i> (<b>SPI</b>) for the
- * {@link java.security.Signature} class, which provides the functionality of a
- * digital signature algorithm. Digital signatures are used for authentication
- * and integrity assurance of digital data.<p>
- *
- * All the abstract methods in the {@link java.security.SignatureSpi} class are
- * implemented by this class and all its sub-classes.<p>
- *
+ * to wrap GNU signature instances.
+ * <p>
+ * This class defines the <i>Service Provider Interface</i> (<b>SPI</b>) for
+ * the {@link java.security.Signature} class, which provides the functionality
+ * of a digital signature algorithm. Digital signatures are used for
+ * authentication and integrity assurance of digital data.
+ * <p>
+ * All the abstract methods in the {@link SignatureSpi} class are implemented by
+ * this class and all its sub-classes.
+ * <p>
  * All the implementations which subclass this object, and which are serviced by
- * the GNU Crypto provider implement the {@link java.lang.Cloneable} interface.<p>
+ * the GNU provider implement the {@link Cloneable} interface.
  */
-class SignatureAdapter extends SignatureSpi implements Cloneable
+class SignatureAdapter
+    extends SignatureSpi
+    implements Cloneable
 {
   private static final Logger log = Logger.getLogger(SignatureAdapter.class.getName());
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
 
   /** Our underlying signature instance. */
   private ISignature adaptee;
@@ -84,12 +83,9 @@ class SignatureAdapter extends SignatureSpi implements Cloneable
   /** Our underlying signature encoder/decoder engine. */
   private ISignatureCodec codec;
 
-  // Constructor(s)
-  // -------------------------------------------------------------------------
-
   /**
-   * Trivial protected constructor.<p>
-   *
+   * Trivial protected constructor.
+   * 
    * @param sigName the canonical name of the signature scheme.
    * @param codec the signature codec engine to use with this scheme.
    */
@@ -99,8 +95,8 @@ class SignatureAdapter extends SignatureSpi implements Cloneable
   }
 
   /**
-   * Private constructor for cloning purposes.<p>
-   *
+   * Private constructor for cloning purposes.
+   * 
    * @param adaptee a clone of the underlying signature scheme instance.
    * @param codec the signature codec engine to use with this scheme.
    */
@@ -111,12 +107,6 @@ class SignatureAdapter extends SignatureSpi implements Cloneable
     this.adaptee = adaptee;
     this.codec = codec;
   }
-
-  // Class methods
-  // -------------------------------------------------------------------------
-
-  // java.security.SignatureSpi interface implementation
-  // -------------------------------------------------------------------------
 
   public Object clone()
   {
@@ -133,7 +123,7 @@ class SignatureAdapter extends SignatureSpi implements Cloneable
       }
     catch (IllegalArgumentException x)
       {
-        throw new InvalidKeyException(String.valueOf(x));
+        throw new InvalidKeyException(x.getMessage(), x);
       }
   }
 
@@ -147,7 +137,7 @@ class SignatureAdapter extends SignatureSpi implements Cloneable
       }
     catch (IllegalArgumentException x)
       {
-        throw new InvalidKeyException(String.valueOf(x));
+        throw new InvalidKeyException(x.getMessage(), x);
       }
   }
 
@@ -163,7 +153,7 @@ class SignatureAdapter extends SignatureSpi implements Cloneable
       }
     catch (IllegalArgumentException x)
       {
-        throw new InvalidKeyException(String.valueOf(x));
+        throw new InvalidKeyException(x.getMessage(), x);
       }
   }
 
@@ -175,7 +165,7 @@ class SignatureAdapter extends SignatureSpi implements Cloneable
       }
     catch (IllegalStateException x)
       {
-        throw new SignatureException(String.valueOf(x));
+        throw new SignatureException(x.getMessage(), x);
       }
   }
 
@@ -188,7 +178,7 @@ class SignatureAdapter extends SignatureSpi implements Cloneable
       }
     catch (IllegalStateException x)
       {
-        throw new SignatureException(String.valueOf(x));
+        throw new SignatureException(x.getMessage(), x);
       }
   }
 
@@ -201,9 +191,8 @@ class SignatureAdapter extends SignatureSpi implements Cloneable
       }
     catch (IllegalStateException x)
       {
-        throw new SignatureException(String.valueOf(x));
+        throw new SignatureException(x.getMessage(), x);
       }
-
     byte[] result = codec.encodeSignature(signature);
     return result;
   }
@@ -214,9 +203,7 @@ class SignatureAdapter extends SignatureSpi implements Cloneable
     byte[] signature = this.engineSign();
     int result = signature.length;
     if (result > len)
-      {
-        throw new SignatureException("len");
-      }
+      throw new SignatureException("Not enough room to store signature");
 
     System.arraycopy(signature, 0, outbuf, offset, result);
     return result;
@@ -226,7 +213,6 @@ class SignatureAdapter extends SignatureSpi implements Cloneable
   {
     if (Configuration.DEBUG)
       log.entering(this.getClass().getName(), "engineVerify");
-
     Object signature = codec.decodeSignature(sigBytes);
     boolean result = false;
     try
@@ -235,10 +221,11 @@ class SignatureAdapter extends SignatureSpi implements Cloneable
       }
     catch (IllegalStateException x)
       {
-        throw new SignatureException(String.valueOf(x));
+        throw new SignatureException(x.getMessage(), x);
       }
     if (Configuration.DEBUG)
-      log.exiting(this.getClass().getName(), "engineVerify", Boolean.valueOf(result));
+      log.exiting(this.getClass().getName(), "engineVerify",
+                  Boolean.valueOf(result));
     return result;
   }
 
