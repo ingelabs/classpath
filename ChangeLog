@@ -1,3 +1,8 @@
+2006-06-19  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/IconUIResource.java
+	(IconUIResource): Throw IllegalArgumentException for null icon.
+
 2006-06-18  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	PR 28035
