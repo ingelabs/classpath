@@ -39,7 +39,6 @@ exception statement from your version. */
 package gnu.java.awt.peer.gtk;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
@@ -47,15 +46,12 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Toolkit;
-import java.awt.Point;
-import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.awt.image.ImageProducer;
-import java.awt.image.ImagingOpException;
 import java.awt.image.RenderedImage;
 
 /**
@@ -170,7 +166,8 @@ public class ComponentGraphics extends CairoGraphics2D
 
   private native void drawVolatile(GtkComponentPeer component,
 				   long vimg, int x, int y, 
-				   int width, int height);
+				   int width, int height, int cx, int cy,
+                                   int cw, int ch);
 
   /**
    * Returns a Graphics2D object for a component, either an instance of this 
@@ -285,21 +282,24 @@ public class ComponentGraphics extends CairoGraphics2D
     if (img instanceof GtkVolatileImage)
       {
         GtkVolatileImage vimg = (GtkVolatileImage) img;
-	int type = transform.getType();
-	if (type == AffineTransform.TYPE_IDENTITY)
-	  {
-	    drawVolatile(component, vimg.nativePointer,
-			 x, y, vimg.width, vimg.height);
-	    return true;
-	  }
-	  else if (type == AffineTransform.TYPE_TRANSLATION)
-	  {
-	    x += transform.getTranslateX();
-	    y += transform.getTranslateY();
-	    drawVolatile(component, vimg.nativePointer,
-			 x, y, vimg.width, vimg.height);
-	    return true;
-	  }
+        int type = transform.getType();
+        if ((type == AffineTransform.TYPE_IDENTITY
+             || type == AffineTransform.TYPE_TRANSLATION)
+             && (clip == null || clip instanceof Rectangle2D))
+          {
+            Rectangle2D r = (Rectangle2D) clip;
+            if (r == null)
+              r = getRealBounds();
+            x += transform.getTranslateX();
+            y += transform.getTranslateY();
+            drawVolatile(component, vimg.nativePointer,
+                         x, y, vimg.width, vimg.height,
+                         (int) (r.getX() + transform.getTranslateX()),
+                         (int) (r.getY() + transform.getTranslateY()),
+                         (int) r.getWidth(),
+                         (int) r.getHeight());
+            return true;
+          }
 	else
 	  return super.drawImage(vimg.getSnapshot(), x, y, observer);
       }
@@ -323,24 +323,28 @@ public class ComponentGraphics extends CairoGraphics2D
     // If it is a GtkVolatileImage with an "easy" transform then
     // draw directly. Always pass a BufferedImage to super to avoid
     // deadlock (see Note in CairoGraphics.drawImage()).
-    if (img instanceof GtkVolatileImage)
+    if (img instanceof GtkVolatileImage
+        && (clip == null || clip instanceof Rectangle2D))
       {
         GtkVolatileImage vimg = (GtkVolatileImage) img;
-	int type = transform.getType();
-	if (type == AffineTransform.TYPE_IDENTITY)
-	  {
-	    drawVolatile(component, vimg.nativePointer,
-			 x, y, width, height);
-	    return true;
-	  }
-	  else if (type == AffineTransform.TYPE_TRANSLATION)
-	  {
-	    x += transform.getTranslateX();
-	    y += transform.getTranslateY();
-	    drawVolatile(component, vimg.nativePointer,
-			 x, y, width, height);
-	    return true;
-	  }
+        int type = transform.getType();
+        if ((type == AffineTransform.TYPE_IDENTITY
+             || type == AffineTransform.TYPE_TRANSLATION)
+             && (clip == null || clip instanceof Rectangle2D))
+          {
+            Rectangle2D r = (Rectangle2D) clip;
+            if (r == null)
+              r = getRealBounds();
+            x += transform.getTranslateX();
+            y += transform.getTranslateY();
+            drawVolatile(component, vimg.nativePointer,
+                         x, y, width, height,
+                         (int) (r.getX() + transform.getTranslateX()),
+                         (int) (r.getY() + transform.getTranslateY()),
+                         (int) r.getWidth(),
+                         (int) r.getHeight());
+            return true;
+          }
 	else
 	  return super.drawImage(vimg.getSnapshot(), x, y,
 				 width, height, observer);
