@@ -1,3 +1,7 @@
+2006-06-19  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* NEWS: Updated (delayed) for security tools and tools.texinfo.
+
 2006-06-19  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/peer/gtk/ComponentGraphics.java

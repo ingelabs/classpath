@@ -13,11 +13,19 @@ New in release 0.92 (UNRELEASED)
   build the GTK peers.
 * A Mozilla plugin, 'gcjwebplugin', is now included.  It introduces a
   dependency on the Mozilla plugin support headers and libraries.
+* A tools.texinfo document has been created and now includes documentation
+  about:
+  * appletviewer
+  * gcjwebplugin
+  * jarsigner
+  * keytool
 * Several new tools are now included:
   * appletviewer
   * jar
   * native2ascii
   * serialver
+  * keytool
+  * jarsigner
   A new configure option --enable-tool-wrappers causes wrapper
   binaries to be built for VMs that support the JNI Invocation API.
 
