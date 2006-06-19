@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package javax.swing;
 
+import java.applet.Applet;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -75,12 +76,6 @@ public class RepaintManager
    * The current repaint managers, indexed by their ThreadGroups.
    */
   static WeakHashMap currentRepaintManagers;
-
-  /**
-   * Used to disable merging of regions in commitBuffer(). This has caused
-   * problems and may either need to be reworked or removed.
-   */
-  private static final boolean MERGE_REGIONS = false;
 
   /**
    * A rectangle object to be reused in damaged regions calculation.
@@ -319,25 +314,44 @@ public class RepaintManager
    */
   public void addInvalidComponent(JComponent component)
   {
-    Component ancestor = component;
+    Component validateRoot = null;
+    Component c = component;
+    while (c != null)
+      {
+        // Special cases we don't bother validating are when the invalidated
+        // component (or any of it's ancestors) is inside a CellRendererPane
+        // or if it doesn't have a peer yet (== not displayable).
+        if (c instanceof CellRendererPane || ! c.isDisplayable())
+          return;
+        if (c instanceof JComponent && ((JComponent) c).isValidateRoot())
+          {
+            validateRoot = c;
+            break;
+          }
 
-    while (ancestor != null
-           && (! (ancestor instanceof JComponent)
-               || ! ((JComponent) ancestor).isValidateRoot() ))
-      ancestor = ancestor.getParent();
+        c = c.getParent();
+      }
 
-    if (ancestor != null
-        && ancestor instanceof JComponent
-        && ((JComponent) ancestor).isValidateRoot())
-      component = (JComponent) ancestor;
-
-    if (invalidComponents.contains(component))
+    // If we didn't find a validate root, then we don't validate.
+    if (validateRoot == null)
       return;
 
-    synchronized (invalidComponents)
+    // Make sure the validate root and all of it's ancestors are visible.
+    c = validateRoot;
+    while (c != null)
       {
-        invalidComponents.add(component);
+        if (! c.isVisible() || ! c.isDisplayable())
+          return;
+        c = c.getParent();
       }
+
+    if (invalidComponents.contains(validateRoot))
+      return;
+
+    //synchronized (invalidComponents)
+    //  {
+        invalidComponents.add(validateRoot);
+    //  }
 
     if (! repaintWorker.isLive())
       {
@@ -384,7 +398,7 @@ public class RepaintManager
   {
     if (w <= 0 || h <= 0 || !component.isShowing())
       return;
-    
+
     Component parent = component.getParent();
     
     component.computeVisibleRect(rectCache);
@@ -638,7 +652,7 @@ public class RepaintManager
       }
     return buffer;
   }
-  
+
   /**
    * Blits the back buffer of the specified root component to the screen. If
    * the RepaintManager is currently working on a paint request, the commit
@@ -666,7 +680,7 @@ public class RepaintManager
       {
         // If the RepaintManager is not currently painting, then directly
         // blit the requested buffer on the screen.
-        if (! MERGE_REGIONS || ! repaintUnderway)
+        if (true || ! repaintUnderway)
           {
             blitBuffer(root, rootRect);
           }
@@ -697,6 +711,9 @@ public class RepaintManager
    */
   private void blitBuffer(Component root, Rectangle rootRect)
   {
+    if (! root.isShowing())
+      return;
+
     // Find the Window from which we use the backbuffer.
     Component bufferRoot = root;
     Rectangle bufferRect = rootRect.getBounds();
@@ -711,7 +728,7 @@ public class RepaintManager
 
     // Make sure we have a sane clip at this point.
     g.clipRect(rootRect.x, rootRect.y, rootRect.width, rootRect.height);
-    g.drawImage(buffer, bufferRect.x - rootRect.x, bufferRect.y - rootRect.y,
+    g.drawImage(buffer, rootRect.x - bufferRect.x, rootRect.y - bufferRect.y,
                 root);
     g.dispose();
 
