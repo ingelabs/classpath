@@ -1,3 +1,9 @@
+2006-06-20  Tom Tromey  <tromey@redhat.com>
+
+	PR classpath/28095:
+	* java/net/URL.java (URL): Throw MalformedURLException if a
+	RuntimeException is caught.  Chain exceptions.
+
 2006-06-20  Lillian Angel  <langel@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkCheckboxPeer.java
