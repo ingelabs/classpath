@@ -3,7 +3,7 @@ lib_LTLIBRARIES = libgcjwebplugin.la
 libgcjwebplugin_la_SOURCES = gcjwebplugin.cc
 
 libgcjwebplugin_la_CXXFLAGS = \
-	-Wall -DAPPLETVIEWER_EXECUTABLE="\"$(bindir)/appletviewer\"" \
+	-Wall -DAPPLETVIEWER_EXECUTABLE="\"$(bindir)/gappletviewer\"" \
 	$(MOZILLA_CFLAGS) $(GLIB_CFLAGS) $(GTK_CFLAGS)
 
 libgcjwebplugin_la_LDFLAGS = -avoid-version \

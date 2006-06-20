@@ -1,3 +1,8 @@
+2006-06-20  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* native/plugin/Makefile.am (libgcjwebplugin_la_CXXFLAGS): Define
+	APPLETVIEWER_EXECUTABLE to gappletviewer.
+
 2006-06-20  Tom Tromey  <tromey@redhat.com>
 
 	PR classpath/28095:
