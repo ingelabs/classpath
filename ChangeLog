@@ -1,3 +1,35 @@
+2006-06-20  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/GapContent.java
+	(GapContentPosition.mark): New field.
+	(GapContentPosition.index): Removed.
+	(GapContentPosition.GapContentPosition): Changed to take the
+	real offset as parameter. Added handling of reference counter.
+	Try to cleanup before creating new instances.
+	(getOffset): Delegate to the Mark method with same name.
+	(Mark): New class, encapsulating a mark.
+	(positionMarks): Removed field.
+	(numMarks): Removed field.
+	(marks): New field.
+	(queueOfDeath): New field.
+	(GapContent): Removed init of old fields, added init of new fields.
+	(createPosition): Added check for validity of arguments.
+	Create GapContentPosition directly with offset.
+	(shiftEnd): Pass end of buffer directly to adjustPositionsInRange.
+	(shiftGap): Pass end of buffer directly to adjustPositionsInRange.
+	(shiftGapStartDown): Call resetMarksAtZero().
+	(shiftGapEndUp): Call resetMarksAtZero().
+	(replace): Don't call resetMarksAtZero().
+	(setPositionInRange): Replaced by simpler algorithm, similar to
+	adjustPositionsInRange.
+	(adjustPositionsInRange): Adapted to use of Mark objects.
+	(resetMarksAtZero): Reset all marks that point to zero instead
+	of only the first one.
+	(dumpMarks): Adjusted to dump Mark objects.
+	(insertMark): Removed.
+	(garbageCollect): New method. Cleans up the marks list.
+	(binarySearch): Removed.
+
 2006-06-20  Lillian Angel  <langel@redhat.com>
 
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
