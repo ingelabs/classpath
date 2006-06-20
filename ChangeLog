@@ -1,3 +1,33 @@
+2006-06-20  Francis Kung  <fkung@redhat.com>
+
+	* examples/gnu/classpath/examples/java2d/J2dBenchmark.java:
+	Changed many members to be protected.
+	(J2dBenchmark): moved to init() instead.
+	(init): New method.
+	(main): Call init() after creating object
+	(testComplete): New method.
+	(test_drawArc): Use maxTests varialbe instead of constant.
+	(test_drawCubicCurve): Likewise.
+	(test_drawEllipse): Likewise.
+	(test_drawGeneralPath): Likewise.
+	(test_drawImage): Likewise.
+	(test_drawLine): Likewise.
+	(test_drawQuadCurve): Likewise.
+	(test_drawRectangle): Likewise.
+	(test_drawRoundRectangle): Likewise.
+	(test_drawTransparentImage): Likewise.
+	(test_fillArc): Likewise.
+	(test_fillEllipse): Likewise.
+	(test_fillGeneralPath): Likewise.
+	(test_fillRectangle): Likewise.
+	(test_fillRoundRectangle): Likewise.
+	(GraphicsTest.runSetNoClipping): Added runCount parameter.
+	(GraphicsTest.runSetWithClipping): Likewise.
+	(GraphicsTest.runSetZeroClipping): Likewise.
+	(GraphicsTest.run): Added checks for more option flags.
+	* examples/gnu/classpath/examples/java2d/J2dBenchmarkGUI.java:
+	New file.
+
 2006-06-20  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/GapContent.java

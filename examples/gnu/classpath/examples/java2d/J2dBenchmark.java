@@ -59,37 +59,37 @@ public class J2dBenchmark
   /**
    * Default number of test-iterations.
    */
-  private static final int DEFAULT_TEST_SIZE = 1000;
+  protected static final int DEFAULT_TEST_SIZE = 1000;
 
   /**
    * Default screen size.
    */
-  private static final int DEFAULT_SCREEN_WIDTH = 320;
+  protected static final int DEFAULT_SCREEN_WIDTH = 320;
 
-  private static final int DEFAULT_SCREEN_HEIGHT = 240;
+  protected static final int DEFAULT_SCREEN_HEIGHT = 240;
 
   /**
    * Java2D tests.
    */
-  private static final int J2DTEST_ARC = 1 << 0;
+  protected static final int J2DTEST_ARC = 1 << 0;
 
-  private static final int J2DTEST_CUBICCURVE = 1 << 1;
+  protected static final int J2DTEST_CUBICCURVE = 1 << 1;
 
-  private static final int J2DTEST_ELLIPSE = 1 << 2;
+  protected static final int J2DTEST_ELLIPSE = 1 << 2;
 
-  private static final int J2DTEST_GENERALPATH = 1 << 3;
+  protected static final int J2DTEST_GENERALPATH = 1 << 3;
 
-  private static final int J2DTEST_LINE = 1 << 4;
+  protected static final int J2DTEST_LINE = 1 << 4;
 
-  private static final int J2DTEST_QUADCURVE = 1 << 5;
+  protected static final int J2DTEST_QUADCURVE = 1 << 5;
 
-  private static final int J2DTEST_RECTANGLE = 1 << 6;
+  protected static final int J2DTEST_RECTANGLE = 1 << 6;
 
-  private static final int J2DTEST_ROUNDRECTANGLE = 1 << 7;
+  protected static final int J2DTEST_ROUNDRECTANGLE = 1 << 7;
 
-  private static final int J2DTEST_IMAGE = 1 << 8;
+  protected static final int J2DTEST_IMAGE = 1 << 8;
 
-  private static final int J2DTEST_NONE = 0;
+  protected static final int J2DTEST_NONE = 0;
 
   /*
   private static final int J2DTEST_ALL = J2DTEST_ARC | J2DTEST_CUBICCURVE
@@ -110,13 +110,23 @@ public class J2dBenchmark
 
   int iterations = 1;
 
-  private int screenWidth = DEFAULT_SCREEN_WIDTH;
+  protected int screenWidth = DEFAULT_SCREEN_WIDTH;
 
-  private int screenHeight = DEFAULT_SCREEN_HEIGHT;
+  protected int screenHeight = DEFAULT_SCREEN_HEIGHT;
 
-  boolean doubleBufferFlag = true;
+  protected boolean noClippingFlag = true;
 
-  private int awtTests = J2DTEST_ALL;
+  protected boolean withClippingFlag = true;
+
+  protected boolean zeroClippingFlag = true;
+
+  protected boolean singleBufferFlag = true;
+
+  protected boolean doubleBufferFlag = true;
+
+  protected int awtTests = J2DTEST_ALL;
+
+  protected int testSize = DEFAULT_TEST_SIZE;
 
   private Label testLabel;
 
@@ -128,9 +138,9 @@ public class J2dBenchmark
 
   private Image gifTestImage;
 
-  private TestSet testSetMap = new TestSet();
+  protected TestSet testSetMap = new TestSet();
 
-  public J2dBenchmark()
+  public void init()
   {
     pngTestImage = loadImage("aicas.png");
     gifTestImage = loadImage("palme.gif");
@@ -174,12 +184,18 @@ public class J2dBenchmark
       }
   }
 
+  void testComplete()
+  {
+    System.exit(0);
+  }
+
   public static void main(String[] args)
   {
     int awtTests;
     int i;
     boolean endOfOptionsFlag;
     J2dBenchmark speed = new J2dBenchmark();
+    speed.init();
 
     // Parse arguments.
     i = 0;
@@ -442,7 +458,7 @@ public class J2dBenchmark
    */
   private void test_drawArc(Graphics2D g, Dimension size)
   {
-    int maxTests = DEFAULT_TEST_SIZE;
+    int maxTests = testSize;
     int minSize;
     long startTime;
     long endTime;
@@ -475,7 +491,7 @@ public class J2dBenchmark
    */
   private void test_fillArc(Graphics2D g, Dimension size)
   {
-    int maxTests = DEFAULT_TEST_SIZE;
+    int maxTests = testSize;
     int minSize;
     long startTime;
     long endTime;
@@ -508,7 +524,7 @@ public class J2dBenchmark
    */
   private void test_drawCubicCurve(Graphics2D g, Dimension size)
   {
-    int maxTests = DEFAULT_TEST_SIZE;
+    int maxTests = testSize;
     int minSize = 10;
     long startTime = System.currentTimeMillis();
     for (int i = 0; i < maxTests; i += 1)
@@ -540,7 +556,7 @@ public class J2dBenchmark
    */
   private void test_drawEllipse(Graphics2D g, Dimension size)
   {
-    int maxTests = DEFAULT_TEST_SIZE;
+    int maxTests = testSize;
     int minSize = 10;
     long startTime = System.currentTimeMillis();
     for (int i = 0; i < maxTests; i += 1)
@@ -566,7 +582,7 @@ public class J2dBenchmark
    */
   private void test_fillEllipse(Graphics2D g, Dimension size)
   {
-    int maxTests = DEFAULT_TEST_SIZE;
+    int maxTests = testSize;
     int minSize = 10;
     long startTime = System.currentTimeMillis();
     for (int i = 0; i < maxTests; i += 1)
@@ -593,7 +609,7 @@ public class J2dBenchmark
    */
   private void test_drawGeneralPath(Graphics2D g, Dimension size)
   {
-    int maxTests = DEFAULT_TEST_SIZE;
+    int maxTests = testSize;
     long startTime = System.currentTimeMillis();
 
     for (int i = 0; i < maxTests; i += 1)
@@ -623,7 +639,7 @@ public class J2dBenchmark
    */
   private void test_fillGeneralPath(Graphics2D g, Dimension size)
   {
-    int maxTests = DEFAULT_TEST_SIZE;
+    int maxTests = testSize;
     long startTime = System.currentTimeMillis();
 
     GeneralPath shape = new GeneralPath();
@@ -654,7 +670,7 @@ public class J2dBenchmark
    */
   private void test_drawLine(Graphics2D g, Dimension size)
   {
-    int maxTests = DEFAULT_TEST_SIZE;
+    int maxTests = testSize;
     int minSize = 10;
     long startTime = System.currentTimeMillis();
     for (int i = 0; i < maxTests; i += 1)
@@ -680,7 +696,7 @@ public class J2dBenchmark
    */
   private void test_drawQuadCurve(Graphics2D g, Dimension size)
   {
-    int maxTests = DEFAULT_TEST_SIZE;
+    int maxTests = testSize;
     int minSize = 10;
     long startTime = System.currentTimeMillis();
     for (int i = 0; i < maxTests; i += 1)
@@ -709,7 +725,7 @@ public class J2dBenchmark
    */
   private void test_drawRectangle(Graphics2D g, Dimension size)
   {
-    int maxTests = DEFAULT_TEST_SIZE;
+    int maxTests = testSize;
     int minSize = 10;
     long startTime = System.currentTimeMillis();
     for (int i = 0; i < maxTests; i += 1)
@@ -735,7 +751,7 @@ public class J2dBenchmark
    */
   private void test_fillRectangle(Graphics2D g, Dimension size)
   {
-    int maxTests = DEFAULT_TEST_SIZE;
+    int maxTests = testSize;
     int minSize = 10;
     long startTime = System.currentTimeMillis();
     for (int i = 0; i < maxTests; i += 1)
@@ -761,7 +777,7 @@ public class J2dBenchmark
    */
   private void test_drawRoundRectangle(Graphics2D g, Dimension size)
   {
-    int maxTests = DEFAULT_TEST_SIZE;
+    int maxTests = testSize;
     int minSize;
     long startTime;
     long endTime;
@@ -794,7 +810,7 @@ public class J2dBenchmark
    */
   private void test_fillRoundRectangle(Graphics2D g, Dimension size)
   {
-    int maxTests = DEFAULT_TEST_SIZE;
+    int maxTests = testSize;
     int minSize;
     long startTime;
     long endTime;
@@ -834,7 +850,7 @@ public class J2dBenchmark
         return;
       }
 
-    int maxTests = DEFAULT_TEST_SIZE / 2;
+    int maxTests = testSize / 2;
     if (maxTests == 0)
       maxTests = 1;
     int imageWidth = gifTestImage.getWidth(this);
@@ -866,7 +882,7 @@ public class J2dBenchmark
         return;
       }
 
-    int maxTests = DEFAULT_TEST_SIZE / 5;
+    int maxTests = testSize / 5;
     if (maxTests == 0)
       maxTests = 1;
     int imageWidth = pngTestImage.getWidth(this);
@@ -926,21 +942,33 @@ public class J2dBenchmark
                     }
                 }
 
-              if (iterations != 0)
-                System.out.println("--- run...("
-                                   + runCount
-                                   + "/"
-                                   + iterations
-                                   + ") ------------------------------------------------------");
+              // if (iterations != 0)
+              // System.out.println("--- run...("
+              // + runCount
+              // + "/"
+              // + iterations
+              // + ") ------------------------------------------------------");
 
               Graphics g = getGraphics();
               Dimension size = getSize();
-              logger.logp(Level.INFO, "J2dGraphicsBenchmark.GraphicsTest",
-                          "run", "Start testing non-double-buffered drawing");
-              runSet_noClipping((Graphics2D) g, size);
-              runSet_zeroClipping((Graphics2D) g, size);
-              runSet_withClipping((Graphics2D) g, size);
-              g.dispose();
+
+              if (singleBufferFlag)
+                {
+                  logger.logp(Level.INFO, "J2dGraphicsBenchmark.GraphicsTest",
+                              "run",
+                              "Start testing non-double-buffered drawing");
+
+                  if (noClippingFlag)
+                    runSet_noClipping((Graphics2D) g, size, runCount);
+
+                  if (withClippingFlag)
+                    runSet_withClipping((Graphics2D) g, size, runCount);
+
+                  if (zeroClippingFlag)
+                    runSet_zeroClipping((Graphics2D) g, size, runCount);
+
+                  g.dispose();
+                }
 
               if (doubleBufferFlag)
                 {
@@ -948,21 +976,34 @@ public class J2dBenchmark
                               "run", "Start testing double-buffered drawing");
                   Graphics canvas = getGraphics();
                   Image doublebuffer = createImage(size.width, size.height);
-                  g = doublebuffer.getGraphics();
-                  runSet_noClipping((Graphics2D) g, size);
-                  g.dispose();
-                  canvas.drawImage(doublebuffer, 0, 0, this);
 
-                  g = doublebuffer.getGraphics();
-                  runSet_withClipping((Graphics2D) g, size);
-                  g.dispose();
-                  canvas.drawImage(doublebuffer, 0, 0, this);
+                  if (noClippingFlag)
+                    {
+                      g = doublebuffer.getGraphics();
+                      runSet_noClipping((Graphics2D) g, size,
+                                        "double buffering", runCount);
+                      g.dispose();
+                      canvas.drawImage(doublebuffer, 0, 0, this);
+                    }
 
-                  g = doublebuffer.getGraphics();
-                  runSet_zeroClipping((Graphics2D) g, size);
-                  g.dispose();
-                  canvas.drawImage(doublebuffer, 0, 0, this);
-                  canvas.dispose();
+                  if (withClippingFlag)
+                    {
+                      g = doublebuffer.getGraphics();
+                      runSet_withClipping((Graphics2D) g, size,
+                                          "double buffering", runCount);
+                      g.dispose();
+                      canvas.drawImage(doublebuffer, 0, 0, this);
+                    }
+
+                  if (zeroClippingFlag)
+                    {
+                      g = doublebuffer.getGraphics();
+                      runSet_zeroClipping((Graphics2D) g, size,
+                                          "double buffering", runCount);
+                      g.dispose();
+                      canvas.drawImage(doublebuffer, 0, 0, this);
+                      canvas.dispose();
+                    }
                 }
 
               printReport();
@@ -974,7 +1015,8 @@ public class J2dBenchmark
                 }
               else
                 {
-                  System.out.println("--- done --------------------------------------------------------");
+                  // System.out.println("--- done
+                  // --------------------------------------------------------");
                   synchronized (this)
                     {
                       doPaint = false;
@@ -988,10 +1030,16 @@ public class J2dBenchmark
               System.exit(129);
             }
         }
-      System.exit(0);
+      testComplete();
     }
 
-    private void runSet_zeroClipping(Graphics2D g, Dimension size)
+    private void runSet_zeroClipping(Graphics2D g, Dimension size, int runCount)
+    {
+      runSet_zeroClipping(g, size, "", runCount);
+    }
+
+    private void runSet_zeroClipping(Graphics2D g, Dimension size,
+                                     String context, int runCount)
     {
       int clipped_width;
       int clipped_height;
@@ -1024,12 +1072,21 @@ public class J2dBenchmark
       g.setColor(Color.BLACK);
       g.fill(fullWindow);
 
-      setTestContext("clipping to zero");
+      if (context.equals(""))
+        setTestContext("(" + runCount + ") clipping to zero");
+      else
+        setTestContext("(" + runCount + ") clipping to zero (" + context + ")");
 
       runTestSet(g, size);
     }
 
-    private void runSet_withClipping(Graphics2D g, Dimension size)
+    private void runSet_withClipping(Graphics2D g, Dimension size, int runCount)
+    {
+      runSet_withClipping(g, size, "", runCount);
+    }
+
+    private void runSet_withClipping(Graphics2D g, Dimension size,
+                                     String context, int runCount)
     {
       int clipped_width = 2 * size.width / 3;
       int clipped_height = 2 * size.height / 3;
@@ -1060,18 +1117,30 @@ public class J2dBenchmark
       g.setColor(Color.BLACK);
       g.fill(fullWindow);
 
-      setTestContext("with clipping");
+      if (context.equals(""))
+        setTestContext("(" + runCount + ") with clipping ");
+      else
+        setTestContext("(" + runCount + ") with clipping (" + context + ")");
 
       runTestSet(g, size);
     }
 
-    public void runSet_noClipping(Graphics2D g, Dimension size)
+    private void runSet_noClipping(Graphics2D g, Dimension size, int runCount)
+    {
+      runSet_noClipping(g, size, "", runCount);
+    }
+
+    private void runSet_noClipping(Graphics2D g, Dimension size,
+                                   String context, int runCount)
     {
       Rectangle fullWindow = new Rectangle(0, 0, size.width, size.height);
       g.setColor(Color.BLACK);
       g.fill(fullWindow);
 
-      setTestContext("without clipping");
+      if (context.equals(""))
+        setTestContext("(" + runCount + ") without clipping");
+      else
+        setTestContext("(" + runCount + ") without clipping (" + context + ")");
 
       runTestSet(g, size);
     }
