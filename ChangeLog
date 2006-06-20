@@ -1,3 +1,9 @@
+2006-06-20  Lillian Angel  <langel@redhat.com>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(drawImage): Added call to updateColor because
+	Cairo seems to lose the current color.
+
 2006-06-20  Gary Benson  <gbenson@redhat.com>
 
 	* java/awt/Toolkit.java: Add security check.

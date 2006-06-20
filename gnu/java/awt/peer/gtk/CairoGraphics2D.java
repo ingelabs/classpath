@@ -1233,6 +1233,7 @@ public abstract class CairoGraphics2D extends Graphics2D
     if(db instanceof CairoSurface)
       {
 	((CairoSurface)db).drawSurface(nativePointer, i2u, alpha);
+        updateColor();
 	return true;
       }
 	    
