@@ -159,11 +159,10 @@ public class DSSKeyPairPKCS8Codec
       }
     catch (IOException e)
       {
-        InvalidParameterException y = new InvalidParameterException();
+        InvalidParameterException y = new InvalidParameterException(e.getMessage());
         y.initCause(e);
         throw y;
       }
-
     return result;
   }
 
@@ -187,7 +186,6 @@ public class DSSKeyPairPKCS8Codec
   {
     if (Configuration.DEBUG)
       log.entering(this.getClass().getName(), "decodePrivateKey");
-
     if (input == null)
       throw new InvalidParameterException("Input bytes MUST NOT be null");
 
@@ -240,7 +238,7 @@ public class DSSKeyPairPKCS8Codec
       }
     catch (IOException e)
       {
-        InvalidParameterException y = new InvalidParameterException();
+        InvalidParameterException y = new InvalidParameterException(e.getMessage());
         y.initCause(e);
         throw y;
       }

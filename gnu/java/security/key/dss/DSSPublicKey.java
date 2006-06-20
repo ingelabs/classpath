@@ -47,26 +47,22 @@ import java.security.PublicKey;
 import java.security.interfaces.DSAPublicKey;
 
 /**
- * <p>An object that embodies a DSS (Digital Signature Standard) public key.</p>
+ * An object that embodies a DSS (Digital Signature Standard) public key.
  * 
  * @see #getEncoded
  */
-public class DSSPublicKey extends DSSKey implements PublicKey, DSAPublicKey
+public class DSSPublicKey
+    extends DSSKey
+    implements PublicKey, DSAPublicKey
 {
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
   /**
-   * <code>y = g<sup>x</sup> mod p</code> where <code>x</code> is the private
-   * part of the DSA key.
+   * <code>y = g<sup>x</sup> mod p</code> where <code>x</code> is the
+   * private part of the DSA key.
    */
   private final BigInteger y;
 
   /** String representation of this key. Cached for speed. */
   private transient String str;
-
-  // Constructor(s)
-  // -------------------------------------------------------------------------
 
   /**
    * Conveience constructor. Calls the constructor with 5 arguments passing
@@ -85,8 +81,8 @@ public class DSSPublicKey extends DSSKey implements PublicKey, DSAPublicKey
   }
 
   /**
-   * Constructs a new instance of <code>DSSPublicKey</code> given the designated
-   * arguments.
+   * Constructs a new instance of <code>DSSPublicKey</code> given the
+   * designated arguments.
    * 
    * @param preferredFormat the identifier of the preferred encoding format to
    *          use when externalizing this key.
@@ -102,12 +98,8 @@ public class DSSPublicKey extends DSSKey implements PublicKey, DSAPublicKey
     super(preferredFormat == Registry.ASN1_ENCODING_ID ? Registry.X509_ENCODING_ID
                                                        : preferredFormat,
           p, q, g);
-
     this.y = y;
   }
-
-  // Class methods
-  // -------------------------------------------------------------------------
 
   /**
    * A class method that takes the output of the <code>encodePublicKey()</code>
@@ -133,30 +125,22 @@ public class DSSPublicKey extends DSSKey implements PublicKey, DSAPublicKey
       catch (IllegalArgumentException ignored)
         {
         }
-
     // try X.509 codec
     return (DSSPublicKey) new DSSKeyPairX509Codec().decodePublicKey(k);
   }
-
-  // Instance methods
-  // -------------------------------------------------------------------------
-
-  // java.security.interfaces.DSAPublicKey interface implementation ----------
 
   public BigInteger getY()
   {
     return y;
   }
 
-  // Other instance methods --------------------------------------------------
-
   /**
-   * <p>Returns the encoded form of this public key according to the designated
-   * format.</p>
+   * Returns the encoded form of this public key according to the designated
+   * format.
    * 
    * @param format the desired format identifier of the resulting encoding.
    * @return the byte sequence encoding this key according to the designated
-   * format.
+   *         format.
    * @exception IllegalArgumentException if the format is not supported.
    * @see DSSKeyPairRawCodec
    */
@@ -179,24 +163,22 @@ public class DSSPublicKey extends DSSKey implements PublicKey, DSAPublicKey
   }
 
   /**
-   * <p>Returns <code>true</code> if the designated object is an instance of
+   * Returns <code>true</code> if the designated object is an instance of
    * {@link DSAPublicKey} and has the same DSS (Digital Signature Standard)
-   * parameter values as this one.</p>
+   * parameter values as this one.
    * 
    * @param obj the other non-null DSS key to compare to.
-   * @return <code>true</code> if the designated object is of the same type and
-   * value as this one.
+   * @return <code>true</code> if the designated object is of the same type
+   *         and value as this one.
    */
   public boolean equals(Object obj)
   {
     if (obj == null)
-      {
-        return false;
-      }
-    if (!(obj instanceof DSAPublicKey))
-      {
-        return false;
-      }
+      return false;
+
+    if (! (obj instanceof DSAPublicKey))
+      return false;
+
     DSAPublicKey that = (DSAPublicKey) obj;
     return super.equals(that) && y.equals(that.getY());
   }
@@ -207,11 +189,11 @@ public class DSSPublicKey extends DSSKey implements PublicKey, DSAPublicKey
       {
         String ls = SystemProperties.getProperty("line.separator");
         str = new StringBuilder(this.getClass().getName()).append("(")
-        .append(super.toString()).append(",").append(ls)
-        .append("y=0x").append(y.toString(16)).append(ls)
-        .append(")").toString();
+            .append(super.toString()).append(",").append(ls)
+            .append("y=0x").append(y.toString(16)).append(ls)
+            .append(")")
+            .toString();
       }
-
     return str;
   }
 }

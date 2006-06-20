@@ -1,3 +1,25 @@
+2006-06-20  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/java/security/key/dss/DSSKey.java: Source formatting.
+	* gnu/java/security/key/dss/DSSKeyPairGenerator.java: Likewise.
+	* gnu/java/security/key/dss/DSSKeyPairPKCS8Codec.java: Likewise.
+	* gnu/java/security/key/dss/DSSKeyPairRawCodec.java: Likewise.
+	* gnu/java/security/key/dss/DSSKeyPairX509Codec.java: Likewise.
+	* gnu/java/security/key/dss/DSSPrivateKey.java: Likewise.
+	* gnu/java/security/key/dss/DSSPublicKey.java: Likewise.
+	* gnu/java/security/key/dss/FIPS186.java: Likewise.
+	* gnu/java/security/key/rsa/GnuRSAKey.java: Likewise.
+	* gnu/java/security/key/rsa/GnuRSAPrivateKey.java: Likewise.
+	* gnu/java/security/key/rsa/GnuRSAPublicKey.java: Likewise.
+	* gnu/java/security/key/rsa/RSAKeyPairGenerator.java: Likewise.
+	* gnu/java/security/key/rsa/RSAKeyPairPKCS8Codec.java: Likewise.
+	* gnu/java/security/key/rsa/RSAKeyPairRawCodec.java: Likewise.
+	* gnu/java/security/key/rsa/RSAKeyPairX509Codec.java: Likewise.
+	* gnu/java/security/key/IKeyPairCodec.java: Likewise.
+	* gnu/java/security/key/IKeyPairGenerator.java: Likewise.
+	* gnu/java/security/key/KeyPairCodecFactory.java: Likewise.
+	* gnu/java/security/key/KeyPairGeneratorFactory.java: Likewise.
+
 2006-06-19  Lillian Angel  <langel@redhat.com>
 
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java

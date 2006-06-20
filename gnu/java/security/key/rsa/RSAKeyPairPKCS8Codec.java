@@ -85,7 +85,6 @@ public class RSAKeyPairPKCS8Codec
   /**
    * Returns the PKCS#8 ASN.1 <i>PrivateKeyInfo</i> representation of an RSA
    * private key. The ASN.1 specification is as follows:
-   * 
    * <pre>
    *   PrivateKeyInfo ::= SEQUENCE {
    *     version              INTEGER, -- MUST be 0
@@ -98,10 +97,9 @@ public class RSAKeyPairPKCS8Codec
    *     parameters  ANY DEFINED BY algorithm OPTIONAL
    *   }
    * </pre>
-   * 
-   * <p>The <i>privateKey</i> field, which is an OCTET STRING, contains the
-   * DER-encoded form of the RSA private key defined as:</p>
-   * 
+   * <p>
+   * The <i>privateKey</i> field, which is an OCTET STRING, contains the
+   * DER-encoded form of the RSA private key defined as:
    * <pre>
    *   RSAPrivateKey ::= SEQUENCE {
    *     version                 INTEGER, -- MUST be 0
@@ -125,7 +123,6 @@ public class RSAKeyPairPKCS8Codec
   {
     if (Configuration.DEBUG)
       log.entering(this.getClass().getName(), "encodePrivateKey()", key);
-
     if (! (key instanceof GnuRSAPrivateKey))
       throw new InvalidParameterException("Wrong key type");
 
@@ -217,7 +214,6 @@ public class RSAKeyPairPKCS8Codec
   {
     if (Configuration.DEBUG)
       log.entering(this.getClass().getName(), "decodePrivateKey()", input);
-
     if (input == null)
       throw new InvalidParameterException("Input bytes MUST NOT be null");
 
@@ -287,9 +283,8 @@ public class RSAKeyPairPKCS8Codec
         y.initCause(x);
         throw y;
       }
-
-    PrivateKey result = new GnuRSAPrivateKey(Registry.PKCS8_ENCODING_ID, n, e,
-                                             d, p, q, dP, dQ, qInv);
+    PrivateKey result = new GnuRSAPrivateKey(Registry.PKCS8_ENCODING_ID,
+                                             n, e, d, p, q, dP, dQ, qInv);
     if (Configuration.DEBUG)
       log.exiting(this.getClass().getName(), "decodePrivateKey()", result);
     return result;

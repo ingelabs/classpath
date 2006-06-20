@@ -49,18 +49,20 @@ import java.security.interfaces.RSAPrivateCrtKey;
 import java.security.interfaces.RSAPrivateKey;
 
 /**
- * <p>An object that embodies an RSA private key.</p>
- *
- * <p>References:</p>
+ * An object that embodies an RSA private key.
+ * <p>
+ * References:
  * <ol>
- *    <li><a href="http://www.cosic.esat.kuleuven.ac.be/nessie/workshop/submissions/rsa-pss.zip">
- *    RSA-PSS Signature Scheme with Appendix, part B.</a><br>
- *    Primitive specification and supporting documentation.<br>
- *    Jakob Jonsson and Burt Kaliski.</li>
+ * <li><a
+ * href="http://www.cosic.esat.kuleuven.ac.be/nessie/workshop/submissions/rsa-pss.zip">
+ * RSA-PSS Signature Scheme with Appendix, part B.</a><br>
+ * Primitive specification and supporting documentation.<br>
+ * Jakob Jonsson and Burt Kaliski.</li>
  * </ol>
  */
-public class GnuRSAPrivateKey extends GnuRSAKey implements PrivateKey,
-    RSAPrivateCrtKey
+public class GnuRSAPrivateKey
+    extends GnuRSAKey
+    implements PrivateKey, RSAPrivateCrtKey
 {
   /** The first prime divisor of the modulus. */
   private final BigInteger p;
@@ -68,8 +70,6 @@ public class GnuRSAPrivateKey extends GnuRSAKey implements PrivateKey,
   /** The second prime divisor of the modulus. */
   private final BigInteger q;
 
-  /** The public exponent of an RSA key. */
-  //   private final BigInteger e;
   /** The private exponent of an RSA private key. */
   private final BigInteger d;
 
@@ -85,21 +85,17 @@ public class GnuRSAPrivateKey extends GnuRSAKey implements PrivateKey,
   /** String representation of this key. Cached for speed. */
   private transient String str;
 
-  // Constructor(s)
-  // -------------------------------------------------------------------------
-
   /**
    * Convenience constructor. Calls the constructor with 5 arguments passing
    * {@link Registry#RAW_ENCODING_ID} as the identifier of the preferred
    * encoding format.
-   *
+   * 
    * @param p the modulus first prime divisor.
    * @param q the modulus second prime divisor.
    * @param e the public exponent.
    * @param d the private exponent.
    */
-  public GnuRSAPrivateKey(BigInteger p, BigInteger q, BigInteger e,
-                          BigInteger d)
+  public GnuRSAPrivateKey(BigInteger p, BigInteger q, BigInteger e, BigInteger d)
   {
     this(Registry.RAW_ENCODING_ID, p, q, e, d);
   }
@@ -118,7 +114,9 @@ public class GnuRSAPrivateKey extends GnuRSAKey implements PrivateKey,
   public GnuRSAPrivateKey(int preferredFormat, BigInteger p, BigInteger q,
                           BigInteger e, BigInteger d)
   {
-    this(preferredFormat, p.multiply(q), e, d, p, q, 
+    this(preferredFormat,
+         p.multiply(q),
+         e, d, p, q,
          e.modInverse(p.subtract(BigInteger.ONE)),
          e.modInverse(q.subtract(BigInteger.ONE)),
          q.modInverse(p));
@@ -131,19 +129,20 @@ public class GnuRSAPrivateKey extends GnuRSAKey implements PrivateKey,
    * @param preferredFormat the indetifier of the preferred encoding format to
    *          use when externalizing this key.
    * @param n the public modulus, which is also the product of <code>p</code>
-   * and <code>q</code>.
+   *          and <code>q</code>.
    * @param e the public exponent.
    * @param d the private exponent.
    * @param p the modulus first prime divisor.
    * @param q the modulus second prime divisor.
    * @param dP the first prime's exponen. A positive integer less than
-   * <code>p</code> and <code>q</code>, satisfying <code>e * dP = 1 (mod p-1)
-   * </code>.
+   *          <code>p</code> and <code>q</code>, satisfying
+   *          <code>e * dP = 1 (mod p-1)</code>.
    * @param dQ the second prime's exponent. A positive integer less than
-   * <code>p</code> and <code>q</code>, satisfying <code>e * dQ = 1 (mod p-1)
-   * </code>.
+   *          <code>p</code> and <code>q</code>, satisfying
+   *          <code>e * dQ = 1 (mod p-1)</code>.
    * @param qInv the Chinese Remainder Theorem coefiicient. A positive integer
-   * less than <code>p</code>, satisfying <code>q * qInv = 1 (mod p)</code>.
+   *          less than <code>p</code>, satisfying
+   *          <code>q * qInv = 1 (mod p)</code>.
    */
   public GnuRSAPrivateKey(int preferredFormat, BigInteger n, BigInteger e,
                           BigInteger d, BigInteger p, BigInteger q,
@@ -152,23 +151,19 @@ public class GnuRSAPrivateKey extends GnuRSAKey implements PrivateKey,
     super(preferredFormat == Registry.ASN1_ENCODING_ID ? Registry.PKCS8_ENCODING_ID
                                                        : preferredFormat,
           n, e);
-
     this.d = d;
     this.p = p;
     this.q = q;
     // the exponents dP and dQ are positive integers less than p and q
     // respectively satisfying
-    //    e * dP = 1 (mod p-1);
-    //    e * dQ = 1 (mod q-1),
+    // e * dP = 1 (mod p-1);
+    // e * dQ = 1 (mod q-1),
     this.dP = dP;
     this.dQ = dQ;
     // the CRT coefficient qInv is a positive integer less than p satisfying
-    //    q * qInv = 1 (mod p).
+    // q * qInv = 1 (mod p).
     this.qInv = qInv;
   }
-
-  // Class methods
-  // -------------------------------------------------------------------------
 
   /**
    * A class method that takes the output of the <code>encodePrivateKey()</code>
@@ -194,13 +189,9 @@ public class GnuRSAPrivateKey extends GnuRSAKey implements PrivateKey,
       catch (IllegalArgumentException ignored)
         {
         }
-
     // try PKCS#8 codec
     return (GnuRSAPrivateKey) new RSAKeyPairPKCS8Codec().decodePrivateKey(k);
   }
-
-  // Instance methods
-  // -------------------------------------------------------------------------
 
   public BigInteger getPrimeP()
   {
@@ -227,22 +218,18 @@ public class GnuRSAPrivateKey extends GnuRSAKey implements PrivateKey,
     return qInv;
   }
 
-  // java.security.interfaces.RSAPrivateKey interface implementation ---------
-
   public BigInteger getPrivateExponent()
   {
     return d;
   }
 
-  // Other instance methods --------------------------------------------------
-
   /**
-   * Returns the encoded form of this private key according to the
-   * designated format.
-   *
+   * Returns the encoded form of this private key according to the designated
+   * format.
+   * 
    * @param format the desired format identifier of the resulting encoding.
    * @return the byte sequence encoding this key according to the designated
-   * format.
+   *         format.
    * @throws IllegalArgumentException if the format is not supported.
    * @see RSAKeyPairRawCodec
    * @see RSAKeyPairPKCS8Codec
@@ -266,19 +253,18 @@ public class GnuRSAPrivateKey extends GnuRSAKey implements PrivateKey,
   }
 
   /**
-   * <p>Returns <code>true</code> if the designated object is an instance of
-   * this class and has the same RSA parameter values as this one.</p>
-   *
+   * Returns <code>true</code> if the designated object is an instance of this
+   * class and has the same RSA parameter values as this one.
+   * 
    * @param obj the other non-null RSA key to compare to.
    * @return <code>true</code> if the designated object is of the same type
-   * and value as this one.
+   *         and value as this one.
    */
   public boolean equals(final Object obj)
   {
     if (obj == null)
-      {
-        return false;
-      }
+      return false;
+
     if (obj instanceof RSAPrivateKey)
       {
         final RSAPrivateKey that = (RSAPrivateKey) obj;
@@ -315,7 +301,8 @@ public class GnuRSAPrivateKey extends GnuRSAKey implements PrivateKey,
                                                         : "**...*").append(ls)
             .append("qInv=0x").append(Configuration.DEBUG ? qInv.toString(16)
                                                           : "**...*").append(ls)
-            .append(")").toString();
+            .append(")")
+            .toString();
       }
     return str;
   }

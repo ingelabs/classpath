@@ -117,7 +117,6 @@ public class RSAKeyPairX509Codec
   {
     if (Configuration.DEBUG)
       log.entering(this.getClass().getName(), "encodePublicKey()", key);
-
     if (! (key instanceof GnuRSAPublicKey))
       throw new InvalidParameterException("key");
 
@@ -158,7 +157,7 @@ public class RSAKeyPairX509Codec
       }
     catch (IOException x)
       {
-        InvalidParameterException y = new InvalidParameterException();
+        InvalidParameterException y = new InvalidParameterException(x.getMessage());
         y.initCause(x);
         throw y;
       }
@@ -187,7 +186,6 @@ public class RSAKeyPairX509Codec
   {
     if (Configuration.DEBUG)
       log.entering(this.getClass().getName(), "decodePublicKey()", input);
-
     if (input == null)
       throw new InvalidParameterException("Input bytes MUST NOT be null");
 
@@ -232,11 +230,10 @@ public class RSAKeyPairX509Codec
       }
     catch (IOException x)
       {
-        InvalidParameterException y = new InvalidParameterException();
+        InvalidParameterException y = new InvalidParameterException(x.getMessage());
         y.initCause(x);
         throw y;
       }
-
     PublicKey result = new GnuRSAPublicKey(Registry.X509_ENCODING_ID, n, e);
     if (Configuration.DEBUG)
       log.exiting(this.getClass().getName(), "decodePublicKey()", result);
