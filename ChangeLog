@@ -1,5 +1,21 @@
 2006-06-20  Lillian Angel  <langel@redhat.com>
 
+	* gnu/java/awt/peer/gtk/GtkCheckboxPeer.java
+	(create): Added check to prevent Seg Fault. Should not
+	set the label if it is null.
+	* gnu/java/awt/peer/gtk/GtkLabelPeer.java
+	(setText): Changed to be a non-native function. Calls
+	setNativeText if the String parameter is non-null.
+	(setNativeText): Replaces old native setText function.
+	* include/gnu_java_awt_peer_gtk_GtkLabelPeer.h: Regenerated.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkLabelPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkLabelPeer_setText): Removed.
+	Replaced by Java_gnu_java_awt_peer_gtk_GtkLabelPeer_setNativeText.
+	(Java_gnu_java_awt_peer_gtk_GtkLabelPeer_setNativeText): Replaced
+	Java_gnu_java_awt_peer_gtk_GtkLabelPeer_setText.
+
+2006-06-20  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/text/JTextComponent.java
 	(AccessibleJTextComponent): Rewrote all javadocs
 	for this inner class.

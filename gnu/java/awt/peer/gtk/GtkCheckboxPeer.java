@@ -78,7 +78,10 @@ public class GtkCheckboxPeer extends GtkComponentPeer
     create (old_group);
     currentState = checkbox.getState();
     gtkToggleButtonSetActive(currentState);
-    gtkButtonSetLabel (checkbox.getLabel ());
+    
+    String label = checkbox.getLabel();
+    if (label != null)
+      gtkButtonSetLabel(label);
   }
 
   /**
