@@ -1,3 +1,9 @@
+2006-06-20  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/JTextComponent.java
+	(AccessibleJTextComponent): Rewrote all javadocs
+	for this inner class.
+
 2006-06-20  Francis Kung  <fkung@redhat.com>
 
 	* examples/gnu/classpath/examples/java2d/J2dBenchmark.java:
