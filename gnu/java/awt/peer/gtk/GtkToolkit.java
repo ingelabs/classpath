@@ -310,6 +310,11 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
 
   public PrintJob getPrintJob (Frame frame, String jobtitle, Properties props) 
   {
+    SecurityManager sm;
+    sm = System.getSecurityManager();
+    if (sm != null)
+      sm.checkPrintJobAccess();
+
     return null;
   }
 

@@ -402,6 +402,11 @@ public class QtToolkit extends ClasspathToolkit
 			      String jobtitle,
 			      Properties props)
   {
+    SecurityManager sm;
+    sm = System.getSecurityManager();
+    if (sm != null)
+      sm.checkPrintJobAccess();
+    
     throw new RuntimeException("Not implemented");
   }
 

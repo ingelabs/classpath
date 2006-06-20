@@ -1,3 +1,9 @@
+2006-06-20  Gary Benson  <gbenson@redhat.com>
+
+	* java/awt/Toolkit.java: Add security check.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java: Likewise.
+	* gnu/java/awt/peer/qt/QtToolkit.java: Likewise.
+
 2006-06-20  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* gnu/java/security/key/dss/DSSKey.java: Source formatting.
