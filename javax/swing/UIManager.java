@@ -183,12 +183,6 @@ public class UIManager implements Serializable
       return val;
     }
 
-    public void clear()
-    {
-      super.clear();
-      fallback.clear();
-    }
-
     public int size()
     {
       return super.size() + fallback.size();
