@@ -40,6 +40,7 @@ package javax.swing;
 
 import java.awt.Component;
 import java.awt.Point;
+import java.awt.PopupMenu;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -74,7 +75,7 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
   private static final long serialVersionUID = 4227225638931828014L;
 
   /** A Popup menu associated with this menu, which pops up when menu is selected */
-  private JPopupMenu popupMenu = new JPopupMenu();
+  private JPopupMenu popupMenu = null;
 
   /** Whenever menu is selected or deselected the MenuEvent is fired to
      menu's registered listeners. */
@@ -98,6 +99,7 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
   {
     super();
     setOpaque(false);
+    setDelay(200);
   }
 
   /**
@@ -108,8 +110,10 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
   public JMenu(String text)
   {
     super(text);
+    popupMenu = new JPopupMenu(); 
     popupMenu.setInvoker(this);
     setOpaque(false);
+    setDelay(200);
   }
 
   /**
@@ -122,8 +126,10 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
   {
     super(action);
     createActionChangeListener(this);
+    popupMenu = new JPopupMenu();
     popupMenu.setInvoker(this);
     setOpaque(false);
+    setDelay(200);
   }
 
   /**
@@ -137,6 +143,7 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
   {
     // FIXME: tearoff not implemented
     this(text);
+    setDelay(200);
   }
 
   /**
@@ -148,7 +155,7 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
    */
   public JMenuItem add(JMenuItem item)
   {
-    return popupMenu.add(item);
+    return getPopupMenu().add(item);
   }
 
   /**
@@ -160,7 +167,7 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
    */
   public Component add(Component component)
   {
-    popupMenu.insert(component, -1);
+    getPopupMenu().insert(component, -1);
     return component;
   }
 
@@ -174,7 +181,7 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
    */
   public Component add(Component component, int index)
   {
-    return popupMenu.add(component, index);
+    return getPopupMenu().add(component, index);
   }
 
   /**
@@ -186,7 +193,7 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
    */
   public JMenuItem add(String text)
   {
-    return popupMenu.add(text);
+    return getPopupMenu().add(text);
   }
 
   /**
@@ -198,7 +205,7 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
    */
   public JMenuItem add(Action action)
   {
-    return popupMenu.add(action);
+    return getPopupMenu().add(action);
   }
 
   /**
@@ -209,7 +216,7 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
    */
   public void remove(JMenuItem item)
   {
-    popupMenu.remove(item);
+    getPopupMenu().remove(item);
   }
 
   /**
@@ -219,7 +226,11 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
    */
   public void remove(int index)
   {
-    popupMenu.remove(index);
+    if (index < 0 || (index > 0 && getMenuComponentCount() == 0))
+      throw new IllegalArgumentException();
+  
+    if (getMenuComponentCount() > 0)
+      popupMenu.remove(index);
   }
 
   /**
@@ -229,8 +240,9 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
    */
   public void remove(Component component)
   {
-    int index = popupMenu.getComponentIndex(component);
-    popupMenu.remove(index);
+    int index = getPopupMenu().getComponentIndex(component);
+    if (index >= 0)
+      getPopupMenu().remove(index);
   }
 
   /**
@@ -267,7 +279,7 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
     if (index < 0)
       throw new IllegalArgumentException("index less than zero");
 
-    popupMenu.insert(item, index);
+    getPopupMenu().insert(item, index);
     return item;
   }
 
@@ -381,7 +393,7 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
 	super.setSelected(false);
 	super.setArmed(false);
 	fireMenuDeselected();
-	popupMenu.setVisible(false);
+        getPopupMenu().setVisible(false);
       }
   }
 
@@ -404,7 +416,7 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
    */
   public boolean isPopupMenuVisible()
   {
-    return popupMenu.isVisible();
+    return getPopupMenu().isVisible();
   }
 
   /**
@@ -415,7 +427,7 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
   public void setPopupMenuVisible(boolean popup)
   {
     if (getModel().isEnabled())
-      popupMenu.setVisible(popup);
+      getPopupMenu().setVisible(popup);
   }
 
   /**
@@ -530,6 +542,9 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
     if (index < 0)
       throw new IllegalArgumentException("index less than 0");
 
+    if (getItemCount() == 0)
+      return null;
+    
     Component c = popupMenu.getComponentAtIndex(index);
 
     if (c instanceof JMenuItem)
@@ -558,7 +573,7 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
   public boolean isTearOff()
   {
     // NOT YET IMPLEMENTED 
-    return false;
+    throw new Error("The method isTearOff() has not yet been implemented.");
   }
 
   /**
@@ -568,7 +583,7 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
    */
   public int getMenuComponentCount()
   {
-    return popupMenu.getComponentCount();
+    return getPopupMenu().getComponentCount();
   }
 
   /**
@@ -581,6 +596,9 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
    */
   public Component getMenuComponent(int index)
   {
+    if (getPopupMenu() == null || getMenuComponentCount() == 0)
+      return null;
+    
     return (Component) popupMenu.getComponentAtIndex(index);
   }
 
@@ -591,7 +609,7 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
    */
   public Component[] getMenuComponents()
   {
-    return popupMenu.getComponents();
+    return getPopupMenu().getComponents();
   }
 
   /**
@@ -626,6 +644,11 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
    */
   public JPopupMenu getPopupMenu()
   {
+    if (popupMenu == null)
+      {
+        popupMenu = new JPopupMenu();
+        popupMenu.setInvoker(this);
+      }
     return popupMenu;
   }
 

@@ -1,3 +1,17 @@
+2006-06-21  Tania Bento  <tbento@redhat.com>
+
+	* javax/swing/JMenu.java
+	(JMenu): Delay should be set to 200, not default of 0.
+	(JMenu): Delay should be set to 200, not default of 0.
+	(JMenu): Delay should be set to 200, not default of 0.
+	(JMenu): Delay should be set to 200, not default of 0.	
+	(remove): Added check that index >= 0 before removing
+	the component.
+	(getItem): Return null if item count equals 0.
+	(isTearOff): Should throw new error and not return false.
+	(getMenuComponent): Return null if popupMenu is null or
+	if there are no menu components.
+
 2006-06-21  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/font/FontRenderContext.java:
@@ -142,6 +156,7 @@
 	* java/net/URL.java (URL): Throw MalformedURLException if a
 	RuntimeException is caught.  Chain exceptions.
 
+>>>>>>> 1.7898
 2006-06-20  Lillian Angel  <langel@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkCheckboxPeer.java
