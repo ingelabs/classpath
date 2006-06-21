@@ -1,5 +1,26 @@
 2006-06-21  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(PropertyChangeHandler.propertyChange): Handle document listener
+	update here.
+	(background): Removed unneeded fields.
+	(inactiveBackground): Remove unneeded fields.
+	(installUI): Install the document listener. Slightly changed
+	order of operations. Don't trigger modelChanged().
+	(installDefaults): Only install properties when the
+	current properties are null or instances of UIResource.
+	(installListeners): Removed unnecessary listener installs.
+	(installDocumentListeners): Removed unneeded method.
+	(uninstallListeners): Removed unnecessary listener uninstalls.
+	(modelChanged): Removed call to installDocumentListeners().	
+	* javax/swing/plaf/basic/BasicTextFieldUI.java
+	(propertyChange): Update the colors by fetching them from
+	SharedUIDefaults. Fixed conditions.
+	* javax/swing/plaf/basic/SharedUIDefaults.java
+	(getColor): New method.
+
+2006-06-21  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/SizeSequence.java
 	(SizeSequence): Initialize array with correct number of entries.
 
