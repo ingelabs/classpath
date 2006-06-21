@@ -1,3 +1,13 @@
+2006-06-21  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/GapContent.java
+	(GapContentPosition.GapContentPosition): Replace
+	Collections.binarySearch with call to local search() to make
+	sure we find the first object that equals the searched object.
+	(setPositionsInRange): Likewise.
+	(adjustPositionsInRange): Likewise.
+	(search): New helper method.
+
 2006-06-21  Gary Benson  <gbenson@redhat.com>
 
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java: Add security check.

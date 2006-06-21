@@ -45,6 +45,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 import java.util.WeakHashMap;
@@ -94,7 +95,7 @@ public class GapContent
           // Try to make space.
           garbageCollect();
           Mark m = new Mark(offset);
-          int i = Collections.binarySearch(marks, m);
+          int i = search(marks, m);
           if (i >= 0) // mark found
             {
               m = (Mark) marks.get(i);
@@ -765,11 +766,11 @@ public class GapContent
         // Find the start and end indices in the positionMarks array.
         Mark m = new Mark(0); // For comparison / search only.
         m.mark = start;
-        int startIndex = Collections.binarySearch(marks, m);
+        int startIndex = search(marks, m);
         if (startIndex < 0) // Translate to insertion index, if not found.
           startIndex = - startIndex - 1;
         m.mark = end;
-        int endIndex = Collections.binarySearch(marks, m);
+        int endIndex = search(marks, m);
         if (endIndex < 0) // Translate to insertion index - 1, if not found.
           endIndex = - endIndex - 2;
 
@@ -797,12 +798,12 @@ public class GapContent
         Mark m = new Mark(0); // For comparison / search only.
 
         m.mark = startOffs;
-        int startIndex = Collections.binarySearch(marks, m);
+        int startIndex = search(marks, m);
         if (startIndex < 0) // Translate to insertion index, if not found.
           startIndex = - startIndex - 1;
 
         m.mark = endOffs;
-        int endIndex = Collections.binarySearch(marks, m);
+        int endIndex = search(marks, m);
         if (endIndex < 0) // Translate to insertion index - 1, if not found.
           endIndex = - endIndex - 2;
         // Actually adjust the marks.
@@ -904,4 +905,30 @@ public class GapContent
       }
   }
 
+  /**
+   * Searches the first occurance of object <code>o</code> in list
+   * <code>l</code>. This performs a binary search by calling
+   * {@link Collections#binarySearch(List, Object)} and when an object has been
+   * found, it searches backwards to the first occurance of that object in the
+   * list. The meaning of the return value is the same as in
+   * <code>Collections.binarySearch()</code>.
+   *
+   * @param l the list to search through
+   * @param o the object to be searched
+   *
+   * @return the index of the first occurance of o in l, or -i + 1 if not found
+   */
+  private int search(List l, Object o)
+  {
+    int i = Collections.binarySearch(l, o);
+    while (i > 0)
+      {
+        Object o2 = l.get(i - 1);
+        if (o2.equals(o))
+          i--;
+        else
+          break;
+      }
+    return i;
+  }
 }
