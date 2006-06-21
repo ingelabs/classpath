@@ -1,5 +1,11 @@
 2006-06-21  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JSplitPane.java
+	(setDividerLocation): Substract divider size when computing
+	the absolute size.
+
+2006-06-21  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComponent.java
 	(paintChildrenWithOverlap): Determine opaque property by
 	calling the corresponding Component method, without requiring
