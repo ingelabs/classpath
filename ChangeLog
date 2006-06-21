@@ -1,5 +1,10 @@
 2006-06-21  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/SizeSequence.java
+	(SizeSequence): Initialize array with correct number of entries.
+
+2006-06-21  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JSplitPane.java
 	(setDividerLocation): Substract divider size when computing
 	the absolute size.
