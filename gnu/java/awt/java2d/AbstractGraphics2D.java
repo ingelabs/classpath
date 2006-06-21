@@ -39,6 +39,7 @@ package gnu.java.awt.java2d;
 
 import java.awt.AWTError;
 import java.awt.AlphaComposite;
+import java.awt.AWTPermission;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
@@ -539,6 +540,15 @@ public abstract class AbstractGraphics2D
    */
   public void setComposite(Composite comp)
   {
+    if (! (comp instanceof AlphaComposite))
+      {
+        // FIXME: this check is only required "if this Graphics2D
+        // context is drawing to a Component on the display screen".
+        SecurityManager sm = System.getSecurityManager();
+        if (sm != null)
+          sm.checkPermission(new AWTPermission("readDisplayPixels"));
+      }
+
     composite = comp;
     if (! (comp.equals(AlphaComposite.SrcOver)))
       isOptimized = false;

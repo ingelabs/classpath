@@ -41,6 +41,7 @@ package gnu.java.awt.peer.gtk;
 import gnu.java.awt.ClasspathToolkit;
 
 import java.awt.AlphaComposite;
+import java.awt.AWTPermission;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
@@ -886,6 +887,12 @@ public abstract class CairoGraphics2D extends Graphics2D
       }
     else
       {
+        // FIXME: this check is only required "if this Graphics2D
+        // context is drawing to a Component on the display screen".
+        SecurityManager sm = System.getSecurityManager();
+        if (sm != null)
+          sm.checkPermission(new AWTPermission("readDisplayPixels"));
+
         // FIXME: implement general Composite support
         throw new java.lang.UnsupportedOperationException();
       }

@@ -1,3 +1,9 @@
+2006-06-21  Gary Benson  <gbenson@redhat.com>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java: Add security check.
+	* gnu/java/awt/peer/qt/QtGraphics.java: Likewise.
+	* gnu/java/awt/java2d/AbstractGraphics2D.java: Likewise.
+
 2006-06-20  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* native/plugin/Makefile.am (libgcjwebplugin_la_CXXFLAGS): Define
