@@ -1,5 +1,11 @@
 2006-06-21  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/font/FontRenderContext.java:
+	(equals): Added special conditions for affineTransform beeing
+	null.
+
+2006-06-21  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/UIManager.java
 	(MultiplexUIDefaults.clear): Removed method. The fallback UIDefaults
 	must not be cleared.
