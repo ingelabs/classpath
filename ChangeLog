@@ -1,5 +1,29 @@
 2006-06-21  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicButtonListener.java
+	(propertyChange): Create a TextLayout and store it in the button
+	when the 'text' property changes.
+	* javax/swing/plaf/basic/BasicButtonUI.java
+	(paintText): Call BasicGraphicsUtils utility method for
+	drawing strings, instead of Graphics.drawString().
+	* javax/swing/plaf/basic/BasicGraphicsUtils.java
+	(CACHE_TEXT_LAYOUT): New constant field. Used as a key for storing
+	cached text layouts as client properties in JComponents.
+	(drawString(JComponent,Graphics,String,int,int)): New helper method.
+	(drawStringUnderlineCharAt): New helper method.
+	* javax/swing/plaf/basic/BasicMenuItemUI.java
+	(PropertyChangeHandler.propertyChange): Update cached text layout
+	when 'text' property changes. Use equals() instead of == for
+	string comparison.
+	(paintText): Use new BasicGraphicsUtils methods for painting
+	the cached text layout.
+	(installListeners): Call super.installListeners() and remove
+	the unneeded listener installs.
+	(uninstallListeners): Call super.uninstallListeners() and remove
+	the unneeded listener uninstalls.
+
+2006-06-21  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicTextUI.java
 	(PropertyChangeHandler.propertyChange): Handle document listener
 	update here.

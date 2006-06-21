@@ -230,10 +230,8 @@ public class BasicMenuUI extends BasicMenuItemUI
    */
   protected void installListeners()
   {
-    ((JMenu) menuItem).addMouseListener(mouseInputListener);
-    ((JMenu) menuItem).addMouseMotionListener(mouseInputListener);
+    super.installListeners();
     ((JMenu) menuItem).addMenuListener(menuListener);
-    ((JMenu) menuItem).addMenuDragMouseListener(menuDragMouseListener);
   }
 
   protected void setupPostTimer(JMenu menu)
@@ -276,9 +274,8 @@ public class BasicMenuUI extends BasicMenuItemUI
    */
   protected void uninstallListeners()
   {
-    ((JMenu) menuItem).removeMouseListener(mouseInputListener);
+    super.uninstallListeners();
     ((JMenu) menuItem).removeMenuListener(menuListener);
-    ((JMenu) menuItem).removePropertyChangeListener(propertyChangeListener);
   }
 
   /**
