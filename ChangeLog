@@ -1,3 +1,11 @@
+2006-06-21  Tania Bento  <tbento@redhat.com>
+
+	* javax/swing/JMenu.java
+	(remove): An IllegalArgumentException should be thrown if
+	either index < 0 or if index > 0 and there are no menu
+	components. Also, a check was added that ensures there are
+	menu components before removing the desired the component.
+
 2006-06-21  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/DefaultCaret.java
