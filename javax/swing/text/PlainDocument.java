@@ -105,10 +105,10 @@ public class PlainDocument extends AbstractDocument
   protected AbstractDocument.AbstractElement createDefaultRoot()
   {
     BranchElement root =
-      (BranchElement) createBranchElement(null, SimpleAttributeSet.EMPTY);
+      (BranchElement) createBranchElement(null, null);
 
     Element[] array = new Element[1];
-    array[0] = createLeafElement(root, SimpleAttributeSet.EMPTY, 0, 1);
+    array[0] = createLeafElement(root, null, 0, 1);
     root.replace(0, 0, array);
     
     return root;

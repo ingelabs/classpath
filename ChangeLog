@@ -1,3 +1,40 @@
+2006-06-21  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/AbstractDocument.java
+	(BranchElement.numChildren): New field.
+	(BranchElement.BranchElement): Initialize children array with
+	one element (that's the least number of elements that makes sense).
+	Initialize numChildren.
+	(BranchElement.children): Use numChildren as boundary.
+	(BranchElement.getElement): Use numChildren as boundary.
+	(BranchElement.getElementCount): Use numChildren as boundary.
+	(BranchElement.getElementIndex): Use numChildren as boundary.
+	(BranchElement.getEndOffset): Use numChildren as boundary.
+	(BranchElement.getStartOffset): Use numChildren as boundary.
+	(BranchElement.positionToElement): Use numChildren as boundary.
+	(BranchElement.replace): Handle the children array more efficiently
+	by growing in blocks > 1, and reusing space from removed elements.
+	(LeafElement.startDelta): Removed.
+	(LeafElement.endDelta): Removed.
+	(LeafElement.LeafElement): Removed handling of deltas.
+	(LeafElement.getEndOffset): Likewise.
+	(LeafElement.getStartOffset): Likewise.
+	* javax/swing/text/JTextComponent.java
+	(setDocument): Added locking of the old document to avoid dangling
+	notification beeing delivered while the document is beeing
+	disconnected.
+	(getScrollableTracksViewportWidth): Fixed condition.
+	* javax/swing/text/PlainDocument.java
+	(createDefaultRoot): Create elements without AttributeSet.
+	* javax/swing/text/rtf/RTFParser.java
+	(parseFile): Handle slightly incorrect RTF gracefully.
+	* javax/swing/text/rtf/RTFScanner.java
+	(lastToken): New field.
+	(readTokenImpl): New method.
+	(peekToken): New method.
+	(readToken): Changed to call readTokenImpl or return the lastToken
+	if there's one present.
+
 2006-06-21  Tania Bento  <tbento@redhat.com>
 
 	* javax/swing/JMenu.java

@@ -42,6 +42,7 @@ import gnu.classpath.NotImplementedException;
 
 import java.awt.AWTEvent;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Point;
@@ -1179,8 +1180,19 @@ public abstract class JTextComponent extends JComponent
   public void setDocument(Document newDoc)
   {
     Document oldDoc = doc;
-    doc = newDoc;
-    firePropertyChange("document", oldDoc, newDoc);
+    try
+      {
+        if (oldDoc instanceof AbstractDocument)
+          ((AbstractDocument) oldDoc).readLock();
+
+        doc = newDoc;
+        firePropertyChange("document", oldDoc, newDoc);
+      }
+    finally
+      {
+        if (oldDoc instanceof AbstractDocument)
+          ((AbstractDocument) oldDoc).readUnlock();
+      }
     revalidate();
     repaint();
   }
@@ -1657,10 +1669,12 @@ public abstract class JTextComponent extends JComponent
 
   public boolean getScrollableTracksViewportWidth()
   {
-    if (getParent() instanceof JViewport)
-      return getParent().getWidth() > getPreferredSize().width;
+    boolean res = false;;
+    Container c = getParent();
+    if (c instanceof JViewport)
+      res = ((JViewport) c).getExtentSize().width > getPreferredSize().width;
 
-    return false;
+    return res;
   }
 
   /**
