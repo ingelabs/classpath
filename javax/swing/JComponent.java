@@ -1865,8 +1865,7 @@ public abstract class JComponent extends Container implements Serializable
           continue;
 
         Rectangle compBounds = comp.getBounds();
-        boolean isOpaque = comp instanceof JComponent
-                           && ((JComponent) comp).isOpaque();
+        boolean isOpaque = comp.isOpaque();
 
         // Add all the current paint rectangles that intersect with the
         // component to the component's paint rectangle array.
@@ -1884,7 +1883,7 @@ public abstract class JComponent extends Container implements Serializable
                     int x, y, w, h;
                     Rectangle rect = new Rectangle();
 
-                    // The north retangle.
+                    // The north rectangle.
                     x = Math.max(compBounds.x, r.x);
                     y = r.y;
                     w = Math.min(compBounds.width, r.width + r.x - x);
@@ -2018,7 +2017,6 @@ public abstract class JComponent extends Container implements Serializable
    */
   private void paintChildrenOptimized(Graphics g)
   {
-    Shape originalClip = g.getClip();
     Rectangle inner = SwingUtilities.calculateInnerArea(this, rectCache);
     g.clipRect(inner.x, inner.y, inner.width, inner.height);
     Component[] children = getComponents();
@@ -2037,20 +2035,14 @@ public abstract class JComponent extends Container implements Serializable
           continue;
 
         Rectangle bounds = children[i].getBounds(rectCache);
-        Rectangle oldClip = g.getClipBounds();
-        if (oldClip == null)
-          oldClip = bounds;
-
         if (!g.hitClip(bounds.x, bounds.y, bounds.width, bounds.height))
           continue;
 
-        boolean translated = false;
         Graphics g2 = g.create(bounds.x, bounds.y, bounds.width,
                                bounds.height);
         children[i].paint(g2);
         g2.dispose();
       }
-    g.setClip(originalClip);
   }
 
   /**
@@ -2118,16 +2110,13 @@ public abstract class JComponent extends Container implements Serializable
     Component root = findPaintRoot(r);
     // If no paint root is found, then this component is completely overlapped
     // by another component and we don't need repainting.
-    if (root == null)
+    if (root == null|| !root.isShowing())
       return;
-    if (root == null || !root.isShowing())
-      return;
-
-    Rectangle rootClip = SwingUtilities.convertRectangle(this, r, root);
+    SwingUtilities.convertRectangleToAncestor(this, r, root);
     if (root instanceof JComponent)
-      ((JComponent) root).paintImmediately2(rootClip);
+      ((JComponent) root).paintImmediately2(r);
     else
-      root.repaint(rootClip.x, rootClip.y, rootClip.width, rootClip.height);
+      root.repaint(r.x, r.y, r.width, r.height);
   }
 
   /**

@@ -1,5 +1,16 @@
 2006-06-21  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JComponent.java
+	(paintChildrenWithOverlap): Determine opaque property by
+	calling the corresponding Component method, without requiring
+	a JComponent.
+	(paintChildrenOptimized): Removed old unneeded code.
+	(paintImmediately): Use JComponent's convertRectangleToAncestor()
+	method instead of SwingUtilities.convertRectangle(). This is
+	more efficient.
+
+2006-06-21  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/AbstractButton.java
 	(init): Call setText() instead of setting the property directly,
 	so that listeners (especially in the UI) get notified.
