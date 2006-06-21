@@ -1,3 +1,13 @@
+2006-06-21  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/DefaultListSelectionModel.java
+	(getSelectionMode): Updated API docs,
+	(setAnchorSelectionIndex): Added ListSelectionEvent generation,
+	(addSelectionInterval): If mode is SINGLE_SELECTION, just call 
+	setSelectionInterval(),
+	(setSelectionInterval): Reimplemented SINGLE_SELECTION and 
+	SINGLE_INTERVAL_SELECTION cases.
+
 2006-06-21  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/AbstractDocument.java
