@@ -1,5 +1,23 @@
 2006-06-21  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/UIManager.java
+	(MultiplexUIDefaults): New inner class.
+	(currentUIDefaults): Changed type to be MultiplexUIDefaults.
+	(userUIDefaults): Changed name to be lookAndFeelDefaults.
+	(<cinit>): Call setLookAndFeel(String) instead of trying to load
+	directly. Print stacktrace if something goes wrong.
+	(get): Delegate call to currentUIDefaults.
+	(getDefaults): If currentUIDefaults is null, then lazily instantiate
+	it.
+	(getUI): Delegate call to currentUIDefaults.
+	(put): Delegate call to currentUIDefaults.
+	(setLookAndFeel): Initialize currentUIDefaults with
+	MultiplexUIDefaults. Set lookAndFeelDefaults.
+	(setLookAndFeel): Use current thread's context classloader for
+	loading the L&F.
+
+2006-06-21  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/GapContent.java
 	(GapContentPosition.GapContentPosition): Replace
 	Collections.binarySearch with call to local search() to make
