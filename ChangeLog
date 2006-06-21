@@ -1,5 +1,19 @@
 2006-06-21  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalUtils.java
+	(paintHorizontalGradient): Use paintHorizontalGradient2D when
+	Graphics2D is available. Use fillRect instead of drawLine, this
+	is much faster.
+	(paintVerticalGradient): Use paintHorizontalGradient2D when
+	Graphics2D is available. Use fillRect instead of drawLine, this
+	is much faster.
+	(paintHorizontalGradient2D): New method. Paints gradient
+	using Graphics2D functions.
+	(paintVerticalGradient2D): New method. Paints gradient
+	using Graphics2D functions.
+
+2006-06-21  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicButtonListener.java
 	(propertyChange): Create a TextLayout and store it in the button
 	when the 'text' property changes.
