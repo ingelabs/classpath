@@ -7,6 +7,31 @@
 2006-06-21  Tania Bento  <tbento@redhat.com>
 
 	* javax/swing/JMenu.java
+	Changed instantiation of popupMenu to null.
+	(JMenu): Instantiated popupMenu to new JPopupMenu.
+	(JMenu): Instantiated popupMenu to new JPopupMenu.	
+	(add): Changed popupMenu to getPopupMenu().
+	(add): Changed popupMenu to getPopupMenu().
+	(add): Changed popupMenu to getPopupMenu().
+	(add): Changed popupMenu to getPopupMenu().
+	(remove): Changed popupMenu to getPopupMenu().
+	(remove): Changed popupMenu to getPopupMenu().
+	(insert): Changed popupMenu to getPopupMenu().
+	(setSelectedHelper): Changed popupMenu to getPopupMenu().
+	(isPopupMenuVisible): Changed popupMenu to getPopupMenu().
+	(setPopupMenuVisible): Changed popupMenu to getPopupMenu().
+	(getMenuComponentCount): Changed popupMenu to getPopupMenu().
+	(getMenuComponents): Changed popupMenu to getPopupMenu().
+	(getPopupMenu): Check first if popupMenu is null and if so,
+	instantiate it to a new JPopupMenu and set the invoker.
+	* javax/swing/plaf/basic/BasicPopupMenuUI.java
+	(popupMenuWillBecomeVisible): Component Listener should only
+	be added to the root container if the root container is not 
+	null. This avoids a null pointer exception.
+
+2006-06-21  Tania Bento  <tbento@redhat.com>
+
+	* javax/swing/JMenu.java
 	(JMenu): Delay should be set to 200, not default of 0.
 	(JMenu): Delay should be set to 200, not default of 0.
 	(JMenu): Delay should be set to 200, not default of 0.
