@@ -1,3 +1,9 @@
+2006-06-21  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/DefaultCaret.java
+	(install): Added check to prevent NPE.
+	(propertyChange): Added checks to prevent NPEs.
+
 2006-06-21  Tania Bento  <tbento@redhat.com>
 
 	* javax/swing/JMenu.java

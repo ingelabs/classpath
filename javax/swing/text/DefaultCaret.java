@@ -221,9 +221,12 @@ public class DefaultCaret extends Rectangle
       if (name.equals("document"))
         {
           Document oldDoc = (Document) e.getOldValue();
-          oldDoc.removeDocumentListener(documentListener);
+          if (oldDoc != null)
+            oldDoc.removeDocumentListener(documentListener);
+          
           Document newDoc = (Document) e.getNewValue();
-          newDoc.addDocumentListener(documentListener);
+          if (newDoc != null)
+            newDoc.addDocumentListener(documentListener);
         }
       else if (name.equals("editable"))
         {
@@ -708,7 +711,11 @@ public class DefaultCaret extends Rectangle
     propertyChangeListener = new PropertyChangeHandler();
     textComponent.addPropertyChangeListener(propertyChangeListener);
     documentListener = new DocumentHandler();
-    textComponent.getDocument().addDocumentListener(documentListener);
+    
+    Document doc = textComponent.getDocument();
+    if (doc != null)
+      doc.addDocumentListener(documentListener);
+    
     active = textComponent.isEditable() && textComponent.isEnabled();
 
     repaint();
