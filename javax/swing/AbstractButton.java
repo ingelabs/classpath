@@ -923,7 +923,7 @@ public abstract class AbstractButton extends JComponent
     // constructor).
     // This way the behavior of the JDK is matched.
     if(text != null)
-        this.text = text;
+      setText(text);
 
     if (icon != null)
       default_icon = icon;

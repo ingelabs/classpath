@@ -1,5 +1,11 @@
 2006-06-21  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/AbstractButton.java
+	(init): Call setText() instead of setting the property directly,
+	so that listeners (especially in the UI) get notified.
+
+2006-06-21  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/UIManager.java
 	(MultiplexUIDefaults): New inner class.
 	(currentUIDefaults): Changed type to be MultiplexUIDefaults.
