@@ -46,6 +46,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
 
 import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleContext;
@@ -518,9 +519,11 @@ public class JLabel extends JComponent implements Accessible, SwingConstants
   }
 
   /**
-   * This method returns the label text.
+   * Returns the text displayed by the label.
    *
-   * @return The label text.
+   * @return The label text (possibly <code>null</code>).
+   * 
+   * @see #setText(String)
    */
   public String getText()
   {
@@ -528,24 +531,32 @@ public class JLabel extends JComponent implements Accessible, SwingConstants
   }
 
   /**
-   * This method changes the "text" property. The given text will be painted
-   * in the label.
+   * Sets the text for the label and sends a {@link PropertyChangeEvent} (with
+   * the name 'text') to all registered listeners.  This method will also 
+   * update the <code>displayedMnemonicIndex</code>, if necessary.
    *
-   * @param newText The label's text.
+   * @param newText The text (<code>null</code> permitted).
+   * 
+   * @see #getText()
+   * @see #getDisplayedMnemonicIndex()
    */
   public void setText(String newText)
   {
-    if (text != newText)
-      {
-        String oldText = text;
-        text = newText;
-        firePropertyChange("text", oldText, newText);
+    if (text == null && newText == null)
+      return;
+    if (text != null && text.equals(newText))
+      return;
 
-        if (text != null && text.length() <= displayedMnemonicIndex)
-          setDisplayedMnemonicIndex(text.length() - 1);
-        revalidate();
-        repaint();
-      }
+    String oldText = text;
+    text = newText;
+    firePropertyChange("text", oldText, newText);
+
+    if (text != null)
+      setDisplayedMnemonicIndex(text.toUpperCase().indexOf(displayedMnemonic));
+    else
+      setDisplayedMnemonicIndex(-1);
+    revalidate();
+    repaint();
   }
 
   /**

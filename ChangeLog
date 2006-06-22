@@ -1,6 +1,13 @@
 2006-06-22  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JLabel.java
+	(getText): Updated API docs,
+	(setText): Corrected the check for an unchanged value, and the update 
+	of the displayedMnemonicIndex.
+
+2006-06-22  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JLabel.java
 	(setDisplayedMnemonic(int)): Fire property change event AFTER updating 
 	field,
 	(setDisplayedMnemonicIndex): Modified argument checking to handle case
