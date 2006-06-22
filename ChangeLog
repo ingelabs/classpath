@@ -1,3 +1,9 @@
+2006-06-22  Robert Schuster  <robertschuster@fsfe.org>
+
+	* java/awt/Insets.java: Updated copyright year.
+	(toString): Changed string, removed a line from the 
+	documentation.
+
 2006-06-22  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/AbstractDocument.java
