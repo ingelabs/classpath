@@ -1,3 +1,21 @@
+2006-06-22  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JComponent.java
+	(vetoableChangeSupport): New field.
+	(removeVetoableChangeListener): Rewritten to use
+	vetoableChangeSupport.
+	(addVetoableChangeListener): Rewritten to use
+	vetoableChangeSupport.
+	(fireVetoableChange): Rewritten to use
+	vetoableChangeSupport.
+	(addPropertyChangeListener): Removed. This is handled in
+	Component already.
+	(firePropertyChange(String,boolean,boolean)): Likewise.
+	(firePropertyChange(String,char,char)): Likewise.
+	(firePropertyChange(String,int,int)): Likewise.
+	(revalidate): Don't do anything when the commponent has no
+	parent.
+
 2006-06-22  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JLabel.java: Updated API docs.

@@ -69,6 +69,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
+import java.beans.VetoableChangeSupport;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.EventListener;
@@ -683,6 +684,11 @@ public abstract class JComponent extends Container implements Serializable
    */
   protected EventListenerList listenerList = new EventListenerList();
 
+  /**
+   * Handles VetoableChangeEvents.
+   */
+  private VetoableChangeSupport vetoableChangeSupport;
+
   /** 
    * Storage for "client properties", which are key/value pairs associated
    * with this component by a "client", such as a user application or a
@@ -874,7 +880,8 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void removeVetoableChangeListener(VetoableChangeListener listener)
   {
-    listenerList.remove(VetoableChangeListener.class, listener);
+    if (vetoableChangeSupport != null)
+      vetoableChangeSupport.removeVetoableChangeListener(listener);
   }
 
   /**
@@ -890,23 +897,6 @@ public abstract class JComponent extends Container implements Serializable
   }
 
   /**
-   * Register a <code>PropertyChangeListener</code> for a specific, named
-   * property. To listen to all property changes, regardless of name, use
-   * {@link #addPropertyChangeListener(PropertyChangeListener)} instead.
-   *
-   * @param propertyName The property name to listen to
-   * @param listener The listener to register
-   *
-   * @see #removePropertyChangeListener(String, PropertyChangeListener)
-   * @see #changeSupport
-   */
-  public void addPropertyChangeListener(String propertyName,
-                                        PropertyChangeListener listener)
-  {
-    listenerList.add(PropertyChangeListener.class, listener);
-  }
-
-  /**
    * Register a <code>VetoableChangeListener</code>.
    *
    * @param listener The listener to register
@@ -916,7 +906,10 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void addVetoableChangeListener(VetoableChangeListener listener)
   {
-    listenerList.add(VetoableChangeListener.class, listener);
+    // Lazily instantiate this, it's rarely needed.
+    if (vetoableChangeSupport == null)
+      vetoableChangeSupport = new VetoableChangeSupport(this);
+    vetoableChangeSupport.addVetoableChangeListener(listener);
   }
 
   /**
@@ -969,51 +962,6 @@ public abstract class JComponent extends Container implements Serializable
   }
 
   /**
-   * A variant of {@link #firePropertyChange(String,Object,Object)} 
-   * for properties with <code>boolean</code> values.
-   *
-   * @specnote It seems that in JDK1.5 all property related methods have been 
-   *           moved to java.awt.Component, except this and 2 others. We call
-   *           super here. I guess this will also be removed in one of the next
-   *           releases.
-   */
-  public void firePropertyChange(String propertyName, boolean oldValue,
-                                 boolean newValue)
-  {
-    super.firePropertyChange(propertyName, oldValue, newValue);
-  }
-
-  /**
-   * A variant of {@link #firePropertyChange(String,Object,Object)} 
-   * for properties with <code>char</code> values.
-   *
-   * @specnote It seems that in JDK1.5 all property related methods have been 
-   *           moved to java.awt.Component, except this and 2 others. We call
-   *           super here. I guess this will also be removed in one of the next
-   *           releases.
-   */
-  public void firePropertyChange(String propertyName, char oldValue,
-                                 char newValue)
-  {
-    super.firePropertyChange(propertyName, oldValue, newValue);
-  }
-
-  /**
-   * A variant of {@link #firePropertyChange(String,Object,Object)} 
-   * for properties with <code>int</code> values.
-   *
-   * @specnote It seems that in JDK1.5 all property related methods have been 
-   *           moved to java.awt.Component, except this and 2 others. We call
-   *           super here. I guess this will also be removed in one of the next
-   *           releases.
-   */
-  public void firePropertyChange(String propertyName, int oldValue,
-                                 int newValue)
-  {
-    super.firePropertyChange(propertyName, oldValue, newValue);
-  }
-
-  /**
    * Call {@link VetoableChangeListener#vetoableChange} on all listeners
    * registered to listen to a given property. Any method which changes
    * the specified property of this component should call this method.
@@ -1031,13 +979,8 @@ public abstract class JComponent extends Container implements Serializable
                                     Object newValue)
     throws PropertyVetoException
   {
-    VetoableChangeListener[] listeners = getVetoableChangeListeners();
-
-    PropertyChangeEvent evt = 
-      new PropertyChangeEvent(this, propertyName, oldValue, newValue);
-
-    for (int i = 0; i < listeners.length; i++)
-      listeners[i].vetoableChange(evt);
+    if (vetoableChangeSupport != null)
+      vetoableChangeSupport.fireVetoableChange(propertyName, oldValue, newValue);
   }
 
   /**
@@ -2700,6 +2643,11 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void revalidate()
   {
+    // As long as we don't have a parent we don't need to do any layout, since
+    // this is done anyway as soon as we get connected to a parent.
+    if (getParent() == null)
+      return;
+
     if (! EventQueue.isDispatchThread())
       SwingUtilities.invokeLater(new Runnable()
         {
