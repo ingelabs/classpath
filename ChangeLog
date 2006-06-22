@@ -1,3 +1,11 @@
+2006-06-22  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicLabelUI.java
+	(installKeyboardActions): Implemented,
+	(uninstallKeyboardActions): Implemented,
+	(propertyChange): Add handling for 'displayedMnemonic' and 'labelFor'
+	properties.
+
 2006-06-22  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/JMenu.java:
