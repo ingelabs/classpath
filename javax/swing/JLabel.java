@@ -615,17 +615,18 @@ public class JLabel extends JComponent implements Accessible, SwingConstants
    * focus to that component when the mnemonic is activated.
    *
    * @param mnemonic The keycode to use for the mnemonic.
+   * 
+   * @see #getDisplayedMnemonic()
    */
   public void setDisplayedMnemonic(int mnemonic)
   {
     if (displayedMnemonic != mnemonic)
       {
-	firePropertyChange("displayedMnemonic",
-	                   displayedMnemonic, mnemonic);
-	displayedMnemonic = mnemonic;
+        firePropertyChange("displayedMnemonic", displayedMnemonic, mnemonic);
+        displayedMnemonic = mnemonic;
 
-	if (text != null)
-	  setDisplayedMnemonicIndex(text.toUpperCase().indexOf(mnemonic));
+        if (text != null)
+          setDisplayedMnemonicIndex(text.toUpperCase().indexOf(mnemonic));
       }
   }
 
@@ -645,22 +646,33 @@ public class JLabel extends JComponent implements Accessible, SwingConstants
    * This method returns the keycode that is used for the label's mnemonic.
    *
    * @return The keycode that is used for the label's mnemonic.
+   * 
+   * @see #setDisplayedMnemonic(int)
    */
   public int getDisplayedMnemonic()
   {
-    return (int) displayedMnemonic;
+    return displayedMnemonic;
   }
 
   /**
-   * This method sets which character in the text will be the underlined
-   * character. If the given index is -1, then this indicates  that there is
-   * no mnemonic. If the index is less than -1 or if the index is equal to
-   * the length, this method will throw an IllegalArgumentException.
+   * Sets the index of the character in the text that will be underlined to
+   * indicate that it is the mnemonic character for the label.  You only need
+   * to call this method if you wish to override the automatically calculated
+   * character index.  For instance, for a label "Find Next" with the mnemonic
+   * character 'n', you might wish to underline the second occurrence of 'n'
+   * rather than the first (which is the default).
+   * <br><br>
+   * Note that this method does not validate the character at the specified 
+   * index to ensure that it matches the key code returned by
+   * {@link #getDisplayedMnemonic()}.
    *
    * @param newIndex The index of the character to underline.
    *
-   * @throws IllegalArgumentException If index less than -1 or index equals
-   *         length.
+   * @throws IllegalArgumentException If index less than -1 or index is greater
+   *         than or equal to the label length.
+   *         
+   * @see #getDisplayedMnemonicIndex()
+   * @since 1.4
    */
   public void setDisplayedMnemonicIndex(int newIndex)
     throws IllegalArgumentException
@@ -668,25 +680,23 @@ public class JLabel extends JComponent implements Accessible, SwingConstants
     if (newIndex < -1 || (text != null && newIndex >= text.length()))
       throw new IllegalArgumentException();
 
-    if (newIndex == -1
-        || text == null
-	|| text.charAt(newIndex) != displayedMnemonic)
-      newIndex = -1;
-
     if (newIndex != displayedMnemonicIndex)
       {
-	int oldIndex = displayedMnemonicIndex;
-	displayedMnemonicIndex = newIndex;
-	firePropertyChange("displayedMnemonicIndex",
-	                   oldIndex, newIndex);
+        int oldIndex = displayedMnemonicIndex;
+        displayedMnemonicIndex = newIndex;
+        firePropertyChange("displayedMnemonicIndex", oldIndex, newIndex);
       }
   }
 
   /**
-   * This method returns which character in the text will be  the underlined
-   * character.
+   * Returns the index of the character in the label's text that will be
+   * underlined (to indicate that it is the mnemonic character), or -1 if no
+   * character is to be underlined.
    *
    * @return The index of the character that will be underlined.
+   * 
+   * @see #setDisplayedMnemonicIndex(int)
+   * @since 1.4
    */
   public int getDisplayedMnemonicIndex()
   {

@@ -1,3 +1,11 @@
+2006-06-22  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JLabel.java
+	(setDisplayedMnemonic): Updated API docs,
+	(getDisplayedMnemonic): Removed unnecessary type-cast,
+	(setDisplayedMnemonicIndex): Removed unnecessary validation, 
+	(getDisplayedMnemonicIndex): Updated API docs.
+
 2006-06-21  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/DefaultListSelectionModel.java
