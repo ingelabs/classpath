@@ -622,9 +622,9 @@ public class JLabel extends JComponent implements Accessible, SwingConstants
   {
     if (displayedMnemonic != mnemonic)
       {
-        firePropertyChange("displayedMnemonic", displayedMnemonic, mnemonic);
+        int old = displayedMnemonic;
         displayedMnemonic = mnemonic;
-
+        firePropertyChange("displayedMnemonic", old, displayedMnemonic);
         if (text != null)
           setDisplayedMnemonicIndex(text.toUpperCase().indexOf(mnemonic));
       }
@@ -677,7 +677,10 @@ public class JLabel extends JComponent implements Accessible, SwingConstants
   public void setDisplayedMnemonicIndex(int newIndex)
     throws IllegalArgumentException
   {
-    if (newIndex < -1 || (text != null && newIndex >= text.length()))
+    int maxValid = -1;
+    if (text != null)
+      maxValid = text.length() - 1;
+    if (newIndex < -1 || newIndex > maxValid)
       throw new IllegalArgumentException();
 
     if (newIndex != displayedMnemonicIndex)

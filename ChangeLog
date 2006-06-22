@@ -1,6 +1,14 @@
 2006-06-22  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JLabel.java
+	(setDisplayedMnemonic(int)): Fire property change event AFTER updating 
+	field,
+	(setDisplayedMnemonicIndex): Modified argument checking to handle case
+	where label text is null.
+
+2006-06-22  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JLabel.java
 	(setDisplayedMnemonic): Updated API docs,
 	(getDisplayedMnemonic): Removed unnecessary type-cast,
 	(setDisplayedMnemonicIndex): Removed unnecessary validation, 
