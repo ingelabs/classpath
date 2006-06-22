@@ -1,3 +1,7 @@
+2006-06-22  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JLabel.java: Updated API docs.
+
 2006-06-22  Robert Schuster  <robertschuster@fsfe.org>
 
 	* java/awt/Insets.java: Updated copyright year.
