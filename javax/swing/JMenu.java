@@ -250,7 +250,8 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
    */
   public void removeAll()
   {
-    popupMenu.removeAll();
+    if (popupMenu != null)
+      popupMenu.removeAll();
   }
 
   /**

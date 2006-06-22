@@ -1,3 +1,8 @@
+2006-06-22  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/JMenu.java:
+	(removeAll): Added check for popupMenu not being null.
+
 2006-06-22  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JLabel.java
@@ -265,7 +270,6 @@
 	* java/net/URL.java (URL): Throw MalformedURLException if a
 	RuntimeException is caught.  Chain exceptions.
 
->>>>>>> 1.7898
 2006-06-20  Lillian Angel  <langel@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkCheckboxPeer.java
