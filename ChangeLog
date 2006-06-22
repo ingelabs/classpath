@@ -1,3 +1,15 @@
+2006-06-22  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/PlainDocument.java
+	(rootElement): Changed type to Element.
+	(tabSize): Removed field. This is stored in the document properties
+	instead.
+	(PlainDocument): Set tabSize property. Init rootElement without
+	cast.
+	(insertUpdate): Rewritten. The previous implementation did not
+	handle some corner cases properly and was a mess.
+	(removeUpdate): Cast rootElement to BranchElement.
+
 2006-06-22  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicLabelUI.java
