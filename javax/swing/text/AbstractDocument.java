@@ -185,6 +185,10 @@ public abstract class AbstractDocument implements Document, Serializable
   {
     content = doc;
     context = ctx;
+
+    // FIXME: This is determined using a Mauve test. Make the document
+    // actually use this.
+    putProperty("i18n", Boolean.FALSE);
   }
   
   /** Returns the DocumentFilter.FilterBypass instance for this
@@ -739,10 +743,16 @@ public abstract class AbstractDocument implements Document, Serializable
   
   void removeImpl(int offset, int length) throws BadLocationException
   {
+    if (offset < 0 || offset > getLength())
+      throw new BadLocationException("Invalid remove position", offset);
+
+    if (offset + length > getLength())
+      throw new BadLocationException("Invalid remove length", offset);
+
     // Prevent some unneccessary method invocation (observed in the RI). 
-    if (length <= 0)
+    if (length == 0)
       return;
-    
+
     DefaultDocumentEvent event =
       new DefaultDocumentEvent(offset, length,
 			       DocumentEvent.EventType.REMOVE);

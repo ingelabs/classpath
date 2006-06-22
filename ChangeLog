@@ -1,5 +1,11 @@
 2006-06-22  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/AbstractDocument.java
+	(AbstractDocument): Set the i18n document property.
+	(removeImpl): Added checks for correct boundaries.
+
+2006-06-22  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/PlainDocument.java
 	(rootElement): Changed type to Element.
 	(tabSize): Removed field. This is stored in the document properties
