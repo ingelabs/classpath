@@ -1,5 +1,39 @@
 2006-06-23  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JInternalFrame.java
+	(maxTransition): Removed.
+	(JInternalFrame): Set maxium=false. Initialize desktopIcon here.
+	Don't initialize storedBounds here.
+	(dipose): Rewritten to correctly dispose the JInternalFrame.
+	(getDesktopIcon): Don't initialize desktopIcon here.
+	(getLayer): Delegate to JLayeredPane.getLayer().
+	(getNormalBounds): Return bounds when storedBounds == null,
+	otherwise storedBounds.
+	(hide): Don't change selection. Also hide the desktopIcon.
+	(moveToBack): Call getParent() only once.
+	(moveToFront): Call getParent() only once.
+	(pack): Call validate() to make sure that the layout is
+	propagated to the children.
+	(setClosed): Fire InternalFrameEvent first, before the
+	PropertyVetoEvent.
+	(setJMenuBar): Fire PropertyChangeEvent for this property.
+	(setLayer): Delegate to JLayeredPane.
+	(setLayeredPane): Check for null and throw IllegalArgumenException.
+	(setMaximum): Remove handling of maxTransition and normalBounds.
+	Should probably be done in the UI.
+	(setNormalBounds): Store Rectangle object directly, not a copy.
+	(setRootPane): Go into rootPaneCheckingEnabled mode so that
+	adding the RootPane doesn't add it to the contentPane.
+	Fire PropertyChangeEvent.
+	(setSelected): Added condition for when this property must not
+	be changed.
+	(show): Don't ask the DesktopPane to select the frame. Moved
+	code around to fire InternalFrameEvent before actually calling
+	super.show(). Also make the desktopIcon visible.
+	(setTitle): Fire PropertyChangeEvent unconditionally.
+
+2006-06-23  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JLayeredPane.java
 	(getPosition): Moved code around to avoid unnecessary method calls.
 	(setPosition): Delegate to setLayer().
