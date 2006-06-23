@@ -1,3 +1,46 @@
+2006-06-23  Francis Kung  <fkung@redhat.com>
+
+	* examples/gnu/classpath/examples/java2d/J2dBenchmarkGUI.java
+	(Harness.actionPerformed): Process additional options.
+	(J2dBenchmarkWrapper): Defer init call until after options are processed.
+	(J2dBenchmarkWrapper.setAlias): New method.
+	(J2dBenchmarkWrapper.setComposite): New method.
+	(J2dBenchmarkWrapper.setFill): New method.
+	(J2dBenchmarkWrapper.setRotation): New method.
+	(J2dBenchmarkWrapper.setShear): New method.
+	(J2dBenchmarkWrapper.setStroke): New method.
+	(J2dBenchmarkWrapper.setTranslation): New method.
+	(run): Add additional options to GUI.
+	* examples/gnu/classpath/examples/java2d/J2dBenchmark.java:
+	Added protected fields for various options.
+	(GraphicsTest.runSet_noClipping): Reset graphics settings between tests.
+	(GraphicsTest.runSet_withClipping): Reset graphics settings between tests.
+	(GraphicsTest.runSet_zeroClipping): Reset graphics settings between tests.
+	(getNextColor): Renamed to setRandom.
+	(init): Load additional image for texturing if needed.
+	(loadBufferedImage): New method.
+	(main): Accept additional command-line switches.
+	(prepareGraphics): New method.
+	(resetGraphics): New method.
+	(runTestSuite): Accept additional image-processing options.
+	(setRandom): Renamed from getNextColor; generate various random options
+	(test_drawArc): Rename getNextColor to setRandom.
+	(test_drawCubic): Likewise.
+	(test_drawEllipse): Likewise.
+	(test_drawGeneralPath): Likewise.
+	(test_drawImage): Likewise.
+	(test_drawLine): Likewise.
+	(test_drawQuadCurve): Likewise.
+	(test_drawRectangle): Likewise.
+	(test_drawRoundRectangle): Likewise.
+	(test_drawTransparentImage): Likewise.
+	(test_fillArc): Rename getNextColor to setRandom.
+	(test_fillEllipse): Likewise.
+	(test_fillGeneralPath): Likewise.
+	(test_fillRectangle): Likewise.
+	(test_fillRoundRectangle): Likewise.
+	(TestRecorder.getAverage): Round the average time.
+
 2006-06-23  Tom Tromey  <tromey@redhat.com>
 
 	* java/util/logging/LoggingMXBean.java: New file.

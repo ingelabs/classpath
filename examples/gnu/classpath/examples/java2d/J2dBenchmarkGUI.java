@@ -40,6 +40,8 @@ package gnu.classpath.examples.java2d;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -55,6 +57,7 @@ import java.util.logging.LogRecord;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -62,9 +65,11 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.BevelBorder;
 
 /**
  * Extends the J2dBenchmark to provide a GUI for selecting options and tests.
@@ -172,6 +177,8 @@ public class J2dBenchmarkGUI
     // Allow user to select tests to run
     JPanel tests = new JPanel();
     tests.setLayout(new BoxLayout(tests, BoxLayout.PAGE_AXIS));
+    tests.setBorder(new BevelBorder(BevelBorder.RAISED));
+    tests.add(new JLabel("Shapes to test:"));
 
     JCheckBox test_arcDraw = new JCheckBox("Arc", true);
     tests.add(test_arcDraw);
@@ -211,6 +218,130 @@ public class J2dBenchmarkGUI
     tests.add(test_image);
     elements.put("test_image", test_image);
 
+    // Additional image-processing options
+    JPanel extras = new JPanel();
+    extras.setBorder(new BevelBorder(BevelBorder.LOWERED));
+    GridBagLayout layout = new GridBagLayout();
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.anchor = GridBagConstraints.NORTHWEST;
+    gbc.insets = new Insets(5, 2, 15, 15);
+    extras.setLayout(layout);
+
+    // Filling (solid, gradient, or texture)
+    JPanel opt_Fill = new JPanel();
+    opt_Fill.setLayout(new BoxLayout(opt_Fill, BoxLayout.PAGE_AXIS));
+    JLabel opt_FillLabel = new JLabel("Filling:");
+    opt_FillLabel.setBorder(new BevelBorder(BevelBorder.RAISED));
+    opt_Fill.add(opt_FillLabel);
+
+    ButtonGroup opt_FillGroup = new ButtonGroup();
+    JRadioButton opt_FillSolid = new JRadioButton("Solid colour", true);
+    opt_FillSolid.setActionCommand("solid");
+    opt_Fill.add(opt_FillSolid);
+    opt_FillGroup.add(opt_FillSolid);
+    JRadioButton opt_FillGradient = new JRadioButton("Gradient", false);
+    opt_FillGradient.setActionCommand("gradient");
+    opt_Fill.add(opt_FillGradient);
+    opt_FillGroup.add(opt_FillGradient);
+    JRadioButton opt_FillTexture = new JRadioButton("Texture", false);
+    opt_FillTexture.setActionCommand("texture");
+    opt_Fill.add(opt_FillTexture);
+    opt_FillGroup.add(opt_FillTexture);
+    JTextField opt_FillTextureFile = new JTextField("texture file");
+    opt_FillTextureFile.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+    opt_Fill.add(opt_FillTextureFile);
+    elements.put("opt_FillGroup", opt_FillGroup);
+    elements.put("opt_FillTextureFile", opt_FillTextureFile);
+    layout.setConstraints(opt_Fill, gbc);
+    extras.add(opt_Fill);
+
+    // Stroke
+    JPanel opt_Stroke = new JPanel();
+    opt_Stroke.setLayout(new BoxLayout(opt_Stroke, BoxLayout.PAGE_AXIS));
+    JLabel opt_StrokeLabel = new JLabel("Stroke:");
+    opt_StrokeLabel.setBorder(new BevelBorder(BevelBorder.RAISED));
+    opt_Stroke.add(opt_StrokeLabel);
+    JCheckBox opt_StrokeRandom = new JCheckBox("random", false);
+    elements.put("opt_StrokeRandom", opt_StrokeRandom);
+    opt_Stroke.add(opt_StrokeRandom);
+    gbc.gridwidth = GridBagConstraints.REMAINDER;
+    layout.setConstraints(opt_Stroke, gbc);
+    extras.add(opt_Stroke);
+
+    // Anti-Alias
+    JPanel opt_Alias = new JPanel();
+    opt_Alias.setLayout(new BoxLayout(opt_Alias, BoxLayout.PAGE_AXIS));
+    JLabel opt_AliasLabel = new JLabel("Anti-Aliasing:");
+    opt_AliasLabel.setBorder(new BevelBorder(BevelBorder.RAISED));
+    opt_Alias.add(opt_AliasLabel);
+    JCheckBox opt_AliasOn = new JCheckBox("on", false);
+    elements.put("opt_AliasOn", opt_AliasOn);
+    opt_Alias.add(opt_AliasOn);
+    gbc.gridwidth = 1;
+    layout.setConstraints(opt_Alias, gbc);
+    extras.add(opt_Alias);
+
+    // Alpha composite
+    JPanel opt_Composite = new JPanel();
+    opt_Composite.setLayout(new BoxLayout(opt_Composite, BoxLayout.PAGE_AXIS));
+    JLabel opt_CompositeLabel = new JLabel("Alpha Composite:");
+    opt_CompositeLabel.setBorder(new BevelBorder(BevelBorder.RAISED));
+    opt_Composite.add(opt_CompositeLabel);
+    JTextField opt_CompositeValue = new JTextField("1.0");
+    opt_CompositeValue.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+    elements.put("opt_CompositeValue", opt_CompositeValue);
+    opt_Composite.add(opt_CompositeValue);
+    gbc.gridwidth = GridBagConstraints.REMAINDER;
+    layout.setConstraints(opt_Composite, gbc);
+    extras.add(opt_Composite);
+
+    // Transformations
+    // TODO: allow user-defined matrices for AffineTransform
+    // (backend already has hooks for it, need to create gui)
+    JLabel opt_TransformLabel = new JLabel("Transformations:");
+    opt_TransformLabel.setBorder(new BevelBorder(BevelBorder.RAISED));
+    gbc.insets = new Insets(5, 2, 0, 15);
+    layout.setConstraints(opt_TransformLabel, gbc);
+    extras.add(opt_TransformLabel);
+
+    JPanel opt_Transform_Translate = new JPanel(new GridLayout(0, 2, 5, 5));
+    opt_Transform_Translate.add(new JLabel("x-axis translation "));
+    JTextField opt_TransformTranslateX = new JTextField("0");
+    opt_TransformTranslateX.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+    opt_Transform_Translate.add(opt_TransformTranslateX);
+    elements.put("opt_TransformTranslateX", opt_TransformTranslateX);
+    opt_Transform_Translate.add(new JLabel("y-axis translation "));
+    JTextField opt_TransformTranslateY = new JTextField("0");
+    opt_TransformTranslateY.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+    opt_Transform_Translate.add(opt_TransformTranslateY);
+    elements.put("opt_TransformTranslateY", opt_TransformTranslateY);
+    gbc.gridwidth = 1;
+    gbc.insets = new Insets(0, 2, 5, 15);
+    layout.setConstraints(opt_Transform_Translate, gbc);
+    extras.add(opt_Transform_Translate);
+
+    JPanel opt_Transform_Shear = new JPanel(new GridLayout(0, 2, 5, 5));
+    opt_Transform_Shear.add(new JLabel("x-axis shear "));
+    JTextField opt_TransformShearX = new JTextField("0");
+    opt_TransformShearX.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+    opt_Transform_Shear.add(opt_TransformShearX);
+    elements.put("opt_TransformShearX", opt_TransformShearX);
+    opt_Transform_Shear.add(new JLabel("y-axis shear "));
+    JTextField opt_TransformShearY = new JTextField("0");
+    opt_Transform_Shear.add(opt_TransformShearY);
+    elements.put("opt_TransformShearY", opt_TransformShearY);
+    gbc.gridwidth = GridBagConstraints.REMAINDER;
+    layout.setConstraints(opt_Transform_Shear, gbc);
+    extras.add(opt_Transform_Shear);
+
+    JPanel opt_Transform_Rotate = new JPanel(new GridLayout(0, 2, 5, 5));
+    opt_Transform_Rotate.add(new JLabel("rotation (radians) "));
+    JTextField opt_TransformRotate = new JTextField("0");
+    opt_Transform_Rotate.add(opt_TransformRotate);
+    elements.put("opt_TransformRotate", opt_TransformRotate);
+    layout.setConstraints(opt_Transform_Rotate, gbc);
+    extras.add(opt_Transform_Rotate);
+
     // Final submit button
     JPanel submit = new JPanel();
     submit.setLayout(new BoxLayout(submit, BoxLayout.PAGE_AXIS));
@@ -236,6 +367,8 @@ public class J2dBenchmarkGUI
 
     body.setAlignmentX(JComponent.CENTER_ALIGNMENT);
     panel.add(body);
+    extras.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+    panel.add(extras);
     submit.setAlignmentX(JComponent.CENTER_ALIGNMENT);
     panel.add(submit);
 
@@ -324,6 +457,24 @@ public class J2dBenchmarkGUI
           speed.setBuffers(((JCheckBox) elements.get("singlebuffer")).isSelected(),
                            ((JCheckBox) elements.get("doublebuffer")).isSelected());
 
+          // Set additional processing options
+          speed.setFill(((ButtonGroup) elements.get("opt_FillGroup")).getSelection().getActionCommand(),
+                        ((JTextField) elements.get("opt_FillTextureFile")).getText());
+
+          speed.setStroke(((JCheckBox) elements.get("opt_StrokeRandom")).isSelected());
+
+          speed.setAlias(((JCheckBox) elements.get("opt_AliasOn")).isSelected());
+
+          speed.setComposite(Float.parseFloat(((JTextField) elements.get("opt_CompositeValue")).getText()));
+
+          speed.setTranslation(Integer.parseInt(((JTextField) elements.get("opt_TransformTranslateX")).getText()),
+                               Integer.parseInt(((JTextField) elements.get("opt_TransformTranslateY")).getText()));
+
+          speed.setRotation(Double.parseDouble(((JTextField) elements.get("opt_TransformRotate")).getText()));
+
+          speed.setShear(Double.parseDouble(((JTextField) elements.get("opt_TransformShearX")).getText()),
+                         Double.parseDouble(((JTextField) elements.get("opt_TransformShearY")).getText()));
+
           // Set tests
           int testSuite = 0;
           if (((JCheckBox) elements.get("test_arcDraw")).isSelected())
@@ -349,21 +500,31 @@ public class J2dBenchmarkGUI
             {
               speed.setTests(testSuite);
 
-              // Create graphics.
-              frame.add(speed, BorderLayout.CENTER);
-              frame.setSize(Integer.parseInt(((JTextField) elements.get("width")).getText()),
-                            Integer.parseInt(((JTextField) elements.get("height")).getText()));
-              frame.setVisible(true);
+              String initResult = speed.init();
 
-              // Insets are correctly set only after the native peer was created.
-              Insets insets = frame.getInsets();
-              frame.setSize(frame.getWidth() + insets.right + insets.left,
-                            frame.getHeight() + insets.top + insets.bottom);
+              if (initResult == null)
+                {
+                  // Create graphics.
+                  frame.add(speed, BorderLayout.CENTER);
+                  frame.setSize(
+                                Integer.parseInt(((JTextField) elements.get("width")).getText()),
+                                Integer.parseInt(((JTextField) elements.get("height")).getText()));
+                  frame.setVisible(true);
+
+                  // Insets are correctly set only after the native peer was
+                  // created.
+                  Insets insets = frame.getInsets();
+                  frame.setSize(frame.getWidth() + insets.right + insets.left,
+                                frame.getHeight() + insets.top + insets.bottom);
+
+                  // Clear any old error messages
+                  errorLabel.setText(" ");
+                }
+              else
+                errorLabel.setText(initResult);
             }
           else
-            {
-              errorLabel.setText("Please select at least one test.");
-            }
+            errorLabel.setText("Please select at least one test.");
         }
       catch (NumberFormatException e)
         {
@@ -397,8 +558,6 @@ public class J2dBenchmarkGUI
       logger.addHandler(display);
 
       myFrame = frame;
-
-      super.init();
     }
 
     /**
@@ -458,6 +617,86 @@ public class J2dBenchmarkGUI
     {
       this.singleBufferFlag = single;
       this.doubleBufferFlag = doubleb;
+    }
+
+    /**
+     * Set fill options
+     * 
+     * @param type fill type: "solid", "gradient", or "texture"
+     * @param file filename to use if texturing
+     */
+    public void setFill(String type, String file)
+    {
+      if (type.equals("gradient"))
+        this.gradientFlag = true;
+      else if (type.equals("texture"))
+        {
+          this.texture = file;
+        }
+    }
+
+    /**
+     * Set stroke options
+     * 
+     * @param stroke boolean flag to use random stroking or not
+     */
+    public void setStroke(boolean stroke)
+    {
+      this.strokeFlag = stroke;
+    }
+
+    /**
+     * Set anti-aliasing options
+     * 
+     * @param alias boolean flag to use anti-aliasing or not
+     */
+    public void setAlias(boolean alias)
+    {
+      this.antialiasFlag = alias;
+    }
+
+    /**
+     * Set alpha composite
+     * 
+     * @param alpha alpha composite
+     */
+    public void setComposite(float alpha)
+    {
+      this.composite = alpha;
+    }
+
+    /**
+     * Set translation values
+     * 
+     * @param x x-axis translation
+     * @param y y-axis translation
+     */
+    public void setTranslation(int x, int y)
+    {
+      this.xtranslate = x;
+      this.ytranslate = y;
+    }
+
+    /**
+     * Set rotation
+     * 
+     * @param theta angle to rotate by (radians)
+     */
+    public void setRotation(double theta)
+    {
+      this.rotate = theta;
+    }
+
+    /**
+     * Set shear values
+     * 
+     * @param x x-axis shear value
+     * @param y-axis shear value
+     */
+    public void setShear(double x, double y)
+    {
+      this.xshear = x;
+      this.yshear = y;
     }
 
     /**

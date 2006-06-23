@@ -19,24 +19,30 @@
  Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  02110-1301 USA. */
 
-
 package gnu.classpath.examples.java2d;
 
+import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Label;
+import java.awt.MediaTracker;
 import java.awt.Panel;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.TexturePaint;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Ellipse2D;
@@ -45,6 +51,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.QuadCurve2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
@@ -124,6 +131,28 @@ public class J2dBenchmark
 
   protected boolean doubleBufferFlag = true;
 
+  protected boolean gradientFlag = false;
+
+  protected String texture = null;
+
+  protected boolean strokeFlag = false;
+
+  protected float composite = 1;
+
+  protected int xtranslate = 0;
+
+  protected int ytranslate = 0;
+
+  protected double xshear = 0;
+
+  protected double yshear = 0;
+
+  protected double rotate = 0;
+
+  protected boolean antialiasFlag = false;
+
+  protected AffineTransform affineTransform = null;
+
   protected int awtTests = J2DTEST_ALL;
 
   protected int testSize = DEFAULT_TEST_SIZE;
@@ -138,17 +167,39 @@ public class J2dBenchmark
 
   private Image gifTestImage;
 
+  protected BufferedImage textureImage;
+
   protected TestSet testSetMap = new TestSet();
 
-  public void init()
+  public String init()
   {
+    boolean loadError = false;
     pngTestImage = loadImage("aicas.png");
     gifTestImage = loadImage("palme.gif");
+
+    if (texture != null)
+      {
+        textureImage = loadBufferedImage(texture);
+
+        if (textureImage == null)
+          {
+            logger.logp(Level.WARNING, "J2dGraphicsBenchmark", "init",
+                        "Unable to load texture - defaulting "
+                            + "to solid colours");
+            texture = null;
+            loadError = true;
+          }
+      }
 
     setLayout(new BorderLayout());
     testLabel = new Label();
     add(testLabel, BorderLayout.NORTH);
     add(new GraphicsTest(), BorderLayout.CENTER);
+
+    if (loadError)
+      return "Unable to load image";
+    else
+      return null;
   }
 
   void setTestContext(String testName)
@@ -195,7 +246,6 @@ public class J2dBenchmark
     int i;
     boolean endOfOptionsFlag;
     J2dBenchmark speed = new J2dBenchmark();
-    speed.init();
 
     // Parse arguments.
     i = 0;
@@ -216,7 +266,23 @@ public class J2dBenchmark
                                    + DEFAULT_SCREEN_WIDTH);
                 System.out.println("         -h|--height=<n>        - screen height; default "
                                    + DEFAULT_SCREEN_HEIGHT);
-                System.out.println("         -n|--noDoubleBuffer    - disable double-buffering test");
+                System.out.println("         -d|--noDoubleBuffer    - disable double-buffering test");
+                System.out.println("         -s|--testsize=<n>      - size of each test; default "
+                                   + DEFAULT_TEST_SIZE);
+                System.out.println("         -c|--noClipping        - disable clipping test");
+                System.out.println("         -z|--noZeroClipping    - disable clipping to zero test");
+                System.out.println("");
+                System.out.println("Additional options:");
+                System.out.println("         --with-gradients       - enable gradients (not compatible with --texture)");
+                System.out.println("         --with-stroking        - enable random stroking");
+                System.out.println("         --texture=<file>       - enable texturing with this file (not compatible with --with-gradients)");
+                System.out.println("         --composite=<n|-1>     - set alpha composite level; -1 for random; default 1.0 (no transparency)");
+                System.out.println("         --anti-alias=<on|off>  - set anti-aliasing hint (not all implementations respect this); default off");
+                System.out.println("         --x-translate=<n>      - set x-axis translation; default 0");
+                System.out.println("         --y-translate=<n>      - set y-axis translation; default 0");
+                System.out.println("         --x-shear=<n>          - set x-axis shear; default 0");
+                System.out.println("         --y-shear=<n>          - set y-axis shear; default 0");
+                System.out.println("         --rotate=<n|-1>        - set rotation (radians); -1 for random; default: 0 (none)");
                 System.out.println("");
                 System.out.println("Tests: arc");
                 System.out.println("       cubiccurve");
@@ -283,12 +349,115 @@ public class J2dBenchmark
                 i += 2;
                 continue;
               }
-            else if ((args[i].equals("-n") || args[i].equals("--noDoubleBuffer")))
+            else if ((args[i].equals("-d") || args[i].equals("--noDoubleBuffer")))
               {
                 speed.doubleBufferFlag = false;
                 i += 1;
                 continue;
               }
+            else if ((args[i].startsWith("-s=") || args[i].startsWith("--testsize=")))
+              {
+                if ((i + 1) >= args.length)
+                  {
+                    System.err.println("ERROR: No argument given for option '"
+                                       + args[i] + "'!");
+                    System.exit(2);
+                  }
+                speed.testSize = Integer.parseInt(args[i].substring(args[i].indexOf('=') + 1));
+                i += 1;
+                continue;
+              }
+            else if ((args[i].equals("-s") || args[i].equals("--testsize")))
+              {
+                if ((i + 1) >= args.length)
+                  {
+                    System.err.println("ERROR: No argument given for option '"
+                                       + args[i] + "'!");
+                    System.exit(2);
+                  }
+                speed.testSize = Integer.parseInt(args[i + 1]);
+                i += 2;
+                continue;
+              }
+            else if ((args[i].equals("-c") || args[i].equals("--noClipping")))
+              {
+                speed.noClippingFlag = false;
+                i += 1;
+                continue;
+              }
+            else if ((args[i].equals("-z") || args[i].equals("--noZeroClipping")))
+              {
+                speed.zeroClippingFlag = false;
+                i += 1;
+                continue;
+              }
+            else if (args[i].equals("--with-gradients"))
+              {
+                speed.gradientFlag = true;
+                i += 1;
+                continue;
+              }
+            else if (args[i].equals("--with-stroking"))
+              {
+                speed.strokeFlag = true;
+                i += 1;
+                continue;
+              }
+            else if (args[i].startsWith("--texture="))
+              {
+                speed.texture = args[i].substring(args[i].indexOf('=') + 1);
+                i += 1;
+                continue;
+              }
+            else if (args[i].startsWith("--composite="))
+              {
+                speed.composite = Float.parseFloat(args[i].substring(args[i].indexOf('=') + 1));
+                if (speed.composite != - 1
+                    && (speed.composite < 0 || speed.composite > 1))
+                  {
+                    System.err.println("ERROR: Invalid value for composite (must be between 0 and 1, or -1 for random)");
+                    System.exit(2);
+                  }
+                i += 1;
+                continue;
+              }
+            else if (args[i].startsWith("--anti-alias="))
+              {
+                speed.antialiasFlag = (args[i].substring(args[i].indexOf('=') + 1).equals("on"));
+                i += 1;
+                continue;
+              }
+            else if (args[i].startsWith("--x-translate="))
+              {
+                speed.xtranslate = Integer.parseInt(args[i].substring(args[i].indexOf('=') + 1));
+                i += 1;
+                continue;
+              }
+            else if (args[i].startsWith("--y-translate="))
+              {
+                speed.ytranslate = Integer.parseInt(args[i].substring(args[i].indexOf('=') + 1));
+                i += 1;
+                continue;
+              }
+            else if (args[i].startsWith("--x-shear="))
+              {
+                speed.xshear = Double.parseDouble(args[i].substring(args[i].indexOf('=') + 1));
+                i += 1;
+                continue;
+              }
+            else if (args[i].startsWith("--y-shear="))
+              {
+                speed.yshear = Double.parseDouble(args[i].substring(args[i].indexOf('=') + 1));
+                i += 1;
+                continue;
+              }
+            else if (args[i].startsWith("--rotate="))
+              {
+                speed.rotate = Double.parseDouble(args[i].substring(args[i].indexOf('=') + 1));
+                i += 1;
+                continue;
+              }
+
             else if (args[i].equals("--"))
               {
                 endOfOptionsFlag = true;
@@ -335,6 +504,7 @@ public class J2dBenchmark
       speed.awtTests = awtTests;
 
     // Create graphics.
+    speed.init();
     final Frame frame = new Frame("J2dGraphicsBenchmark");
 
     frame.addWindowListener(new WindowAdapter()
@@ -377,6 +547,51 @@ public class J2dBenchmark
     return result;
   }
 
+  private BufferedImage loadBufferedImage(String imageName)
+  {
+    BufferedImage result = null;
+    logger.logp(Level.INFO, "J2dGraphicsBenchmark", "loadImage",
+                "Loading image: " + imageName);
+
+    // Try to load image out of classpath before trying an absolute filename
+    URL url = getClass().getResource(imageName);
+    Image img;
+    if (url != null)
+      img = Toolkit.getDefaultToolkit().getImage(url);
+    else
+      img = Toolkit.getDefaultToolkit().getImage(imageName);
+
+    if (img != null)
+      {
+        // Wait for image to load
+        try
+          {
+            MediaTracker tracker = new MediaTracker(this);
+            tracker.addImage(img, 1);
+            tracker.waitForAll();
+
+            prepareImage(img, this);
+            result = new BufferedImage(img.getWidth(this), img.getHeight(this),
+                                       BufferedImage.TYPE_INT_RGB);
+            result.createGraphics().drawImage(img, 0, 0, this);
+          }
+        catch (InterruptedException e)
+          {
+          }
+        catch (IllegalArgumentException e)
+          {
+          }
+      }
+
+    if (result == null)
+      {
+        logger.logp(Level.WARNING, "J2dGraphicsBenchmark", "loadBufferedImage",
+                    "Could not locate image resource in class path: "
+                        + imageName);
+      }
+    return result;
+  }
+
   /**
    * Executes the test methods.
    * 
@@ -385,6 +600,9 @@ public class J2dBenchmark
    */
   void runTestSet(Graphics2D g, Dimension size)
   {
+    // Any user-specified options (ie set transforms, rendering hints)
+    prepareGraphics((Graphics2D) g);
+
     if ((awtTests & J2DTEST_ARC) != 0)
       {
         test_drawArc(g, size);
@@ -439,15 +657,121 @@ public class J2dBenchmark
   }
 
   /**
-   * Gets a new random Color.
+   * Reset all graphics settings to the standard, default values
    * 
-   * @returna new random Color
+   * @param g the object to apply settings to
    */
-  private Color getNextColor()
+  private void resetGraphics(Graphics2D g)
   {
-    return new Color((int) (Math.random() * 254) + 1,
-                     (int) (Math.random() * 254) + 1,
-                     (int) (Math.random() * 254) + 1);
+    g.setTransform(new AffineTransform());
+    g.setStroke(new BasicStroke());
+    g.setComposite(AlphaComposite.SrcOut);
+  }
+
+  /**
+   * Sets initial user graphics options
+   * 
+   * @param g the object to apply settings to
+   */
+  private void prepareGraphics(Graphics2D g)
+  {
+    // Transforms
+    if (affineTransform != null)
+      g.setTransform(affineTransform);
+
+    else if (xtranslate != 0 || ytranslate != 0 || xshear != 0 || yshear != 0)
+      {
+        g.translate(xtranslate, ytranslate);
+        g.shear(xshear, yshear);
+      }
+
+    if (rotate > 0)
+      g.rotate(rotate * Math.PI, screenWidth / 2, screenHeight / 2);
+
+    // Composite (transparency)
+    if (composite > 0)
+      {
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+                                                  composite));
+      }
+
+    // Textures
+    if (texture != null)
+      g.setPaint(new TexturePaint(textureImage,
+                                  new Rectangle(0, 0, textureImage.getWidth(),
+                                                textureImage.getHeight())));
+
+    // Anti-alias setting
+    if (antialiasFlag)
+      g.setRenderingHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING,
+                                             RenderingHints.VALUE_ANTIALIAS_ON));
+    else
+      g.setRenderingHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING,
+                                             RenderingHints.VALUE_ANTIALIAS_OFF));
+  }
+
+  /**
+   * Gets new random settings
+   * 
+   * @param g the object to set parameters for
+   * @param size the screen size
+   */
+  private void setRandom(Graphics2D g, Dimension size)
+  {
+    // Set colour / paint
+    if (gradientFlag)
+      {
+        Color c1 = new Color((int) (Math.random() * 254) + 1,
+                             (int) (Math.random() * 254) + 1,
+                             (int) (Math.random() * 254) + 1);
+
+        Color c2 = new Color((int) (Math.random() * 254) + 1,
+                             (int) (Math.random() * 254) + 1,
+                             (int) (Math.random() * 254) + 1);
+
+        g.setPaint(new GradientPaint(0, 0, c1, screenWidth / 5,
+                                     screenHeight / 5, c2, true));
+      }
+
+    else if (texture == null)
+      g.setPaint(new Color((int) (Math.random() * 254) + 1,
+                           (int) (Math.random() * 254) + 1,
+                           (int) (Math.random() * 254) + 1));
+
+    // Set stroke width and options
+    if (strokeFlag)
+      {
+        int cap = (int) (Math.random() * 3 + 1);
+        if (cap == 1)
+          cap = BasicStroke.CAP_SQUARE;
+        else if (cap == 2)
+          cap = BasicStroke.CAP_BUTT;
+        else
+          cap = BasicStroke.CAP_ROUND;
+
+        int join = (int) (Math.random() * 3 + 1);
+        if (join == 1)
+          join = BasicStroke.JOIN_MITER;
+        else if (join == 2)
+          join = BasicStroke.JOIN_BEVEL;
+        else
+          join = BasicStroke.JOIN_ROUND;
+
+        float[] dashes = { 10, 10 };
+        g.setStroke(new BasicStroke((int) (Math.random() * 10), cap, join, 10f,
+                                    dashes, 0));
+      }
+
+    // Composite / transparency
+    if (composite == - 1)
+      {
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+                                                  (float) Math.random()));
+      }
+
+    // Transformations
+    if (rotate == - 1)
+      g.rotate(Math.random() * Math.PI * 2);
   }
 
   /**
@@ -466,7 +790,7 @@ public class J2dBenchmark
     startTime = System.currentTimeMillis();
     for (int i = 0; i < maxTests; i += 1)
       {
-        g.setColor(getNextColor());
+        setRandom(g, size);
         int x = (int) (Math.random() * (size.width - minSize + 1));
         int y = (int) (Math.random() * (size.height - minSize + 1));
         int width = (int) (Math.random() * (size.width - x - minSize) + minSize);
@@ -499,7 +823,7 @@ public class J2dBenchmark
     startTime = System.currentTimeMillis();
     for (int i = 0; i < maxTests; i += 1)
       {
-        g.setColor(getNextColor());
+        setRandom(g, size);
         int x = (int) (Math.random() * (size.width - minSize + 1));
         int y = (int) (Math.random() * (size.height - minSize + 1));
         int width = (int) (Math.random() * (size.width - x - minSize) + minSize);
@@ -529,7 +853,7 @@ public class J2dBenchmark
     long startTime = System.currentTimeMillis();
     for (int i = 0; i < maxTests; i += 1)
       {
-        g.setColor(getNextColor());
+        setRandom(g, size);
         int x1 = (int) (Math.random() * (size.width - minSize));
         int y1 = (int) (Math.random() * (size.height - minSize));
         int xc1 = (int) (Math.random() * (size.width - minSize));
@@ -561,7 +885,7 @@ public class J2dBenchmark
     long startTime = System.currentTimeMillis();
     for (int i = 0; i < maxTests; i += 1)
       {
-        g.setColor(getNextColor());
+        setRandom(g, size);
         int x1 = (int) (Math.random() * (size.width - minSize));
         int y1 = (int) (Math.random() * (size.height - minSize));
         int x2 = (int) (Math.random() * (size.width - minSize));
@@ -587,7 +911,7 @@ public class J2dBenchmark
     long startTime = System.currentTimeMillis();
     for (int i = 0; i < maxTests; i += 1)
       {
-        g.setColor(getNextColor());
+        setRandom(g, size);
         int x1 = (int) (Math.random() * (size.width - minSize));
         int y1 = (int) (Math.random() * (size.height - minSize));
         int x2 = (int) (Math.random() * (size.width - minSize));
@@ -614,7 +938,7 @@ public class J2dBenchmark
 
     for (int i = 0; i < maxTests; i += 1)
       {
-        g.setColor(getNextColor());
+        setRandom(g, size);
         int points = (int) (Math.random() * 6) + 2;
         GeneralPath shape = new GeneralPath();
         shape.moveTo((float) Math.random() * (size.width),
@@ -648,7 +972,7 @@ public class J2dBenchmark
 
     for (int i = 0; i < maxTests; i += 1)
       {
-        g.setColor(getNextColor());
+        setRandom(g, size);
         int points = (int) (Math.random() * 6) + 2;
         for (int j = 0; j < points; j += 1)
           {
@@ -675,7 +999,7 @@ public class J2dBenchmark
     long startTime = System.currentTimeMillis();
     for (int i = 0; i < maxTests; i += 1)
       {
-        g.setColor(getNextColor());
+        setRandom(g, size);
         int x1 = (int) (Math.random() * (size.width - minSize));
         int y1 = (int) (Math.random() * (size.height - minSize));
         int x2 = (int) (Math.random() * (size.width - minSize));
@@ -701,7 +1025,7 @@ public class J2dBenchmark
     long startTime = System.currentTimeMillis();
     for (int i = 0; i < maxTests; i += 1)
       {
-        g.setColor(getNextColor());
+        setRandom(g, size);
         int x1 = (int) (Math.random() * (size.width - minSize));
         int y1 = (int) (Math.random() * (size.height - minSize));
         int xc = (int) (Math.random() * (size.width - minSize));
@@ -730,7 +1054,7 @@ public class J2dBenchmark
     long startTime = System.currentTimeMillis();
     for (int i = 0; i < maxTests; i += 1)
       {
-        g.setColor(getNextColor());
+        setRandom(g, size);
         int x1 = (int) (Math.random() * (size.width - minSize));
         int y1 = (int) (Math.random() * (size.height - minSize));
         int x2 = (int) (Math.random() * (size.width - minSize));
@@ -756,7 +1080,7 @@ public class J2dBenchmark
     long startTime = System.currentTimeMillis();
     for (int i = 0; i < maxTests; i += 1)
       {
-        g.setColor(getNextColor());
+        setRandom(g, size);
         int x1 = (int) (Math.random() * (size.width - minSize));
         int y1 = (int) (Math.random() * (size.height - minSize));
         int x2 = (int) (Math.random() * (size.width - minSize));
@@ -785,7 +1109,7 @@ public class J2dBenchmark
     startTime = System.currentTimeMillis();
     for (int i = 0; i < maxTests; i += 1)
       {
-        g.setColor(getNextColor());
+        setRandom(g, size);
         int x = (int) (Math.random() * (size.width - minSize + 1));
         int y = (int) (Math.random() * (size.height - minSize + 1));
         int width = (int) (Math.random() * (size.width - x - minSize) + minSize);
@@ -818,7 +1142,7 @@ public class J2dBenchmark
     startTime = System.currentTimeMillis();
     for (int i = 0; i < maxTests; i += 1)
       {
-        g.setColor(getNextColor());
+        setRandom(g, size);
         int x = (int) (Math.random() * (size.width - minSize + 1));
         int y = (int) (Math.random() * (size.height - minSize + 1));
         int width = (int) (Math.random() * (size.width - x - minSize) + minSize);
@@ -858,7 +1182,7 @@ public class J2dBenchmark
     long startTime = System.currentTimeMillis();
     for (int i = 0; i < maxTests; i += 1)
       {
-        g.setColor(getNextColor());
+        setRandom(g, size);
         int x = (int) (Math.random() * (size.width - imageWidth + 1));
         int y = (int) (Math.random() * (size.height - imageHeight + 1));
         g.drawImage(gifTestImage, x, y, this);
@@ -878,7 +1202,7 @@ public class J2dBenchmark
     if (pngTestImage == null)
       {
         logger.logp(Level.WARNING, "AicasGraphicsBenchmark", "runTestSet",
-                    "Skipping 'test_drawTransparentImage' due to missing resource.");
+                    "Skipping 'drawTransparentImage' due to missing resource.");
         return;
       }
 
@@ -890,7 +1214,7 @@ public class J2dBenchmark
     long startTime = System.currentTimeMillis();
     for (int i = 0; i < maxTests; i += 1)
       {
-        g.setColor(getNextColor());
+        setRandom(g, size);
         int x = (int) (Math.random() * (size.width - imageWidth + 1));
         int y = (int) (Math.random() * (size.height - imageHeight + 1));
         g.drawImage(pngTestImage, x, y, this);
@@ -1051,14 +1375,17 @@ public class J2dBenchmark
       clipped_x = (size.width) / 2;
       clipped_y = (size.height) / 2;
 
+      // Reset any transforms from past tests
+      resetGraphics(g);
+
       Rectangle fullWindow = new Rectangle(0, 0, size.width, size.height);
       g.setClip(fullWindow);
-      g.setColor(Color.BLACK);
+      g.setPaint(Color.BLACK);
       g.fill(fullWindow);
 
       Rectangle windowBorder = new Rectangle(0, 0, size.width - 1,
                                              size.width - 1);
-      g.setColor(Color.WHITE);
+      g.setPaint(Color.WHITE);
       g.draw(windowBorder);
 
       Rectangle innerBorder = new Rectangle(clipped_x - 1, clipped_y - 1,
@@ -1069,7 +1396,7 @@ public class J2dBenchmark
       Rectangle innerBox = new Rectangle(clipped_x, clipped_y, clipped_width,
                                          clipped_height);
       g.clip(innerBox);
-      g.setColor(Color.BLACK);
+      g.setPaint(Color.BLACK);
       g.fill(fullWindow);
 
       if (context.equals(""))
@@ -1093,28 +1420,31 @@ public class J2dBenchmark
       int clipped_x = (size.width - clipped_width) / 2;
       int clipped_y = (size.height - clipped_height) / 2;
 
+      // Reset any transforms from past tests
+      resetGraphics(g);
+
       Rectangle fullWindow = new Rectangle(0, 0, size.width, size.height);
       g.setClip(fullWindow);
 
-      g.setColor(Color.BLACK);
+      g.setPaint(Color.BLACK);
       g.fill(fullWindow);
 
       Rectangle windowBorder = new Rectangle(0, 0, size.width - 1,
                                              size.height - 1);
-      g.setColor(Color.GREEN);
+      g.setPaint(Color.GREEN);
       g.draw(windowBorder);
 
       Rectangle innerBorder = new Rectangle(clipped_x - 1, clipped_y - 1,
                                             clipped_width + 2,
                                             clipped_height + 2);
-      g.setColor(Color.WHITE);
+      g.setPaint(Color.WHITE);
       g.fill(innerBorder);
 
       Rectangle innerBox = new Rectangle(clipped_x, clipped_y, clipped_width,
                                          clipped_height);
       g.clip(innerBox);
 
-      g.setColor(Color.BLACK);
+      g.setPaint(Color.BLACK);
       g.fill(fullWindow);
 
       if (context.equals(""))
@@ -1133,8 +1463,11 @@ public class J2dBenchmark
     private void runSet_noClipping(Graphics2D g, Dimension size,
                                    String context, int runCount)
     {
+      // Reset any transforms from past tests
+      resetGraphics(g);
+
       Rectangle fullWindow = new Rectangle(0, 0, size.width, size.height);
-      g.setColor(Color.BLACK);
+      g.setPaint(Color.BLACK);
       g.fill(fullWindow);
 
       if (context.equals(""))
@@ -1216,9 +1549,9 @@ class TestRecorder
     return test;
   }
 
-  public final double getAverage()
+  public final long getAverage()
   {
-    return ((double) totalTime) / ((double) runCount);
+    return (totalTime / runCount);
   }
 
   public TestRecorder(String testName)
