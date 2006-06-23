@@ -1,4 +1,20 @@
-2006-06-22  Roman Kennke  <kennke@aicas.com>
+2006-06-23  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JLayeredPane.java
+	(getPosition): Moved code around to avoid unnecessary method calls.
+	(setPosition): Delegate to setLayer().
+	(insertIndexForLayer(int,int)): Delegate to new private helper method.
+	(insertIndexForLayer(Component,int,int)): New helper method
+	to support the use of setComponentZOrder() which doesn't remove
+	the component and thus the insertIndexForLayer must ignore
+	the component to be moved to get the index right.
+	(setLayer): Added check to prevent unnecessary execution of
+	method body. Changed to update the component order here.
+	Added repaint() to make sure that the update becomes visible.
+	(addImpl): Call setLayer() only when a constraint has been specified.
+	Validate and repaint the JLayeredPane.
+
+2006-06-23  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/Container.java
 	(getComponentZOrder): Use ncomponents instead of
