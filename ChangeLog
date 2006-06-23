@@ -1,5 +1,12 @@
 2006-06-22  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/Container.java
+	(getComponentZOrder): Use ncomponents instead of
+	component.length so that we don't consider the empty space
+	after the last component.
+
+2006-06-22  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComponent.java
 	(vetoableChangeSupport): New field.
 	(removeVetoableChangeListener): Rewritten to use

@@ -1685,7 +1685,7 @@ public class Container extends Component
     int index = -1;
     if (component != null)
       {
-        for (int i = 0; i < component.length; i++)
+        for (int i = 0; i < ncomponents; i++)
           {
             if (component[i] == comp)
               {
