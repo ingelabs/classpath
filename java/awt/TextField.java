@@ -96,7 +96,7 @@ private ActionListener action_listeners;
 public
 TextField()
 {
-  this("", 1);
+  this("", 0);
 }
 
 /*************************************************************************/
@@ -113,7 +113,7 @@ TextField()
 public
 TextField(String text)
 {
-  this(text, text.length());
+  this(text, (text == null) ? 0 : text.length());
 }
 
 /*************************************************************************/
@@ -147,7 +147,11 @@ public
 TextField(String text, int columns)
 {
   super(text);
-  this.columns = columns;
+  
+  if (columns < 0)
+    this.columns = 0;
+  else
+    this.columns = columns;
 
   if (GraphicsEnvironment.isHeadless())
     throw new HeadlessException ();

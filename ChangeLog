@@ -1,3 +1,13 @@
+2006-06-23  Tania Bento  <tbento@redhat.com>
+
+	* java/awt/TextField.java
+	(TextField): Default number of columns should be 0, not 1.
+	(TextField): Check if number of columns given as argument
+	is valid (>= 0) and set the number of columns accordingly.
+	(TextField): Check if the string passed is null. If it is, 
+	set columns to 0, else columns is set to the length of
+	the string.
+
 2006-06-23  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicInternalFrameUI.java
