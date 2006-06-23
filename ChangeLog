@@ -1,3 +1,10 @@
+2006-06-23  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/logging/LoggingMXBean.java: New file.
+	* java/util/logging/LogManager.java (LOGGING_MXBEAN_NAME): New field.
+	(loggingBean): New field.
+	(getLoggingMXBean): New method.
+
 2006-06-23  Tania Bento  <tbento@redhat.com>
 
 	* java/awt/TextField.java
