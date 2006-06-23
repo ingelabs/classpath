@@ -1,5 +1,13 @@
 2006-06-23  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java
+	(InternalFramePropertyChangeListener.propertyChange):
+	Don't call getPropertyName() repeatedly. Added null checks
+	to avoid NPEs. Call closeFrame() if the closed property
+	changes.
+
+2006-06-23  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JInternalFrame.java
 	(maxTransition): Removed.
 	(JInternalFrame): Set maxium=false. Initialize desktopIcon here.

@@ -945,40 +945,53 @@ public class BasicInternalFrameUI extends InternalFrameUI
      */
     public void propertyChange(PropertyChangeEvent evt)
     {
-      if (evt.getPropertyName().equals(JInternalFrame.IS_MAXIMUM_PROPERTY))
+      String property = evt.getPropertyName();
+      if (property.equals(JInternalFrame.IS_MAXIMUM_PROPERTY))
         {
           if (frame.isMaximum())
             maximizeFrame(frame);
           else
             minimizeFrame(frame);
         }
-      else if (evt.getPropertyName().equals(JInternalFrame.IS_ICON_PROPERTY))
+      else if (property.equals(JInternalFrame.IS_ICON_PROPERTY))
         {
           if (frame.isIcon())
             iconifyFrame(frame);
           else
             deiconifyFrame(frame);
         }
-      else if (evt.getPropertyName().equals(JInternalFrame.IS_SELECTED_PROPERTY))
+      else if (property.equals(JInternalFrame.IS_SELECTED_PROPERTY))
         {
           if (frame.isSelected())
             activateFrame(frame);
           else
             deactivateFrame(frame);
         }
-      else if (evt.getPropertyName().equals(JInternalFrame.ROOT_PANE_PROPERTY)
-               || evt.getPropertyName().equals(
-                                               JInternalFrame.GLASS_PANE_PROPERTY))
+      else if (property.equals(JInternalFrame.ROOT_PANE_PROPERTY)
+               || property.equals(JInternalFrame.GLASS_PANE_PROPERTY))
         {
           Component old = (Component) evt.getOldValue();
-          old.removeMouseListener(glassPaneDispatcher);
-          old.removeMouseMotionListener(glassPaneDispatcher);
+          if (old != null)
+            {
+              old.removeMouseListener(glassPaneDispatcher);
+              old.removeMouseMotionListener(glassPaneDispatcher);
+            }
 
           Component newPane = (Component) evt.getNewValue();
-          newPane.addMouseListener(glassPaneDispatcher);
-          newPane.addMouseMotionListener(glassPaneDispatcher);
+          if (newPane != null)
+            {
+              newPane.addMouseListener(glassPaneDispatcher);
+              newPane.addMouseMotionListener(glassPaneDispatcher);
+            }
 
           frame.revalidate();
+        }
+      else if (property.equals(JInternalFrame.IS_CLOSED_PROPERTY))
+        {
+          if (evt.getNewValue() == Boolean.TRUE)
+            {
+              closeFrame(frame);
+            }
         }
       /*
        * FIXME: need to add ancestor properties to JComponents. else if
