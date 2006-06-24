@@ -49,12 +49,13 @@ import java.util.PropertyPermission;
 import java.util.logging.Logger;
 
 /**
- * <p>A global object containing build-specific properties that affect the
- * behaviour of the generated binaries from this library.</p>
+ * A global object containing build-specific properties that affect the
+ * behaviour of the generated binaries from this library.
  */
 public final class Properties
 {
   private static final Logger log = Logger.getLogger(Properties.class.getName());
+
   public static final String VERSION = "gnu.crypto.version";
 
   public static final String PROPERTIES_FILE = "gnu.crypto.properties.file";
@@ -79,9 +80,6 @@ public final class Properties
 
   private boolean doRSABlinding = true;
 
-  // Constructor(s)
-  // -------------------------------------------------------------------------
-
   /** Trivial constructor to enforce Singleton pattern. */
   private Properties()
   {
@@ -89,18 +87,15 @@ public final class Properties
     init();
   }
 
-  // Class methods
-  // -------------------------------------------------------------------------
-
   /**
-   * <p>Returns the string representation of the library global configuration
-   * property with the designated <code>key</code>.</p>
-   *
+   * Returns the string representation of the library global configuration
+   * property with the designated <code>key</code>.
+   * 
    * @param key the case-insensitive, non-null and non-empty name of a
-   * configuration property.
+   *          configuration property.
    * @return the string representation of the designated property, or
-   * <code>null</code> if such property is not yet set, or <code>key</code> is
-   * empty.
+   *         <code>null</code> if such property is not yet set, or
+   *         <code>key</code> is empty.
    */
   public static final synchronized String getProperty(String key)
   {
@@ -116,13 +111,13 @@ public final class Properties
   }
 
   /**
-   * <p>Sets the value of a designated library global configuration property,
-   * to a string representation of what should be a legal value.</p>
-   *
+   * Sets the value of a designated library global configuration property, to a
+   * string representation of what should be a legal value.
+   * 
    * @param key the case-insensitive, non-null and non-empty name of a
-   * configuration property.
-   * @param value the non-null, non-empty string representation of a legal
-   * value of the configuration property named by <code>key</code>.
+   *          configuration property.
+   * @param value the non-null, non-empty string representation of a legal value
+   *          of the configuration property named by <code>key</code>.
    */
   public static final synchronized void setProperty(String key, String value)
   {
@@ -153,13 +148,14 @@ public final class Properties
   }
 
   /**
-   * <p>A convenience method that returns, as a boolean, the library global
+   * A convenience method that returns, as a boolean, the library global
    * configuration property indicating if the default Pseudo Random Number
-   * Generator produces, or not, the same bit stream when instantiated.</p>
-   *
-   * @return <code>true</code> if the default PRNG produces the same bit stream
-   * with every VM instance. Returns <code>false</code> if the default PRNG is
-   * seeded with the time of day of its first invocation.
+   * Generator produces, or not, the same bit stream when instantiated.
+   * 
+   * @return <code>true</code> if the default PRNG produces the same bit
+   *         stream with every VM instance. Returns <code>false</code> if the
+   *         default PRNG is seeded with the time of day of its first
+   *         invocation.
    */
   public static final synchronized boolean isReproducible()
   {
@@ -170,15 +166,15 @@ public final class Properties
   }
 
   /**
-   * <p>A convenience method that returns, as a boolean, the library global
-   * configuration property indicating if the implementations of symmetric
-   * key block ciphers check, or not, for possible/potential weak and semi-weak
-   * keys that may be produced in the course of generating round encryption
-   * and/or decryption keys.</p>
-   *
-   * @return <code>true</code> if the cipher implementations check for weak and
-   * semi-weak keys. Returns <code>false</code> if the cipher implementations
-   * do not check for weak or semi-weak keys.
+   * A convenience method that returns, as a boolean, the library global
+   * configuration property indicating if the implementations of symmetric key
+   * block ciphers check, or not, for possible/potential weak and semi-weak keys
+   * that may be produced in the course of generating round encryption and/or
+   * decryption keys.
+   * 
+   * @return <code>true</code> if the cipher implementations check for weak
+   *         and semi-weak keys. Returns <code>false</code> if the cipher
+   *         implementations do not check for weak or semi-weak keys.
    */
   public static final synchronized boolean checkForWeakKeys()
   {
@@ -189,13 +185,14 @@ public final class Properties
   }
 
   /**
-   * <p>A convenience method that returns, as a boolean, the library global
+   * A convenience method that returns, as a boolean, the library global
    * configuration property indicating if RSA decryption (RSADP primitive),
-   * does, or not, blinding against timing attacks.</p>
-   *
+   * does, or not, blinding against timing attacks.
+   * 
    * @return <code>true</code> if the RSA decryption primitive includes a
-   * blinding operation. Returns <code>false</code> if the RSA decryption
-   * primitive does not include the additional blinding operation.
+   *         blinding operation. Returns <code>false</code> if the RSA
+   *         decryption primitive does not include the additional blinding
+   *         operation.
    */
   public static final synchronized boolean doRSABlinding()
   {
@@ -206,11 +203,11 @@ public final class Properties
   }
 
   /**
-   * <p>A convenience method to set the global property for reproducibility of
-   * the default PRNG bit stream output.</p>
-   *
+   * A convenience method to set the global property for reproducibility of the
+   * default PRNG bit stream output.
+   * 
    * @param value if <code>true</code> then the default PRNG bit stream output
-   * is the same with every invocation of the VM.
+   *          is the same with every invocation of the VM.
    */
   public static final synchronized void setReproducible(final boolean value)
   {
@@ -222,12 +219,12 @@ public final class Properties
   }
 
   /**
-   * <p>A convenience method to set the global property for checking for weak
-   * and semi-weak cipher keys.</p>
-   *
+   * A convenience method to set the global property for checking for weak and
+   * semi-weak cipher keys.
+   * 
    * @param value if <code>true</code> then the cipher implementations will
-   * invoke additional checks for weak and semi-weak key values that may get
-   * generated.
+   *          invoke additional checks for weak and semi-weak key values that
+   *          may get generated.
    */
   public static final synchronized void setCheckForWeakKeys(final boolean value)
   {
@@ -239,11 +236,11 @@ public final class Properties
   }
 
   /**
-   * <p>A convenience method to set the global property fo adding a blinding
-   * operation when executing the RSA decryption primitive.</p>
-   *
+   * A convenience method to set the global property fo adding a blinding
+   * operation when executing the RSA decryption primitive.
+   * 
    * @param value if <code>true</code> then the code for performing the RSA
-   * decryption primitive will include a blinding operation.
+   *          decryption primitive will include a blinding operation.
    */
   public static final synchronized void setDoRSABlinding(final boolean value)
   {
@@ -261,15 +258,12 @@ public final class Properties
     return singleton;
   }
 
-  // Instance methods
-  // -------------------------------------------------------------------------
   private void init()
   {
     // default values
     props.put(REPRODUCIBLE_PRNG, (reproducible ? "true" : "false"));
     props.put(CHECK_WEAK_KEYS, (checkForWeakKeys ? "true" : "false"));
     props.put(DO_RSA_BLINDING, (doRSABlinding ? "true" : "false"));
-
     // 1. allow site-wide override by reading a properties file
     String propFile = null;
     try
@@ -309,17 +303,14 @@ public final class Properties
                        + se.getMessage());
           }
       }
-
     // 2. allow vm-specific override by allowing -D options in launcher
     handleBooleanProperty(REPRODUCIBLE_PRNG);
     handleBooleanProperty(CHECK_WEAK_KEYS);
     handleBooleanProperty(DO_RSA_BLINDING);
-
     // re-sync the 'known' properties
     reproducible = Boolean.valueOf((String) props.get(REPRODUCIBLE_PRNG)).booleanValue();
     checkForWeakKeys = Boolean.valueOf((String) props.get(CHECK_WEAK_KEYS)).booleanValue();
     doRSABlinding = Boolean.valueOf((String) props.get(DO_RSA_BLINDING)).booleanValue();
-
     // This does not change.
     props.put(VERSION, Registry.VERSION_STRING);
   }
@@ -339,7 +330,7 @@ public final class Properties
     if (s != null)
       {
         s = s.trim().toLowerCase();
-        // we have to test for explicit "true" or "false".  anything else may
+        // we have to test for explicit "true" or "false". anything else may
         // hide valid value set previously
         if (s.equals(TRUE) || s.equals(FALSE))
           {

@@ -1,5 +1,10 @@
 2006-06-24  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* gnu/java/security/Properties.java: Source formatting.
+	* gnu/java/security/Registry.java: Likewise.
+
+2006-06-24  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* gnu/java/security/util/Util.java: Source formatting.
 	* gnu/java/security/util/SimpleList.java: Likewise.
 	* gnu/java/security/util/Sequence.java: Likewise.
