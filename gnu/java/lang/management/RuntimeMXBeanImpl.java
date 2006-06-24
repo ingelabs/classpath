@@ -176,9 +176,9 @@ public final class RuntimeMXBeanImpl
   {
     if (bootClassPath == null)
       {
-	bootClassPath = System.getProperty(JAVA_BOOT_CLASS_PATH);
+	bootClassPath = SystemProperties.getProperty(JAVA_BOOT_CLASS_PATH);
 	if (bootClassPath == null)
-	  bootClassPath = System.getProperty(SUN_BOOT_CLASS_PATH);
+	  bootClassPath = SystemProperties.getProperty(SUN_BOOT_CLASS_PATH);
 	if (bootClassPath == null)
 	  bootClassPathSupported = false;
       }
