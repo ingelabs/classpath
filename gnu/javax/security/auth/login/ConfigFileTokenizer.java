@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.javax.security.auth.login;
 
-import gnu.classpath.Configuration;
+import gnu.java.security.Configuration;
 
 import java.io.BufferedReader;
 import java.io.IOException;

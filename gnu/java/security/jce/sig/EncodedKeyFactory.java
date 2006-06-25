@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.java.security.jce.sig;
 
-import gnu.classpath.Configuration;
+import gnu.java.security.Configuration;
 import gnu.java.security.Registry;
 import gnu.java.security.key.dss.DSSPrivateKey;
 import gnu.java.security.key.dss.DSSPublicKey;

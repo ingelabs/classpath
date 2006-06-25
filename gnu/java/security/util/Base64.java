@@ -38,7 +38,7 @@ exception statement from your version.  */
 
 package gnu.java.security.util;
 
-import gnu.classpath.Configuration;
+import gnu.java.security.Configuration;
 
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Logger;

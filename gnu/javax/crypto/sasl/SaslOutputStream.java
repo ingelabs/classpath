@@ -38,7 +38,7 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.sasl;
 
-import gnu.classpath.Configuration;
+import gnu.java.security.Configuration;
 import gnu.java.security.util.Util;
 
 import java.io.IOException;

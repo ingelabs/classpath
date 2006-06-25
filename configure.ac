@@ -733,6 +733,7 @@ external/sax/Makefile
 external/w3c_dom/Makefile
 external/relaxngDatatype/Makefile
 gnu/classpath/Configuration.java
+gnu/java/security/Configuration.java
 include/Makefile
 native/Makefile
 native/fdlibm/Makefile

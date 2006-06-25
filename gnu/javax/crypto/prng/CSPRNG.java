@@ -38,7 +38,7 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.prng;
 
-import gnu.classpath.Configuration;
+import gnu.java.security.Configuration;
 import gnu.java.security.Properties;
 import gnu.java.security.Registry;
 import gnu.java.security.hash.HashFactory;

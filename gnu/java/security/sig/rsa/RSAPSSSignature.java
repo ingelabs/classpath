@@ -38,7 +38,7 @@ exception statement from your version.  */
 
 package gnu.java.security.sig.rsa;
 
-import gnu.classpath.Configuration;
+import gnu.java.security.Configuration;
 import gnu.java.security.Registry;
 import gnu.java.security.hash.HashFactory;
 import gnu.java.security.hash.IMessageDigest;

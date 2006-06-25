@@ -38,7 +38,7 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.pad;
 
-import gnu.classpath.Configuration;
+import gnu.java.security.Configuration;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

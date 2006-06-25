@@ -38,7 +38,7 @@ exception statement from your version.  */
 
 package gnu.java.security.jce.sig;
 
-import gnu.classpath.Configuration;
+import gnu.java.security.Configuration;
 import gnu.java.security.sig.BaseSignature;
 import gnu.java.security.sig.ISignature;
 import gnu.java.security.sig.ISignatureCodec;

@@ -175,7 +175,7 @@ public final class GnuConfiguration extends Configuration
     if (loginModules == null || loginModules.size() == 0)
       return null;
 
-    if (gnu.classpath.Configuration.DEBUG)
+    if (gnu.java.security.Configuration.DEBUG)
       log.fine(appName + " -> " + loginModules.size() + " entry(ies)");
     return (AppConfigurationEntry[]) loginModules.toArray(new AppConfigurationEntry[0]);
   }
@@ -213,22 +213,22 @@ public final class GnuConfiguration extends Configuration
   {
     if (processSecurityProperties())
       {
-        if (gnu.classpath.Configuration.DEBUG)
+        if (gnu.java.security.Configuration.DEBUG)
           log.fine("Using login configuration defined by Security property(ies)");
       }
     else if (processSystemProperty())
       {
-        if (gnu.classpath.Configuration.DEBUG)
+        if (gnu.java.security.Configuration.DEBUG)
           log.fine("Using login configuration defined by System property");
       }
     else if (processUserHome())
       {
-        if (gnu.classpath.Configuration.DEBUG)
+        if (gnu.java.security.Configuration.DEBUG)
           log.fine("Using login configuration defined in ${user.home}");
       }
     else
       {
-        if (gnu.classpath.Configuration.DEBUG)
+        if (gnu.java.security.Configuration.DEBUG)
           log.fine("No login configuration file found");
       }
   }
@@ -258,7 +258,7 @@ public final class GnuConfiguration extends Configuration
           s = s.trim();
           if (s.length() != 0)
             {
-              if (gnu.classpath.Configuration.DEBUG)
+              if (gnu.java.security.Configuration.DEBUG)
                 log.fine("java.security.auth.login.config.url." + counter
                          + " = " + s);
               parseConfig(getInputStreamFromURL(s));
@@ -267,7 +267,7 @@ public final class GnuConfiguration extends Configuration
         }
       catch (Throwable t)
         {
-          if (gnu.classpath.Configuration.DEBUG)
+          if (gnu.java.security.Configuration.DEBUG)
             log.fine("Exception while handling Security property at #"
                      + counter + ". Continue: " + t);
         }
@@ -298,7 +298,7 @@ public final class GnuConfiguration extends Configuration
       }
     catch (MalformedURLException x)
       {
-        if (gnu.classpath.Configuration.DEBUG)
+        if (gnu.java.security.Configuration.DEBUG)
           log.fine("Failed opening as URL: " + s + ". Will try as File");
         result = new FileInputStream(s);
       }
@@ -323,7 +323,7 @@ public final class GnuConfiguration extends Configuration
             s = s.trim();
             if (s.length() != 0)
               {
-                if (gnu.classpath.Configuration.DEBUG)
+                if (gnu.java.security.Configuration.DEBUG)
                   log.fine("java.security.auth.login.config = " + s);
                 parseConfig(getInputStreamFromURL(s));
                 result = true;
@@ -332,7 +332,7 @@ public final class GnuConfiguration extends Configuration
       }
     catch (Throwable t)
       {
-        if (gnu.classpath.Configuration.DEBUG)
+        if (gnu.java.security.Configuration.DEBUG)
           log.fine("Exception while handling System property. Continue: " + t);
       }
     return result;
@@ -363,7 +363,7 @@ public final class GnuConfiguration extends Configuration
 
         if (jaasFile == null)
           {
-            if (gnu.classpath.Configuration.DEBUG)
+            if (gnu.java.security.Configuration.DEBUG)
               log.fine("Login Configuration file, in " + userHome
                        + ", does not exist or is inaccessible");
             return result;
@@ -375,7 +375,7 @@ public final class GnuConfiguration extends Configuration
       }
     catch (Throwable t)
       {
-        if (gnu.classpath.Configuration.DEBUG)
+        if (gnu.java.security.Configuration.DEBUG)
           log.fine("Exception (ignored) while handling ${user.home}: " + t);
       }
     return result;
@@ -413,7 +413,7 @@ public final class GnuConfiguration extends Configuration
     String uh = System.getProperty("user.home");
     if (uh == null || uh.trim().length() == 0)
       {
-        if (gnu.classpath.Configuration.DEBUG)
+        if (gnu.java.security.Configuration.DEBUG)
           log.fine("User home path is not set or is empty");
         return null;
       }
@@ -421,19 +421,19 @@ public final class GnuConfiguration extends Configuration
     File result = new File(uh);
     if (! result.exists())
       {
-        if (gnu.classpath.Configuration.DEBUG)
+        if (gnu.java.security.Configuration.DEBUG)
           log.fine("User home '" + uh + "' does not exist");
         return null;
       }
     if (! result.isDirectory())
       {
-        if (gnu.classpath.Configuration.DEBUG)
+        if (gnu.java.security.Configuration.DEBUG)
           log.fine("User home '" + uh + "' is not a directory");
         return null;
       }
     if (! result.canRead())
       {
-        if (gnu.classpath.Configuration.DEBUG)
+        if (gnu.java.security.Configuration.DEBUG)
           log.fine("User home '" + uh + "' is not readable");
         return null;
       }
@@ -445,19 +445,19 @@ public final class GnuConfiguration extends Configuration
     File result = new File(userHome, fileName);
     if (! result.exists())
       {
-        if (gnu.classpath.Configuration.DEBUG)
+        if (gnu.java.security.Configuration.DEBUG)
           log.fine("File '" + fileName + "' does not exist in user's home");
         return null;
       }
     if (! result.isFile())
       {
-        if (gnu.classpath.Configuration.DEBUG)
+        if (gnu.java.security.Configuration.DEBUG)
           log.fine("File '" + fileName + "' in user's home is not a file");
         return null;
       }
     if (! result.canRead())
       {
-        if (gnu.classpath.Configuration.DEBUG)
+        if (gnu.java.security.Configuration.DEBUG)
           log.fine("File '" + fileName + "' in user's home is not readable");
         return null;
       }

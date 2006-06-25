@@ -38,7 +38,7 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.keyring;
 
-import gnu.classpath.Configuration;
+import gnu.java.security.Configuration;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;

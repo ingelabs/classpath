@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.java.security.key.rsa;
 
-import gnu.classpath.Configuration;
+import gnu.java.security.Configuration;
 import gnu.java.security.OID;
 import gnu.java.security.Registry;
 import gnu.java.security.der.DER;

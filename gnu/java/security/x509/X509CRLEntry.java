@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.java.security.x509;
 
-import gnu.classpath.Configuration;
+import gnu.java.security.Configuration;
 import gnu.java.security.OID;
 import gnu.java.security.der.DERReader;
 import gnu.java.security.der.DERValue;

@@ -38,7 +38,7 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.pad;
 
-import gnu.classpath.Configuration;
+import gnu.java.security.Configuration;
 import gnu.java.security.Registry;
 import gnu.java.security.sig.rsa.EME_PKCS1_V1_5;
 import gnu.java.security.util.PRNG;

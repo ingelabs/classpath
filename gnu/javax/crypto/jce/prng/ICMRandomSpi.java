@@ -38,7 +38,7 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.jce.prng;
 
-import gnu.classpath.Configuration;
+import gnu.java.security.Configuration;
 import gnu.java.security.Registry;
 import gnu.java.security.prng.LimitReachedException;
 import gnu.javax.crypto.cipher.IBlockCipher;
