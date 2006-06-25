@@ -58,12 +58,12 @@ public final class ClassLoadingMXBeanImpl
     return VMClassLoadingMXBeanImpl.getLoadedClassCount();
   }
 
-  public int getTotalLoadedClassCount()
+  public long getTotalLoadedClassCount()
   {
     return getLoadedClassCount() + getUnloadedClassCount();
   }
 
-  public int getUnloadedClassCount()
+  public long getUnloadedClassCount()
   {
     return VMClassLoadingMXBeanImpl.getUnloadedClassCount();
   }

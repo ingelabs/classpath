@@ -63,7 +63,7 @@ final class VMClassLoadingMXBeanImpl
    *
    * @return the number of unloaded classes.
    */
-  static native int getUnloadedClassCount();
+  static native long getUnloadedClassCount();
 
   /**
    * Returns true if the virtual machine will emit additional

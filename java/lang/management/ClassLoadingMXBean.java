@@ -66,7 +66,7 @@ public interface ClassLoadingMXBean
    * @return the total number of classes that have been
    *         loaded by the virtual machine since it started.
    */
-  int getTotalLoadedClassCount();
+  long getTotalLoadedClassCount();
 
   /**
    * Returns the number of classes that have been unloaded
@@ -74,7 +74,7 @@ public interface ClassLoadingMXBean
    *
    * @return the number of unloaded classes.
    */
-  int getUnloadedClassCount();
+  long getUnloadedClassCount();
 
   /**
    * Returns true if the virtual machine will emit additional
