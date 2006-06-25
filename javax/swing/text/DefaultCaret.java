@@ -1147,6 +1147,24 @@ public class DefaultCaret extends Rectangle
   }  
 
   /**
+   * Returns <code>true</code> if this <code>Caret</code> is blinking,
+   * and <code>false</code> if not. The returned value is independent of
+   * the visiblity of this <code>Caret</code> as returned by {@link #isVisible()}.
+   *
+   * @return <code>true</code> if this <code>Caret</code> is blinking,
+   *         and <code>false</code> if not.
+   * @see #isVisible()
+   * @since 1.5
+   */
+  public boolean isActive()
+  {
+    if (blinkTimer != null)
+      return blinkTimer.isRunning();
+
+    return false;
+  }
+
+  /**
    * Returns <code>true</code> if this <code>Caret</code> is currently visible,
    * and <code>false</code> if it is not.
    *
