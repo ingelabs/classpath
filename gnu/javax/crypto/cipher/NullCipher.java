@@ -46,44 +46,27 @@ import java.util.Collections;
 import java.util.Iterator;
 
 /**
- * <p>The implementation of a Null block cipher.</p>
- *
- * <p>This cipher does not alter its input at all, claims to process block sizes
+ * The implementation of a Null block cipher.
+ * <p>
+ * This cipher does not alter its input at all, claims to process block sizes
  * 128-, 192- and 256-bit long, and key sizes from 64- to 512-bit in 8-bit
- * increments.</p>
+ * increments.
  */
-public final class NullCipher extends BaseCipher
+public final class NullCipher
+    extends BaseCipher
 {
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
-  // Constructor(s)
-  // -------------------------------------------------------------------------
-
   /** Trivial 0-arguments constructor. */
   public NullCipher()
   {
     super(Registry.NULL_CIPHER, 16, 16);
   }
 
-  // Class methods
-  // -------------------------------------------------------------------------
-
-  // Instance methods
-  // -------------------------------------------------------------------------
-
-  // java.lang.Cloneable interface implementation ----------------------------
-
   public Object clone()
   {
     NullCipher result = new NullCipher();
     result.currentBlockSize = this.currentBlockSize;
-
     return result;
   }
-
-  // IBlockCipherSpi interface implementation --------------------------------
 
   public Iterator blockSizes()
   {
@@ -92,7 +75,6 @@ public final class NullCipher extends BaseCipher
     al.add(Integer.valueOf(128 / 8));
     al.add(Integer.valueOf(192 / 8));
     al.add(Integer.valueOf(256 / 8));
-
     return Collections.unmodifiableList(al).iterator();
   }
 
@@ -100,10 +82,7 @@ public final class NullCipher extends BaseCipher
   {
     ArrayList al = new ArrayList();
     for (int n = 8; n < 64; n++)
-      {
-        al.add(Integer.valueOf(n));
-      }
-
+      al.add(Integer.valueOf(n));
     return Collections.unmodifiableList(al).iterator();
   }
 

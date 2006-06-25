@@ -1,5 +1,24 @@
 2006-06-25  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* gnu/javax/crypto/cipher/WeakKeyException.java: Source formatting.
+	* gnu/javax/crypto/cipher/Twofish.java: Likewise.
+	* gnu/javax/crypto/cipher/TripleDES.java: Likewise.
+	* gnu/javax/crypto/cipher/Square.java: Likewise.
+	* gnu/javax/crypto/cipher/Serpent.java: Likewise.
+	* gnu/javax/crypto/cipher/Rijndael.java: Likewise.
+	* gnu/javax/crypto/cipher/NullCipher.java: Likewise.
+	* gnu/javax/crypto/cipher/Khazad.java: Likewise.
+	* gnu/javax/crypto/cipher/IBlockCipherSpi.java: Likewise.
+	* gnu/javax/crypto/cipher/IBlockCipher.java: Likewise.
+	* gnu/javax/crypto/cipher/DES.java: Likewise.
+	* gnu/javax/crypto/cipher/CipherFactory.java: Likewise.
+	* gnu/javax/crypto/cipher/Cast5.java: Likewise.
+	* gnu/javax/crypto/cipher/Blowfish.java: Likewise.
+	* gnu/javax/crypto/cipher/BaseCipher.java: Likewise.
+	* gnu/javax/crypto/cipher/Anubis.java: Likewise.
+
+2006-06-25  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* gnu/javax/crypto/assembly/TransformerException.java: Source formatting.
 	* gnu/javax/crypto/assembly/Transformer.java: Likewise.
 	* gnu/javax/crypto/assembly/Stage.java: Likewise.
