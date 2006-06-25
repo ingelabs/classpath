@@ -1267,9 +1267,10 @@ implementations of the management beans.
 
 @menu
 * gnu.java.lang.management.VMRuntimeMXBeanImpl::
+* gnu.java.lang.management.VMClassLoadingMXBeanImpl::
 @end menu
 
-@node gnu.java.lang.management.VMRuntimeMXBeanImpl,,,gnu.java.lang.management
+@node gnu.java.lang.management.VMRuntimeMXBeanImpl,gnu.java.lang.management.VMClassLoadingMXBeanImpl,,gnu.java.lang.management
 @subsection @code{gnu.java.lang.management.VMRuntimeMXBeanImpl}
 
 The @code{gnu.java.lang.management.RuntimeMXBeanImpl} provides an
@@ -1310,6 +1311,33 @@ The virtual machine also needs to provide either the
 @code{sun.boot.class.path} or @code{java.boot.class.path}
 property in order to support the optional boot class path
 retrieval functionality.
+
+@node gnu.java.lang.management.VMClassLoadingMXBeanImpl,,gnu.java.lang.management.VMRuntimeMXBeanImpl,gnu.java.lang.management
+@subsection @code{gnu.java.lang.management.VMClassLoadingMXBeanImpl}
+
+The @code{gnu.java.lang.management.ClassLoadingMXBeanImpl} provides an
+implementation of the @code{java.lang.management.ClassLoadingMXBean} interface,
+and is supported by VM functionality in the form of
+@code{gnu.java.lang.management.VMClassLoadingMXBeanImpl}.  This provides a
+series of methods, which should be implemented by the virtual machine
+in order to provide the required information for the bean.  Implementing
+this bean requires the VM to monitor when classes are loaded and unloaded,
+and provide the option of verbose class loading output.
+
+The methods are as follows:
+
+@itemize @bullet
+@item @code{(getLoadedClassCount())} -- This should return
+the number of classes that are currently loaded by the VM.
+@item @code{(getUnloadedClassCount())} -- This should return
+the number of classes that have been loaded by the VM, but
+have since been unloaded.
+@item @code{(isVerbose())} -- This should return @code{true}
+or @code{false}, depending on whether verbose class loading
+output is turned or not, respectively.
+@item @code{(setVerbose(boolean))} -- This should allow the
+verbose class loading output to be turned on and off.
+@end itemize
 
 @node Classpath Callbacks, , gnu.java.lang.management, Classpath Hooks
 Some of the classes you implement for the VM will need to call back to
