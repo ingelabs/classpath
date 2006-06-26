@@ -1,3 +1,12 @@
+2006-06-26  Tania Bento  <tbento@redhat.com>
+
+	* java/awt/List.java
+	(List): A list should have at least 4 visible rows.	
+	(replaceItem): Should throw an ArrayIndexOutOfBoundsException,
+	not an IllegalArgumentException.
+	(makeVisible): Should not throw an IllegalArgumentException if
+	the specified index is out of range.
+
 2006-06-26  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JList.java
