@@ -1,5 +1,10 @@
 2006-06-26  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* gnu/java/security/key/rsa/RSAKeyPairRawCodec.java: Remove RCS Revision.
+	* gnu/javax/crypto/assembly/DeflateTransformer.java: Likewise.
+
+2006-06-26  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* gnu/javax/crypto/jce/PBKDF2SecretKeyFactory.java: Source formatting.
 	* gnu/javax/crypto/jce/GnuSasl.java: Likewise.
 	* gnu/javax/crypto/jce/GnuCrypto.java: Likewise.

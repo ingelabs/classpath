@@ -49,8 +49,6 @@ import java.security.PublicKey;
 /**
  * An object that implements the {@link IKeyPairCodec} interface for the <i>Raw</i>
  * format to use with RSA keypairs.
- * 
- * @version $Revision: 1.2 $
  */
 public class RSAKeyPairRawCodec
     implements IKeyPairCodec
