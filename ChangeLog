@@ -1,6 +1,12 @@
 2006-06-26  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JList.java
+	(init): Set default value for visibleRowCount to 8,
+	(setVisibleRowCount): Fire PropertyChangeEvent when value changes.
+
+2006-06-26  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JList.java
 	(valueIsAdjusting): Removed,
 	(init): Removed initialization of valueIsAdjusting field,
 	(getValueIsAdjusting): Fetch value from selection model,

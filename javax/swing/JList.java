@@ -1074,7 +1074,7 @@ public class JList extends JComponent implements Accessible, Scrollable
     fixedCellWidth = -1;
     layoutOrientation = VERTICAL;
     opaque = true;
-    visibleRowCount = 7;
+    visibleRowCount = 8;
 
     cellRenderer = new DefaultListCellRenderer();
     listListener = new ListListener();
@@ -1184,11 +1184,13 @@ public class JList extends JComponent implements Accessible, Scrollable
   }
 
   /** 
-   * Gets the value of the {@link #visibleRowCount} property. 
+   * Gets the value of the {@link #visibleRowCount} property.  The default 
+   * value is 8.
    *
    * @return the current value of the property.
+   * 
+   * @see #setVisibleRowCount(int)
    */
-
   public int getVisibleRowCount()
   {
     return visibleRowCount;
@@ -1198,12 +1200,19 @@ public class JList extends JComponent implements Accessible, Scrollable
    * Sets the value of the {@link #visibleRowCount} property. 
    *
    * @param vc The new property value
+   * 
+   * @see #getVisibleRowCount()
    */
   public void setVisibleRowCount(int vc)
   {
-    visibleRowCount = vc;
-    revalidate();
-    repaint();
+    if (visibleRowCount != vc)
+      {
+        int oldValue = visibleRowCount;
+        visibleRowCount = Math.max(vc, 0);
+        firePropertyChange("visibleRowCount", oldValue, vc);
+        revalidate();
+        repaint();
+      }
   }
 
   /**
