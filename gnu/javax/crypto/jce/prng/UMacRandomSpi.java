@@ -50,36 +50,28 @@ import java.util.Random;
 import java.util.logging.Logger;
 
 /**
- * <p>An <em>Adapter</em> class around {@link UMacGenerator} to allow using this
- * algorithm as a JCE {@link java.security.SecureRandom}.</p>
+ * An <em>Adapter</em> class around {@link UMacGenerator} to allow using this
+ * algorithm as a JCE {@link java.security.SecureRandom}.
  */
-public class UMacRandomSpi extends SecureRandomSpi
+public class UMacRandomSpi
+    extends SecureRandomSpi
 {
   private static final Logger log = Logger.getLogger(UMacRandomSpi.class.getName());
-  /** Class-wide prng to generate random material for the underlying prng.*/
+  /** Class-wide prng to generate random material for the underlying prng. */
   private static final UMacGenerator prng; // blank final
   static
     {
       prng = new UMacGenerator();
       resetLocalPRNG();
     }
-
   // error messages
   private static final String MSG = "Exception while setting up a "
                                     + Registry.UMAC_PRNG + " SPI: ";
-
   private static final String RETRY = "Retry...";
-
   /** Our underlying prng instance. */
   private UMacGenerator adaptee = new UMacGenerator();
 
-  // Constructor(s)
-  // -------------------------------------------------------------------------
-
   // default 0-arguments constructor
-
-  // Class methods
-  // -------------------------------------------------------------------------
 
   private static void resetLocalPRNG()
   {
@@ -91,21 +83,13 @@ public class UMacRandomSpi extends SecureRandomSpi
     attributes.put(IBlockCipher.KEY_MATERIAL, key);
     int index = rand.nextInt() & 0xFF;
     attributes.put(UMacGenerator.INDEX, Integer.valueOf(index));
-
     prng.setup(attributes);
   }
-
-  // Instance methods
-  // -------------------------------------------------------------------------
-
-  // java.security.SecureRandomSpi interface implementation ------------------
 
   public byte[] engineGenerateSeed(int numBytes)
   {
     if (numBytes < 1)
-      {
-        return new byte[0];
-      }
+      return new byte[0];
     byte[] result = new byte[numBytes];
     this.engineNextBytes(result);
     return result;
@@ -113,11 +97,8 @@ public class UMacRandomSpi extends SecureRandomSpi
 
   public void engineNextBytes(byte[] bytes)
   {
-    if (!adaptee.isInitialised())
-      {
-        this.engineSetSeed(new byte[0]);
-      }
-
+    if (! adaptee.isInitialised())
+      this.engineSetSeed(new byte[0]);
     while (true)
       {
         try
@@ -139,7 +120,6 @@ public class UMacRandomSpi extends SecureRandomSpi
     materialLength += 16; // key material size
     materialLength++; // index size
     byte[] material = new byte[materialLength];
-
     // use as much as possible bytes from the seed
     int materialOffset = 0;
     int materialLeft = material.length;
@@ -150,8 +130,8 @@ public class UMacRandomSpi extends SecureRandomSpi
         materialOffset += lenToCopy;
         materialLeft -= lenToCopy;
       }
-    if (materialOffset > 0)
-      { // generate the rest
+    if (materialOffset > 0) // generate the rest
+      {
         while (true)
           {
             try
@@ -159,8 +139,8 @@ public class UMacRandomSpi extends SecureRandomSpi
                 prng.nextBytes(material, materialOffset, materialLeft);
                 break;
               }
-            catch (IllegalStateException x)
-              { // should not happen
+            catch (IllegalStateException x) // should not happen
+              {
                 throw new InternalError(MSG + String.valueOf(x));
               }
             catch (LimitReachedException x)
@@ -173,10 +153,8 @@ public class UMacRandomSpi extends SecureRandomSpi
               }
           }
       }
-
     // setup the underlying adaptee instance
     HashMap attributes = new HashMap();
-
     // use AES cipher with 128-bit block size
     attributes.put(UMacGenerator.CIPHER, Registry.AES_CIPHER);
     // specify the key
@@ -185,7 +163,6 @@ public class UMacRandomSpi extends SecureRandomSpi
     attributes.put(IBlockCipher.KEY_MATERIAL, key);
     // use a 1-byte index
     attributes.put(UMacGenerator.INDEX, Integer.valueOf(material[16] & 0xFF));
-
     adaptee.init(attributes);
   }
 }

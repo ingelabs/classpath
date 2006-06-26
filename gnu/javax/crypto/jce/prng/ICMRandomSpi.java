@@ -51,13 +51,14 @@ import java.util.Random;
 import java.util.logging.Logger;
 
 /**
- * <p>An <em>Adapter</em> class around {@link ICMGenerator} to allow using this
- * algorithm as a JCE {@link java.security.SecureRandom}.</p>
+ * An <em>Adapter</em> class around {@link ICMGenerator} to allow using this
+ * algorithm as a JCE {@link java.security.SecureRandom}.
  */
-public class ICMRandomSpi extends SecureRandomSpi
+public class ICMRandomSpi
+    extends SecureRandomSpi
 {
   private static final Logger log = Logger.getLogger(ICMRandomSpi.class.getName());
-  /** Class-wide prng to generate random material for the underlying prng.*/
+  /** Class-wide prng to generate random material for the underlying prng. */
   private static final ICMGenerator prng; // blank final
   static
     {
@@ -68,23 +69,13 @@ public class ICMRandomSpi extends SecureRandomSpi
   // error messages
   private static final String MSG = "Exception while setting up an "
                                     + Registry.ICM_PRNG + " SPI: ";
-
   private static final String RETRY = "Retry...";
-
   private static final String LIMIT_REACHED_MSG = "Limit reached: ";
-
   private static final String RESEED = "Re-seed...";
-
   /** Our underlying prng instance. */
   private ICMGenerator adaptee = new ICMGenerator();
 
-  // Constructor(s)
-  // -------------------------------------------------------------------------
-
   // default 0-arguments constructor
-
-  // Class methods
-  // -------------------------------------------------------------------------
 
   private static void resetLocalPRNG()
   {
@@ -104,23 +95,15 @@ public class ICMRandomSpi extends SecureRandomSpi
     // choose a random value between 1 and aesBlockSize / 2
     int limit = aesBlockSize / 2;
     while (ndxLen < 1 || ndxLen > limit)
-      {
-        ndxLen = rand.nextInt(limit + 1);
-      }
+      ndxLen = rand.nextInt(limit + 1);
     attributes.put(ICMGenerator.SEGMENT_INDEX_LENGTH, Integer.valueOf(ndxLen));
     byte[] index = new byte[ndxLen];
     rand.nextBytes(index);
     attributes.put(ICMGenerator.SEGMENT_INDEX, new BigInteger(1, index));
-
     prng.setup(attributes);
     if (Configuration.DEBUG)
       log.exiting(ICMRandomSpi.class.getName(), "resetLocalPRNG");
   }
-
-  // Instance methods
-  // -------------------------------------------------------------------------
-
-  // java.security.SecureRandomSpi interface implementation ------------------
 
   public byte[] engineGenerateSeed(int numBytes)
   {
@@ -143,11 +126,8 @@ public class ICMRandomSpi extends SecureRandomSpi
   {
     if (Configuration.DEBUG)
       log.entering(this.getClass().getName(), "engineNextBytes");
-    if (!adaptee.isInitialised())
-      {
-        this.engineSetSeed(new byte[0]);
-      }
-
+    if (! adaptee.isInitialised())
+      this.engineSetSeed(new byte[0]);
     while (true)
       {
         try
@@ -179,7 +159,6 @@ public class ICMRandomSpi extends SecureRandomSpi
     materialLength += 16; // offset size
     materialLength += 8; // index size == half of an AES block
     byte[] material = new byte[materialLength];
-
     // use as much as possible bytes from the seed
     int materialOffset = 0;
     int materialLeft = material.length;
@@ -190,8 +169,8 @@ public class ICMRandomSpi extends SecureRandomSpi
         materialOffset += lenToCopy;
         materialLeft -= lenToCopy;
       }
-    if (materialOffset > 0)
-      { // generate the rest
+    if (materialOffset > 0) // generate the rest
+      {
         while (true)
           {
             try
@@ -213,10 +192,8 @@ public class ICMRandomSpi extends SecureRandomSpi
               }
           }
       }
-
     // setup the underlying adaptee instance
     HashMap attributes = new HashMap();
-
     // use AES cipher with 128-bit block size
     attributes.put(ICMGenerator.CIPHER, Registry.AES_CIPHER);
     // use an index the size of quarter of an AES block
@@ -233,7 +210,6 @@ public class ICMRandomSpi extends SecureRandomSpi
     byte[] index = new byte[8];
     System.arraycopy(material, 32, index, 0, 8);
     attributes.put(ICMGenerator.SEGMENT_INDEX, new BigInteger(1, index));
-
     adaptee.init(attributes);
     if (Configuration.DEBUG)
       log.exiting(this.getClass().getName(), "engineSetSeed");

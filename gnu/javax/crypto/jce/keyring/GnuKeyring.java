@@ -419,8 +419,9 @@ public class GnuKeyring
     int usage = in.read();
     in.reset();
     if (usage != GnuPrivateKeyring.USAGE)
-      throw new MalformedKeyringException("Was expecting a private keyring but got a wrong USAGE: "
-                                          + Integer.toBinaryString(usage));
+      throw new MalformedKeyringException(
+          "Was expecting a private keyring but got a wrong USAGE: "
+          + Integer.toBinaryString(usage));
     HashMap attr = new HashMap();
     attr.put(IKeyring.KEYRING_DATA_IN, in);
     attr.put(IKeyring.KEYRING_PASSWORD, password);
@@ -451,8 +452,9 @@ public class GnuKeyring
     int usage = in.read();
     in.reset();
     if (usage != GnuPublicKeyring.USAGE)
-      throw new MalformedKeyringException("Was expecting a public keyring but got a wrong USAGE: "
-                                          + Integer.toBinaryString(usage));
+      throw new MalformedKeyringException(
+          "Was expecting a public keyring but got a wrong USAGE: "
+          + Integer.toBinaryString(usage));
     HashMap attr = new HashMap();
     attr.put(IKeyring.KEYRING_DATA_IN, in);
     attr.put(IKeyring.KEYRING_PASSWORD, password);

@@ -99,8 +99,8 @@ public final class DiffieHellmanImpl
 
     result = pub.getY().modPow(key.getX(), s1.getP());
     if (! lastPhase)
-      throw new IllegalArgumentException("This key-agreement MUST be concluded in one step only");
-
+      throw new IllegalArgumentException(
+          "This key-agreement MUST be concluded in one step only");
     last_phase_done = true;
     return null;
   }
@@ -117,7 +117,6 @@ public final class DiffieHellmanImpl
         System.arraycopy(buf, 1, buf2, 0, buf2.length);
         buf = buf2;
       }
-
     return buf;
   }
 

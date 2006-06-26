@@ -39,8 +39,8 @@ exception statement from your version.  */
 package gnu.javax.crypto.jce.cipher;
 
 import gnu.java.security.Registry;
-import gnu.javax.crypto.cipher.IBlockCipher;
 import gnu.javax.crypto.cipher.CipherFactory;
+import gnu.javax.crypto.cipher.IBlockCipher;
 import gnu.javax.crypto.jce.spec.BlockCipherParameterSpec;
 import gnu.javax.crypto.mode.IMode;
 import gnu.javax.crypto.mode.ModeFactory;
@@ -68,61 +68,48 @@ import javax.crypto.ShortBufferException;
 import javax.crypto.spec.IvParameterSpec;
 
 /**
- * <p>The implementation of a generic {@link Cipher} <i>Adapter</i> class to
- * wrap GNU Crypto cipher instances.</p>
- *
- * <p>This class defines the <i>Service Provider Interface</i> (<b>SPI</b>) for
+ * The implementation of a generic {@link Cipher} <i>Adapter</i> class to wrap
+ * GNU cipher instances.
+ * <p>
+ * This class defines the <i>Service Provider Interface</i> (<b>SPI</b>) for
  * the {@link Cipher} class, which provides the functionality of symmetric-key
- * block ciphers, such as the AES.<p>
- *
- * <p>This base class defines all of the abstract methods in {@link CipherSpi},
+ * block ciphers, such as the AES.
+ * <p>
+ * This base class defines all of the abstract methods in {@link CipherSpi},
  * but does not define the (non-abstract) key wrapping functions that extended
  * the base cipher SPI, and these methods thus immediately throw an
  * {@link UnsupportedOperationException}. If a cipher implementation provides
  * this functionality, or if it in fact accepts parameters other than the key
  * and the initialization vector, the subclass should override those methods.
  * Otherwise a subclass need only call the {@link #CipherAdapter(String)}
- * constructor with the name of the cipher.</p>
+ * constructor with the name of the cipher.
  */
-class CipherAdapter extends CipherSpi
+class CipherAdapter
+    extends CipherSpi
 {
-
-  // Constants and variables.
-  // -------------------------------------------------------------------------
-
   /** Our cipher instance. */
   protected IBlockCipher cipher;
-
   /** Our mode instance. */
   protected IMode mode;
-
   /** Our padding instance. */
   protected IPad pad;
-
   /** The current key size. */
   protected int keyLen;
-
   /** Our attributes map. */
   protected Map attributes;
-
   /** An incomplete block. */
   protected byte[] partBlock;
-
   /** The number of bytes in {@link #partBlock}. */
   protected int partLen;
-
   /** The length of blocks we are processing. */
   protected int blockLen;
 
-  // Constructor(s)
-  // -------------------------------------------------------------------------
-
   /**
-   * <p>Protected constructor to be called by subclasses. The cipher name
-   * argument should be the appropriate one listed in {@link gnu.java.security.Registry}.
-   * The basic cipher instance is created, along with an instance of the
-   * {@link gnu.javax.crypto.mode.ECB} mode and no padding.</p>
-   *
+   * Protected constructor to be called by subclasses. The cipher name argument
+   * should be the appropriate one listed in {@link Registry}. The basic cipher
+   * instance is created, along with an instance of the
+   * {@link gnu.javax.crypto.mode.ECB} mode and no padding.
+   * 
    * @param cipherName The cipher to instantiate.
    * @param blockLen The block length to use.
    */
@@ -136,8 +123,8 @@ class CipherAdapter extends CipherSpi
   }
 
   /**
-   * <p>Creates a new cipher adapter with the default block size.</p>
-   *
+   * Creates a new cipher adapter with the default block size.
+   * 
    * @param cipherName The cipher to instantiate.
    */
   protected CipherAdapter(String cipherName)
@@ -148,9 +135,6 @@ class CipherAdapter extends CipherSpi
     mode = ModeFactory.getInstance("ECB", cipher, blockLen);
     attributes.put(IBlockCipher.CIPHER_BLOCK_SIZE, Integer.valueOf(blockLen));
   }
-
-  // Instance methods implementing javax.crypto.CipherSpi.
-  // -------------------------------------------------------------------------
 
   protected void engineSetMode(String modeName) throws NoSuchAlgorithmException
   {
@@ -172,14 +156,10 @@ class CipherAdapter extends CipherSpi
           }
       }
     else
-      {
-        attributes.remove(IMode.MODE_BLOCK_SIZE);
-      }
+      attributes.remove(IMode.MODE_BLOCK_SIZE);
     mode = ModeFactory.getInstance(modeName, cipher, blockLen);
     if (mode == null)
-      {
-        throw new NoSuchAlgorithmException(modeName);
-      }
+      throw new NoSuchAlgorithmException(modeName);
   }
 
   protected void engineSetPadding(String padName) throws NoSuchPaddingException
@@ -191,17 +171,13 @@ class CipherAdapter extends CipherSpi
       }
     pad = PadFactory.getInstance(padName);
     if (pad == null)
-      {
-        throw new NoSuchPaddingException(padName);
-      }
+      throw new NoSuchPaddingException(padName);
   }
 
   protected int engineGetBlockSize()
   {
     if (cipher != null)
-      {
-        return blockLen;
-      }
+      return blockLen;
     return 0;
   }
 
@@ -215,17 +191,16 @@ class CipherAdapter extends CipherSpi
   {
     byte[] iv = (byte[]) attributes.get(IMode.IV);
     if (iv == null)
-      {
-        return null;
-      }
+      return null;
     return (byte[]) iv.clone();
   }
 
   protected AlgorithmParameters engineGetParameters()
   {
-    BlockCipherParameterSpec spec = new BlockCipherParameterSpec(
-                                                                 (byte[]) attributes.get(IMode.IV),
-                                                                 cipher.currentBlockSize(),
+    byte[] iv = (byte[]) attributes.get(IMode.IV);
+    int cipherBlockSize = cipher.currentBlockSize();
+    BlockCipherParameterSpec spec = new BlockCipherParameterSpec(iv,
+                                                                 cipherBlockSize,
                                                                  keyLen);
     AlgorithmParameters params;
     try
@@ -280,15 +255,11 @@ class CipherAdapter extends CipherSpi
         attributes.put(IMode.STATE, Integer.valueOf(IMode.DECRYPTION));
         break;
       }
-    if (!key.getFormat().equalsIgnoreCase("RAW"))
-      {
-        throw new InvalidKeyException("bad key format " + key.getFormat());
-      }
+    if (! key.getFormat().equalsIgnoreCase("RAW"))
+      throw new InvalidKeyException("bad key format " + key.getFormat());
     byte[] kb = key.getEncoded();
     if (keyLen == 0)
-      {
-        keyLen = kb.length;
-      }
+      keyLen = kb.length;
     else if (keyLen < kb.length)
       {
         byte[] kbb = kb;
@@ -304,12 +275,12 @@ class CipherAdapter extends CipherSpi
       InvalidAlgorithmParameterException
   {
     if (params == null)
-      {  
+      {
         // All cipher modes require parameters (like an IV) except ECB. When
         // these cant be derived from the given key then it must be generated
         // randomly if in ENCRYPT or WRAP mode. Parameters that have defaults
         // for our cipher must be set to these defaults.
-        if(! mode.name().toLowerCase().startsWith(Registry.ECB_MODE + "("))
+        if (! mode.name().toLowerCase().startsWith(Registry.ECB_MODE + "("))
           {
             switch (opmode)
               {
@@ -323,20 +294,21 @@ class CipherAdapter extends CipherSpi
                 throw new InvalidAlgorithmParameterException(
                     "Required algorithm parameters are missing for mode: "
                     + mode.name());
-              } 
+              }
           }
         // Add default for block length etc.
         blockLen = cipher.defaultBlockSize();
-        attributes.put(IBlockCipher.CIPHER_BLOCK_SIZE, Integer.valueOf(blockLen));
+        attributes.put(IBlockCipher.CIPHER_BLOCK_SIZE,
+                       Integer.valueOf(blockLen));
         keyLen = 0;
       }
     else if (params instanceof BlockCipherParameterSpec)
       {
-        attributes.put(IBlockCipher.CIPHER_BLOCK_SIZE,
-                       Integer.valueOf(((BlockCipherParameterSpec) params).getBlockSize()));
-        attributes.put(IMode.IV, ((BlockCipherParameterSpec) params).getIV());
-        keyLen = ((BlockCipherParameterSpec) params).getKeySize();
-        blockLen = ((BlockCipherParameterSpec) params).getBlockSize();
+        BlockCipherParameterSpec bcps = (BlockCipherParameterSpec) params;
+        blockLen = bcps.getBlockSize();
+        attributes.put(IBlockCipher.CIPHER_BLOCK_SIZE, Integer.valueOf(blockLen));
+        attributes.put(IMode.IV, bcps.getIV());
+        keyLen = bcps.getKeySize();
       }
     else if (params instanceof IvParameterSpec)
       {
@@ -356,9 +328,7 @@ class CipherAdapter extends CipherSpi
     try
       {
         if (params != null)
-          {
-            spec = params.getParameterSpec(BlockCipherParameterSpec.class);
-          }
+          spec = params.getParameterSpec(BlockCipherParameterSpec.class);
       }
     catch (InvalidParameterSpecException ignored)
       {
@@ -375,91 +345,50 @@ class CipherAdapter extends CipherSpi
       {
         engineUpdate(input, off, len, out, 0);
       }
-    catch (ShortBufferException x)
-      { // should not happen
+    catch (ShortBufferException x) // should not happen
+      {
         x.printStackTrace(System.err);
       }
     return out;
   }
 
-  //   protected int
-  //   engineUpdate(byte[] in, int inOff, int inLen, byte[] out, int outOff)
-  //   throws ShortBufferException
-  //   {
-  //      int blockSize = mode.currentBlockSize();
-  //      int count = (partLen + inLen) / blockSize;
-  //      if (count * blockSize > out.length - outOff) {
-  //         throw new ShortBufferException();
-  //      }
-  //      byte[] buf;
-  //      if (partLen > 0 && count > 0) {
-  //         buf = new byte[partLen + inLen];
-  //         System.arraycopy(partBlock, 0, buf, 0, partLen);
-  //         if (in != null && inLen > 0) {
-  //            System.arraycopy(in, inOff, buf, partLen, inLen);
-  //         }
-  //         partLen = 0;
-  //         inOff = 0;
-  //      } else {
-  //         buf = in;
-  //      }
-  //      for (int i = 0; i < count; i++) {
-  //         mode.update(buf, i * blockSize + inOff, out, i * blockSize + outOff);
-  //      }
-  //      if (inOff + inLen > count * blockSize) {
-  //         partLen = (inOff + inLen) - (count * blockSize);
-  //         System.arraycopy(in, count * blockSize, partBlock, 0, partLen);
-  //      }
-  //      return count * blockSize;
-  //   }
-
   protected int engineUpdate(byte[] in, int inOff, int inLen, byte[] out,
                              int outOff) throws ShortBufferException
   {
-    if (inLen == 0)
-      { // nothing to process
-        return 0;
-      }
+    if (inLen == 0) // nothing to process
+      return 0;
     final int blockSize = mode.currentBlockSize();
     final int blockCount = (partLen + inLen) / blockSize;
     final int result = blockCount * blockSize;
     if (result > out.length - outOff)
+      throw new ShortBufferException();
+    if (blockCount == 0) // not enough bytes for even 1 block
       {
-        throw new ShortBufferException();
-      }
-    if (blockCount == 0)
-      { // not enough bytes for even 1 block
         System.arraycopy(in, inOff, partBlock, partLen, inLen);
         partLen += inLen;
         return 0;
       }
     final byte[] buf;
     // we have enough bytes for at least 1 block
-    if (partLen == 0)
-      { // if no cached bytes use input
-        buf = in;
-      }
-    else
-      { // prefix input with cached bytes
+    if (partLen == 0) // if no cached bytes use input
+      buf = in;
+    else // prefix input with cached bytes
+      {
         buf = new byte[partLen + inLen];
         System.arraycopy(partBlock, 0, buf, 0, partLen);
         if (in != null && inLen > 0)
-          {
-            System.arraycopy(in, inOff, buf, partLen, inLen);
-          }
+          System.arraycopy(in, inOff, buf, partLen, inLen);
         inOff = 0;
       }
-    for (int i = 0; i < blockCount; i++)
-      { // update blockCount * blockSize
+    for (int i = 0; i < blockCount; i++) // update blockCount * blockSize
+      {
         mode.update(buf, inOff, out, outOff);
         inOff += blockSize;
         outOff += blockSize;
       }
     partLen += inLen - result;
-    if (partLen > 0)
-      { // cache remaining bytes from buf
-        System.arraycopy(buf, inOff, partBlock, 0, partLen);
-      }
+    if (partLen > 0) // cache remaining bytes from buf
+      System.arraycopy(buf, inOff, partBlock, 0, partLen);
     return result;
   }
 
@@ -499,9 +428,7 @@ class CipherAdapter extends CipherSpi
     else
       {
         if (partLen > 0)
-          {
-            throw new IllegalBlockSizeException(partLen + " trailing bytes");
-          }
+          throw new IllegalBlockSizeException(partLen + " trailing bytes");
         result = buf;
       }
 
@@ -524,9 +451,7 @@ class CipherAdapter extends CipherSpi
   {
     byte[] buf = engineDoFinal(in, inOff, inLen);
     if (out.length + outOff < buf.length)
-      {
-        throw new ShortBufferException();
-      }
+      throw new ShortBufferException();
     System.arraycopy(buf, 0, out, outOff, buf.length);
     return buf.length;
   }
