@@ -1,3 +1,14 @@
+2006-06-26  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicListUI.java
+	(installKeyboardActions): Rewritten to fit with the
+	ActionMap/InputMap architecture.
+	(uninstallKeyboardActions): Implemented.
+	(ListAction): Made private. Added TODO for splitting
+	up this bulk Action.
+	(ListAction.ListAction): New constructor. This one
+	takes a cmd parameter to be installed as actionCommand.
+
 2006-06-26  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* gnu/java/security/key/rsa/RSAKeyPairRawCodec.java: Remove RCS Revision.
