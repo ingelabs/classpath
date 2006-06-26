@@ -2228,11 +2228,13 @@ public class JList extends JComponent implements Accessible, Scrollable
   }
 
   /**
-   * Returns the layout orientation.
+   * Returns the layout orientation, which will be one of {@link #VERTICAL}, 
+   * {@link #VERTICAL_WRAP} and {@link #HORIZONTAL_WRAP}.  The default value
+   * is {@link #VERTICAL}.
    *
-   * @return the orientation, one of <code>JList.VERTICAL</code>,
-   * <code>JList.VERTICAL_WRAP</code> and <code>JList.HORIZONTAL_WRAP</code>
+   * @return the orientation.
    *
+   * @see #setLayoutOrientation(int)
    * @since 1.4
    */
   public int getLayoutOrientation()
@@ -2241,15 +2243,21 @@ public class JList extends JComponent implements Accessible, Scrollable
   }
 
   /**
-   * Sets the layout orientation.
+   * Sets the layout orientation (this is a bound property with the name
+   * 'layoutOrientation').  Valid orientations are {@link #VERTICAL}, 
+   * {@link #VERTICAL_WRAP} and {@link #HORIZONTAL_WRAP}.
    *
-   * @param orientation the orientation to set, one of <code>JList.VERTICAL</code>,
-   * <code>JList.VERTICAL_WRAP</code> and <code>JList.HORIZONTAL_WRAP</code>
+   * @param orientation the orientation.
    *
+   * @throws IllegalArgumentException if <code>orientation</code> is not one
+   *     of the specified values.
    * @since 1.4
+   * @see #getLayoutOrientation()
    */
   public void setLayoutOrientation(int orientation)
   {
+    if (orientation < JList.VERTICAL || orientation > JList.HORIZONTAL_WRAP)
+      throw new IllegalArgumentException();
     if (layoutOrientation == orientation)
       return;
 
