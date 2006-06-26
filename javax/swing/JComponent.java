@@ -983,6 +983,42 @@ public abstract class JComponent extends Container implements Serializable
       vetoableChangeSupport.fireVetoableChange(propertyName, oldValue, newValue);
   }
 
+
+  /**
+   * Fires a property change for a primitive integer property.
+   *
+   * @param property the name of the property
+   * @param oldValue the old value of the property
+   * @param newValue the new value of the property
+   *
+   * @specnote This method is implemented in
+   *           {@link Component#firePropertyChange(String, int, int)}. It is
+   *           only here because it is specified to be public, whereas the
+   *           Component method is protected.
+   */
+  public void firePropertyChange(String property, int oldValue, int newValue)
+  {
+    super.firePropertyChange(property, oldValue, newValue);
+  }
+  
+  /**
+   * Fires a property change for a primitive boolean property.
+   *
+   * @param property the name of the property
+   * @param oldValue the old value of the property
+   * @param newValue the new value of the property
+   *
+   * @specnote This method is implemented in
+   *           {@link Component#firePropertyChange(String, boolean, boolean)}.
+   *           It is only here because it is specified to be public, whereas
+   *           the Component method is protected.
+   */
+  public void firePropertyChange(String property, boolean oldValue,
+                                 boolean newValue)
+  {
+    super.firePropertyChange(property, oldValue, newValue);
+  }
+
   /**
    * Get the value of the accessibleContext property for this component.
    *

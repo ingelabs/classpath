@@ -1,3 +1,10 @@
+2006-06-26  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JComponent.java
+	(firePropertyChange(String,int,int)): New method. Overrides
+	Component method and makes it public.
+	(firePropertyChange(String,boolean,boolean)): Likewise.
+
 2006-06-25  Vivek Lakshmanan  <vivekl@redhat.com>
 	
 	* gnu/java/security/.cvsignore: New File.
