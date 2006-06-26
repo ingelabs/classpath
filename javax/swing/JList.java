@@ -2289,14 +2289,16 @@ public class JList extends JComponent implements Accessible, Scrollable
   }
 
   /**
-   * Returns the next list element (beginning from <code>startIndex</code>
-   * that starts with <code>prefix</code>. Searching is done in the direction
-   * specified by <code>bias</code>.
+   * Returns the index of the next list element (beginning at 
+   * <code>startIndex</code> and moving in the specified direction through the
+   * list, looping around if necessary) that starts with <code>prefix</code>
+   * (ignoring case).
    *
    * @param prefix the prefix to search for in the cell values
    * @param startIndex the index where to start searching from
-   * @param bias the search direction, either {@link Position.Bias#Forward}
-   *     or {@link Position.Bias#Backward}
+   * @param direction the search direction, either {@link Position.Bias#Forward}
+   *     or {@link Position.Bias#Backward} (<code>null</code> is interpreted
+   *     as {@link Position.Bias#Backward}.
    *
    * @return the index of the found element or -1 if no such element has
    *     been found
@@ -2306,7 +2308,8 @@ public class JList extends JComponent implements Accessible, Scrollable
    *
    * @since 1.4
    */
-  public int getNextMatch(String prefix, int startIndex, Position.Bias bias)
+  public int getNextMatch(String prefix, int startIndex, 
+                          Position.Bias direction)
   {
     if (prefix == null)
       throw new IllegalArgumentException("The argument 'prefix' must not be"
@@ -2316,37 +2319,33 @@ public class JList extends JComponent implements Accessible, Scrollable
                                          + " be less than zero.");
 
     int size = model.getSize();
-    if (startIndex > model.getSize())
+    if (startIndex >= model.getSize())
       throw new IllegalArgumentException("The argument 'startIndex' must not"
                                          + " be greater than the number of"
                                          + " elements in the ListModel.");
 
-    int index = -1;
-    if (bias == Position.Bias.Forward)
+    int result = -1;
+    int current = startIndex;
+    int delta = -1;
+    int itemCount = model.getSize();
+    boolean finished = false;
+    prefix = prefix.toUpperCase();
+    
+    if (direction == Position.Bias.Forward)
+      delta = 1;
+    while (!finished)
       {
-        for (int i = startIndex; i < size; i++)
-          {
-            String item = model.getElementAt(i).toString();
-            if (item.startsWith(prefix))
-              {
-                index = i;
-                break;
-              }
-          }
+        String itemStr = model.getElementAt(current).toString().toUpperCase();
+        if (itemStr.startsWith(prefix))
+          return current;
+        current = (current + delta);
+        if (current == -1)
+          current += itemCount;
+        else
+          current = current % itemCount; 
+        finished = current == startIndex;
       }
-    else
-      {
-        for (int i = startIndex; i >= 0; i--)
-          {
-            String item = model.getElementAt(i).toString();
-            if (item.startsWith(prefix))
-              {
-                index = i;
-                break;
-              }
-          }
-      }
-    return index;
+    return result;
   }
   
   /**

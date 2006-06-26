@@ -1,6 +1,12 @@
 2006-06-26  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JList.java
+	(getNextMatch): Reimplemented to perform a circular search for the 
+	matching item.
+
+2006-06-26  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JList.java
 	(init): Set default value for visibleRowCount to 8,
 	(setVisibleRowCount): Fire PropertyChangeEvent when value changes.
 
