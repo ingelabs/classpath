@@ -1,3 +1,11 @@
+2006-06-26  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JList.java
+	(valueIsAdjusting): Removed,
+	(init): Removed initialization of valueIsAdjusting field,
+	(getValueIsAdjusting): Fetch value from selection model,
+	(setValueIsAdjusting): Store value in selection model.
+
 2006-06-26  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicListUI.java

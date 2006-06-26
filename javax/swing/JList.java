@@ -944,17 +944,6 @@ public class JList extends JComponent implements Accessible, Scrollable
    */
   ListSelectionModel selectionModel;
 
-
-  /**
-   * This property indicates that the list's selection is currently
-   * "adjusting" -- perhaps due to a user actively dragging the mouse over
-   * multiple list elements -- and is therefore likely to change again in
-   * the near future. A {@link ListSelectionListener} might choose to delay
-   * updating its view of the list's selection until this property is
-   * false, meaning that the adjustment has completed.
-   */
-  boolean valueIsAdjusting;
-
   /** 
    * This property indicates a <em>preference</em> for the number of rows
    * displayed in the list, and will scale the
@@ -1085,7 +1074,6 @@ public class JList extends JComponent implements Accessible, Scrollable
     fixedCellWidth = -1;
     layoutOrientation = VERTICAL;
     opaque = true;
-    valueIsAdjusting = false;
     visibleRowCount = 7;
 
     cellRenderer = new DefaultListCellRenderer();
@@ -2184,23 +2172,25 @@ public class JList extends JComponent implements Accessible, Scrollable
   }
 
   /**
-   * Returns the value of the <code>valueIsAdjusting</code> property.
+   * Returns the <code>valueIsAdjusting</code> flag from the list's selection
+   * model.
    *
    * @return the value
    */
   public boolean getValueIsAdjusting()
   {
-    return valueIsAdjusting;
+    return selectionModel.getValueIsAdjusting();
   }
 
   /**
-   * Sets the <code>valueIsAdjusting</code> property.
+   * Sets the <code>valueIsAdjusting</code> flag in the list's selection 
+   * model.
    *
    * @param isAdjusting the new value
    */
   public void setValueIsAdjusting(boolean isAdjusting)
   {
-    valueIsAdjusting = isAdjusting;
+    selectionModel.setValueIsAdjusting(isAdjusting);
   }
 
   /**
