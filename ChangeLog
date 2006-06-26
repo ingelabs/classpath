@@ -1,3 +1,23 @@
+2006-06-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/lang/Thread.java:
+	(getState()): New method.
+	* java/lang/management/ClassLoadingMXBean.java:
+	Corrected class documentation.
+	* java/lang/management/ManagementFactory.java:
+	Added new temporary marked stub to get thread bean.
+	* java/lang/management/OperatingSystemMXBean.java:
+	Corrected class documentation.
+	* java/lang/management/RuntimeMXBean.java:
+	Corrected class documentation.
+	* java/lang/management/ThreadInfo.java,
+	* java/lang/management/ThreadMXBean.java:
+	New classes.
+	* vm/reference/java/lang/VMThread.java:
+	(getState()): New method.
+	* vm/reference/java/lang/management/VMThreadInfo.java:
+	New VM class.
+
 2006-06-26  Tania Bento  <tbento@redhat.com>
 
 	* java/awt/List.java

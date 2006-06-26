@@ -40,7 +40,7 @@ package java.lang.management;
 /**
  * Provides access to information about the class loading 
  * behaviour of the current invocation of the virtual
- * machine.  Instances of this bean are obtained by calling
+ * machine.  An instance of this bean is obtained by calling
  * {@link ManagementFactory#getClassLoadingMXBean()}.
  *
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)

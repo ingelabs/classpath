@@ -42,7 +42,7 @@ import java.util.Map;
 
 /**
  * Provides access to information about the underlying virtual
- * machine.  Instances of this bean are obtained by calling
+ * machine.  An instance of this bean is obtained by calling
  * {@link ManagementFactory#getRuntimeMXBean()}.
  *
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
