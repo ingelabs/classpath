@@ -1,3 +1,14 @@
+2006-06-27  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/swing/SwingComponentPeer.java
+	(createImage): Delegate this to the parent.
+	(handleEvent): Only handle PAINT/UPDATE events when the
+	component is actually showing.
+	(hide): Repaint the parent after hiding a component.
+	(prepareImage): Have only one return point.
+	(setVisible): Delegate to show() and hide().
+	(createVolatileImage): Added null check to avoid NPE.
+
 2006-06-27  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/Label.java: Reformatted source code.
