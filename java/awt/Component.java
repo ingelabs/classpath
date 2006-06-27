@@ -632,16 +632,19 @@ public abstract class Component
   }
 
   /**
-   * Sets the name of this component to the specified name.
+   * Sets the name of this component to the specified name (this is a bound
+   * property with the name 'name').
    *
-   * @param name the new name of this component
+   * @param name the new name (<code>null</code> permitted).
    * @see #getName()
    * @since 1.1
    */
   public void setName(String name)
   {
     nameExplicitlySet = true;
+    String old = this.name;
     this.name = name;
+    firePropertyChange("name", old, name);
   }
 
   /**

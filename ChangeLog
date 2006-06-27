@@ -1,3 +1,13 @@
+2006-06-27  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/Component.java
+	(setName): Fire required PropertyChangeEvent,
+	* java/awt/Label.java
+	(getText): Removed redundant brackets,
+	(generateName): New method (override),
+	(nextLabelNumber): New field,
+	(getUniqueLong): New method.
+
 2006-06-27  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/peer/swing/SwingComponentPeer.java

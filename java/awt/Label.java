@@ -167,7 +167,7 @@ public class Label extends Component implements Accessible
    */
   public String getText()
   {
-    return(text);
+    return text;
   }
 
   /**
@@ -269,6 +269,26 @@ public class Label extends Component implements Accessible
     if (accessibleContext == null)
       accessibleContext = new AccessibleAWTLabel();
     return accessibleContext;
+  }
+
+  /**
+   * Generate a unique name for this button.
+   *
+   * @return A unique name for this button.
+   */
+  String generateName()
+  {
+    return "label" + getUniqueLong();
+  }
+  
+  /**
+   * The number used to generate the name returned by getName.
+   */
+  private static transient long nextLabelNumber;
+
+  private static synchronized long getUniqueLong()
+  {
+    return nextLabelNumber++;
   }
 
 }
