@@ -1,3 +1,8 @@
+2006-06-27  Roman Kennke  <kennke@aicas.com>
+
+	* javax/imageio/spi/IIORegistry.java
+	(IIORegistry): Added BMP codec.
+
 2006-06-27  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/JComponent.java
