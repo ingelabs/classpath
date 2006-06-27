@@ -1,3 +1,16 @@
+2006-06-27  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/Component.java
+	(minSizeSet): New field,
+	(maxSize): Likewise,
+	(maxSizeSet): Likewise,
+	(isMaximumSizeSet): Implemented,
+	(isMinimumSizeSet): Likewise,
+	(isPreferredSizeSet): Likewise,
+	(setMaximumSize): Likewise,
+	(setMinimumSize): Likewise,
+	(setPreferredSize): Likewise. 
+
 2006-06-27  Roman Kennke  <kennke@aicas.com>
 
 	* javax/imageio/spi/IIORegistry.java
