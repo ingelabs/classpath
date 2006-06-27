@@ -4838,14 +4838,12 @@ p   * <li>the set of backward traversal keys
    * {@link #applyComponentOrientation(ComponentOrientation)} affects the
    * entire hierarchy.
    *
-   * @param o the new orientation
-   * @throws NullPointerException if o is null
+   * @param o the new orientation (<code>null</code> is accepted)
    * @see #getComponentOrientation()
    */
   public void setComponentOrientation(ComponentOrientation o)
   {
-    if (o == null)
-      throw new NullPointerException();
+ 
     ComponentOrientation oldOrientation = orientation;
     orientation = o;
     firePropertyChange("componentOrientation", oldOrientation, o);
@@ -4854,7 +4852,7 @@ p   * <li>the set of backward traversal keys
   /**
    * Determines the text layout orientation used by this component.
    *
-   * @return the component orientation
+   * @return the component orientation (this can be <code>null</code>)
    * @see #setComponentOrientation(ComponentOrientation)
    */
   public ComponentOrientation getComponentOrientation()

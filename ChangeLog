@@ -1,3 +1,8 @@
+2006-06-27  Tania Bento  <tbento@redhat.com>
+
+	* java/awt/Component.java
+	(setComponentOrientation): NPE should not be thrown.
+
 2006-06-27  Tom Tromey  <tromey@redhat.com>
 
 	* configure.ac: Create gjar, gnative2ascii, gserialver.
@@ -17,6 +22,7 @@
 	(getThreadInfo(long[])): Corrected return type.
 	(getThreadInfo(long[], int)): Likewise.
 	
+>>>>>>> 1.7954
 2006-06-27  Mark Wielaard  <mark@klomp.org>
 
 	* java/awt/datatransfer/Clipboard.java (addFlavorListener): Do
