@@ -769,10 +769,16 @@ if test "x${COMPILE_WRAPPERS}" = xno
 then
 AC_CONFIG_FILES([tools/gappletviewer
 tools/gjarsigner
-tools/gkeytool])
+tools/gkeytool
+tools/gjar
+tools/gnative2ascii
+tools/gserialver])
 AC_CONFIG_COMMANDS([gappletviewer],[chmod 755 tools/gappletviewer])
 AC_CONFIG_COMMANDS([gjarsigner],[chmod 755 tools/gjarsigner])
 AC_CONFIG_COMMANDS([gkeytool],[chmod 755 tools/gkeytool])
+AC_CONFIG_COMMANDS([gjar],[chmod 755 tools/gjar])
+AC_CONFIG_COMMANDS([gnative2ascii],[chmod 755 tools/gnative2ascii])
+AC_CONFIG_COMMANDS([gserialver],[chmod 755 tools/gserialver])
 fi
 
 AC_CONFIG_COMMANDS([gen-classlist],[chmod 755 lib/gen-classlist.sh])

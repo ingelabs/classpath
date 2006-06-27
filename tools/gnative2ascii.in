@@ -37,11 +37,11 @@
 ## exception statement from your version.
 ##
 ##
-## A simple shell script to launch the GNU Classpath jarsigner tool.
+## A simple shell script to launch the GNU Classpath native2ascii tool.
 ##
 
 prefix=@prefix@
 tools_dir=@datadir@/@PACKAGE@
 tools_cp=${tools_dir}/tools.zip
 
-exec @VM_BINARY@ -Xbootclasspath/p:"${tools_cp}" gnu.classpath.tools.jarsigner.Main "$@"
+exec @VM_BINARY@ -Xbootclasspath/p:"${tools_cp}" gnu.classpath.tools.native2ascii.Main "$@"
