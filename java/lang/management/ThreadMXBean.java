@@ -282,7 +282,7 @@ public interface ThreadMXBean
    * @throws SecurityException if a security manager exists and
    *                           denies ManagementPermission("monitor").
    */
-  ThreadInfo getThreadInfo(long[] ids);
+  ThreadInfo[] getThreadInfo(long[] ids);
 
   /**
    * Returns information on the specified thread with
@@ -336,7 +336,7 @@ public interface ThreadMXBean
    * @throws SecurityException if a security manager exists and
    *                           denies ManagementPermission("monitor").
    */
-  ThreadInfo getThreadInfo(long[] ids, int maxDepth);
+  ThreadInfo[] getThreadInfo(long[] ids, int maxDepth);
 
   /**
    * <p>
