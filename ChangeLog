@@ -1,3 +1,24 @@
+2006-06-27  Mark Wielaard  <mark@klomp.org>
+
+	* java/awt/datatransfer/Clipboard.java (addFlavorListener): Do
+	nothing when listener is null.
+	(removeFlavorListener): Likewise.
+
+	* java/awt/datatransfer/DataFlavor.java
+	(getRepresentationClassFromMime): Renamed to
+	getRepresentationClassFromMimeThrows.
+	(isRepresentationClassInputStream): Use Class.isAssignableFrom().
+	(isRepresentationClassSerializable): Likewise.
+	(isFlavorJavaFileListType): Likewise and check primary and
+	subtype.
+	(getParameter): Parameters are separated by semi-colons.
+	(DataFlavor(Class,String,String)): Do some sanity checks.
+	(DataFlavor(String,String,ClassLoader)): Call
+	getRepresentationClassFromMimeThrows.
+	(DataFlavor(String)): Likewise.
+	(equals(DataFlavor)): Special case primary type text and charset
+	parameter.
+	
 2006-06-27  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/Component.java
