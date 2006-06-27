@@ -1020,6 +1020,21 @@ public abstract class JComponent extends Container implements Serializable
   }
 
   /**
+   * Fires a property change for a primitive character property.
+   *
+   * @param property the name of the property
+   * @param oldValue the old value of the property
+   * @param newValue the new value of the property
+   */
+  public void firePropertyChange(String property, char oldValue,
+                                 char newValue)
+  {
+    //  FIXME - This method is already public in awt Component, but
+    //  is included here to work around a compilation bug in gcj 4.1.
+    super.firePropertyChange(property, oldValue, newValue);
+  }
+
+  /**
    * Get the value of the accessibleContext property for this component.
    *
    * @return the current value of the property
