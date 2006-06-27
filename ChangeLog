@@ -77,6 +77,15 @@
 	* vm/reference/java/lang/management/VMThreadInfo.java:
 	New VM class.
 
+2006-06-26  Sven de Marothy  <sven@physto.se>
+
+	* gnu/javax/imageio/gif/GIFFile.java
+	* gnu/javax/imageio/gif/GIFImageReader.java
+	* gnu/javax/imageio/gif/GIFImageSpi.java
+	* gnu/javax/imageio/gif/GIFStream.java
+	New files.
+	* javax/imageio/spi/IIORegistry.java: Load new GIF decoder plugin.
+
 2006-06-26  Tania Bento  <tbento@redhat.com>
 
 	* java/awt/List.java
