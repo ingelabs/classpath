@@ -40,7 +40,14 @@ package java.lang;
 
 import gnu.classpath.VMStackWalker;
 import gnu.java.util.WeakIdentityHashMap;
+
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadInfo;
+import java.lang.management.ThreadMXBean;
+
 import java.security.Permission;
+
+import java.util.HashMap;
 import java.util.Map;
 
 /* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
@@ -1233,6 +1240,103 @@ public class Thread implements Runnable
   {
     VMThread t = vmThread;
     return t == null ? null : t.getState();
+  }
+
+  /**
+   * <p>
+   * Returns a map of threads to stack traces for each
+   * live thread.  The keys of the map are {@link Thread}
+   * objects, which map to arrays of {@link StackTraceElement}s.
+   * The results obtained from Calling this method are
+   * equivalent to calling {@link getStackTrace()} on each
+   * thread in succession.  Threads may be executing while
+   * this takes place, and the results represent a snapshot
+   * of the thread at the time its {@link getStackTrace()}
+   * method is called.
+   * </p>
+   * <p>
+   * The stack trace information contains the methods called
+   * by the thread, with the most recent method forming the
+   * first element in the array.  The array will be empty
+   * if the virtual machine can not obtain information on the
+   * thread. 
+   * </p>
+   * <p>
+   * To execute this method, the current security manager
+   * (if one exists) must allow both the
+   * <code>"getStackTrace"</code> and
+   * <code>"modifyThreadGroup"</code> {@link RuntimePermission}s.
+   * </p>
+   * 
+   * @return a map of threads to arrays of {@link StackTraceElement}s.
+   * @throws SecurityException if a security manager exists, and
+   *                           prevents either or both the runtime
+   *                           permissions specified above.
+   * @since 1.5
+   * @see #getStackTrace()
+   */
+  public static Map getAllStackTraces()
+  {
+    ThreadGroup group = currentThread().group;
+    while (group.getParent() != null)
+      group = group.getParent();
+    int arraySize = group.activeCount();
+    Thread[] threadList = new Thread[arraySize];
+    int filled = group.enumerate(threadList);
+    while (filled == arraySize)
+      {
+	arraySize *= 2;
+	threadList = new Thread[arraySize];
+	filled = group.enumerate(threadList);
+      }
+    Map traces = new HashMap();
+    for (int a = 0; a < filled; ++a)
+      traces.put(threadList[a],
+		 threadList[a].getStackTrace());
+    return traces;
+  }
+
+  /**
+   * <p>
+   * Returns an array of {@link StackTraceElement}s
+   * representing the current stack trace of this thread.
+   * The first element of the array is the most recent
+   * method called, and represents the top of the stack.
+   * The elements continue in this order, with the last
+   * element representing the bottom of the stack.
+   * </p>
+   * <p>
+   * A zero element array is returned for threads which
+   * have not yet started (and thus have not yet executed
+   * any methods) or for those which have terminated.
+   * Where the virtual machine can not obtain a trace for
+   * the thread, an empty array is also returned.  The
+   * virtual machine may also omit some methods from the
+   * trace in non-zero arrays.
+   * </p>
+   * <p>
+   * To execute this method, the current security manager
+   * (if one exists) must allow both the
+   * <code>"getStackTrace"</code> and
+   * <code>"modifyThreadGroup"</code> {@link RuntimePermission}s.
+   * </p>
+   *
+   * @return a stack trace for this thread.
+   * @throws SecurityException if a security manager exists, and
+   *                           prevents the use of the
+   *                           <code>"getStackTrace"</code>
+   *                           permission.
+   * @since 1.5
+   * @see #getAllStackTraces()
+   */
+  public StackTraceElement[] getStackTrace()
+  {
+    SecurityManager sm = SecurityManager.current; // Be thread-safe.
+    if (sm != null)
+      sm.checkPermission(new RuntimePermission("getStackTrace"));
+    ThreadMXBean bean = ManagementFactory.getThreadMXBean();
+    ThreadInfo info = bean.getThreadInfo(threadId, Integer.MAX_VALUE);
+    return info.getStackTrace();
   }
 
 }
