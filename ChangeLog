@@ -1,3 +1,7 @@
+2006-06-27  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/Label.java: Reformatted source code.
+
 2006-06-27  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/image/BufferedImage.java
