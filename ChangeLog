@@ -1,3 +1,9 @@
+2006-06-27  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/image/BufferedImage.java
+	(getSource): Use a fixed DirectColorModel to deliver the
+	RGB pixels to the ImageConsumer.
+
 2006-06-27  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/Point.java

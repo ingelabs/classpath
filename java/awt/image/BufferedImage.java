@@ -504,7 +504,10 @@ public class BufferedImage extends Image
           int[] pixels = getRGB(x, y, 
                                 width, height, 
                                 (int[])null, offset, stride);
-          ColorModel model = getColorModel();
+          // We already convert the color to RGB in the getRGB call, so
+          // we pass a simple RGB color model to the consumers.
+          ColorModel model = new DirectColorModel(32, 0xff0000, 0xff00, 0xff,
+                                                  0xff000000);
 
           consumers.add(ic);
 
