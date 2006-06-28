@@ -1,6 +1,11 @@
 2006-06-28  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JComponent.java
+	(getRegisteredKeyStrokes): Implemented.
+
+2006-06-28  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JComponent.java
 	(verifyInputWhenFocusTarget): Initialise to true.
 
 2006-06-28  David Gilbert  <david.gilbert@object-refinery.com>

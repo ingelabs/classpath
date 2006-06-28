@@ -72,6 +72,7 @@ import java.beans.VetoableChangeListener;
 import java.beans.VetoableChangeSupport;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EventListener;
 import java.util.Hashtable;
 import java.util.Locale;
@@ -1423,11 +1424,32 @@ public abstract class JComponent extends Container implements Serializable
    * Return the set of {@link KeyStroke} objects which are registered
    * to initiate actions on this component.
    *
-   * @return An array of the registered keystrokes
+   * @return An array of the registered keystrokes (possibly empty but never
+   *     <code>null</code>).
    */
   public KeyStroke[] getRegisteredKeyStrokes()
   {
-    return null;
+    KeyStroke[] ks0;
+    KeyStroke[] ks1;
+    KeyStroke[] ks2;
+    if (inputMap_whenFocused != null)
+      ks0 = inputMap_whenFocused.keys();
+    else 
+      ks0 = new KeyStroke[0];
+    if (inputMap_whenAncestorOfFocused != null)
+      ks1 = inputMap_whenAncestorOfFocused.keys();
+    else 
+      ks1 = new KeyStroke[0];
+    if (inputMap_whenInFocusedWindow != null)
+      ks2 = inputMap_whenInFocusedWindow.keys();
+    else
+      ks2 = new KeyStroke[0];
+    int count = ks0.length + ks1.length + ks2.length;
+    KeyStroke[] result = new KeyStroke[count];
+    System.arraycopy(ks0, 0, result, 0, ks0.length);
+    System.arraycopy(ks1, 0, result, ks0.length, ks1.length);
+    System.arraycopy(ks2, 0, result, ks0.length + ks1.length, ks2.length);
+    return result;
   }
 
   /**
