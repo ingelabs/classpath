@@ -131,6 +131,9 @@ public class Thread implements Runnable
   /** The thread priority, 1 to 10. */
   volatile int priority;
 
+  /** The current thread state. */
+  volatile String state;
+
   /** Native thread stack size. 0 = use default */
   private long stacksize;
 
@@ -372,6 +375,7 @@ public class Thread implements Runnable
 
     priority = current.priority;
     daemon = current.daemon;
+    state = "NEW";
     contextClassLoader = current.contextClassLoader;
     contextClassLoaderIsSystemClassLoader =
         current.contextClassLoaderIsSystemClassLoader;
@@ -402,6 +406,7 @@ public class Thread implements Runnable
     this.name = name;
     this.priority = priority;
     this.daemon = daemon;
+    state = "NEW";
     // By default the context class loader is the system class loader,
     // we set a flag to signal this because we don't want to call
     // ClassLoader.getSystemClassLoader() at this point, because on
@@ -706,7 +711,13 @@ public class Thread implements Runnable
 
     VMThread t = vmThread;
     if(t != null)
-        t.join(ms, ns);
+      {
+	if(ms == 0 && ns == 0)
+	  state = "WAITING";
+	else
+	  state = "TIMED_WAITING";
+	t.join(ms, ns);
+      }
   }
 
   /**
@@ -724,7 +735,10 @@ public class Thread implements Runnable
     checkAccess();
     VMThread t = vmThread;
     if (t != null)
+      {
+	state = "RUNNABLE";
 	t.resume();
+      }
   }
   
   /**
@@ -850,7 +864,7 @@ public class Thread implements Runnable
    * are no guarantees which thread will be next to run, but most VMs will
    * choose the highest priority thread that has been waiting longest.
    *
-   * @param ms the number of milliseconds to sleep.
+   * @param ms the number of milliseconds to sleep5~.
    * @throws InterruptedException if the Thread is (or was) interrupted;
    *         it's <i>interrupted status</i> will be cleared
    * @throws IllegalArgumentException if ms is negative
@@ -892,6 +906,11 @@ public class Thread implements Runnable
     if (ns < 0 || ns > 999999)
       throw new IllegalArgumentException("Nanoseconds ouf of range: " + ns);
 
+    if (ms == 0 && ns == 0)
+      currentThread().state = "WAITING";
+    else
+      currentThread().state = "TIMED_WAITING";
+
     // Really sleep
     VMThread.sleep(ms, ns);
   }
@@ -911,6 +930,7 @@ public class Thread implements Runnable
     if (vmThread != null || group == null)
 	throw new IllegalThreadStateException();
 
+    state = "RUNNABLE";
     VMThread.create(this, stacksize);
   }
   
@@ -984,7 +1004,10 @@ public class Thread implements Runnable
       }
     VMThread vt = vmThread;
     if (vt != null)
+      {
+	state = "TERMINATED";
 	vt.stop(t);
+      }
     else
 	stillborn = t;
   }
@@ -1006,7 +1029,10 @@ public class Thread implements Runnable
     checkAccess();
     VMThread t = vmThread;
     if (t != null)
+      {
+	state = "WAITING";
 	t.suspend();
+      }
   }
 
   /**
@@ -1058,6 +1084,7 @@ public class Thread implements Runnable
     group.removeThread(this);
     vmThread = null;
     locals = null;
+    state = "TERMINATED";
   }
 
   /**
@@ -1239,7 +1266,7 @@ public class Thread implements Runnable
   public String getState()
   {
     VMThread t = vmThread;
-    return t == null ? null : t.getState();
+    return t == null ? state : t.getState();
   }
 
   /**
@@ -1338,5 +1365,5 @@ public class Thread implements Runnable
     ThreadInfo info = bean.getThreadInfo(threadId, Integer.MAX_VALUE);
     return info.getStackTrace();
   }
-
+  
 }
