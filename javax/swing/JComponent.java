@@ -717,7 +717,7 @@ public abstract class JComponent extends Container implements Serializable
   private ComponentInputMap inputMap_whenInFocusedWindow;
   private ActionMap actionMap;
   /** @since 1.3 */
-  private boolean verifyInputWhenFocusTarget;
+  private boolean verifyInputWhenFocusTarget = true;
   private InputVerifier inputVerifier;
 
   private TransferHandler transferHandler;
