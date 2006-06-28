@@ -38,6 +38,7 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.key.dh;
 
+import gnu.classpath.SystemProperties;
 import gnu.java.security.Registry;
 import gnu.java.security.util.FormatUtil;
 
@@ -85,6 +86,8 @@ public abstract class GnuDHKey implements Key, DHKey
    * key material.
    */
   protected final int defaultFormat;
+  /** String representation of this key. Cached for speed. */
+  private transient String str;
 
   // Constructor(s)
   // -------------------------------------------------------------------------
@@ -176,6 +179,25 @@ public abstract class GnuDHKey implements Key, DHKey
     DHKey that = (DHKey) obj;
     return p.equals(that.getParams().getP())
            && g.equals(that.getParams().getG());
+  }
+
+  public String toString()
+  {
+    if (str == null)
+      {
+        String ls = SystemProperties.getProperty("line.separator");
+        StringBuilder sb = new StringBuilder(ls)
+            .append("defaultFormat=").append(defaultFormat).append(",").append(ls);
+        if (q == null)
+          sb.append("q=null,");
+        else
+          sb.append("q=0x").append(q.toString(16)).append(",");
+        sb.append(ls)
+            .append("p=0x").append(p.toString(16)).append(",").append(ls)
+            .append("g=0x").append(g.toString(16));
+        str = sb.toString();
+      }
+    return str;
   }
 
   // abstract methods to be implemented by subclasses ------------------------

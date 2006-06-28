@@ -57,6 +57,7 @@ import java.security.SecureRandom;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.InvalidParameterSpecException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.crypto.BadPaddingException;
@@ -258,9 +259,39 @@ class CipherAdapter
     if (! key.getFormat().equalsIgnoreCase("RAW"))
       throw new InvalidKeyException("bad key format " + key.getFormat());
     byte[] kb = key.getEncoded();
+    int kbLength = kb.length;
     if (keyLen == 0)
-      keyLen = kb.length;
-    else if (keyLen < kb.length)
+      {
+        // no key-size given; instead key-material is provided in kb --which
+        // can be more than what we need.  if we don't cull this down to what
+        // the cipher likes/wants we may get an InvalidKeyException.
+        //
+        // try to find the largest key-size value that is less than or equal
+        // to kbLength
+        for (Iterator it = cipher.keySizes(); it.hasNext();)
+          {
+            int aKeySize = ((Integer) it.next()).intValue();
+            if (aKeySize == kbLength)
+              {
+                keyLen = aKeySize;
+                break;
+              }
+            else if (aKeySize < kbLength)
+              keyLen = aKeySize;
+            else // all remaining key-sizes are longer than kb.length
+              break;
+          }
+      }
+    if (keyLen == 0)
+      {
+        // we were unable to find a key-size, among those advertised by the
+        // cipher, that is less than or equal to the length of the kb array.
+        // set keyLen to kbLength.  either the cipher implementation will throw
+        // an InvalidKeyException, or it is implemented in a way which can deal
+        // with an unsupported key-size. 
+        keyLen = kbLength;
+      }
+    if (keyLen < kbLength)
       {
         byte[] kbb = kb;
         kb = new byte[keyLen];

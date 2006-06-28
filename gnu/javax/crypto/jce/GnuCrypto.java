@@ -365,6 +365,19 @@ public final class GnuCrypto
 
         put("AlgorithmParameters.BlockCipherParameters",
             gnu.javax.crypto.jce.params.BlockCipherParameters.class.getName());
+        put("Alg.Alias.AlgorithmParameters.Anubis", "BlockCipherParameters");
+        put("Alg.Alias.AlgorithmParameters.Blowfish", "BlockCipherParameters");
+        put("Alg.Alias.AlgorithmParameters.Cast5", "BlockCipherParameters");
+        put("Alg.Alias.AlgorithmParameters.DES", "BlockCipherParameters");
+        put("Alg.Alias.AlgorithmParameters.Khazad", "BlockCipherParameters");
+        put("Alg.Alias.AlgorithmParameters.Rijndael", "BlockCipherParameters");
+        put("Alg.Alias.AlgorithmParameters.AES", "BlockCipherParameters");
+        put("Alg.Alias.AlgorithmParameters.Serpent", "BlockCipherParameters");
+        put("Alg.Alias.AlgorithmParameters.Square", "BlockCipherParameters");
+        put("Alg.Alias.AlgorithmParameters.TripleDES", "BlockCipherParameters");
+        put("Alg.Alias.AlgorithmParameters.DESede", "BlockCipherParameters");
+        put("Alg.Alias.AlgorithmParameters.3-DES", "BlockCipherParameters");
+        put("Alg.Alias.AlgorithmParameters.3DES", "BlockCipherParameters");
 
         // KeyGenerator Adapter implementations
         put("KeyGenerator.Anubis",

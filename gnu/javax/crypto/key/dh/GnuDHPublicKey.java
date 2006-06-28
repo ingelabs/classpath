@@ -38,6 +38,7 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.key.dh;
 
+import gnu.classpath.SystemProperties;
 import gnu.java.security.Registry;
 import gnu.java.security.key.IKeyPairCodec;
 
@@ -62,6 +63,8 @@ public class GnuDHPublicKey extends GnuDHKey implements DHPublicKey
   // -------------------------------------------------------------------------
 
   private BigInteger y;
+  /** String representation of this key. Cached for speed. */
+  private transient String str;
 
   // Constructor(s)
   // -------------------------------------------------------------------------
@@ -190,5 +193,19 @@ public class GnuDHPublicKey extends GnuDHKey implements DHPublicKey
 
     DHPublicKey that = (DHPublicKey) obj;
     return super.equals(that) && y.equals(that.getY());
+  }
+
+  public String toString()
+  {
+    if (str == null)
+      {
+        String ls = SystemProperties.getProperty("line.separator");
+        str = new StringBuilder(this.getClass().getName()).append("(")
+            .append(super.toString()).append(",").append(ls)
+            .append("y=0x").append(y.toString(16)).append(ls)
+            .append(")")
+            .toString();
+      }
+    return str;
   }
 }

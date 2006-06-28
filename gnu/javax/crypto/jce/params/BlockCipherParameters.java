@@ -38,6 +38,7 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.jce.params;
 
+import gnu.java.security.Configuration;
 import gnu.javax.crypto.jce.spec.BlockCipherParameterSpec;
 
 import java.io.IOException;
@@ -46,6 +47,7 @@ import java.math.BigInteger;
 import java.security.AlgorithmParametersSpi;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.InvalidParameterSpecException;
+import java.util.logging.Logger;
 
 /**
  * An implementation of algorithm parameters for the GNU block ciphers. This
@@ -55,6 +57,7 @@ import java.security.spec.InvalidParameterSpecException;
 public class BlockCipherParameters
     extends AlgorithmParametersSpi
 {
+  private static final Logger log = Logger.getLogger(BlockCipherParameters.class.getName());
   /** The underlying block cipher specification. */
   protected BlockCipherParameterSpec cipherSpec;
   private static final String DEFAULT_FORMAT = "ASN.1";
@@ -120,7 +123,8 @@ public class BlockCipherParameters
     if (reader.hasMorePrimitives())
       iv = reader.getBigInteger().toByteArray();
     cipherSpec = new BlockCipherParameterSpec(iv, bs, ks);
-    System.out.println(cipherSpec);
+    if (Configuration.DEBUG)
+      log.fine("cipherSpec: " + cipherSpec);
   }
 
   protected AlgorithmParameterSpec engineGetParameterSpec(Class c)

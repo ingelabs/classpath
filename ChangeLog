@@ -1,3 +1,35 @@
+2006-06-28  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/javax/crypto/key/dh/GnuDHPublicKey.java (str): New field.
+	(toString): New method.
+	* gnu/javax/crypto/key/dh/GnuDHPrivateKey.java (str): New field.
+	(toString): New method.
+	* gnu/javax/crypto/key/dh/GnuDHKey.java (str): New field.
+	(toString): New method.
+	* gnu/javax/crypto/key/dh/DHKeyPairPKCS8Codec.java (encodePrivateKey):
+	Handle case when Q is null.
+	(decodePrivateKey): Likewise.
+	* gnu/javax/crypto/key/dh/DHKeyPairX509Codec.java (encodePublicKey):
+	Likewise.
+	(decodePublicKey): Likewise.
+	* gnu/javax/crypto/jce/GnuCrypto.java (run): Added AlgorithmParameters
+	aliases for all block ciphers.
+	* gnu/javax/crypto/jce/DiffieHellmanImpl.java (result): Changed to byte[].
+	(engineDoPhase): Compute fully the shared secret.
+	(checkState): New method.
+	(reset): Likewise.
+	(engineGenerateSecret()): Reset key-agreement before returning.
+	(engineGenerateSecret(byte[],int)): Check for short-buffer.
+	Reset key-agreement before returning.
+	(engineGenerateSecret(String)): Reset key-agreement before returning.
+	(engineInit(Key,SecureRandom)): Call reset() before returning.
+	* gnu/javax/crypto/jce/params/BlockCipherParameters.java (log): New field.
+	(engineInit): Replace printing to System.out with conditional logging.
+	* gnu/javax/crypto/jce/cipher/CipherAdapter.java (engineInitHandler):
+	When the key-size is not specified, attempt best effort to find a suitable
+	value among those advertised by the cipher before setting it to the length
+	of provided key material.
+
 2006-06-28  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/table/DefaultTableColumnModel.java
