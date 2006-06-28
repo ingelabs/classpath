@@ -572,6 +572,21 @@ public abstract class JComponent extends Container implements Serializable
    */
    String toolTipText;
 
+  /**
+   * The popup menu for the component.
+   * 
+   * @see #getComponentPopupMenu()
+   * @see #setComponentPopupMenu(JPopupMenu)
+   */
+  JPopupMenu componentPopupMenu;
+   
+  /**
+   * A flag that controls whether the {@link #getComponentPopupMenu()} method
+   * looks to the component's parent when the <code>componentPopupMenu</code>
+   * field is <code>null</code>.
+   */
+  boolean inheritsPopupMenu;
+  
   /** 
    * <p>Whether to double buffer this component when painting. This flag
    * should generally be <code>true</code>, to ensure good painting
@@ -1524,7 +1539,89 @@ public abstract class JComponent extends Container implements Serializable
   {
     return getToolTipText();
   }
+  
+  /**
+   * Returns the flag that controls whether or not the component inherits its
+   * parent's popup menu when no popup menu is specified for this component.
+   * 
+   * @return A boolean.
+   * 
+   * @since 1.5
+   * 
+   * @see #setInheritsPopupMenu(boolean)
+   */
+  public boolean getInheritsPopupMenu()
+  {
+    return inheritsPopupMenu; 
+  }
+  
+  /**
+   * Sets the flag that controls whether or not the component inherits its
+   * parent's popup menu when no popup menu is specified for this component.
+   * This is a bound property with the property name 'inheritsPopupMenu'.
+   * 
+   * @param inherit  the new flag value.
+   * 
+   * @since 1.5
+   * 
+   * @see #getInheritsPopupMenu()
+   */
+  public void setInheritsPopupMenu(boolean inherit)
+  {
+    if (inheritsPopupMenu != inherit)
+      {
+        inheritsPopupMenu = inherit;
+        this.firePropertyChange("inheritsPopupMenu", ! inherit, inherit);
+      }
+  }
+  
+  /**
+   * Returns the popup menu for this component.  If the popup menu is 
+   * <code>null</code> AND the {@link #getInheritsPopupMenu()} method returns
+   * <code>true</code>, this method will return the parent's popup menu (if it
+   * has one).
+   * 
+   * @return The popup menu (possibly <code>null</code>.
+   * 
+   * @since 1.5
+   * 
+   * @see #setComponentPopupMenu(JPopupMenu)
+   * @see #getInheritsPopupMenu()
+   */
+  public JPopupMenu getComponentPopupMenu()
+  {
+    if (componentPopupMenu == null && getInheritsPopupMenu())
+      {
+        Container parent = getParent(); 
+        if (parent instanceof JComponent)
+          return ((JComponent) parent).getComponentPopupMenu();
+        else
+          return null;
+      }
+    else
+      return componentPopupMenu;
+  }
 
+  /**
+   * Sets the popup menu for this component (this is a bound property with 
+   * the property name 'componentPopupMenu').
+   * 
+   * @param popup  the popup menu (<code>null</code> permitted).
+   *
+   * @since 1.5
+   * 
+   * @see #getComponentPopupMenu()
+   */
+  public void setComponentPopupMenu(JPopupMenu popup)
+  {
+    if (componentPopupMenu != popup)
+      {
+        JPopupMenu old = componentPopupMenu;
+        componentPopupMenu = popup;
+        firePropertyChange("componentPopupMenu", old, popup);
+      }
+  }
+  
   /**
    * Return the top level ancestral container (usually a {@link
    * java.awt.Window} or {@link java.applet.Applet}) which this component is
