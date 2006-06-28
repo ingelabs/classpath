@@ -52,6 +52,7 @@ import java.awt.image.ColorModel;
 import java.awt.image.DirectColorModel;
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteOrder;
 import java.util.Hashtable;
 import java.util.Vector;
 import java.io.ByteArrayOutputStream;
@@ -177,28 +178,51 @@ public class CairoSurface extends DataBuffer
     height = image.height;
 
     create(width, height, width);
-    
+
     if(surfacePointer == 0 || bufferPointer == 0)
       throw new Error("Could not allocate bitmap.");
-    
+
     // Copy the pixel data from the GtkImage.
     int[] data = image.getPixels();
 
     // Swap ordering from GdkPixbuf to Cairo
     for(int i = 0; i < data.length; i++ )
       {
-	int alpha = (data[i] & 0xFF000000) >> 24;
-	if( alpha == 0 ) // I do not know why we need this, but it works.
-	  data[i] = 0;
+	if (ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN)
+	  {
+	    // On a big endian system we get a RRGGBBAA data array.
+	    int alpha = (data[i] & 0xFF);
+	    if( alpha == 0 ) // I do not know why we need this, but it works.
+	      data[i] = 0;
+	    else
+	      {
+		int r = (((data[i] & 0xFF000000) >> 24));
+		int g = (((data[i] & 0x00FF0000) >> 16));
+		int b = (((data[i] & 0x0000FF00) >> 8));
+		// Cairo needs a ARGB32 native array.
+		data[i] = (( alpha << 24 ) & 0xFF000000)
+		  | (( r << 16 ) & 0x00FF0000)
+		  | (( g << 8 )  & 0x0000FF00)
+		  | ( b  & 0x000000FF);
+	      }
+	  }
 	else
 	  {
-	    int r = (((data[i] & 0x00FF0000) >> 16) );
-	    int g = (((data[i] & 0x0000FF00) >> 8) );
-	    int b = ((data[i] & 0x000000FF) );
-	    data[i] = (( alpha << 24 ) & 0xFF000000) 
-	      | (( b << 16 ) & 0x00FF0000)
-	      | (( g << 8 )  & 0x0000FF00)
-	      | ( r  & 0x000000FF);
+	    // On a little endian system we get a AABBGGRR data array.
+	    int alpha = (data[i] & 0xFF000000) >> 24;
+	    if( alpha == 0 ) // I do not know why we need this, but it works.
+	      data[i] = 0;
+	    else
+	      {
+		int b = (((data[i] & 0x00FF0000) >> 16));
+		int g = (((data[i] & 0x0000FF00) >> 8));
+		int r = ((data[i] & 0x000000FF));
+		// Cairo needs a ARGB32 native array.
+		data[i] = (( alpha << 24 ) & 0xFF000000)
+		  | (( r << 16 ) & 0x00FF0000)
+		  | (( g << 8 )  & 0x0000FF00)
+		  | ( b  & 0x000000FF);
+	      }
 	  }
       }
 

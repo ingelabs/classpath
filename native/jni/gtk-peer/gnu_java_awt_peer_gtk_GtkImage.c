@@ -189,13 +189,27 @@ Java_gnu_java_awt_peer_gtk_GtkImage_getPixels(JNIEnv *env, jobject obj)
 	  pixeldata += rowstride;
 	}
     } else {
+
+    /* Add a default alpha value of 0xFF to the pixeldata without alpha
+       information and keep it in the same format as the pixeldata with alpha
+       information. On Little Endian systems: AABBGGRR and on Big Endian
+       systems: RRGGBBAA.  */
+
       for(i = 0; i < height; i++)
 	{
 	  for(j = 0; j < width; j++)
-	    dst[j] = 0xFF000000 |
-	      (pixeldata[j*3 + 2] & 0xFF) << 16 |
-	      (pixeldata[j*3 + 1] & 0xFF) << 8 |
-	      (pixeldata[j*3] & 0xFF);
+
+#ifndef WORDS_BIGENDIAN
+	    dst[j] = 0xFF000000
+	      | (pixeldata[j*3 + 2] & 0xFF) << 16
+	      | (pixeldata[j*3 + 1] & 0xFF) << 8
+	      | (pixeldata[j*3] & 0xFF);
+#else
+	    dst[j] = (pixeldata[j*3] & 0xFF) << 24
+	      | (pixeldata[j*3 + 1] & 0xFF) << 16
+	      | (pixeldata[j*3 + 2] & 0xFF) << 8
+	      | 0xFF;
+#endif
 	  dst += width;
 	  pixeldata += rowstride;
 	}

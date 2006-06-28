@@ -1,3 +1,13 @@
+2006-06-28  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* gnu/java/awt/peer/gtk/CairoSurface.java: Swap the data from the
+	GdkPixbuf correctly on big endian systems. Fix a typo in the little
+	endian swapping code.
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c
+	(Java_gnu_java_awt_peer_gtk_GtkImage_getPixels): Swap the pixeldata
+	without alpha information correctly on big endian systems.
+
 2006-06-28  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/net/local/LocalSocket.java
