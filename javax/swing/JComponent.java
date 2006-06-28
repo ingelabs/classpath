@@ -950,6 +950,8 @@ public abstract class JComponent extends Container implements Serializable
   {
     if (listenerType == PropertyChangeListener.class)
       return getPropertyChangeListeners();
+    else if (listenerType == VetoableChangeListener.class)
+      return getVetoableChangeListeners();
     else
       return listenerList.getListeners(listenerType);
   }
@@ -968,12 +970,16 @@ public abstract class JComponent extends Container implements Serializable
   /**
    * Return all registered <code>VetoableChangeListener</code> objects.
    *
-   * @return The set of <code>VetoableChangeListener</code> objects in {@link
-   * #listenerList}
+   * @return An array of the <code>VetoableChangeListener</code> objects 
+   *     registered with this component (possibly empty but never 
+   *     <code>null</code>).
+   * 
+   * @since 1.4
    */
   public VetoableChangeListener[] getVetoableChangeListeners()
-  {
-    return (VetoableChangeListener[]) getListeners(VetoableChangeListener.class);
+  {    
+    return vetoableChangeSupport == null ? new VetoableChangeListener[0]
+        : vetoableChangeSupport.getVetoableChangeListeners();
   }
 
   /**

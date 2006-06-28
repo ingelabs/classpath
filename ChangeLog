@@ -1,5 +1,17 @@
 2006-06-28  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* java/beans/VetoableChangeSupport.java
+	(addVetoableChangeListener(VetoableChangeListener)): Do nothing for
+	null listener,
+	(addVetoableChangeListener(String, VetoableChangeListener)): Do nothing
+	for null property name and/or listener,
+	* javax/swing/JComponent.java
+	(getListeners): Handle VetoableChangeListener.class as a special case,
+	(getVetoableChangeListeners): Fetch these from the 
+	vetoableChangeSupport object.
+
+2006-06-28  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/JComponent.java
 	(componentPopupMenu): New field,
 	(inheritsPopupMenu): New field,
@@ -77,8 +89,7 @@
 	* java/lang/management/ThreadMXBean.java:
 	(getThreadInfo(long[])): Corrected return type.
 	(getThreadInfo(long[], int)): Likewise.
-	
->>>>>>> 1.7954
+
 2006-06-27  Mark Wielaard  <mark@klomp.org>
 
 	* java/awt/datatransfer/Clipboard.java (addFlavorListener): Do
