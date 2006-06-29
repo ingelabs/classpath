@@ -1200,7 +1200,38 @@ public class File implements Serializable, Comparable
    */
   public static File[] listRoots()
   {
-    return VMFile.listRoots();
+    File[] roots = VMFile.listRoots();
+    
+    SecurityManager s = System.getSecurityManager();
+    if (s != null)
+      {
+	// Only return roots to which the security manager permits read access.
+	int count = roots.length;
+	for (int i = 0; i < roots.length; i++)
+	  {
+	    try
+	      {
+        	s.checkRead (roots[i].path);		
+	      }
+	    catch (SecurityException sx)
+	      {
+	        roots[i] = null;
+		count--;
+	      }
+	  }
+	if (count != roots.length)
+	  {
+	    File[] newRoots = new File[count];
+	    int k = 0;
+	    for (int i = 0; i < roots.length; i++)
+	      {
+	        if (roots[i] != null)
+		  newRoots[k++] = roots[i];
+	      }
+	    roots = newRoots;
+	  }
+      }
+    return roots;
   }
 
   /**
