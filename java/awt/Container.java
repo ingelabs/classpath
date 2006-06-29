@@ -1594,7 +1594,16 @@ public class Container extends Component
   public void applyComponentOrientation (ComponentOrientation orientation)
   {
     if (orientation == null)
-      throw new NullPointerException ();
+      throw new NullPointerException();
+
+    setComponentOrientation(orientation);
+    for (int i = 0; i < ncomponents; i++)
+      {
+        if (component[i] instanceof Container)
+             ((Container) component[i]).applyComponentOrientation(orientation); 
+          else
+             component[i].setComponentOrientation(orientation);
+      }
   }
 
   public void addPropertyChangeListener (PropertyChangeListener listener)

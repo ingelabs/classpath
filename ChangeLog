@@ -1,3 +1,8 @@
+2006-06-27  Tania Bento  <tbento@redhat.com>
+
+	* java/awt/Container.java
+	(applyComponentOrientation): Implemented method.
+
 2006-06-29  Gary Benson  <gbenson@redhat.com>
 
 	* java/io/File.java (listRoots): Merge security checks from libgcj.
