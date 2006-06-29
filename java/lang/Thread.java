@@ -1239,7 +1239,11 @@ public class Thread implements Runnable
   public String getState()
   {
     VMThread t = vmThread;
-    return t == null ? null : t.getState();
+    if (t != null)
+      return t.getState();
+    if (group == null)
+      return "TERMINATED";
+    return "NEW";
   }
 
   /**
