@@ -1,4 +1,4 @@
-2006-06-27  Tania Bento  <tbento@redhat.com>
+2006-06-29  Tania Bento  <tbento@redhat.com>
 
 	* java/awt/Container.java
 	(applyComponentOrientation): Implemented method.
