@@ -1,3 +1,10 @@
+2006-06-29  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JComponent.java
+	(JComponent()): Initialize the locale here, not the default locale,
+	(getDefaultLocale): If null, return Locale.getDefault(),
+	(setDefaultLocale): Added API docs.
+
 2006-06-29  Tania Bento  <tbento@redhat.com>
 
 	* java/awt/Container.java

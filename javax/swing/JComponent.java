@@ -72,7 +72,6 @@ import java.beans.VetoableChangeListener;
 import java.beans.VetoableChangeSupport;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EventListener;
 import java.util.Hashtable;
 import java.util.Locale;
@@ -812,7 +811,7 @@ public abstract class JComponent extends Container implements Serializable
   {
     super();
     setDropTarget(new DropTarget());
-    defaultLocale = Locale.getDefault();
+    setLocale(getDefaultLocale());
     debugGraphicsOptions = DebugGraphics.NONE_OPTION;
     setRequestFocusEnabled(true);
   }
@@ -3207,11 +3206,29 @@ public abstract class JComponent extends Container implements Serializable
     // Nothing to do here.
   }
 
+  /**
+   * Returns the locale used as the default for all new components.  The 
+   * default value is {@link Locale#getDefault()} (that is, the platform
+   * default locale).
+   * 
+   * @return The locale (never <code>null</code>).
+   * 
+   * @see #setDefaultLocale(Locale)
+   */
   public static Locale getDefaultLocale()
   {
+    if (defaultLocale == null)
+      defaultLocale = Locale.getDefault();
     return defaultLocale;
   }
   
+  /**
+   * Sets the locale to be used as the default for all new components.  If this
+   * is set to <code>null</code>, the {@link #getDefaultLocale()} method will
+   * return the platform default locale.
+   * 
+   * @param l  the locale (<code>null</code> permitted).
+   */
   public static void setDefaultLocale(Locale l)
   {
     defaultLocale = l;
