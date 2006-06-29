@@ -456,9 +456,6 @@ final class VMThread
    * @return a string corresponding to one of the 
    *         thread enumeration states specified above.
    */
-  String getState()
-  {
-    return thread.state;
-  }
+  native String getState();
 
 }
