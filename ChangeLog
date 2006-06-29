@@ -1,3 +1,7 @@
+2006-06-29  Gary Benson  <gbenson@redhat.com>
+
+	* java/io/FilePermission.java (implies): Work when path is "/".
+
 2006-06-28  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/lang/Thread.java:
