@@ -697,6 +697,30 @@ esac;
 AM_CONDITIONAL(USE_PREBUILT_GLIBJ_ZIP, test x$use_glibj_zip = xtrue)
 AC_SUBST(PATH_TO_GLIBJ_ZIP)
 
+dnl -----------------------------------------------------------
+dnl Build with Escher based X peers.
+dnl -----------------------------------------------------------
+AC_ARG_WITH([escher],
+	 AS_HELP_STRING([--with-escher=ABS.PATH],
+	                [specify path to escher dir or JAR for X peers]))
+case "$with_escher" in
+"")
+        use_escher=false
+        ;;
+"no")
+        use_escher=false
+        ;;
+"yes")
+        AC_MSG_ERROR([Please suply an absolute path to Escher library])
+        ;;
+*)
+        use_escher=true
+        PATH_TO_ESCHER=$with_escher
+        ;;
+esac;
+
+AM_CONDITIONAL(USE_ESCHER, test x$use_escher = xtrue)
+AC_SUBST(PATH_TO_ESCHER)
 
 dnl -----------------------------------------------------------
 dnl Check if local socket support should be included.
@@ -784,3 +808,9 @@ fi
 AC_CONFIG_COMMANDS([gen-classlist],[chmod 755 lib/gen-classlist.sh])
 AC_CONFIG_COMMANDS([copy-vmresources],[chmod 755 lib/copy-vmresources.sh])
 AC_OUTPUT
+
+# Create standard.omit based on decisions we just made.
+cp lib/standard.omit.in lib/standard.omit
+if test x$use_escher != xtrue; then
+   echo gnu/java/awt/peer/x >> lib/standard.omit
+fi

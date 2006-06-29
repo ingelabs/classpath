@@ -1,3 +1,28 @@
+2006-06-29  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/x/GLGraphics.java,
+	* gnu/java/awt/peer/x/ImageConverter.java,
+	* gnu/java/awt/peer/x/KeyboardMapping.java,
+	* gnu/java/awt/peer/x/XEventPump.java,
+	* gnu/java/awt/peer/x/XFontPeer.java,
+	* gnu/java/awt/peer/x/XFontPeer2.java,
+	* gnu/java/awt/peer/x/XFramePeer.java,
+	* gnu/java/awt/peer/x/XGraphics.java,
+	* gnu/java/awt/peer/x/XGraphics2D.java,
+	* gnu/java/awt/peer/x/XGraphicsConfiguration.java,
+	* gnu/java/awt/peer/x/XGraphicsDevice.java,
+	* gnu/java/awt/peer/x/XGraphicsEnvironment.java,
+	* gnu/java/awt/peer/x/XImage.java,
+	* gnu/java/awt/peer/x/XLightweightPeer.java,
+	* gnu/java/awt/peer/x/XToolkit.java,
+	* gnu/java/awt/peer/x/XWindowPeer.java,
+	* gnu/java/awt/peer/x/fonts.properties: New files.
+	* lib/standard.omit: Removed.
+	* lib/standard.omit.in: Added.
+	* configure.ac: Added configure option --with-escher. Added some
+	configury for omitting gnu.java.awt.peer.x package when
+	this option is not specified.
+
 2006-06-29  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JComponent.java
