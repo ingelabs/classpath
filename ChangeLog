@@ -1,5 +1,16 @@
 2006-06-30  Sven de Marothy  <sven@physto.se>
 
+	* gnu/java/awt/ClasspathToolkit.java,
+	* gnu/java/awt/peer/x/XToolkit.java,
+	* gnu/java/awt/peer/qt/QtToolkit.java,
+	* gnu/java/awt/peer/gtk/GtkToolkit.java,
+	Remove ClasspathTextLayoutPeer.
+	* gnu/java/awt/peer/gtk/GdkTextLayout.java,
+	* gnu/java/awt/peer/ClasspathTextLayoutPeer,
+	Files removed.
+	
+2006-06-30  Sven de Marothy  <sven@physto.se>
+
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java:
 	(drawGlyphVector): Don't draw empty vectors.
 

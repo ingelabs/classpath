@@ -42,7 +42,6 @@ package gnu.java.awt.peer.gtk;
 import gnu.classpath.Configuration;
 import gnu.java.awt.EmbeddedWindow;
 import gnu.java.awt.peer.ClasspathFontPeer;
-import gnu.java.awt.peer.ClasspathTextLayoutPeer;
 import gnu.java.awt.peer.EmbeddedWindowPeer;
 
 import java.awt.*;
@@ -531,12 +530,6 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
         fontCache.put (keyMap, newPeer);
         return newPeer;
       }
-  }
-
-  public ClasspathTextLayoutPeer getClasspathTextLayoutPeer (AttributedString str, 
-                                                             FontRenderContext frc)
-  {
-    return new GdkTextLayout(str, frc);
   }
 
   protected EventQueue getSystemEventQueueImpl() 

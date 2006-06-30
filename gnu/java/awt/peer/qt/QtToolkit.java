@@ -41,7 +41,6 @@ import gnu.classpath.Configuration;
 import gnu.java.awt.EmbeddedWindow;
 import gnu.java.awt.peer.ClasspathFontPeer;
 import gnu.java.awt.peer.EmbeddedWindowPeer;
-import gnu.java.awt.peer.ClasspathTextLayoutPeer;
 import java.awt.AWTEvent;
 import java.awt.AWTException;
 import java.awt.Button;
@@ -448,12 +447,6 @@ public class QtToolkit extends ClasspathToolkit
   public ClasspathFontPeer getClasspathFontPeer (String name, Map attrs)
   {  
     return new QtFontPeer (name, attrs);
-  }
-
-  public ClasspathTextLayoutPeer getClasspathTextLayoutPeer(AttributedString str, 
-							    FontRenderContext frc)
-  {
-    return null;
   }
 
   // FIXME

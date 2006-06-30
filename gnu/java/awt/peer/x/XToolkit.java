@@ -117,7 +117,6 @@ import javax.imageio.ImageIO;
 import gnu.java.awt.ClasspathToolkit;
 import gnu.java.awt.EmbeddedWindow;
 import gnu.java.awt.peer.ClasspathFontPeer;
-import gnu.java.awt.peer.ClasspathTextLayoutPeer;
 import gnu.java.awt.peer.EmbeddedWindowPeer;
 import gnu.java.awt.peer.swing.SwingCanvasPeer;
 import gnu.java.awt.peer.swing.SwingLabelPeer;
@@ -188,12 +187,6 @@ public class XToolkit
         font = (XFontPeer) fontCache.get(canonical);
       }
     return font;
-  }
-
-  public ClasspathTextLayoutPeer getClasspathTextLayoutPeer(AttributedString str, FontRenderContext frc)
-  {
-    // TODO: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented.");
   }
 
   public Font createFont(int format, InputStream stream)
