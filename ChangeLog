@@ -1,3 +1,10 @@
+2006-07-01  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/java2d/AbstractGraphics2D.java
+	(transform): Make field protected.
+	(getDestinationRaster): Provide default implementation for
+	previously abstract method.
+
 2006-06-30  Tania Bento  <tbento@redhat.com>
 
 	* java/awt/TextArea.java
