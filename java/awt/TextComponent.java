@@ -312,7 +312,11 @@ public class TextComponent extends Component
 
   TextComponent(String text)
   {
-    this.text = text;
+    if (text == null)
+      this.text = "";
+    else
+      this.text = text;
+    
     this.editable = true;
   }
 

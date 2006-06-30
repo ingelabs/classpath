@@ -1,3 +1,18 @@
+2006-06-30  Tania Bento  <tbento@redhat.com>
+
+	* java/awt/TextArea.java
+	(TextArea(String, int, int, int)): No longer throws
+	IllegalArgumentException if rows, columns, or scrollbarVisibility 
+	values are invalid.  
+	(TextArea(String, int, int, int)): If rows or columns are < 0, 
+	they get set to 0.  If scrollbarVisibility is < 0 or > 4, it 
+	gets set to the default value of 0 (SCROLLBARS_BOTH).
+	 (appendText): Added case when peer = null.
+	(insertText): Added case when peer == null.
+	(replaceText): Added case when peer == null.
+	* java/awt/TextComponent.java
+	(TextComponent(String)): If text == null, set it to "".
+
 2006-06-30  Lillian Angel  <langel@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkCheckboxPeer.java

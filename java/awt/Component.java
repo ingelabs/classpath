@@ -4697,7 +4697,7 @@ p   * <li>the set of backward traversal keys
                                     Object newValue)
   {
     if (changeSupport != null)
-      changeSupport.firePropertyChange(propertyName, oldValue, newValue);
+      changeSupport.firePropertyChange(propertyName, oldValue, newValue);  
   }
 
   /**
