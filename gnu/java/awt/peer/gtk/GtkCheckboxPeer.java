@@ -95,7 +95,12 @@ public class GtkCheckboxPeer extends GtkComponentPeer
         // Initially we're part of a group.
 
         // See if this group is already stored in our map.
-        Long groupPointer = (Long) groupMap.get(current_group);
+        Long groupPointer = null;
+        synchronized (groupMap)
+        {
+          groupPointer = (Long) groupMap.get(current_group);
+        }
+        
         if (groupPointer == null)
           {
             // We don't know about this group.  Create a new native
@@ -150,7 +155,12 @@ public class GtkCheckboxPeer extends GtkComponentPeer
         current_group = group;
 
         // See if the new group is already stored in our map.
-        Long groupPointer = (Long) groupMap.get(current_group);
+        Long groupPointer = null;
+        synchronized (groupMap)
+        {
+          groupPointer = (Long) groupMap.get(current_group);
+        }
+        
         if (groupPointer == null)
           {
             // We don't know about this group.  Create a new native
@@ -190,7 +200,12 @@ public class GtkCheckboxPeer extends GtkComponentPeer
         current_group = group;
         
         // See if the new group is already stored in our map.
-        Long groupPointer = (Long) groupMap.get(group);
+        Long groupPointer = null;
+        synchronized (groupMap)
+        {
+          groupPointer = (Long) groupMap.get(current_group);
+        }
+        
         if (groupPointer == null)
           {
             // We don't know about this group.  Create a new native

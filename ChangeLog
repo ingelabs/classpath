@@ -1,29 +1,35 @@
 2006-06-30  Lillian Angel  <langel@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkCheckboxPeer.java
-	(create): Changed to be non-syncronized.
+	(create): Added synchronized block around groupMap.get calls.
+	(setCheckboxGroup): Likewise.
+
+2006-06-30  Lillian Angel  <langel@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkCheckboxPeer.java
+	(create): Changed to be non-synchronized.
 	(setLabel): Likewise.
 	(setCheckboxGroup): Likewise.
 	(addToGroupMap): Likewise. Added synchronized block around
 	code.
-	(dispose): Changed to be non-syncronized.
+	(dispose): Changed to be non-synchronized.
 
 2006-06-30  Lillian Angel  <langel@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkCheckboxPeer.java:
 	Changed all return values of native functions to void.
-	(create): Changed function to be syncronized. Removed
+	(create): Changed function to be synchronized. Removed
 	call to put value in groupMap, this is now done from 
 	the native code.
-	(setState): Changed function to be syncronized.
-	(setLabel): Changed function to be syncronized.
-	(setCheckboxGroup): Changed function to be syncronized. Removed
+	(setState): Changed function to be synchronized.
+	(setLabel): Changed function to be synchronized.
+	(setCheckboxGroup): Changed function to be synchronized. Removed
 	call to put value in groupMap, this is now done from
 	the native code.
-	(postItemEvent): Changed function to be syncronized.
+	(postItemEvent): Changed function to be synchronized.
 	(addToGroupMap): New function. Called by native code to add
 	new value to the group.
-	(dispose): Changed function to be syncronized.
+	(dispose): Changed function to be synchronized.
 	* include/gnu_java_awt_peer_gtk_GtkCheckboxPeer.h: Updated
 	all functions.
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxPeer.c
