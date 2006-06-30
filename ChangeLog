@@ -1,3 +1,8 @@
+2006-06-30  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/TextComponent.java: Reformatted source code,
+	* java/awt/TextField.java: Likewise.
+
 2006-06-29  Jeroen Frijters <jeroen@sumatra.nl>
 
 	* java/lang/Thread.java:
