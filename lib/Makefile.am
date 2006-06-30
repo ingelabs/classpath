@@ -165,7 +165,7 @@ compile-classes: classes $(JAVA_SRCS) Makefile
 	touch compile-classes
 endif
 
-EXTRA_DIST = standard.omit mkcollections.pl.in Makefile.gcj split-for-gcj.sh
+EXTRA_DIST = standard.omit.in mkcollections.pl.in Makefile.gcj split-for-gcj.sh
 CLEANFILES = compile-classes resources classes \
 	glibj.zip classes.1 classes.2 \
 	$(top_builddir)/gnu/java/locale/LocaleData.java \
@@ -181,6 +181,7 @@ clean-local:
 	-rm -rf META-INF
 	-rm -rf lists
 	-rm -f Makefile.deps
+	-rm -f standard.omit
 
 dist-hook:
 	mkdir -p $(distdir)

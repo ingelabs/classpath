@@ -66,7 +66,7 @@ if test ! "${top_builddir}" -ef "@top_srcdir@"; then
 fi
 
 
-cat @top_srcdir@/lib/$1.omit vm.omit > tmp.omit
+cat $1.omit vm.omit > tmp.omit
 for dir in $vm_dirlist; do
    if test -f $dir/$1.omit; then
       cat $dir/$1.omit >> tmp.omit

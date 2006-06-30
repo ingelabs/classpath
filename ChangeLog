@@ -1,3 +1,12 @@
+2006-06-30  Mark Wielaard  <mark@klomp.org>
+
+	* configure.ac: Move standard.omit creation after dirs are created.
+	Cat standard.omit.in from srcdir. Make exclude regex more explicit.
+	* lib/Makefile.am (EXTRA_DIST): Add standard.omit.in.
+	(clean-local): Remove standard.omit.
+	* lib/gen-classlist.sh.in: Use omit file in build dir.
+	* lib/standard.omit.in: Make exclude regex more explicit.
+
 2006-06-30  Roman Kennke  <kennke@aicas.com>
 
 	* lib/Makefile.am: Added Escher dir/jar to classpath when
