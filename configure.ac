@@ -746,6 +746,12 @@ fi
 AM_CONDITIONAL(ENABLE_LOCAL_SOCKETS, test "x$ENABLE_LOCAL_SOCKETS" = "xyes")
 
 
+# Create standard.omit based on decisions we just made.
+cp lib/standard.omit.in lib/standard.omit
+if test x$use_escher != xtrue; then
+   echo gnu/java/awt/peer/x >> lib/standard.omit
+fi
+
 dnl -----------------------------------------------------------
 dnl output files
 dnl -----------------------------------------------------------
@@ -808,9 +814,3 @@ fi
 AC_CONFIG_COMMANDS([gen-classlist],[chmod 755 lib/gen-classlist.sh])
 AC_CONFIG_COMMANDS([copy-vmresources],[chmod 755 lib/copy-vmresources.sh])
 AC_OUTPUT
-
-# Create standard.omit based on decisions we just made.
-cp lib/standard.omit.in lib/standard.omit
-if test x$use_escher != xtrue; then
-   echo gnu/java/awt/peer/x >> lib/standard.omit
-fi

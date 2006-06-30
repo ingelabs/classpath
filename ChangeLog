@@ -1,3 +1,10 @@
+2006-06-30  Roman Kennke  <kennke@aicas.com>
+
+	* lib/Makefile.am: Added Escher dir/jar to classpath when
+	requested.
+	* configure.ac: Moved handling of standard.omit to a place
+	where it actually gets executed.
+
 2006-06-30  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/TextComponent.java: Reformatted source code,
