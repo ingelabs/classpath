@@ -1,5 +1,15 @@
 2006-06-30  Lillian Angel  <langel@redhat.com>
 
+	* gnu/java/awt/peer/gtk/GtkCheckboxPeer.java
+	(create): Changed to be non-syncronized.
+	(setLabel): Likewise.
+	(setCheckboxGroup): Likewise.
+	(addToGroupMap): Likewise. Added synchronized block around
+	code.
+	(dispose): Changed to be non-syncronized.
+
+2006-06-30  Lillian Angel  <langel@redhat.com>
+
 	* gnu/java/awt/peer/gtk/GtkCheckboxPeer.java:
 	Changed all return values of native functions to void.
 	(create): Changed function to be syncronized. Removed

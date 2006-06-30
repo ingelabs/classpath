@@ -80,7 +80,7 @@ public class GtkCheckboxPeer extends GtkComponentPeer
     super (c);
   }
 
-  public synchronized void create ()
+  public void create ()
   {
     Checkbox checkbox = (Checkbox) awtComponent;
     current_group = checkbox.getCheckboxGroup ();
@@ -133,12 +133,12 @@ public class GtkCheckboxPeer extends GtkComponentPeer
       }
   }
 
-  public synchronized void setLabel (String label)
+  public void setLabel (String label)
   {
     gtkButtonSetLabel (label);
   }
 
-  public synchronized void setCheckboxGroup (CheckboxGroup group)
+  public void setCheckboxGroup (CheckboxGroup group)
   {
     if (current_group == null && group != null)
       {
@@ -221,12 +221,15 @@ public class GtkCheckboxPeer extends GtkComponentPeer
       }
   }
   
-  public synchronized void addToGroupMap(long groupPointer)
+  public void addToGroupMap(long groupPointer)
   {
-    groupMap.put(current_group, new Long (groupPointer));
+    synchronized (groupMap)
+    {
+      groupMap.put(current_group, new Long (groupPointer));
+    }
   }
 
-  public synchronized void dispose ()
+  public void dispose ()
   {
     super.dispose ();
   }
