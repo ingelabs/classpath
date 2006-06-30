@@ -60,11 +60,11 @@ public class GtkCheckboxPeer extends GtkComponentPeer
   private static WeakHashMap groupMap = new WeakHashMap();
 
   public native void createCheckButton ();
-  public native long createRadioButton (long groupPointer);
+  public native void createRadioButton (long groupPointer);
 
-  public native long addToGroup (long groupPointer);
-  public native long removeFromGroup ();
-  public native long switchToGroup (long groupPointer);
+  public native void addToGroup (long groupPointer);
+  public native void removeFromGroup ();
+  public native void switchToGroup (long groupPointer);
   
   public native void connectSignals ();
 
@@ -80,7 +80,7 @@ public class GtkCheckboxPeer extends GtkComponentPeer
     super (c);
   }
 
-  public void create ()
+  public synchronized void create ()
   {
     Checkbox checkbox = (Checkbox) awtComponent;
     current_group = checkbox.getCheckboxGroup ();
@@ -100,15 +100,14 @@ public class GtkCheckboxPeer extends GtkComponentPeer
           {
             // We don't know about this group.  Create a new native
             // group pointer for this group and store it in our map.
-            groupMap.put(current_group, new Long (createRadioButton(0)));
+           createRadioButton(0);
           }
         else
           {
             // We already know about this group.  Pass the
             // corresponding native group pointer value to the native
             // create method.
-            groupMap.put(current_group,
-                         new Long(createRadioButton(groupPointer.longValue())));
+            createRadioButton(groupPointer.longValue());
           }
       }
     currentState = checkbox.getState();
@@ -125,7 +124,7 @@ public class GtkCheckboxPeer extends GtkComponentPeer
    * event since events should only be posted for user initiated
    * clicks on the GtkCheckButton.
    */
-  synchronized public void setState (boolean state)
+  public synchronized void setState (boolean state)
   {
     if (currentState != state)
       {
@@ -134,12 +133,12 @@ public class GtkCheckboxPeer extends GtkComponentPeer
       }
   }
 
-  public void setLabel (String label)
+  public synchronized void setLabel (String label)
   {
     gtkButtonSetLabel (label);
   }
 
-  public void setCheckboxGroup (CheckboxGroup group)
+  public synchronized void setCheckboxGroup (CheckboxGroup group)
   {
     if (current_group == null && group != null)
       {
@@ -156,15 +155,14 @@ public class GtkCheckboxPeer extends GtkComponentPeer
           {
             // We don't know about this group.  Create a new native
             // group pointer for this group and store it in our map.
-            groupMap.put(current_group, new Long (addToGroup(0)));
+            addToGroup(0);
           }
         else
           {
             // We already know about this group.  Pass the
             // corresponding native group pointer value to the native
             // create method.
-            groupMap.put(current_group,
-                         new Long(addToGroup(groupPointer.longValue())));
+            addToGroup(groupPointer.longValue());
           }
       }
     else if (current_group != null && group == null)
@@ -173,8 +171,8 @@ public class GtkCheckboxPeer extends GtkComponentPeer
         // removing it from a group.  This means that the backing
         // GtkWidget will change from a GtkRadioButton to a
         // GtkCheckButton.
-        groupMap.put(current_group, new Long (removeFromGroup()));
-        current_group = group;
+        removeFromGroup();
+        current_group = null;
       }
     else if (current_group == null && group == null)
       {
@@ -189,30 +187,30 @@ public class GtkCheckboxPeer extends GtkComponentPeer
         // remove the backing GtkRadioButton from one group and add it
         // to the other group.
 
+        current_group = group;
+        
         // See if the new group is already stored in our map.
         Long groupPointer = (Long) groupMap.get(group);
         if (groupPointer == null)
           {
             // We don't know about this group.  Create a new native
             // group pointer for this group and store it in our map.
-            groupMap.put(group, new Long (switchToGroup(0)));
+            switchToGroup(0);
           }
         else
           {
             // We already know about this group.  Pass the
             // corresponding native group pointer value to the native
             // create method.
-            groupMap.put(group,
-                         new Long(switchToGroup(groupPointer.longValue())));
+            switchToGroup(groupPointer.longValue());
           }
-        current_group = group;
       }
   }
 
   // Override the superclass postItemEvent so that the peer doesn't
   // need information that we have.
   // called back by native side: item_toggled_cb
-  synchronized public void postItemEvent(Object item, boolean state)
+  public synchronized void postItemEvent(Object item, boolean state)
   {
     // Only fire event is state actually changed.
     if (currentState != state)
@@ -222,8 +220,13 @@ public class GtkCheckboxPeer extends GtkComponentPeer
 			    state ? ItemEvent.SELECTED : ItemEvent.DESELECTED);
       }
   }
+  
+  public synchronized void addToGroupMap(long groupPointer)
+  {
+    groupMap.put(current_group, new Long (groupPointer));
+  }
 
-  public void dispose ()
+  public synchronized void dispose ()
   {
     super.dispose ();
   }

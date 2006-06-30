@@ -1,3 +1,34 @@
+2006-06-30  Lillian Angel  <langel@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkCheckboxPeer.java:
+	Changed all return values of native functions to void.
+	(create): Changed function to be syncronized. Removed
+	call to put value in groupMap, this is now done from 
+	the native code.
+	(setState): Changed function to be syncronized.
+	(setLabel): Changed function to be syncronized.
+	(setCheckboxGroup): Changed function to be syncronized. Removed
+	call to put value in groupMap, this is now done from
+	the native code.
+	(postItemEvent): Changed function to be syncronized.
+	(addToGroupMap): New function. Called by native code to add
+	new value to the group.
+	(dispose): Changed function to be syncronized.
+	* include/gnu_java_awt_peer_gtk_GtkCheckboxPeer.h: Updated
+	all functions.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxPeer.c
+	(cp_gtk_checkbox_init_jni): Added code to link to 
+	java function.
+	(Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_createRadioButton): 
+	Changed return value to void. Added call
+	to java function to set pointer in groupMap.
+	(Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_addtoGroup): Likewise. Also,
+	changed check to an assert. Also, removed call to set/del pointer.
+	(Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_removeFromGroup): 
+	Likewise. Also, added check to determine if native_group should be 
+	set to NULL.
+	(Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_switchToGroup): Likewise.
+
 2006-06-30  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/ClasspathToolkit.java,
@@ -6,7 +37,7 @@
 	* gnu/java/awt/peer/gtk/GtkToolkit.java,
 	Remove ClasspathTextLayoutPeer.
 	* gnu/java/awt/peer/gtk/GdkTextLayout.java,
-	* gnu/java/awt/peer/ClasspathTextLayoutPeer,
+	* gnu/java/awt/peer/ClasspathTextLayoutPeer:
 	Files removed.
 	
 2006-06-30  Sven de Marothy  <sven@physto.se>

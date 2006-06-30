@@ -43,6 +43,7 @@ exception statement from your version. */
 #include "jcl.h"
 
 static jmethodID postItemEventID;
+static jmethodID addToGroupMapID;
 static GtkWidget *checkbox_get_widget (GtkWidget *widget);
 static void item_toggled_cb (GtkToggleButton *item, jobject peer);
 
@@ -57,6 +58,10 @@ cp_gtk_checkbox_init_jni (void)
   postItemEventID = (*cp_gtk_gdk_env())->GetMethodID (cp_gtk_gdk_env(), gtkcheckboxpeer,
                                                "postItemEvent", 
                                                "(Ljava/lang/Object;Z)V");
+  
+  addToGroupMapID = (*cp_gtk_gdk_env())->GetMethodID (cp_gtk_gdk_env(), gtkcheckboxpeer,
+                                               "addToGroupMap", 
+                                               "(J)V");
 }
 
 JNIEXPORT void JNICALL
@@ -195,7 +200,7 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_createCheckButton
    This function is called when initially creating the
    button, so an eventbox is created.
  */
-JNIEXPORT jlong JNICALL 
+JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_createRadioButton 
   (JNIEnv *env, jobject obj, jlong groupPointer)
 {
@@ -211,8 +216,7 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_createRadioButton
   if (groupPointer != 0)
   {
     native_group = JLONG_TO_PTR (GSList, groupPointer);
-    if(! GTK_IS_RADIO_BUTTON (native_group->data))
-      native_group = NULL;
+    g_assert (GTK_IS_RADIO_BUTTON (native_group->data));
   }
   button = gtk_radio_button_new_with_label (native_group, "");
   
@@ -229,9 +233,11 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_createRadioButton
   
   NSA_SET_PTR (env, obj, eventbox);
   
-  gdk_threads_leave ();
+  (*cp_gtk_gdk_env())->CallVoidMethod (cp_gtk_gdk_env(), obj,
+                                addToGroupMapID,
+                                PTR_TO_JLONG (native_group));
   
-  return PTR_TO_JLONG (native_group);
+  gdk_threads_leave ();
 }
 
 /* Add the object to the group pointed to by groupPointer.
@@ -239,7 +245,7 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_createRadioButton
    a radio button. Otherwise, creating a radio button in an
    existing group.
  */
-JNIEXPORT jlong JNICALL 
+JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_addToGroup 
   (JNIEnv *env, jobject obj, jlong groupPointer)
 {
@@ -264,8 +270,7 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_addToGroup
   if (groupPointer != 0)
     {
       native_group = JLONG_TO_PTR (GSList, groupPointer);
-      if(! GTK_IS_RADIO_BUTTON (native_group->data))
-        native_group = NULL;
+      g_assert (GTK_IS_RADIO_BUTTON (native_group->data));
     }
       
   radio_button = gtk_radio_button_new_with_label (native_group, label);
@@ -281,22 +286,20 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_addToGroup
   }
              
   gtk_container_remove (GTK_CONTAINER (container), check_button);
-
-  NSA_DEL_PTR (env, obj);
-  NSA_SET_PTR (env, obj, container);
-  
   gtk_container_add (GTK_CONTAINER (container), radio_button);
   gtk_widget_show (radio_button);
   
-  gdk_threads_leave ();
+  (*cp_gtk_gdk_env())->CallVoidMethod (cp_gtk_gdk_env(), obj,
+                                addToGroupMapID,
+                                PTR_TO_JLONG (native_group));
   
-  return PTR_TO_JLONG (native_group);
+  gdk_threads_leave ();
 }
 
 /* Remove the object from the group pointed to by groupPointer.
    We are removing the radio button and creating a check button. 
  */
-JNIEXPORT jlong JNICALL 
+JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_removeFromGroup 
   (JNIEnv *env, jobject obj)
 {
@@ -324,25 +327,27 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_removeFromGroup
              
   native_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio_button));
   native_group = g_slist_remove (native_group, GTK_RADIO_BUTTON (radio_button));
+  
+  if (native_group && ! GTK_IS_RADIO_BUTTON (native_group->data))
+    native_group = NULL;
+  
   GTK_RADIO_BUTTON(radio_button)->group = NULL;
   
-  gtk_container_remove (GTK_CONTAINER (container), radio_button);
-    
-  NSA_DEL_PTR (env, obj);
-  NSA_SET_PTR (env, obj, container);
-  
+  gtk_container_remove (GTK_CONTAINER (container), radio_button);  
   gtk_container_add (GTK_CONTAINER (container), check_button);
   gtk_widget_show (check_button);
   
-  gdk_threads_leave ();
+  (*cp_gtk_gdk_env())->CallVoidMethod (cp_gtk_gdk_env(), obj,
+                                addToGroupMapID,
+                                PTR_TO_JLONG (native_group));
   
-  return PTR_TO_JLONG (native_group);
+  gdk_threads_leave ();
 }
 
 /* Move the radio button to a new group. If groupPointer is
    0, create a new group.
  */
-JNIEXPORT jlong JNICALL 
+JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_switchToGroup 
   (JNIEnv *env, jobject obj, jlong groupPointer)
 {
@@ -362,8 +367,7 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_switchToGroup
   if (groupPointer != 0)
   {
     native_group = JLONG_TO_PTR (GSList, groupPointer);
-    if(! GTK_IS_RADIO_BUTTON (native_group->data))
-      native_group = NULL;
+    g_assert (GTK_IS_RADIO_BUTTON (native_group->data));
   }
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (radio_button), native_group);
   
@@ -374,9 +378,11 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_switchToGroup
     GTK_RADIO_BUTTON(radio_button)->group = native_group;
   }
    
-  gdk_threads_leave ();
+  (*cp_gtk_gdk_env())->CallVoidMethod (cp_gtk_gdk_env(), obj,
+                                addToGroupMapID,
+                                PTR_TO_JLONG (native_group));
   
-  return PTR_TO_JLONG (native_group);
+  gdk_threads_leave ();
 }
 
 static void
