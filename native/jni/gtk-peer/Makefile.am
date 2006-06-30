@@ -15,7 +15,6 @@ libgtkpeer_la_SOURCES = gnu_java_awt_peer_gtk_CairoSurface.c \
 			gnu_java_awt_peer_gtk_GdkTextLayout.c \
 			gnu_java_awt_peer_gtk_GtkButtonPeer.c \
 			gnu_java_awt_peer_gtk_GtkCanvasPeer.c \
-			gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer.c \
 			gnu_java_awt_peer_gtk_GtkCheckboxMenuItemPeer.c \
 			gnu_java_awt_peer_gtk_GtkCheckboxPeer.c \
 			gnu_java_awt_peer_gtk_GtkChoicePeer.c \

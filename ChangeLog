@@ -1,3 +1,51 @@
+2006-06-30  Lillian Angel  <langel@redhat.com>
+	    Tom Fitzsimmons <fitzsim@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkCheckboxGroupPeer.java: Removed class.
+	* gnu/java/awt/peer/gtk/GtkCheckboxPeer.java:
+	Added current_group, groupMap fields. Added definitions for
+	new native functions.
+	(create): Removed FIXME. Added code to create the check button or
+	radio button when appropriate. Updated groupMap to contain
+	pointer to the newly created group.
+	(setCheckboxGroup): Added code to handle all cases. Removing
+	a button from a group, adding a button to a group, or changing the
+	group of a button.
+	(dispose): Changed to call super.
+	* include/Makefile.am: Removed reference to 
+	gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer.h.
+	* include/gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer.h: Removed file.
+	* include/gnu_java_awt_peer_gtk_GtkCheckboxPeer.h: Added definitions
+	for new functions.
+	* native/jni/gtk-peer/Makefile.am: Removed reference to 
+	gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer.c.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer.c:
+	Removed file.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_combobox_get_widget): 
+	Renamed to checkbox_get_widget.
+	(Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_connectSignals): 
+	Changed to use checkbox_get_widget.
+	(Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_nativeSetCheckboxGroup): 
+	Removed.
+	(Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkWidgetModifyFont):
+	Changed to use checkbox_get_widget.
+	(Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkButtonSetLabel):
+	Likewise.
+	(Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_createCheckButton):
+	New function. Creates checkbutton without a group.
+	(Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_createRadioButton):
+	Creates a radio button in a group, using groupPointer. If groupPointer
+	is 0, then a new group is created.
+	(Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_addToGroup): Adds the
+	check button to a group, using groupPointer. A radio button is created
+	in its place. If groupPointer is 0, then a new group is created.
+	(Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_removeFromGroup): The
+	radio button is removed from the group. A check button is created in 
+	its place.
+	(Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_switchToGroup): The
+	radio button is moved to a new group.
+
 2006-06-30  Mark Wielaard  <mark@klomp.org>
 
 	* configure.ac: Move standard.omit creation after dirs are created.
