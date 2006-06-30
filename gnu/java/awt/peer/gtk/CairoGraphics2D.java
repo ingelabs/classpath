@@ -1392,6 +1392,10 @@ public abstract class CairoGraphics2D extends Graphics2D
   public void drawGlyphVector(GlyphVector gv, float x, float y)
   {
     double alpha = 1.0;
+
+    if( gv.getNumGlyphs() <= 0 )
+      return;
+
     if (comp instanceof AlphaComposite)
       alpha = ((AlphaComposite) comp).getAlpha();
     if (gv instanceof FreetypeGlyphVector && alpha == 1.0)

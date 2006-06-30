@@ -1,3 +1,8 @@
+2006-06-30  Sven de Marothy  <sven@physto.se>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java:
+	(drawGlyphVector): Don't draw empty vectors.
+
 2006-06-30  Lillian Angel  <langel@redhat.com>
 	    Tom Fitzsimmons <fitzsim@redhat.com>
 
