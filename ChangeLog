@@ -1,3 +1,30 @@
+2006-07-02  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/javax/crypto/keyring/AuthenticatedEntry.java: Source formatting.
+	* gnu/javax/crypto/keyring/BaseKeyring.java: Likewise.
+	* gnu/javax/crypto/keyring/BinaryDataEntry.java: Likewise.
+	* gnu/javax/crypto/keyring/CertificateEntry.java: Likewise.
+	* gnu/javax/crypto/keyring/CertPathEntry.java: Likewise.
+	* gnu/javax/crypto/keyring/CompressedEntry.java: Likewise.
+	* gnu/javax/crypto/keyring/EncryptedEntry.java: Likewise.
+	* gnu/javax/crypto/keyring/Entry.java: Likewise.
+	* gnu/javax/crypto/keyring/EnvelopeEntry.java: Likewise.
+	* gnu/javax/crypto/keyring/GnuPrivateKeyring.java: Likewise.
+	* gnu/javax/crypto/keyring/GnuPublicKeyring.java: Likewise.
+	* gnu/javax/crypto/keyring/IKeyring.java: Likewise.
+	* gnu/javax/crypto/keyring/IPrivateKeyring.java: Likewise.
+	* gnu/javax/crypto/keyring/IPublicKeyring.java: Likewise.
+	* gnu/javax/crypto/keyring/MalformedKeyringException.java: Likewise.
+	* gnu/javax/crypto/keyring/MaskableEnvelopeEntry.java: Likewise.
+	* gnu/javax/crypto/keyring/MeteredInputStream.java: Likewise.
+	* gnu/javax/crypto/keyring/PasswordAuthenticatedEntry.java: Likewise.
+	* gnu/javax/crypto/keyring/PasswordEncryptedEntry.java: Likewise.
+	* gnu/javax/crypto/keyring/PasswordProtectedEntry.java: Likewise.
+	* gnu/javax/crypto/keyring/PrimitiveEntry.java: Likewise.
+	* gnu/javax/crypto/keyring/PrivateKeyEntry.java: Likewise.
+	* gnu/javax/crypto/keyring/Properties.java: Likewise.
+	* gnu/javax/crypto/keyring/PublicKeyEntry.java: Likewise.
+
 2006-07-01  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/AbstractCellEditor.java: Source code formatting,

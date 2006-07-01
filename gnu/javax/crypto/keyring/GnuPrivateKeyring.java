@@ -56,29 +56,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * <p>.</p>
+ * 
  */
-public class GnuPrivateKeyring extends BaseKeyring implements IPrivateKeyring
+public class GnuPrivateKeyring
+    extends BaseKeyring
+    implements IPrivateKeyring
 {
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
   private static final Logger log = Logger.getLogger(GnuPrivateKeyring.class.getName());
   public static final int USAGE = Registry.GKR_PRIVATE_KEYS
                                   | Registry.GKR_PUBLIC_CREDENTIALS;
-
   protected String mac;
-
   protected int maclen;
-
   protected String cipher;
-
   protected String mode;
-
   protected int keylen;
-
-  // Constructor(s)
-  // -------------------------------------------------------------------------
 
   public GnuPrivateKeyring(String mac, int maclen, String cipher, String mode,
                            int keylen)
@@ -97,12 +88,6 @@ public class GnuPrivateKeyring extends BaseKeyring implements IPrivateKeyring
   {
     this("HMAC-SHA-1", 20, "AES", "OFB", 16);
   }
-
-  // Class methods
-  // -------------------------------------------------------------------------
-
-  // Instance methods
-  // -------------------------------------------------------------------------
 
   public boolean containsPrivateKey(String alias)
   {
@@ -156,7 +141,6 @@ public class GnuPrivateKeyring extends BaseKeyring implements IPrivateKeyring
                   log.throwing(this.getClass().getName(), "getPrivateKey", e);
                 throw new UnrecoverableKeyException("authentication failed");
               }
-
             PasswordEncryptedEntry e2 = null;
             for (Iterator it = e1.getEntries().iterator(); it.hasNext();)
               {
@@ -167,7 +151,6 @@ public class GnuPrivateKeyring extends BaseKeyring implements IPrivateKeyring
                     break;
                   }
               }
-
             if (e2 != null)
               {
                 try
@@ -179,7 +162,6 @@ public class GnuPrivateKeyring extends BaseKeyring implements IPrivateKeyring
                     log.throwing(this.getClass().getName(), "getPrivateKey", e);
                     throw new UnrecoverableKeyException("decryption failed");
                   }
-
                 for (Iterator it = e2.get(alias).iterator(); it.hasNext();)
                   {
                     Entry e = (Entry) it.next();
@@ -222,7 +204,7 @@ public class GnuPrivateKeyring extends BaseKeyring implements IPrivateKeyring
           {
             if (Configuration.DEBUG)
               log.log(Level.FINE, "Exception while encrypting the key. "
-                      + "Rethrow as IllegalArgumentException", x);
+                                  + "Rethrow as IllegalArgumentException", x);
             throw new IllegalArgumentException(x.toString());
           }
         if (Configuration.DEBUG)
@@ -238,15 +220,13 @@ public class GnuPrivateKeyring extends BaseKeyring implements IPrivateKeyring
           {
             if (Configuration.DEBUG)
               log.log(Level.FINE, "Exception while authenticating the encrypted "
-                      + "key. Rethrow as IllegalArgumentException", x);
+                                  + "key. Rethrow as IllegalArgumentException", x);
             throw new IllegalArgumentException(x.toString());
           }
-
         keyring.add(auth);
       }
     else if (Configuration.DEBUG)
       log.fine("Keyring already contains alias: " + alias);
-
     if (Configuration.DEBUG)
       log.exiting(this.getClass().getName(), "putPrivateKey");
   }
@@ -303,7 +283,6 @@ public class GnuPrivateKeyring extends BaseKeyring implements IPrivateKeyring
       }
     else if (Configuration.DEBUG)
       log.fine("Keyring already contains alias: " + alias);
-
     if (Configuration.DEBUG)
       log.exiting(this.getClass().getName(), "putPublicKey");
   }
@@ -359,7 +338,6 @@ public class GnuPrivateKeyring extends BaseKeyring implements IPrivateKeyring
       }
     else if (Configuration.DEBUG)
       log.fine("Keyring already contains alias: " + alias);
-
     if (Configuration.DEBUG)
       log.exiting(this.getClass().getName(), "putCertPath");
   }
@@ -370,12 +348,10 @@ public class GnuPrivateKeyring extends BaseKeyring implements IPrivateKeyring
       log.entering(this.getClass().getName(), "load");
     if (in.read() != USAGE)
       throw new MalformedKeyringException("incompatible keyring usage");
-
     if (in.read() != PasswordAuthenticatedEntry.TYPE)
-      throw new MalformedKeyringException("expecting password-authenticated entry tag");
-
-    keyring = PasswordAuthenticatedEntry.decode(new DataInputStream(in),
-                                                password);
+      throw new MalformedKeyringException(
+          "expecting password-authenticated entry tag");
+    keyring = PasswordAuthenticatedEntry.decode(new DataInputStream(in), password);
     if (Configuration.DEBUG)
       log.exiting(this.getClass().getName(), "load");
   }

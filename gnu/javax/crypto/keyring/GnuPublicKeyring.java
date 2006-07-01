@@ -51,16 +51,12 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
-public class GnuPublicKeyring extends BaseKeyring implements IPublicKeyring
+public class GnuPublicKeyring
+    extends BaseKeyring
+    implements IPublicKeyring
 {
-  // Fields.
-  // ------------------------------------------------------------------------
-
   private static final Logger log = Logger.getLogger(GnuPublicKeyring.class.getName());
   public static final int USAGE = Registry.GKR_CERTIFICATES;
-
-  // Constructors.
-  // ------------------------------------------------------------------------
 
   public GnuPublicKeyring(String mac, int macLen)
   {
@@ -72,9 +68,6 @@ public class GnuPublicKeyring extends BaseKeyring implements IPublicKeyring
   public GnuPublicKeyring()
   {
   }
-
-  // Instance methods.
-  // ------------------------------------------------------------------------
 
   public boolean containsCertificate(String alias)
   {
@@ -127,7 +120,6 @@ public class GnuPublicKeyring extends BaseKeyring implements IPublicKeyring
       }
     else if (Configuration.DEBUG)
       log.fine("Keyring already contains alias: " + alias);
-
     if (Configuration.DEBUG)
       log.exiting(this.getClass().getName(), "putCertificate");
   }
@@ -138,10 +130,9 @@ public class GnuPublicKeyring extends BaseKeyring implements IPublicKeyring
       log.entering(this.getClass().getName(), "load");
     if (in.read() != USAGE)
       throw new MalformedKeyringException("incompatible keyring usage");
-
     if (in.read() != PasswordAuthenticatedEntry.TYPE)
-      throw new MalformedKeyringException("expecting password-authenticated entry tag");
-
+      throw new MalformedKeyringException(
+          "expecting password-authenticated entry tag");
     DataInputStream dis = new DataInputStream(in);
     keyring = PasswordAuthenticatedEntry.decode(dis, password);
     if (Configuration.DEBUG)

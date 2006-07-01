@@ -67,17 +67,12 @@ import java.util.logging.Logger;
 /**
  * An envelope that is encrypted with a password-derived key.
  */
-public class PasswordEncryptedEntry extends MaskableEnvelopeEntry implements
-    PasswordProtectedEntry, Registry
+public class PasswordEncryptedEntry
+    extends MaskableEnvelopeEntry
+    implements PasswordProtectedEntry, Registry
 {
-  // Constants and fields.
-  // ------------------------------------------------------------------------
-
   private static final Logger log = Logger.getLogger(PasswordEncryptedEntry.class.getName());
   public static final int TYPE = 1;
-
-  // Constructors.
-  // ------------------------------------------------------------------------
 
   public PasswordEncryptedEntry(String cipher, String mode, int keylen,
                                 Properties properties)
@@ -85,9 +80,7 @@ public class PasswordEncryptedEntry extends MaskableEnvelopeEntry implements
     super(TYPE, properties);
     if ((cipher == null || cipher.length() == 0)
         || (mode == null || mode.length() == 0))
-      {
-        throw new IllegalArgumentException("cipher nor mode can be empty");
-      }
+      throw new IllegalArgumentException("cipher nor mode can be empty");
     this.properties.put("cipher", cipher);
     this.properties.put("mode", mode);
     this.properties.put("keylen", String.valueOf(keylen));
@@ -99,9 +92,6 @@ public class PasswordEncryptedEntry extends MaskableEnvelopeEntry implements
     super(TYPE);
     setMasked(true);
   }
-
-  // Class methods.
-  // ------------------------------------------------------------------------
 
   public static PasswordEncryptedEntry decode(DataInputStream in,
                                               char[] password)
@@ -127,9 +117,6 @@ public class PasswordEncryptedEntry extends MaskableEnvelopeEntry implements
     return entry;
   }
 
-  // Instance methods.
-  // ------------------------------------------------------------------------
-
   public void decrypt(char[] password) throws IllegalArgumentException,
       WrongPaddingException
   {
@@ -137,7 +124,7 @@ public class PasswordEncryptedEntry extends MaskableEnvelopeEntry implements
       log.entering(this.getClass().getName(), "decrypt");
     if (isMasked() && payload != null)
       {
-        long tt = - System.currentTimeMillis();
+        long tt = -System.currentTimeMillis();
         IMode mode = getMode(password, IMode.DECRYPTION);
         IPad padding = PadFactory.getInstance("PKCS7");
         padding.init(mode.currentBlockSize());
@@ -149,11 +136,9 @@ public class PasswordEncryptedEntry extends MaskableEnvelopeEntry implements
             count += mode.currentBlockSize();
           }
         int padlen = padding.unpad(buf, 0, buf.length);
-
         setMasked(false);
-
-        ByteArrayInputStream baos = new ByteArrayInputStream(buf, 0,
-                                                             buf.length - padlen);
+        int len = buf.length - padlen;
+        ByteArrayInputStream baos = new ByteArrayInputStream(buf, 0, len);
         DataInputStream in = new DataInputStream(baos);
         try
           {
@@ -168,7 +153,6 @@ public class PasswordEncryptedEntry extends MaskableEnvelopeEntry implements
       }
     else if (Configuration.DEBUG)
       log.fine("Skip decryption; " + (isMasked() ? "null payload" : "unmasked"));
-
     if (Configuration.DEBUG)
       log.exiting(this.getClass().getName(), "decrypt");
   }
@@ -177,9 +161,8 @@ public class PasswordEncryptedEntry extends MaskableEnvelopeEntry implements
   {
     if (Configuration.DEBUG)
       log.entering(this.getClass().getName(), "encrypt", String.valueOf(password));
-    long tt = - System.currentTimeMillis();
-    long t1 = - System.currentTimeMillis();
-
+    long tt = -System.currentTimeMillis();
+    long t1 = -System.currentTimeMillis();
     byte[] salt = new byte[8];
     PRNG.getInstance().nextBytes(salt);
     t1 += System.currentTimeMillis();
@@ -196,7 +179,7 @@ public class PasswordEncryptedEntry extends MaskableEnvelopeEntry implements
         Entry entry = (Entry) it.next();
         if (Configuration.DEBUG)
           log.fine("-- About to encode one " + entry);
-        t1 = - System.currentTimeMillis();
+        t1 = -System.currentTimeMillis();
         entry.encode(out2);
         t1 += System.currentTimeMillis();
         if (Configuration.DEBUG)
@@ -216,9 +199,7 @@ public class PasswordEncryptedEntry extends MaskableEnvelopeEntry implements
         count += mode.currentBlockSize();
       }
     mode.update(lastBlock, 0, payload, count);
-
     setMasked(true);
-
     tt += System.currentTimeMillis();
     if (Configuration.DEBUG)
       {
@@ -243,56 +224,40 @@ public class PasswordEncryptedEntry extends MaskableEnvelopeEntry implements
       }
   }
 
-  // Own methods.
-  // ------------------------------------------------------------------------
-
   private IMode getMode(char[] password, int state)
   {
     String s = properties.get("salt");
     if (s == null)
-      {
-        throw new IllegalArgumentException("no salt");
-      }
+      throw new IllegalArgumentException("no salt");
     byte[] salt = Util.toBytesFromString(s);
     IBlockCipher cipher = CipherFactory.getInstance(properties.get("cipher"));
     if (cipher == null)
-      {
-        throw new IllegalArgumentException("no such cipher: "
-                                           + properties.get("cipher"));
-      }
+      throw new IllegalArgumentException("no such cipher: "
+                                         + properties.get("cipher"));
     int blockSize = cipher.defaultBlockSize();
     if (properties.containsKey("block-size"))
-      {
-        try
-          {
-            blockSize = Integer.parseInt(properties.get("block-size"));
-          }
-        catch (NumberFormatException nfe)
-          {
-            throw new IllegalArgumentException("bad block size: "
-                                               + nfe.getMessage());
-          }
-      }
-    IMode mode = ModeFactory.getInstance(properties.get("mode"), cipher,
-                                         blockSize);
+      try
+        {
+          blockSize = Integer.parseInt(properties.get("block-size"));
+        }
+      catch (NumberFormatException nfe)
+        {
+          throw new IllegalArgumentException("bad block size: "
+                                             + nfe.getMessage());
+        }
+    String modeName = properties.get("mode");
+    IMode mode = ModeFactory.getInstance(modeName, cipher, blockSize);
     if (mode == null)
-      {
-        throw new IllegalArgumentException("no such mode: "
-                                           + properties.get("mode"));
-      }
-
+      throw new IllegalArgumentException("no such mode: " + modeName);
     HashMap pbAttr = new HashMap();
     pbAttr.put(IPBE.PASSWORD, password);
     pbAttr.put(IPBE.SALT, salt);
     pbAttr.put(IPBE.ITERATION_COUNT, ITERATION_COUNT);
     IRandom kdf = PRNGFactory.getInstance("PBKDF2-HMAC-SHA");
     kdf.init(pbAttr);
-
     int keylen = 0;
-    if (!properties.containsKey("keylen"))
-      {
-        throw new IllegalArgumentException("no key length");
-      }
+    if (! properties.containsKey("keylen"))
+      throw new IllegalArgumentException("no key length");
     try
       {
         keylen = Integer.parseInt(properties.get("keylen"));
