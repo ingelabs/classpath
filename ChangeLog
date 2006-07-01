@@ -1,3 +1,38 @@
+2006-07-01  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/javax/crypto/key/dh/DHKeyPairRawCodec.java: Source formatting.
+	* gnu/javax/crypto/key/dh/DiffieHellmanKeyAgreement.java: Likewise.
+	* gnu/javax/crypto/key/dh/DiffieHellmanReceiver.java: Likewise.
+	* gnu/javax/crypto/key/dh/DiffieHellmanSender.java: Likewise.
+	* gnu/javax/crypto/key/dh/ElGamalKeyAgreement.java: Likewise.
+	* gnu/javax/crypto/key/dh/ElGamalReceiver.java: Likewise.
+	* gnu/javax/crypto/key/dh/ElGamalSender.java: Likewise.
+	* gnu/javax/crypto/key/dh/GnuDHKey.java: Likewise.
+	* gnu/javax/crypto/key/dh/GnuDHKeyPairGenerator.java: Likewise.
+	* gnu/javax/crypto/key/dh/GnuDHPrivateKey.java: Likewise.
+	* gnu/javax/crypto/key/dh/GnuDHPublicKey.java: Likewise.
+	* gnu/javax/crypto/key/dh/RFC2631.java: Likewise.
+	* gnu/javax/crypto/key/srp6/SRP6Host.java: Likewise.
+	* gnu/javax/crypto/key/srp6/SRP6KeyAgreement.java: Likewise.
+	* gnu/javax/crypto/key/srp6/SRP6SaslClient.java: Likewise.
+	* gnu/javax/crypto/key/srp6/SRP6SaslServer.java: Likewise.
+	* gnu/javax/crypto/key/srp6/SRP6TLSClient.java: Likewise.
+	* gnu/javax/crypto/key/srp6/SRP6TLSServer.java: Likewise.
+	* gnu/javax/crypto/key/srp6/SRP6User.java: Likewise.
+	* gnu/javax/crypto/key/srp6/SRPAlgorithm.java: Likewise.
+	* gnu/javax/crypto/key/srp6/SRPKey.java: Likewise.
+	* gnu/javax/crypto/key/srp6/SRPKeyPairGenerator.java: Likewise.
+	* gnu/javax/crypto/key/srp6/SRPKeyPairRawCodec.java: Likewise.
+	* gnu/javax/crypto/key/srp6/SRPPrivateKey.java: Likewise.
+	* gnu/javax/crypto/key/srp6/SRPPublicKey.java: Likewise.
+	* gnu/javax/crypto/key/BaseKeyAgreementParty.java: Likewise.
+	* gnu/javax/crypto/key/GnuSecretKey.java: Likewise.
+	* gnu/javax/crypto/key/IKeyAgreementParty.java: Likewise.
+	* gnu/javax/crypto/key/IncomingMessage.java: Likewise.
+	* gnu/javax/crypto/key/KeyAgreementException.java: Likewise.
+	* gnu/javax/crypto/key/KeyAgreementFactory.java: Likewise.
+	* gnu/javax/crypto/key/OutgoingMessage.java: Likewise.
+
 2006-07-01  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/java2d/AbstractGraphics2D.java

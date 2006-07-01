@@ -47,27 +47,22 @@ import java.math.BigInteger;
 import javax.crypto.interfaces.DHPublicKey;
 
 /**
- * <p>An implementation of the Diffie-Hellman public key.</p>
- *
- * <p>Reference:</p>
+ * An implementation of the Diffie-Hellman public key.
+ * <p>
+ * Reference:
  * <ol>
- *    <li><a href="http://www.ietf.org/rfc/rfc2631.txt">Diffie-Hellman Key
- *    Agreement Method</a><br>
- *    Eric Rescorla.</li>
+ * <li><a href="http://www.ietf.org/rfc/rfc2631.txt">Diffie-Hellman Key
+ * Agreement Method</a><br>
+ * Eric Rescorla.</li>
  * </ol>
  */
-public class GnuDHPublicKey extends GnuDHKey implements DHPublicKey
+public class GnuDHPublicKey
+    extends GnuDHKey
+    implements DHPublicKey
 {
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
   private BigInteger y;
   /** String representation of this key. Cached for speed. */
   private transient String str;
-
-  // Constructor(s)
-  // -------------------------------------------------------------------------
 
   /**
    * Convenience constructor. Calls the constructor with five arguments passing
@@ -94,31 +89,27 @@ public class GnuDHPublicKey extends GnuDHKey implements DHPublicKey
    * @param g the generator of the group.
    * @param y the public value y.
    */
-  public GnuDHPublicKey(int preferredFormat,
-                        BigInteger q, BigInteger p, BigInteger g, BigInteger y)
+  public GnuDHPublicKey(int preferredFormat, BigInteger q, BigInteger p,
+                        BigInteger g, BigInteger y)
   {
     super(preferredFormat == Registry.ASN1_ENCODING_ID ? Registry.X509_ENCODING_ID
                                                        : preferredFormat,
           q, p, g);
-
     this.y = y;
   }
 
-  // Class methods
-  // -------------------------------------------------------------------------
-
   /**
-   * <p>A class method that takes the output of the <code>encodePublicKey()</code>
+   * A class method that takes the output of the <code>encodePublicKey()</code>
    * method of a DH keypair codec object (an instance implementing
    * {@link IKeyPairCodec} for DSS keys, and re-constructs an instance of this
-   * object.</p>
-   *
-   * @param k the contents of a previously encoded instance of this object.
-   * @exception ArrayIndexOutOfBoundsException if there is not enough bytes,
-   * in <code>k</code>, to represent a valid encoding of an instance of this
    * object.
-   * @exception IllegalArgumentException if the byte sequence does not
-   * represent a valid encoding of an instance of this object.
+   * 
+   * @param k the contents of a previously encoded instance of this object.
+   * @exception ArrayIndexOutOfBoundsException if there is not enough bytes, in
+   *              <code>k</code>, to represent a valid encoding of an
+   *              instance of this object.
+   * @exception IllegalArgumentException if the byte sequence does not represent
+   *              a valid encoding of an instance of this object.
    */
   public static GnuDHPublicKey valueOf(byte[] k)
   {
@@ -131,30 +122,22 @@ public class GnuDHPublicKey extends GnuDHKey implements DHPublicKey
       catch (IllegalArgumentException ignored)
         {
         }
-
     // try X.509 codec
     return (GnuDHPublicKey) new DHKeyPairX509Codec().decodePublicKey(k);
   }
-
-  // Instance methods
-  // -------------------------------------------------------------------------
-
-  // javax.crypto.interfaces.DHPublicKey interface implementation ------------
 
   public BigInteger getY()
   {
     return y;
   }
 
-  // other methods -----------------------------------------------------------
-
   /**
-   * <p>Returns the encoded form of this public key according to the designated
-   * format.</p>
-   *
+   * Returns the encoded form of this public key according to the designated
+   * format.
+   * 
    * @param format the desired format identifier of the resulting encoding.
    * @return the byte sequence encoding this key according to the designated
-   * format.
+   *         format.
    * @exception IllegalArgumentException if the format is not supported.
    */
   public byte[] getEncoded(int format)

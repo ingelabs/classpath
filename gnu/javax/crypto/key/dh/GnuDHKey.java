@@ -49,48 +49,39 @@ import javax.crypto.interfaces.DHKey;
 import javax.crypto.spec.DHParameterSpec;
 
 /**
- * <p>A base asbtract class for both public and private Diffie-Hellman keys. It
- * encapsulates the two DH numbers: <code>p</code>, and <code>g</code>.</p>
- *
- * <p>According to the JDK, cryptographic <i>Keys</i> all have a <i>format</i>.
+ * A base asbtract class for both public and private Diffie-Hellman keys. It
+ * encapsulates the two DH numbers: <code>p</code>, and <code>g</code>.
+ * <p>
+ * According to the JDK, cryptographic <i>Keys</i> all have a <i>format</i>.
  * The format used in this implementation is called <i>Raw</i>, and basically
  * consists of the raw byte sequences of algorithm parameters. The exact order
- * of the byte sequences and the implementation details are given in each of
- * the relevant <code>getEncoded()</code> methods of each of the private and
- * public keys.</p>
- *
- * <p>Reference:</p>
+ * of the byte sequences and the implementation details are given in each of the
+ * relevant <code>getEncoded()</code> methods of each of the private and
+ * public keys.
+ * <p>
+ * Reference:
  * <ol>
- *    <li><a href="http://www.ietf.org/rfc/rfc2631.txt">Diffie-Hellman Key
- *    Agreement Method</a><br>
- *    Eric Rescorla.</li>
+ * <li><a href="http://www.ietf.org/rfc/rfc2631.txt">Diffie-Hellman Key
+ * Agreement Method</a><br>
+ * Eric Rescorla.</li>
  * </ol>
  */
-public abstract class GnuDHKey implements Key, DHKey
+public abstract class GnuDHKey
+    implements Key, DHKey
 {
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
   /** The public prime q. A prime divisor of p-1. */
   protected BigInteger q;
-
   /** The public prime p. */
   protected BigInteger p;
-
   /** The generator g. */
   protected BigInteger g;
-
   /**
-   * Identifier of the default encoding format to use when externalizing the
-   * key material.
+   * Identifier of the default encoding format to use when externalizing the key
+   * material.
    */
   protected final int defaultFormat;
   /** String representation of this key. Cached for speed. */
   private transient String str;
-
-  // Constructor(s)
-  // -------------------------------------------------------------------------
 
   /**
    * Trivial protected constructor.
@@ -112,27 +103,12 @@ public abstract class GnuDHKey implements Key, DHKey
     this.g = g;
   }
 
-  // Class methods
-  // -------------------------------------------------------------------------
-
-  // Instance methods
-  // -------------------------------------------------------------------------
-
-  // javax.crypto.interfaces.DHKey interface implementation ------------------
-
   public DHParameterSpec getParams()
   {
     if (q == null)
-      {
-        return new DHParameterSpec(p, g);
-      }
-    else
-      {
-        return new DHParameterSpec(p, g, q.bitLength());
-      }
+      return new DHParameterSpec(p, g);
+    return new DHParameterSpec(p, g, q.bitLength());
   }
-
-  // java.security.Key interface implementation ------------------------------
 
   public String getAlgorithm()
   {
@@ -150,32 +126,25 @@ public abstract class GnuDHKey implements Key, DHKey
     return FormatUtil.getEncodingShortName(defaultFormat);
   }
 
-  // Other instance methods --------------------------------------------------
-
   public BigInteger getQ()
   {
     return q;
   }
 
   /**
-   * <p>Returns <code>true</code> if the designated object is an instance of
-   * {@link DHKey} and has the same Diffie-Hellman parameter values as this
-   * one.</p>
-   *
+   * Returns <code>true</code> if the designated object is an instance of
+   * {@link DHKey} and has the same Diffie-Hellman parameter values as this one.
+   * 
    * @param obj the other non-null DH key to compare to.
-   * @return <code>true</code> if the designated object is of the same type and
-   * value as this one.
+   * @return <code>true</code> if the designated object is of the same type
+   *         and value as this one.
    */
   public boolean equals(Object obj)
   {
     if (obj == null)
-      {
-        return false;
-      }
-    if (!(obj instanceof DHKey))
-      {
-        return false;
-      }
+      return false;
+    if (! (obj instanceof DHKey))
+      return false;
     DHKey that = (DHKey) obj;
     return p.equals(that.getParams().getP())
            && g.equals(that.getParams().getG());
@@ -192,15 +161,12 @@ public abstract class GnuDHKey implements Key, DHKey
           sb.append("q=null,");
         else
           sb.append("q=0x").append(q.toString(16)).append(",");
-        sb.append(ls)
-            .append("p=0x").append(p.toString(16)).append(",").append(ls)
+        sb.append(ls).append("p=0x").append(p.toString(16)).append(",").append(ls)
             .append("g=0x").append(g.toString(16));
         str = sb.toString();
       }
     return str;
   }
-
-  // abstract methods to be implemented by subclasses ------------------------
 
   public abstract byte[] getEncoded(int format);
 }

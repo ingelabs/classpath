@@ -48,28 +48,23 @@ import java.math.BigInteger;
 import javax.crypto.interfaces.DHPrivateKey;
 
 /**
- * <p>An implementation of the Diffie-Hellman private key.</p>
- *
- * <p>Reference:</p>
+ * An implementation of the Diffie-Hellman private key.
+ * <p>
+ * Reference:
  * <ol>
- *    <li><a href="http://www.ietf.org/rfc/rfc2631.txt">Diffie-Hellman Key
- *    Agreement Method</a><br>
- *    Eric Rescorla.</li>
+ * <li><a href="http://www.ietf.org/rfc/rfc2631.txt">Diffie-Hellman Key
+ * Agreement Method</a><br>
+ * Eric Rescorla.</li>
  * </ol>
  */
-public class GnuDHPrivateKey extends GnuDHKey implements DHPrivateKey
+public class GnuDHPrivateKey
+    extends GnuDHKey
+    implements DHPrivateKey
 {
-
-  // Constants and variables
-  // -------------------------------------------------------------------------
-
   /** The private exponent. */
   private final BigInteger x;
   /** String representation of this key. Cached for speed. */
   private transient String str;
-
-  // Constructor(s)
-  // -------------------------------------------------------------------------
 
   /**
    * Convenience constructor. Calls the constructor with five arguments passing
@@ -96,31 +91,27 @@ public class GnuDHPrivateKey extends GnuDHKey implements DHPrivateKey
    * @param g the generator of the group.
    * @param x the private value x.
    */
-  public GnuDHPrivateKey(int preferredFormat,
-                         BigInteger q, BigInteger p, BigInteger g, BigInteger x)
+  public GnuDHPrivateKey(int preferredFormat, BigInteger q, BigInteger p,
+                         BigInteger g, BigInteger x)
   {
     super(preferredFormat == Registry.ASN1_ENCODING_ID ? Registry.PKCS8_ENCODING_ID
                                                        : preferredFormat,
           q, p, g);
-
     this.x = x;
   }
 
-  // Class methods
-  // -------------------------------------------------------------------------
-
   /**
-   * <p>A class method that takes the output of the <code>encodePrivateKey()</code>
+   * A class method that takes the output of the <code>encodePrivateKey()</code>
    * method of a DH keypair codec object (an instance implementing
    * {@link IKeyPairCodec} for DH keys, and re-constructs an instance of this
-   * object.</p>
-   *
+   * object.
+   * 
    * @param k the contents of a previously encoded instance of this object.
-   * @exception ArrayIndexOutOfBoundsException if there is not enough bytes,
-   * in <code>k</code>, to represent a valid encoding of an instance of
-   * this object.
-   * @exception IllegalArgumentException if the byte sequence does not
-   * represent a valid encoding of an instance of this object.
+   * @exception ArrayIndexOutOfBoundsException if there is not enough bytes, in
+   *              <code>k</code>, to represent a valid encoding of an
+   *              instance of this object.
+   * @exception IllegalArgumentException if the byte sequence does not represent
+   *              a valid encoding of an instance of this object.
    */
   public static GnuDHPrivateKey valueOf(byte[] k)
   {
@@ -133,30 +124,22 @@ public class GnuDHPrivateKey extends GnuDHKey implements DHPrivateKey
       catch (IllegalArgumentException ignored)
         {
         }
-
     // try PKCS#8 codec
     return (GnuDHPrivateKey) new DHKeyPairPKCS8Codec().decodePrivateKey(k);
   }
-
-  // Instance methods
-  // -------------------------------------------------------------------------
-
-  // javax.crypto.interfaces.DHPrivateKey interface implementation -----------
 
   public BigInteger getX()
   {
     return x;
   }
 
-  // other methods -----------------------------------------------------------
-
   /**
-   * <p>Returns the encoded form of this private key according to the
-   * designated format.</p>
-   *
+   * Returns the encoded form of this private key according to the designated
+   * format.
+   * 
    * @param format the desired format identifier of the resulting encoding.
    * @return the byte sequence encoding this key according to the designated
-   * format.
+   *         format.
    * @exception IllegalArgumentException if the format is not supported.
    * @see DHKeyPairRawCodec
    */
@@ -197,6 +180,7 @@ public class GnuDHPrivateKey extends GnuDHKey implements DHPrivateKey
     DHPrivateKey that = (DHPrivateKey) obj;
     return super.equals(that) && x.equals(that.getX());
   }
+
   public String toString()
   {
     if (str == null)
