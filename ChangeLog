@@ -1,5 +1,10 @@
 2006-07-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	* java/lang/Thread.java:
+	Make thread IDs start from 1.
+	
+2006-07-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* gnu/java/lang/management/BeanImpl.java:
 	New superclass for all bean implementations.
 	* gnu/java/lang/management/ClassLoadingMXBeanImpl.java:

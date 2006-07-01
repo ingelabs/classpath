@@ -148,7 +148,7 @@ public class Thread implements Runnable
   private static int numAnonymousThreadsCreated;
   
   /** The next thread ID to use.  */
-  private static long nextThreadId;
+  private static long nextThreadId = 1;
 
   /** The default exception handler.  */
   private static UncaughtExceptionHandler defaultHandler;
