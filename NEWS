@@ -54,6 +54,13 @@ Runtime interface changes:
   are currently loaded, how many have been unloaded and whether
   verbose class loading output is on or off.  Provision should also
   be made for the latter to be toggled at runtime.
+* VMThreadMXBeanImpl is used to implement the low-level support
+  of the thread management bean.  Providing this interface requires
+  providing a fair amount of information about threads, including
+  optional time and contention monitoring, and instances of the
+  new ThreadInfo class in java.lang.management.  getState() has also
+  been added to the VMThread interface; this is required by the bean
+  as well as java.lang.Thread.
 
 New in release 0.91 (May 15, 2006)
 

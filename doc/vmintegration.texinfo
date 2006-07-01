@@ -705,6 +705,9 @@ to allow the setting to flow down to the native thread.
 @item @code{nativeStop(Throwable)} -- The VM should stop the thread abnormally
 and throw the specified exception.  This is clearly deprecated, due to the
 ambiguous state an abruptly-stopped thread may leave.
+@item @code{getState()} -- Returns the VM's impression of the current state
+of the thread.  The applicable states are supplied by the @code{State}
+enumeration in @code{java.lang.Thread}.
 @end itemize
 @item Mandatory Class Methods
 @itemize @bullet
@@ -1268,6 +1271,7 @@ implementations of the management beans.
 @menu
 * gnu.java.lang.management.VMRuntimeMXBeanImpl::
 * gnu.java.lang.management.VMClassLoadingMXBeanImpl::
+* gnu.java.lang.management.VMThreadMXBeanImpl::
 @end menu
 
 @node gnu.java.lang.management.VMRuntimeMXBeanImpl,gnu.java.lang.management.VMClassLoadingMXBeanImpl,,gnu.java.lang.management
@@ -1312,7 +1316,7 @@ The virtual machine also needs to provide either the
 property in order to support the optional boot class path
 retrieval functionality.
 
-@node gnu.java.lang.management.VMClassLoadingMXBeanImpl,,gnu.java.lang.management.VMRuntimeMXBeanImpl,gnu.java.lang.management
+@node gnu.java.lang.management.VMClassLoadingMXBeanImpl,gnu.java.lang.management.VMThreadMXBeanImpl,gnu.java.lang.management.VMRuntimeMXBeanImpl,gnu.java.lang.management
 @subsection @code{gnu.java.lang.management.VMClassLoadingMXBeanImpl}
 
 The @code{gnu.java.lang.management.ClassLoadingMXBeanImpl} provides an
@@ -1337,6 +1341,97 @@ or @code{false}, depending on whether verbose class loading
 output is turned or not, respectively.
 @item @code{(setVerbose(boolean))} -- This should allow the
 verbose class loading output to be turned on and off.
+@end itemize
+
+@node gnu.java.lang.management.VMThreadMXBeanImpl,,gnu.java.lang.management.VMClassLoadingMXBeanImpl,gnu.java.lang.management
+@subsection @code{gnu.java.lang.management.VMThreadMXBeanImpl}
+
+The @code{gnu.java.lang.management.ThreadMXBeanImpl} provides an
+implementation of the @code{java.lang.management.ThreadMXBean} interface,
+and is supported by VM functionality in the form of
+@code{gnu.java.lang.management.VMThreadMXBeanImpl}.  This provides a
+series of methods, which should be implemented by the virtual machine
+in order to provide the required information for the bean.  Implementing
+this bean requires the VM to monitor thread-related statistics such as
+how often the blocked and waiting states have been entered, as well as
+additional optional support for time and contention monitoring.
+
+Optional support is determined by the following properties:
+
+@itemize @bullet
+@item @code{gnu.java.lang.management.CurrentThreadTimeSupport} --
+This property should be present if the VM supports monitoring the
+time used by the current thread.  If time monitoring for all threads
+is supported, this need not be provided.
+@item @code{gnu.java.lang.management.ThreadTimeSupport} --
+This property should be present if the VM supports monitoring the
+time used by all threads.
+@item @code{gnu.java.lang.management.ThreadContentionSupport} --
+This property should be present if the VM supports thread contention
+monitoring.
+@end itemize
+
+In addition, the property
+@code{gnu.java.lang.management.ThreadTimeInitallyEnabled} may be
+set to the @code{String} value, @code{"true"}, if time monitoring
+is enabled at startup.
+
+The methods are as follows:
+
+@itemize @bullet
+@item @code{(findMonitorDeadlockedThreads())} -- This should return
+an array of thread identifiers which match threads involved in
+deadlock cycles (where each thread is waiting to obtain a lock
+held by one of the others).  This is specified as a native method
+in the reference implementation.
+@item @code{(getAllThreads())} -- This should return an array of
+all live threads and set the @code{filled} variable to the number
+found.  A default implementation is provided.
+@item @code{(getAllThreadIds())} -- This should return an array of
+all live thread identifiers.  An implementation is provided against
+@code{getAllThreads()} by default.
+@item @code{(getCurrentThreadCpuTime())} -- This should return the
+approximate number of nanoseconds of CPU time the current thread
+has used.  This is an optional native method, which is used by VMs
+supporting time monitoring.
+@item @code{(getCurrentThreadUserTime())} -- This should return the
+approximate number of nanoseconds of user time the current thread
+has used.  This is an optional native method, which is used by VMs
+supporting time monitoring.
+@item @code{(getDaemonThreadCount())} -- This should return the number
+of live daemon threads.  A default implementation is provided, based
+on @code{getAllThreads()}.
+@item @code{(getPeakThreadCount())} -- The VM should maintain a record
+of the peak number of live threads, and return it when this method is
+called.  This is specified as a native method in the reference
+implementation.
+@item @code{(resetPeakThreadCount())} -- This should reset the record
+of the peak number of live threads to the current number of live
+threads.  This is specified as a native method in the reference
+implementation.
+@item @code{(getThreadCount())} -- This should return the number of
+live threads.  A default implementation is provided, based on
+@code{getAllThreads()}.
+@item @code{(getThreadCpuTime(long))} -- This should return the
+approximate number of nanoseconds of CPU time the specified thread
+has used.  This is an optional native method, which is used by VMs
+supporting time monitoring.
+@item @code{(getThreadUserTime(long))} -- This should return the
+approximate number of nanoseconds of CPU time the specified thread
+has used.  This is an optional native method, which is used by VMs
+supporting time monitoring.
+@item @code{(getThreadInfoForId(long, int))} -- This return an instance
+of @code{java.lang.management.ThreadInfo} for the specified thread.
+The class includes a private constructor which VMs should use to initialise
+it with the appropriate values for the thread.  The second argument
+given here specifies the depth of the stack trace supplied on construction
+of the instance.  Special values are 0 (return an empty array) and
+@code{Integer.MAX_VALUE} (return the maximum depth possible).  This
+is specified as a native method in the reference implementation.
+@item @code{(getTotalStartedThreadCount())} -- This should return the
+total number of threads that have been started by the VM, including ones
+that have died.  This is specified as a native method in the reference
+implementation.
 @end itemize
 
 @node Classpath Callbacks, , gnu.java.lang.management, Classpath Hooks
