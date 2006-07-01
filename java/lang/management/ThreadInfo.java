@@ -88,9 +88,57 @@ public class ThreadInfo
   private Thread thread;
 
   /**
-   * The maximum depth of the stack traces for this thread.
+   * The number of times the thread has been blocked.
    */
-  private int maxDepth;
+  private long blockedCount;
+
+  /**
+   * The accumulated number of milliseconds the thread has
+   * been blocked (used only with thread contention monitoring
+   * support).
+   */
+  private long blockedTime;
+
+  /**
+   * The monitor lock on which this thread is blocked
+   * (if any).
+   */
+  private Object lock;
+
+  /**
+   * The thread which owns the monitor lock on which this
+   * thread is blocked, or <code>null</code> if there is
+   * no owner.
+   */
+  private Thread lockOwner;
+
+  /**
+   * The number of times the thread has been in a waiting
+   * state.
+   */
+  private long waitedCount;
+
+  /**
+   * The accumulated number of milliseconds the thread has
+   * been waiting (used only with thread contention monitoring
+   * support).
+   */
+  private long waitedTime;
+
+  /**
+   * True if the thread is in a native method.
+   */
+  private boolean isInNative;
+
+  /**
+   * True if the thread is suspended.
+   */
+  private boolean isSuspended;
+
+  /**
+   * The stack trace of the thread.
+   */
+  private StackTraceElement[] trace;
 
   /**
    * Cache a local reference to the thread management bean.
@@ -103,11 +151,41 @@ public class ThreadInfo
    *
    * @param thread the thread on which the new instance
    *               will be based.
+   * @param blockedCount the number of times the thread
+   *                     has been blocked.
+   * @param blockedTime the accumulated number of milliseconds
+   *                    the specified thread has been blocked
+   *                    (only used with contention monitoring enabled)
+   * @param lock the monitor lock the thread is waiting for
+   *             (only used if blocked)
+   * @param lockOwner the thread which owns the monitor lock, or
+   *                  <code>null</code> if it doesn't have an owner
+   *                  (only used if blocked)
+   * @param waitedCount the number of times the thread has been in a
+   *                    waiting state.
+   * @param waitedTime the accumulated number of milliseconds the
+   *                   specified thread has been waiting
+   *                   (only used with contention monitoring enabled)
+   * @param isInNative true if the thread is in a native method.
+   * @param isSuspended true if the thread is suspended.
+   * @param trace the stack trace of the thread to a pre-determined
+   *              depth (see VMThreadMXBeanImpl)
    */
-  ThreadInfo(Thread thread, int maxDepth)
+  private ThreadInfo(Thread thread, long blockedCount, long blockedTime,
+		     Object lock, Thread lockOwner, long waitedCount,
+		     long waitedTime, boolean isInNative, boolean isSuspended,
+		     StackTraceElement[] trace)
   {
     this.thread = thread;
-    this.maxDepth = maxDepth;
+    this.blockedCount = blockedCount;
+    this.blockedTime = blockedTime;
+    this.lock = lock;
+    this.lockOwner = lockOwner;
+    this.waitedCount = waitedCount;
+    this.waitedTime = waitedTime;
+    this.isInNative = isInNative;
+    this.isSuspended = isSuspended;
+    this.trace = trace;
   }
 
   /**
@@ -123,7 +201,7 @@ public class ThreadInfo
    */
   public long getBlockedCount()
   {
-    return VMThreadInfo.getBlockedCount(thread);
+    return blockedCount;
   }
 
   /**
@@ -161,7 +239,7 @@ public class ThreadInfo
       bean = ManagementFactory.getThreadMXBean();
     // Will throw UnsupportedOperationException for us
     if (bean.isThreadContentionMonitoringEnabled())
-      return VMThreadInfo.getBlockedTime(thread);
+      return blockedTime;
     else
       return -1;
   }
@@ -196,7 +274,6 @@ public class ThreadInfo
   {
     if (thread.getState().equals("BLOCKED"))
       return null;
-    Object lock = VMThreadInfo.getLock(thread);
     return lock.getClass().getName() + "@" +
       Integer.toHexString(System.identityHashCode(lock));
   }
@@ -216,7 +293,6 @@ public class ThreadInfo
   {
     if (thread.getState().equals("BLOCKED"))
       return -1;
-    Thread lockOwner = VMThreadInfo.getLockOwner(thread);
     if (lockOwner == null)
       return -1;
     return lockOwner.getId();
@@ -237,7 +313,6 @@ public class ThreadInfo
   {
     if (thread.getState().equals("BLOCKED"))
       return null;
-    Thread lockOwner = VMThreadInfo.getLockOwner(thread);
     if (lockOwner == null)
       return null;
     return lockOwner.getName();
@@ -264,9 +339,7 @@ public class ThreadInfo
    */
   public StackTraceElement[] getStackTrace()
   {
-    if (maxDepth == 0)
-      return new StackTraceElement[0];
-    return VMThreadInfo.getStackTrace(thread, maxDepth);
+    return trace;
   }
 
   /**
@@ -316,7 +389,7 @@ public class ThreadInfo
    */
   public long getWaitedCount()
   {
-    return VMThreadInfo.getWaitedCount(thread);
+    return waitedCount;
   }
 
   /**
@@ -355,7 +428,7 @@ public class ThreadInfo
       bean = ManagementFactory.getThreadMXBean();
     // Will throw UnsupportedOperationException for us
     if (bean.isThreadContentionMonitoringEnabled())
-      return VMThreadInfo.getWaitedTime(thread);
+      return waitedTime;
     else
       return -1;
   }
@@ -371,7 +444,7 @@ public class ThreadInfo
    */
   public boolean isInNative()
   {
-    return VMThreadInfo.isInNative(thread);
+    return isInNative;
   }
 
   /**
@@ -382,7 +455,7 @@ public class ThreadInfo
    */
   public boolean isSuspended()
   {
-    return VMThreadInfo.isSuspended(thread);
+    return isSuspended;
   }
 
   /**
@@ -397,9 +470,18 @@ public class ThreadInfo
    */
   public String toString()
   {
+    String state = thread.getState();
     return getClass().getName() +
-      "[id=" + thread.getId() + ", maxDepth=" +
-      maxDepth + "]";
+      "[id=" + thread.getId() + 
+      ", name=" + thread.getName() +
+      ", state=" + state +
+      ", blockedCount=" + blockedCount +
+      ", waitedCount=" + waitedCount +
+      ", isInNative=" + isInNative + 
+      ", isSuspended=" + isSuspended +
+      (state.equals("BLOCKED") ? ", lock=" + lock +
+       ", lockOwner=" + lockOwner : "") +
+      "]";
   }
 
 }

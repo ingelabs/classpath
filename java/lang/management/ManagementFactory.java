@@ -37,11 +37,10 @@ exception statement from your version. */
 
 package java.lang.management;
 
-import gnu.classpath.NotImplementedException;
-
 import gnu.java.lang.management.ClassLoadingMXBeanImpl;
 import gnu.java.lang.management.OperatingSystemMXBeanImpl;
 import gnu.java.lang.management.RuntimeMXBeanImpl;
+import gnu.java.lang.management.ThreadMXBeanImpl;
 
 /**
  * <p>
@@ -77,6 +76,11 @@ public class ManagementFactory
    * The class loading management bean.
    */
   private static ClassLoadingMXBean classLoadingBean;
+
+  /**
+   * The thread bean.
+   */
+  private static ThreadMXBean threadBean;
 
   /**
    * Private constructor to prevent instance creation.
@@ -133,9 +137,10 @@ public class ManagementFactory
    *         this virtual machine.
    */
   public static ThreadMXBean getThreadMXBean()
-    throws NotImplementedException
   {
-    return null;
+    if (threadBean == null)
+      threadBean = new ThreadMXBeanImpl();
+    return threadBean;
   }
 
 }

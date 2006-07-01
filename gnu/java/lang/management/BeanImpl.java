@@ -1,4 +1,4 @@
-/* OperatingSystemMXBeanImpl.java - Implementation of an operating system bean
+/* BeanImpl.java - A common superclass for bean implementations.
    Copyright (C) 2006 Free Software Foundation
 
 This file is part of GNU Classpath.
@@ -37,38 +37,29 @@ exception statement from your version. */
 
 package gnu.java.lang.management;
 
-import java.lang.management.OperatingSystemMXBean;
+import java.lang.management.ManagementPermission;
 
 /**
- * Provides access to information about the underlying operating
- * system.  
+ * A common superclass for bean implementations.
  *
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.5
  */
-public final class OperatingSystemMXBeanImpl
-  extends BeanImpl
-  implements OperatingSystemMXBean
+public class BeanImpl
 {
-  
-  public String getArch()
+
+  protected void checkMonitorPermissions()
   {
-    return System.getProperty("os.arch");
+    SecurityManager sm = System.getSecurityManager();
+    if (sm != null)
+      sm.checkPermission(new ManagementPermission("monitor"));
   }
 
-  public int getAvailableProcessors()
+  protected void checkControlPermissions()
   {
-    return Runtime.getRuntime().availableProcessors();
+    SecurityManager sm = System.getSecurityManager();
+    if (sm != null)
+      sm.checkPermission(new ManagementPermission("control"));
   }
 
-  public String getName()
-  {
-    return System.getProperty("os.name");
-  }
-
-  public String getVersion()
-  {
-    return System.getProperty("os.version");
-  }
-  
 }

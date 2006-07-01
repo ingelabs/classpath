@@ -39,7 +39,6 @@ package gnu.java.lang.management;
 
 import gnu.classpath.SystemProperties;
 
-import java.lang.management.ManagementPermission;
 import java.lang.management.RuntimeMXBean;
 
 import java.util.Arrays;
@@ -57,6 +56,7 @@ import java.util.Properties;
  * @since 1.5
  */
 public final class RuntimeMXBeanImpl
+  extends BeanImpl
   implements RuntimeMXBean
 {
 
@@ -68,13 +68,6 @@ public final class RuntimeMXBeanImpl
   private String bootClassPath = null;
 
   private boolean bootClassPathSupported = true;
-
-  void checkMonitorPermissions()
-  {
-    SecurityManager sm = System.getSecurityManager();
-    if (sm != null)
-      sm.checkPermission(new ManagementPermission("monitor"));
-  }
 
   public String getBootClassPath()
   {

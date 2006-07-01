@@ -304,7 +304,7 @@ public interface ThreadMXBean
    *         thread, or <code>null</code> if the identifier specifies
    *         a thread that doesn't exist or is not alive.
    * @throws IllegalArgumentException if <code>id</code> <= 0.
-   * @throws IllegalArgumentException if <code>maxDepth</code> <= 0.
+   * @throws IllegalArgumentException if <code>maxDepth</code> < 0.
    * @throws SecurityException if a security manager exists and
    *                           denies ManagementPermission("monitor").
    */
@@ -332,7 +332,7 @@ public interface ThreadMXBean
    *         a thread that doesn't exist or is not alive.
    * @throws IllegalArgumentException if an identifier in the array is
    *                                  <= 0.
-   * @throws IllegalArgumentException if <code>maxDepth</code> <= 0.
+   * @throws IllegalArgumentException if <code>maxDepth</code> < 0.
    * @throws SecurityException if a security manager exists and
    *                           denies ManagementPermission("monitor").
    */

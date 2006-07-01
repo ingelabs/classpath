@@ -1,3 +1,40 @@
+2006-07-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* gnu/java/lang/management/BeanImpl.java:
+	New superclass for all bean implementations.
+	* gnu/java/lang/management/ClassLoadingMXBeanImpl.java:
+	Extend BeanImpl and call permission code there.
+	* gnu/java/lang/management/OperatingSystemMXBeanImpl.java:
+	Extend BeanImpl.
+	* gnu/java/lang/management/RuntimeMXBeanImpl.java:
+	Extend BeanImpl and call permission code there.
+	* gnu/java/lang/management/ThreadMXBeanImpl.java:
+	New file.
+	* java/lang/management/ManagementFactory.java:
+	(getThreadMXBean()): Implemented.
+	* java/lang/management/ThreadInfo.java:
+	(ThreadInfo(Thread,int)): Replaced...
+	(ThreadInfo(Thread,long,long,Object,Thread,long,long,
+	boolean, boolean, StackTraceElement[])): with this.
+	(getBlockedCount()): Refactored to use local variables.
+	(getBlockedTime()): Likewise.
+	(getLockName()): Likewise.
+	(getLockOwnerId()): Likewise.
+	(getLockOwnerName()): Likewise.
+	(getStackTrace()): Likewise.
+	(getWaitedCount()): Likewise.
+	(getWaitedTime()): Likewise.
+	(isInNative()): Likewise.
+	(isSuspended()): Likewise.
+	(toString()): Changed to use new local variables.
+	* java/lang/management/ThreadMXBean.java:
+	(getThreadInfo(long, int)): Corrected documentation.
+	(getThreadInfo(long[], int)): Likewise.
+	* vm/reference/gnu/java/lang/management/VMThreadMXBeanImpl.java:
+	New file.
+	* vm/reference/java/lang/management/VMThreadInfo.java:
+	Removed.
+
 2006-07-01  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* gnu/javax/crypto/key/dh/DHKeyPairRawCodec.java: Source formatting.
