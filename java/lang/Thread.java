@@ -147,8 +147,8 @@ public class Thread implements Runnable
   /** The next thread number to use. */
   private static int numAnonymousThreadsCreated;
   
-  /** The next thread ID to use.  */
-  private static long nextThreadId = 1;
+  /** Used to generate the next thread ID to use.  */
+  private static long totalThreadsCreated;
 
   /** The default exception handler.  */
   private static UncaughtExceptionHandler defaultHandler;
@@ -367,7 +367,7 @@ public class Thread implements Runnable
     
     synchronized (Thread.class)
       {
-        this.threadId = nextThreadId++;
+        this.threadId = ++totalThreadsCreated;
       }
 
     priority = current.priority;
@@ -414,7 +414,7 @@ public class Thread implements Runnable
     contextClassLoaderIsSystemClassLoader = true;
     synchronized (Thread.class)
       {
-	this.threadId = nextThreadId++;
+	this.threadId = ++totalThreadsCreated;
       }
   }
 
