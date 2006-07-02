@@ -213,7 +213,7 @@ public class MemoryUsage
       "MB), used=" + used + " bytes (~" + (used / megabyte) +
       "MB), committed=" + committed + " bytes (~" + (committed / megabyte) +
       "MB), maximum=" + maximum + " bytes (~" + (maximum / megabyte) +
-      "]";
+      "MB)]";
   }
 
 }
