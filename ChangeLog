@@ -1,3 +1,10 @@
+2006-07-01  Anthony Green  <green@redhat.com>
+
+	* resource/META-INF/services/javax.sound.midi.spi.MidiFileReader,
+	gnu/javax/sound/midi/file/MidiFileReader.java,
+	gnu/javax/sound/midi/file/ExtendedMidiFileFormat.java,
+	gnu/javax/sound/midi/file/MidiDataInputStream.java: New files.
+
 2006-07-02  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* gnu/javax/crypto/prng/ARCFour.java: Source formatting.
