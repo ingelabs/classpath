@@ -1,5 +1,9 @@
 2006-07-02  Anthony Green  <green@redhat.com>
 
+	* NEWS: Mention MIDI file reader/writer providers.
+
+2006-07-02  Anthony Green  <green@redhat.com>
+
 	* resource/META-INF/services/javax.sound.midi.spi.MidiFileWriter,
 	gnu/javax/sound/midi/file/MidiFileWriter.java,
 	gnu/javax/sound/midi/file/MidiDataOutputStream.java: New files.

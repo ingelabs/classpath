@@ -28,6 +28,8 @@ New in release 0.92 (UNRELEASED)
   * jarsigner
   A new configure option --enable-tool-wrappers causes wrapper
   binaries to be built for VMs that support the JNI Invocation API.
+* javax.sound.midi providers have been added to read and
+  write standard MIDI files.
 
 Runtime interface changes:
 
