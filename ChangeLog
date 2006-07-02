@@ -1,5 +1,15 @@
 2006-07-02  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* gnu/javax/crypto/prng/ARCFour.java: Source formatting.
+	* gnu/javax/crypto/prng/CSPRNG.java: Likewise.
+	* gnu/javax/crypto/prng/Fortuna.java: Likewise.
+	* gnu/javax/crypto/prng/ICMGenerator.java: Likewise.
+	* gnu/javax/crypto/prng/PBKDF2.java: Likewise.
+	* gnu/javax/crypto/prng/PRNGFactory.java: Likewise.
+	* gnu/javax/crypto/prng/UMacGenerator.java: Likewise.
+
+2006-07-02  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* gnu/javax/crypto/pad/BasePad.java: Source formatting.
 	* gnu/javax/crypto/pad/IPad.java: Likewise.
 	* gnu/javax/crypto/pad/PadFactory.java: Likewise.
