@@ -1,5 +1,19 @@
 2006-07-02  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* gnu/javax/crypto/mode/BaseMode.java: Source formatting.
+	* gnu/javax/crypto/mode/CBC.java: Likewise.
+	* gnu/javax/crypto/mode/CFB.java: Likewise.
+	* gnu/javax/crypto/mode/CTR.java: Likewise.
+	* gnu/javax/crypto/mode/EAX.java: Likewise.
+	* gnu/javax/crypto/mode/ECB.java: Likewise.
+	* gnu/javax/crypto/mode/IAuthenticatedMode.java: Likewise.
+	* gnu/javax/crypto/mode/ICM.java: Likewise.
+	* gnu/javax/crypto/mode/IMode.java: Likewise.
+	* gnu/javax/crypto/mode/ModeFactory.java: Likewise.
+	* gnu/javax/crypto/mode/OFB.java: Likewise.
+
+2006-07-02  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* gnu/javax/crypto/mac/BaseMac.java: Source formatting.
 	* gnu/javax/crypto/mac/HMac.java: Likewise.
 	* gnu/javax/crypto/mac/HMacFactory.java: Likewise.
