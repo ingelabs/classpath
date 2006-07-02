@@ -14,6 +14,7 @@
 
 	* javax/sound/midi/SysexMessage.java (setMessage): Fix sysex
 	status byte test.
+	(setMessage): Fix it again, in a different setMessage method.
 
 2006-07-02  Raif S. Naffah  <raif@swiftdsl.com.au>
 

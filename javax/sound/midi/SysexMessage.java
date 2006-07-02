@@ -105,7 +105,7 @@ public class SysexMessage extends MidiMessage
     throws InvalidMidiDataException
   {
     if (status != SYSTEM_EXCLUSIVE
-        || status != SPECIAL_SYSTEM_EXCLUSIVE)
+        && status != SPECIAL_SYSTEM_EXCLUSIVE)
       throw new InvalidMidiDataException("Sysex message starts with 0x"
                                          + Integer.toHexString(status)
                                          + " instead of 0xF0 or 0xF7");
