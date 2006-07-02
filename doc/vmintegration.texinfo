@@ -1273,6 +1273,7 @@ implementations of the management beans.
 * gnu.java.lang.management.VMClassLoadingMXBeanImpl::
 * gnu.java.lang.management.VMThreadMXBeanImpl::
 * gnu.java.lang.management.VMMemoryMXBeanImpl::
+* gnu.java.lang.management.VMCompilationMXBeanImpl::
 @end menu
 
 @node gnu.java.lang.management.VMRuntimeMXBeanImpl,gnu.java.lang.management.VMClassLoadingMXBeanImpl,,gnu.java.lang.management
@@ -1435,7 +1436,7 @@ that have died.  This is specified as a native method in the reference
 implementation.
 @end itemize
 
-@node gnu.java.lang.management.VMMemoryMXBeanImpl,,gnu.java.lang.management.VMThreadMXBeanImpl,gnu.java.lang.management
+@node gnu.java.lang.management.VMMemoryMXBeanImpl,gnu.java.lang.management.VMCompilationMXBeanImpl,gnu.java.lang.management.VMThreadMXBeanImpl,gnu.java.lang.management
 @subsection @code{gnu.java.lang.management.VMMemoryMXBeanImpl}
 
 The @code{gnu.java.lang.management.MemoryMXBeanImpl} provides an
@@ -1453,7 +1454,8 @@ The methods are as follows:
 @itemize @bullet
 @item @code{(getHeapMemoryUsage())} -- This should return
 an instance of @code{java.lang.management.MemoryUsage} with
-values pertaining to the heap.
+values pertaining to the heap.  A default implementation is
+provided, based on @code{java.lang.Runtime}'s methods.
 @item @code{(getNonHeapMemoryUsage())} -- This should return
 an instance of @code{java.lang.management.MemoryUsage} with
 values pertaining to non-heap memory.
@@ -1466,6 +1468,39 @@ or @code{false}, depending on whether verbose memory management
 output is turned or not, respectively.
 @item @code{(setVerbose(boolean))} -- This should allow the
 verbose memory management output to be turned on and off.
+@end itemize
+
+@node gnu.java.lang.management.VMCompilationMXBeanImpl,,gnu.java.lang.management.VMMemoryMXBeanImpl,gnu.java.lang.management
+@subsection @code{gnu.java.lang.management.VMCompilationMXBeanImpl}
+
+The @code{gnu.java.lang.management.CompilationMXBeanImpl} provides an
+implementation of the optional @code{java.lang.management.CompilationMXBean}
+interface, and is supported by VM functionality in the form of
+@code{gnu.java.lang.management.VMCompilatinMXBeanImpl}.  This provides a
+single method for returning the number of milliseconds the virtual
+machine's Just-In-Time (JIT) compiler has spent compiling.  Even if
+a JIT compiler is available and an instance of the bean supplied, this
+method is still optional.
+
+Optional support is determined by the following properties:
+
+@itemize @bullet
+@item @code{gnu.java.lang.compiler.name} -- This property should
+specify the name of the JIT compiler.  Classpath also uses this,
+within @code{java.lang.management.ManagementFactory}, to determine
+whether a bean should be created.  If this property is set to a
+non-null value, a bean will be created and its @code{getName()}
+method will return this value.
+@item @code{gnu.java.lang.management.CompilationTimeSupport} --
+This property should be present if the VM supports monitoring the
+time spent compiling.
+@end itemize
+
+Time support is implemented by the following method:
+
+@itemize @bullet
+@item @code{(getTotalCompilationTime())} -- This should return the
+number of milliseconds the JIT compiler has spent compiling.
 @end itemize
 
 @node Classpath Callbacks, , gnu.java.lang.management, Classpath Hooks

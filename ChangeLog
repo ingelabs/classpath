@@ -1,3 +1,21 @@
+2006-07-02  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* NEWS:
+	Updated to include VMCompilationMXBeanImpl.
+	* doc/vmintegration.texinfo:
+	Likewise, along with update to VMMemoryMXBeanImpl
+	as below.
+	* examples/gnu/classpath/examples/management/TestCompilation.java,
+	* gnu/java/lang/management/CompilationMXBeanImpl.java,
+	* java/lang/management/CompilationMXBeanImpl.java:
+	New files.
+	* java/lang/management/ManagementFactory.java:
+	(getCompilationMXBean()): Implemented.
+	* vm/reference/gnu/java/lang/management/VMCompilationMXBeanImpl.java:
+	New file.
+	* vm/reference/gnu/java/lang/management/VMMemoryMXBeanImpl.java:
+	(getHeapMemoryUsage()): Added default implementation.	
+	
 2006-07-02  Anthony Green  <green@redhat.com>
 
 	* NEWS: Mention MIDI file reader/writer providers.

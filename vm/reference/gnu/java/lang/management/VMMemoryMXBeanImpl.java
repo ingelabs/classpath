@@ -54,12 +54,19 @@ final class VMMemoryMXBeanImpl
   /**
    * Returns an instance of {@link java.lang.management.MemoryUsage}
    * with appropriate initial, used, committed and maximum values
-   * for the heap.
+   * for the heap.  By default, this uses the methods of
+   * {@link java.lang.Runtime} to provide some of the values.
    *
    * @return an {@link java.lang.management.MemoryUsage} instance
    *         for the heap.
    */
-  static native MemoryUsage getHeapMemoryUsage();
+  static MemoryUsage getHeapMemoryUsage()
+  {
+    Runtime runtime = Runtime.getRuntime();
+    long totalMem = runtime.totalMemory();
+    return new MemoryUsage(-1, totalMem - runtime.freeMemory(),
+			   totalMem, runtime.maxMemory());
+  }
 
   /**
    * Returns an instance of {@link java.lang.management.MemoryUsage}

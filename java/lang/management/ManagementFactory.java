@@ -37,7 +37,10 @@ exception statement from your version. */
 
 package java.lang.management;
 
+import gnu.classpath.SystemProperties;
+
 import gnu.java.lang.management.ClassLoadingMXBeanImpl;
+import gnu.java.lang.management.CompilationMXBeanImpl;
 import gnu.java.lang.management.OperatingSystemMXBeanImpl;
 import gnu.java.lang.management.MemoryMXBeanImpl;
 import gnu.java.lang.management.RuntimeMXBeanImpl;
@@ -87,6 +90,11 @@ public class ManagementFactory
    * The memory bean.
    */
   private static MemoryMXBean memoryBean;
+
+  /**
+   * The compilation bean (may remain null).
+   */
+  private static CompilationMXBean compilationBean;
 
   /**
    * Private constructor to prevent instance creation.
@@ -161,6 +169,24 @@ public class ManagementFactory
     if (memoryBean == null)
       memoryBean = new MemoryMXBeanImpl();
     return memoryBean;
+  }
+
+  /**
+   * Returns the compilation bean for the running
+   * virtual machine, if supported.  Otherwise,
+   * it returns <code>null</code>.
+   *
+   * @return an instance of {@link CompilationMXBean} for
+   *         this virtual machine, or <code>null</code>
+   *         if the virtual machine doesn't include
+   *         a Just-In-Time (JIT) compiler.
+   */
+  public static CompilationMXBean getCompilationMXBean()
+  {
+    if (compilationBean == null &&
+	SystemProperties.getProperty("gnu.java.compiler.name") != null)
+      compilationBean = new CompilationMXBeanImpl();
+    return compilationBean;
   }
 
 }

@@ -67,6 +67,8 @@ Runtime interface changes:
   of the memory management bean.  Providing this interface requires
   providing information about the levels of heap and non-heap memory,
   and the number of objects eligible for garbage collection.
+* VMCompilationMXBeanImpl is used to allow for optional compilation
+  time support for Just-In-Time compilers.
 
 New in release 0.91 (May 15, 2006)
 
