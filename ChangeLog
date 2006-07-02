@@ -1,3 +1,8 @@
+2006-07-01  Anthony Green  <green@redhat.com>
+
+	* javax/sound/midi/SysexMessage.java (setMessage): Fix sysex
+	status byte test.
+
 2006-07-02  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* gnu/javax/crypto/mode/BaseMode.java: Source formatting.
