@@ -1,3 +1,17 @@
+2006-07-02  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/javax/crypto/mac/BaseMac.java: Source formatting.
+	* gnu/javax/crypto/mac/HMac.java: Likewise.
+	* gnu/javax/crypto/mac/HMacFactory.java: Likewise.
+	* gnu/javax/crypto/mac/IMac.java: Likewise.
+	* gnu/javax/crypto/mac/MacFactory.java: Likewise.
+	* gnu/javax/crypto/mac/MacInputStream.java: Likewise.
+	* gnu/javax/crypto/mac/MacOutputStream.java: Likewise.
+	* gnu/javax/crypto/mac/OMAC.java: Likewise.
+	* gnu/javax/crypto/mac/TMMH16.java: Likewise.
+	* gnu/javax/crypto/mac/UHash32.java: Likewise.
+	* gnu/javax/crypto/mac/UMac32.java: Likewise.
+
 2006-07-01  Anthony Green  <green@redhat.com>
 
 	* javax/sound/midi/Track.java (vector, eventSet): Initialize. 
