@@ -39,6 +39,7 @@ package java.lang.management;
 
 import gnu.java.lang.management.ClassLoadingMXBeanImpl;
 import gnu.java.lang.management.OperatingSystemMXBeanImpl;
+import gnu.java.lang.management.MemoryMXBeanImpl;
 import gnu.java.lang.management.RuntimeMXBeanImpl;
 import gnu.java.lang.management.ThreadMXBeanImpl;
 
@@ -81,6 +82,11 @@ public class ManagementFactory
    * The thread bean.
    */
   private static ThreadMXBean threadBean;
+
+  /**
+   * The memory bean.
+   */
+  private static MemoryMXBean memoryBean;
 
   /**
    * Private constructor to prevent instance creation.
@@ -141,6 +147,20 @@ public class ManagementFactory
     if (threadBean == null)
       threadBean = new ThreadMXBeanImpl();
     return threadBean;
+  }
+
+  /**
+   * Returns the memory management bean for the running
+   * virtual machine.
+   *
+   * @return an instance of {@link MemoryMXBean} for
+   *         this virtual machine.
+   */
+  public static MemoryMXBean getMemoryMXBean()
+  {
+    if (memoryBean == null)
+      memoryBean = new MemoryMXBeanImpl();
+    return memoryBean;
   }
 
 }

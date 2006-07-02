@@ -1,4 +1,4 @@
-/* ClassLoadingMXBeanImpl.java - Implementation of a class loading bean
+/* MemoryMXBeanImpl.java - Implementation of a memory bean
    Copyright (C) 2006 Free Software Foundation
 
 This file is part of GNU Classpath.
@@ -37,47 +37,52 @@ exception statement from your version. */
 
 package gnu.java.lang.management;
 
-import java.lang.management.ClassLoadingMXBean;
+import java.lang.management.MemoryMXBean;
+import java.lang.management.MemoryUsage;
 
 /**
- * Provides access to information about the class loading 
- * behaviour of the current invocation of the virtual
+ * Provides access to information about the memory 
+ * management of the current invocation of the virtual
  * machine.  Instances of this bean are obtained by calling
- * {@link ManagementFactory#getClassLoadingMXBean()}.
+ * {@link ManagementFactory#getMemoryMXBean()}.
  *
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.5
  */
-public final class ClassLoadingMXBeanImpl
+public final class MemoryMXBeanImpl
   extends BeanImpl
-  implements ClassLoadingMXBean
+  implements MemoryMXBean
 {
 
-  public int getLoadedClassCount()
+  public void gc()
   {
-    return VMClassLoadingMXBeanImpl.getLoadedClassCount();
+    System.gc();
   }
 
-  public long getTotalLoadedClassCount()
+  public MemoryUsage getHeapMemoryUsage()
   {
-    return getLoadedClassCount() + getUnloadedClassCount();
+    return VMMemoryMXBeanImpl.getHeapMemoryUsage();
   }
 
-  public long getUnloadedClassCount()
+  public MemoryUsage getNonHeapMemoryUsage()
   {
-    return VMClassLoadingMXBeanImpl.getUnloadedClassCount();
+    return VMMemoryMXBeanImpl.getNonHeapMemoryUsage();
+  }
+
+  public int getObjectPendingFinalizationCount()
+  {
+    return VMMemoryMXBeanImpl.getObjectPendingFinalizationCount();
   }
 
   public boolean isVerbose()
   {
-    return VMClassLoadingMXBeanImpl.isVerbose();
+    return VMMemoryMXBeanImpl.isVerbose();
   }
 
   public void setVerbose(boolean verbose)
   {
     checkControlPermissions();
-    VMClassLoadingMXBeanImpl.setVerbose(verbose);
+    VMMemoryMXBeanImpl.setVerbose(verbose);
   }
 
 }
-

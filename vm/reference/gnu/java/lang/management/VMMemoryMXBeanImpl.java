@@ -1,4 +1,4 @@
-/* ClassLoadingMXBeanImpl.java - Implementation of a class loading bean
+/* VMMemoryMXBeanImpl.java - VM impl. of a memory bean
    Copyright (C) 2006 Free Software Foundation
 
 This file is part of GNU Classpath.
@@ -37,47 +37,66 @@ exception statement from your version. */
 
 package gnu.java.lang.management;
 
-import java.lang.management.ClassLoadingMXBean;
+import java.lang.management.MemoryUsage;
 
 /**
- * Provides access to information about the class loading 
- * behaviour of the current invocation of the virtual
+ * Provides access to information about the memory
+ * management of the current invocation of the virtual
  * machine.  Instances of this bean are obtained by calling
- * {@link ManagementFactory#getClassLoadingMXBean()}.
+ * {@link ManagementFactory#getMemoryMXBean()}.
  *
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.5
  */
-public final class ClassLoadingMXBeanImpl
-  extends BeanImpl
-  implements ClassLoadingMXBean
+final class VMMemoryMXBeanImpl
 {
 
-  public int getLoadedClassCount()
-  {
-    return VMClassLoadingMXBeanImpl.getLoadedClassCount();
-  }
+  /**
+   * Returns an instance of {@link java.lang.management.MemoryUsage}
+   * with appropriate initial, used, committed and maximum values
+   * for the heap.
+   *
+   * @return an {@link java.lang.management.MemoryUsage} instance
+   *         for the heap.
+   */
+  static native MemoryUsage getHeapMemoryUsage();
 
-  public long getTotalLoadedClassCount()
-  {
-    return getLoadedClassCount() + getUnloadedClassCount();
-  }
+  /**
+   * Returns an instance of {@link java.lang.management.MemoryUsage}
+   * with appropriate initial, used, committed and maximum values
+   * for non-heap memory.
+   *
+   * @return an {@link java.lang.management.MemoryUsage} instance
+   *         for non-heap memory.
+   */
+  static native MemoryUsage getNonHeapMemoryUsage();
 
-  public long getUnloadedClassCount()
-  {
-    return VMClassLoadingMXBeanImpl.getUnloadedClassCount();
-  }
+  /**
+   * Returns the number of objects ready to be garbage collected.
+   *
+   * @return the number of finalizable objects.
+   */
+  static native int getObjectPendingFinalizationCount();
 
-  public boolean isVerbose()
-  {
-    return VMClassLoadingMXBeanImpl.isVerbose();
-  }
+  /**
+   * Returns true if the virtual machine will emit additional
+   * information when memory is allocated and deallocated.  The
+   * format of the output is left up to the virtual machine.
+   *
+   * @return true if verbose class loading output is on.
+   */
+  static native boolean isVerbose();
 
-  public void setVerbose(boolean verbose)
-  {
-    checkControlPermissions();
-    VMClassLoadingMXBeanImpl.setVerbose(verbose);
-  }
+  /**
+   * Turns on or off the emission of additional information
+   * when memory is allocated and deallocated.  The format of the
+   * output is left up to the virtual machine.  This method
+   * may be called by multiple threads concurrently, but there
+   * is only one global setting of verbosity that is affected.
+   *
+   * @param verbose the new setting for verbose class loading
+   *                output.
+   */
+  static native void setVerbose(boolean verbose);
 
 }
-

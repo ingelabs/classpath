@@ -461,10 +461,20 @@ public class ThreadInfo
   /**
    * Returns a {@link java.lang.String} representation of
    * this {@link ThreadInfo} object.  This takes the form
-   * <code>java.lang.ThreadInfo[id=tid, maxDepth=md]</code>,
-   * where <code>tid</code> is the thread identifier
-   * and <code>md</code> is the maximum depth used by
-   * this {@link ThreadInfo}.
+   * <code>java.lang.management.ThreadInfo[id=tid, name=n,
+   * state=s, blockedCount=bc, waitedCount=wc, isInNative=iin,
+   * isSuspended=is]</code>, where <code>tid</code> is
+   * the thread identifier, <code>n</code> is the
+   * thread name, <code>s</code> is the thread state,
+   * <code>bc</code> is the blocked state count,
+   * <code>wc</code> is the waiting state count and
+   * <code>iin</code> and <code>is</code> are boolean
+   * flags to indicate the thread is in native code or
+   * suspended respectively.  If the thread is blocked,
+   * <code>lock=l, lockOwner=lo</code> is also included,
+   * where <code>l</code> is the lock waited for, and
+   * <code>lo</code> is the thread which owns the lock
+   * (or null if there is no owner).
    *
    * @return the string specified above.
    */

@@ -1272,6 +1272,7 @@ implementations of the management beans.
 * gnu.java.lang.management.VMRuntimeMXBeanImpl::
 * gnu.java.lang.management.VMClassLoadingMXBeanImpl::
 * gnu.java.lang.management.VMThreadMXBeanImpl::
+* gnu.java.lang.management.VMMemoryMXBeanImpl::
 @end menu
 
 @node gnu.java.lang.management.VMRuntimeMXBeanImpl,gnu.java.lang.management.VMClassLoadingMXBeanImpl,,gnu.java.lang.management
@@ -1343,7 +1344,7 @@ output is turned or not, respectively.
 verbose class loading output to be turned on and off.
 @end itemize
 
-@node gnu.java.lang.management.VMThreadMXBeanImpl,,gnu.java.lang.management.VMClassLoadingMXBeanImpl,gnu.java.lang.management
+@node gnu.java.lang.management.VMThreadMXBeanImpl,gnu.java.lang.management.VMMemoryMXBeanImpl,gnu.java.lang.management.VMClassLoadingMXBeanImpl,gnu.java.lang.management
 @subsection @code{gnu.java.lang.management.VMThreadMXBeanImpl}
 
 The @code{gnu.java.lang.management.ThreadMXBeanImpl} provides an
@@ -1432,6 +1433,39 @@ is specified as a native method in the reference implementation.
 total number of threads that have been started by the VM, including ones
 that have died.  This is specified as a native method in the reference
 implementation.
+@end itemize
+
+@node gnu.java.lang.management.VMMemoryMXBeanImpl,,gnu.java.lang.management.VMThreadMXBeanImpl,gnu.java.lang.management
+@subsection @code{gnu.java.lang.management.VMMemoryMXBeanImpl}
+
+The @code{gnu.java.lang.management.MemoryMXBeanImpl} provides an
+implementation of the @code{java.lang.management.MemoryMXBean} interface,
+and is supported by VM functionality in the form of
+@code{gnu.java.lang.management.VMMemoryMXBeanImpl}.  This provides a
+series of methods, which should be implemented by the virtual machine
+in order to provide the required information for the bean.  Implementing
+this bean requires the VM to monitor the levels of heap and non-heap
+memory, and provide the number of objects which are eligible for garbage
+collection.
+
+The methods are as follows:
+
+@itemize @bullet
+@item @code{(getHeapMemoryUsage())} -- This should return
+an instance of @code{java.lang.management.MemoryUsage} with
+values pertaining to the heap.
+@item @code{(getNonHeapMemoryUsage())} -- This should return
+an instance of @code{java.lang.management.MemoryUsage} with
+values pertaining to non-heap memory.
+@item @code{(getObjectPendingFinalizationCount())} -- Returns
+the number of objects which are no longer referenced, and which
+will thus be garbage collected on the next run of the garbage
+collector.
+@item @code{(isVerbose())} -- This should return @code{true}
+or @code{false}, depending on whether verbose memory management
+output is turned or not, respectively.
+@item @code{(setVerbose(boolean))} -- This should allow the
+verbose memory management output to be turned on and off.
 @end itemize
 
 @node Classpath Callbacks, , gnu.java.lang.management, Classpath Hooks

@@ -41,7 +41,6 @@ import gnu.classpath.SystemProperties;
 
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
-import java.lang.management.ManagementPermission;
 
 /**
  * Provides access to information about the threads 

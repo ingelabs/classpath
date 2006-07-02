@@ -61,6 +61,10 @@ Runtime interface changes:
   new ThreadInfo class in java.lang.management.  getState() has also
   been added to the VMThread interface; this is required by the bean
   as well as java.lang.Thread.
+* VMMemoryMXBeanImpl is used to implement the low-level support
+  of the memory management bean.  Providing this interface requires
+  providing information about the levels of heap and non-heap memory,
+  and the number of objects eligible for garbage collection.
 
 New in release 0.91 (May 15, 2006)
 
