@@ -1,3 +1,15 @@
+2006-07-02  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/javax/crypto/pad/BasePad.java: Source formatting.
+	* gnu/javax/crypto/pad/IPad.java: Likewise.
+	* gnu/javax/crypto/pad/PadFactory.java: Likewise.
+	* gnu/javax/crypto/pad/PKCS1_V1_5.java: Likewise.
+	* gnu/javax/crypto/pad/PKCS7.java: Likewise.
+	* gnu/javax/crypto/pad/SSL3.java: Likewise.
+	* gnu/javax/crypto/pad/TBC.java: Likewise.
+	* gnu/javax/crypto/pad/TLS1.java: Likewise.
+	* gnu/javax/crypto/pad/WrongPaddingException.java: Likewise.
+
 2006-07-01  Anthony Green  <green@redhat.com>
 
 	* javax/sound/midi/SysexMessage.java (setMessage): Fix sysex

@@ -46,16 +46,14 @@ import java.util.logging.Logger;
 /**
  * An abstract class to facilitate implementing padding algorithms.
  */
-public abstract class BasePad implements IPad
+public abstract class BasePad
+    implements IPad
 {
   private static final Logger log = Logger.getLogger(BasePad.class.getName());
   /** The canonical name prefix of the padding algorithm. */
   protected String name;
   /** The block size, in bytes, for this instance. */
   protected int blockSize;
-
-  // Constructor(s)
-  // -------------------------------------------------------------------------
 
   /** Trivial constructor for use by concrete subclasses. */
   protected BasePad(final String name)
@@ -66,30 +64,18 @@ public abstract class BasePad implements IPad
     blockSize = -1;
   }
 
-  // Class methods
-  // -------------------------------------------------------------------------
-
-  // Instance methods
-  // -------------------------------------------------------------------------
-
-  // IPad interface implementation -------------------------------------------
-
   public String name()
   {
     final StringBuffer sb = new StringBuffer(name);
     if (blockSize != -1)
-      {
-        sb.append('-').append(String.valueOf(8 * blockSize));
-      }
+      sb.append('-').append(String.valueOf(8 * blockSize));
     return sb.toString();
   }
 
   public void init(final int bs) throws IllegalStateException
   {
     if (blockSize != -1)
-      {
-        throw new IllegalStateException();
-      }
+      throw new IllegalStateException();
     blockSize = bs;
     setup();
   }
@@ -133,7 +119,6 @@ public abstract class BasePad implements IPad
     byte[] padBytes;
     final int offset = 5;
     final int limit = buffer.length;
-
     this.init(size);
     for (int i = 0; i < limit - offset - blockSize; i++)
       {
@@ -142,8 +127,8 @@ public abstract class BasePad implements IPad
           {
             if (Configuration.DEBUG)
               log.log(Level.SEVERE,
-                      "Length of padded text MUST be a multiple of " + blockSize,
-                      new RuntimeException(name()));
+                      "Length of padded text MUST be a multiple of "
+                      + blockSize, new RuntimeException(name()));
             return false;
           }
         System.arraycopy(padBytes, 0, buffer, offset + i, padBytes.length);
@@ -169,12 +154,10 @@ public abstract class BasePad implements IPad
     return true;
   }
 
-  // abstract methods to implement by subclasses -----------------------------
-
   /**
-   * <p>If any additional checks or resource setup must be done by the
-   * subclass, then this is the hook for it. This method will be called before
-   * the {@link #init(int)} method returns.</p>
+   * If any additional checks or resource setup must be done by the subclass,
+   * then this is the hook for it. This method will be called before the
+   * {@link #init(int)} method returns.
    */
   public abstract void setup();
 

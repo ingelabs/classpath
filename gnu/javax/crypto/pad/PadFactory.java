@@ -45,9 +45,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * <p>A Factory to instantiate padding schemes.</p>
+ * A Factory to instantiate padding schemes.
  */
-public class PadFactory implements Registry
+public class PadFactory
+    implements Registry
 {
   /** Collection of padding algorithm names --cached for speed. */
   private static Set names;
@@ -58,65 +59,46 @@ public class PadFactory implements Registry
     super();
   }
 
-  // Class methods
-  // -------------------------------------------------------------------------
-
   /**
-   * <p>Returns an instance of a padding algorithm given its name.</p>
-   *
+   * Returns an instance of a padding algorithm given its name.
+   * 
    * @param pad the case-insensitive name of the padding algorithm.
-   * @return an instance of the padding algorithm, operating with a given
-   * block size, or <code>null</code> if none found.
+   * @return an instance of the padding algorithm, operating with a given block
+   *         size, or <code>null</code> if none found.
    * @throws InternalError if the implementation does not pass its self-test.
    */
   public static final IPad getInstance(String pad)
   {
     if (pad == null)
-      {
-        return null;
-      }
+      return null;
 
     pad = pad.trim().toLowerCase();
     if (pad.endsWith("padding"))
       pad = pad.substring(0, pad.length() - "padding".length());
     IPad result = null;
     if (pad.equals(PKCS7_PAD) || pad.equals(PKCS5_PAD))
-      {
-        result = new PKCS7();
-      }
+      result = new PKCS7();
     else if (pad.equals(TBC_PAD))
-      {
-        result = new TBC();
-      }
+      result = new TBC();
     else if (pad.equals(EME_PKCS1_V1_5_PAD))
-      {
-        result = new PKCS1_V1_5();
-      }
+      result = new PKCS1_V1_5();
     else if (pad.equals(SSL3_PAD))
-      {
-        result = new SSL3();
-      }
+      result = new SSL3();
     else if (pad.equals(TLS1_PAD))
-      {
-        result = new TLS1();
-      }
+      result = new TLS1();
     else if (pad.equals(ISO10126_PAD))
-      {
-        result = new ISO10126();
-      }
+      result = new ISO10126();
 
-    if (result != null && !result.selfTest())
-      {
-        throw new InternalError(result.name());
-      }
+    if (result != null && ! result.selfTest())
+      throw new InternalError(result.name());
 
     return result;
   }
 
   /**
-   * Returns a {@link java.util.Set} of names of padding algorithms
-   * supported by this <i>Factory</i>.
-   *
+   * Returns a {@link Set} of names of padding algorithms supported by this
+   * <i>Factory</i>.
+   * 
    * @return a {@link Set} of padding algorithm names (Strings).
    */
   public static final Set getNames()

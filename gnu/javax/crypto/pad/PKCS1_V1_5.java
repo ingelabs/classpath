@@ -48,32 +48,29 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * <p>A padding algorithm implementation of the EME-PKCS1-V1.5 encoding/decoding
+ * A padding algorithm implementation of the EME-PKCS1-V1.5 encoding/decoding
  * algorithm as described in section 7.2 of RFC-3447. This is effectively an
  * <i>Adapter</i> over an instance of {@link EME_PKCS1_V1_5} initialised with
- * the RSA public shared modulus length (in bytes).</p>
- *
- * <p>References:</p>
+ * the RSA public shared modulus length (in bytes).
+ * <p>
+ * References:
  * <ol>
- *    <li><a href="http://www.ietf.org/rfc/rfc3447.txt">Public-Key Cryptography
- *    Standards (PKCS) #1:</a><br>
- *    RSA Cryptography Specifications Version 2.1.<br>
- *    Jakob Jonsson and Burt Kaliski.</li>
+ * <li><a href="http://www.ietf.org/rfc/rfc3447.txt">Public-Key Cryptography
+ * Standards (PKCS) #1:</a><br>
+ * RSA Cryptography Specifications Version 2.1.<br>
+ * Jakob Jonsson and Burt Kaliski.</li>
  * </ol>
- *
+ * 
  * @see EME_PKCS1_V1_5
  */
-public class PKCS1_V1_5 extends BasePad
+public class PKCS1_V1_5
+    extends BasePad
 {
   private static final Logger log = Logger.getLogger(PKCS1_V1_5.class.getName());
   private EME_PKCS1_V1_5 codec;
 
-  // Constructor(s)
-  // -------------------------------------------------------------------------
-
   /**
-   * <p>Trivial package-private constructor for use by the <i>Factory</i> class.
-   * </p>
+   * Trivial package-private constructor for use by the <i>Factory</i> class.
    *
    * @see PadFactory
    */
@@ -81,12 +78,6 @@ public class PKCS1_V1_5 extends BasePad
   {
     super(Registry.EME_PKCS1_V1_5_PAD);
   }
-
-  // Class methods
-  // -------------------------------------------------------------------------
-
-  // Implementation of abstract methods in BasePad
-  // -------------------------------------------------------------------------
 
   public void setup()
   {
@@ -116,8 +107,6 @@ public class PKCS1_V1_5 extends BasePad
     return result;
   }
 
-  // overloaded methods ------------------------------------------------------
-
   public boolean selfTest()
   {
     final int[] mLen = new int[] { 16, 20, 32, 48, 64 };
@@ -137,11 +126,10 @@ public class PKCS1_V1_5 extends BasePad
               {
                 if (Configuration.DEBUG)
                   log.log(Level.SEVERE,
-                          "Length of padded text MUST be a multiple of " + blockSize,
-                          new RuntimeException(name()));
+                          "Length of padded text MUST be a multiple of "
+                          + blockSize, new RuntimeException(name()));
                 return false;
               }
-
             System.arraycopy(p, 0, EM, 0, p.length);
             System.arraycopy(M, 0, EM, p.length, j);
             try
@@ -149,8 +137,7 @@ public class PKCS1_V1_5 extends BasePad
                 if (p.length != unpad(EM, 0, blockSize))
                   {
                     if (Configuration.DEBUG)
-                      log.log(Level.SEVERE,
-                              "Failed symmetric operation",
+                      log.log(Level.SEVERE, "Failed symmetric operation",
                               new RuntimeException(name()));
                     return false;
                   }
@@ -164,7 +151,6 @@ public class PKCS1_V1_5 extends BasePad
           }
         reset();
       }
-
     return true;
   }
 }
