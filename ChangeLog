@@ -1,3 +1,9 @@
+2006-07-02  Anthony Green  <green@redhat.com>
+
+	* gnu/javax/sound/midi/file/MidiFileWriter.java (writeTrack): Make
+	sure that every track written ends with an End Of Track meta
+	message.
+
 2006-07-02  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/lang/management/MemoryUsage.java:

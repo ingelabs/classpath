@@ -44,6 +44,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.sound.midi.MetaMessage;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Track;
@@ -161,8 +162,22 @@ public class MidiFileWriter
 	pme = me;
 	i++;
       } 
-    // FIXME: if the last event isn't an end of track.. write that.
-    return trackLength + 8;
+
+    // We're done if the last event was an End of Track meta message.
+    if (pme != null && (pme.getMessage() instanceof MetaMessage))
+      {
+	MetaMessage mm = (MetaMessage) pme.getMessage();
+	if (mm.getType() == 0x2f) // End of Track message
+	  return trackLength + 8;
+      }
+
+    // Write End of Track meta message
+    dos.writeVariableLengthInt(0); // Delta time of 0
+    dos.writeByte(0xff); // Meta Message
+    dos.writeByte(0x2f); // End of Track message
+    dos.writeVariableLengthInt(0); // Length of 0
+
+    return trackLength + 8 + 4;
   }
 
   /* Write a Sequence to a file.
