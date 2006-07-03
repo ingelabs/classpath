@@ -845,9 +845,9 @@ public class BasicTreeUI
     updateRenderer();
     updateDepthOffset();
     setSelectionModel(tree.getSelectionModel());
-    treeState = createLayoutCache();
-    treeSelectionModel.setRowMapper(treeState);
     configureLayoutCache();
+    treeState.setRootVisible(tree.isRootVisible()); 
+    treeSelectionModel.setRowMapper(treeState);
     updateSize();
   }
 
@@ -1848,7 +1848,8 @@ public class BasicTreeUI
    */
   protected void toggleExpandState(TreePath path)
   {
-    if (tree.isExpanded(path))
+    // tree.isExpanded(path) would do the same, but treeState knows faster.
+    if (treeState.isExpanded(path))
       tree.collapsePath(path);
     else
       tree.expandPath(path);

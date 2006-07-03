@@ -1,3 +1,13 @@
+2006-07-04  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	PR 28061
+	* javax/swing/JTree.java (COLLAPSED): Initialise to Boolean.FALSE.
+	(EXPANDED): Initialise to Boolean.TRUE.
+	* javax/swing/plaf/basic/BasicTreeUI.java (completeUIInstall):
+	First configure layout cache and then set the assigned value 
+	as row mapper. Set the root visibility property.
+	(toggleExpandState): Obtains expansion state from the layout cache.
+
 2006-07-03  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/lang/management/MemoryPoolMXBean.java:

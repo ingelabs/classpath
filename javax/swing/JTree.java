@@ -1392,9 +1392,9 @@ public class JTree extends JComponent implements Scrollable, Accessible
   public static final String EXPANDS_SELECTED_PATHS_PROPERTY =
     "expandsSelectedPaths";
 
-  private static final Object EXPANDED = new Object();
+  private static final Object EXPANDED = Boolean.TRUE;
 
-  private static final Object COLLAPSED = new Object();
+  private static final Object COLLAPSED = Boolean.FALSE;
 
   private boolean dragEnabled;
 
