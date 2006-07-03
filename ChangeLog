@@ -1,3 +1,53 @@
+2006-07-03  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/javax/crypto/sasl/anonymous/AnonymousClient.java: Source formatting.
+	* gnu/javax/crypto/sasl/anonymous/AnonymousServer.java: Likewise.
+	* gnu/javax/crypto/sasl/anonymous/AnonymousUtil.java: Likewise.
+	* gnu/javax/crypto/sasl/crammd5/CramMD5AuthInfoProvider.java: Likewise.
+	* gnu/javax/crypto/sasl/crammd5/CramMD5Client.java: Likewise.
+	* gnu/javax/crypto/sasl/crammd5/CramMD5Registry.java: Likewise.
+	* gnu/javax/crypto/sasl/crammd5/CramMD5Server.java: Likewise.
+	* gnu/javax/crypto/sasl/crammd5/CramMD5Util.java: Likewise.
+	* gnu/javax/crypto/sasl/crammd5/PasswordFile.java: Likewise.
+	* gnu/javax/crypto/sasl/plain/PasswordFile.java: Likewise.
+	* gnu/javax/crypto/sasl/plain/PlainAuthInfoProvider.java: Likewise.
+	* gnu/javax/crypto/sasl/plain/PlainClient.java: Likewise.
+	* gnu/javax/crypto/sasl/plain/PlainRegistry.java: Likewise.
+	* gnu/javax/crypto/sasl/plain/PlainServer.java: Likewise.
+	* gnu/javax/crypto/sasl/srp/CALG.java: Likewise.
+	* gnu/javax/crypto/sasl/srp/ClientStore.java: Likewise.
+	* gnu/javax/crypto/sasl/srp/IALG.java: Likewise.
+	* gnu/javax/crypto/sasl/srp/KDF.java: Likewise.
+	* gnu/javax/crypto/sasl/srp/PasswordFile.java: Likewise.
+	* gnu/javax/crypto/sasl/srp/SecurityContext.java: Likewise.
+	* gnu/javax/crypto/sasl/srp/ServerStore.java: Likewise.
+	* gnu/javax/crypto/sasl/srp/SRP.java: Likewise.
+	* gnu/javax/crypto/sasl/srp/SRPAuthInfoProvider.java: Likewise.
+	* gnu/javax/crypto/sasl/srp/SRPClient.java: Likewise.
+	* gnu/javax/crypto/sasl/srp/SRPRegistry.java: Likewise.
+	* gnu/javax/crypto/sasl/srp/SRPServer.java: Likewise.
+	* gnu/javax/crypto/sasl/srp/StoreEntry.java: Likewise.
+	* gnu/javax/crypto/sasl/AuthInfo.java: Likewise.
+	* gnu/javax/crypto/sasl/AuthInfoProviderFactory.java: Likewise.
+	* gnu/javax/crypto/sasl/ClientFactory.java: Likewise.
+	* gnu/javax/crypto/sasl/ClientMechanism.java: Likewise.
+	* gnu/javax/crypto/sasl/ConfidentialityException.java: Likewise.
+	* gnu/javax/crypto/sasl/IAuthInfoProvider.java: Likewise.
+	* gnu/javax/crypto/sasl/IAuthInfoProviderFactory.java: Likewise.
+	* gnu/javax/crypto/sasl/IllegalMechanismStateException.java: Likewise.
+	* gnu/javax/crypto/sasl/InputBuffer.java: Likewise.
+	* gnu/javax/crypto/sasl/IntegrityException.java: Likewise.
+	* gnu/javax/crypto/sasl/NoSuchMechanismException.java: Likewise.
+	* gnu/javax/crypto/sasl/NoSuchUserException.java: Likewise.
+	* gnu/javax/crypto/sasl/OutputBuffer.java: Likewise.
+	* gnu/javax/crypto/sasl/SaslEncodingException.java: Likewise.
+	* gnu/javax/crypto/sasl/SaslInputStream.java: Likewise.
+	* gnu/javax/crypto/sasl/SaslOutputStream.java: Likewise.
+	* gnu/javax/crypto/sasl/SaslUtil.java: Likewise.
+	* gnu/javax/crypto/sasl/ServerFactory.java: Likewise.
+	* gnu/javax/crypto/sasl/ServerMechanism.java: Likewise.
+	* gnu/javax/crypto/sasl/UserAlreadyExistsException.java: Likewise.
+
 2006-07-02  Anthony Green  <green@redhat.com>
 
 	* gnu/javax/sound/midi/file/MidiFileWriter.java (writeTrack): Make

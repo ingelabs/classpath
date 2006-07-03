@@ -53,7 +53,8 @@ import javax.security.sasl.SaslServer;
  * An output stream that uses either a {@link SaslClient} or a {@link SaslServer}
  * to process the data through these entities' security layer filter(s).
  */
-public class SaslOutputStream extends OutputStream
+public class SaslOutputStream
+    extends OutputStream
 {
   private static final Logger log = Logger.getLogger(SaslOutputStream.class.getName());
   private SaslClient client;
@@ -61,16 +62,14 @@ public class SaslOutputStream extends OutputStream
   private int maxRawSendSize;
   private OutputStream dest;
 
-  // Constructor(s)
-  // -------------------------------------------------------------------------
-
   public SaslOutputStream(SaslClient client, OutputStream dest)
       throws IOException
   {
     super();
 
     this.client = client;
-    maxRawSendSize = Integer.parseInt((String) client.getNegotiatedProperty(Sasl.RAW_SEND_SIZE));
+    String size = (String) client.getNegotiatedProperty(Sasl.RAW_SEND_SIZE);
+    maxRawSendSize = Integer.parseInt(size);
     server = null;
     this.dest = dest;
   }
@@ -81,16 +80,11 @@ public class SaslOutputStream extends OutputStream
     super();
 
     this.server = server;
-    maxRawSendSize = Integer.parseInt((String) server.getNegotiatedProperty(Sasl.RAW_SEND_SIZE));
+    String size = (String) server.getNegotiatedProperty(Sasl.RAW_SEND_SIZE);
+    maxRawSendSize = Integer.parseInt(size);
     client = null;
     this.dest = dest;
   }
-
-  // Class methods
-  // -------------------------------------------------------------------------
-
-  // Overloaded java.io.OutputStream methods
-  // -------------------------------------------------------------------------
 
   public void close() throws IOException
   {
@@ -126,8 +120,7 @@ public class SaslOutputStream extends OutputStream
       log.entering(this.getClass().getName(), "write");
     if ((off < 0) || (off > b.length) || (len < 0) || ((off + len) > b.length)
         || ((off + len) < 0))
-      throw new IndexOutOfBoundsException("off=" + off
-                                          + ", len=" + len
+      throw new IndexOutOfBoundsException("off=" + off + ", len=" + len
                                           + ", b.length=" + b.length);
     if (len == 0)
       {
@@ -163,14 +156,12 @@ public class SaslOutputStream extends OutputStream
           }
         length = output.length;
         result = new byte[length + 4];
-        result[0] = (byte) (length >>> 24);
-        result[1] = (byte) (length >>> 16);
-        result[2] = (byte) (length >>> 8);
+        result[0] = (byte)(length >>> 24);
+        result[1] = (byte)(length >>> 16);
+        result[2] = (byte)(length >>> 8);
         result[3] = (byte) length;
         System.arraycopy(output, 0, result, 4, length);
-
         dest.write(result);
-
         off += chunckSize;
         len -= chunckSize;
         if (Configuration.DEBUG)

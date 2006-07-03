@@ -81,7 +81,9 @@ import javax.security.sasl.SaslException;
 /**
  * The SASL-SRP client-side mechanism.
  */
-public class SRPClient extends ClientMechanism implements SaslClient
+public class SRPClient
+    extends ClientMechanism
+    implements SaslClient
 {
   private static final Logger log = Logger.getLogger(SRPClient.class.getName());
   private String uid; // the unique key for this type of client
@@ -107,7 +109,8 @@ public class SRPClient extends ClientMechanism implements SaslClient
   private int outCounter = 0;
   private IALG inMac, outMac; // if !null, use for integrity
   private CALG inCipher, outCipher; // if !null, use for confidentiality
-  private IKeyAgreementParty clientHandler = KeyAgreementFactory.getPartyAInstance(Registry.SRP_SASL_KA);
+  private IKeyAgreementParty clientHandler =
+      KeyAgreementFactory.getPartyAInstance(Registry.SRP_SASL_KA);
   /** Our default source of randomness. */
   private PRNG prng = null;
 
@@ -118,8 +121,8 @@ public class SRPClient extends ClientMechanism implements SaslClient
 
   protected void initMechanism() throws SaslException
   {
-    // we shall keep track of the sid (and the security context of this
-    // SRP client) based on the initialisation parameters of an SRP session.
+    // we shall keep track of the sid (and the security context of this SRP
+    // client) based on the initialisation parameters of an SRP session.
     // we shall compute a unique key for those parameters and key the sid
     // (and the security context) accordingly.
     // 1. compute the mapping key. use MD5 (the fastest) for this purpose
@@ -182,7 +185,6 @@ public class SRPClient extends ClientMechanism implements SaslClient
     sIV = null;
     inMac = outMac = null;
     inCipher = outCipher = null;
-
     sid = null;
     ttl = 0;
     cn = null;
@@ -243,7 +245,6 @@ public class SRPClient extends ClientMechanism implements SaslClient
           { // integrity bytes are at the end of the stream
             final int macBytesCount = inMac.length();
             final int payloadLength = len - macBytesCount;
-            //            final byte[] received_mac = frameIn.getOS();
             final byte[] received_mac = new byte[macBytesCount];
             System.arraycopy(incoming, offset + payloadLength, received_mac, 0,
                              macBytesCount);
@@ -255,16 +256,16 @@ public class SRPClient extends ClientMechanism implements SaslClient
                 inCounter++;
                 if (Configuration.DEBUG)
                   log.fine("inCounter=" + inCounter);
-                inMac.update(new byte[] { (byte) (inCounter >>> 24),
-                                         (byte) (inCounter >>> 16),
-                                         (byte) (inCounter >>> 8),
-                                         (byte) inCounter });
+                inMac.update(new byte[] {
+                    (byte)(inCounter >>> 24),
+                    (byte)(inCounter >>> 16),
+                    (byte)(inCounter >>> 8),
+                    (byte) inCounter });
               }
-
             final byte[] computed_mac = inMac.doFinal();
             if (Configuration.DEBUG)
               log.fine("Computed MAC: " + Util.dumpString(computed_mac));
-            if (!Arrays.equals(received_mac, computed_mac))
+            if (! Arrays.equals(received_mac, computed_mac))
               throw new IntegrityException("engineUnwrap()");
             // deal with the payload, which can be either plain or encrypted
             if (inCipher != null)
@@ -318,10 +319,11 @@ public class SRPClient extends ClientMechanism implements SaslClient
                     outCounter++;
                     if (Configuration.DEBUG)
                       log.fine("outCounter=" + outCounter);
-                    outMac.update(new byte[] { (byte)(outCounter >>> 24),
-                                               (byte)(outCounter >>> 16),
-                                               (byte)(outCounter >>> 8),
-                                               (byte) outCounter });
+                    outMac.update(new byte[] {
+                        (byte)(outCounter >>> 24),
+                        (byte)(outCounter >>> 16),
+                        (byte)(outCounter >>> 8),
+                        (byte) outCounter });
                   }
                 final byte[] C = outMac.doFinal();
                 out.write(C);
@@ -342,10 +344,11 @@ public class SRPClient extends ClientMechanism implements SaslClient
                 outCounter++;
                 if (Configuration.DEBUG)
                   log.fine("outCounter=" + outCounter);
-                outMac.update(new byte[] { (byte)(outCounter >>> 24),
-                                           (byte)(outCounter >>> 16),
-                                           (byte)(outCounter >>> 8),
-                                           (byte) outCounter });
+                outMac.update(new byte[] {
+                    (byte)(outCounter >>> 24),
+                    (byte)(outCounter >>> 16),
+                    (byte)(outCounter >>> 8),
+                    (byte) outCounter });
               }
             final byte[] C = outMac.doFinal();
             out.write(C);
@@ -371,7 +374,6 @@ public class SRPClient extends ClientMechanism implements SaslClient
       {
         if (inCipher != null)
           return Registry.QOP_AUTH_CONF;
-
         return Registry.QOP_AUTH_INT;
       }
     return Registry.QOP_AUTH;
@@ -383,7 +385,6 @@ public class SRPClient extends ClientMechanism implements SaslClient
       {
         if (inCipher != null)
           return Registry.STRENGTH_HIGH;
-
         return Registry.STRENGTH_MEDIUM;
       }
     return Registry.STRENGTH_LOW;
@@ -398,8 +399,6 @@ public class SRPClient extends ClientMechanism implements SaslClient
   {
     return Registry.REUSE_TRUE;
   }
-
-  // other methods -----------------------------------------------------------
 
   private byte[] sendIdentities() throws SaslException
   {
@@ -421,7 +420,6 @@ public class SRPClient extends ClientMechanism implements SaslClient
       }
     else
       cn = new byte[0];
-
     final OutputBuffer frameOut = new OutputBuffer();
     try
       {
@@ -465,8 +463,8 @@ public class SRPClient extends ClientMechanism implements SaslClient
     try
       {
         ack = (int) frameIn.getScalar(1);
-        if (ack == 0x00)
-          { // new session
+        if (ack == 0x00) // new session
+          {
             N = frameIn.getMPI();
             if (Configuration.DEBUG)
               log.fine("Got N (modulus): " + Util.dump(N));
@@ -483,8 +481,8 @@ public class SRPClient extends ClientMechanism implements SaslClient
             if (Configuration.DEBUG)
               log.fine("Got L (available options): \"" + L + "\"");
           }
-        else if (ack == 0xFF)
-          { // session re-use
+        else if (ack == 0xFF) // session re-use
+          {
             sn = frameIn.getOS();
             if (Configuration.DEBUG)
               log.fine("Got sn (server nonce): " + Util.dumpString(sn));
@@ -644,9 +642,8 @@ public class SRPClient extends ClientMechanism implements SaslClient
       }
     if (Configuration.DEBUG)
       log.fine("Expected: " + Util.dumpString(expected));
-    if (!Arrays.equals(M2, expected))
+    if (! Arrays.equals(M2, expected))
       throw new AuthenticationException("M2 mismatch");
-
     setupSecurityServices(false);
     if (Configuration.DEBUG)
       log.exiting(this.getClass().getName(), "receiveEvidence");
@@ -749,13 +746,11 @@ public class SRPClient extends ClientMechanism implements SaslClient
             if (Configuration.DEBUG)
               log.fine("mda: <" + option + ">");
             for (i = 0; i < SRPRegistry.INTEGRITY_ALGORITHMS.length; i++)
-              {
-                if (SRPRegistry.SRP_ALGORITHMS[i].equals(option))
-                  {
-                    mdName = option;
-                    break;
-                  }
-              }
+              if (SRPRegistry.SRP_ALGORITHMS[i].equals(option))
+                {
+                  mdName = option;
+                  break;
+                }
           }
         else if (option.equals(SRPRegistry.OPTION_REPLAY_DETECTION))
           replaydetectionAvailable = true;
@@ -765,14 +760,12 @@ public class SRPClient extends ClientMechanism implements SaslClient
             if (Configuration.DEBUG)
               log.fine("ialg: <" + option + ">");
             for (i = 0; i < SRPRegistry.INTEGRITY_ALGORITHMS.length; i++)
-              {
-                if (SRPRegistry.INTEGRITY_ALGORITHMS[i].equals(option))
-                  {
-                    chosenIntegrityAlgorithm = option;
-                    integrityAvailable = true;
-                    break;
-                  }
-              }
+              if (SRPRegistry.INTEGRITY_ALGORITHMS[i].equals(option))
+                {
+                  chosenIntegrityAlgorithm = option;
+                  integrityAvailable = true;
+                  break;
+                }
           }
         else if (option.startsWith(SRPRegistry.OPTION_CONFIDENTIALITY + "="))
           {
@@ -780,14 +773,12 @@ public class SRPClient extends ClientMechanism implements SaslClient
             if (Configuration.DEBUG)
               log.fine("calg: <" + option + ">");
             for (i = 0; i < SRPRegistry.CONFIDENTIALITY_ALGORITHMS.length; i++)
-              {
-                if (SRPRegistry.CONFIDENTIALITY_ALGORITHMS[i].equals(option))
-                  {
-                    chosenConfidentialityAlgorithm = option;
-                    confidentialityAvailable = true;
-                    break;
-                  }
-              }
+              if (SRPRegistry.CONFIDENTIALITY_ALGORITHMS[i].equals(option))
+                {
+                  chosenConfidentialityAlgorithm = option;
+                  confidentialityAvailable = true;
+                  break;
+                }
           }
         else if (option.startsWith(SRPRegistry.OPTION_MANDATORY + "="))
           mandatory = option.substring(option.indexOf('=') + 1);
@@ -799,22 +790,27 @@ public class SRPClient extends ClientMechanism implements SaslClient
                 rawSendSize = Integer.parseInt(maxBufferSize);
                 if (rawSendSize > Registry.SASL_BUFFER_MAX_LIMIT
                     || rawSendSize < 1)
-                  throw new AuthenticationException("Illegal value for 'maxbuffersize' option");
+                  throw new AuthenticationException(
+                      "Illegal value for 'maxbuffersize' option");
               }
             catch (NumberFormatException x)
               {
-                throw new AuthenticationException(SRPRegistry.OPTION_MAX_BUFFER_SIZE
-                                                  + "=" + maxBufferSize,
-                                                  x);
+                throw new AuthenticationException(
+                    SRPRegistry.OPTION_MAX_BUFFER_SIZE + "=" + maxBufferSize, x);
               }
           }
       }
-    replayDetection = replaydetectionAvailable
-                      && Boolean.valueOf((String) properties.get(SRPRegistry.SRP_REPLAY_DETECTION)).booleanValue();
-    boolean integrity = integrityAvailable
-                        && Boolean.valueOf((String) properties.get(SRPRegistry.SRP_INTEGRITY_PROTECTION)).booleanValue();
-    boolean confidentiality = confidentialityAvailable
-                              && Boolean.valueOf((String) properties.get(SRPRegistry.SRP_CONFIDENTIALITY)).booleanValue();
+    String s;
+    Boolean flag;
+    s = (String) properties.get(SRPRegistry.SRP_REPLAY_DETECTION);
+    flag = Boolean.valueOf(s);
+    replayDetection = replaydetectionAvailable && flag.booleanValue();
+    s = (String) properties.get(SRPRegistry.SRP_INTEGRITY_PROTECTION);
+    flag = Boolean.valueOf(s);
+    boolean integrity = integrityAvailable && flag.booleanValue();
+    s = (String) properties.get(SRPRegistry.SRP_CONFIDENTIALITY);
+    flag = Boolean.valueOf(s);
+    boolean confidentiality = confidentialityAvailable && flag.booleanValue();
     // make sure we do the right thing
     if (SRPRegistry.OPTION_REPLAY_DETECTION.equals(mandatory))
       {
@@ -830,7 +826,8 @@ public class SRPClient extends ClientMechanism implements SaslClient
       {
         if (chosenIntegrityAlgorithm == null)
           throw new AuthenticationException(
-              "Replay detection is required but no integrity protection algorithm was chosen");
+              "Replay detection is required but no integrity protection "
+              + "algorithm was chosen");
       }
     if (integrity)
       {
@@ -950,7 +947,6 @@ public class SRPClient extends ClientMechanism implements SaslClient
   {
     if (prng == null)
       prng = PRNG.getInstance();
-
     return prng;
   }
 }
