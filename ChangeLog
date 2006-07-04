@@ -1,3 +1,23 @@
+2006-07-04  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/dnd/DragSourceContext.java:
+	Removed FIXMEs from fields.
+	(DragSourceContext): Added code to initialize cursor and sourceActions.
+	(getDragSource): Added documentation.
+	(getComponent): Likewise.
+	(getTrigger): Likewise.
+	(getSourceActions): Added documentation and implemented.
+	(setCursor): Implemented. Added documentation.
+	(getCursor): Implemented. Added documentation.
+	(dragEnter): Added code to notify DragSource's listeners.
+	(dragOver): Likewise.
+	(dragExit): Likewise.
+	(dropActionChanged): Likewise.
+	(dragDropEnd): Likewise.
+	(dragMouseMoved): Implemented.
+	(getTransferable): Added API documentation.
+	(updateCurrentCursor): Added API documentation and partially implemented.
+
 2006-07-04  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java (KeyHandler): Implemented.
