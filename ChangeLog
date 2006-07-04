@@ -1,3 +1,16 @@
+2006-07-04  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	PR 28061
+	* javax/swing/plaf/basic/BasicTreeUI.java (MouseHandler.mousePressed):
+	Returned back the code to handle the start of the click-pause-click
+	editing initiation, explained about this code. 
+	(TreeStartEditingAction): New inner class.
+	(stopEditingInCompleteEditing): Explained about this field.
+	(completeEditing(boolean, boolean, boolean): Only return early
+	if there is no current editing session.
+	(createDefaultActions): Install TreeStartEditingAction and
+	TreeCancelEditingAction.
+
 2006-07-04  Mario Torre  <neugens@limasoftware.net>
 
 	* configure.ac: Added new option --enable-default-preferences-peer

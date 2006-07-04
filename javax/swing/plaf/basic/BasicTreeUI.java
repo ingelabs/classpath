@@ -174,6 +174,9 @@ public class BasicTreeUI
   /**
    * Set to false when editing and shouldSelectCall() returns true meaning the
    * node should be selected before editing, used in completeEditing.
+   * GNU Classpath editing is implemented differently, so this value is not
+   * actually read anywhere. However it is always set correctly to maintain 
+   * interoperability with the derived classes that read this field.
    */
   protected boolean stopEditingInCompleteEditing;
 
@@ -1349,6 +1352,13 @@ public class BasicTreeUI
     am.put(action.getValue(Action.NAME), action);
     action = new TreePageAction(1, "scrollDownChangeLead");
     am.put(action.getValue(Action.NAME), action);
+    
+    // Tree editing actions
+    action = new TreeStartEditingAction("startEditing");
+    am.put(action.getValue(Action.NAME), action);
+    action = new TreeCancelEditingAction("cancel");
+    am.put(action.getValue(Action.NAME), action);
+    
 
     return am;
   }
@@ -1703,9 +1713,10 @@ public class BasicTreeUI
   protected void completeEditing(boolean messageStop, boolean messageCancel,
                                  boolean messageTree)
   {
-    if (! stopEditingInCompleteEditing || editingComponent == null)
+    // Make no attempt to complete the non existing editing session.
+    if (!isEditing(tree))
       return;
-
+    
     if (messageStop)
       {
         getCellEditor().stopCellEditing();
@@ -1976,6 +1987,35 @@ public class BasicTreeUI
     Object node = pathForRow.getLastPathComponent();
     return treeModel.isLeaf(node);
   }
+  
+  /**
+   * The action to start editing at the current lead selection path.
+   */
+  class TreeStartEditingAction
+      extends AbstractAction
+  {
+    /**
+     * Creates the new tree cancel editing action.
+     * 
+     * @param name the name of the action (used in toString).
+     */
+    public TreeStartEditingAction(String name)
+    {
+      super(name);
+    }    
+    
+    /**
+     * Start editing at the current lead selection path.
+     * 
+     * @param e the ActionEvent that caused this action.
+     */
+    public void actionPerformed(ActionEvent e)
+    {
+      TreePath lead = tree.getLeadSelectionPath();
+      if (!tree.isEditing()) 
+        tree.startEditingAtPath(lead);
+    }
+  }  
 
   /**
    * This class implements the actions that we want to happen when specific keys
@@ -2342,12 +2382,19 @@ public class BasicTreeUI
      */
     public void mousePressed(MouseEvent e)
     {
+      // Any mouse click cancels the previous waiting edit action, initiated
+      // by the single click on the selected node.
+      if (startEditTimer != null)
+        {
+          startEditTimer.stop();
+          startEditTimer = null;
+        }
 
       if (tree != null && tree.isEnabled())
         {
           // Maybe stop editing and return.
           if (isEditing(tree) && tree.getInvokesStopCellEditing()
-              && !stopEditing(tree))
+              && ! stopEditing(tree))
             return;
 
           int x = e.getX();
@@ -2362,8 +2409,41 @@ public class BasicTreeUI
 
               if (x > bounds.x && x <= (bounds.x + bounds.width))
                 {
-                  if (! startEditing(path, e))
-                    selectPathForEvent(path, e);
+                  TreePath currentLead = tree.getLeadSelectionPath();
+                  if (currentLead != null && currentLead.equals(path)
+                      && e.getClickCount() == 1 && tree.isEditable())
+                    {
+                      // Schedule the editing session.
+                      final TreePath editPath = path;
+                      
+                      // The code below handles the required click-pause-click
+                      // functionality which must be present in the tree UI. 
+                      // If the next click comes after the
+                      // time longer than the double click interval AND
+                      // the same node stays focused for the WAIT_TILL_EDITING
+                      // duration, the timer starts the editing session.
+                      if (startEditTimer != null)
+                        startEditTimer.stop();
+
+                      startEditTimer = new Timer(WAIT_TILL_EDITING,
+                         new ActionListener()
+                           {
+                              public void actionPerformed(ActionEvent e)
+                                {
+                                   startEditing(editPath, EDIT);
+                                }
+                            });
+                      
+                      startEditTimer.setRepeats(false);
+                      startEditTimer.start();
+                    }
+                  else
+                    {
+                      if (e.getClickCount() == 2)
+                        toggleExpandState(path);
+                      else
+                        selectPathForEvent(path, e);
+                    }
                 }
             }
         }
