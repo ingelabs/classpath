@@ -220,9 +220,8 @@ public class BasicMenuUI extends BasicMenuItemUI
    *
    */
   protected void installKeyboardActions()
-    throws NotImplementedException
   {
-    // FIXME: Need to implement
+    super.installKeyboardActions();
   }
 
   /**
@@ -235,6 +234,7 @@ public class BasicMenuUI extends BasicMenuItemUI
   }
 
   protected void setupPostTimer(JMenu menu)
+  throws NotImplementedException
   {
     // TODO: Implement this properly.
   }
@@ -263,9 +263,8 @@ public class BasicMenuUI extends BasicMenuItemUI
    * Basic look and feel's defaults.
    */
   protected void uninstallKeyboardActions()
-    throws NotImplementedException
   {
-    // FIXME: Need to implement
+    super.installKeyboardActions();
   }
 
   /**
@@ -348,7 +347,7 @@ public class BasicMenuUI extends BasicMenuItemUI
 
     public void mouseMoved(MouseEvent e)
     {
-      // TODO: What should be done here, if anything?
+      // Nothing to do here.
     }
 
     public void mousePressed(MouseEvent e)
@@ -469,7 +468,8 @@ public class BasicMenuUI extends BasicMenuItemUI
      */
     public ChangeHandler(JMenu m, BasicMenuUI ui)
     {
-      // Not used.
+      menu = m;
+      this.ui = ui;
     }
 
     /**
@@ -517,7 +517,7 @@ public class BasicMenuUI extends BasicMenuItemUI
      */
     public void menuDragMouseExited(MenuDragMouseEvent e)
     {
-      // TODO: What should be done here, if anything?
+      // Nothing to do here.
     }
 
     /**
@@ -528,7 +528,7 @@ public class BasicMenuUI extends BasicMenuItemUI
      */
     public void menuDragMouseReleased(MenuDragMouseEvent e)
     {
-      // TODO: What should be done here, if anything?
+      // Nothing to do here.
     }
   }
 
@@ -545,7 +545,7 @@ public class BasicMenuUI extends BasicMenuItemUI
      */
     public void menuKeyPressed(MenuKeyEvent e)
     {
-      // TODO: What should be done here, if anything?
+      // Nothing to do here.
     }
 
     /**
@@ -555,7 +555,7 @@ public class BasicMenuUI extends BasicMenuItemUI
      */
     public void menuKeyReleased(MenuKeyEvent e)
     {
-      // TODO: What should be done here, if anything?
+      // Nothing to do here.
     }
 
     /**
@@ -565,6 +565,7 @@ public class BasicMenuUI extends BasicMenuItemUI
      * @param e A {@link MenuKeyEvent}.
      */
     public void menuKeyTyped(MenuKeyEvent e)
+    throws NotImplementedException
     {
       // TODO: What should be done here, if anything?
     }

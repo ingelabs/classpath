@@ -1,3 +1,18 @@
+2006-07-04  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicMenuUI.java
+	(installKeyboardActions): Implemented to call super. Nothing else
+	needs to be done here.
+	(setupPostTimer): Marked as unimplemented.
+	(uninstallKeyboardActions): Implemented to call super. Nothing else
+	needs to be done here.
+	(mouseMoved): Removed TODO. Nothing to be done here.
+	(ChangeHandler): Implemented.
+	(menuDragMouseExited): Removed TODO. Nothing to be done here.
+	(menuDragMouseReleased): Removed TODO. Nothing to be done here.
+	(menuKeyReleased): Removed TODO. Nothing to be done here.
+	(menuKeyTyped): Marked as unimplemented.
+
 2006-07-04  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	PR 28061
