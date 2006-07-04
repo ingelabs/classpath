@@ -2,6 +2,16 @@
 
 	PR 28061
 	* javax/swing/plaf/basic/BasicTreeUI.java (MouseHandler.mousePressed):
+	Always cancel the current editing session before doing anything else,
+	return immediately if this fails.
+	(TreeHomeAction): Ensure that the lead selection path is visible after
+	the action is performed. TreeIncrementAction: Likewise. TreeToggleAction:
+	Likewise. TreeTraverseAction: Likewise.
+
+2006-07-04  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	PR 28061
+	* javax/swing/plaf/basic/BasicTreeUI.java (MouseHandler.mousePressed):
 	Returned back the code to handle the start of the click-pause-click
 	editing initiation, explained about this code. 
 	(TreeStartEditingAction): New inner class.

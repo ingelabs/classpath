@@ -2392,11 +2392,13 @@ public class BasicTreeUI
 
       if (tree != null && tree.isEnabled())
         {
-          // Maybe stop editing and return.
-          if (isEditing(tree) && tree.getInvokesStopCellEditing()
-              && ! stopEditing(tree))
-            return;
-
+          // Always end the current editing session if clicked on the
+          // tree and outside the bounds of the editing component.
+          if (isEditing(tree))
+            if (!stopEditing(tree))
+            // Return if we have failed to cancel the editing session.
+              return;
+ 
           int x = e.getX();
           int y = e.getY();
           TreePath path = getClosestPathForLocation(tree, x, y);
@@ -2911,6 +2913,9 @@ public class BasicTreeUI
                 }
             }
         }
+
+      // Ensure that the lead path is visible after the increment action.
+      tree.scrollPathToVisible(tree.getLeadSelectionPath());
     }
 
     /**
@@ -3026,6 +3031,9 @@ public class BasicTreeUI
           tree.setAnchorSelectionPath(newPath);
           tree.setLeadSelectionPath(newPath);
         }
+      
+      // Ensure that the lead path is visible after the increment action.
+      tree.scrollPathToVisible(tree.getLeadSelectionPath());
     }
 
     /**
@@ -3330,6 +3338,9 @@ public class BasicTreeUI
           // and anchor.
           tree.setLeadSelectionPath(leadPath);
           tree.setAnchorSelectionPath(anchorPath);
+
+          // Ensure that the lead path is visible after the increment action.
+          tree.scrollPathToVisible(tree.getLeadSelectionPath());
         }
     }
 
@@ -3417,6 +3428,9 @@ public class BasicTreeUI
               tree.expandPath(current);
             }
         }
+      
+      // Ensure that the lead path is visible after the increment action.
+      tree.scrollPathToVisible(tree.getLeadSelectionPath());
     }
 
     /**
