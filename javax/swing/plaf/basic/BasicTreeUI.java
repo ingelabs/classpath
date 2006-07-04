@@ -1828,14 +1828,25 @@ public class BasicTreeUI
     boolean cntlClick = false;
     if (! treeModel.isLeaf(path.getLastPathComponent()))
       {
-        int width = 8; // Only guessing.
+        int width;
         Icon expandedIcon = getExpandedIcon();
         if (expandedIcon != null)
           width = expandedIcon.getIconWidth();
+        else
+          // Only guessing. This is the width of
+          // the tree control icon in Metal L&F.
+          width = 18;
 
         Insets i = tree.getInsets();
-        int left = getRowX(tree.getRowForPath(path), path.getPathCount() - 1)
-                   - getRightChildIndent() - width / 2 + i.left;
+        
+        int depth;
+        if (isRootVisible())
+          depth = path.getPathCount()-1;
+        else
+          depth = path.getPathCount()-2;
+        
+        int left = getRowX(tree.getRowForPath(path), depth)
+                   - width + i.left;
         cntlClick = mouseX >= left && mouseX <= left + width;
       }
     return cntlClick;
@@ -3744,7 +3755,13 @@ public class BasicTreeUI
   {
     Rectangle bounds = getPathBounds(tree, path);
     TreePath parent = path.getParentPath();
-    if (parent != null)
+    
+    boolean paintLine;
+    if (isRootVisible())
+      paintLine = parent != null;
+    else
+      paintLine = parent != null && parent.getPathCount() > 1;
+    if (paintLine)
       {
         Rectangle parentBounds = getPathBounds(tree, parent);
         paintVerticalLine(g, tree, parentBounds.x + 2 * gap, 

@@ -1,3 +1,11 @@
+2006-07-04  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	PR 28061
+	* javax/swing/plaf/basic/BasicTreeUI.java (isLocationInExpandControl):
+	Mind the effect of the root visibility on the position of the control.
+	Quess icon width 18. (paintVerticalPartOfLeg): Do no paint the 
+	vertical line over first level nodes.
+
 2006-07-04  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicMenuUI.java
