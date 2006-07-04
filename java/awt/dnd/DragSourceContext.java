@@ -82,16 +82,17 @@ public class DragSourceContext
    * are null, the drag action for the trigger event is DnDConstants.ACTION_NONE
    * or if the source actions for the DragGestureRecognizer associated with the
    * trigger event are equal to DnDConstants.ACTION_NONE.
-   * @exception NullPointerException If peer or trigger is null.
+   * @exception NullPointerException If peer, trans or trigger is null or if the
+   * image is not null but the offset is. 
    */
   public DragSourceContext (DragSourceContextPeer peer,
                             DragGestureEvent trigger, Cursor cursor,
                             Image image, Point offset, Transferable trans,
                             DragSourceListener dsl)
-    throws NotImplementedException
-  {
+  {    
     if (peer == null
-        || trigger == null)
+        || trigger == null || trans == null
+        || (image != null && offset == null))
       throw new NullPointerException ();
 
     if (trigger.getComponent () == null
@@ -108,8 +109,6 @@ public class DragSourceContext
     this.offset = offset;
     this.transferable = trans;
     this.dragSourceListener = dsl;
-    
-    throw new Error ("not implemented");
   }
 
   public DragSource getDragSource()
@@ -165,34 +164,52 @@ public class DragSourceContext
       dragSourceListener = null;
   }
 
+  /**
+   * This function tells the peer that the DataFlavors have been modified.
+   */
   public void transferablesFlavorsChanged()
-    throws NotImplementedException
   {
+    peer.transferablesFlavorsChanged();
   }
 
+  /**
+   * Calls dragEnter on the DragSourceListener registered with this.
+   */
   public void dragEnter(DragSourceDragEvent e)
-    throws NotImplementedException
   {
+    dragSourceListener.dragEnter(e);
   }
 
+  /**
+   * Calls dragOver on the DragSourceListener registered with this.
+   */
   public void dragOver(DragSourceDragEvent e)
-    throws NotImplementedException
   {
+    dragSourceListener.dragOver(e);
   }
-
+  
+  /**
+   * Calls dragExit on the DragSourceListener registered with this.
+   */
   public void dragExit(DragSourceEvent e)
-    throws NotImplementedException
   {
+    dragSourceListener.dragExit(e);
   }
 
+  /**
+   * Calls dropActionChanged on the DragSourceListener registered with this.
+   */
   public void dropActionChanged(DragSourceDragEvent e)
-    throws NotImplementedException
   {
+    dragSourceListener.dropActionChanged(e);
   }
 
+  /**
+   * Calls dragDropEnd on the DragSourceListener registered with this.
+   */
   public void dragDropEnd(DragSourceDropEvent e)
-    throws NotImplementedException
   {
+    dragSourceListener.dragDropEnd(e);
   }
 
   public void dragMouseMoved(DragSourceDragEvent e)
