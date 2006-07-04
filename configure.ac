@@ -83,6 +83,18 @@ AC_ARG_ENABLE([core-jni],
 AM_CONDITIONAL(CREATE_CORE_JNI_LIBRARIES, test "x${COMPILE_CORE_JNI}" = xyes)
 
 dnl -----------------------------------------------------------
+dnl Default Preference Backend
+dnl -----------------------------------------------------------
+AC_ARG_ENABLE(default-preferences-peer,
+  AS_HELP_STRING([--enable-default-preferences-peer],
+                 [fully qualified class name of default Preferences API Backend]))
+DEFAULT_PREFS_PEER=$enable_default_preferences_peer
+if test "$DEFAULT_PREFS_PEER" = ""; then
+   DEFAULT_PREFS_PEER=gnu.java.util.prefs.FileBasedFactory
+fi
+dnl AC_SUBST(DEFAULT_PREFS_PEER)
+
+dnl -----------------------------------------------------------
 dnl GConf native peer (enabled by default)
 dnl -----------------------------------------------------------
 AC_ARG_ENABLE([gconf-peer],
@@ -99,7 +111,6 @@ dnl -----------------------------------------------------------
 dnl GTK native peer error checking
 dnl -----------------------------------------------------------
 AC_ARG_ENABLE([gconf-peers],,AC_MSG_ERROR([No --enable-gconf-peers (or --disable-gconf-peers) option; you want --enable-gconf-peer]))
-
 
 dnl ------------------------------------------------------------
 dnl Whether to compile with -Werror or not (disabled by default)
@@ -456,6 +467,13 @@ if test "x${COMPILE_JNI}" = xyes; then
     PKG_CHECK_MODULES(GCONF, gconf-2.0 >= 2.11.2)
     AC_SUBST(GCONF_CFLAGS)
     AC_SUBST(GCONF_LIBS)
+    dnl check if the config value was given form the command line,
+    dnl if not, overwrite the default if we have the gconf backend
+    dnl compiled in
+    USE_GCONF_PREFS_PEER=$enable_default_preferences_peer
+    if test "$USE_GCONF_PREFS_PEER" = ""; then
+   	DEFAULT_PREFS_PEER=gnu.java.util.prefs.GConfBasedFactory
+    fi
   fi
 
   dnl Check for AWT related Qt4
@@ -745,6 +763,10 @@ then
 fi
 AM_CONDITIONAL(ENABLE_LOCAL_SOCKETS, test "x$ENABLE_LOCAL_SOCKETS" = "xyes")
 
+dnl -----------------------------------------------------------
+dnl Add the default preference peer
+dnl -----------------------------------------------------------
+AC_SUBST(DEFAULT_PREFS_PEER)
 
 dnl -----------------------------------------------------------
 dnl output files
@@ -780,6 +802,7 @@ native/target/Makefile
 native/target/Linux/Makefile
 native/target/generic/Makefile
 resource/Makefile
+resource/META-INF/services/java.util.prefs.PreferencesFactory
 scripts/Makefile
 scripts/classpath.spec
 lib/Makefile

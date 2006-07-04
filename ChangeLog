@@ -1,3 +1,20 @@
+2006-07-04  Mario Torre  <neugens@limasoftware.net>
+
+	* configure.ac: Added new option --enable-default-preferences-peer
+	to pass user specified default preference backend.
+	If the GConf peer is built, GConf become the default backend.
+	* resource/META-INF/services/java.util.prefs.PreferencesFactory.in:
+	new file. 
+	* lib/Makefile.am: excludes files terminating in 'in' from
+	the metafiles list.
+	* lib/copy-vmresources.sh.in: excludes files terminating in 'in'
+	from copy into META-INF.
+	* java/util/prefs/Preferences.java: added two new import
+	classes gnu.classpath.ServiceFactory and java.util.Iterator.
+	(getFactory): Now try to check for
+	a system defined default preference backend before to fall back on
+	FileBasedPreference.
+
 2006-07-04  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	PR 28061
