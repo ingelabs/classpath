@@ -69,6 +69,12 @@ Runtime interface changes:
   and the number of objects eligible for garbage collection.
 * VMCompilationMXBeanImpl is used to allow for optional compilation
   time support for Just-In-Time compilers.
+* VMMemoryPoolMXBeanImpl is used to implement the low-level support
+  of the memory pool beans.  Providing this interface requires
+  providing memory usage statistics for each supported bean.
+* VMManagementFactory provides the names of the memory pools,
+  memory managers and garbage collectors maintained by the virtual
+  machine.  These are used to create the beans by the ManagementFactory.
 
 New in release 0.91 (May 15, 2006)
 

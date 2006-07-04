@@ -1,3 +1,16 @@
+2006-07-04  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* NEWS:	Updated.
+	* doc/vmintegration.texinfo: Likewise.
+	* examples/gnu/classpath/examples/management/TestMemoryPool.java,
+	* gnu/java/lang/management/MemoryPoolMXBeanImpl.java:
+	New files.
+	* java/lang/management/ManagementFactory.java:
+	(getMemoryPoolMXBeans()): Implemented.
+	* vm/reference/gnu/java/lang/management/VMMemoryPoolMXBeanImpl.java,
+	* vm/reference/java/lang/management/VMManagementFactory.java:
+	New files.
+	
 2006-07-04  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/dnd/DragSourceContext.java:

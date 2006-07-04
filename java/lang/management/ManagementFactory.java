@@ -43,8 +43,12 @@ import gnu.java.lang.management.ClassLoadingMXBeanImpl;
 import gnu.java.lang.management.CompilationMXBeanImpl;
 import gnu.java.lang.management.OperatingSystemMXBeanImpl;
 import gnu.java.lang.management.MemoryMXBeanImpl;
+import gnu.java.lang.management.MemoryPoolMXBeanImpl;
 import gnu.java.lang.management.RuntimeMXBeanImpl;
 import gnu.java.lang.management.ThreadMXBeanImpl;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -189,4 +193,19 @@ public class ManagementFactory
     return compilationBean;
   }
 
+  /**
+   * Returns the memory pool beans for the running
+   * virtual machine.  These may change during the course
+   * of execution.
+   *
+   * @return a list of memory pool beans, one for each pool.
+   */
+  public static List getMemoryPoolMXBeans()
+  {
+    List poolBeans = new ArrayList();
+    String[] names = VMManagementFactory.getMemoryPoolNames();
+    for (int a = 0; a < names.length; ++a)
+      poolBeans.add(new MemoryPoolMXBeanImpl(names[a]));
+    return poolBeans;
+  }
 }

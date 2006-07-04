@@ -203,6 +203,7 @@ implementation.
 * java.lang.reflect::
 * gnu.java.lang::
 * gnu.java.lang.management::
+* java.lang.management::
 * Classpath Callbacks::
 @end menu
 
@@ -1262,7 +1263,7 @@ method calls the @code{VMInstrumentationImpl.redefineClasses} native method
 which must be implemented by the VM. The implementation should call the
 @code{InstrumentationImpl.callTransformers} method.
 
-@node gnu.java.lang.management, Classpath Callbacks, gnu.java.lang, Classpath Hooks
+@node gnu.java.lang.management, java.lang.management, gnu.java.lang, Classpath Hooks
 @section @code{gnu.java.lang.management}
 
 @code{gnu.java.lang.management} provides the VM interfaces for the GNU
@@ -1274,6 +1275,7 @@ implementations of the management beans.
 * gnu.java.lang.management.VMThreadMXBeanImpl::
 * gnu.java.lang.management.VMMemoryMXBeanImpl::
 * gnu.java.lang.management.VMCompilationMXBeanImpl::
+* gnu.java.lang.management.VMMemoryPoolMXBeanImpl::
 @end menu
 
 @node gnu.java.lang.management.VMRuntimeMXBeanImpl,gnu.java.lang.management.VMClassLoadingMXBeanImpl,,gnu.java.lang.management
@@ -1470,13 +1472,13 @@ output is turned or not, respectively.
 verbose memory management output to be turned on and off.
 @end itemize
 
-@node gnu.java.lang.management.VMCompilationMXBeanImpl,,gnu.java.lang.management.VMMemoryMXBeanImpl,gnu.java.lang.management
+@node gnu.java.lang.management.VMCompilationMXBeanImpl,gnu.java.lang.management.VMMemoryPoolMXBeanImpl,gnu.java.lang.management.VMMemoryMXBeanImpl,gnu.java.lang.management
 @subsection @code{gnu.java.lang.management.VMCompilationMXBeanImpl}
 
 The @code{gnu.java.lang.management.CompilationMXBeanImpl} provides an
 implementation of the optional @code{java.lang.management.CompilationMXBean}
 interface, and is supported by VM functionality in the form of
-@code{gnu.java.lang.management.VMCompilatinMXBeanImpl}.  This provides a
+@code{gnu.java.lang.management.VMCompilationMXBeanImpl}.  This provides a
 single method for returning the number of milliseconds the virtual
 machine's Just-In-Time (JIT) compiler has spent compiling.  Even if
 a JIT compiler is available and an instance of the bean supplied, this
@@ -1503,7 +1505,92 @@ Time support is implemented by the following method:
 number of milliseconds the JIT compiler has spent compiling.
 @end itemize
 
-@node Classpath Callbacks, , gnu.java.lang.management, Classpath Hooks
+@node gnu.java.lang.management.VMMemoryPoolMXBeanImpl,,gnu.java.lang.management.VMCompilationMXBeanImpl,gnu.java.lang.management
+@subsection @code{gnu.java.lang.management.VMMemoryPoolMXBeanImpl}
+
+The @code{gnu.java.lang.management.MemoryPoolMXBeanImpl} provides an
+implementation of the optional @code{java.lang.management.MemoryPoolMXBean}
+interface, and is supported by VM functionality in the form of
+@code{gnu.java.lang.management.VMMemoryPoolMXBeanImpl}.  Providing
+this interface requires implementing a number of methods for each supported
+pool.  These return statistics on memory usage, and, optionally, allows
+monitoring of when memory usage exceedes a preset threshold.
+
+Optional support is determined by the following properties:
+
+@itemize @bullet
+@item @code{gnu.java.lang.management.CollectionUsageThresholdSupport} --
+This property should be present if the VM supports setting a collection
+usage threshold and monitoring when it is matched or exceeded.  Collection
+usage thresholds are related to the remaining memory usage following a
+garbage collection cycle.
+@item @code{gnu.java.lang.management.UsageThresholdSupport} --
+This property should be present if the VM supports setting a 
+usage threshold and monitoring when it is matched or exceeded.  
+@end itemize
+
+The methods are as follows (all take a pool name as their
+first parameter):
+
+@itemize @bullet
+@item @code{(getCollectionUsage(String))} -- Returns a
+@code{java.lang.management.MemoryUsage} object, containing the
+memory usage statistics following a garbage collection cycle
+for the specified pool.  This may also return @code{null} if
+the pool isn't an appropriate pool for this particular task.
+@item @code{(getCollectionUsageThreshold(String))} -- Returns
+the pool's collection usage threshold, if supported.
+@item @code{(getCollectionUsageThresholdCount(String))} -- Returns
+the number of times the specified pool has matched or exceeded
+its collection usage threshold, if supported.
+@item @code{(getMemoryManagerNames(String))} -- Returns a list
+of names of memory managers which manage the specified pool.
+@item @code{(getPeakUsage(String))} -- Returns a
+@code{java.lang.management.MemoryUsage} object for the peak
+usage level of the specified pool.
+@item @code{(getUsage(String))} -- Returns a
+@code{java.lang.management.MemoryUsage} object for the current
+usage level of the specified pool.
+@item @code{(getUsageThreshold(String))} -- Returns
+the pool's usage threshold, if supported.
+@item @code{(getUsageThresholdCount(String))} -- Returns
+the number of times the specified pool has matched or exceeded
+its usage threshold, if supported.
+@item @code{(isValid(String))} -- Returns true if the pool
+is still in use by the virtual machine.
+@item @code{(resetPeakUsage(String))} -- Resets the peak usage
+levels to the current usage levels for the specified pool.
+@item @code{(setCollectionUsageThreshold(String, long))} -- Sets
+the pool's collection usage threshold, if supported.
+@item @code{(setUsageThreshold(String, long))} -- Sets
+the pool's usage threshold, if supported.
+@end itemize
+
+@node java.lang.management, Classpath Callbacks, gnu.java.lang.management, Classpath Hooks
+@section @code{java.lang.management}
+
+@code{gnu.java.lang.management} provides the VM interfaces for the GNU
+implementations of the management beans.  
+
+@menu
+* java.lang.management.VMManagementFactory::
+@end menu
+
+@node java.lang.management.VMManagementFactory,,,java.lang.management
+@subsection @code{java.lang.management.VMManagementFactory}
+
+This VM interface provides the names of the memory pools, memory managers
+and garbage collectors for use by the @code{java.lang.management.ManagementFactory}
+in creating lists of appropriate beans for these types of managed object.
+
+The methods are as follows:
+
+@itemize @bullet
+@item @code{(getMemoryPoolNames())} -- Returns a list of the names
+of the current memory pools in use by the virtual machine.
+@end itemize
+
+@node Classpath Callbacks, , java.lang.management, Classpath Hooks
 Some of the classes you implement for the VM will need to call back to
 package-private methods in Classpath:
 
