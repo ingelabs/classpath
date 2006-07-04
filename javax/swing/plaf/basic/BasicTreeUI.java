@@ -2347,9 +2347,49 @@ public class BasicTreeUI
      * @param e the key typed
      */
     public void keyTyped(KeyEvent e)
-    throws NotImplementedException
     {
-      // TODO: What should be done here, if anything?
+      char typed = Character.toLowerCase(e.getKeyChar());
+      for (int row = tree.getLeadSelectionRow() + 1;
+        row < tree.getRowCount(); row++)
+        {
+           if (checkMatch(row, typed))
+             {
+               tree.setSelectionRow(row);
+               tree.scrollRowToVisible(row);
+               return;
+             }
+        }
+      
+      // Not found below, search above:
+      for (int row = 0; row < tree.getLeadSelectionRow(); row++)
+        {
+           if (checkMatch(row, typed))
+             {
+               tree.setSelectionRow(row);
+               tree.scrollRowToVisible(row);               
+               return;
+             }
+        }
+    }
+    
+    /**
+     * Check if the given tree row starts with this character
+     * 
+     * @param row the tree row
+     * @param typed the typed char, must be converted to lowercase
+     * @return true if the given tree row starts with this character
+     */
+    boolean checkMatch(int row, char typed)
+    {
+      TreePath path = treeState.getPathForRow(row);
+      String node = path.getLastPathComponent().toString();
+      if (node.length() > 0)
+        {
+          char x = node.charAt(0);
+          if (typed == Character.toLowerCase(x))
+            return true;
+        }
+      return false;
     }
 
     /**
@@ -2358,9 +2398,8 @@ public class BasicTreeUI
      * @param e the key pressed
      */
     public void keyPressed(KeyEvent e)
-    throws NotImplementedException
     {
-      // TODO: What should be done here, if anything?
+      // Nothing to do here.
     }
 
     /**
@@ -2369,9 +2408,8 @@ public class BasicTreeUI
      * @param e the key released
      */
     public void keyReleased(KeyEvent e)
-    throws NotImplementedException
     {
-      // TODO: What should be done here, if anything?
+      // Nothing to do here.
     }
   }
 

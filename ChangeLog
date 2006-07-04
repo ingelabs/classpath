@@ -1,3 +1,7 @@
+2006-07-04  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java (KeyHandler): Implemented.
+
 2006-07-04  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/dnd/DragSourceContext.java
