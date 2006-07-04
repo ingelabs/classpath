@@ -998,7 +998,7 @@ public class BasicToolBarUI extends ToolBarUI implements SwingConstants
      */
     public void mouseClicked(MouseEvent e)
     {
-      // Don't care.
+      // Nothing to do here.
     }
 
     /**
@@ -1020,7 +1020,7 @@ public class BasicToolBarUI extends ToolBarUI implements SwingConstants
      */
     public void mouseEntered(MouseEvent e)
     {
-      // Don't care (yet).
+      // Nothing to do here.
     }
 
     /**
@@ -1030,7 +1030,7 @@ public class BasicToolBarUI extends ToolBarUI implements SwingConstants
      */
     public void mouseExited(MouseEvent e)
     {
-      // Don't care (yet).
+      // Nothing to do here.
     }
 
     /**
@@ -1040,7 +1040,7 @@ public class BasicToolBarUI extends ToolBarUI implements SwingConstants
      */
     public void mouseMoved(MouseEvent e)
     {
-      // TODO: What should be done here, if anything?
+      // Nothing to do here.
     }
 
     /**
@@ -1203,13 +1203,17 @@ public class BasicToolBarUI extends ToolBarUI implements SwingConstants
     }
 
     /**
-     * FIXME: Do something.
+     * Sets the orientation of the toolbar and the
+     * drag window.
      *
-     * @param o DOCUMENT ME!
+     * @param o - the new orientation of the toolbar and drag
+     * window.
      */
     public void setOrientation(int o)
     {
-      // FIXME: implement.
+      toolBar.setOrientation(o);
+      if (dragWindow != null) 
+        dragWindow.setOrientation(o);
     }
   }
 
@@ -1330,27 +1334,27 @@ public class BasicToolBarUI extends ToolBarUI implements SwingConstants
     /**
      * Creates a new ToolBarFocusListener object.
      */
-    protected ToolBarFocusListener()
+    protected ToolBarFocusListener() throws NotImplementedException
     {
       // FIXME: implement.
     }
 
     /**
      * DOCUMENT ME!
-     *
+     * 
      * @param e DOCUMENT ME!
      */
-    public void focusGained(FocusEvent e)
+    public void focusGained(FocusEvent e) throws NotImplementedException
     {
       // FIXME: implement.
     }
 
     /**
      * DOCUMENT ME!
-     *
+     * 
      * @param e DOCUMENT ME!
      */
-    public void focusLost(FocusEvent e)
+    public void focusLost(FocusEvent e) throws NotImplementedException
     {
       // FIXME: implement.
     }

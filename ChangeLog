@@ -1,3 +1,27 @@
+2006-07-04  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicOptionPaneUI.java:
+	Fixed name of constant.
+	(getIconWidth): Changed name of constant returned.
+	(getIconHeight): Likewise.
+	(paint): Likewise.
+	(createSeparator): Marked as unimplemented.
+	* javax/swing/plaf/basic/BasicTableUI.java
+	(focusGained): Marked as unimplemented.
+	(focusLost): Marked as unimplemented.
+	(mouseEntered): Likewise.
+	(mouseMoved): Likewise.
+	(uninstallDefaults): Likewise.
+	* javax/swing/plaf/basic/BasicToolBarUI.java
+	(mouseClicked): Changed comment.
+	(mouseEntered): Likewise.
+	(mouseExited): Likewise.
+	(mouseMoved): Likewise.
+	(setOrientation): Implemented.
+	(ToolBarFocusListener): Marked as unimplemented.
+	(focusGained): Marked as unimplemented.
+	(focusLost): Marked as unimplemented.
+
 2006-07-04  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	PR 28061

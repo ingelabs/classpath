@@ -164,12 +164,12 @@ public class BasicTableUI extends TableUI
 
   public class FocusHandler implements FocusListener
   {
-    public void focusGained(FocusEvent e) 
+    public void focusGained(FocusEvent e) throws NotImplementedException
     {
       // TODO: Implement this properly.
     }
 
-    public void focusLost(FocusEvent e) 
+    public void focusLost(FocusEvent e) throws NotImplementedException
     {
       // TODO: Implement this properly.
     }
@@ -243,16 +243,17 @@ public class BasicTableUI extends TableUI
     }
 
     public void mouseEntered(MouseEvent e) 
+    throws NotImplementedException
     {
       // TODO: What should be done here, if anything?
     }
 
-    public void mouseExited(MouseEvent e) 
+    public void mouseExited(MouseEvent e) throws NotImplementedException
     {
       // TODO: What should be done here, if anything?
     }
 
-    public void mouseMoved(MouseEvent e) 
+    public void mouseMoved(MouseEvent e) throws NotImplementedException
     {
       // TODO: What should be done here, if anything?
     }
@@ -1167,7 +1168,7 @@ public class BasicTableUI extends TableUI
     table.addPropertyChangeListener(propertyChangeListener);
   }
 
-  protected void uninstallDefaults() 
+  protected void uninstallDefaults() throws NotImplementedException
   {
     // TODO: this method used to do the following which is not
     // quite right (at least it breaks apps that run fine with the
@@ -1187,8 +1188,7 @@ public class BasicTableUI extends TableUI
     // though. / Roman Kennke
   }
 
-  protected void uninstallKeyboardActions() 
-    throws NotImplementedException
+  protected void uninstallKeyboardActions() throws NotImplementedException
   {
     // TODO: Implement this properly.
   }

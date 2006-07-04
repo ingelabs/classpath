@@ -460,8 +460,7 @@ public class BasicOptionPaneUI extends OptionPaneUI
   protected JOptionPane optionPane;
 
   /** The size of the icons. */
-  // FIXME: wrong name for a constant.
-  private static final int iconSize = 36;
+  private static final int ICON_SIZE = 36;
 
   /** The foreground color for the message area. */
   private transient Color messageForeground;
@@ -505,7 +504,7 @@ public class BasicOptionPaneUI extends OptionPaneUI
      */
     public int getIconWidth()
     {
-      return iconSize;
+      return ICON_SIZE;
     }
 
     /**
@@ -515,7 +514,7 @@ public class BasicOptionPaneUI extends OptionPaneUI
      */
     public int getIconHeight()
     {
-      return iconSize;
+      return ICON_SIZE;
     }
 
     /**
@@ -566,7 +565,7 @@ public class BasicOptionPaneUI extends OptionPaneUI
 	// Should be purple.
 	g.setColor(Color.RED);
 
-	g.fillOval(0, 0, iconSize, iconSize);
+	g.fillOval(0, 0, ICON_SIZE, ICON_SIZE);
 
 	g.setColor(Color.BLACK);
 	g.drawOval(16, 6, 4, 4);
@@ -615,7 +614,7 @@ public class BasicOptionPaneUI extends OptionPaneUI
 	Color saved = g.getColor();
 	g.setColor(Color.GREEN);
 
-	g.fillRect(0, 0, iconSize, iconSize);
+	g.fillRect(0, 0, ICON_SIZE, ICON_SIZE);
 
 	g.setColor(Color.BLACK);
 
@@ -623,7 +622,7 @@ public class BasicOptionPaneUI extends OptionPaneUI
 	g.drawOval(14, 5, 10, 10);
 
 	g.setColor(Color.GREEN);
-	g.fillRect(0, 10, iconSize, iconSize - 10);
+	g.fillRect(0, 10, ICON_SIZE, ICON_SIZE - 10);
 
 	g.setColor(Color.BLACK);
 
@@ -639,10 +638,6 @@ public class BasicOptionPaneUI extends OptionPaneUI
 	g.translate(-x, -y);
       }
     };
-
-  // FIXME: Uncomment when the ImageIcons are fixed.
-
-  /*  IconUIResource warningIcon, questionIcon, infoIcon, errorIcon;*/
 
   /**
    * Creates a new BasicOptionPaneUI object.
@@ -940,6 +935,7 @@ public class BasicOptionPaneUI extends OptionPaneUI
    * @return A Container that will separate the message and button areas.
    */
   protected Container createSeparator()
+    throws NotImplementedException
   {
     // FIXME: Figure out what this method is supposed to return and where
     // this should be added to the OptionPane.
