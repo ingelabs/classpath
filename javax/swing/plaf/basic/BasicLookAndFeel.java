@@ -1610,7 +1610,7 @@ public abstract class BasicLookAndFeel extends LookAndFeel
       }),
       "Tree.font", new FontUIResource("Dialog", Font.PLAIN, 12),
       "Tree.foreground", new ColorUIResource(Color.black),
-      "Tree.hash", new ColorUIResource(new Color(128, 128, 128)),
+      "Tree.hash", new ColorUIResource(new Color(184, 207, 228)),
       "Tree.leftChildIndent", new Integer(7),
       "Tree.rightChildIndent", new Integer(13),
       "Tree.rowHeight", new Integer(16),

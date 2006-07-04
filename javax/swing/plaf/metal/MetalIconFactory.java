@@ -1801,78 +1801,36 @@ public class MetalIconFactory implements Serializable
     /**
      * Paints the icon at the location (x, y).
      * 
-     * @param c  the component.
-     * @param g  the graphics device.
-     * @param x  the x coordinate.
-     * @param y  the y coordinate.
+     * @param c the component.
+     * @param g the graphics device.
+     * @param x the x coordinate.
+     * @param y the y coordinate.
      */
-    public void paintIcon(Component c, Graphics g, int x, int y) 
+    public void paintIcon(Component c, Graphics g, int x, int y)
     {
-      x = x + 5;
-      y = y + 5;
-      if (collapsed) 
-      {
-        // TODO: pick up appropriate UI colors
-        g.setColor(Color.black);
-        g.drawLine(x + 2, y, x + 5, y);
-        g.drawLine(x + 6, y + 1, x + 7, y + 2);
-        g.fillRect(x + 7, y + 3, 5, 2);
-        g.drawLine(x + 7, y + 5, x + 6, y + 6);
-        g.drawLine(x + 1, y + 1, x + 1, y + 1);
-        g.drawLine(x, y + 2, x, y + 5);
-        g.drawLine(x + 1, y + 6, x + 1, y + 6);
-        g.drawLine(x + 2, y + 7, x + 5, y + 7);
-        g.fillRect(x + 3, y + 3, 2, 2);
+      // TODO: pick up appropriate UI colors
+      Color dark = new Color(99, 130, 191);
+      Color light = new Color(163, 184, 204);
+      Color white = Color.white;
 
-        g.setColor(new Color(204, 204, 255));
-        g.drawLine(x + 3, y + 2, x + 4, y + 2);
-        g.drawLine(x + 2, y + 3, x + 2, y + 4);
-        g.drawLine(x + 3, y + 5, x + 3, y + 5);
-        g.drawLine(x + 5, y + 3, x + 5, y + 3);
-        
-        g.setColor(new Color(153, 153, 204));
-        g.drawLine(x + 2, y + 2, x + 2, y + 2);
-        g.drawLine(x + 2, y + 5, x + 2, y + 5);
-        g.drawLine(x + 2, y + 6, x + 5, y + 6);
-        g.drawLine(x + 5, y + 2, x + 5, y + 2);
-        g.drawLine(x + 6, y + 2, x + 6, y + 5);
-        
-        g.setColor(new Color(102, 102, 153));
-        g.drawLine(x + 2, y + 1, x + 5, y + 1);
-        g.drawLine(x + 1, y + 2, x + 1, y + 5);
-      }
+      x += 8;
+      y += 6;
+
+      final int w = 6;
+      final int wHalf = (w >> 2);
+      g.setColor(light);
+      g.drawOval(x, y, w, w);
+      g.setColor(dark);
+      g.fillOval(x + 1, y + 1, w - 1, w - 1);
+      
+      if (collapsed)
+        g.fillRect(x + w, y + wHalf + 1, w, 2);
       else
-      {
-        // TODO: pick up appropriate UI colors
-        g.setColor(Color.black);
-        g.drawLine(x + 2, y, x + 5, y);
-        g.drawLine(x + 6, y + 1, x + 7, y + 2);
-        g.drawLine(x + 7, y + 2, x + 7, y + 5);
-        g.fillRect(x + 3, y + 7, 2, 5);
-        g.drawLine(x + 7, y + 5, x + 6, y + 6);
-        g.drawLine(x + 1, y + 1, x + 1, y + 1);
-        g.drawLine(x, y + 2, x, y + 5);
-        g.drawLine(x + 1, y + 6, x + 1, y + 6);
-        g.drawLine(x + 2, y + 7, x + 5, y + 7);
-        g.fillRect(x + 3, y + 3, 2, 2);
+        g.fillRect(x + wHalf + 1, y + w, 2, w);
+      
+      g.setColor(white);
+      g.fillRect(x + wHalf + 1, y + wHalf + 1, 2, 2);
 
-        g.setColor(new Color(204, 204, 255));
-        g.drawLine(x + 3, y + 2, x + 4, y + 2);
-        g.drawLine(x + 2, y + 3, x + 2, y + 4);
-        g.drawLine(x + 3, y + 5, x + 3, y + 5);
-        g.drawLine(x + 5, y + 3, x + 5, y + 3);
-        
-        g.setColor(new Color(153, 153, 204));
-        g.drawLine(x + 2, y + 2, x + 2, y + 2);
-        g.drawLine(x + 2, y + 5, x + 2, y + 5);
-        g.drawLine(x + 2, y + 6, x + 5, y + 6);
-        g.drawLine(x + 5, y + 2, x + 5, y + 2);
-        g.drawLine(x + 6, y + 2, x + 6, y + 5);
-        
-        g.setColor(new Color(102, 102, 153));
-        g.drawLine(x + 2, y + 1, x + 5, y + 1);
-        g.drawLine(x + 1, y + 2, x + 1, y + 5);
-      }
     } 
     
     /**

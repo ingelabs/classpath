@@ -1240,6 +1240,11 @@ public class BasicTreeUI
   {
     LookAndFeel.installColorsAndFont(tree, "Tree.background",
                                      "Tree.foreground", "Tree.font");
+    
+    hashColor = UIManager.getColor("Tree.hash");
+    if (hashColor == null)
+      hashColor = Color.black;
+    
     tree.setOpaque(true);
 
     rightChildIndent = UIManager.getInt("Tree.rightChildIndent");

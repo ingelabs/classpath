@@ -1,6 +1,18 @@
 2006-07-04  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	PR 28061
+	* gnu/javax/swing/plaf/gnu/GNULookAndFeel.java
+	(getDefaults): Set hash color to black.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Set hash color to grey blue.
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(instellDefaults): Set hash color.
+	* javax/swing/plaf/metal/MetalIconFactory.java
+	(TreeControlIcon.paint): Rewritten.
+
+2006-07-04  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	PR 28061
 	* javax/swing/plaf/basic/BasicTreeUI.java (MouseHandler.mousePressed):
 	Always cancel the current editing session before doing anything else,
 	return immediately if this fails.
