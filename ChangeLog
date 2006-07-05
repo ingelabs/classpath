@@ -1,3 +1,9 @@
+2006-07-05  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* native/plugin/Makefile.am (nativeexeclib_LTLIBRARIES): Rename
+	from lib_LTLIBRARIES.
+	(install-plugin): Depend on nativeexeclib_LTLIBRARIES.
+
 2006-07-05  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/dnd/DragGestureEvent.java:
