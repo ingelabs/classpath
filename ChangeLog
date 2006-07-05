@@ -1,3 +1,63 @@
+2006-07-05  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/dnd/DragGestureEvent.java:
+	Added new fields.
+	(DragGestureEvent): Initialized new fields, added to check and 
+	added documentation.
+	(getSourceAsDragGestureRecognizer): Added documentation and 
+	changed to use getSource.
+	(getComponent): Added documentation and fixed to return the proper
+	value.
+	(getDragSource): Likewise.
+	(getDragOrigin): Added documentation.
+	(iterator): Implemented and added documentation.
+	(toArray): Likewise.
+	(toArray): Likewise.
+	(getDragAction): Likewise.
+	(getTriggerEvent): Likewise.
+	(startDrag): Likewise.
+	* java/awt/dnd/DragGestureRecognizer.java
+	(resetRecognizer): Added FIXME.
+	* java/awt/dnd/DragSource.java:
+	Added new field.
+	(DragSource): Set ds to be null if headless.
+	(getDefaultDragSource): Added documentation and implemented.
+	(isDragImageSupported): Marked as unimplemented.
+	(startDrag): Likewise.
+	(createDragSourceContext): Implemented.
+	(NoDragGestureRecognizer): Formatted inner class.
+	* java/awt/dnd/DropTarget.java
+	(stop): Marked as unimplemented.
+	(actionPerformed): Likewise.
+	(addDropTargetListener): Added code to throw exception.
+	(removeDropTargetListener): Added check, removed FIXME.
+	(dragEnter): Implemented.
+	(dragOver): Implemented.
+	(dropActionChanged): Implemented.
+	(dragExit): Implemented.
+	(drop): Implemented.
+	(addNotify): Implemented.
+	(removeNotify): Implemented.
+	(createDropTargetContext): Implemented.
+	(createDropTargetAutoScroller): Implemented.
+	(initializeAutoscrolling): Implemented.
+	(updateAutoscroll): Implemented.
+	(clearAutoscroll): Implemented.
+	* java/awt/dnd/DropTargetContext.java
+	(dropComplete): Implemented.
+	(acceptDrag): Implemented.
+	(rejectDrag): Implemented.
+	(acceptDrop): Implemented.
+	(rejectDrop): Implemented.
+	(getCurrentDataFlavors): Implemented.
+	(getTransferable): Partially implemented.
+	* java/awt/dnd/DropTargetDragEvent.java
+	(getDropAction): Uncommented correct code.
+	* java/awt/dnd/DropTargetDropEvent.java
+	(dropComplete) :Implemented.
+	* java/awt/dnd/InvalidDnDOperationException.java
+	(InvalidDnDOperationException): Added call to super.
+
 2006-07-05  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/plaf/basic/BasicArrowButton.java:

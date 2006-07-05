@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package java.awt.dnd;
 
+import gnu.classpath.NotImplementedException;
+
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.GraphicsEnvironment;
@@ -70,9 +72,10 @@ public class DragSource implements Serializable
   public static final Cursor DefaultLinkNoDrop = null;
 
   private transient FlavorMap flavorMap = SystemFlavorMap.getDefaultFlavorMap ();
-
   private transient DragSourceListener dragSourceListener;
   private transient DragSourceMotionListener dragSourceMotionListener;
+  
+  private static DragSource ds;
 
   /**
    * Initializes the drag source.
@@ -82,19 +85,34 @@ public class DragSource implements Serializable
   public DragSource()
   {
     if (GraphicsEnvironment.isHeadless())
-      throw new HeadlessException ();
+      {
+        ds = null;
+        throw new HeadlessException();
+      }
   }
 
   /**
+   * Gets the default drag source.
+   * 
    * @exception HeadlessException If GraphicsEnvironment.isHeadless() is true.
    */
   public static DragSource getDefaultDragSource()
   {
-    return new DragSource();
+    if (GraphicsEnvironment.isHeadless())
+      {
+        ds = null;
+        throw new HeadlessException();
+      }
+    
+    if (ds == null)
+      ds = new DragSource();
+    return ds;
   }
 
   public static boolean isDragImageSupported()
+    throws NotImplementedException
   {
+    // FIXME: Implement this
     return false;
   }
 
@@ -109,7 +127,9 @@ public class DragSource implements Serializable
                         Image dragImage, Point imageOffset,
                         Transferable trans, DragSourceListener dsl,
                         FlavorMap map)
+    throws NotImplementedException
   {
+    // FIXME: Implement this
   }
 
   /**
@@ -156,7 +176,7 @@ public class DragSource implements Serializable
   /**
    * Creates the DragSourceContext to handle this drag.
    *
-   * @exception IllegalArgumentException FIXME
+   * @exception IllegalArgumentException 
    * @exception NullPointerException If dscp, dgl, dragImage or t is null.
    */
   protected DragSourceContext
@@ -164,7 +184,7 @@ public class DragSource implements Serializable
                             Cursor cursor, Image image, Point offset,
                             Transferable t, DragSourceListener dsl)
   {
-    return null;
+    return new DragSourceContext(peer, dge, cursor, image, offset, t, dsl);
   }
 
   public FlavorMap getFlavorMap()
@@ -175,7 +195,8 @@ public class DragSource implements Serializable
   /**
    * Dummy DragGestureRecognizer when Toolkit doesn't support drag and drop.
    */
-  static class NoDragGestureRecognizer extends DragGestureRecognizer
+  static class NoDragGestureRecognizer
+      extends DragGestureRecognizer
   {
     NoDragGestureRecognizer(DragSource ds, Component c, int actions,
                             DragGestureListener dgl)
@@ -183,8 +204,13 @@ public class DragSource implements Serializable
       super(ds, c, actions, dgl);
     }
 
-    protected void registerListeners() { }
-    protected void unregisterListeners() { }
+    protected void registerListeners()
+    {
+    }
+
+    protected void unregisterListeners()
+    {
+    }
   }
 
   public DragGestureRecognizer
