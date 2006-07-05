@@ -1,3 +1,9 @@
+2006-07-05  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/plaf/basic/BasicArrowButton.java:
+	(paint): Removed getBounds() call, changed center point
+	calculation.
+
 2006-07-05  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/InputMap.java

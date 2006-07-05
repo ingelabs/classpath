@@ -1,5 +1,5 @@
 /* BasicArrowButton.java --
-   Copyright (C) 2004, 2005 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2005, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -162,16 +162,20 @@ public class BasicArrowButton extends JButton implements SwingConstants
   public void paint(Graphics g)
   {
     super.paint(g);
-    Rectangle bounds = getBounds();
-    int size = bounds.height / 4;
-    int x = bounds.x + (bounds.width - size) / 2;
-    int y = (bounds.height - size) / 4;
+    
+    int height = getHeight();
+    int size = height / 4;
+    
+    int x = (getWidth() - size) / 2;
+    int y = (height - size) / 2;
+    
     ButtonModel m = getModel();
     if (m.isArmed())
       {
         x++;
         y++;
       }
+    
     paintTriangle(g, x, y, size, direction, isEnabled());
   }
 
