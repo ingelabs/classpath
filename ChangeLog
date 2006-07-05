@@ -1,5 +1,21 @@
 2006-07-05  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/InputMap.java
+	(inputMap): Don't initialize yet,
+	(InputMap): Removed TODO,
+	(get): Check for null inputMap,
+	(put): Return immediately for null keyStroke, check for null inputMap
+	and initialize if necessary,
+	(remove): Check for null inputMap,
+	(size): Likewise,
+	(clear): Likewise,
+	(keys): Likewise,
+	(allKeys): Likewise,
+	(writeObject): Removed,
+	(readObject): Removed.
+
+2006-07-05  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* gnu/classpath/examples/swing/TabbedPaneDemo.java
 	(createContent): Use different labels for buttons.
 
