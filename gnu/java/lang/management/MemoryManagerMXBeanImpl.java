@@ -1,4 +1,4 @@
-/* VMManagementFactory.java - VM interface for obtaining system beans.
+/* MemoryManagerMXBeanImpl.java - Implementation of a memory manager bean
    Copyright (C) 2006 Free Software Foundation
 
 This file is part of GNU Classpath.
@@ -35,41 +35,53 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package java.lang.management;
+package gnu.java.lang.management;
+
+import java.lang.management.MemoryManagerMXBean;
 
 /**
- * Provides lists of resources required by the
- * {@link java.lang.management.ManagementFactory} for
- * creating beans.
+ * Provides access to information about one of the memory 
+ * managers used by the current invocation of the
+ * virtual machine.  An instance of this bean for each memory
+ * manager is obtained by calling
+ * {@link ManagementFactory#getMemoryPoolMXBeans()}.
  *
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.5
  */
-final class VMManagementFactory
+public class MemoryManagerMXBeanImpl
+  extends BeanImpl
+  implements MemoryManagerMXBean
 {
 
   /**
-   * Return a list of the names of the currently available
-   * memory pools within the virtual machine.
-   *
-   * @return a list of memory pool names.
+   * The name of the memory manager.
    */
-  static native String[] getMemoryPoolNames();
+  protected String name;
 
   /**
-   * Return a list of the names of the currently available
-   * memory managers within the virtual machine.  This should
-   * not include the garbage collectors listed below.
+   * Constructs a new <code>MemoryManagerMXBeanImpl</code>.
    *
-   * @return a list of memory manager names.
+   * @param name the name of the manager this bean represents.
    */
-  static native String[] getMemoryManagerNames();
+  public MemoryManagerMXBeanImpl(String name)
+  {
+    this.name = name;
+  }
 
-  /**
-   * Return a list of the names of the currently available
-   * garbage collectors within the virtual machine.
-   *
-   * @return a list of garbage collector names.
-   */
-  static native String[] getGarbageCollectorNames();
+  public String[] getMemoryPoolNames()
+  {
+    return VMMemoryManagerMXBeanImpl.getMemoryPoolNames(name);
+  }
+
+  public String getName()
+  {
+    return name;
+  }
+
+  public boolean isValid()
+  {
+    return VMMemoryManagerMXBeanImpl.isValid(name);
+  }
+
 }

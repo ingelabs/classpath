@@ -1,4 +1,4 @@
-/* VMManagementFactory.java - VM interface for obtaining system beans.
+/* MemoryManagerMXBean.java - Interface for a memory manager bean
    Copyright (C) 2006 Free Software Foundation
 
 This file is part of GNU Classpath.
@@ -38,38 +38,40 @@ exception statement from your version. */
 package java.lang.management;
 
 /**
- * Provides lists of resources required by the
- * {@link java.lang.management.ManagementFactory} for
- * creating beans.
+ * Provides access to information about the memory managers
+ * of the virtual machine.  An instance of this bean for each
+ * memory manager is obtained by calling
+ * {@link ManagementFactory#getMemoryManagerMXBeans()}.
  *
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.5
  */
-final class VMManagementFactory
+public interface MemoryManagerMXBean
 {
 
-  /**
-   * Return a list of the names of the currently available
-   * memory pools within the virtual machine.
-   *
-   * @return a list of memory pool names.
+  /** 
+   * Returns an array containing the names of the memory pools
+   * this memory manager manages.
+   * 
+   * @return an array containing the name of each memory pool
+   *         this manager is responsible for.
    */
-  static native String[] getMemoryPoolNames();
+  String[] getMemoryPoolNames();
 
   /**
-   * Return a list of the names of the currently available
-   * memory managers within the virtual machine.  This should
-   * not include the garbage collectors listed below.
+   * Returns the name of the memory manager.
    *
-   * @return a list of memory manager names.
+   * @return the memory manager name.
    */
-  static native String[] getMemoryManagerNames();
+  String getName();
 
   /**
-   * Return a list of the names of the currently available
-   * garbage collectors within the virtual machine.
+   * Returns true if this memory manager is still valid.  A memory
+   * manager becomes invalid when it is removed by the virtual machine
+   * and no longer used.
    *
-   * @return a list of garbage collector names.
+   * @return true if this memory manager is valid.
    */
-  static native String[] getGarbageCollectorNames();
+  boolean isValid();
+
 }

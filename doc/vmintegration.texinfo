@@ -1276,6 +1276,8 @@ implementations of the management beans.
 * gnu.java.lang.management.VMMemoryMXBeanImpl::
 * gnu.java.lang.management.VMCompilationMXBeanImpl::
 * gnu.java.lang.management.VMMemoryPoolMXBeanImpl::
+* gnu.java.lang.management.VMMemoryManagerMXBeanImpl::
+* gnu.java.lang.management.VMGarbageCollectorMXBeanImpl::
 @end menu
 
 @node gnu.java.lang.management.VMRuntimeMXBeanImpl,gnu.java.lang.management.VMClassLoadingMXBeanImpl,,gnu.java.lang.management
@@ -1505,7 +1507,7 @@ Time support is implemented by the following method:
 number of milliseconds the JIT compiler has spent compiling.
 @end itemize
 
-@node gnu.java.lang.management.VMMemoryPoolMXBeanImpl,,gnu.java.lang.management.VMCompilationMXBeanImpl,gnu.java.lang.management
+@node gnu.java.lang.management.VMMemoryPoolMXBeanImpl,gnu.java.lang.management.VMMemoryManagerMXBeanImpl,gnu.java.lang.management.VMCompilationMXBeanImpl,gnu.java.lang.management
 @subsection @code{gnu.java.lang.management.VMMemoryPoolMXBeanImpl}
 
 The @code{gnu.java.lang.management.MemoryPoolMXBeanImpl} provides an
@@ -1566,6 +1568,46 @@ the pool's collection usage threshold, if supported.
 the pool's usage threshold, if supported.
 @end itemize
 
+@node gnu.java.lang.management.VMMemoryManagerMXBeanImpl,gnu.java.lang.management.VMGarbageCollectorMXBeanImpl,gnu.java.lang.management.VMMemoryPoolMXBeanImpl,gnu.java.lang.management
+@subsection @code{gnu.java.lang.management.VMMemoryManagerMXBeanImpl}
+
+The @code{gnu.java.lang.management.MemoryManagerMXBeanImpl} provides an
+implementation of the optional @code{java.lang.management.MemoryManagerMXBean}
+interface, and is supported by VM functionality in the form of
+@code{gnu.java.lang.management.VMMemoryManagerMXBeanImpl}.  Providing
+this interface requires implementing two methods (each takes the name
+of the manager as the first argument):
+
+@itemize @bullet
+@item @code{(getMemoryPoolNames(String))} -- Returns a list of the
+memory pools that the manager maintains.  A default implementation
+which scans the results of @code{getMemoryManagerNames()} for each
+pool is provided.
+@item @code{(isValid(String))} -- Returns true if the specified
+manager is still valid i.e. it is still in use by the virtual machine.
+@end itemize
+
+@node gnu.java.lang.management.VMGarbageCollectorMXBeanImpl,,gnu.java.lang.management.VMMemoryManagerMXBeanImpl,gnu.java.lang.management
+@subsection @code{gnu.java.lang.management.VMGarbageCollectorMXBeanImpl}
+
+The @code{gnu.java.lang.management.GarbageCollectorMXBeanImpl} provides an
+implementation of the optional @code{java.lang.management.GarbageCollectorMXBean}
+interface, and is supported by VM functionality in the form of
+@code{gnu.java.lang.management.VMGarbageCollectorMXBeanImpl}.  Providing
+this interface requires implementing two methods (each takes the name
+of the garbage collector as the first argument):
+
+@itemize @bullet
+@item @code{(getCollectionCount(String))} -- Returns the number of
+times the specified garbage collector has run.
+@item @code{(getCollectionTime(String))} -- Returns the accumulated
+number of milliseconds for which the garbage collector has run.
+@end itemize
+
+Note that each garbage collector is also a memory manager, and so an
+implementation of the @xref{gnu.java.lang.management.VMMemoryManagerMXBeanImpl}
+methods for its name should also be provided.
+
 @node java.lang.management, Classpath Callbacks, gnu.java.lang.management, Classpath Hooks
 @section @code{java.lang.management}
 
@@ -1588,6 +1630,11 @@ The methods are as follows:
 @itemize @bullet
 @item @code{(getMemoryPoolNames())} -- Returns a list of the names
 of the current memory pools in use by the virtual machine.
+@item @code{(getMemoryManagerNames())} -- Returns a list of the names
+of the current memory managers in use by the virtual machine.  This
+should not include those that are also garbage collectors.
+@item @code{(getGarbageCollectorNames())} -- Returns a list of the names
+of the current garbage collectors in use by the virtual machine.
 @end itemize
 
 @node Classpath Callbacks, , java.lang.management, Classpath Hooks

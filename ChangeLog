@@ -1,3 +1,23 @@
+2006-07-05  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* NEWS: Updated.
+	* doc/vmintegration.texinfo: Likewise.
+	* examples/gnu/classpath/examples/management/TestGarbageCollector.java,
+	* examples/gnu/classpath/examples/management/TestMemoryManager.java,
+	* gnu/java/lang/management/GarbageCollectorMXBeanImpl.java,
+	* gnu/java/lang/management/MemoryManagerMXBeanImpl.java,
+	* java/lang/management/GarbageCollectorMXBean.java:
+	New files.
+	* java/lang/management/ManagementFactory.java:
+	(getGarbageCollectorMXBeans()): Implemented.
+	(getMemoryManagerMXBeans()): Likewise.
+	* vm/reference/gnu/java/lang/management/VMGarbageCollectorMXBeanImpl.java,
+	* vm/reference/gnu/java/lang/management/VMMemoryManagerMXBeanImpl.java:
+	New files.
+	* vm/reference/java/lang/management/VMManagementFactory.java:
+	(getMemoryManagerNames()): Added.
+	(getGarbageCollectorNames()): Added.
+	
 2006-07-05  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* native/plugin/Makefile.am (nativeexeclib_LTLIBRARIES): Rename

@@ -75,6 +75,12 @@ Runtime interface changes:
 * VMManagementFactory provides the names of the memory pools,
   memory managers and garbage collectors maintained by the virtual
   machine.  These are used to create the beans by the ManagementFactory.
+* VMMemoryManagerMXBeanImpl and VMGarbageCollectorMXBeanImpl provide
+  low-level support for memory managers (including the specific subclass
+  of garbage collecting memory managers).  The interfaces for these
+  require no more than enumerating the number of collections and the
+  time spent (for garbage collectors) and a relationship to the memory
+  pools (for all), along with a validity check.
 
 New in release 0.91 (May 15, 2006)
 
