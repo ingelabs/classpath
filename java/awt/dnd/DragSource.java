@@ -127,9 +127,39 @@ public class DragSource implements Serializable
                         Image dragImage, Point imageOffset,
                         Transferable trans, DragSourceListener dsl,
                         FlavorMap map)
-    throws NotImplementedException
   {
-    // FIXME: Implement this
+    // http://www.javaworld.com/javaworld/jw-03-1999/jw-03-dragndrop.html
+
+    // This function creates a DragSourceContext object. This object tracks the
+    // state of the operation by listening to a native peer. In this situation,
+    // the DragSource may be obtained from the event or by an instance variable.
+    // This function also creates a new DragSourceContextPeer.
+
+    // This function sends the same message to the context, which then forwards
+    // it to the peer, passing itself as a parameter. Now, the native system has
+    // access to the Transferable through the context.
+
+    try
+      {
+        flavorMap = map;
+        DragSourceContextPeer peer = Toolkit.getDefaultToolkit().
+                                          createDragSourceContextPeer(trigger);
+        DragSourceContext context = createDragSourceContext(peer, trigger,
+                                                            dragCursor,
+                                                            dragImage,
+                                                            imageOffset, trans,
+                                                            dsl);
+
+        if (peer == null)
+          throw new InvalidDnDOperationException();
+
+        peer.startDrag(context, dragCursor, dragImage, imageOffset);
+      }
+    catch (Exception e)
+      {
+        throw new InvalidDnDOperationException("Drag and Drop system is "
+                                + "unable to initiate a drag operation.");
+      }
   }
 
   /**

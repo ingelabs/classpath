@@ -1,3 +1,9 @@
+2006-07-06  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/dnd/DragSource.java
+	(startDrag): Implemented. Added comments describing
+	what the function should do. Removed FIXME.
+
 2006-07-06  Tania Bento  <tbento@redhat.com>
 	
 	* gnu/java/awt/Canvas.java
