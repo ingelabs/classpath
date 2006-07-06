@@ -1,3 +1,11 @@
+2006-07-06  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/text/html/HTMLEditorKit.java: 
+	(HTMLFactory.createElement): Uncomment
+	code for BRView and HRuleView.
+	* javax/swing/text/html/BRView.java,
+	javax/swing/text/html/HRuleView.java: New files.
+
 2006-07-05  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* NEWS: Updated.
