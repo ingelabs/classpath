@@ -1,5 +1,12 @@
 2006-07-06  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* gnu/javax/swing/text/html/CharacterAttributeTranslator.java
+	(getColor): Made public.
+	* javax/swing/text/html/StyleSheet.java (stringToColor):
+	Use CharacterAttributeTranslator.getColor(String)
+
+2006-07-06  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* javax/swing/text/html/HTMLEditorKit.java:
 	(HTMLFactory.createElement): Update reference to the html table view.
 	* javax/swing/text/html/HTMLTableView.java: Removed (renamed).
