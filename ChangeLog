@@ -1,3 +1,9 @@
+2006-07-06  Mark Wielaard  <mark@klomp.org>
+
+	* lib/Makefile.am (CLEANFILES): Add Makefile.deps.
+	(DISTCLEANFILES): Add standard.omit.
+	(clean-local): Remove Makefile.deps, only remove dirs.
+
 2006-07-01  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/Component.java
