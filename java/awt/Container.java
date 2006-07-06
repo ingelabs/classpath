@@ -517,7 +517,8 @@ public class Container extends Component
   public void setLayout(LayoutManager mgr)
   {
     layoutMgr = mgr;
-    invalidate();
+    if (valid)
+      invalidate();
   }
 
   /**

@@ -1,3 +1,10 @@
+2006-07-01  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Component.java
+	(setFont): Only invalidate when component is valid.
+	* java/awt/Container.java
+	(setLayout): Only invalidate when component is valid.
+
 2006-07-06  Lillian Angel  <langel@redhat.com>
 
 	* gnu/java/awt/dnd/GtkMouseDragGestureRecognizer.java:

@@ -1123,7 +1123,8 @@ public abstract class Component
         if (peer != null)
           peer.setFont(font);
         firePropertyChange("font", oldFont, newFont);
-        invalidate();
+        if (valid)
+          invalidate();
       }
   }
 
