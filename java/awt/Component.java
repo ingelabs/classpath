@@ -931,7 +931,6 @@ public abstract class Component
         ComponentPeer currentPeer=peer;
         if (currentPeer != null)
             currentPeer.show();
-
         // The JDK repaints the component before invalidating the parent.
         // So do we.
         if (isShowing() && isLightweight())

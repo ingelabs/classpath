@@ -341,7 +341,7 @@ public class Container extends Component
 
         if (component == null)
           component = new Component[4]; // FIXME, better initial size?
-
+   
         // This isn't the most efficient implementation.  We could do less
         // copying when growing the array.  It probably doesn't matter.
         if (ncomponents >= component.length)

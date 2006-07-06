@@ -445,7 +445,7 @@ public class TextComponent extends Component
 
     this.selectionStart = selectionStart;
     this.selectionEnd = selectionEnd;
-
+    
     TextComponentPeer tcp = (TextComponentPeer) getPeer();
     if (tcp != null)
       tcp.select(selectionStart, selectionEnd);

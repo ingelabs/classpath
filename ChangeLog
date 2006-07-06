@@ -1,3 +1,10 @@
+2006-07-06  Tania Bento  <tbento@redhat.com>
+	
+	* gnu/java/awt/Canvas.java
+	Added new private variable 'next_canvas_number'.
+	(generateName): Added.
+	(getUniqueLong): Added.
+
 2006-07-06  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/javax/swing/text/html/CharacterAttributeTranslator.java
