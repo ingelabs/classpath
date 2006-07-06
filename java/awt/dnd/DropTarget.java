@@ -275,12 +275,20 @@ public class DropTarget
 
   public void addNotify(ComponentPeer p)
   {
-    peer = (DropTargetPeer) p;
+    if (p instanceof DropTargetPeer)
+      {
+        peer = (DropTargetPeer) p;
+        peer.addDropTarget(this);
+      }
+    else
+      peer = null;
   }
 
-  public void removeNotify(ComponentPeer peer)
+  public void removeNotify(ComponentPeer p)
   {
+    ((DropTargetPeer) peer).removeDropTarget(this);
     peer = null;
+    p = null;
   }
 
   public DropTargetContext getDropTargetContext()

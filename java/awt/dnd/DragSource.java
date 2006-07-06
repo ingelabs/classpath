@@ -51,6 +51,7 @@ import java.awt.datatransfer.FlavorMap;
 import java.awt.datatransfer.SystemFlavorMap;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.peer.DragSourceContextPeer;
+import java.awt.event.MouseMotionListener;
 import java.io.Serializable;
 import java.util.EventListener;
 
@@ -222,48 +223,22 @@ public class DragSource implements Serializable
     return flavorMap;
   }
 
-  /**
-   * Dummy DragGestureRecognizer when Toolkit doesn't support drag and drop.
-   */
-  static class NoDragGestureRecognizer
-      extends DragGestureRecognizer
+  public DragGestureRecognizer createDragGestureRecognizer(Class recognizer,
+                                                           Component c,
+                                                           int actions,
+                                                           DragGestureListener dgl)
   {
-    NoDragGestureRecognizer(DragSource ds, Component c, int actions,
-                            DragGestureListener dgl)
-    {
-      super(ds, c, actions, dgl);
-    }
-
-    protected void registerListeners()
-    {
-    }
-
-    protected void unregisterListeners()
-    {
-    }
+    return Toolkit.getDefaultToolkit().createDragGestureRecognizer(recognizer,
+                                                                   this, c,
+                                                                   actions, dgl);
   }
 
-  public DragGestureRecognizer
-    createDragGestureRecognizer(Class recognizer, Component c, int actions,
-                                DragGestureListener dgl)
+  public DragGestureRecognizer createDefaultDragGestureRecognizer(Component c,
+                                                                  int actions,
+                                                                  DragGestureListener dgl)
   {
-    DragGestureRecognizer dgr;
-    dgr = Toolkit.getDefaultToolkit ()
-                  .createDragGestureRecognizer (recognizer, this, c, actions,
-                                                dgl);
-
-    if (dgr == null)
-      dgr = new NoDragGestureRecognizer(this, c, actions, dgl);
-
-    return dgr;
-  }
-
-  public DragGestureRecognizer
-    createDefaultDragGestureRecognizer(Component c, int actions,
-                                       DragGestureListener dgl)
-  {
-    return createDragGestureRecognizer (MouseDragGestureRecognizer.class, c,
-                                        actions, dgl);
+    return createDragGestureRecognizer(MouseDragGestureRecognizer.class, c,
+                                       actions, dgl);
   }
 
   /**

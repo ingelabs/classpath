@@ -1,3 +1,29 @@
+2006-07-06  Lillian Angel  <langel@redhat.com>
+
+	* gnu/java/awt/dnd/GtkMouseDragGestureRecognizer.java:
+	New class not fully implemented.
+	* gnu/java/awt/dnd/peer/gtk/GtkDragSourceContextPeer.java:
+	New class not fully implemented.
+	* gnu/java/awt/dnd/peer/gtk/GtkDropTargetPeer.java:
+	New class not fully implemented.
+	* gnu/java/awt/dnd/peer/gtk/GtkDropTargetContextPeer.java:
+	New class not fully implemented.
+	* nu/java/awt/peer/gtk/GtkToolkit.java:
+	Fixed Imports.
+	(createDragSourceContextPeer): Implemented.
+	(createDragGestureRecognizer): New function to override
+	java.awt.Toolkit.createDragGestureRecognizer.
+	* java/awt/dnd/DragSource.java
+	(NoDragGestureRecognizer): Removed inner class.
+	(createDragGestureRecognizer): Re-Implemented to 
+	call Toolkit's createDragGestureRecognizer.
+	(createDefaultDragGestureRecognizer): Re-Implemented to
+	call Toolkit's createDragGestureRecognizer.
+	* java/awt/dnd/DropTarget.java
+	(addNotify): Added check to determine type of peer and call
+	addDropTarget.
+	(removeNotify): Added call to removeDropTarget.
+
 2006-07-06  Tom Tromey  <tromey@redhat.com>
 
 	* gnu/java/util/prefs/EventDispatcher.java (dispatch): Notify
