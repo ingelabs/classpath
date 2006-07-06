@@ -1,4 +1,4 @@
-/* HTMLTableView.java -- A table view for HTML tables
+/* TableView.java -- A table view for HTML tables
    Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -39,7 +39,6 @@ exception statement from your version. */
 package javax.swing.text.html;
 
 import javax.swing.text.Element;
-import javax.swing.text.TableView;
 import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 
@@ -48,20 +47,47 @@ import javax.swing.text.ViewFactory;
  * 
  * @author Roman Kennke (kennke@aicas.com)
  */
-class HTMLTableView
-    extends TableView
+class TableView
+    extends javax.swing.text.TableView
 {
+  /**
+   * Represents a single table row.
+   */
+  public class RowView extends TableRow
+  {
+    /**
+     * Creates a new instance of the <code>RowView</code>.
+     *
+     * @param el the element for which to create a row view
+     */
+    public RowView(Element el)
+    {
+      super(el);
+    }
+  }
 
   /**
-   * Creates a new HTMLTableView for the specified element.
+   * Creates a new HTML table view for the specified element.
    *
    * @param el the element for the table view
    */
-  public HTMLTableView(Element el)
+  public TableView(Element el)
   {
     super(el);
   }
-
+  
+  /**
+   * Creates a view for a table row.
+   * 
+   * @param el the element that represents the table row
+   * @return a view for rendering the table row 
+   * (and instance of {@link RowView}).
+   */
+  protected TableRow createTableRow(Element el) 
+  {
+    return new RowView(el);
+  }  
+  
   /**
    * Loads the children of the Table. This completely bypasses the ViewFactory
    * and creates instances of TableRow instead.

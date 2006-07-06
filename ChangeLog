@@ -1,5 +1,12 @@
 2006-07-06  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* javax/swing/text/html/HTMLEditorKit.java:
+	(HTMLFactory.createElement): Update reference to the html table view.
+	* javax/swing/text/html/HTMLTableView.java: Removed (renamed).
+	* javax/swing/text/html/TableView.java: New file.
+
+2006-07-06  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* javax/swing/text/html/HTMLEditorKit.java: 
 	(HTMLFactory.createElement): Uncomment
 	code for BRView and HRuleView.
