@@ -42,7 +42,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Polygon;
-import java.awt.Rectangle;
 
 import javax.swing.ButtonModel;
 import javax.swing.JButton;
@@ -86,7 +85,9 @@ public class BasicArrowButton extends JButton implements SwingConstants
   transient Color highlight = Color.WHITE;
 
   /**
-   * Creates a new <code>BasicArrowButton</code> object.
+   * Creates a new <code>BasicArrowButton</code> object with an arrow pointing
+   * in the specified direction.  If the <code>direction</code> is not one of
+   * the specified constants, no arrow is drawn.
    *
    * @param direction The direction the arrow points in (one of: 
    * {@link #NORTH}, {@link #SOUTH}, {@link #EAST} and {@link #WEST}).
@@ -178,16 +179,6 @@ public class BasicArrowButton extends JButton implements SwingConstants
     
     paintTriangle(g, x, y, size, direction, isEnabled());
   }
-
-  /** The preferred size for the button. */
-  private static final Dimension PREFERRED_SIZE = new Dimension(16, 16);
-
-  /** The minimum size for the button. */
-  private static final Dimension MINIMUM_SIZE = new Dimension(5, 5);
-
-  /** The maximum size for the button. */
-  private static final Dimension MAXIMUM_SIZE 
-    = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
   
   /**
    * Returns the preferred size of the arrow button.
@@ -196,7 +187,10 @@ public class BasicArrowButton extends JButton implements SwingConstants
    */
   public Dimension getPreferredSize()
   {
-    return PREFERRED_SIZE;
+    // since Dimension is NOT immutable, we must return a new instance
+    // every time (if we return a cached value, the caller might modify it)
+    // - tests show that the reference implementation does the same.
+    return new Dimension(16, 16);
   }
 
   /**
@@ -206,17 +200,23 @@ public class BasicArrowButton extends JButton implements SwingConstants
    */
   public Dimension getMinimumSize()
   {
-    return MINIMUM_SIZE;
+    // since Dimension is NOT immutable, we must return a new instance
+    // every time (if we return a cached value, the caller might modify it)
+    // - tests show that the reference implementation does the same.
+    return new Dimension(5, 5);
   }
 
   /**
    * Returns the maximum size of the arrow button.
    *
-   * @return The maximum size.
+   * @return The maximum size (always Integer.MAX_VALUE x Integer.MAX_VALUE).
    */
   public Dimension getMaximumSize()
   {
-    return MAXIMUM_SIZE;
+    // since Dimension is NOT immutable, we must return a new instance
+    // every time (if we return a cached value, the caller might modify it)
+    // - tests show that the reference implementation does the same.
+    return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
   }
 
   /**

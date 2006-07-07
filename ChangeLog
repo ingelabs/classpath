@@ -1,3 +1,13 @@
+2006-07-07  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicArrowButton.java
+	(MAXIMUM_SIZE): Removed field,
+	(MINIMUM_SIZE): Likewise,
+	(PREFERRED_SIZE): Likewise,
+	(getMaximumSize): Return new instance every time,
+	(getMinimumSize): Likewise,
+	(getPreferredSize): Likewise.
+
 2006-07-07  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/LightweightDispatcher.java
