@@ -748,7 +748,7 @@ public abstract class Component
   {
     // Tests show that components are invalid as long as they are not showing, even after validate()
     // has been called on them.
-    return isShowing() && valid;
+    return peer != null && valid;
   }
 
   /**

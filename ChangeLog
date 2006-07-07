@@ -1,3 +1,9 @@
+2006-07-07  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Component.java
+	(isValid): Return false when component has no peer,
+	don't query the showing state.
+
 2006-07-07  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/text/FlowView.java (FlowStrategy.layoutRow):
