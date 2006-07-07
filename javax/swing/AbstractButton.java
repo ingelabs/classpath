@@ -1297,9 +1297,11 @@ public abstract class AbstractButton extends JComponent
    * alignment is a numeric constant from {@link SwingConstants}. It must
    * be one of: <code>RIGHT</code>, <code>LEFT</code>, <code>CENTER</code>,
    * <code>LEADING</code> or <code>TRAILING</code>.  The default is
-   * <code>RIGHT</code>.
+   * <code>CENTER</code>.
    * 
    * @return The current horizontal alignment
+   * 
+   * @see #setHorizontalAlignment(int)
    */
   public int getHorizontalAlignment()
   {
@@ -1311,17 +1313,21 @@ public abstract class AbstractButton extends JComponent
    * alignment is a numeric constant from {@link SwingConstants}. It must
    * be one of: <code>RIGHT</code>, <code>LEFT</code>, <code>CENTER</code>,
    * <code>LEADING</code> or <code>TRAILING</code>.  The default is
-   * <code>RIGHT</code>.
+   * <code>CENTER</code>.
    *
    * @param a The new horizontal alignment
    * @throws IllegalArgumentException If alignment is not one of the legal
    * constants.
+   * 
+   * @see #getHorizontalAlignment()
    */
   public void setHorizontalAlignment(int a)
   {
     if (horizontalAlignment == a)
       return;
-
+    if (a != LEFT && a != CENTER && a != RIGHT && a != LEADING 
+        && a != TRAILING)
+      throw new IllegalArgumentException("Invalid alignment.");
     int old = horizontalAlignment;
     horizontalAlignment = a;
     firePropertyChange(HORIZONTAL_ALIGNMENT_CHANGED_PROPERTY, old, a);
@@ -1373,6 +1379,8 @@ public abstract class AbstractButton extends JComponent
    * <code>BOTTOM</code>. The default is <code>CENTER</code>.
    *
    * @return The current vertical alignment
+   * 
+   * @see #setVerticalAlignment(int)
    */
   public int getVerticalAlignment()
   {
@@ -1388,12 +1396,16 @@ public abstract class AbstractButton extends JComponent
    * @param a The new vertical alignment
    * @throws IllegalArgumentException If alignment is not one of the legal
    * constants.
+   * 
+   * @see #getVerticalAlignment()
    */
   public void setVerticalAlignment(int a)
   {
     if (verticalAlignment == a)
       return;
-    
+    if (a != TOP && a != CENTER && a != BOTTOM)
+      throw new IllegalArgumentException("Invalid alignment.");
+
     int old = verticalAlignment;
     verticalAlignment = a;
     firePropertyChange(VERTICAL_ALIGNMENT_CHANGED_PROPERTY, old, a);
