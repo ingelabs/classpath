@@ -1,5 +1,11 @@
 2006-07-07  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/LightweightDispatcher.java
+	(findTarget):  Avoid array copying in
+	Container.getComponents().
+
+2006-07-07  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComponent.java
 	(paintChildrenWithOverlap): Avoid array copying in
 	Container.getComponents().

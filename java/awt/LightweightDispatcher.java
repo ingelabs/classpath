@@ -287,13 +287,13 @@ class LightweightDispatcher
    */
   private Component findTarget(Container c, Point loc)
   {
-    Component[] children = c.getComponents();
+    int numComponents = c.getComponentCount();
     Component target = null;
     if (c != null)
       {
-        for (int i = 0; i < children.length; i++)
+        for (int i = 0; i < numComponents; i++)
           {
-            Component child = children[i];
+            Component child = c.getComponent(i);
             if (child.isShowing())
               {
                 if (child.contains(loc.x - child.getX(), loc.y - child.getY())
