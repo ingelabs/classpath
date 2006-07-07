@@ -1,5 +1,11 @@
 2006-07-07  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/AbstractButton.java
+	(setRolloverIcon): Call setRolloverEnabled(true),
+	(setRolloverSelectedIcon): Likewise.
+
+2006-07-07  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/border/TitledBorder.java
 	(setTitlePosition): Added message to exception,
 	(setTitleJustification): Likewise.

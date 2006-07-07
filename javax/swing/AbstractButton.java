@@ -2092,7 +2092,8 @@ public abstract class AbstractButton extends JComponent
   }
 
   /**
-   * Set the button's rollover icon. The look and feel class should
+   * Set the button's rollover icon and sets the <code>rolloverEnabled</code>
+   * property to <code>true</code>. The look and feel class should
    * paint this icon when the "rolloverEnabled" property of the button is
    * <code>true</code> and the mouse rolls over the button.
    *
@@ -2106,6 +2107,7 @@ public abstract class AbstractButton extends JComponent
     Icon old = rolloverIcon;
     rolloverIcon = r;
     firePropertyChange(ROLLOVER_ICON_CHANGED_PROPERTY, old, rolloverIcon);
+    setRolloverEnabled(true);
     revalidate();
     repaint();
   }
@@ -2124,12 +2126,13 @@ public abstract class AbstractButton extends JComponent
   }
 
   /**
-   * Set the button's rollover selected icon. The look and feel class
-   * should paint this icon when the "rolloverEnabled" property of the button
-   * is <code>true</code>, the "selected" property of the button's model is
-   * <code>true</code>, and the mouse rolls over the button.
+   * Set the button's rollover selected icon and sets the 
+   * <code>rolloverEnabled</code> property to <code>true</code>. The look and 
+   * feel class should paint this icon when the "rolloverEnabled" property of 
+   * the button is <code>true</code>, the "selected" property of the button's 
+   * model is <code>true</code>, and the mouse rolls over the button.
    *
-   * @param r The new rollover selected icon
+   * @param r The new rollover selected icon.
    */
   public void setRolloverSelectedIcon(Icon r)
   {
@@ -2139,6 +2142,7 @@ public abstract class AbstractButton extends JComponent
     Icon old = rolloverSelectedIcon;
     rolloverSelectedIcon = r;
     firePropertyChange(ROLLOVER_SELECTED_ICON_CHANGED_PROPERTY, old, r);
+    setRolloverEnabled(true);
     revalidate();
     repaint();
   }
