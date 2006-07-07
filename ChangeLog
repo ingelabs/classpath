@@ -1,3 +1,11 @@
+2006-07-07  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Component.java
+	(isValid): Always return false when component is
+	not showing.
+	(setFont): Always set font, even when setting
+	the same or equal font again.
+
 2006-07-07  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalIconFactory.java
@@ -29,7 +37,7 @@
 	(DISTCLEANFILES): Add standard.omit.
 	(clean-local): Remove Makefile.deps, only remove dirs.
 
-2006-07-01  Roman Kennke  <kennke@aicas.com>
+2006-07-06  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/Component.java
 	(setFont): Only invalidate when component is valid.
