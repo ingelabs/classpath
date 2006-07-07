@@ -1,3 +1,15 @@
+2006-07-07  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JComponent.java
+	(paintChildrenWithOverlap): Avoid array copying in
+	Container.getComponents().
+	(paintChildrenOptimized): Avoid array copying in
+	Container.getComponents().
+	(fireAncestorEvent):  Avoid array copying in
+	Container.getComponents().
+	(findOverlapFreeParent): Avoid array copying in
+	Container.getComponents().
+
 2006-07-07  Matt Wringe <mwringe@redhat.com>
 
 	* javax/crypto/spec/PBEKeySpec.java: Updated copyright year.

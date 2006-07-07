@@ -1961,13 +1961,13 @@ public abstract class JComponent extends Container implements Serializable
     Shape originalClip = g.getClip();
     Rectangle inner = SwingUtilities.calculateInnerArea(this, rectCache);
     g.clipRect(inner.x, inner.y, inner.width, inner.height);
-    Component[] children = getComponents();
 
     // Find the rectangles that need to be painted for each child component.
     // We push on this list arrays that have the Rectangles to be painted as
     // the first elements and the component to be painted as the last one.
     // Later we go through that list in reverse order and paint the rectangles.
-    ArrayList paintRegions = new ArrayList(children.length);
+    int numChildren = getComponentCount();
+    ArrayList paintRegions = new ArrayList(numChildren);
     ArrayList paintRectangles = new ArrayList();
     ArrayList newPaintRects = new ArrayList();
     paintRectangles.add(g.getClipBounds());
@@ -1975,10 +1975,9 @@ public abstract class JComponent extends Container implements Serializable
 
     // Go through children from top to bottom and find out their paint
     // rectangles.
-    for (int index = 0; paintRectangles.size() > 0 &&
-      index < children.length; index++)
+    for (int index = 0; paintRectangles.size() > 0 && index < numChildren; index++)
       {
-        Component comp = children[index];
+        Component comp = getComponent(index);
         if (! comp.isVisible() || ! comp.isLightweight())
           continue;
 
@@ -2137,28 +2136,29 @@ public abstract class JComponent extends Container implements Serializable
   {
     Rectangle inner = SwingUtilities.calculateInnerArea(this, rectCache);
     g.clipRect(inner.x, inner.y, inner.width, inner.height);
-    Component[] children = getComponents();
 
     // paintingTile becomes true just before we start painting the component's
     // children.
     paintingTile = true;
-    for (int i = children.length - 1; i >= 0; i--) //children.length; i++)
+    int numChildren = getComponentCount();
+    for (int i = numChildren - 1; i >= 0; i--) //children.length; i++)
       {
+        Component child = getComponent(i);
         // paintingTile must be set to false before we begin to start painting
         // the last tile.
-        if (i == children.length - 1)
+        if (i == numChildren - 1)
           paintingTile = false;
 
-        if (!children[i].isVisible() || ! children[i].isLightweight())
+        if (!child.isVisible() || ! child.isLightweight())
           continue;
 
-        Rectangle bounds = children[i].getBounds(rectCache);
+        Rectangle bounds = child.getBounds(rectCache);
         if (!g.hitClip(bounds.x, bounds.y, bounds.width, bounds.height))
           continue;
 
         Graphics g2 = g.create(bounds.x, bounds.y, bounds.width,
                                bounds.height);
-        children[i].paint(g2);
+        child.paint(g2);
         g2.dispose();
       }
   }
@@ -3689,12 +3689,13 @@ public abstract class JComponent extends Container implements Serializable
           }
       }
     // Dispatch event to all children.
-    Component[] children = getComponents();
-    for (int i = 0; i < children.length; i++)
+    int numChildren = getComponentCount();
+    for (int i = 0; i < numChildren; i++)
       {
-        if (!(children[i] instanceof JComponent))
+        Component child = getComponent(i);
+        if (! (child instanceof JComponent))
           continue;
-        JComponent jc = (JComponent) children[i];
+        JComponent jc = (JComponent) child;
         jc.fireAncestorEvent(ancestor, id);
       }
   }
@@ -3777,10 +3778,10 @@ public abstract class JComponent extends Container implements Serializable
           ! SwingUtilities.isRectangleContainingRectangle(parentRect, target);
         if (! haveOverlap)
           {
-            Component[] children = newParent.getComponents();
-            for (int i = 0; children[i] != parent && !haveOverlap; i++)
+            Component child;
+            for (int i = 0; (child = newParent.getComponent(i)) != parent && !haveOverlap; i++)
               {
-                Rectangle childRect = children[i].getBounds();
+                Rectangle childRect = child.getBounds();
                 haveOverlap = target.intersects(childRect);
               }
           }
