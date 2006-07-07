@@ -1,3 +1,8 @@
+2006-07-07  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/text/FlowView.java (FlowStrategy.layoutRow):
+	Advance the offset also in the case of the enforced break.
+
 2006-07-07  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicArrowButton.java

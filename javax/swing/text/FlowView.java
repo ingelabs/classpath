@@ -198,11 +198,13 @@ public abstract class FlowView extends BoxView
           int viewSpan = (int) view.getPreferredSpan(axis);
           row.append(view);
           int breakWeight = view.getBreakWeight(axis, x, span);
+          
+          offset += (view.getEndOffset() - view.getStartOffset());          
           if (breakWeight >= View.ForcedBreakWeight)
-            break;
+              break;
+
           x += viewSpan;
           span -= viewSpan;
-          offset += (view.getEndOffset() - view.getStartOffset());
         }
       if (span < 0)
         {
