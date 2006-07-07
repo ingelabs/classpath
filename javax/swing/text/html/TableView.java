@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package javax.swing.text.html;
 
+import javax.swing.text.Document;
 import javax.swing.text.Element;
 import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
@@ -64,6 +65,20 @@ class TableView
     {
       super(el);
     }
+    
+  /**
+   * Get the associated style sheet from the document.
+   * 
+   * @return the associated style sheet.
+   */
+    protected StyleSheet getStyleSheet()
+    {
+      Document d = getElement().getDocument();
+      if (d instanceof HTMLDocument)
+        return ((HTMLDocument) d).getStyleSheet();
+      else
+        return null;
+    }    
   }
 
   /**
@@ -75,6 +90,20 @@ class TableView
   {
     super(el);
   }
+  
+  /**
+   * Get the associated style sheet from the document.
+   * 
+   * @return the associated style sheet.
+   */
+  protected StyleSheet getStyleSheet()
+  {
+    Document d = getElement().getDocument();
+    if (d instanceof HTMLDocument)
+      return ((HTMLDocument) d).getStyleSheet();
+    else
+      return null;
+  }  
   
   /**
    * Creates a view for a table row.
