@@ -1,3 +1,19 @@
+2006-07-07  Matt Wringe <mwringe@redhat.com>
+
+	* javax/crypto/spec/PBEKeySpec.java: Updated copyright year.
+	(passwordValid): New field.
+	(setPassword): New method.
+	(setSalt): Likewise.
+	(setIterationCount): Likewise.
+	(setKeyLength): Likewise.
+	(PBEKeySpec(char[])): Use new setter methods.
+	(PBEKeySpec(char[], byte[], int)): Likewise.
+	(PBEKeySpec(char[], byte[], int, int)): Likewise.
+	(clearPassword): Set passwordValid to false.
+	(getPassword): Check that clearPassword() was not called earlier.
+	Return a clone of the password.
+	(getSalt): Return a clone of the salt if it was not null.
+
 2006-07-07  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/Component.java
