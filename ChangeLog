@@ -1,3 +1,28 @@
+2006-07-07  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalIconFactory.java
+	(CheckBoxMenuItemIcon): Implement UIResource,
+	(FileChooserDetailViewIcon): Likewise,
+	(FileChooserHomeFolderIcon): Likewise,
+	(FileChooserListViewIcon): Likewise,
+	(FileChooserNewFolderIcon): Likewise,
+	(FileChooserUpFolderIcon): Removed redundant 'implements',
+	(RadioButtonMenuItemIcon): Implement UIResource,
+	(HorizontalSliderThumbIcon): Likewise,
+	(InternalFrameCloseIcon): Likewise,
+	(InternalFrameDefaultMenuIcon): Likewise,
+	(InternalFrameAltMaximizeIcon): Likewise,
+	(InternalFrameMaximizeIcon): Likewise,
+	(InternalFrameMinimizeIcon): Likewise,
+	(VerticalSliderThumbIcon): Likewise,
+	(TreeHardDriveIcon): Likewise,
+	(TreeFloppyDriveIcon): Likewise,
+	(TreeComputerIcon): Likewise,
+	(horizontalSliderThumbIcon): New field,
+	(verticalSliderThumbIcon): New field,
+	(getHorizontalSliderThumbIcon): Cache icon,
+	(getVerticalSliderThumbIcon): Likewise.
+
 2006-07-06  Mark Wielaard  <mark@klomp.org>
 
 	* lib/Makefile.am (CLEANFILES): Add Makefile.deps.

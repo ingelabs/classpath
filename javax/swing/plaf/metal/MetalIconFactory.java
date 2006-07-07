@@ -1,5 +1,5 @@
 /* MetalIconFactory.java --
-   Copyright (C) 2005 Free Software Foundation, Inc.
+   Copyright (C) 2005, 2006, Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -54,6 +54,7 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.plaf.IconUIResource;
 import javax.swing.plaf.UIResource;
 
 
@@ -78,7 +79,8 @@ public class MetalIconFactory implements Serializable
   /**
    * An icon displayed for {@link JCheckBoxMenuItem} components.
    */
-  private static class CheckBoxMenuItemIcon implements Icon, Serializable 
+  private static class CheckBoxMenuItemIcon 
+    implements Icon, UIResource, Serializable 
   {
     /**
      * Creates a new icon instance.
@@ -153,7 +155,8 @@ public class MetalIconFactory implements Serializable
    * 
    * @see MetalIconFactory#getFileChooserDetailViewIcon()
    */
-  private static class FileChooserDetailViewIcon implements Icon, Serializable
+  private static class FileChooserDetailViewIcon 
+    implements Icon, UIResource, Serializable
   {
 
     /**
@@ -233,7 +236,8 @@ public class MetalIconFactory implements Serializable
    * 
    * @see MetalIconFactory#getFileChooserHomeFolderIcon()
    */
-  private static class FileChooserHomeFolderIcon implements Icon, Serializable
+  private static class FileChooserHomeFolderIcon 
+    implements Icon, UIResource, Serializable
   {
 
     /**
@@ -322,7 +326,8 @@ public class MetalIconFactory implements Serializable
    * 
    * @see MetalIconFactory#getFileChooserListViewIcon()
    */
-  private static class FileChooserListViewIcon implements Icon, Serializable 
+  private static class FileChooserListViewIcon 
+    implements Icon, UIResource, Serializable 
   {
     /**
      * Creates a new icon.
@@ -418,7 +423,8 @@ public class MetalIconFactory implements Serializable
    * 
    * @see MetalIconFactory#getFileChooserNewFolderIcon()
    */
-  private static class FileChooserNewFolderIcon  implements Icon, Serializable
+  private static class FileChooserNewFolderIcon 
+    implements Icon, UIResource, Serializable
   {
     /** 
      * Creates a new icon.
@@ -490,8 +496,7 @@ public class MetalIconFactory implements Serializable
    * 
    * @see MetalIconFactory#getFileChooserNewFolderIcon()
    */
-  private static class FileChooserUpFolderIcon extends FileChooserNewFolderIcon
-    implements Icon, Serializable 
+  private static class FileChooserUpFolderIcon extends FileChooserNewFolderIcon 
   {
     /**
      * Creates a new icon.
@@ -883,7 +888,8 @@ public class MetalIconFactory implements Serializable
   /**
    * An icon displayed for {@link JRadioButtonMenuItem} components.
    */
-  private static class RadioButtonMenuItemIcon implements Icon, Serializable 
+  private static class RadioButtonMenuItemIcon 
+    implements Icon, UIResource, Serializable 
   {
     /**
      * Creates a new icon instance.
@@ -960,7 +966,8 @@ public class MetalIconFactory implements Serializable
    * The icon used to display the thumb control on a horizontally oriented
    * {@link JSlider} component.
    */
-  private static class HorizontalSliderThumbIcon  implements Icon, Serializable
+  private static class HorizontalSliderThumbIcon 
+    implements Icon, UIResource, Serializable
   {
 
     /**
@@ -1102,7 +1109,8 @@ public class MetalIconFactory implements Serializable
    * An icon used for the 'close' button in the title frame of a 
    * {@link JInternalFrame}.
    */
-  private static class InternalFrameCloseIcon implements Icon, Serializable
+  private static class InternalFrameCloseIcon 
+    implements Icon, UIResource, Serializable
   {
     /** The icon size in pixels. */
     private int size;
@@ -1219,7 +1227,7 @@ public class MetalIconFactory implements Serializable
    * The icon displayed at the top-left corner of a {@link JInternalFrame}.
    */
   private static class InternalFrameDefaultMenuIcon
-    implements Icon, Serializable 
+    implements Icon, UIResource, Serializable 
   {
        
     /**
@@ -1291,7 +1299,7 @@ public class MetalIconFactory implements Serializable
    * provide a 'restore' option.
    */
   private static class InternalFrameAltMaximizeIcon
-    implements Icon, Serializable 
+    implements Icon, UIResource, Serializable 
   {
     /** The icon size in pixels. */
     private int size;
@@ -1401,7 +1409,8 @@ public class MetalIconFactory implements Serializable
    * An icon used for the 'maximize' button in the title frame of a 
    * {@link JInternalFrame}.
    */
-  private static class InternalFrameMaximizeIcon implements Icon, Serializable
+  private static class InternalFrameMaximizeIcon 
+    implements Icon, UIResource, Serializable
   {
     
     /**
@@ -1513,7 +1522,8 @@ public class MetalIconFactory implements Serializable
   /**
    * An icon used in the title frame of a {@link JInternalFrame}.
    */
-  private static class InternalFrameMinimizeIcon implements Icon, Serializable
+  private static class InternalFrameMinimizeIcon 
+    implements Icon, UIResource, Serializable
   {
   
     /**
@@ -1617,7 +1627,8 @@ public class MetalIconFactory implements Serializable
    * The icon used to display the thumb control on a horizontally oriented
    * {@link JSlider} component.
    */
-  private static class VerticalSliderThumbIcon implements Icon, Serializable
+  private static class VerticalSliderThumbIcon 
+    implements Icon, UIResource, Serializable
   {
     /**
      * This mask is used to paint the gradient in the shape of the thumb.
@@ -1922,7 +1933,8 @@ public class MetalIconFactory implements Serializable
    * 
    * @see MetalIconFactory#getTreeHardDriveIcon()
    */
-  private static class TreeHardDriveIcon implements Icon, Serializable
+  private static class TreeHardDriveIcon 
+    implements Icon, UIResource, Serializable
   {
 
     /**
@@ -2032,7 +2044,8 @@ public class MetalIconFactory implements Serializable
    * 
    * @see MetalIconFactory#getTreeFloppyDriveIcon()
    */
-  private static class TreeFloppyDriveIcon implements Icon, Serializable
+  private static class TreeFloppyDriveIcon 
+    implements Icon, UIResource, Serializable
   {
 
     /**
@@ -2108,7 +2121,8 @@ public class MetalIconFactory implements Serializable
    * 
    * @see MetalIconFactory#getTreeComputerIcon()
    */
-  private static class TreeComputerIcon implements Icon, Serializable
+  private static class TreeComputerIcon 
+    implements Icon, UIResource, Serializable
   {
 
     /**
@@ -2212,6 +2226,12 @@ public class MetalIconFactory implements Serializable
   
   /** The icon instance returned by {@link #getTreeHardDriveIcon()}. */
   private static Icon treeHardDriveIcon;
+  
+  /** The icon instance returned by {@link #getHorizontalSliderThumbIcon()}. */
+  private static Icon horizontalSliderThumbIcon;
+
+  /** The icon instance returned by {@link #getVerticalSliderThumbIcon()}. */
+  private static Icon verticalSliderThumbIcon;
   
   /**
    * Creates a new instance.  All the methods are static, so creating an 
@@ -2341,7 +2361,9 @@ public class MetalIconFactory implements Serializable
    */
   public static Icon getHorizontalSliderThumbIcon() 
   {
-    return new HorizontalSliderThumbIcon();
+    if (horizontalSliderThumbIcon == null)
+      horizontalSliderThumbIcon = new HorizontalSliderThumbIcon();
+    return horizontalSliderThumbIcon;
   }
     
   /**
@@ -2420,7 +2442,9 @@ public class MetalIconFactory implements Serializable
    */
   public static Icon getVerticalSliderThumbIcon() 
   {
-    return new VerticalSliderThumbIcon();
+    if (verticalSliderThumbIcon == null)
+      verticalSliderThumbIcon = new VerticalSliderThumbIcon();
+    return verticalSliderThumbIcon;
   }
     
   /**
