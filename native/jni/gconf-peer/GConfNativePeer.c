@@ -78,24 +78,24 @@ static void init_gconf_client (void);
 /**
  * Throws a new runtime exception after a failure, with the given message.
  */
-static void throw_exception (JNIEnv *env, const char *msg);
+static void throw_exception (JNIEnv * env, const char *msg);
 
 /**
  * Throws the given exception after a failure, with the given message.
  */
 static void
-throw_exception_by_name (JNIEnv *env, const char *name, const char *msg);
+throw_exception_by_name (JNIEnv * env, const char *name, const char *msg);
 
 /**
  * Return a reference to a java.util.ArrayList class.
  */
-static gboolean set_jlist_class (JNIEnv *env);
+static gboolean set_jlist_class (JNIEnv * env);
 
 /**
  * Builds a new reference to a new java.util.ArrayList instace.
  * The instance should be freed by the caller after use.
  */
-static jclass get_jlist_reference (JNIEnv *env, jclass jlist_class);
+static jclass get_jlist_reference (JNIEnv * env, jclass jlist_class);
 
 /* ***** END: PRIVATE FUNCTIONS DELCARATION ***** */
 
@@ -108,16 +108,17 @@ static jclass get_jlist_reference (JNIEnv *env, jclass jlist_class);
  */
 JNIEXPORT void
 JNICALL Java_gnu_java_util_prefs_gconf_GConfNativePeer_init_1class
-	(JNIEnv *env, jclass clazz)
+  (JNIEnv *env, jclass clazz)
 {
-	if (reference_count == 0) {
-		Java_gnu_java_util_prefs_gconf_GConfNativePeer_init_1id_1cache
-				(env, clazz);
-		return;
-	}
-	
-	reference_count++;
-}			/* Java_gnu_java_util_prefs_gconf_GConfNativePeer_init_1class */
+  if (reference_count == 0)
+    {
+      Java_gnu_java_util_prefs_gconf_GConfNativePeer_init_1id_1cache
+		(env, clazz);
+      return;
+    }
+
+  reference_count++;
+}
 
 /*
  * Class:     gnu_java_util_prefs_gconf_GConfNativePeer
@@ -126,27 +127,29 @@ JNICALL Java_gnu_java_util_prefs_gconf_GConfNativePeer_init_1class
  */
 JNIEXPORT void
 JNICALL Java_gnu_java_util_prefs_gconf_GConfNativePeer_init_1id_1cache
-	(JNIEnv *env, jclass clazz __attribute__ ((unused)))
+  (JNIEnv *env, jclass clazz __attribute__ ((unused)))
 {
-	reference_count++;
+  reference_count++;
 
-	init_gconf_client ();
-	
-	/* if client is null, there is probably an out or memory */
-    if (client == NULL) {
-    	/* release the string and throw a runtime exception */
-       	throw_exception (env,
-       		"Unable to initialize GConfClient in native code\n");
-  		return;
-   	}
-   	
-   	/* ***** java.util.ArrayList ***** */
-   	if (set_jlist_class (env) == FALSE) {
-   		throw_exception (env,
-   			"Unable to get valid reference to java.util.List in native code\n");
-   		return;
-   	}
-}			/* Java_gnu_java_util_prefs_gconf_GConfNativePeer_init_1id_1cache */
+  init_gconf_client ();
+
+  /* if client is null, there is probably an out of memory */
+  if (client == NULL)
+    {
+      /* release the string and throw a runtime exception */
+      throw_exception (env,
+      		"Unable to initialize GConfClient in native code\n");
+      return;
+    }
+
+  /* ***** java.util.ArrayList ***** */
+  if (set_jlist_class (env) == FALSE)
+    {
+      throw_exception (env,
+      		"Unable to get valid reference to java.util.List in native code\n");
+      return;
+    }
+}
 
 /*
  * Class:     gnu_java_util_prefs_gconf_GConfNativePeer
@@ -155,58 +158,63 @@ JNICALL Java_gnu_java_util_prefs_gconf_GConfNativePeer_init_1id_1cache
  */
 JNIEXPORT jobject JNICALL
 Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1gconf_1client_1all_1keys
-	(JNIEnv *env, jclass clazz __attribute__ ((unused)), jstring node)
+  (JNIEnv *env, jclass clazz __attribute__ ((unused)), jstring node)
 {
-	const char 	*dir	 = NULL;
-	GError 		*err 	 = NULL;
-	GSList 		*entries = NULL;
-	GSList          *tmp;
-	
-	/* java.util.ArrayList */
-	jobject jlist = NULL;
+  const char *dir = NULL;
+  GError *err = NULL;
+  GSList *entries = NULL;
+  GSList *tmp;
 
-	dir = JCL_jstring_to_cstring(env, node);
-	if (dir == NULL) {
-		return NULL;
-	}
+  /* java.util.ArrayList */
+  jobject jlist = NULL;
 
-    entries = gconf_client_all_entries (client, dir, &err);
-    if (err != NULL) {
-		throw_exception_by_name (env, "java/util/prefs/BackingStoreException",
-								 err->message);								 
-		g_error_free (err);
-		err = NULL;
-		
-		JCL_free_cstring(env, node, dir);
-		return NULL;
-	}
+  dir = JCL_jstring_to_cstring (env, node);
+  if (dir == NULL)
+    {
+      return NULL;
+    }
 
-	jlist = get_jlist_reference (env, jlist_class);
-	if (jlist == NULL) {
-		throw_exception_by_name (env, "java/util/prefs/BackingStoreException",
-				"Unable to get java.util.List reference in native code\n");
-		JCL_free_cstring(env, node, dir);
-		g_slist_foreach (entries, (GFunc) gconf_entry_free, NULL);
-		g_slist_free (entries);
-		return NULL;
-	}
+  entries = gconf_client_all_entries (client, dir, &err);
+  if (err != NULL)
+    {
+      throw_exception_by_name (env, "java/util/prefs/BackingStoreException",
+                               err->message);
+      g_error_free (err);
+      err = NULL;
 
-	tmp = entries;
-	while (tmp != NULL) {
-		const char *_val = gconf_entry_get_key(tmp->data);		
-		_val = strrchr (_val, '/');	++_val;
-		(*env)->CallBooleanMethod(env, jlist, jlist_add_id,
-								  (*env)->NewStringUTF(env, _val));
-		tmp = g_slist_next (tmp);
-	}
+      JCL_free_cstring (env, node, dir);
+      return NULL;
+    }
 
-	/* clean up things */
-	JCL_free_cstring(env, node, dir);
-	g_slist_foreach (entries, (GFunc) gconf_entry_free, NULL);
-	g_slist_free (entries);
+  jlist = get_jlist_reference (env, jlist_class);
+  if (jlist == NULL)
+    {
+      throw_exception_by_name (env, "java/util/prefs/BackingStoreException",
+			       "Unable to get java.util.List reference in native code\n");
+      JCL_free_cstring (env, node, dir);
+      g_slist_foreach (entries, (GFunc) gconf_entry_free, NULL);
+      g_slist_free (entries);
+      return NULL;
+    }
 
-	return jlist;
-}			/* Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1gconf_1client_1all_1keys */
+  tmp = entries;
+  while (tmp != NULL)
+    {
+      const char *_val = gconf_entry_get_key (tmp->data);
+      _val = strrchr (_val, '/');
+      ++_val;
+      (*env)->CallBooleanMethod (env, jlist, jlist_add_id,
+				 (*env)->NewStringUTF (env, _val));
+      tmp = g_slist_next (tmp);
+    }
+
+  /* clean up things */
+  JCL_free_cstring (env, node, dir);
+  g_slist_foreach (entries, (GFunc) gconf_entry_free, NULL);
+  g_slist_free (entries);
+
+  return jlist;
+}
 
 /*
  * Class:     gnu_java_util_prefs_gconf_GConfNativePeer
@@ -215,57 +223,62 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1gconf_1client_1all
  */
 JNIEXPORT jobject JNICALL
 Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1gconf_1client_1all_1nodes
-	(JNIEnv *env, jclass clazz __attribute__ ((unused)), jstring node)
+  (JNIEnv *env, jclass clazz __attribute__ ((unused)), jstring node)
 {
-	const char 	*dir	 = NULL;
-	GError 		*err 	 = NULL;
-	GSList 		*entries = NULL;
-	GSList		*tmp;
-	
-	/* java.util.ArrayList */
-	jobject jlist = NULL;
-	   
-    dir = JCL_jstring_to_cstring(env, node);
-	if (dir == NULL) {
-		return NULL;
-	}
+  const char *dir = NULL;
+  GError *err = NULL;
+  GSList *entries = NULL;
+  GSList *tmp;
 
-	entries = gconf_client_all_dirs (client, dir, &err);
-    if (err != NULL) {
-		throw_exception_by_name (env, "java/util/prefs/BackingStoreException",
-								 err->message);
-		g_error_free (err);
-		err = NULL;
-		JCL_free_cstring(env, node, dir);
-		return NULL;
-	}
+  /* java.util.ArrayList */
+  jobject jlist = NULL;
 
-	jlist = get_jlist_reference (env, jlist_class);
-	if (jlist == NULL) {
-		throw_exception_by_name (env, "java/util/prefs/BackingStoreException",
-				"Unable to get java.util.List reference in native code\n");
-		JCL_free_cstring(env, node, dir);
-		g_slist_foreach (entries, (GFunc) gconf_entry_free, NULL);
-		g_slist_free (entries);
-		return NULL;
-	}
+  dir = JCL_jstring_to_cstring (env, node);
+  if (dir == NULL)
+    {
+      return NULL;
+    }
 
-	tmp = entries;
-	while (tmp != NULL) {
-		const char *_val = tmp->data;
-		_val = strrchr (_val, '/');	++_val;
-		(*env)->CallBooleanMethod(env, jlist, jlist_add_id,
-								  (*env)->NewStringUTF(env, _val));
-		tmp = g_slist_next (tmp);
-	}
+  entries = gconf_client_all_dirs (client, dir, &err);
+  if (err != NULL)
+    {
+      throw_exception_by_name (env, "java/util/prefs/BackingStoreException",
+                               err->message);
+      g_error_free (err);
+      err = NULL;
+      JCL_free_cstring (env, node, dir);
+      return NULL;
+    }
 
-	/* clean up things */
-	JCL_free_cstring(env, node, dir);
-	g_slist_foreach (entries, (GFunc) gconf_entry_free, NULL);
-	g_slist_free (entries);
+  jlist = get_jlist_reference (env, jlist_class);
+  if (jlist == NULL)
+    {
+      throw_exception_by_name (env, "java/util/prefs/BackingStoreException",
+			       "Unable to get java.util.List reference in native code\n");
+      JCL_free_cstring (env, node, dir);
+      g_slist_foreach (entries, (GFunc) gconf_entry_free, NULL);
+      g_slist_free (entries);
+      return NULL;
+    }
 
-	return jlist;
-}			/* Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1gconf_1client_1all_1nodes */
+  tmp = entries;
+  while (tmp != NULL)
+    {
+      const char *_val = tmp->data;
+      _val = strrchr (_val, '/');
+      ++_val;
+      (*env)->CallBooleanMethod (env, jlist, jlist_add_id,
+				 (*env)->NewStringUTF (env, _val));
+      tmp = g_slist_next (tmp);
+    }
+
+  /* clean up things */
+  JCL_free_cstring (env, node, dir);
+  g_slist_foreach (entries, (GFunc) gconf_entry_free, NULL);
+  g_slist_free (entries);
+
+  return jlist;
+}
 
 /*
  * Class:     gnu_java_util_prefs_gconf_GConfNativePeer
@@ -274,18 +287,19 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1gconf_1client_1all
  */
 JNIEXPORT void JNICALL
 Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1suggest_1sync
-	(JNIEnv *env, jclass clazz __attribute__ ((unused)))
+  (JNIEnv *env, jclass clazz __attribute__ ((unused)))
 {
-	GError *err = NULL;
-	
-    gconf_client_suggest_sync (client, &err);
-    if (err != NULL) {
-		throw_exception_by_name (env, "java/util/prefs/BackingStoreException",
-								 err->message);
-		g_error_free (err);
-		err = NULL;
-	}
-}			/* Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1suggest_1sync */
+  GError *err = NULL;
+
+  gconf_client_suggest_sync (client, &err);
+  if (err != NULL)
+    {
+      throw_exception_by_name (env, "java/util/prefs/BackingStoreException",
+			       			   err->message);
+      g_error_free (err);
+      err = NULL;
+    }
+}
 
 /*
  * Class:     gnu_java_util_prefs_gconf_GConfNativePeer
@@ -294,22 +308,30 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1suggest_1sync
  */
 JNIEXPORT jboolean JNICALL
 Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1unset
-	(JNIEnv *env, jclass clazz __attribute__ ((unused)), jstring key)
+  (JNIEnv *env, jclass clazz __attribute__ ((unused)), jstring key)
 {
-    const char *_key	= NULL;
-	gboolean	result	= JNI_FALSE;
+  const char *_key = NULL;
+  gboolean result = JNI_FALSE;
+  GError *err = NULL;
 
-	_key = JCL_jstring_to_cstring(env, key);
-	if (_key == NULL) {
-		return JNI_FALSE;
-	}
+  _key = JCL_jstring_to_cstring (env, key);
+  if (_key == NULL)
+    {
+      return JNI_FALSE;
+    }
 
-	result = gconf_client_unset (client, _key, NULL);
+  result = gconf_client_unset (client, _key, &err);
+  if (err != NULL)
+    {
+      result = JNI_FALSE;
+      g_error_free (err);
+      err = NULL;
+    }
+    
+  JCL_free_cstring (env, key, _key);
 
-	JCL_free_cstring(env, key, _key);
-
-	return result;
-}			/* Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1unset */
+  return result;
+}
 
 /*
  * Class:     gnu_java_util_prefs_gconf_GConfNativePeer
@@ -318,25 +340,36 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1unset
  */
 JNIEXPORT jstring JNICALL
 Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1get_1string
-	(JNIEnv *env, jclass clazz __attribute__ ((unused)), jstring key)
+  (JNIEnv *env, jclass clazz __attribute__ ((unused)), jstring key)
 {
-    const char *_key 	= NULL;
-    const char *_value	= NULL;
-	jstring	 	result	= NULL;
-	
-	_key = JCL_jstring_to_cstring(env, key);
-	if (_key == NULL) {
-		return NULL;
-	}
-	
-	_value = gconf_client_get_string (client, _key, NULL);
-	JCL_free_cstring(env, key, _key);
+  const char *_key = NULL;
+  const char *_value = NULL;
+  GError *err = NULL;
+  jstring result = NULL;
 
-	result = (*env)->NewStringUTF (env, _value);
-	g_free ((gpointer) _value);
+  _key = JCL_jstring_to_cstring (env, key);
+  if (_key == NULL)
+    {
+      return NULL;
+    }
 
-	return result;
-}			/* Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1get_1string */
+  _value = gconf_client_get_string (client, _key, &err);
+  JCL_free_cstring (env, key, _key);
+  if (err != NULL)
+    {
+      /* just in case */
+      if (_value != NULL) g_free ((gpointer) _value);
+      g_error_free (err);
+      err = NULL;
+      
+      return NULL;
+    }
+
+  result = (*env)->NewStringUTF (env, _value);
+  g_free ((gpointer) _value);
+
+  return result;
+}
 
 /*
  * Class:     gnu_java_util_prefs_gconf_GConfNativePeer
@@ -345,28 +378,36 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1get_1string
  */
 JNIEXPORT jboolean JNICALL
 Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1set_1string
-	(JNIEnv *env, jclass clazz __attribute__ ((unused)),
-	 jstring key, jstring value)
+  (JNIEnv *env, jclass clazz __attribute__ ((unused)),
+   jstring key, jstring value)
 {
-    const char *_key	= NULL;
-    const char *_value = NULL;
- 	
- 	gboolean result = JNI_FALSE;
+  const char *_key = NULL;
+  const char *_value = NULL;
+  GError *err = NULL;
 
-    /* load an UTF string from the virtual machine. */
-    _key   = JCL_jstring_to_cstring (env, key);
-    _value = JCL_jstring_to_cstring (env, value);
- 	if (_key == NULL && _value == NULL) {
-		return JNI_FALSE;
-	}
- 
-	result = gconf_client_set_string (client, _key, _value, NULL);
+  gboolean result = JNI_FALSE;
 
-    JCL_free_cstring (env, key, _key);
-    JCL_free_cstring (env, value, _value);
-        
-    return (jboolean) result;
-}			/* Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1set_1string */
+  /* load an UTF string from the virtual machine. */
+  _key = JCL_jstring_to_cstring (env, key);
+  _value = JCL_jstring_to_cstring (env, value);
+  if (_key == NULL && _value == NULL)
+    {
+      return JNI_FALSE;
+    }
+
+  result = gconf_client_set_string (client, _key, _value, &err);
+  if (err != NULL)
+  	{
+	  g_error_free (err);
+      err = NULL;
+      result = JNI_FALSE;
+  	}
+	
+  JCL_free_cstring (env, key, _key);
+  JCL_free_cstring (env, value, _value);
+
+  return (jboolean) result;
+}
 
 /*
  * Class:     gnu_java_util_prefs_gconf_GConfNativePeer
@@ -375,18 +416,18 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1set_1string
  */
 JNIEXPORT void JNICALL
 Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1remove_1dir
-	(JNIEnv *env, jclass clazz __attribute__ ((unused)), jstring node)
+  (JNIEnv *env, jclass clazz __attribute__ ((unused)), jstring node)
 {
-    const char *dir = NULL;
-    
-    dir = JCL_jstring_to_cstring (env, node);
-    if (dir == NULL)
-      return;
-	
-    gconf_client_remove_dir (client, dir, NULL);
-	
-    JCL_free_cstring (env, node, dir);
-}			/* Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1remove_1dir */
+  const char *dir = NULL;
+
+  dir = JCL_jstring_to_cstring (env, node);
+  if (dir == NULL)
+    return;
+
+  gconf_client_remove_dir (client, dir, NULL);
+
+  JCL_free_cstring (env, node, dir);
+}
 
 /*
  * Class:     gnu_java_util_prefs_gconf_GConfNativePeer
@@ -395,19 +436,19 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1remove_1dir
  */
 JNIEXPORT void JNICALL
 Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1add_1dir
-	(JNIEnv *env, jclass clazz __attribute__ ((unused)), jstring node)
+  (JNIEnv *env, jclass clazz __attribute__ ((unused)), jstring node)
 {
-    const char *dir	= NULL;
+  const char *dir = NULL;
 
-    dir = JCL_jstring_to_cstring (env, node);
-    if (dir == NULL)
-      return;
-	
-    /* ignore errors */
-    gconf_client_add_dir (client, dir, GCONF_CLIENT_PRELOAD_ONELEVEL, NULL);
+  dir = JCL_jstring_to_cstring (env, node);
+  if (dir == NULL)
+    return;
 
-    JCL_free_cstring (env, node, dir);
-}			/* Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1add_1dir */
+  /* ignore errors */
+  gconf_client_add_dir (client, dir, GCONF_CLIENT_PRELOAD_ONELEVEL, NULL);
+
+  JCL_free_cstring (env, node, dir);
+}
 
 /*
  * Class:     gnu_java_util_prefs_gconf_GConfNativePeer
@@ -416,22 +457,25 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1add_1dir
  */
 JNIEXPORT jboolean JNICALL
 Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1dir_1exists
-    (JNIEnv *env, jclass clazz __attribute__ ((unused)), jstring node)
-{ 
-    const char *dir	  = NULL;
-    jboolean value = JNI_FALSE;
-	
-    dir = JCL_jstring_to_cstring (env, node);
-    if (dir == NULL)
-      return value;
-	
-    /* we ignore errors here */
-    value = gconf_client_dir_exists (client, dir, NULL);
-	
-    JCL_free_cstring (env, node, dir);
+  (JNIEnv *env, jclass clazz __attribute__ ((unused)), jstring node)
+{
+  const char *dir = NULL;
+  GError *err = NULL;
+  jboolean value = JNI_FALSE;
 
+  dir = JCL_jstring_to_cstring (env, node);
+  if (dir == NULL)
     return value;
-}           /* Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1dir_1exists */
+
+  /* on error return false */
+  value = gconf_client_dir_exists (client, dir, &err);
+  if (err != NULL)
+    value = JNI_FALSE;
+
+  JCL_free_cstring (env, node, dir);
+
+  return value;
+}
 
 /*
  * Class:     gnu_java_util_prefs_gconf_GConfNativePeer
@@ -440,23 +484,24 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1dir_1exists
  */
 JNIEXPORT void
 JNICALL Java_gnu_java_util_prefs_gconf_GConfNativePeer_finalize_1class
-	(JNIEnv *env, jclass clazz __attribute__ ((unused)))
+  (JNIEnv *env, jclass clazz __attribute__ ((unused)))
 {
-	if (reference_count == 0) {
-		/* last reference, free all resources and return */
-		g_object_unref (G_OBJECT (client));
-		
-		(*env)->DeleteGlobalRef (env, jlist_class);
-		
-		jlist_class = NULL;
-		jlist_init_id = NULL;
-		jlist_add_id = NULL;
-		
-		return;
-	}
-	
-	reference_count--;
-}			/* Java_gnu_java_util_prefs_gconf_GConfNativePeer_finalize_1class */
+  if (reference_count == 0)
+    {
+      /* last reference, free all resources and return */
+      g_object_unref (G_OBJECT (client));
+
+      (*env)->DeleteGlobalRef (env, jlist_class);
+
+      jlist_class = NULL;
+      jlist_init_id = NULL;
+      jlist_add_id = NULL;
+
+      return;
+    }
+
+  reference_count--;
+}
 
 /* ***** END: NATIVE FUNCTIONS ***** */
 
@@ -464,55 +509,59 @@ JNICALL Java_gnu_java_util_prefs_gconf_GConfNativePeer_finalize_1class
 
 static void throw_exception (JNIEnv *env, const char *msg)
 {
-    throw_exception_by_name (env, "java/lang/RuntimeException", msg);
-}			/* throw_exception */
+  throw_exception_by_name (env, "java/lang/RuntimeException", msg);
+}
 
 static void
 throw_exception_by_name (JNIEnv *env, const char *name, const char *msg)
-{    
-    JCL_ThrowException(env, name, msg);
-}			/* throw_exception */
+{
+  JCL_ThrowException (env, name, msg);
+}
 
 static void init_gconf_client (void)
-{  
-    client = gconf_client_get_default ();
-    g_type_init();
-}           /* init_gconf_client */
+{
+  client = gconf_client_get_default ();
+  g_type_init ();
+}
 
 static gboolean set_jlist_class (JNIEnv *env)
 {
-	jclass local_jlist_class = NULL;
+  jclass local_jlist_class = NULL;
 
-    /* gets a reference to the ArrayList class */
-	local_jlist_class = JCL_FindClass (env, "java/util/ArrayList");
-	if (local_jlist_class == NULL) {
-		return FALSE;
-	}
-	
-	jlist_class = (*env)->NewGlobalRef(env, local_jlist_class);
-	(*env)->DeleteLocalRef(env, local_jlist_class);
-	if (jlist_class == NULL) {
-		return FALSE;
-	}
+  /* gets a reference to the ArrayList class */
+  local_jlist_class = JCL_FindClass (env, "java/util/ArrayList");
+  if (local_jlist_class == NULL)
+    {
+      return FALSE;
+    }
 
-	/* and initialize it */
-	jlist_init_id = (*env)->GetMethodID (env, jlist_class, "<init>", "()V");
-	if (jlist_init_id == NULL) {
-		return FALSE;
-	}
+  jlist_class = (*env)->NewGlobalRef (env, local_jlist_class);
+  (*env)->DeleteLocalRef (env, local_jlist_class);
+  if (jlist_class == NULL)
+    {
+      return FALSE;
+    }
 
-	jlist_add_id = (*env)->GetMethodID (env, jlist_class, "add",
-										"(Ljava/lang/Object;)Z");
-	if (jlist_add_id == NULL) {
-		return FALSE;
-	}
+  /* and initialize it */
+  jlist_init_id = (*env)->GetMethodID (env, jlist_class, "<init>", "()V");
+  if (jlist_init_id == NULL)
+    {
+      return FALSE;
+    }
 
-	return TRUE;
-}		/* set_jlist_class */
+  jlist_add_id = (*env)->GetMethodID (env, jlist_class, "add",
+				      				  "(Ljava/lang/Object;)Z");
+  if (jlist_add_id == NULL)
+    {
+      return FALSE;
+    }
+
+  return TRUE;
+}
 
 static jobject get_jlist_reference (JNIEnv *env, jclass jlist_class)
 {
-	return (*env)->NewObject(env, jlist_class, jlist_init_id);
-}			/* get_jlist_reference */
+  return (*env)->NewObject (env, jlist_class, jlist_init_id);
+}
 
 /* ***** END: PRIVATE FUNCTIONS IMPLEMENTATION ***** */

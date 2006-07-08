@@ -45,7 +45,7 @@ import java.util.prefs.BackingStoreException;
  * Native peer for GConf based preference backend.
  * 
  * @author Mario Torre <neugens@limasoftware.net>
- * @version 1.0
+ * @version 1.0.1
  */
 public final class GConfNativePeer
 {
@@ -73,10 +73,6 @@ public final class GConfNativePeer
    */
   public boolean nodeExist(String node)
   {
-    if (node.endsWith("/"))
-      {
-        node = node.substring(0, node.length() - 1);
-      }
     return gconf_client_dir_exists(node);
   }
 
@@ -89,10 +85,6 @@ public final class GConfNativePeer
    */
   public void startWatchingNode(String node)
   {
-    if (node.endsWith("/"))
-      {
-        node = node.substring(0, node.length() - 1);
-      }
     gconf_client_add_dir(node);
   }
 
@@ -105,16 +97,14 @@ public final class GConfNativePeer
    */
   public void stopWatchingNode(String node)
   {
-    if (node.endsWith("/"))
-      {
-        node = node.substring(0, node.length() - 1);
-      }
     gconf_client_remove_dir(node);
   }
 
   /**
    * Change the value of key to val. Automatically creates the key if it didn't
    * exist before (ie it was unset or it only had a default value).
+   * Key names must be valid GConf key names, that is, there can be more
+   * restrictions than for normal Preference Backend.
    * 
    * @param key the key to alter (or add).
    * @param value the new value for this key.
@@ -122,10 +112,6 @@ public final class GConfNativePeer
    */
   public boolean setString(String key, String value)
   {
-    if (key.endsWith("/"))
-      {
-        key = key.substring(0, key.length() - 1);
-      }
     return gconf_client_set_string(key, value);
   }
 
@@ -139,10 +125,6 @@ public final class GConfNativePeer
    */
   public boolean unset(String key)
   {
-    if (key.endsWith("/"))
-      {
-        key = key.substring(0, key.length() - 1);
-      }
     return gconf_client_unset(key);
   }
 
@@ -154,16 +136,12 @@ public final class GConfNativePeer
    */
   public String getKey(String key)
   {
-    if (key.endsWith("/"))
-      {
-        key = key.substring(0, key.length() - 1);
-      }
     return gconf_client_get_string(key);
   }
 
   /**
    * Lists the key in the given node. Does not list subnodes. Keys names are the
-   * stripped names (name relative to the current node) of the kyes stored in
+   * stripped names (name relative to the current node) of the keys stored in
    * this node.
    * 
    * @param node the node where keys are stored.
@@ -172,10 +150,6 @@ public final class GConfNativePeer
    */
   public List getKeys(String node) throws BackingStoreException
   {
-    if (node.endsWith("/"))
-      {
-        node = node.substring(0, node.length() - 1);
-      }
     return gconf_client_gconf_client_all_keys(node);
   }
 
@@ -188,10 +162,6 @@ public final class GConfNativePeer
    */
   public List getChildrenNodes(String node) throws BackingStoreException
   {
-    if (node.endsWith("/"))
-      {
-        node = node.substring(0, node.length() - 1);
-      }
     return gconf_client_gconf_client_all_nodes(node);
   }
 
@@ -226,33 +196,99 @@ public final class GConfNativePeer
    * the main java class.
    */
 
-  /** */
+  /**
+   * Initialize the GConf native peer and enable the object cache.
+   * It is meant to be used by the static initializer.
+   */
   native static final private void init_id_cache();
   
+  /**
+   * Initialize the GConf native peer. This is meant to be used by the
+   * class constructor.
+   */
   native static final private void init_class();
 
+  /**
+   * Class finalizer.
+   */
   native static final private void finalize_class();
 
+  /**
+   * Queries the GConf database to see if the given node exists, returning
+   * true if the node exist, false otherwise.
+   * 
+   * @param node the node to query for existence.
+   * @return true if the node exist, false otherwise.
+   */
   native static final protected boolean gconf_client_dir_exists(String node);
 
+  /**
+   * Adds the given node to the list of nodes that GConf watches for
+   * changes.
+   * 
+   * @param node the node to watch for changes.
+   */
   native static final protected void gconf_client_add_dir(String node);
 
+  /**
+   * Removes the given node from the list of nodes that GConf watches for
+   * changes.
+   * 
+   * @param node the node to remove from from the list of watched nodes.
+   */
   native static final protected void gconf_client_remove_dir(String node);
 
+  /**
+   * Sets the given key/value pair into the GConf database.
+   * The key must be a valid GConf key.
+   * 
+   * @param key the key to store in the GConf database
+   * @param value the value to associate to the given key.
+   * @return true if the change has effect, false otherwise.
+   */
   native static final protected boolean gconf_client_set_string(String key,
                                                                 String value);
 
+  /**
+   * Returns the key associated to the given key. Null is returned if the
+   * key is not valid.
+   * 
+   * @param key the key to return the value of.
+   * @return The value associated to the given key, or null.
+   */
   native static final protected String gconf_client_get_string(String key);
 
+  /**
+   * Usets the given key, removing the key from the database.
+   * 
+   * @param key the key to remove.
+   * @return true if the operation success, false otherwise.
+   */
   native static final protected boolean gconf_client_unset(String key);
 
+  /**
+   * Suggest to the GConf native peer a sync with the database.
+   *
+   */
   native static final protected void gconf_client_suggest_sync();
 
-  native static final protected List gconf_client_gconf_client_all_nodes(
-                                                                         String node);
+  /**
+   * Returns a list of all nodes under the given node.
+   * 
+   * @param node the source node.
+   * @return A list of nodes under the given source node.
+   */
+  native
+  static final protected List gconf_client_gconf_client_all_nodes(String node);
 
-  native static final protected List gconf_client_gconf_client_all_keys(
-                                                                        String node);
+  /**
+   * Returns a list of all keys stored in the given node.
+   * 
+   * @param node the source node.
+   * @return A list of all keys stored in the given node.
+   */
+  native
+  static final protected List gconf_client_gconf_client_all_keys(String node);
 
   static
     {

@@ -72,6 +72,7 @@ import java.util.prefs.BackingStoreException;
  * <br />
  * 
  * @author Mario Torre <neugens@limasoftware.net>
+ * @version 1.0.1
  */
 public class GConfBasedPreferences
     extends AbstractPreferences
@@ -84,7 +85,7 @@ public class GConfBasedPreferences
   private static GConfNativePeer backend = new GConfNativePeer();
 
   /** Default user root path */
-  private static final String DEFAULT_USER_ROOT = "/apps/java";
+  private static final String DEFAULT_USER_ROOT = "/apps/classpath";
 
   /** Default system root path */
   private static final String DEFAULT_SYSTEM_ROOT = "/system";
@@ -129,7 +130,13 @@ public class GConfBasedPreferences
     this.isUser = isUser;
 
     // stores the fully qualified name of this node
-    this.node = this.getRealRoot(isUser) + this.absolutePath();
+    String absolutePath = this.absolutePath();
+    if (absolutePath != null && absolutePath.endsWith("/"))
+      {
+        absolutePath = absolutePath.substring(0, absolutePath.length() - 1);
+      }
+
+    this.node = this.getRealRoot(isUser) + absolutePath;
 
     boolean nodeExist = backend.nodeExist(this.node);
 
@@ -356,9 +363,8 @@ public class GConfBasedPreferences
    */
   private String getGConfKey(String key)
   {
-
     String nodeName = "";
-
+    
     if (this.node.endsWith("/"))
       {
         nodeName = this.node + key;
