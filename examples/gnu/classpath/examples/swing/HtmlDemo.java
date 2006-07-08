@@ -63,8 +63,12 @@ public class HtmlDemo extends JPanel
   
   JTextPane html = new JTextPane();
 
-  //JTextArea text = new JTextArea("<html><body><p><img src='' alt='alt txt'></p></body></html>");
-  JTextArea text = new JTextArea("<html><body><p>nor<font color=red>ma</font>l<sup>sup</sup>normal<sub>sub</sub>normal</p></body></html>");
+  JTextArea text = new JTextArea("<html><body><p>" +
+    "123456789HR!<hr>987654321"+
+    "123456789BR!<br>987654321"+
+    "<font color=red>ma</font>"+
+    "<sup>sup</sup>normal<sub>sub</sub>normal</p><p>Table:"+
+    "<table><tr>a<td>b<td>c<tr>x<td>y<td>z</table></body></html>");  
   
   JPanel buttons;
 

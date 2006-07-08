@@ -59,7 +59,50 @@ class HRuleView extends InlineView
    */
   View nullView;
   
+  /**
+   * The height of the horizontal dash area.
+   */
   static int HEIGHT = 4;
+  
+  /**
+   * The imaginary invisible view that stays after end of line after the
+   * breaking procedure. It occupies on character.
+   */
+  class Beginning extends NullView
+  {
+    /**
+     * The break offset that becomes the views start offset.
+     */
+    int breakOffset;
+    
+    /**
+     * Return the end offset that is always one char after the break offset.
+     */
+    public int getEndOffset()
+    {
+      return breakOffset + 1;
+    }
+    
+    /**
+     * Return the start offset that has been passed in a constructor.
+     */
+    public int getStartOffset()
+    {
+      return breakOffset;
+    }
+     
+    /**
+     * Create the new instance of this view.
+     * 
+     * @param element the element (inherited from the HR view)
+     * @param offset the position where the HR view has been broken
+     */
+    public Beginning(Element element, int offset)
+    {
+      super(element);
+      breakOffset = offset;
+    }
+  }
   
   /**
    * Creates the new HR view.
@@ -76,7 +119,7 @@ class HRuleView extends InlineView
    */
   public int getBreakWeight(int axis, float pos, float len)
   {
-    if (axis == X_AXIS)
+    if (axis == X_AXIS && ((getEndOffset() - getStartOffset()) > 1))
       return ForcedBreakWeight;      
     else
       return BadBreakWeight;      
@@ -105,14 +148,17 @@ class HRuleView extends InlineView
   }
 
   /**
-   * Always returns the null view, indicating that the dash must be painted
-   * below the breaking point.
+   * Break the view into this view and the invisible imaginary view that
+   * stays on the end of line that is broken by HR dash. The view is broken
+   * only if its length is longer than one (the two characters are expected
+   * in the initial length).
    */
   public View breakView(int axis, int offset, float pos, float len)
   {
-    if (nullView == null)
-      nullView = new NullView(getElement());
-    return nullView;
+    if (getEndOffset() - getStartOffset() > 1)
+      return new Beginning(getElement(), offset);
+    else
+      return this;
   }
   
   /**
@@ -132,15 +178,7 @@ class HRuleView extends InlineView
     else
       return HEIGHT;     
   }
-  
-  /**
-   * Returns the same values as {@link #getMaximumSpan(int)}
-   */
-  public float getMinimumSpan(int axis)
-  {
-    return getMaximumSpan(axis);
-  }
-  
+
   /**
    * Returns the same values as {@link #getMaximumSpan(int)}
    */

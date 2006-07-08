@@ -1433,14 +1433,14 @@ public class HTMLDocument extends DefaultStyledDocument
       // Migrate from the rather htmlAttributeSet to the faster, lighter and 
       // unchangeable alternative implementation.
       AttributeSet copy = a.copyAttributes();
-      
-      // TODO: Figure out why we must always insert this single character
-      // (otherwise the element does not appear). Either fix or add explaining
-      // comment or at least report a normal bug.
-      DefaultStyledDocument.ElementSpec spec;
-      spec = new DefaultStyledDocument.ElementSpec(copy,
-	DefaultStyledDocument.ElementSpec.ContentType, 
-        new char[] {' '}, 0, 1 );
+
+      // The two spaces are required because some special elements like HR
+      // must be broken. At least two characters are needed to break into the
+      // two parts.
+      DefaultStyledDocument.ElementSpec spec =
+        new DefaultStyledDocument.ElementSpec(copy,
+	  DefaultStyledDocument.ElementSpec.ContentType, 
+          new char[] {' ', ' '}, 0, 2 );
       parseBuffer.add(spec);
     }
     

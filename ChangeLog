@@ -1,3 +1,15 @@
+2006-07-08  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/text/FlowView.java (FlowStrategy.layoutRow):
+	Handle the forced break in the same way as exceeding the
+	available row space.
+	* javax/swing/text/html/HRuleView.java: Rewritten.
+	* javax/swing/text/html/HTMLDocument.java 
+	(HTMLReader.addSpecialElement):Reserve two characters for
+	the special elements.
+	* examples/gnu/classpath/examples/swing/HtmlDemo.java
+	(text): Extended the HTML example to parse.
+
 2006-07-07  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/AbstractButton.java
