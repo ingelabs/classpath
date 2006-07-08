@@ -1,3 +1,7 @@
+2006-07-08  Mark Wielaard  <mark@klomp.org>
+
+	* .classpath: Add gnu/java/awt/peer/x/ to excludes.
+
 2006-07-08  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/text/FlowView.java (FlowStrategy.layoutRow):
