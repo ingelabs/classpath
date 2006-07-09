@@ -1364,6 +1364,9 @@ public abstract class AbstractButton extends JComponent
   {
     if (horizontalTextPosition == t)
       return;
+    if (t != LEFT && t != CENTER && t != RIGHT && t != LEADING 
+        && t != TRAILING)
+      throw new IllegalArgumentException("Invalid alignment.");
 
     int old = horizontalTextPosition;
     horizontalTextPosition = t;
@@ -1442,6 +1445,8 @@ public abstract class AbstractButton extends JComponent
   {
     if (verticalTextPosition == t)
       return;
+    if (t != TOP && t != CENTER && t != BOTTOM)
+      throw new IllegalArgumentException("Invalid alignment.");
     
     int old = verticalTextPosition;
     verticalTextPosition = t;

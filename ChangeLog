@@ -1,5 +1,11 @@
 2006-07-09  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/AbstractButton.java
+	(setHorizontalTextPosition): Added check for illegal argument,
+	(setVerticalTextPosition): Likewise.
+
+2006-07-09  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/Timer.java
 	(setDelay): Throw IllegalArgumentException for negative delay,
 	(setInitialDelay): Likewise,
