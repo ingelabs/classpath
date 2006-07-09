@@ -1,3 +1,9 @@
+2006-07-08  Anthony Green  <green@redhat.com>
+
+	* gnu/javax/sound/sampled/WAV/WAVReader.java,
+	resource/META-INF/services/javax.sound.sampled.spi.AudioFileReader: 
+	New files.
+
 2006-07-09  Mario Torre  <neugens@limasoftware.net>
 
     * native/jni/gconf-peer/GConfNativePeer.c:
