@@ -1,3 +1,14 @@
+2006-07-09  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/management/openmbean/CompositeData.java,
+	* javax/management/openmbean/CompositeType.java,
+	* javax/management/openmbean/OpenDataException.java,
+	* javax/management/openmbean/OpenType.java,
+	* javax/management/openmbean/TabularData.java,
+	* javax/management/openmbean/TabularType.java,
+	* javax/management/openmbean/package.html:
+	New files.
+
 2006-07-09  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/javax/print/ipp/IppRequest.java: Remove double assignment.
