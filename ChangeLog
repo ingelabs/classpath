@@ -1,3 +1,9 @@
+2006-07-09  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/javax/print/ipp/IppRequest.java: Remove double assignment.
+	* gnu/java/rmi/server/UnicastServerRef.java: Likewise.
+	* gnu/java/rmi/server/ActivatableServerRef.java: Likewise.
+
 2006-07-08  Anthony Green  <green@redhat.com>
 
 	* gnu/javax/sound/sampled/WAV/WAVReader.java,
@@ -6,36 +12,35 @@
 
 2006-07-09  Mario Torre  <neugens@limasoftware.net>
 
-    * native/jni/gconf-peer/GConfNativePeer.c:
-    Fixed indentation to be more compliant to the GNU coding
-    guidelines.
+	* native/jni/gconf-peer/GConfNativePeer.c:
+	Fixed indentation to be more compliant to the GNU coding
+	guidelines.
 	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1unset):
-    Added explicit test for errors in the GConf backend.
+	Added explicit test for errors in the GConf backend.
 	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1get_1string):
-    Added explicit test for errors in the GConf backend.
-    Fixed Segmentation Fault when non valid key names are
-    given as input.
+	Added explicit test for errors in the GConf backend.
+	Fixed Segmentation Fault when non valid key names are given as input.
 	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1set_1string):
-    likewise.
+	likewise.
 	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1dir_1exists):
-    Added explicit test for errors in the GConf backend.
-    * gnu/java/util/prefs/gconf/GConfNativePeer.java:
-    Added javadoc comments for all native methods.
-    (nodeExist): removed test to check for valid absolute path name
-    for nodes.
-    (startWatchingNode): likewise.
-    (stopWatchingNode): likewise.
-    (setString): likewise, plus fixed javadoc comments.
-    (unset): likekwise.
-    (getKey): likewise.
-    (getKeys): likewise, also fixed javadoc comments.
-    (getChildrenNodes): likewise.
-    * gnu/java/util/prefs/GConfBasedPreferences.java:
-    changed DEFAULT_USER_ROOT to /apps/classpath.
-    (constructor): Test to check for a valid absolute path for nodes
-    is now in the contructor for that node, instead of being on
-    each method of the backend.
-    (getGConfKey): removed empty new line.
+	Added explicit test for errors in the GConf backend.
+	* gnu/java/util/prefs/gconf/GConfNativePeer.java:
+	Added javadoc comments for all native methods.
+	(nodeExist): removed test to check for valid absolute path name
+	for nodes.
+	(startWatchingNode): likewise.
+	(stopWatchingNode): likewise.
+	(setString): likewise, plus fixed javadoc comments.
+	(unset): likekwise.
+	(getKey): likewise.
+	(getKeys): likewise, also fixed javadoc comments.
+	(getChildrenNodes): likewise.
+	* gnu/java/util/prefs/GConfBasedPreferences.java:
+	changed DEFAULT_USER_ROOT to /apps/classpath.
+	(constructor): Test to check for a valid absolute path for nodes
+	is now in the contructor for that node, instead of being on
+	each method of the backend.
+	(getGConfKey): removed empty new line.
 
 2006-07-08  Mark Wielaard  <mark@klomp.org>
 
