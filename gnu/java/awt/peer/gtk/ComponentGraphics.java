@@ -62,6 +62,8 @@ import java.awt.image.RenderedImage;
  */
 public class ComponentGraphics extends CairoGraphics2D
 {
+  private static final boolean hasXRenderExtension = hasXRender();
+
   private GtkComponentPeer component;
   protected long cairo_t;
 
@@ -175,7 +177,7 @@ public class ComponentGraphics extends CairoGraphics2D
    */
   public static Graphics2D getComponentGraphics(GtkComponentPeer component)
   {
-    if( hasXRender() )
+    if( hasXRenderExtension )
       return new ComponentGraphics(component);
 
     Rectangle r = component.awtComponent.getBounds();
@@ -399,6 +401,19 @@ public class ComponentGraphics extends CairoGraphics2D
     finally
       {
         unlock();
+      }
+  }
+
+  public void setClip(Shape s)
+  {
+    lock();
+    try
+      {
+	super.setClip(s);
+      }
+    finally
+      {
+	unlock();
       }
   }
 
