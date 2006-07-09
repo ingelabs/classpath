@@ -37,6 +37,9 @@ exception statement from your version. */
 
 package java.lang.management;
 
+import javax.management.openmbean.CompositeData;
+import javax.management.openmbean.CompositeType;
+import javax.management.openmbean.SimpleType;
 /**
  * <p>
  * Retains information on the usage of a particular memory
@@ -143,6 +146,48 @@ public class MemoryUsage
     this.used = used;
     this.committed = committed;
     this.maximum = maximum;
+  }
+
+  /**
+   * <p>
+   * Returns a {@link MemoryUsage} instance using the values
+   * given in the supplied
+   * {@link javax.management.openmbean.CompositeData} object.
+   * The composite data instance should contain the following
+   * attributes:
+   * </p>
+   * <ul>
+   * <li>init</li>
+   * <li>used</li>
+   * <li>committed</li>
+   * <li>max</li>
+   * </ul>
+   * <p>
+   * All should have the type, <code>java.lang.Long</code>.
+   * </p>
+   * 
+   * @param data the composite data structure to take values from.
+   * @return a new instance containing the values from the 
+   *         composite data structure, or <code>null</code>
+   *         if the data structure was also <code>null</code>.
+   * @throws IllegalArgumentException if the composite data structure
+   *                                  does not match the structure
+   *                                  outlined above, or the values
+   *                                  are invalid.
+   */
+  public static MemoryUsage from(CompositeData data)
+  {
+    if (data == null)
+      return null;
+    CompositeType type = data.getCompositeType();
+    ThreadInfo.checkAttribute(type, "init", SimpleType.LONG);
+    ThreadInfo.checkAttribute(type, "used", SimpleType.LONG);
+    ThreadInfo.checkAttribute(type, "committed", SimpleType.LONG);
+    ThreadInfo.checkAttribute(type, "max", SimpleType.LONG);
+    return new MemoryUsage(((Long) data.get("init")).longValue(),
+			   ((Long) data.get("used")).longValue(),
+			   ((Long) data.get("committed")).longValue(),
+			   ((Long) data.get("max")).longValue());
   }
 
   /**

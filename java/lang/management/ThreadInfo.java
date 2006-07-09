@@ -37,6 +37,13 @@ exception statement from your version. */
 
 package java.lang.management;
 
+import javax.management.openmbean.ArrayType;
+import javax.management.openmbean.CompositeData;
+import javax.management.openmbean.CompositeType;
+import javax.management.openmbean.OpenDataException;
+import javax.management.openmbean.OpenType;
+import javax.management.openmbean.SimpleType;
+
 /**
  * <p>
  * A class which maintains information about a particular
@@ -83,9 +90,19 @@ public class ThreadInfo
 {
 
   /**
-   * The thread which this instance concerns.
+   * The id of the thread which this instance concerns.
    */
-  private Thread thread;
+  private long threadId;
+
+  /**
+   * The name of the thread which this instance concerns.
+   */
+  private String threadName;
+
+  /**
+   * The state of the thread which this instance concerns.
+   */
+  private String threadState;
 
   /**
    * The number of times the thread has been blocked.
@@ -100,17 +117,24 @@ public class ThreadInfo
   private long blockedTime;
 
   /**
-   * The monitor lock on which this thread is blocked
-   * (if any).
+   * The name of the monitor lock on which this thread
+   * is blocked (if any).
    */
-  private Object lock;
+  private String lockName;
 
   /**
-   * The thread which owns the monitor lock on which this
-   * thread is blocked, or <code>null</code> if there is
-   * no owner.
+   * The id of the thread which owns the monitor lock on
+   * which this thread is blocked, or <code>-1</code>
+   * if there is no owner.
    */
-  private Thread lockOwner;
+  private long lockOwnerId;
+
+  /**
+   * The name of the thread which owns the monitor lock on
+   * which this thread is blocked, or <code>null</code>
+   * if there is no owner.
+   */
+  private String lockOwnerName;
 
   /**
    * The number of times the thread has been in a waiting
@@ -176,16 +200,204 @@ public class ThreadInfo
 		     long waitedTime, boolean isInNative, boolean isSuspended,
 		     StackTraceElement[] trace)
   {
-    this.thread = thread;
+    this(thread.getId(), thread.getName(), thread.getState(), blockedCount,
+	 blockedTime, lock.getClass().getName() + "@" + 
+	 Integer.toHexString(System.identityHashCode(lock)), lockOwner.getId(),
+	 lockOwner.getName(), waitedCount, waitedTime, isInNative, isSuspended,
+	 trace);
+  }
+
+  /**
+   * Constructs a new {@link ThreadInfo} corresponding
+   * to the thread details specified.
+   *
+   * @param threadId the id of the thread on which this
+   *                 new instance will be based.
+   * @param threadName the name of the thread on which
+   *                 this new instance will be based.
+   * @param threadState the state of the thread on which
+   *                 this new instance will be based.
+   * @param blockedCount the number of times the thread
+   *                     has been blocked.
+   * @param blockedTime the accumulated number of milliseconds
+   *                    the specified thread has been blocked
+   *                    (only used with contention monitoring enabled)
+   * @param lockName the name of the monitor lock the thread is waiting for
+   *                 (only used if blocked)
+   * @param lockOwnerId the id of the thread which owns the monitor
+   *                  lock, or <code>-1</code> if it doesn't have an owner
+   *                  (only used if blocked)
+   * @param lockOwnerName the name of the thread which owns the monitor
+   *                  lock, or <code>null</code> if it doesn't have an 
+   *                  owner (only used if blocked)
+   * @param waitedCount the number of times the thread has been in a
+   *                    waiting state.
+   * @param waitedTime the accumulated number of milliseconds the
+   *                   specified thread has been waiting
+   *                   (only used with contention monitoring enabled)
+   * @param isInNative true if the thread is in a native method.
+   * @param isSuspended true if the thread is suspended.
+   * @param trace the stack trace of the thread to a pre-determined
+   *              depth (see VMThreadMXBeanImpl)
+   */
+  private ThreadInfo(long threadId, String threadName, String threadState,
+		     long blockedCount, long blockedTime, String lockName, 
+		     long lockOwnerId, String lockOwnerName, long waitedCount,
+		     long waitedTime, boolean isInNative, boolean isSuspended,
+		     StackTraceElement[] trace)
+  {
+    this.threadId = threadId;
+    this.threadName = threadName;
+    this.threadState = threadState;
     this.blockedCount = blockedCount;
     this.blockedTime = blockedTime;
-    this.lock = lock;
-    this.lockOwner = lockOwner;
+    this.lockName = lockName;
+    this.lockOwnerId = lockOwnerId;
+    this.lockOwnerName = lockOwnerName;
     this.waitedCount = waitedCount;
     this.waitedTime = waitedTime;
     this.isInNative = isInNative;
     this.isSuspended = isSuspended;
     this.trace = trace;
+  }
+
+  /**
+   * Checks for an attribute in a {@link CompositeData} structure
+   * with the correct type.
+   *
+   * @param ctype the composite data type to check.
+   * @param name the name of the attribute.
+   * @param type the type to check for.
+   * @throws IllegalArgumentException if the attribute is absent
+   *                                  or of the wrong type.
+   */
+  static void checkAttribute(CompositeType ctype, String name,
+			     OpenType type)
+    throws IllegalArgumentException
+  {
+    OpenType foundType = ctype.getType(name);
+    if (foundType == null)
+      throw new IllegalArgumentException("Could not find a field named " +
+					 name);
+    if (!(foundType.equals(type)))
+      throw new IllegalArgumentException("Field " + name + " is not of " +
+					 "type " + type.getClassName());
+  }
+
+  /**
+   * <p>
+   * Returns a {@link ThreadInfo} instance using the values
+   * given in the supplied
+   * {@link javax.management.openmbean.CompositeData} object.
+   * The composite data instance should contain the following
+   * attributes with the specified types:
+   * </p>
+   * <table>
+   * <th><td>Name</td><td>Type</td></th>
+   * <tr><td>threadId</td><td>java.lang.Long</td></tr>
+   * <tr><td>threadName</td><td>java.lang.String</td></tr>
+   * <tr><td>threadState</td><td>java.lang.String</td></tr>
+   * <tr><td>suspended</td><td>java.lang.Boolean</td></tr>
+   * <tr><td>inNative</td><td>java.lang.Boolean</td></tr>
+   * <tr><td>blockedCount</td><td>java.lang.Long</td></tr>
+   * <tr><td>blockedTime</td><td>java.lang.Long</td></tr>
+   * <tr><td>waitedCount</td><td>java.lang.Long</td></tr>
+   * <tr><td>waitedTime</td><td>java.lang.Long</td></tr>
+   * <tr><td>lockName</td><td>java.lang.String</td></tr>
+   * <tr><td>lockOwnerId</td><td>java.lang.Long</td></tr>
+   * <tr><td>lockOwnerName</td><td>java.lang.String</td></tr>
+   * <tr><td>stackTrace</td><td>javax.management.openmbean.CompositeData[]
+   * </td></tr>
+   * </table>
+   * <p>
+   * The stack trace is further described as:
+   * </p>
+   * <table>
+   * <th><td>Name</td><td>Type</td></th>
+   * <tr><td>className</td><td>java.lang.String</td></tr>
+   * <tr><td>methodName</td><td>java.lang.String</td></tr>
+   * <tr><td>fileName</td><td>java.lang.String</td></tr>
+   * <tr><td>lineNumber</td><td>java.lang.Integer</td></tr>
+   * <tr><td>nativeMethod</td><td>java.lang.Boolean</td></tr>
+   * </table>
+   * 
+   * @param data the composite data structure to take values from.
+   * @return a new instance containing the values from the 
+   *         composite data structure, or <code>null</code>
+   *         if the data structure was also <code>null</code>.
+   * @throws IllegalArgumentException if the composite data structure
+   *                                  does not match the structure
+   *                                  outlined above.
+   */
+  public static ThreadInfo from(CompositeData data)
+  {
+    if (data == null)
+      return null;
+    CompositeType type = data.getCompositeType();
+    checkAttribute(type, "threadId", SimpleType.LONG);
+    checkAttribute(type, "threadName", SimpleType.STRING);
+    checkAttribute(type, "threadState", SimpleType.STRING);
+    checkAttribute(type, "suspended", SimpleType.BOOLEAN);
+    checkAttribute(type, "inNative", SimpleType.BOOLEAN);
+    checkAttribute(type, "blockedCount", SimpleType.LONG);
+    checkAttribute(type, "blockedTime", SimpleType.LONG);
+    checkAttribute(type, "waitedCount", SimpleType.LONG);
+    checkAttribute(type, "waitedTime", SimpleType.LONG);
+    checkAttribute(type, "lockName", SimpleType.STRING);
+    checkAttribute(type, "lockOwnerId", SimpleType.LONG);
+    checkAttribute(type, "lockOwnerName", SimpleType.STRING);
+    try
+      {
+	CompositeType seType = 
+	  new CompositeType(StackTraceElement.class.getName(),
+			    "An element of a stack trace",
+			    new String[] { "className", "methodName",
+					   "fileName", "lineNumber",
+					   "nativeMethod" 
+			    },
+			    new String[] { "Name of the class",
+					   "Name of the method",
+					   "Name of the source code file",
+					   "Line number",
+					   "True if this is a native method" 
+			    },
+			    new OpenType[] {
+			      SimpleType.STRING, SimpleType.STRING,
+			      SimpleType.STRING, SimpleType.INTEGER,
+			      SimpleType.BOOLEAN 
+			    });
+	checkAttribute(type, "stackTrace", new ArrayType(1, seType));
+      }
+    catch (OpenDataException e)
+      {
+	throw new IllegalStateException("Something went wrong in creating " +
+					"the composite data type for the " +
+					"stack trace element.", e);
+      }
+    CompositeData[] dTraces = (CompositeData[]) data.get("stackTrace");
+    StackTraceElement[] traces = new StackTraceElement[dTraces.length];
+    for (int a = 0; a < dTraces.length; ++a)
+	/* FIXME: We can't use the boolean as there is no available
+	   constructor. */
+      traces[a] = 
+	new StackTraceElement((String) dTraces[a].get("className"),
+			      (String) dTraces[a].get("methodName"),
+			      (String) dTraces[a].get("fileName"),
+			      ((Integer) 
+			       dTraces[a].get("lineNumber")).intValue());
+    return new ThreadInfo(((Long) data.get("threadId")).longValue(),
+			  (String) data.get("threadName"),
+			  (String) data.get("threadState"),
+			  ((Long) data.get("blockedCount")).longValue(),
+			  ((Long) data.get("blockedTime")).longValue(),
+			  (String) data.get("lockName"),
+			  ((Long) data.get("lockOwnerId")).longValue(),
+			  (String) data.get("lockOwnerName"),  
+			  ((Long) data.get("waitedCount")).longValue(),
+			  ((Long) data.get("waitedTime")).longValue(),
+			  ((Boolean) data.get("inNative")).booleanValue(),
+			  ((Boolean) data.get("suspended")).booleanValue(),
+			  traces);
   }
 
   /**
@@ -272,10 +484,9 @@ public class ThreadInfo
    */
   public String getLockName()
   {
-    if (thread.getState().equals("BLOCKED"))
+    if (threadState.equals("BLOCKED"))
       return null;
-    return lock.getClass().getName() + "@" +
-      Integer.toHexString(System.identityHashCode(lock));
+    return lockName;
   }
 
   /**
@@ -291,11 +502,9 @@ public class ThreadInfo
    */
   public long getLockOwnerId()
   {
-    if (thread.getState().equals("BLOCKED"))
+    if (threadState.equals("BLOCKED"))
       return -1;
-    if (lockOwner == null)
-      return -1;
-    return lockOwner.getId();
+    return lockOwnerId;
   }
 
   /**
@@ -311,11 +520,9 @@ public class ThreadInfo
    */
   public String getLockOwnerName()
   {
-    if (thread.getState().equals("BLOCKED"))
+    if (threadState.equals("BLOCKED"))
       return null;
-    if (lockOwner == null)
-      return null;
-    return lockOwner.getName();
+    return lockOwnerName;
   }
 
   /**
@@ -350,7 +557,7 @@ public class ThreadInfo
    */
   public long getThreadId()
   {
-    return thread.getId();
+    return threadId;
   }
 
   /**
@@ -361,7 +568,7 @@ public class ThreadInfo
    */
   public String getThreadName()
   {
-    return thread.getName();
+    return threadName;
   }
 
   /**
@@ -372,7 +579,7 @@ public class ThreadInfo
    */
   public String getThreadState()
   {
-    return thread.getState();
+    return threadState;
   }
     
   /**
@@ -480,17 +687,17 @@ public class ThreadInfo
    */
   public String toString()
   {
-    String state = thread.getState();
     return getClass().getName() +
-      "[id=" + thread.getId() + 
-      ", name=" + thread.getName() +
-      ", state=" + state +
+      "[id=" + threadId + 
+      ", name=" + threadName +
+      ", state=" + threadState +
       ", blockedCount=" + blockedCount +
       ", waitedCount=" + waitedCount +
       ", isInNative=" + isInNative + 
       ", isSuspended=" + isSuspended +
-      (state.equals("BLOCKED") ? ", lock=" + lock +
-       ", lockOwner=" + lockOwner : "") +
+      (threadState.equals("BLOCKED") ? 
+       ", lockOwnerId=" + lockOwnerId +
+       ", lockOwnerName=" + lockOwnerName : "") +
       "]";
   }
 

@@ -73,12 +73,12 @@ public class TabularType
   /**
    * The hash code of this instance.
    */
-  private volatile Integer hashCode;
+  private transient Integer hashCode;
 
   /**
    * The <code>toString()</code> result of this instance.
    */
-  private volatile String string;
+  private transient String string;
 
   /**
    * <p>
@@ -131,7 +131,7 @@ public class TabularType
     this.indexNames = Collections.unmodifiableList(Arrays.asList(indexNames));
   }
 
-    /**
+  /**
    * <p>
    * Compares this tabular data type with another object
    * for equality.  The objects are judged to be equal if:

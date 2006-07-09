@@ -1,3 +1,35 @@
+2006-07-09  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/lang/management/MemoryUsage.java:
+	(from(javax.management.openmbean.CompositeData)):
+	Implemented.
+	* java/lang/management/ThreadInfo.java:
+	Changed to use open types throughout for the state.
+	(ThreadInfo(long,String,String,long,long,String,
+	long,String,long,long,boolean,StackTraceElement[])):
+	New constructor.
+	(checkAttribute(javax.management.openmbean.CompositeType,
+	String, javax.management.openmbean.OpenType)): New method.
+	(from(javax.management.openmbean.CompositeData)):
+	Implemented.
+	(getLockName()): Fixed to use new variable.
+	(getLockOwnerId()): Likewise.
+	(getLockOwnerName()): Likewise.
+	(getThreadId()): Likewise.
+	(getThreadName()): Likewise.
+	(getThreadState()): Likewise.
+	(toString()): Refactored to use new variables.
+	* javax/management/openmbean/ArrayType.java:
+	New file.
+	* javax/management/openmbean/CompositeType.java:
+	Variables should be transient, not volatile.
+	* javax/management/openmbean/OpenDataException.java:
+	(serialVersionUID): Added.
+	* javax/management/openmbean/SimpleType.java:
+	New file.
+	* javax/management/openmbean/TabularType.java
+	Variables should be transient, not volatile.
+
 2006-07-09  Tom Tromey  <tromey@redhat.com>
 
 	* tools/.cvsignore: Updated for new tools.

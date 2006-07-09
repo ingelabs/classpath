@@ -52,6 +52,11 @@ public class OpenDataException
 {
 
   /**
+   * Compatible with JDK 1.5
+   */
+  private static final long serialVersionUID = 8346311255433349870L;
+
+  /**
    * Constructs a new <code>OpenDataException</code>.
    */
   public OpenDataException()

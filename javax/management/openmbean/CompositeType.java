@@ -72,12 +72,12 @@ public class CompositeType
   /**
    * The hash code of this instance.
    */
-  private volatile Integer hashCode;
+  private transient Integer hashCode;
 
   /**
    * The <code>toString()</code> result of this instance.
    */
-  private volatile String string;
+  private transient String string;
 
   /**
    * <p>
