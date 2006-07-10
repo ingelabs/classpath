@@ -810,7 +810,8 @@ lib/gen-classlist.sh
 lib/copy-vmresources.sh
 tools/Makefile
 examples/Makefile
-examples/Makefile.jawt])
+examples/Makefile.jawt
+examples/Makefile.java2d])
 
 if test "x${COMPILE_WRAPPERS}" = xno
 then
