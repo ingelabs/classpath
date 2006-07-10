@@ -1,3 +1,9 @@
+2006-07-10  Matt Wringe  <mwringe@redhat.com>
+
+	PR classpath/28212:
+	* javax/crypto/spec/SecretKeySpec.java 
+	(equals): Check object type. 
+
 2006-07-10  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* examples/gnu/classpath/examples/CORBA/SimpleCommunication/
