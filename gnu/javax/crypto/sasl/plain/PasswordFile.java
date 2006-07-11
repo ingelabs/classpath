@@ -38,7 +38,7 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.sasl.plain;
 
-import gnu.classpath.SystemProperties;
+import gnu.java.security.action.GetPropertyAction;
 import gnu.javax.crypto.sasl.NoSuchUserException;
 import gnu.javax.crypto.sasl.UserAlreadyExistsException;
 
@@ -50,6 +50,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.security.AccessController;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.NoSuchElementException;
@@ -63,8 +64,9 @@ public class PasswordFile
   private static String DEFAULT_FILE;
   static
     {
-      DEFAULT_FILE = SystemProperties.getProperty(PlainRegistry.PASSWORD_FILE,
-                                                  PlainRegistry.DEFAULT_PASSWORD_FILE);
+      DEFAULT_FILE = (String) AccessController.doPrivileged
+          (new GetPropertyAction(PlainRegistry.PASSWORD_FILE,
+          PlainRegistry.DEFAULT_PASSWORD_FILE));
     }
   private Hashtable entries;
   private File passwdFile;

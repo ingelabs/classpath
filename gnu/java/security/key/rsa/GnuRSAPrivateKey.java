@@ -39,11 +39,12 @@ exception statement from your version.  */
 package gnu.java.security.key.rsa;
 
 import gnu.java.security.Configuration;
-import gnu.classpath.SystemProperties;
+import gnu.java.security.action.GetPropertyAction;
 import gnu.java.security.Registry;
 import gnu.java.security.key.IKeyPairCodec;
 
 import java.math.BigInteger;
+import java.security.AccessController;
 import java.security.PrivateKey;
 import java.security.interfaces.RSAPrivateCrtKey;
 import java.security.interfaces.RSAPrivateKey;
@@ -286,7 +287,8 @@ public class GnuRSAPrivateKey
   {
     if (str == null)
       {
-        String ls = SystemProperties.getProperty("line.separator");
+        String ls = (String) AccessController.doPrivileged
+            (new GetPropertyAction("line.separator"));
         str = new StringBuilder(this.getClass().getName()).append("(")
             .append(super.toString()).append(",").append(ls)
             .append("d=0x").append(Configuration.DEBUG ? d.toString(16)

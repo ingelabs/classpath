@@ -38,12 +38,13 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.key.dh;
 
-import gnu.classpath.SystemProperties;
 import gnu.java.security.Configuration;
 import gnu.java.security.Registry;
+import gnu.java.security.action.GetPropertyAction;
 import gnu.java.security.key.IKeyPairCodec;
 
 import java.math.BigInteger;
+import java.security.AccessController;
 
 import javax.crypto.interfaces.DHPrivateKey;
 
@@ -185,7 +186,8 @@ public class GnuDHPrivateKey
   {
     if (str == null)
       {
-        String ls = SystemProperties.getProperty("line.separator");
+        String ls = (String) AccessController.doPrivileged
+            (new GetPropertyAction("line.separator"));
         str = new StringBuilder(this.getClass().getName()).append("(")
             .append(super.toString()).append(",").append(ls)
             .append("x=0x").append(Configuration.DEBUG ? x.toString(16)

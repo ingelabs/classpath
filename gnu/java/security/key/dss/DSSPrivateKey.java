@@ -39,11 +39,12 @@ exception statement from your version.  */
 package gnu.java.security.key.dss;
 
 import gnu.java.security.Configuration;
-import gnu.classpath.SystemProperties;
 import gnu.java.security.Registry;
+import gnu.java.security.action.GetPropertyAction;
 import gnu.java.security.key.IKeyPairCodec;
 
 import java.math.BigInteger;
+import java.security.AccessController;
 import java.security.PrivateKey;
 import java.security.interfaces.DSAPrivateKey;
 
@@ -188,7 +189,8 @@ public class DSSPrivateKey
   {
     if (str == null)
       {
-        String ls = SystemProperties.getProperty("line.separator");
+        String ls = (String) AccessController.doPrivileged
+            (new GetPropertyAction("line.separator"));
         str = new StringBuilder(this.getClass().getName()).append("(")
             .append(super.toString()).append(",").append(ls)
             .append("x=0x").append(Configuration.DEBUG ? x.toString(16)
