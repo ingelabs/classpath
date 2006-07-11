@@ -1,3 +1,9 @@
+2006-07-11  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/image/MultiPixelPackedSampleModel.java
+	(MultiPixelPackedSampleModel): Substract -1 so that the integer
+	division gets rounded up.
+
 2006-07-11  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/lang/management/ManageFactory.java:

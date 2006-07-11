@@ -101,7 +101,7 @@ public class MultiPixelPackedSampleModel extends SampleModel
 
     // Compute scan line large enough for w pixels.
     if (scanlineStride == 0)
-      scanlineStride = ((dataBitOffset + w * numberOfBits) / elemBits);
+      scanlineStride = (((dataBitOffset + w * numberOfBits) - 1) / elemBits);
     this.scanlineStride = scanlineStride;
 
     
