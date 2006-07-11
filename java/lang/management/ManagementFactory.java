@@ -224,7 +224,7 @@ public class ManagementFactory
     String[] names = VMManagementFactory.getMemoryManagerNames();
     for (int a = 0; a < names.length; ++a)
       managerBeans.add(new MemoryManagerMXBeanImpl(names[a]));
-    managerBeans.add(getGarbageCollectorMXBeans());
+    managerBeans.addAll(getGarbageCollectorMXBeans());
     return managerBeans;
   }
 
