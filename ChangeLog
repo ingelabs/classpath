@@ -1,3 +1,12 @@
+2006-07-11  Robert Schuster  <robertschuster@fsfe.org>
+
+	Fixes PR28350.
+	* native/jni/gconf-peer/GConfNativePeer.c:
+	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1set_1string):
+	Changed if-expression.
+	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1get_1string):
+	Added check for _value not being NULL.
+	
 2006-07-11  Roman Kennke  <kennke@aicas.com>
 
 	* native/jni/java-net/gnu_java_net_local_LocalSocketImpl.c

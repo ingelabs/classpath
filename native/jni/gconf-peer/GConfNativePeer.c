@@ -365,8 +365,13 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1get_1string
       return NULL;
     }
 
-  result = (*env)->NewStringUTF (env, _value);
-  g_free ((gpointer) _value);
+  // Even if Gconf reported no error it is possible that NULL was returned and
+  // it should be prevented to create a Java string from that value.
+  if (_value != NULL)
+    {
+      result = (*env)->NewStringUTF (env, _value);
+      g_free ((gpointer) _value);
+    }
 
   return result;
 }
@@ -390,7 +395,7 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1set_1string
   /* load an UTF string from the virtual machine. */
   _key = JCL_jstring_to_cstring (env, key);
   _value = JCL_jstring_to_cstring (env, value);
-  if (_key == NULL && _value == NULL)
+  if (_key == NULL || _value == NULL)
     {
       return JNI_FALSE;
     }
