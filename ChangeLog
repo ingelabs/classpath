@@ -1,3 +1,10 @@
+2006-07-11  Sven de Marothy  <sven@physto.se>
+
+	* gnu/javax/sound/sampled/AU/AUReader.java:
+	New file.
+	* resource/META-INF/services/javax.sound.sampled.spi.AudioFileReader: 
+	Added new provider.
+
 2006-07-11  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JTable.java
