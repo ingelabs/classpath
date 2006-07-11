@@ -1,5 +1,15 @@
 2006-07-11  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/ButtonGroup.java
+	(add): Ignore null argument,
+	(remove): Ignore null argument.  If removing selected button, clear the
+	sel field,
+	(findButton): Changed case for method name, and documented,
+	(setSelected): Updated for modification to findButton() method name,
+	(isSelected): Updated API docs.
+
+2006-07-11  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* java/awt/image/BufferedImage.java
 	(BufferedImage(int, int, int)): Use correct color space for 
 	TYPE_BYTE_GRAY and TYPE_USHORT_GRAY, and throw an 
