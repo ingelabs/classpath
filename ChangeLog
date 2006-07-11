@@ -1,5 +1,12 @@
 2006-07-11  Roman Kennke  <kennke@aicas.com>
 
+	* native/jni/java-net/gnu_java_net_local_LocalSocketImpl.c
+	(read): Use fd when local sockets are disabled to make the
+	compiler quite.
+	(write): Likewise.
+
+2006-07-11  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/image/MultiPixelPackedSampleModel.java
 	(MultiPixelPackedSampleModel): Substract -1 so that the integer
 	division gets rounded up.

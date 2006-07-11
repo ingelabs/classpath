@@ -474,6 +474,7 @@ Java_gnu_java_net_local_LocalSocketImpl_read
   return count;
 #else
   (void) this;
+  (void) fd;
   (void) buf;
   (void) off;
   (void) len;
@@ -508,6 +509,7 @@ Java_gnu_java_net_local_LocalSocketImpl_write
   TRACE("end");
 #else
   (void) this;
+  (void) fd;
   (void) buf;
   (void) off;
   (void) len;
