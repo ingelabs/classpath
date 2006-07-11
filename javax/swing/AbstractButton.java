@@ -199,7 +199,7 @@ public abstract class AbstractButton extends JComponent
   Icon pressed_icon;
 
   /** The icon displayed when the button is disabled. */
-  Icon disabeldIcon;
+  Icon disabledIcon;
 
   /** The icon displayed when the button is selected. */
   Icon selectedIcon;
@@ -1725,14 +1725,14 @@ public abstract class AbstractButton extends JComponent
    */
   public Icon getDisabledIcon()
   {
-    if (disabeldIcon == null && default_icon instanceof ImageIcon)
+    if (disabledIcon == null && default_icon instanceof ImageIcon)
       {
         Image iconImage = ((ImageIcon) default_icon).getImage();
         Image grayImage = GrayFilter.createDisabledImage(iconImage);
-        disabeldIcon = new ImageIcon(grayImage);
+        disabledIcon = new ImageIcon(grayImage);
       }
       
-    return disabeldIcon;
+    return disabledIcon;
   }
 
   /**
@@ -1746,7 +1746,11 @@ public abstract class AbstractButton extends JComponent
    */
   public void setDisabledIcon(Icon d)
   {
-    disabeldIcon = d;
+    if (disabledIcon == d)
+      return;
+    Icon old = disabledIcon;
+    disabledIcon = d;
+    firePropertyChange(DISABLED_ICON_CHANGED_PROPERTY, old, d);
     revalidate();
     repaint();
   }

@@ -1,5 +1,12 @@
 2006-07-11  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/AbstractButton.java
+	(disabledIcon): Fixed name (was 'disabeldIcon'),
+	(getDisabledIcon): Updated for corrected field name,
+	(setDisabledIcon): Fire a PropertyChangeEvent.
+
+2006-07-11  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/DefaultBoundedRangeModel.java
 	(readObject): New private method,
 	(writeObject): Likewise.
