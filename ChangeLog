@@ -1,3 +1,11 @@
+2006-07-11  Vivek Lakshmanan  <vivekl@redhat.com>
+
+	PR 27649:
+	* gnu/classpath/ByteArray.java: Removed (moved).
+	* gnu/java/security/util/ByteArray.java: New File.
+	* gnu/javax/crypto/RSACipherImpl.java: Reference 
+	gnu.java.security.util.ByteArray instead of gnu.classpath.ByteArray.
+
 2006-07-11  Roman Kennke  <kennke@aicas.com>
 
 	* native/jni/java-net/gnu_java_net_local_LocalSocketImpl.c

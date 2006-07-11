@@ -38,9 +38,9 @@ exception statement from your version. */
 
 package gnu.javax.crypto;
 
-import gnu.classpath.ByteArray;
 import gnu.classpath.debug.Component;
 import gnu.classpath.debug.SystemLogger;
+import gnu.java.security.util.ByteArray;
 
 import java.math.BigInteger;
 import java.security.AlgorithmParameters;
