@@ -1,3 +1,18 @@
+2006-07-11  Roman Kennke  <kennke@aicas.com>
+
+	* native/jni/java-net/gnu_java_net_local_LocalSocketImpl.c
+	(available): Pass fd as argument and avoid JNI class/field
+	lookup.
+	(read): Likewise.
+	(write): Likewise.
+	* include/gnu_java_net_local_LocalSocketImpl.h:
+	Regenerated.
+	* gnu/java/net/local/LocalSocketImpl.h
+	(available): Pass fd as argument and avoid JNI class/field
+	lookup.
+	(read): Likewise.
+	(write): Likewise.	
+
 2006-07-11  Sven de Marothy  <sven@physto.se>
 
 	* gnu/javax/sound/sampled/AU/AUReader.java:
