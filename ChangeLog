@@ -1,6 +1,11 @@
 2006-07-11  Sven de Marothy  <sven@physto.se>
 
 	* gnu/javax/sound/sampled/AU/AUReader.java:
+	Correct file extension from .as to .au.
+
+2006-07-11  Sven de Marothy  <sven@physto.se>
+
+	* gnu/javax/sound/sampled/AU/AUReader.java:
 	New file.
 	* resource/META-INF/services/javax.sound.sampled.spi.AudioFileReader: 
 	Added new provider.

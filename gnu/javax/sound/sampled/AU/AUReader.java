@@ -91,7 +91,7 @@ public class AUReader extends AudioFileReader
       ByteBuffer buf = ByteBuffer.wrap(hdr);
 
       if( buf.getInt() != MAGIC )
-	throw new UnsupportedAudioFileException("Not an AS format audio file.");
+	throw new UnsupportedAudioFileException("Not an AU format audio file.");
       headerSize = buf.getInt(); 
       fileSize = buf.getInt(); 
       encoding = buf.getInt(); 
@@ -138,17 +138,17 @@ public class AUReader extends AudioFileReader
 
   public AudioFileFormat getAudioFileFormat()
     {
-      return new AudioFileFormat(new ASFormatType(), 
+      return new AudioFileFormat(new AUFormatType(), 
 				 getAudioFormat(), 
 				 AudioSystem.NOT_SPECIFIED);
     }
   }
 
-  public static class ASFormatType extends AudioFileFormat.Type
+  public static class AUFormatType extends AudioFileFormat.Type
   {
-    public ASFormatType()
+    public AUFormatType()
     {
-      super("AS", ".as");
+      super("AU", ".au");
     }
   }
 
