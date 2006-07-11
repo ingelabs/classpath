@@ -1,3 +1,10 @@
+2006-07-11  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/image/BufferedImage.java
+	(BufferedImage(int, int, int)): Use correct color space for 
+	TYPE_BYTE_GRAY and TYPE_USHORT_GRAY, and throw an 
+	IllegalArgumentException for an unrecognised type.
+
 2006-07-10  Mario Torre  <neugens@limasoftware.net>
 
         * java/awt/BasicStroke.java: Removed unused import.
