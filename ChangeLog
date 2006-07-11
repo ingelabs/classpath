@@ -1,5 +1,11 @@
 2006-07-11  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/DefaultBoundedRangeModel.java
+	(readObject): New private method,
+	(writeObject): Likewise.
+
+2006-07-11  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/ButtonGroup.java
 	(add): Ignore null argument,
 	(remove): Ignore null argument.  If removing selected button, clear the
