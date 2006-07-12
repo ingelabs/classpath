@@ -1,5 +1,5 @@
 /* Arrays.java -- Utility class with methods to operate on arrays
-   Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005
+   Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006,
    Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -2341,8 +2341,10 @@ public class Arrays
    * value modification. The returned list implements both Serializable and
    * RandomAccess.
    *
-   * @param a the array to return a view of
+   * @param a the array to return a view of (<code>null</code> not permitted)
    * @return a fixed-size list, changes to which "write through" to the array
+   * 
+   * @throws NullPointerException if <code>a</code> is <code>null</code>.
    * @see Serializable
    * @see RandomAccess
    * @see Arrays.ArrayList
