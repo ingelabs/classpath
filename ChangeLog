@@ -1,3 +1,8 @@
+2006-07-12  Sven de Marothy  <sven@physto.se>
+
+	* javax/swing/JFileChooser.java:
+	(createDialog): Close operation should cause a cancel.
+
 2006-07-12  Francis Kung  <fkung@redhat.com>
 
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java: Organized imports.
