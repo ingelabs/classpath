@@ -365,8 +365,8 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1get_1string
       return NULL;
     }
 
-  // Even if Gconf reported no error it is possible that NULL was returned and
-  // it should be prevented to create a Java string from that value.
+  /* Even if Gconf reported no error it is possible that NULL was returned */
+  /* and it should be prevented to create a Java string from that value. */
   if (_value != NULL)
     {
       result = (*env)->NewStringUTF (env, _value);
