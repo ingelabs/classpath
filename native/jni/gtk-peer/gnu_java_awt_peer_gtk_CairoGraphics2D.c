@@ -263,6 +263,17 @@ Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoSetMatrix
 }
 
 JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoScale
+(JNIEnv *env __attribute__((unused)), jobject obj __attribute__((unused)),
+ jlong pointer, jdouble x, jdouble y)
+{
+  struct cairographics2d *gr = JLONG_TO_PTR(struct cairographics2d, pointer);
+  g_assert (gr != NULL);
+
+  cairo_scale (gr->cr, x, y);
+}
+
+JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoDrawGlyphVector
 (JNIEnv *env, jobject obj, jlong pointer,
  jobject font,
@@ -473,6 +484,28 @@ Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoSetDash
 }
 
 JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoSave
+(JNIEnv *env __attribute__((unused)), jobject obj __attribute__((unused)),
+ jlong pointer)
+{
+  struct cairographics2d *gr = JLONG_TO_PTR(struct cairographics2d, pointer);
+  g_assert (gr != NULL);
+
+  cairo_save (gr->cr);
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoRestore
+(JNIEnv *env __attribute__((unused)), jobject obj __attribute__((unused)),
+ jlong pointer)
+{
+  struct cairographics2d *gr = JLONG_TO_PTR(struct cairographics2d, pointer);
+  g_assert (gr != NULL);
+
+  cairo_restore (gr->cr);
+}
+
+JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoNewPath 
 (JNIEnv *env __attribute__((unused)), jobject obj __attribute__((unused)),
  jlong pointer)
@@ -558,6 +591,17 @@ Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoRectangle
   struct cairographics2d *gr = JLONG_TO_PTR(struct cairographics2d, pointer);
 
   cairo_rectangle (gr->cr, x, y, width, height);
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoArc 
+(JNIEnv *env __attribute__((unused)), jobject obj __attribute__((unused)),
+ jlong pointer, jdouble x, jdouble y, jdouble radius, jdouble angle1,
+ jdouble angle2)
+{
+  struct cairographics2d *gr = JLONG_TO_PTR(struct cairographics2d, pointer);
+
+  cairo_arc (gr->cr, x, y, radius, angle1, angle2);
 }
 
 JNIEXPORT void JNICALL

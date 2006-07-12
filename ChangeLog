@@ -1,3 +1,23 @@
+2006-07-12  Francis Kung  <fkung@redhat.com>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java: Organized imports.
+	(cairoArc): New native method.
+	(cairoRestore): New native method.
+	(cairoSave): New native method.
+	(cairoScale): New native method.
+	(createPath): New method to centralize code from draw and fill.
+	(draw): Modified to use createPath method.
+	(fill): Modified to use createPath method.
+	* include/gnu_java_awt_peer_gtk_CairoGraphics2D.h: Added 
+	function declarations.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoGraphics2D.c
+	(Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoScale): New 
+	method.
+	(Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoSave): New 
+	method.
+	(Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoArc): New 
+	method.
+	
 2006-07-12  Tom Tromey  <tromey@redhat.com>
 
 	PR libgcj/27271:
