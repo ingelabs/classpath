@@ -40,14 +40,18 @@ package javax.swing.text.html;
 
 import gnu.classpath.NotImplementedException;
 import gnu.javax.swing.text.html.CharacterAttributeTranslator;
+import gnu.javax.swing.text.html.parser.htmlAttributeSet;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Stack;
 import java.util.Vector;
 
 import javax.swing.JEditorPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.HyperlinkEvent.EventType;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -515,19 +519,23 @@ public class HTMLDocument extends DefaultStyledDocument
    */
   public class HTMLReader extends HTMLEditorKit.ParserCallback
   {    
-    /** Holds the current character attribute set **/
+    /**
+     * Holds the current character attribute set *
+     */
     protected MutableAttributeSet charAttr = new SimpleAttributeSet();
     
     protected Vector parseBuffer = new Vector();
     
-    /** A stack for character attribute sets **/
+    /** 
+     * A stack for character attribute sets *
+     */
     Stack charAttrStack = new Stack();
 
     /**
      * The parse stack. This stack holds HTML.Tag objects that reflect the
      * current position in the parsing process.
      */
-    private Stack parseStack = new Stack();
+    Stack parseStack = new Stack();
    
     /** A mapping between HTML.Tag objects and the actions that handle them **/
     HashMap tagToAction;
@@ -535,10 +543,31 @@ public class HTMLDocument extends DefaultStyledDocument
     /** Tells us whether we've received the '</html>' tag yet **/
     boolean endHTMLEncountered = false;
     
-    /** Variables related to the constructor with explicit insertTag **/
-    int popDepth, pushDepth, offset;
+    /** 
+     * Related to the constructor with explicit insertTag 
+     */
+    int popDepth;
+    
+    /**
+     * Related to the constructor with explicit insertTag
+     */    
+    int pushDepth;
+    
+    /** 
+     * Related to the constructor with explicit insertTag
+     */    
+    int offset;
+    
+    /**
+     * The tag (inclusve), after that the insertion should start.
+     */
     HTML.Tag insertTag;
-    boolean insertTagEncountered = false;
+    
+    /**
+     * This variable becomes true after the insert tag has been encountered.
+     */
+    boolean insertTagEncountered;
+
     
     /** A temporary variable that helps with the printing out of debug information **/
     boolean debug = false;
@@ -1139,8 +1168,21 @@ public class HTMLDocument extends DefaultStyledDocument
     }
     
     /**
-     * This method is called by the parser and should route the call to 
-     * the proper handler for the tag.
+     * Checks if the HTML tag should be inserted. The tags before insert tag (if
+     * specified) are not inserted. Also, the tags after the end of the html are
+     * not inserted.
+     * 
+     * @return true if the tag should be inserted, false otherwise.
+     */
+    private boolean shouldInsert()
+    {
+      return ! endHTMLEncountered
+             && (insertTagEncountered || insertTag == null);
+    }
+    
+    /**
+     * This method is called by the parser and should route the call to the
+     * proper handler for the tag.
      * 
      * @param t the HTML.Tag
      * @param a the attribute set
@@ -1148,13 +1190,15 @@ public class HTMLDocument extends DefaultStyledDocument
      */
     public void handleStartTag(HTML.Tag t, MutableAttributeSet a, int pos)
     {
-      // Don't call the Action if we've already seen </html>.
-      if (endHTMLEncountered)
-        return;
-        
-      TagAction action = (TagAction) tagToAction.get(t);
-      if (action != null)
-        action.start(t, a);      
+      if (t == insertTag)
+        insertTagEncountered = true;
+
+      if (shouldInsert())
+        {
+          TagAction action = (TagAction) tagToAction.get(t);
+          if (action != null)
+            action.start(t, a);
+        }
     }
     
     /**
@@ -1165,42 +1209,41 @@ public class HTMLDocument extends DefaultStyledDocument
      */
     public void handleComment(char[] data, int pos)
     {
-      // Don't call the Action if we've already seen </html>.
-      if (endHTMLEncountered)
-        return;
-      
-      TagAction action = (TagAction) tagToAction.get(HTML.Tag.COMMENT);
-      if (action != null)
+      if (shouldInsert())
         {
-          action.start(HTML.Tag.COMMENT, new SimpleAttributeSet());
-          action.end (HTML.Tag.COMMENT);
+          TagAction action = (TagAction) tagToAction.get(HTML.Tag.COMMENT);
+          if (action != null)
+            {
+              action.start(HTML.Tag.COMMENT, 
+                           htmlAttributeSet.EMPTY_HTML_ATTRIBUTE_SET);
+              action.end(HTML.Tag.COMMENT);
+            }
         }
     }
     
     /**
-     * This method is called by the parser and should route the call to 
-     * the proper handler for the tag.
+     * This method is called by the parser and should route the call to the
+     * proper handler for the tag.
      * 
      * @param t the HTML.Tag
      * @param pos the position at which the tag was encountered
      */
     public void handleEndTag(HTML.Tag t, int pos)
     {
-      // Don't call the Action if we've already seen </html>.
-      if (endHTMLEncountered)
-        return;
-      
-      // If this is the </html> tag we need to stop calling the Actions
-      if (t == HTML.Tag.HTML)
-        endHTMLEncountered = true;
-      
-      TagAction action = (TagAction) tagToAction.get(t);
-      if (action != null)
-        action.end(t);
+      if (shouldInsert())
+        {
+          // If this is the </html> tag we need to stop calling the Actions
+          if (t == HTML.Tag.HTML)
+            endHTMLEncountered = true;
+
+          TagAction action = (TagAction) tagToAction.get(t);
+          if (action != null)
+            action.end(t);
+        }
     }
     
     /**
-     * This is a callback from the parser that should be routed to the 
+     * This is a callback from the parser that should be routed to the
      * appropriate handler for the tag.
      * 
      * @param t the HTML.Tag that was encountered
@@ -1209,15 +1252,17 @@ public class HTMLDocument extends DefaultStyledDocument
      */
     public void handleSimpleTag(HTML.Tag t, MutableAttributeSet a, int pos)
     {
-      // Don't call the Action if we've already seen </html>.
-      if (endHTMLEncountered)
-        return;
-      
-      TagAction action = (TagAction) tagToAction.get (t);
-      if (action != null)
+      if (t == insertTag)
+        insertTagEncountered = true;
+
+      if (shouldInsert())
         {
-          action.start(t, a);
-          action.end(t);
+          TagAction action = (TagAction) tagToAction.get(t);
+          if (action != null)
+            {
+              action.start(t, a);
+              action.end(t);
+            }
         }
     }
     
@@ -1322,7 +1367,7 @@ public class HTMLDocument extends DefaultStyledDocument
         }
       // If the previous tag is content and the parent is p-implied, then
       // we must also close the p-implied.
-      else if (parseStack.peek() == HTML.Tag.IMPLIED)
+      else if (!parseStack.isEmpty() && parseStack.peek() == HTML.Tag.IMPLIED)
         {
           element = new DefaultStyledDocument.ElementSpec(null,
                                  DefaultStyledDocument.ElementSpec.EndTagType);
@@ -1481,7 +1526,61 @@ public class HTMLDocument extends DefaultStyledDocument
                                                 HTML.Tag insertTag)
   {
     return new HTMLReader(pos, popDepth, pushDepth, insertTag);
-  }  
+  }
+  
+  /**
+   * Gets the reader for the parser to use when inserting the HTML fragment into
+   * the document. Checks if the parser is present, sets the parent in the
+   * element stack and removes any actions for BODY (it can be only one body in
+   * a HTMLDocument).
+   * 
+   * @param pos - the starting position
+   * @param popDepth - the number of EndTagTypes to generate before inserting
+   * @param pushDepth - the number of StartTagTypes with a direction of
+   *          JoinNextDirection that should be generated before inserting, but
+   *          after the end tags have been generated.
+   * @param insertTag - the first tag to start inserting into document
+   * @param parent the element that will be the parent in the document. HTML
+   *          parsing includes checks for the parent, so it must be available.
+   * @return - the reader
+   * @throws IllegalStateException if the parsert is not set.
+   */
+  public HTMLEditorKit.ParserCallback getInsertingReader(int pos, int popDepth,
+                                                         int pushDepth,
+                                                         HTML.Tag insertTag,
+                                                         final Element parent)
+      throws IllegalStateException
+  {
+    if (parser == null)
+      throw new IllegalStateException("Parser has not been set");
+
+    HTMLReader reader = new HTMLReader(pos, popDepth, pushDepth, insertTag)
+    {
+      /**
+       * Ignore BODY.
+       */
+      public void handleStartTag(HTML.Tag t, MutableAttributeSet a, int pos)
+      {
+        if (t != HTML.Tag.BODY)
+          super.handleStartTag(t, a, pos);
+      }
+
+      /**
+       * Ignore BODY.
+       */
+      public void handleEndTag(HTML.Tag t, int pos)
+      {
+        if (t != HTML.Tag.BODY)
+          super.handleEndTag(t, pos);
+      }
+    };
+      
+    // Set the parent HTML tag.
+    reader.parseStack.push(parent.getAttributes().getAttribute(
+      StyleConstants.NameAttribute));
+
+    return reader;
+  }   
   
   /**
    * Gets the child element that contains the attribute with the value or null.
@@ -1490,8 +1589,8 @@ public class HTMLDocument extends DefaultStyledDocument
    * @param e - the element to begin search at
    * @param attribute - the desired attribute
    * @param value - the desired value
-   * @return the element found with the attribute and value specified or null
-   * if it is not found.
+   * @return the element found with the attribute and value specified or null if
+   *         it is not found.
    */
   public Element getElement(Element e, Object attribute, Object value)
   {
@@ -1516,16 +1615,17 @@ public class HTMLDocument extends DefaultStyledDocument
   }
   
   /**
-   * Returns the element that has the given id Attribute. If it is not found, 
-   * null is returned. This method works on an Attribute, not a character tag.
-   * This is not thread-safe.
+   * Returns the element that has the given id Attribute (for instance, &lt;p id
+   * ='my paragraph &gt;'). If it is not found, null is returned. The HTML tag,
+   * having this attribute, is not checked by this method and can be any. The
+   * method is not thread-safe.
    * 
-   * @param attrId - the Attribute id to look for
+   * @param attrId - the value of the attribute id to look for
    * @return the element that has the given id.
    */
   public Element getElement(String attrId)
   {
-    return getElement(getDefaultRootElement(), HTML.getAttributeKey(attrId),
+    return getElement(getDefaultRootElement(), HTML.Attribute.ID,
                       attrId);
   }
   
@@ -1542,22 +1642,30 @@ public class HTMLDocument extends DefaultStyledDocument
    * @throws IllegalStateException - if an HTMLEditorKit.Parser has not been set
    */
   public void setInnerHTML(Element elem, String htmlText) 
-    throws BadLocationException, IOException, NotImplementedException
+    throws BadLocationException, IOException
   {
     if (elem.isLeaf())
       throw new IllegalArgumentException("Element is a leaf");
-    if (parser == null)
-      throw new IllegalStateException("Parser has not been set");
-    // FIXME: Not implemented fully, use InsertHTML* in HTMLEditorKit?
-    System.out.println("setInnerHTML not implemented");
+    
+    int start = elem.getStartOffset();
+    int end = elem.getEndOffset();
+
+    HTMLEditorKit.ParserCallback reader = getInsertingReader(
+      end, 0, 0, HTML.Tag.BODY, elem);
+
+    // TODO charset
+    getParser().parse(new StringReader(htmlText), reader, true);
+    
+    // Remove the previous content
+    remove(start, end - start);
   }
   
   /**
-   * Replaces the given element in the parent with the string. When replacing
-   * a leaf, this will attempt to make sure there is a newline present if one is
-   * needed. This may result in an additional element being inserted.
-   * This will be seen as at least two events, n inserts followed by a remove.
-   * The HTMLEditorKit.Parser must be set.
+   * Replaces the given element in the parent with the string. When replacing a
+   * leaf, this will attempt to make sure there is a newline present if one is
+   * needed. This may result in an additional element being inserted. This will
+   * be seen as at least two events, n inserts followed by a remove. The
+   * HTMLEditorKit.Parser must be set.
    * 
    * @param elem - the branch element whose parent will be replaced
    * @param htmlText - the string to be parsed and assigned to elem
@@ -1565,18 +1673,25 @@ public class HTMLDocument extends DefaultStyledDocument
    * @throws IOException
    * @throws IllegalStateException - if parser is not set
    */
-  public void setOuterHTML(Element elem, String htmlText) 
-    throws BadLocationException, IOException, NotImplementedException
-    {
-      if (parser == null)
-        throw new IllegalStateException("Parser has not been set");
-      // FIXME: Not implemented fully, use InsertHTML* in HTMLEditorKit?
-      System.out.println("setOuterHTML not implemented");
-    }
+public void setOuterHTML(Element elem, String htmlText)
+      throws BadLocationException, IOException
+  {
+    // Remove the current element:
+    int start = elem.getStartOffset();
+    int end = elem.getEndOffset();
+
+    remove(start, end-start);
+       
+    HTMLEditorKit.ParserCallback reader = getInsertingReader(
+      start, 0, 0, HTML.Tag.BODY, elem);
+
+    // TODO charset
+    getParser().parse(new StringReader(htmlText), reader, true);
+  }
   
   /**
-   * Inserts the string before the start of the given element.
-   * The parser must be set.
+   * Inserts the string before the start of the given element. The parser must
+   * be set.
    * 
    * @param elem - the element to be the root for the new text.
    * @param htmlText - the string to be parsed and assigned to elem
@@ -1585,18 +1700,19 @@ public class HTMLDocument extends DefaultStyledDocument
    * @throws IllegalStateException - if parser has not been set
    */
   public void insertBeforeStart(Element elem, String htmlText)
-      throws BadLocationException, IOException, NotImplementedException
+      throws BadLocationException, IOException
   {
-    if (parser == null)
-      throw new IllegalStateException("Parser has not been set");
-    //  FIXME: Not implemented fully, use InsertHTML* in HTMLEditorKit?
-    System.out.println("insertBeforeStart not implemented");
+    HTMLEditorKit.ParserCallback reader = getInsertingReader(
+      elem.getStartOffset(), 0, 0, HTML.Tag.BODY, elem);
+
+    // TODO charset
+    getParser().parse(new StringReader(htmlText), reader, true);
   }
   
   /**
-   * Inserts the string at the end of the element. If elem's children
-   * are leaves, and the character at elem.getEndOffset() - 1 is a newline, 
-   * then it will be inserted before the newline. The parser must be set.
+   * Inserts the string at the end of the element. If elem's children are
+   * leaves, and the character at elem.getEndOffset() - 1 is a newline, then it
+   * will be inserted before the newline. The parser must be set.
    * 
    * @param elem - the element to be the root for the new text
    * @param htmlText - the text to insert
@@ -1607,10 +1723,12 @@ public class HTMLDocument extends DefaultStyledDocument
   public void insertBeforeEnd(Element elem, String htmlText)
       throws BadLocationException, IOException, NotImplementedException
   {
-    if (parser == null)
-      throw new IllegalStateException("Parser has not been set");
-    //  FIXME: Not implemented fully, use InsertHTML* in HTMLEditorKit?
-    System.out.println("insertBeforeEnd not implemented");
+    HTMLEditorKit.ParserCallback reader = getInsertingReader(
+      elem.getEndOffset(), 0, 0, HTML.Tag.BODY, elem);
+
+    // TODO charset
+    getParser().parse(new StringReader(htmlText), reader, true);
+
   }
   
   /**
@@ -1626,10 +1744,11 @@ public class HTMLDocument extends DefaultStyledDocument
   public void insertAfterEnd(Element elem, String htmlText)
       throws BadLocationException, IOException, NotImplementedException
   {
-    if (parser == null)
-      throw new IllegalStateException("Parser has not been set");
-    //  FIXME: Not implemented fully, use InsertHTML* in HTMLEditorKit?
-    System.out.println("insertAfterEnd not implemented");
+    HTMLEditorKit.ParserCallback reader = getInsertingReader(
+      elem.getEndOffset(), 0, 0, HTML.Tag.BODY, elem);
+
+    // TODO charset
+    getParser().parse(new StringReader(htmlText), reader, true);
   }
   
   /**
@@ -1645,9 +1764,10 @@ public class HTMLDocument extends DefaultStyledDocument
   public void insertAfterStart(Element elem, String htmlText)
       throws BadLocationException, IOException, NotImplementedException
   {
-    if (parser == null)
-      throw new IllegalStateException("Parser has not been set");
-    //  FIXME: Not implemented fully, use InsertHTML* in HTMLEditorKit?
-    System.out.println("insertAfterStart not implemented");
+    HTMLEditorKit.ParserCallback reader = getInsertingReader(
+      elem.getStartOffset(), 0, 0, HTML.Tag.BODY, elem);
+
+    // TODO charset
+    getParser().parse(new StringReader(htmlText), reader, true);
   }
 }

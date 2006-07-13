@@ -52,6 +52,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
+import javax.swing.text.Element;
+import javax.swing.text.html.HTMLDocument;
 
 /**
  * Parses and displays HTML content.
@@ -66,11 +68,14 @@ public class HtmlDemo extends JPanel
   JTextArea text = new JTextArea("<html><body><p>" +
     "123456789HR!<hr>987654321"+
     "123456789BR!<br>987654321"+
+    "<p id='insertHere'>Insertion target</p><p>"+
     "<font color=red>ma</font>"+
     "<sup>sup</sup>normal<sub>sub</sub>normal</p><p>Table:"+
     "<table><tr>a<td>b<td>c<tr>x<td>y<td>z</table></body></html>");  
   
   JPanel buttons;
+  
+  int n;
 
   public HtmlDemo()
   {
@@ -111,7 +116,131 @@ public class HtmlDemo extends JPanel
       });
     
     buttons.add(parse);
+    
+    JButton insertBeforeEnd = new JButton("before end");
+    insertBeforeEnd.addActionListener(new ActionListener()
+      {
+        public void actionPerformed(ActionEvent event)
+          {
+            HTMLDocument doc = (HTMLDocument) html.getDocument();
+            Element el = doc.getElement("insertHere");
+            System.out.println("Element found:"+el);
+            try
+              {
+                doc.insertBeforeEnd(el,"before end "+(n++));
+              }
+            catch (Exception e)
+              {
+                e.printStackTrace();
+              }
+          }
+      });
+    
+    JButton insertBeforeStart = new JButton("before start");
+    insertBeforeStart.addActionListener(new ActionListener()
+      {
+        public void actionPerformed(ActionEvent event)
+          {
+            HTMLDocument doc = (HTMLDocument) html.getDocument();
+            Element el = doc.getElement("insertHere");
+            System.out.println("Element found:"+el);
+            try
+              {
+                doc.insertBeforeStart(el,"before start "+(n++));
+              }
+            catch (Exception e)
+              {
+                e.printStackTrace();
+              }
+          }
+      });
+    
+    JButton insertAfterEnd = new JButton("after end");
+    insertAfterEnd.addActionListener(new ActionListener()
+      {
+        public void actionPerformed(ActionEvent event)
+          {
+            HTMLDocument doc = (HTMLDocument) html.getDocument();
+            Element el = doc.getElement("insertHere");
+            System.out.println("Element found:"+el);
+            try
+              {
+                doc.insertAfterEnd(el,"after end "+(n++));
+              }
+            catch (Exception e)
+              {
+                e.printStackTrace();
+              }
+          }
+      });
+    
+    JButton insertAfterStart = new JButton("after start");
+    insertAfterStart.addActionListener(new ActionListener()
+      {
+        public void actionPerformed(ActionEvent event)
+          {
+            HTMLDocument doc = (HTMLDocument) html.getDocument();
+            Element el = doc.getElement("insertHere");
+            System.out.println("Element found:"+el);
+            try
+              {
+                doc.insertAfterStart(el,"after start "+(n++));
+              }
+            catch (Exception e)
+              {
+                e.printStackTrace();
+              }
+          }
+      });
+    
 
+    JButton setInner = new JButton("inner");
+    setInner.addActionListener(new ActionListener()
+      {
+        public void actionPerformed(ActionEvent event)
+          {
+            HTMLDocument doc = (HTMLDocument) html.getDocument();
+            Element el = doc.getElement("insertHere");
+            System.out.println("Element found:"+el);
+            try
+              {
+                doc.setInnerHTML(el,"inner "+(n++));
+              }
+            catch (Exception e)
+              {
+                e.printStackTrace();
+              }
+          }
+      });
+    
+    JButton setOuter = new JButton("outer");
+    setOuter.addActionListener(new ActionListener()
+      {
+        public void actionPerformed(ActionEvent event)
+          {
+            HTMLDocument doc = (HTMLDocument) html.getDocument();
+            Element el = doc.getElement("insertHere");
+            System.out.println("Element found:"+el);
+            try
+              {
+                doc.setOuterHTML(el,"outer "+(n++));
+              }
+            catch (Exception e)
+              {
+                e.printStackTrace();
+              }
+          }
+      });
+    
+
+    buttons.add(insertBeforeStart);
+    buttons.add(insertAfterStart);    
+    buttons.add(insertBeforeEnd);
+    buttons.add(insertAfterEnd);
+
+    buttons.add(setInner);
+    buttons.add(setOuter);
+    
     add(center, BorderLayout.CENTER);
     add(buttons, BorderLayout.SOUTH);
   }
@@ -144,7 +273,7 @@ public class HtmlDemo extends JPanel
          
          JFrame frame = new JFrame();
          frame.getContentPane().add(demo);
-         frame.setSize(new Dimension(640, 480));
+         frame.setSize(new Dimension(700, 480));
          frame.setVisible(true);
        }
      });

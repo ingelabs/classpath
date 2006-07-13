@@ -1,3 +1,19 @@
+2006-07-13  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/text/html/HTMLDocument.java (HTMLReader.parseStack): 
+	Made package private. (HTMLReader.charAttr, HTMLReader.charAttrStack,
+	HTMLReader.insertTag, HTMLReader.insertTagEncountered, 
+	HTMLReader.pushDepth, HTMLReader.popDepth): Documented. 
+	(HRMLReader.blockClose): Mind that parser stack may be empty. 
+	(HTMLReader.handeComment, HTMLReader.handleStartTag,
+	HTMLReader.handleEndTag, HTMLReader.handleSimpleTag): Rewritten. 
+	(HTMLReader.shouldInsert): New method. (getElement(String)): 
+	Pass HTML.Atrribute.ID. (insertAfterEnd, insertBeforeEnd, 
+	insertAfterStart, insertBeforeStart, setInnerHTML, SetOuterHTML):
+	Implemented. (getInsertingReader): New method. 
+	* examples/gnu/classpath/examples/swing/HtmlDemo.java:
+	Added buttons to demonstrate the work of the insert actions.
+
 2006-07-13  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/image/SampleModel.java: API doc updates and additions,
