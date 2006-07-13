@@ -1,3 +1,29 @@
+2006-07-13  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Component.java
+	(DEFAULT_MAX_SIZE): New static constant.
+	(preferredSize): Return copy of the actual value computed
+	by new helper method.
+	(preferredSizeImpl): New helper method. Adds locking and
+	correct handling of cached value.
+	(minimumSize): Return copy of the actual value computed
+	by new helper method.
+	(minimumSizeImpl): New helper method. Adds locking and
+	correct handling of cached value.
+	(getMaximumSize):  Return copy of the actual value computed
+	by new helper method.
+	(maximumSizeImpl): New helper method. Adds locking and
+	correct handling of cached value.
+	(invalidate): Correct handling of cached layout information.
+	Added locking.
+	* java/awt/Container.java
+	(preferredSize): Minimized locking. Corrected handling of cached
+	values. Return copy of real value.
+	(minimumSize): Minimized locking. Corrected handling of cached
+	values. Return copy of real value.
+	(getMaximumSize): Minimized locking. Corrected handling of cached
+	values. Return copy of real value.
+	
 2006-07-13  Tania Bento  <tbento@redhat.com>
 
 	* gnu/java/awt/peer/ClasspathFontPeer.java

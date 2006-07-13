@@ -672,21 +672,25 @@ public class Container extends Component
    */
   public Dimension preferredSize()
   {
-    synchronized(treeLock)
-      {  
-        if(valid && prefSize != null)
-          return new Dimension(prefSize);
-        LayoutManager layout = getLayout();
-        if (layout != null)
+    Dimension size = prefSize;
+    // Try to return cached value if possible.
+    if (size == null || !(prefSizeSet || valid))
+      {
+        // Need to lock here.
+        synchronized (getTreeLock())
           {
-            Dimension layoutSize = layout.preferredLayoutSize(this);
-            if(valid)
-              prefSize = layoutSize;
-            return new Dimension(layoutSize);
+            LayoutManager l = layoutMgr;
+            if (l != null)
+              prefSize = l.preferredLayoutSize(this);
+            else
+              prefSize = super.preferredSizeImpl();
+            size = prefSize;
           }
-        else
-          return super.preferredSize ();
       }
+    if (size != null)
+      return new Dimension(size);
+    else
+      return size;
   }
 
   /**
@@ -708,17 +712,25 @@ public class Container extends Component
    */
   public Dimension minimumSize()
   {
-    if(valid && minSize != null)
-      return new Dimension(minSize);
-
-    LayoutManager layout = getLayout();
-    if (layout != null)
+    Dimension size = minSize;
+    // Try to return cached value if possible.
+    if (size == null || !(minSizeSet || valid))
       {
-        minSize = layout.minimumLayoutSize (this);
-        return minSize;
-      }    
+        // Need to lock here.
+        synchronized (getTreeLock())
+          {
+            LayoutManager l = layoutMgr;
+            if (l != null)
+              minSize = l.minimumLayoutSize(this);
+            else
+              minSize = super.minimumSizeImpl();
+            size = minSize;
+          }
+      }
+    if (size != null)
+      return new Dimension(size);
     else
-      return super.minimumSize ();
+      return size;
   }
 
   /**
@@ -728,18 +740,25 @@ public class Container extends Component
    */
   public Dimension getMaximumSize()
   {
-    if (valid && maxSize != null)
-      return new Dimension(maxSize);
-
-    LayoutManager layout = getLayout();
-    if (layout != null && layout instanceof LayoutManager2)
+    Dimension size = maxSize;
+    // Try to return cached value if possible.
+    if (size == null || !(maxSizeSet || valid))
       {
-        LayoutManager2 lm2 = (LayoutManager2) layout;
-        maxSize = lm2.maximumLayoutSize(this);
-        return maxSize;
+        // Need to lock here.
+        synchronized (getTreeLock())
+          {
+            LayoutManager l = layoutMgr;
+            if (l instanceof LayoutManager2)
+              maxSize = ((LayoutManager2) l).maximumLayoutSize(this);
+            else
+              maxSize = super.maximumSizeImpl();
+            size = maxSize;
+          }
       }
+    if (size != null)
+      return new Dimension(size);
     else
-      return super.getMaximumSize();
+      return size;
   }
 
   /**

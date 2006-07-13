@@ -214,6 +214,12 @@ public abstract class Component
    */
   static final Object treeLock = new String("AWT_TREE_LOCK");
 
+  /**
+   * The default maximum size.
+   */
+  private static final Dimension DEFAULT_MAX_SIZE 
+                             = new Dimension(Short.MAX_VALUE, Short.MAX_VALUE);
+
   // Serialized fields from the serialization spec.
 
   /**
@@ -1660,14 +1666,36 @@ public abstract class Component
    */
   public Dimension preferredSize()
   {
-    if (!prefSizeSet)
+    // Create a new Dimension object, so that the application doesn't mess
+    // with the actual values.
+    return new Dimension(preferredSizeImpl());
+  }
+
+  /**
+   * The actual calculation is pulled out of preferredSize() so that
+   * we can call it from Container.preferredSize() and avoid creating a
+   * new intermediate Dimension object.
+   * 
+   * @return the preferredSize of the component
+   */
+  Dimension preferredSizeImpl()
+  {
+    Dimension size = prefSize;
+    // Try to use a cached value.
+    if (size == null || !(valid || prefSizeSet))
       {
-        if (peer == null)
-          prefSize = minimumSize();
-        else
-          prefSize = peer.getPreferredSize();
+        // We need to lock here, because the calculation depends on the
+        // component structure not changing.
+        synchronized (getTreeLock())
+          {
+            ComponentPeer p = peer;
+            if (p != null)
+              size = peer.preferredSize();
+            else
+              size = minimumSizeImpl();
+          }
       }
-    return prefSize;
+    return size;
   }
 
   /**
@@ -1724,10 +1752,36 @@ public abstract class Component
    */
   public Dimension minimumSize()
   {
-    if (minSize == null)
-      minSize = (peer != null ? peer.getMinimumSize()
-                 : new Dimension(width, height));
-    return minSize;
+    // Create a new Dimension object, so that the application doesn't mess
+    // with the actual values.
+    return new Dimension(minimumSizeImpl());
+  }
+
+  /**
+   * The actual calculation is pulled out of minimumSize() so that
+   * we can call it from Container.preferredSize() and
+   * Component.preferredSizeImpl and avoid creating a
+   * new intermediate Dimension object.
+   * 
+   * @return the minimum size of the component
+   */
+  Dimension minimumSizeImpl()
+  {
+    Dimension size = minSize;
+    if (size == null || !(valid || minSizeSet))
+      {
+        // We need to lock here, because the calculation depends on the
+        // component structure not changing.
+        synchronized (getTreeLock())
+          {
+            ComponentPeer p = peer;
+            if (p != null)
+              size = peer.minimumSize();
+            else
+              size = size();
+          }
+      }
+    return size;
   }
 
   /**
@@ -1741,10 +1795,24 @@ public abstract class Component
    */
   public Dimension getMaximumSize()
   {
+    return new Dimension(maximumSizeImpl());
+  }
+
+  /**
+   * This is pulled out from getMaximumSize(), so that we can access it
+   * from Container.getMaximumSize() without creating an additional
+   * intermediate Dimension object.
+   *
+   * @return the maximum size of the component
+   */
+  Dimension maximumSizeImpl()
+  {
+    Dimension size;
     if (maxSizeSet)
-      return maxSize;
+      size = maxSize;
     else
-      return new Dimension(Short.MAX_VALUE, Short.MAX_VALUE);
+      size = DEFAULT_MAX_SIZE;
+    return size;
   }
 
   /**
@@ -1848,11 +1916,25 @@ public abstract class Component
    */
   public void invalidate()
   {
-    valid = false;
-    prefSize = null;
-    minSize = null;
-    if (parent != null && parent.isValid())
-      parent.invalidate();
+    // Need to lock here, to avoid races and other ugly stuff when doing
+    // layout or structure changes in other threads.
+    synchronized (getTreeLock())
+      {
+        // Invalidate.
+        valid = false;
+
+        // Throw away cached layout information.
+        if (! minSizeSet)
+          minSize = null;
+        if (! prefSizeSet)
+          prefSize = null;
+        if (! maxSizeSet)
+          maxSize = null;
+
+        // Also invalidate the parent, if it hasn't already been invalidated.
+        if (parent != null && parent.isValid())
+          parent.invalidate();
+      }
   }
 
   /**
