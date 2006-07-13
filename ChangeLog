@@ -1,3 +1,8 @@
+2006-07-13  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/image/SampleModel.java: API doc updates and additions,
+	* java/awt/image/SinglePixelPackedSampleModel.java: Likewise.
+
 2006-07-12  Sven de Marothy  <sven@physto.se>
 
 	* javax/swing/JFileChooser.java:

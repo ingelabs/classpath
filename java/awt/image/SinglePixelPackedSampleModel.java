@@ -1,4 +1,4 @@
-/* Copyright (C) 2000, 2002, 2003, 2004  Free Software Foundation
+/* Copyright (C) 2000, 2002, 2003, 2004, 2006,  Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -103,6 +103,8 @@ public class SinglePixelPackedSampleModel extends SampleModel
    * Creates a DataBuffer for holding pixel data in the format and
    * layout described by this SampleModel. The returned buffer will
    * consist of one single bank.
+   * 
+   * @return The data buffer.
    */
   public DataBuffer createDataBuffer()
   {
@@ -116,12 +118,27 @@ public class SinglePixelPackedSampleModel extends SampleModel
     return Buffers.createBuffer(getDataType(), size);
   }
 
-
+  /**
+   * Returns an array containing the size (in bits) for each band accessed by
+   * the <code>SampleModel</code>.
+   * 
+   * @return An array.
+   * 
+   * @see #getSampleSize(int)
+   */
   public int[] getSampleSize()
   {
     return sampleSize;
   }
   
+  /**
+   * Returns the size (in bits) of the samples for the specified band.
+   * 
+   * @param band  the band (in the range <code>0</code> to 
+   *     <code>getNumBands() - 1</code>).
+   *     
+   * @return The sample size (in bits).
+   */
   public int getSampleSize(int band)
   {
     return sampleSize[band];
@@ -229,7 +246,22 @@ public class SinglePixelPackedSampleModel extends SampleModel
     return obj;
   }
   
-
+  /**
+   * Returns an array containing the samples for the pixel at (x, y) in the
+   * specified data buffer.  If <code>iArray</code> is not <code>null</code>,
+   * it will be populated with the sample values and returned as the result of
+   * this function (this avoids allocating a new array instance).
+   * 
+   * @param x  the x-coordinate of the pixel.
+   * @param y  the y-coordinate of the pixel.
+   * @param iArray  an array to populate with the sample values and return as 
+   *     the result (if <code>null</code>, a new array will be allocated).
+   * @param data  the data buffer (<code>null</code> not permitted).
+   * 
+   * @return The pixel sample values.
+   * 
+   * @throws NullPointerException if <code>data</code> is <code>null</code>.
+   */
   public int[] getPixel(int x, int y, int[] iArray, DataBuffer data)
   {
     int offset = scanlineStride*y + x;
@@ -242,6 +274,27 @@ public class SinglePixelPackedSampleModel extends SampleModel
     return iArray;
   }
 
+  /**
+   * Returns an array containing the samples for the pixels in the region 
+   * specified by (x, y, w, h) in the specified data buffer.  The array is
+   * ordered by pixels (that is, all the samples for the first pixel are 
+   * grouped together, followed by all the samples for the second pixel, and so
+   * on).  If <code>iArray</code> is not <code>null</code>, it will be 
+   * populated with the sample values and returned as the result of this 
+   * function (this avoids allocating a new array instance).
+   * 
+   * @param x  the x-coordinate of the top-left pixel.
+   * @param y  the y-coordinate of the top-left pixel.
+   * @param w  the width of the region of pixels.
+   * @param h  the height of the region of pixels.
+   * @param iArray  an array to populate with the sample values and return as 
+   *     the result (if <code>null</code>, a new array will be allocated).
+   * @param data  the data buffer (<code>null</code> not permitted).
+   * 
+   * @return The pixel sample values.
+   * 
+   * @throws NullPointerException if <code>data</code> is <code>null</code>.
+   */
   public int[] getPixels(int x, int y, int w, int h, int[] iArray,
 			 DataBuffer data)
   {
@@ -262,6 +315,20 @@ public class SinglePixelPackedSampleModel extends SampleModel
     return iArray;	
   }
 
+  /**
+   * Returns the sample value for the pixel at (x, y) in the specified data 
+   * buffer.
+   * 
+   * @param x  the x-coordinate of the pixel.
+   * @param y  the y-coordinate of the pixel.
+   * @param b  the band (in the range <code>0</code> to 
+   *     <code>getNumBands() - 1</code>).
+   * @param data  the data buffer (<code>null</code> not permitted).
+   * 
+   * @return The sample value.
+   * 
+   * @throws NullPointerException if <code>data</code> is <code>null</code>.
+   */
   public int getSample(int x, int y, int b, DataBuffer data)
   {
     int offset = scanlineStride*y + x;
@@ -373,6 +440,18 @@ public class SinglePixelPackedSampleModel extends SampleModel
       }
     }
 
+  /**
+   * Sets the samples for the pixel at (x, y) in the specified data buffer to
+   * the specified values. 
+   * 
+   * @param x  the x-coordinate of the pixel.
+   * @param y  the y-coordinate of the pixel.
+   * @param iArray  the sample values (<code>null</code> not permitted).
+   * @param data  the data buffer (<code>null</code> not permitted).
+   * 
+   * @throws NullPointerException if either <code>iArray</code> or 
+   *     <code>data</code> is <code>null</code>.
+   */
   public void setPixel(int x, int y, int[] iArray, DataBuffer data)
   {
     int offset = scanlineStride*y + x;
@@ -416,7 +495,19 @@ public class SinglePixelPackedSampleModel extends SampleModel
     }
   }
   
-  
+  /**
+   * Sets the sample value for a band for the pixel at (x, y) in the 
+   * specified data buffer. 
+   * 
+   * @param x  the x-coordinate of the pixel.
+   * @param y  the y-coordinate of the pixel.
+   * @param b  the band (in the range <code>0</code> to 
+   *     <code>getNumBands() - 1</code>).
+   * @param s  the sample value.
+   * @param data  the data buffer (<code>null</code> not permitted).
+   * 
+   * @throws NullPointerException if <code>data</code> is <code>null</code>.
+   */
   public void setSample(int x, int y, int b, int s, DataBuffer data)
   {
     int offset = scanlineStride*y + x;
