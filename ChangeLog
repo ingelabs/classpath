@@ -1,3 +1,11 @@
+2006-07-14  Mario Torre  <neugens@limasoftware.net>
+
+	* gnu/java/security/OID.java (OID): Private Constructor removed as
+	it is not needed anymore.
+	(clone): Fixed. Now uses super.clone instead of the private
+	constructor as per specification of clone method.
+	(serialVersionUID): added new field to allow serialization.
+
 2006-07-13  Sven de Marothy  <sven@physto.se>
 
 	* gnu/javax/imageio/gif/GIFImageReader.java
