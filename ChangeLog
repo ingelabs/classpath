@@ -1,3 +1,7 @@
+2006-07-13  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/image/BandedSampleModel.java: API doc updates.
+
 2006-07-13  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/text/html/HTMLDocument.java (HTMLReader.parseStack): 

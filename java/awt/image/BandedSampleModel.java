@@ -1,4 +1,4 @@
-/* Copyright (C) 2004, 2005, Free Software Foundation
+/* Copyright (C) 2004, 2005, 2006, Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -61,17 +61,45 @@ public final class BandedSampleModel extends ComponentSampleModel
     return result;
   }
 
+  /**
+   * Creates a new <code>BandedSampleModel</code>.
+   * 
+   * @param dataType  the data buffer type.
+   * @param w  the width (in pixels).
+   * @param h  the height (in pixels).
+   * @param numBands  the number of bands.
+   */
   public BandedSampleModel(int dataType, int w, int h, int numBands)
   {
     this(dataType, w, h, w, createBankArray(numBands), new int[numBands]);
   }
 
+  /**
+   * Creates a new <code>BandedSampleModel</code>.
+   * 
+   * @param dataType  the data buffer type.
+   * @param w  the width (in pixels).
+   * @param h  the height (in pixels).
+   * @param scanlineStride  the number of data elements from a pixel in one 
+   *     row to the corresponding pixel in the next row.
+   * @param bankIndices  the bank indices.
+   * @param bandOffsets  the band offsets.
+   */
   public BandedSampleModel(int dataType, int w, int h, int scanlineStride,
 			   int[] bankIndices, int[] bandOffsets)
   {
     super(dataType, w, h, 1, scanlineStride, bankIndices, bandOffsets);
   }
 
+  /**
+   * Creates a new <code>SampleModel</code> that is compatible with this
+   * model and has the specified width and height.
+   * 
+   * @param w  the width (in pixels).
+   * @param h  the height (in pixels).
+   * 
+   * @return The new sample model.
+   */
   public SampleModel createCompatibleSampleModel(int w, int h)
   {
     // NOTE: blackdown 1.4.1 sets all offsets to 0.  Sun's 1.4.2 docs
@@ -195,6 +223,22 @@ public final class BandedSampleModel extends ComponentSampleModel
     }
   }
 
+  /**
+   * Returns all the samples for the pixel at location <code>(x, y)</code>
+   * stored in the specified data buffer.
+   * 
+   * @param x  the x-coordinate.
+   * @param y  the y-coordinate.
+   * @param iArray  an array that will be populated with the sample values and
+   *   returned as the result.  The size of this array should be equal to the 
+   *   number of bands in the model.  If the array is <code>null</code>, a new
+   *   array is created.
+   * @param data  the data buffer (<code>null</code> not permitted).
+   * 
+   * @return The samples for the specified pixel.
+   * 
+   * @see #setPixel(int, int, int[], DataBuffer)
+   */
   public int[] getPixel(int x, int y, int[] iArray, DataBuffer data)
   {
     if (iArray == null) iArray = new int[numBands];
@@ -247,18 +291,64 @@ public final class BandedSampleModel extends ComponentSampleModel
     return iArray;	
   }
 
+  /**
+   * Returns a sample value for the pixel at (x, y) in the specified data 
+   * buffer.
+   * 
+   * @param x  the x-coordinate of the pixel.
+   * @param y  the y-coordinate of the pixel.
+   * @param b  the band (in the range <code>0</code> to 
+   *     <code>getNumBands() - 1</code>).
+   * @param data  the data buffer (<code>null</code> not permitted).
+   * 
+   * @return The sample value.
+   * 
+   * @throws NullPointerException if <code>data</code> is <code>null</code>.
+   */
   public int getSample(int x, int y, int b, DataBuffer data)
   {
     int offset = bandOffsets[b] + y * scanlineStride + x;
     return data.getElem(bankIndices[b], offset);
   }
   
+  /**
+   * Returns a sample value for the pixel at (x, y) in the specified data 
+   * buffer.
+   * 
+   * @param x  the x-coordinate of the pixel.
+   * @param y  the y-coordinate of the pixel.
+   * @param b  the band (in the range <code>0</code> to 
+   *     <code>getNumBands() - 1</code>).
+   * @param data  the data buffer (<code>null</code> not permitted).
+   * 
+   * @return The sample value.
+   * 
+   * @throws NullPointerException if <code>data</code> is <code>null</code>.
+   * 
+   * @see #getSample(int, int, int, DataBuffer)
+   */
   public float getSampleFloat(int x, int y, int b, DataBuffer data)
   {
     int offset = bandOffsets[b] + y * scanlineStride + x;
     return data.getElemFloat(bankIndices[b], offset);
   }
   
+  /**
+   * Returns the sample value for the pixel at (x, y) in the specified data 
+   * buffer.
+   * 
+   * @param x  the x-coordinate of the pixel.
+   * @param y  the y-coordinate of the pixel.
+   * @param b  the band (in the range <code>0</code> to 
+   *     <code>getNumBands() - 1</code>).
+   * @param data  the data buffer (<code>null</code> not permitted).
+   * 
+   * @return The sample value.
+   * 
+   * @throws NullPointerException if <code>data</code> is <code>null</code>.
+   * 
+   * @see #getSample(int, int, int, DataBuffer)
+   */
   public double getSampleDouble(int x, int y, int b, DataBuffer data)
   {
     int offset = bandOffsets[b] + y * scanlineStride + x;
@@ -303,7 +393,6 @@ public final class BandedSampleModel extends ComponentSampleModel
       }
     return iArray;	
   }
-
 
   /**
    * Set the pixel at x, y to the value in the first element of the primitive
@@ -401,6 +490,18 @@ public final class BandedSampleModel extends ComponentSampleModel
       }
     }
 
+  /**
+   * Sets the samples for the pixel at (x, y) in the specified data buffer to
+   * the specified values. 
+   * 
+   * @param x  the x-coordinate of the pixel.
+   * @param y  the y-coordinate of the pixel.
+   * @param iArray  the sample values (<code>null</code> not permitted).
+   * @param data  the data buffer (<code>null</code> not permitted).
+   * 
+   * @throws NullPointerException if either <code>iArray</code> or 
+   *     <code>data</code> is <code>null</code>.
+   */
   public void setPixel(int x, int y, int[] iArray, DataBuffer data)
   {
     for (int b=0; b < numBands; b++)
@@ -408,6 +509,23 @@ public final class BandedSampleModel extends ComponentSampleModel
 		   iArray[b]);
   }
 
+  /**
+   * Sets the sample values for the pixels in the region specified by 
+   * (x, y, w, h) in the specified data buffer.  The array is
+   * ordered by pixels (that is, all the samples for the first pixel are 
+   * grouped together, followed by all the samples for the second pixel, and so
+   * on). 
+   *  
+   * @param x  the x-coordinate of the top-left pixel.
+   * @param y  the y-coordinate of the top-left pixel.
+   * @param w  the width of the region of pixels.
+   * @param h  the height of the region of pixels.
+   * @param iArray  the pixel sample values (<code>null</code> not permitted).
+   * @param data  the data buffer (<code>null</code> not permitted).
+   * 
+   * @throws NullPointerException if either <code>iArray</code> or 
+   *     <code>data</code> is <code>null</code>.
+   */
   public void setPixels(int x, int y, int w, int h, int[] iArray,
 			DataBuffer data)
   {
@@ -425,21 +543,77 @@ public final class BandedSampleModel extends ComponentSampleModel
       }
   }
 
+  /**
+   * Sets the sample value for band <code>b</code> of the pixel at location
+   * <code>(x, y)</code> in the specified data buffer.
+   * 
+   * @param x  the x-coordinate.
+   * @param y  the y-coordinate.
+   * @param b  the band index.
+   * @param s  the sample value.
+   * @param data  the data buffer (<code>null</code> not permitted).
+   * 
+   * @see #getSample(int, int, int, DataBuffer)
+   */
   public void setSample(int x, int y, int b, int s, DataBuffer data)
   {
     data.setElem(bankIndices[b], bandOffsets[b] + y * scanlineStride + x, s);
   }
   
+  /**
+   * Sets the sample value for a band for the pixel at (x, y) in the 
+   * specified data buffer. 
+   * 
+   * @param x  the x-coordinate of the pixel.
+   * @param y  the y-coordinate of the pixel.
+   * @param b  the band (in the range <code>0</code> to 
+   *     <code>getNumBands() - 1</code>).
+   * @param s  the sample value.
+   * @param data  the data buffer (<code>null</code> not permitted).
+   * 
+   * @throws NullPointerException if <code>data</code> is <code>null</code>.
+   */
   public void setSample(int x, int y, int b, float s, DataBuffer data)
   {
-    data.setElemFloat(bankIndices[b], bandOffsets[b] + y * scanlineStride + x, s);
+    data.setElemFloat(bankIndices[b], bandOffsets[b] + y * scanlineStride + x, 
+                      s);
   }
   
+  /**
+   * Sets the sample value for a band for the pixel at (x, y) in the 
+   * specified data buffer. 
+   * 
+   * @param x  the x-coordinate of the pixel.
+   * @param y  the y-coordinate of the pixel.
+   * @param b  the band (in the range <code>0</code> to 
+   *     <code>getNumBands() - 1</code>).
+   * @param s  the sample value.
+   * @param data  the data buffer (<code>null</code> not permitted).
+   * 
+   * @throws NullPointerException if <code>data</code> is <code>null</code>.
+   */
   public void setSample(int x, int y, int b, double s, DataBuffer data)
   {
-    data.setElemDouble(bankIndices[b], bandOffsets[b] + y * scanlineStride + x, s);
+    data.setElemDouble(bankIndices[b], bandOffsets[b] + y * scanlineStride + x,
+                       s);
   }
   
+  /**
+   * Sets the sample values for one band for the pixels in the region 
+   * specified by (x, y, w, h) in the specified data buffer. 
+   * 
+   * @param x  the x-coordinate of the top-left pixel.
+   * @param y  the y-coordinate of the top-left pixel.
+   * @param w  the width of the region of pixels.
+   * @param h  the height of the region of pixels.
+   * @param b  the band (in the range <code>0</code> to 
+   *     </code>getNumBands() - 1</code>).
+   * @param iArray  the sample values (<code>null</code> not permitted).
+   * @param data  the data buffer (<code>null</code> not permitted).
+   * 
+   * @throws NullPointerException if either <code>iArray</code> or 
+   *     <code>data</code> is <code>null</code>.
+   */
   public void setSamples(int x, int y, int w, int h, int b, int[] iArray,
 			 DataBuffer data)
   {
@@ -539,7 +713,8 @@ public final class BandedSampleModel extends ComponentSampleModel
     result.append("scanlineStride=").append(scanlineStride);
     for(int i=0; i < bitMasks.length; i+=1)
     {
-      result.append(", mask[").append(i).append("]=0x").append(Integer.toHexString(bitMasks[i]));
+      result.append(", mask[").append(i).append("]=0x").append(
+          Integer.toHexString(bitMasks[i]));
     }
     
     result.append("]");
