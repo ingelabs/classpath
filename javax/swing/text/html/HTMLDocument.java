@@ -1275,7 +1275,6 @@ public class HTMLDocument extends DefaultStyledDocument
      * @since 1.3
      */
     public void handleEndOfLineString(String eol)
-      throws NotImplementedException
     {
       // FIXME: Implement.
       print ("HTMLReader.handleEndOfLineString not implemented yet");
@@ -1721,7 +1720,7 @@ public void setOuterHTML(Element elem, String htmlText)
    * @throws IllegalStateException - if parser is not set
    */
   public void insertBeforeEnd(Element elem, String htmlText)
-      throws BadLocationException, IOException, NotImplementedException
+      throws BadLocationException, IOException
   {
     HTMLEditorKit.ParserCallback reader = getInsertingReader(
       elem.getEndOffset(), 0, 0, HTML.Tag.BODY, elem);
@@ -1742,7 +1741,7 @@ public void setOuterHTML(Element elem, String htmlText)
    * @throws IllegalStateException - if parser is not set
    */
   public void insertAfterEnd(Element elem, String htmlText)
-      throws BadLocationException, IOException, NotImplementedException
+      throws BadLocationException, IOException
   {
     HTMLEditorKit.ParserCallback reader = getInsertingReader(
       elem.getEndOffset(), 0, 0, HTML.Tag.BODY, elem);
@@ -1762,7 +1761,7 @@ public void setOuterHTML(Element elem, String htmlText)
    * @throws IllegalStateException - if parser is not set
    */
   public void insertAfterStart(Element elem, String htmlText)
-      throws BadLocationException, IOException, NotImplementedException
+      throws BadLocationException, IOException
   {
     HTMLEditorKit.ParserCallback reader = getInsertingReader(
       elem.getStartOffset(), 0, 0, HTML.Tag.BODY, elem);

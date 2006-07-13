@@ -1,3 +1,8 @@
+2006-07-13  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/text/html/HTMLDocument.java (insertAfterEnd,
+	insertAfterStart, insertBeforeEnd):  Removed stub markings.
+
 2006-07-13  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/image/BandedSampleModel.java: API doc updates and source 
@@ -19,7 +24,7 @@
 	HTMLReader.handleEndTag, HTMLReader.handleSimpleTag): Rewritten. 
 	(HTMLReader.shouldInsert): New method. (getElement(String)): 
 	Pass HTML.Atrribute.ID. (insertAfterEnd, insertBeforeEnd, 
-	insertAfterStart, insertBeforeStart, setInnerHTML, SetOuterHTML):
+	insertAfterStart, insertBeforeStart, setInnerHTML, setOuterHTML):
 	Implemented. (getInsertingReader): New method. 
 	* examples/gnu/classpath/examples/swing/HtmlDemo.java:
 	Added buttons to demonstrate the work of the insert actions.
