@@ -1,3 +1,10 @@
+2006-07-13  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/image/SinglePixelPackedSampleModel.java
+	(SinglePixelPackageSampleModel(int, int, int, int, int[])): Convert
+	mask correctly as an unsigned integer,
+	(equals): New method override.
+
 2006-07-13  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/text/html/HTMLDocument.java (insertAfterEnd,

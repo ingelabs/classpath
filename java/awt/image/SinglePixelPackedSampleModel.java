@@ -36,6 +36,8 @@ exception statement from your version. */
 
 package java.awt.image;
 
+import java.util.Arrays;
+
 import gnu.java.awt.BitMaskExtent;
 import gnu.java.awt.Buffers;
 
@@ -104,9 +106,11 @@ public class SinglePixelPackedSampleModel extends SampleModel
     BitMaskExtent extent = new BitMaskExtent();
     for (int b = 0; b < numBands; b++)
       {
-	extent.setMask(bitMasks[b]);
-	sampleSize[b] = extent.bitWidth;
-	bitOffsets[b] = extent.leastSignificantBit;
+        // the mask is an unsigned integer
+        long mask = bitMasks[b] & 0xFFFFFFFFL;
+        extent.setMask(mask);
+        sampleSize[b] = extent.bitWidth;
+        bitOffsets[b] = extent.leastSignificantBit;
       }
   }
 
@@ -563,6 +567,55 @@ public class SinglePixelPackedSampleModel extends SampleModel
     samples &= ~bitMask;
     samples |= (s << bitOffsets[b]) & bitMask;
     data.setElem(offset, samples);
+  }
+  
+  /**
+   * Tests this sample model for equality with an arbitrary object.  This 
+   * method returns <code>true</code> if and only if:
+   * <ul>
+   *   <li><code>obj</code> is not <code>null</code>;
+   *   <li><code>obj</code> is an instance of 
+   *       <code>SinglePixelPackedSampleModel</code>;
+   *   <li>both models have the same:
+   *     <ul>
+   *       <li><code>dataType</code>;
+   *       <li><code>width</code>;
+   *       <li><code>height</code>;
+   *       <li><code>numBands</code>;
+   *       <li><code>scanlineStride</code>;
+   *       <li><code>bitMasks</code>;
+   *       <li><code>bitOffsets</code>.
+   *     </ul>
+   *   </li>
+   * </ul>
+   * 
+   * @param obj  the object (<code>null</code> permitted)
+   * 
+   * @return <code>true</code> if this model is equal to <code>obj</code>, and
+   *     <code>false</code> otherwise.
+   */
+  public boolean equals(Object obj) 
+  {
+    if (this == obj) 
+      return true;
+    if (! (obj instanceof SinglePixelPackedSampleModel)) 
+      return false;
+    SinglePixelPackedSampleModel that = (SinglePixelPackedSampleModel) obj;
+    if (this.dataType != that.dataType)
+      return false;
+    if (this.width != that.width)
+      return false;
+    if (this.height != that.height)
+      return false;
+    if (this.numBands != that.numBands)
+      return false;
+    if (this.scanlineStride != that.scanlineStride)
+      return false;
+    if (!Arrays.equals(this.bitMasks, that.bitMasks))
+      return false;
+    if (!Arrays.equals(this.bitOffsets, that.bitOffsets)) 
+      return false;
+    return true;
   }
   
   /**
