@@ -37,9 +37,8 @@ exception statement from your version. */
 package java.awt.image;
 
 /**
- * MultiPixelPackedSampleModel provides a single band model that supports
- * multiple pixels in a single unit.  Pixels have 2^n bits and 2^k pixels fit
- * per data element.
+ * A sample model that reads each sample value from a separate band in the
+ * {@link DataBuffer}.
  *
  * @author Jerry Quinn (jlquinn@optonline.net)
  */
@@ -108,12 +107,12 @@ public final class BandedSampleModel extends ComponentSampleModel
     // Compress offsets so minimum is 0, others w*scanlineStride
     int[] newoffsets = new int[bandOffsets.length];
     int[] order = new int[bandOffsets.length];
-    for (int i=0; i < bandOffsets.length; i++)
+    for (int i = 0; i < bandOffsets.length; i++)
       order[i] = i;
     // FIXME: This is N^2, but not a big issue, unless there's a lot of
     // bands...
-    for (int i=0; i < bandOffsets.length; i++)
-      for (int j=i+1; j < bandOffsets.length; i++)
+    for (int i = 0; i < bandOffsets.length; i++)
+      for (int j = i + 1; j < bandOffsets.length; i++)
 	if (bankIndices[order[i]] > bankIndices[order[j]]
 	    || (bankIndices[order[i]] == bankIndices[order[j]]
 		&& bandOffsets[order[i]] > bandOffsets[order[j]]))
@@ -122,7 +121,7 @@ public final class BandedSampleModel extends ComponentSampleModel
 	  }
     int bank = 0;
     int offset = 0;
-    for (int i=0; i < bandOffsets.length; i++)
+    for (int i = 0; i < bandOffsets.length; i++)
       {
 	if (bankIndices[order[i]] != bank)
 	  {
@@ -133,7 +132,8 @@ public final class BandedSampleModel extends ComponentSampleModel
 	offset += w * scanlineStride;
       }
     
-    return new BandedSampleModel(dataType, w, h, scanlineStride, bankIndices, newoffsets);
+    return new BandedSampleModel(dataType, w, h, scanlineStride, bankIndices, 
+                                 newoffsets);
   }
 
 
@@ -145,7 +145,7 @@ public final class BandedSampleModel extends ComponentSampleModel
 			      +" many bands");
     int[] newoff = new int[bands.length];
     int[] newbanks = new int[bands.length];
-    for (int i=0; i < bands.length; i++)
+    for (int i = 0; i < bands.length; i++)
       {
 	int b = bands[i];
 	newoff[i] = bandOffsets[b];
@@ -162,57 +162,61 @@ public final class BandedSampleModel extends ComponentSampleModel
    * Extracts the pixel at x, y from data and stores samples into the array
    * obj.  If obj is null, a new array of getTransferType() is created.
    *
-   * @param x The x-coordinate of the pixel rectangle to store in <code>obj</code>.
-   * @param y The y-coordinate of the pixel rectangle to store in <code>obj</code>.
-   * @param obj The primitive array to store the pixels into or null to force creation.
+   * @param x The x-coordinate of the pixel rectangle to store in 
+   *     <code>obj</code>.
+   * @param y The y-coordinate of the pixel rectangle to store in 
+   *     <code>obj</code>.
+   * @param obj The primitive array to store the pixels into or null to force 
+   *     creation.
    * @param data The DataBuffer that is the source of the pixel data.
    * @return The primitive array containing the pixel data.
-   * @see java.awt.image.SampleModel#getDataElements(int, int, java.lang.Object, java.awt.image.DataBuffer)
+   * @see java.awt.image.SampleModel#getDataElements(int, int, 
+   *     java.lang.Object, java.awt.image.DataBuffer)
    */
-  public Object getDataElements(int x, int y, Object obj,
-				DataBuffer data)
+  public Object getDataElements(int x, int y, Object obj, DataBuffer data)
   {
     int pixel = getSample(x, y, 0, data);
     switch (getTransferType())
     {
     case DataBuffer.TYPE_BYTE:
       {
-	byte[] b = (byte[])obj;
+	byte[] b = (byte[]) obj;
 	if (b == null) b = new byte[numBands];
-	for (int i=0; i < numBands; i++)
+	for (int i = 0; i < numBands; i++)
 	  b[i] = (byte)getSample(x, y, i, data);
 	return b;
       }
     case DataBuffer.TYPE_SHORT:
     case DataBuffer.TYPE_USHORT:
       {
-	short[] b = (short[])obj;
+	short[] b = (short[]) obj;
 	if (b == null) b = new short[numBands];
-	for (int i=0; i < numBands; i++)
+	for (int i = 0; i < numBands; i++)
 	  b[i] = (short)getSample(x, y, i, data);
 	return b;
       }
     case DataBuffer.TYPE_INT:
       {
-	int[] b = (int[])obj;
+	int[] b = (int[]) obj;
 	if (b == null) b = new int[numBands];
-	for (int i=0; i < numBands; i++)
+	for (int i = 0; i < numBands; i++)
 	  b[i] = getSample(x, y, i, data);
 	return b;
       }
     case DataBuffer.TYPE_FLOAT:
       {
-	float[] b = (float[])obj;
+	float[] b = (float[]) obj;
 	if (b == null) b = new float[numBands];
-	for (int i=0; i < numBands; i++)
+	for (int i = 0; i < numBands; i++)
 	  b[i] = getSampleFloat(x, y, i, data);
 	return b;
       }
     case DataBuffer.TYPE_DOUBLE:
       {
-	double[] b = (double[])obj;
-	if (b == null) b = new double[numBands];
-	for (int i=0; i < numBands; i++)
+	double[] b = (double[]) obj;
+	if (b == null) 
+          b = new double[numBands];
+	for (int i = 0; i < numBands; i++)
 	  b[i] = getSample(x, y, i, data);
 	return b;
       }
@@ -241,8 +245,9 @@ public final class BandedSampleModel extends ComponentSampleModel
    */
   public int[] getPixel(int x, int y, int[] iArray, DataBuffer data)
   {
-    if (iArray == null) iArray = new int[numBands];
-    for (int i=0; i < numBands; i++)
+    if (iArray == null) 
+      iArray = new int[numBands];
+    for (int i = 0; i < numBands; i++)
       iArray[i] = getSample(x, y, i, data);
 	
     return iArray;
@@ -272,7 +277,8 @@ public final class BandedSampleModel extends ComponentSampleModel
   public int[] getPixels(int x, int y, int w, int h, int[] iArray,
 			 DataBuffer data)
   {
-    if (iArray == null) iArray = new int[w*h*numBands];
+    if (iArray == null) 
+      iArray = new int[w * h * numBands];
     int outOffset = 0;
     int maxX = x + w;
     int maxY = y + h;
@@ -378,7 +384,8 @@ public final class BandedSampleModel extends ComponentSampleModel
   public int[] getSamples(int x, int y, int w, int h, int b, int[] iArray,
 			  DataBuffer data)
   {
-    if (iArray == null) iArray = new int[w*h];
+    if (iArray == null) 
+      iArray = new int[w * h];
     int outOffset = 0;
     int maxX = x + w;
     int maxY = y + h;
@@ -427,7 +434,7 @@ public final class BandedSampleModel extends ComponentSampleModel
 	    {
 	      DataBufferByte out = (DataBufferByte) data;
 	      byte[] in = (byte[]) obj;
-	      for (int i=0; i < numBands; i++)
+	      for (int i = 0; i < numBands; i++)
 		out.getData(bankIndices[i])[offset + bandOffsets[i]] = in[i];
 	      return;
 	    }
@@ -435,7 +442,7 @@ public final class BandedSampleModel extends ComponentSampleModel
 	    {
 	      DataBufferShort out = (DataBufferShort) data;
 	      short[] in = (short[]) obj;
-	      for (int i=0; i < numBands; i++)
+	      for (int i = 0; i < numBands; i++)
 		out.getData(bankIndices[i])[offset + bandOffsets[i]] = in[i];
 	      return;
 	    }
@@ -443,7 +450,7 @@ public final class BandedSampleModel extends ComponentSampleModel
 	    {
 	      DataBufferUShort out = (DataBufferUShort) data;
 	      short[] in = (short[]) obj;
-	      for (int i=0; i < numBands; i++)
+	      for (int i = 0; i < numBands; i++)
 		out.getData(bankIndices[i])[offset + bandOffsets[i]] = in[i];
 	      return;
 	    }
@@ -451,7 +458,7 @@ public final class BandedSampleModel extends ComponentSampleModel
 	    {
 	      DataBufferInt out = (DataBufferInt) data;
 	      int[] in = (int[]) obj;
-	      for (int i=0; i < numBands; i++)
+	      for (int i = 0; i < numBands; i++)
 		out.getData(bankIndices[i])[offset + bandOffsets[i]] = in[i];
 	      return;
 	    }
@@ -459,7 +466,7 @@ public final class BandedSampleModel extends ComponentSampleModel
 	    {
 	      DataBufferFloat out = (DataBufferFloat) data;
 	      float[] in = (float[]) obj;
-	      for (int i=0; i < numBands; i++)
+	      for (int i = 0; i < numBands; i++)
 		out.getData(bankIndices[i])[offset + bandOffsets[i]] = in[i];
 	      return;
 	    }
@@ -467,7 +474,7 @@ public final class BandedSampleModel extends ComponentSampleModel
 	    {
 	      DataBufferDouble out = (DataBufferDouble) data;
 	      double[] in = (double[]) obj;
-	      for (int i=0; i < numBands; i++)
+	      for (int i = 0; i < numBands; i++)
 		out.getData(bankIndices[i])[offset + bandOffsets[i]] = in[i];
 	      return;
 	    }
@@ -477,15 +484,14 @@ public final class BandedSampleModel extends ComponentSampleModel
       }
     catch (ArrayIndexOutOfBoundsException aioobe)
       {
-	String msg = "While writing data elements" +
-	  ", x="+x+", y="+y+
-	  ", width="+width+", height="+height+
-	  ", scanlineStride="+scanlineStride+
-	  ", offset="+offset+
-	  ", data.getSize()="+data.getSize()+
-	  ", data.getOffset()="+data.getOffset()+
-	  ": " +
-	  aioobe;
+	String msg = "While writing data elements" 
+      + ", x=" + x + ", y=" + y 
+      + ", width=" + width + ", height=" + height 
+      + ", scanlineStride=" + scanlineStride 
+      + ", offset=" + offset 
+      + ", data.getSize()=" + data.getSize() 
+      + ", data.getOffset()=" + data.getOffset() 
+      + ": " + aioobe;
 	throw new ArrayIndexOutOfBoundsException(msg);
       }
     }
@@ -504,7 +510,7 @@ public final class BandedSampleModel extends ComponentSampleModel
    */
   public void setPixel(int x, int y, int[] iArray, DataBuffer data)
   {
-    for (int b=0; b < numBands; b++)
+    for (int b = 0; b < numBands; b++)
       data.setElem(bankIndices[b], bandOffsets[b] + y * scanlineStride + x,
 		   iArray[b]);
   }
@@ -535,7 +541,7 @@ public final class BandedSampleModel extends ComponentSampleModel
 	for (int ww = 0; ww < w; ww++)
 	  {
 	    int offset = y * scanlineStride + (x + ww);
-	    for (int b=0; b < numBands; b++)
+	    for (int b = 0; b < numBands; b++)
 	      data.setElem(bankIndices[b], bandOffsets[b] + offset,
 			   iArray[inOffset++]);
 	  }
@@ -711,7 +717,7 @@ public final class BandedSampleModel extends ComponentSampleModel
     result.append(getClass().getName());
     result.append("[");
     result.append("scanlineStride=").append(scanlineStride);
-    for(int i=0; i < bitMasks.length; i+=1)
+    for(int i = 0; i < bitMasks.length; i+=1)
     {
       result.append(", mask[").append(i).append("]=0x").append(
           Integer.toHexString(bitMasks[i]));

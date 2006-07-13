@@ -40,6 +40,10 @@ import gnu.java.awt.BitMaskExtent;
 import gnu.java.awt.Buffers;
 
 /**
+ * A <code>SampleModel</code> used when all samples are stored in a single
+ * data element in the {@link DataBuffer}, and each data element contains 
+ * samples for one pixel only.
+ * 
  * @author Rolf W. Rasmussen (rolfwr@ii.uib.no)
  */
 public class SinglePixelPackedSampleModel extends SampleModel
@@ -49,12 +53,32 @@ public class SinglePixelPackedSampleModel extends SampleModel
   private int[] bitOffsets;
   private int[] sampleSize;
   
+  /**
+   * Creates a new <code>SinglePixelPackedSampleModel</code>.
+   * 
+   * @param dataType  the data buffer type.
+   * @param w  the width (in pixels).
+   * @param h  the height (in pixels).
+   * @param bitMasks  an array containing the bit mask used to extract the
+   *     sample value for each band.
+   */
   public SinglePixelPackedSampleModel(int dataType, int w, int h,
 				      int[] bitMasks)
   {
     this(dataType, w, h, w, bitMasks);
   }
 
+  /**
+   * Creates a new <code>SinglePixelPackedSampleModel</code>.
+   * 
+   * @param dataType  the data buffer type.
+   * @param w  the width (in pixels).
+   * @param h  the height (in pixels).
+   * @param scanlineStride  the number of data elements between a pixel on one
+   *     row and the corresponding pixel on the next row.
+   * @param bitMasks  an array containing the bit mask used to extract the
+   *     sample value for each band.
+   */
   public SinglePixelPackedSampleModel(int dataType, int w, int h,
 				      int scanlineStride, int[] bitMasks)
   {
@@ -67,7 +91,8 @@ public class SinglePixelPackedSampleModel extends SampleModel
       case DataBuffer.TYPE_INT:
 	break;
       default:
-	throw new IllegalArgumentException("SinglePixelPackedSampleModel unsupported dataType");
+        throw new IllegalArgumentException(
+            "SinglePixelPackedSampleModel unsupported dataType");
       }
     
     this.scanlineStride = scanlineStride;
@@ -77,7 +102,7 @@ public class SinglePixelPackedSampleModel extends SampleModel
     sampleSize = new int[numBands];
     
     BitMaskExtent extent = new BitMaskExtent();
-    for (int b=0; b<numBands; b++)
+    for (int b = 0; b < numBands; b++)
       {
 	extent.setMask(bitMasks[b]);
 	sampleSize[b] = extent.bitWidth;
@@ -85,11 +110,25 @@ public class SinglePixelPackedSampleModel extends SampleModel
       }
   }
 
+  /**
+   * Returns the number of data elements.
+   * 
+   * @return <code>1</code>.
+   */
   public int getNumDataElements()
   {
     return 1;
   }
 
+  /**
+   * Creates a new <code>SampleModel</code> that is compatible with this
+   * model and has the specified width and height.
+   * 
+   * @param w  the width (in pixels).
+   * @param h  the height (in pixels).
+   * 
+   * @return The new sample model.
+   */
   public SampleModel createCompatibleSampleModel(int w, int h)
   {
     /* FIXME: We can avoid recalculation of bit offsets and sample
@@ -172,7 +211,7 @@ public class SinglePixelPackedSampleModel extends SampleModel
     
     int[] bitMasks = new int[numBands];
 
-    for (int b=0; b<numBands; b++)
+    for (int b = 0; b < numBands; b++)
       bitMasks[b] = this.bitMasks[bands[b]];
 
     return new SinglePixelPackedSampleModel(dataType, width, height,
@@ -191,16 +230,20 @@ public class SinglePixelPackedSampleModel extends SampleModel
   }
   
   /**
-   * This is a more efficient implementation of the default implementation in the super
-   * class. 
-   * @param x The x-coordinate of the pixel rectangle to store in <code>obj</code>.
-   * @param y The y-coordinate of the pixel rectangle to store in <code>obj</code>.
+   * This is a more efficient implementation of the default implementation in 
+   * the super class. 
+   * @param x The x-coordinate of the pixel rectangle to store in 
+   *     <code>obj</code>.
+   * @param y The y-coordinate of the pixel rectangle to store in 
+   *     <code>obj</code>.
    * @param w The width of the pixel rectangle to store in <code>obj</code>.
    * @param h The height of the pixel rectangle to store in <code>obj</code>.
-   * @param obj The primitive array to store the pixels into or null to force creation.
+   * @param obj The primitive array to store the pixels into or null to force 
+   *     creation.
    * @param data The DataBuffer that is the source of the pixel data.
    * @return The primitive array containing the pixel data.
-   * @see java.awt.image.SampleModel#getDataElements(int, int, int, int, java.lang.Object, java.awt.image.DataBuffer)
+   * @see java.awt.image.SampleModel#getDataElements(int, int, int, int, 
+   *     java.lang.Object, java.awt.image.DataBuffer)
    */
   public Object getDataElements(int x, int y, int w, int h, Object obj,
 							DataBuffer data)
@@ -226,10 +269,11 @@ public class SinglePixelPackedSampleModel extends SampleModel
              // Seems like the only sensible thing to do.
            throw new ClassCastException();
       }
-      if(x==0 && scanlineStride == w)
+      if(x == 0 && scanlineStride == w)
       { 
         // The full width need to be copied therefore we can copy in one shot.
-        System.arraycopy(pixelData, scanlineStride*y + data.getOffset(), obj, 0, size);
+        System.arraycopy(pixelData, scanlineStride*y + data.getOffset(), obj, 
+                         0, size);
       }
       else
       {  
@@ -268,7 +312,7 @@ public class SinglePixelPackedSampleModel extends SampleModel
     if (iArray == null) iArray = new int[numBands];
     int samples = data.getElem(offset);
 
-    for (int b=0; b<numBands; b++)
+    for (int b = 0; b < numBands; b++)
       iArray[b] = (samples & bitMasks[b]) >>> bitOffsets[b];
 	
     return iArray;
@@ -301,13 +345,13 @@ public class SinglePixelPackedSampleModel extends SampleModel
     int offset = scanlineStride*y + x;
     if (iArray == null) iArray = new int[numBands*w*h];
     int outOffset = 0;
-    for (y=0; y<h; y++)
+    for (y = 0; y < h; y++)
       {
 	int lineOffset = offset;
-	for (x=0; x<w; x++)
+	for (x = 0; x < w; x++)
 	  {
 	    int samples = data.getElem(lineOffset++);
-	    for (int b=0; b<numBands; b++)
+	    for (int b = 0; b < numBands; b++)
 	      iArray[outOffset++] = (samples & bitMasks[b]) >>> bitOffsets[b];
 	  }
 	offset += scanlineStride;
@@ -337,16 +381,18 @@ public class SinglePixelPackedSampleModel extends SampleModel
   }
   
   /**
-   * This method implements a more efficient way to set data elements than the default
-   * implementation of the super class. It sets the data elements line by line instead 
-   * of pixel by pixel.
+   * This method implements a more efficient way to set data elements than the 
+   * default implementation of the super class. It sets the data elements line 
+   * by line instead of pixel by pixel.
+   * 
    * @param x The x-coordinate of the data elements in <code>obj</code>.
    * @param y The y-coordinate of the data elements in <code>obj</code>.
    * @param w The width of the data elements in <code>obj</code>.
    * @param h The height of the data elements in <code>obj</code>.
    * @param obj The primitive array containing the data elements to set.
    * @param data The DataBuffer to store the data elements into.
-   * @see java.awt.image.SampleModel#setDataElements(int, int, int, int, java.lang.Object, java.awt.image.DataBuffer)
+   * @see java.awt.image.SampleModel#setDataElements(int, int, int, int, 
+   *     java.lang.Object, java.awt.image.DataBuffer)
    */
   public void setDataElements(int x, int y, int w, int h,
 				Object obj, DataBuffer data)
@@ -457,7 +503,7 @@ public class SinglePixelPackedSampleModel extends SampleModel
     int offset = scanlineStride*y + x;
     
     int samples = 0;
-    for (int b=0; b<numBands; b++)
+    for (int b = 0; b < numBands; b++)
       samples |= (iArray[b] << bitOffsets[b]) & bitMasks[b];
 
     data.setElem(offset, samples);
@@ -473,7 +519,8 @@ public class SinglePixelPackedSampleModel extends SampleModel
    * @param h The height of the pixel rectangle in <code>obj</code>.
    * @param iArray The primitive array containing the pixels to set.
    * @param data The DataBuffer to store the pixels into.
-   * @see java.awt.image.SampleModel#setPixels(int, int, int, int, int[], java.awt.image.DataBuffer)
+   * @see java.awt.image.SampleModel#setPixels(int, int, int, int, int[], 
+   *     java.awt.image.DataBuffer)
    */
   public void setPixels(int x, int y, int w, int h, int[] iArray,
 						DataBuffer data)
@@ -486,7 +533,7 @@ public class SinglePixelPackedSampleModel extends SampleModel
       for (int xx=x; xx<(x+w); xx++)
        { 
         int samples = 0;
-        for (int b=0; b<numBands; b++)
+        for (int b = 0; b < numBands; b++)
           samples |= (iArray[inOffset+b] << bitOffsets[b]) & bitMasks[b];
         data.setElem(0, offset, samples);
         inOffset += numBands;
@@ -529,9 +576,10 @@ public class SinglePixelPackedSampleModel extends SampleModel
     result.append(getClass().getName());
     result.append("[");
     result.append("scanlineStride=").append(scanlineStride);
-    for(int i=0; i < bitMasks.length; i+=1)
+    for(int i = 0; i < bitMasks.length; i+=1)
     {
-      result.append(", mask[").append(i).append("]=0x").append(Integer.toHexString(bitMasks[i]));
+      result.append(", mask[").append(i).append("]=0x").append(
+          Integer.toHexString(bitMasks[i]));
     }
     
     result.append("]");

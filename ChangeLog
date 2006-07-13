@@ -1,5 +1,11 @@
 2006-07-13  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* java/awt/image/BandedSampleModel.java: API doc updates and source 
+	code reformatting,
+	* java/awt/image/SinglePixelPackageSampleModel.java: Likewise.
+
+2006-07-13  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* java/awt/image/BandedSampleModel.java: API doc updates.
 
 2006-07-13  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
