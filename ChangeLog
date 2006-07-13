@@ -1,3 +1,58 @@
+2006-07-13  Tania Bento  <tbento@redhat.com>
+
+	* gnu/java/awt/peer/ClasspathFontPeer.java
+	(isLogicalFontName): Return true if name == default.
+	(logicalFontNameToFaceName): Check if name == default,
+	and if so, return "Dialog.plain".
+	(setStandardAttributes(String, Map)): If name == null, 
+	it should be set to "Default", not "SansSerif".
+	* java/awt/Canvas.java
+	(generateName): Fixed documentation.
+	* java/awt/CheckboxMenuItem.java
+	Added static variable "next_chkmenuitem_number".
+	(generateName): Added and implemented method.
+	(getUniqueLong): Likewise.
+	* java/awt/Choice.java
+	Added static variable "next_choice_number".
+	(generateName): Added and implemented method.
+	(getUniqueLong): Likewise.
+	* java/awt/Cursor.java
+	(Cursor(int)): Set name depending on the type passed.
+	* java/awt/List.java
+	Added static variable "next_list_number".
+	(generateName): Added and implemented method.
+	(getUniqueLong): Likewise.
+	* java/awt/Menu.java
+	Added static variable "next_menu_number".
+	(generateName): Added and implemented method.
+	(getUniqueLong): Likewise.
+	* java/awt/MenuBar.java
+	Added static variable "next_menubar_number".
+	(generateName): Added and implemented method.	
+	(getUniqueLong): Likewise.
+	* java/awt/MenuComponent.java
+	(getName): Before returning name, check if name == null
+	and name is not explicity set.  If this is the case,    
+	name will be generated.
+	(generateName): Added and implemented method.	
+	* java/awt/MenuItem.java
+	Added static variable "next_menuitem_number".
+	(generateName): Added and implemented method.   
+	(getUniqueLong): Likewise.
+	* java/awt/PopupMenu.java
+	Added static variable "next_popup_number".
+	(generateName): Added and implemented method.
+	(getUniqueLong): Likewise.
+	* java/awt/ScrollPane.java
+	Added static variable "next_scrollpane_number".
+	(generateName): Added and implemented method.
+	(getUniqueLong): Likewise.
+	* java/awt/TextField.java
+	Added static variable "next_textfield_number".
+	(generateName): Added and implemented method.
+	(getUniqueLong): Likewise.
+
+
 2006-07-13  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/image/SinglePixelPackedSampleModel.java

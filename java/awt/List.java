@@ -66,6 +66,11 @@ public class List extends Component
  * Static Variables
  */
 
+/**
+ * The number used to generate the name returned by getName.
+ */
+private static transient long next_list_number;  
+
 // Serialization constant
 private static final long serialVersionUID = -3304312411574666869L;
 
@@ -1265,5 +1270,20 @@ paramString()
     if (accessibleContext == null)
       accessibleContext = new AccessibleAWTList();
     return accessibleContext;
+  }
+  
+  /**
+   * Generate a unique name for this <code>List</code>.
+   *
+   * @return A unique name for this <code>List</code>.
+   */
+  String generateName()
+  {
+    return "list" + getUniqueLong();
+  }
+
+  private static synchronized long getUniqueLong()
+  {
+    return next_list_number++;
   }
 } // class List

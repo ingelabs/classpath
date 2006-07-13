@@ -54,7 +54,13 @@ import javax.accessibility.AccessibleStateSet;
  */
 public class TextField extends TextComponent
 {
+  
+  /**
+   * The number used to generate the name returned by getName.
+   */
+  private static transient long next_textfield_number;
 
+  
   private static final long serialVersionUID = -2966288784432217853L;
 
 
@@ -433,6 +439,21 @@ public class TextField extends TextComponent
   public ActionListener[] getActionListeners ()
   {
     return (ActionListener[]) getListeners (ActionListener.class);
+  }
+  
+  /**
+   * Generate a unique name for this <code>TextField</code>.
+   *
+   * @return A unique name for this <code>TextField</code>.
+   */
+  String generateName()
+  {
+    return "textfield" + getUniqueLong();
+  }
+
+  private static synchronized long getUniqueLong()
+  {
+    return next_textfield_number++;
   }
 
   protected class AccessibleAWTTextField extends AccessibleAWTTextComponent

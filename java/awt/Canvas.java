@@ -350,9 +350,9 @@ public class Canvas
   }
   
   /**
-   * Generate a unique name for this canvas.
+   * Generate a unique name for this <code>Canvas</code>.
    *
-   * @return A unique name for this canvas.
+   * @return A unique name for this <code>Canvas</code>.
    */
   String generateName()
   {
