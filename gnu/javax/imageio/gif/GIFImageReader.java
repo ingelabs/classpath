@@ -231,9 +231,6 @@ public class GIFImageReader extends ImageReader
 					      new int[] {0xFF});
 	break;
       }
-    byte[] bits = f.getRawImage();
-    for(int i = 0; i < 5; i++)
-      System.out.println("Bits "+i+":"+bits[i]);
     DataBuffer db = new DataBufferByte(f.getRawImage(), width * height, 0);
     WritableRaster raster = Raster.createWritableRaster(sm, db, null);
     

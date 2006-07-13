@@ -1,3 +1,8 @@
+2006-07-13  Sven de Marothy  <sven@physto.se>
+
+	* gnu/javax/imageio/gif/GIFImageReader.java
+	(read): Remove old debugging trace.
+
 2006-07-13  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	PR awt/28369:
