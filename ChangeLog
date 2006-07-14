@@ -1,3 +1,8 @@
+2006-07-14  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/image/MultiPixelPackedSampleModel.java: 
+	Added API docs all over.
+
 2006-07-14  Matt Wringe  <mwringe@redhat.com>
 
 	* gnu/javax/crypto/jce/cipher/CipherAdapter.java 

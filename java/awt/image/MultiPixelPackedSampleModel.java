@@ -56,12 +56,43 @@ public class MultiPixelPackedSampleModel extends SampleModel
   private int numberOfBits;
   private int numElems;
 
+  /**
+   * Creates a new <code>MultiPixelPackedSampleModel</code> with the specified
+   * data type, which should be one of:
+   * <ul>
+   *   <li>{@link DataBuffer#TYPE_BYTE};</li>
+   *   <li>{@link DataBuffer#TYPE_USHORT};</li>
+   *   <li>{@link DataBuffer#TYPE_INT};</li>
+   * </ul>
+   * 
+   * @param dataType  the data type.
+   * @param w  the width (in pixels).
+   * @param h  the height (in pixels).
+   * @param numberOfBits  the number of bits per pixel (must be a power of 2).
+   */
   public MultiPixelPackedSampleModel(int dataType, int w, int h,
 				     int numberOfBits)
   {
     this(dataType, w, h, numberOfBits, 0, 0);
   }
 
+  /**
+   * Creates a new <code>MultiPixelPackedSampleModel</code> with the specified
+   * data type, which should be one of:
+   * <ul>
+   *   <li>{@link DataBuffer#TYPE_BYTE};</li>
+   *   <li>{@link DataBuffer#TYPE_USHORT};</li>
+   *   <li>{@link DataBuffer#TYPE_INT};</li>
+   * </ul>
+   * 
+   * @param dataType  the data type.
+   * @param w  the width (in pixels).
+   * @param h  the height (in pixels).
+   * @param numberOfBits  the number of bits per pixel (must be a power of 2).
+   * @param scanlineStride  the number of data elements from a pixel on one 
+   *     row to the corresponding pixel in the next row.
+   * @param dataBitOffset  the offset to the first data bit.
+   */
   public MultiPixelPackedSampleModel(int dataType, int w, int h,
 				     int numberOfBits, int scanlineStride,
 				     int dataBitOffset)
@@ -118,6 +149,16 @@ public class MultiPixelPackedSampleModel extends SampleModel
       }
   }
 
+  /**
+   * Creates a new <code>MultiPixelPackedSample</code> model with the same
+   * data type and bits per pixel as this model, but with the specified
+   * dimensions.
+   * 
+   * @param w  the width (in pixels).
+   * @param h  the height (in pixels).
+   * 
+   * @return The new sample model.
+   */
   public SampleModel createCompatibleSampleModel(int w, int h)
   {
     /* FIXME: We can avoid recalculation of bit offsets and sample
@@ -125,7 +166,6 @@ public class MultiPixelPackedSampleModel extends SampleModel
        special private constructor. */
     return new MultiPixelPackedSampleModel(dataType, w, h, numberOfBits);
   }
-
 
   /**
    * Creates a DataBuffer for holding pixel data in the format and
@@ -142,7 +182,12 @@ public class MultiPixelPackedSampleModel extends SampleModel
     return Buffers.createBuffer(getDataType(), size);
   }
 
-
+  /**
+   * Returns the number of data elements required to transfer a pixel in the
+   * get/setDataElements() methods.
+   * 
+   * @return <code>1</code>.
+   */
   public int getNumDataElements()
   {
     return 1;
@@ -179,26 +224,58 @@ public class MultiPixelPackedSampleModel extends SampleModel
     return sampleSize[0];
   }
 
+  /**
+   * Returns the index in the data buffer that stores the pixel at (x, y).
+   * 
+   * @param x  the x-coordinate.
+   * @param y  the y-coordinate.
+   * 
+   * @return The index in the data buffer that stores the pixel at (x, y).
+   */
   public int getOffset(int x, int y)
   {
     return scanlineStride * y + ((dataBitOffset + x*numberOfBits) / elemBits);
   }
 
+  /**
+   * The bit offset (within an element in the data buffer) of the pixels with 
+   * the specified x-coordinate.
+   * 
+   * @param x  the x-coordinate.
+   * 
+   * @return The bit offset.
+   */
   public int getBitOffset(int x)
   {
     return (dataBitOffset + x*numberOfBits) % elemBits;
   }
 
+  /**
+   * Returns the offset to the first data bit.
+   * 
+   * @return The offset to the first data bit.
+   */
   public int getDataBitOffset()
   {
     return dataBitOffset;
   }
 
+  /**
+   * Returns the number of data elements from a pixel in one row to the
+   * corresponding pixel in the next row.
+   * 
+   * @return The scanline stride.
+   */
   public int getScanlineStride()
   {
     return scanlineStride;
   }
 
+  /**
+   * Returns the number of bits per pixel.
+   * 
+   * @return The number of bits per pixel.
+   */
   public int getPixelBitStride()
   {
     return numberOfBits;
@@ -285,6 +362,23 @@ public class MultiPixelPackedSampleModel extends SampleModel
     }
   }
 
+  /**
+   * Returns an array (of length 1) containing the sample for the pixel at 
+   * (x, y) in the specified data buffer.  If <code>iArray</code> is not 
+   * <code>null</code>, it will be populated with the sample value and 
+   * returned as the result of this function (this avoids allocating a new 
+   * array instance).
+   * 
+   * @param x  the x-coordinate of the pixel.
+   * @param y  the y-coordinate of the pixel.
+   * @param iArray  an array to populate with the sample values and return as 
+   *     the result (if <code>null</code>, a new array will be allocated).
+   * @param data  the data buffer (<code>null</code> not permitted).
+   * 
+   * @return An array containing the pixel sample value.
+   * 
+   * @throws NullPointerException if <code>data</code> is <code>null</code>.
+   */
   public int[] getPixel(int x, int y, int[] iArray, DataBuffer data)
   {
     if (iArray == null) iArray = new int[1];
@@ -293,6 +387,25 @@ public class MultiPixelPackedSampleModel extends SampleModel
     return iArray;
   }
 
+  /**
+   * Returns an array containing the samples for the pixels in the region 
+   * specified by (x, y, w, h) in the specified data buffer.  If 
+   * <code>iArray</code> is not <code>null</code>, it will be populated with 
+   * the sample values and returned as the result of this function (this 
+   * avoids allocating a new array instance).
+   * 
+   * @param x  the x-coordinate of the top-left pixel.
+   * @param y  the y-coordinate of the top-left pixel.
+   * @param w  the width of the region of pixels.
+   * @param h  the height of the region of pixels.
+   * @param iArray  an array to populate with the sample values and return as 
+   *     the result (if <code>null</code>, a new array will be allocated).
+   * @param data  the data buffer (<code>null</code> not permitted).
+   * 
+   * @return The pixel sample values.
+   * 
+   * @throws NullPointerException if <code>data</code> is <code>null</code>.
+   */
   public int[] getPixels(int x, int y, int w, int h, int[] iArray,
 			 DataBuffer data)
   {
@@ -316,6 +429,20 @@ public class MultiPixelPackedSampleModel extends SampleModel
     return iArray;	
   }
 
+  /**
+   * Returns the sample value for the pixel at (x, y) in the specified data 
+   * buffer.
+   * 
+   * @param x  the x-coordinate of the pixel.
+   * @param y  the y-coordinate of the pixel.
+   * @param b  the band (in the range <code>0</code> to 
+   *     <code>getNumBands() - 1</code>).
+   * @param data  the data buffer (<code>null</code> not permitted).
+   * 
+   * @return The sample value.
+   * 
+   * @throws NullPointerException if <code>data</code> is <code>null</code>.
+   */
   public int getSample(int x, int y, int b, DataBuffer data)
   {
     int pos =
@@ -394,11 +521,38 @@ public class MultiPixelPackedSampleModel extends SampleModel
       }
     }
 
+  /**
+   * Sets the sample value for the pixel at (x, y) in the specified data 
+   * buffer to the specified value. 
+   * 
+   * @param x  the x-coordinate of the pixel.
+   * @param y  the y-coordinate of the pixel.
+   * @param iArray  the sample value (<code>null</code> not permitted).
+   * @param data  the data buffer (<code>null</code> not permitted).
+   * 
+   * @throws NullPointerException if either <code>iArray</code> or 
+   *     <code>data</code> is <code>null</code>.
+   *     
+   * @see #setSample(int, int, int, int, DataBuffer)
+   */
   public void setPixel(int x, int y, int[] iArray, DataBuffer data)
   {
     setSample(x, y, 0, iArray[0], data);
   }
 
+  /**
+   * Sets the sample value for a band for the pixel at (x, y) in the 
+   * specified data buffer. 
+   * 
+   * @param x  the x-coordinate of the pixel.
+   * @param y  the y-coordinate of the pixel.
+   * @param b  the band (in the range <code>0</code> to 
+   *     <code>getNumBands() - 1</code>).
+   * @param s  the sample value.
+   * @param data  the data buffer (<code>null</code> not permitted).
+   * 
+   * @throws NullPointerException if <code>data</code> is <code>null</code>.
+   */
   public void setSample(int x, int y, int b, int s, DataBuffer data)
   {
     int bitpos =
