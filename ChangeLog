@@ -1,6 +1,12 @@
 2006-07-14  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/image/MultiPixelPackedSampleModel.java
+	(equals): New method override,
+	(hashCode): Likewise.
+
+2006-07-14  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/image/MultiPixelPackedSampleModel.java
 	(MultiPixelPackedSampleModel(int, int, int, int, int, int)): 
 	Corrected scanlineStride calculation.
 

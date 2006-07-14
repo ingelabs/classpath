@@ -367,6 +367,70 @@ public class MultiPixelPackedSampleModel extends SampleModel
   }
   
   /**
+   * Tests this sample model for equality with an arbitrary object.  This 
+   * method returns <code>true</code> if and only if:
+   * <ul>
+   *   <li><code>obj</code> is not <code>null</code>;
+   *   <li><code>obj</code> is an instance of 
+   *       <code>MultiPixelPackedSampleModel</code>;
+   *   <li>both models have the same:
+   *     <ul>
+   *       <li><code>dataType</code>;
+   *       <li><code>width</code>;
+   *       <li><code>height</code>;
+   *       <li><code>numberOfBits</code>;
+   *       <li><code>scanlineStride</code>;
+   *       <li><code>dataBitOffsets</code>.
+   *     </ul>
+   *   </li>
+   * </ul>
+   * 
+   * @param obj  the object (<code>null</code> permitted)
+   * 
+   * @return <code>true</code> if this model is equal to <code>obj</code>, and
+   *     <code>false</code> otherwise.
+   */
+  public boolean equals(Object obj) 
+  {
+    if (this == obj) 
+      return true;
+    if (! (obj instanceof MultiPixelPackedSampleModel)) 
+      return false;
+    MultiPixelPackedSampleModel that = (MultiPixelPackedSampleModel) obj;
+    if (this.dataType != that.dataType)
+      return false;
+    if (this.width != that.width)
+      return false;
+    if (this.height != that.height)
+      return false;
+    if (this.numberOfBits != that.numberOfBits)
+      return false;
+    if (this.scanlineStride != that.scanlineStride)
+      return false;
+    if (this.dataBitOffset != that.dataBitOffset)
+      return false;
+    return true;
+  }
+  
+  /**
+   * Returns a hash code for this <code>MultiPixelPackedSampleModel</code>.
+   * 
+   * @return A hash code.
+   */
+  public int hashCode()
+  {
+    // this hash code won't match Sun's, but that shouldn't matter...
+    int result = 193;
+    result = 37 * result + dataType;
+    result = 37 * result + width;
+    result = 37 * result + height;
+    result = 37 * result + numberOfBits;
+    result = 37 * result + scanlineStride;
+    result = 37 * result + dataBitOffset;
+    return result;
+  }
+  
+  /**
    * Creates a String with some information about this SampleModel.
    * @return A String describing this SampleModel.
    * @see java.lang.Object#toString()
