@@ -152,11 +152,32 @@ public class MultiPixelPackedSampleModel extends SampleModel
     return 1;
   }
 
+  /**
+   * Returns an array containing the size (in bits) of the samples in each 
+   * band.  The <code>MultiPixelPackedSampleModel</code> class supports only
+   * one band, so this method returns an array with length <code>1</code>. 
+   * 
+   * @return An array containing the size (in bits) of the samples in band zero. 
+   *     
+   * @see #getSampleSize(int)
+   */
   public int[] getSampleSize()
   {
-    return sampleSize;
+    return (int[]) sampleSize.clone();
   }
   
+  /**
+   * Returns the size of the samples in the specified band.  Note that the
+   * <code>MultiPixelPackedSampleModel</code> supports only one band -- this
+   * method ignored the <code>band</code> argument, and always returns the size
+   * of band zero.
+   * 
+   * @param band  the band (this parameter is ignored).
+   * 
+   * @return The size of the samples in band zero.
+   * 
+   * @see #getSampleSize()
+   */
   public int getSampleSize(int band)
   {
     return sampleSize[0];
@@ -185,6 +206,26 @@ public class MultiPixelPackedSampleModel extends SampleModel
   public int getPixelBitStride()
   {
     return numberOfBits;
+  }
+  
+  /**
+   * Returns the transfer type, which is one of the following (depending on
+   * the number of bits per sample for this model):
+   * <ul>
+   *   <li>{@link DataBuffer#TYPE_BYTE};</li>
+   *   <li>{@link DataBuffer#TYPE_USHORT};</li>
+   *   <li>{@link DataBuffer#TYPE_INT};</li>
+   * </ul>
+   * 
+   * @return The transfer type.
+   */
+  public int getTransferType()
+  {
+    if (numberOfBits <= DataBuffer.getDataTypeSize(DataBuffer.TYPE_BYTE))
+      return DataBuffer.TYPE_BYTE;
+    else if (numberOfBits <= DataBuffer.getDataTypeSize(DataBuffer.TYPE_USHORT))
+      return DataBuffer.TYPE_USHORT;
+    return DataBuffer.TYPE_INT;
   }
 
   /**
