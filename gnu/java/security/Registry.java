@@ -89,6 +89,18 @@ public interface Registry
 
   String CAST_128_CIPHER = "cast-128";
 
+  // Key Wrapping Algorithm names and synonyms ...............................
+
+  String KWA_PREFIX = "kw-";
+  String AES_KWA = KWA_PREFIX + AES_CIPHER;
+  String AES128_KWA = AES_KWA + "128";
+  String AES192_KWA = AES_KWA + "192";
+  String AES256_KWA = AES_KWA + "256";
+  String RIJNDAEL_KWA = KWA_PREFIX + RIJNDAEL_CIPHER;
+
+  String TRIPLEDES_KWA = KWA_PREFIX + TRIPLEDES_CIPHER;
+  String DESEDE_KWA = KWA_PREFIX + DESEDE_CIPHER;
+
   // Message digest algorithms and synonyms...................................
 
   String WHIRLPOOL_HASH = "whirlpool";

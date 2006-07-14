@@ -1,4 +1,21 @@
-2006-07-14  raif  <raif@solomon.tng.com.au>
+2006-07-14  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/java/security/Registry.java (KWA_PREFIX): New constant.
+	(AES_KWA): Likewise.
+	(AES128_KWA): Likewise.
+	(AES192_KWA): Likewise.
+	(AES256_KWA): Likewise.
+	(RIJNDAEL_KWA): Likewise.
+	(TRIPLEDES_KWA): Likewise.
+	(DESEDE_KWA): Likewise.
+	* gnu/javax/crypto/kwa/AESKeyWrap.java: New file
+	* gnu/javax/crypto/kwa/BaseKeyWrappingAlgorithm.java: Likewise.
+	* gnu/javax/crypto/kwa/IKeyWrappingAlgorithm.java: Likewise.
+	* gnu/javax/crypto/kwa/KeyUnwrappingException.java: Likewise.
+	* gnu/javax/crypto/kwa/KeyWrappingAlgorithmFactory.java: Likewise.
+	* gnu/javax/crypto/kwa/TripleDESKeyWrap.java: Likewise.
+
+2006-07-14  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* gnu/javax/crypto/pad/IPad.java: Updated class documentation.
 	(PADDING_BLOCK_SIZE): New constant.
