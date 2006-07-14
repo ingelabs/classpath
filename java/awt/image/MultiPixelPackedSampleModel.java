@@ -187,17 +187,19 @@ public class MultiPixelPackedSampleModel extends SampleModel
     return numberOfBits;
   }
 
-
+  /**
+   * Normally this method returns a sample model for accessing a subset of
+   * bands of image data, but since <code>MultiPixelPackedSampleModel</code>
+   * only supports a single band, this overridden implementation just returns
+   * a new instance of <code>MultiPixelPackedSampleModel</code>, with the same
+   * attributes as this instance.
+   * 
+   * @param bands  ignored.
+   */
   public SampleModel createSubsetSampleModel(int[] bands)
   {
-    int numBands = bands.length;
-    if (numBands != 1)
-      throw new RasterFormatException("MultiPixelPackedSampleModel only"
-				      + " supports one band");
-    
-    return new MultiPixelPackedSampleModel(dataType, width, height,
-					   numberOfBits, scanlineStride,
-					   dataBitOffset);
+    return new MultiPixelPackedSampleModel(dataType, width, height, 
+        numberOfBits, scanlineStride, dataBitOffset);
   }
 
   /**
