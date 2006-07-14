@@ -1,5 +1,11 @@
 2006-07-14  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/CardLayout.java
+	(show): Validate parent to make sure that the layout is
+	valid.
+
+2006-07-14  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/Component.java
 	(enable): Added tree locking.
 	(disable): Added tree locking.
