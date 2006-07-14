@@ -1,3 +1,11 @@
+2006-07-14  Tania Bento  <tbento@redhat.com>
+
+	* java/awt/FlowLayout.java
+	(setHgap): No Excpetion should be thrown if hgap has
+	a negative value.
+	(setVgap): No Exception should be thrown if vgap has
+	a negative value.
+
 2006-07-14  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/image/MultiPixelPackedSampleModel.java: 
