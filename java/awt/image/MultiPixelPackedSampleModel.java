@@ -1,4 +1,4 @@
-/* Copyright (C) 2004  Free Software Foundation
+/* Copyright (C) 2004, 2006,  Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -101,7 +101,7 @@ public class MultiPixelPackedSampleModel extends SampleModel
 
     // Compute scan line large enough for w pixels.
     if (scanlineStride == 0)
-      scanlineStride = (((dataBitOffset + w * numberOfBits) - 1) / elemBits);
+      scanlineStride = ((dataBitOffset + w * numberOfBits) - 1) / elemBits + 1;
     this.scanlineStride = scanlineStride;
 
     
