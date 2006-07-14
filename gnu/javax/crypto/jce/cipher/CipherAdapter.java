@@ -343,6 +343,12 @@ class CipherAdapter
       }
     else if (params instanceof IvParameterSpec)
       {
+        // The size of the IV must match the block size
+        if (((IvParameterSpec) params).getIV().length != cipher.defaultBlockSize())
+          {
+            throw new InvalidAlgorithmParameterException();
+          }
+        
         attributes.put(IMode.IV, ((IvParameterSpec) params).getIV());
         blockLen = cipher.defaultBlockSize();
         attributes.put(IBlockCipher.CIPHER_BLOCK_SIZE, Integer.valueOf(blockLen));
