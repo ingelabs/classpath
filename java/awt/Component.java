@@ -594,6 +594,17 @@ public abstract class Component
   transient BufferStrategy bufferStrategy;
 
   /**
+   * The number of hierarchy listeners of this container plus all of its
+   * children. This is needed for efficient handling of HierarchyEvents.
+   * These must be propagated to all child components with HierarchyListeners
+   * attached. To avoid traversal of the whole subtree, we keep track of
+   * the number of HierarchyListeners here and only walk the paths that
+   * actually have listeners.
+   */
+  int numHierarchyListeners;
+  int numHierarchyBoundsListeners;
+
+  /**
    * true if requestFocus was called on this component when its
    * top-level ancestor was not focusable.
    */
@@ -938,11 +949,19 @@ public abstract class Component
         // Avoid NullPointerExceptions by creating a local reference.
         ComponentPeer currentPeer=peer;
         if (currentPeer != null)
+          {
             currentPeer.show();
-        // The JDK repaints the component before invalidating the parent.
-        // So do we.
-        if (isShowing() && isLightweight())
-          repaint();
+
+            // Fire HierarchyEvent.
+            fireHierarchyEvent(HierarchyEvent.HIERARCHY_CHANGED,
+                               this, parent,
+                               HierarchyEvent.SHOWING_CHANGED);
+
+            // The JDK repaints the component before invalidating the parent.
+            // So do we.
+            if (isLightweight())
+              repaint();
+          }
         // Invalidate the parent if we have one. The component itself must
         // not be invalidated. We also avoid NullPointerException with
         // a local reference here.
@@ -950,9 +969,15 @@ public abstract class Component
         if (currentParent != null)
           currentParent.invalidate();
 
-        ComponentEvent ce =
-          new ComponentEvent(this,ComponentEvent.COMPONENT_SHOWN);
-        getToolkit().getSystemEventQueue().postEvent(ce);
+        // Only post an event if this component actually has a listener
+        // or has this event explicitly enabled.
+        if (componentListener != null
+            || (eventMask & AWTEvent.COMPONENT_EVENT_MASK) != 0)
+          {
+            ComponentEvent ce =
+              new ComponentEvent(this,ComponentEvent.COMPONENT_SHOWN);
+            getToolkit().getSystemEventQueue().postEvent(ce);
+          }
       }
   }
 
@@ -983,7 +1008,15 @@ public abstract class Component
         // Avoid NullPointerExceptions by creating a local reference.
         ComponentPeer currentPeer=peer;
         if (currentPeer != null)
-            currentPeer.setVisible(false);
+          {
+            currentPeer.hide();
+
+            // Fire hierarchy event.
+            fireHierarchyEvent(HierarchyEvent.HIERARCHY_CHANGED,
+                                     this, parent,
+                                     HierarchyEvent.SHOWING_CHANGED);
+          }
+
         boolean wasShowing = isShowing();
         this.visible = false;
 
@@ -998,9 +1031,15 @@ public abstract class Component
         if (currentParent != null)
           currentParent.invalidate();
 
-        ComponentEvent ce =
-          new ComponentEvent(this,ComponentEvent.COMPONENT_HIDDEN);
-        getToolkit().getSystemEventQueue().postEvent(ce);
+        // Only post an event if this component actually has a listener
+        // or has this event explicitly enabled.
+        if (componentListener != null
+            || (eventMask & AWTEvent.COMPONENT_EVENT_MASK) != 0)
+          {
+            ComponentEvent ce =
+              new ComponentEvent(this,ComponentEvent.COMPONENT_HIDDEN);
+            getToolkit().getSystemEventQueue().postEvent(ce);
+          }
       }
   }
 
@@ -1449,20 +1488,53 @@ public abstract class Component
           }
       }
 
-    // Only post event if this component is visible and has changed size.
-    if (isShowing ()
-        && (oldx != x || oldy != y))
+    boolean resized = oldwidth != width || oldheight != height;
+    boolean moved = oldx != x || oldy != y;
+    // Only post an event if this component actually has a listener
+    // or has this event explicitly enabled.
+    if (componentListener != null
+        || (eventMask & AWTEvent.COMPONENT_EVENT_MASK) != 0)
       {
-        ComponentEvent ce = new ComponentEvent(this,
-                                               ComponentEvent.COMPONENT_MOVED);
-        getToolkit().getSystemEventQueue().postEvent(ce);
+        // Fire component event on this component.
+        if (moved)
+          {
+            ComponentEvent ce = new ComponentEvent(this,
+                                              ComponentEvent.COMPONENT_MOVED);
+            getToolkit().getSystemEventQueue().postEvent(ce);
+          }
+        if (resized)
+          {
+            ComponentEvent ce = new ComponentEvent(this,
+                                             ComponentEvent.COMPONENT_RESIZED);
+            getToolkit().getSystemEventQueue().postEvent(ce);
+          }
       }
-    if (isShowing ()
-        && (oldwidth != width || oldheight != height))
+    else
       {
-        ComponentEvent ce = new ComponentEvent(this,
-                                               ComponentEvent.COMPONENT_RESIZED);
-        getToolkit().getSystemEventQueue().postEvent(ce);
+        // Otherwise we might need to notify child components when this is
+        // a Container.
+        if (this instanceof Container)
+          {
+            Container cont = (Container) this;
+            if (resized)
+              {
+                for (int i = 0; i < cont.getComponentCount(); i++)
+                  {
+                    Component child = cont.getComponent(i);
+                    child.fireHierarchyEvent(HierarchyEvent.ANCESTOR_RESIZED,
+                                             this, parent, 0);
+                  }
+              }
+            if (moved)
+              {
+                for (int i = 0; i < cont.getComponentCount(); i++)
+                  {
+                    Component child = cont.getComponent(i);
+                    child.fireHierarchyEvent(HierarchyEvent.ANCESTOR_MOVED,
+                                             this, parent, 0);
+                  }
+              }
+          }
       }
   }
 
@@ -2674,6 +2746,10 @@ public abstract class Component
     hierarchyListener = AWTEventMulticaster.add(hierarchyListener, listener);
     if (hierarchyListener != null)
       enableEvents(AWTEvent.HIERARCHY_EVENT_MASK);
+
+    numHierarchyListeners++;
+    if (parent != null)
+      parent.updateHierarchyListenerCount(AWTEvent.HIERARCHY_EVENT_MASK, 1);
   }
 
   /**
@@ -2689,6 +2765,10 @@ public abstract class Component
   public synchronized void removeHierarchyListener(HierarchyListener listener)
   {
     hierarchyListener = AWTEventMulticaster.remove(hierarchyListener, listener);
+
+    numHierarchyListeners--;
+    if (parent != null)
+      parent.updateHierarchyListenerCount(AWTEvent.HIERARCHY_EVENT_MASK, -1);
   }
 
   /**
@@ -2724,6 +2804,11 @@ public abstract class Component
       AWTEventMulticaster.add(hierarchyBoundsListener, listener);
     if (hierarchyBoundsListener != null)
       enableEvents(AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK);
+
+    numHierarchyBoundsListeners++;
+    if (parent != null)
+      parent.updateHierarchyListenerCount(AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK,
+                                          1);
   }
 
   /**
@@ -2741,6 +2826,11 @@ public abstract class Component
   {
     hierarchyBoundsListener =
       AWTEventMulticaster.remove(hierarchyBoundsListener, listener);
+
+    numHierarchyBoundsListeners--;
+    if (parent != null)
+      parent.updateHierarchyListenerCount(AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK,
+                                          -1);
   }
 
   /**
@@ -2756,6 +2846,40 @@ public abstract class Component
     return (HierarchyBoundsListener[])
       AWTEventMulticaster.getListeners(hierarchyBoundsListener,
                                        HierarchyBoundsListener.class);
+  }
+
+  /**
+   * Fires a HierarchyEvent or HierarchyChangeEvent on this component.
+   *
+   * @param id the event id
+   * @param changed the changed component
+   * @param parent the parent
+   * @param flags the event flags
+   */
+  void fireHierarchyEvent(int id, Component changed, Container parent,
+                          long flags)
+  {
+    boolean enabled = false;
+    switch (id)
+    {
+      case HierarchyEvent.HIERARCHY_CHANGED:
+        enabled = hierarchyListener != null
+                  || (eventMask & AWTEvent.HIERARCHY_EVENT_MASK) != 0;
+        break;
+      case HierarchyEvent.ANCESTOR_MOVED:
+      case HierarchyEvent.ANCESTOR_RESIZED:
+        enabled = hierarchyBoundsListener != null
+                  || (eventMask & AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK) != 0;
+          break;
+      default:
+        assert false : "Should not reach here";
+    }
+    if (enabled)
+      {
+        HierarchyEvent ev = new HierarchyEvent(this, id, changed, parent,
+                                               flags);
+        dispatchEvent(ev);
+      }
   }
 
   /**

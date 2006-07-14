@@ -42,6 +42,7 @@ package java.awt;
 import java.awt.event.ComponentListener;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
+import java.awt.event.HierarchyEvent;
 import java.awt.event.KeyEvent;
 import java.awt.peer.ComponentPeer;
 import java.awt.peer.ContainerPeer;
@@ -362,6 +363,16 @@ public class Container extends Component
             ++ncomponents;
           }
 
+        // Update the counter for Hierarchy(Bounds)Listeners.
+        int childHierarchyListeners = comp.numHierarchyListeners;
+        if (childHierarchyListeners > 0)
+          updateHierarchyListenerCount(AWTEvent.HIERARCHY_EVENT_MASK,
+                                       childHierarchyListeners);
+        int childHierarchyBoundsListeners = comp.numHierarchyBoundsListeners;
+        if (childHierarchyBoundsListeners > 0)
+          updateHierarchyListenerCount(AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK,
+                                       childHierarchyListeners);
+
         // Notify the layout manager.
         if (layoutMgr != null)
           {
@@ -388,6 +399,10 @@ public class Container extends Component
         ContainerListener[] listeners = getContainerListeners();
         for (int i = 0; i < listeners.length; i++)
           listeners[i].componentAdded(ce);
+
+        // Notify hierarchy listeners.
+        comp.fireHierarchyEvent(HierarchyEvent.HIERARCHY_CHANGED, comp,
+                                this, HierarchyEvent.PARENT_CHANGED);
       }
   }
 
@@ -412,6 +427,16 @@ public class Container extends Component
                          ncomponents - index - 1);
         component[--ncomponents] = null;
 
+        // Update the counter for Hierarchy(Bounds)Listeners.
+        int childHierarchyListeners = r.numHierarchyListeners;
+        if (childHierarchyListeners > 0)
+          updateHierarchyListenerCount(AWTEvent.HIERARCHY_EVENT_MASK,
+                                       -childHierarchyListeners);
+        int childHierarchyBoundsListeners = r.numHierarchyBoundsListeners;
+        if (childHierarchyBoundsListeners > 0)
+          updateHierarchyListenerCount(AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK,
+                                       -childHierarchyListeners);
+
         invalidate();
 
         if (layoutMgr != null)
@@ -423,10 +448,14 @@ public class Container extends Component
           {
             // Post event to notify of removing the component.
             ContainerEvent ce = new ContainerEvent(this,
-                                                   ContainerEvent.COMPONENT_REMOVED,
-                                                   r);
+                                               ContainerEvent.COMPONENT_REMOVED,
+                                               r);
             getToolkit().getSystemEventQueue().postEvent(ce);
           }
+
+        // Notify hierarchy listeners.
+        r.fireHierarchyEvent(HierarchyEvent.HIERARCHY_CHANGED, r,
+                             this, HierarchyEvent.PARENT_CHANGED);
       }
   }
 
@@ -1877,6 +1906,48 @@ public class Container extends Component
 
         return null;
       }
+  }
+
+  /**
+   * Fires hierarchy events to the children of this container and this
+   * container itself. This overrides {@link Component#fireHierarchyEvent}
+   * in order to forward this event to all children.
+   */
+  void fireHierarchyEvent(int id, Component changed, Container parent,
+                          long flags)
+  {
+    // Only propagate event if there is actually a listener waiting for it.
+    if ((id == HierarchyEvent.HIERARCHY_CHANGED && numHierarchyListeners > 0)
+        || ((id == HierarchyEvent.ANCESTOR_MOVED
+             || id == HierarchyEvent.ANCESTOR_RESIZED)
+            && numHierarchyBoundsListeners > 0))
+      {
+        for (int i = 0; i < ncomponents; i++)
+          component[i].fireHierarchyEvent(id, changed, parent, flags);
+        super.fireHierarchyEvent(id, changed, parent, flags);
+      }
+  }
+
+  /**
+   * Adjusts the number of hierarchy listeners of this container and all of
+   * its parents. This is called by the add/remove listener methods and
+   * structure changing methods in Container.
+   *
+   * @param type the type, either {@link AWTEvent#HIERARCHY_BOUNDS_EVENT_MASK}
+   *        or {@link AWTEvent#HIERARCHY_EVENT_MASK}
+   * @param delta the number of listeners added or removed
+   */
+  void updateHierarchyListenerCount(long type, int delta)
+  {
+    if (type == AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK)
+      numHierarchyBoundsListeners += delta;
+    else if (type == AWTEvent.HIERARCHY_EVENT_MASK)
+      numHierarchyListeners += delta;
+    else
+      assert false : "Should not reach here";
+
+    if (parent != null)
+      parent.updateHierarchyListenerCount(type, delta);
   }
 
   private void addNotifyContainerChildren()

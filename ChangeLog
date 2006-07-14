@@ -1,3 +1,28 @@
+2006-07-14  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Component.java
+	(numHierarchyListeners): New field.
+	(numHierarchyBoundsListeners): New field.
+	(show): Fire hierarchy events here. Only fire component event
+	if there is actually a listener for it.
+	(hide): Fire hierarchy events here. Only fire component event
+	if there is actually a listener for it.
+	(reshape): Fire hierarchy events here. Only fire component event
+	if there is actually a listener for it.
+	(addHierarchyListeners): Update listener counters.
+	(removeHierarchyListeners): Update listener counters.
+	(addHierarchyBoundsListeners): Update listener counters.
+	(removeHierarchyBoundsListeners): Update listener counters.
+	(fireHierarchyEvent): New helper method for firing hierarchy
+	events.
+	* java/awt/Container.java
+	(addImpl): Update listener counters. Fire hierarchy event.
+	(remove): Update listener counters. Fire hierarchy event.
+	(fireHierarchyEvent): New helper method for firing hierarchy
+	events.
+	(updateHierarchyListenerCount): New helper method for
+	updating the listener counters.
+
 2006-07-14  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/image/MultiPixelPackedSampleModel.java
