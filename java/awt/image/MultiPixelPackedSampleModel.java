@@ -194,10 +194,18 @@ public class MultiPixelPackedSampleModel extends SampleModel
    * a new instance of <code>MultiPixelPackedSampleModel</code>, with the same
    * attributes as this instance.
    * 
-   * @param bands  ignored.
+   * @param bands  the bands to include in the subset (this is ignored, except
+   *     that if it is non-<code>null</code> a check is made to ensure that the
+   *     array length is equal to <code>1</code>).
+   *     
+   * @throws RasterFormatException if <code>bands</code> is not 
+   *     <code>null</code> and <code>bands.length != 1</code>.
    */
   public SampleModel createSubsetSampleModel(int[] bands)
   {
+    if (bands != null && bands.length != 1)
+      throw new RasterFormatException("MultiPixelPackedSampleModel only"
+          + " supports one band");
     return new MultiPixelPackedSampleModel(dataType, width, height, 
         numberOfBits, scanlineStride, dataBitOffset);
   }

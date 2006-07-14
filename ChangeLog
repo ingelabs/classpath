@@ -1,6 +1,12 @@
 2006-07-14  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/image/MultiPixelPackedSampleModel.java
+	(createSubsetSampleModel): Restored argument check, but let null
+	through.
+
+2006-07-14  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/image/MultiPixelPackedSampleModel.java
 	(createSubsetSampleModel): Removed argument check.
 
 2006-07-14  Roman Kennke  <kennke@aicas.com>
