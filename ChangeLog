@@ -1,3 +1,10 @@
+2006-07-14  raif  <raif@solomon.tng.com.au>
+
+	* gnu/javax/crypto/pad/IPad.java: Updated class documentation.
+	(PADDING_BLOCK_SIZE): New constant.
+	(init(Map attributes)): New method.
+	* gnu/javax/crypto/pad/BasePad.java (init): New method.
+
 2006-07-14  Mario Torre  <neugens@limasoftware.net>
 
 	* gnu/java/security/OID.java (OID): Private Constructor removed as

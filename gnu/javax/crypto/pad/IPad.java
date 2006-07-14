@@ -38,8 +38,10 @@ exception statement from your version.  */
 
 package gnu.javax.crypto.pad;
 
+import java.util.Map;
+
 /**
- * The basic visible methods of any padding algorithm.
+ * The basic visible methods, and attribute names, of every padding algorithm.
  * <p>
  * Padding algorithms serve to <i>pad</i> and <i>unpad</i> byte arrays usually
  * as the last step in an <i>encryption</i> or respectively a <i>decryption</i>
@@ -49,6 +51,13 @@ package gnu.javax.crypto.pad;
  */
 public interface IPad
 {
+  /**
+   * Property name of the block size in which to operate the padding algorithm.
+   * The value associated with this property name is taken to be a positive 
+   * {@link Integer} greater than zero.
+   */
+  String PADDING_BLOCK_SIZE = "gnu.crypto.pad.block.size";
+
   /** @return the canonical name of this instance. */
   String name();
 
@@ -60,6 +69,19 @@ public interface IPad
    * @exception IllegalArgumentException if the block size value is invalid.
    */
   void init(int bs) throws IllegalStateException;
+
+  /**
+   * Initialises the algorithm with designated attributes. Names, valid and/or
+   * recognisable by all concrete implementations are described in the class
+   * documentation above. Other algorithm-specific attributes MUST be documented
+   * in the implementation class of that padding algorithm.
+   * 
+   * @param attributes a set of name-value pairs that describes the desired
+   *          future behaviour of this instance.
+   * @exception IllegalStateException if the instance is already initialised.
+   * @exception IllegalArgumentException if the block size value is invalid.
+   */
+  void init(Map attributes) throws IllegalStateException;
 
   /**
    * Returns the byte sequence that should be appended to the designated input.

@@ -40,6 +40,7 @@ package gnu.javax.crypto.pad;
 
 import gnu.java.security.Configuration;
 
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -78,6 +79,28 @@ public abstract class BasePad
       throw new IllegalStateException();
     blockSize = bs;
     setup();
+  }
+
+  /**
+   * Initialises the algorithm with designated attributes. Names, valid and/or
+   * recognisable by all concrete implementations are described in {@link IPad}
+   * class documentation. Other algorithm-specific attributes MUST be documented
+   * in the implementation class of that padding algorithm.
+   * <p>
+   * For compatibility reasons, this method is not declared <i>abstract</i>.
+   * Furthermore, and unless overridden, the default implementation will throw
+   * an {@link UnsupportedOperationException}. Concrete padding algorithms MUST
+   * override this method if they wish to offer an initialisation method that
+   * allows for other than the padding block size parameter to be specified.
+   * 
+   * @param attributes a set of name-value pairs that describes the desired
+   *          future behaviour of this instance.
+   * @exception IllegalStateException if the instance is already initialised.
+   * @exception IllegalArgumentException if the block size value is invalid.
+   */
+  public void init(Map attributes) throws IllegalStateException
+  {
+    throw new UnsupportedOperationException();
   }
 
   public void reset()
