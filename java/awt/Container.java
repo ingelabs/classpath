@@ -602,19 +602,22 @@ public class Container extends Component
    */
   void invalidateTree()
   {
-    super.invalidate();  // Clean cached layout state.
-    for (int i = 0; i < ncomponents; i++)
+    synchronized (getTreeLock())
       {
-        Component comp = component[i];
-        comp.invalidate();
-        if (comp instanceof Container)
-          ((Container) comp).invalidateTree();
-      }
+        super.invalidate();  // Clean cached layout state.
+        for (int i = 0; i < ncomponents; i++)
+          {
+            Component comp = component[i];
+            comp.invalidate();
+            if (comp instanceof Container)
+              ((Container) comp).invalidateTree();
+          }
 
-    if (layoutMgr != null && layoutMgr instanceof LayoutManager2)
-      {
-        LayoutManager2 lm2 = (LayoutManager2) layoutMgr;
-        lm2.invalidateLayout(this);
+        if (layoutMgr != null && layoutMgr instanceof LayoutManager2)
+          {
+            LayoutManager2 lm2 = (LayoutManager2) layoutMgr;
+            lm2.invalidateLayout(this);
+          }
       }
   }
 
@@ -803,8 +806,11 @@ public class Container extends Component
     float alignmentX = 0.0F;
     if (layout != null && layout instanceof LayoutManager2)
       {
-        LayoutManager2 lm2 = (LayoutManager2) layout;
-        alignmentX = lm2.getLayoutAlignmentX(this);
+        synchronized (getTreeLock())
+          {
+            LayoutManager2 lm2 = (LayoutManager2) layout;
+            alignmentX = lm2.getLayoutAlignmentX(this);
+          }
       }
     else
       alignmentX = super.getAlignmentX();
@@ -824,8 +830,11 @@ public class Container extends Component
     float alignmentY = 0.0F;
     if (layout != null && layout instanceof LayoutManager2)
       {
-        LayoutManager2 lm2 = (LayoutManager2) layout;
-        alignmentY = lm2.getLayoutAlignmentY(this);
+        synchronized (getTreeLock())
+          {
+            LayoutManager2 lm2 = (LayoutManager2) layout;
+            alignmentY = lm2.getLayoutAlignmentY(this);
+          }
       }
     else
       alignmentY = super.getAlignmentY();
@@ -1222,8 +1231,11 @@ public class Container extends Component
    */
   public void addNotify()
   {
-    super.addNotify();
-    addNotifyContainerChildren();
+    synchronized (getTreeLock())
+      {
+        super.addNotify();
+        addNotifyContainerChildren();
+      }
   }
 
   /**
@@ -1704,24 +1716,27 @@ public class Container extends Component
     if (comp == this)
       throw new IllegalArgumentException("cannot add component to itself");
 
-    // FIXME: Implement reparenting.
-    if ( comp.getParent() != this)
-      throw new AssertionError("Reparenting is not implemented yet");
-    else
+    synchronized (getTreeLock())
       {
-        // Find current component index.
-        int currentIndex = getComponentZOrder(comp);
-        if (currentIndex < index)
-          {
-            System.arraycopy(component, currentIndex + 1, component,
-                             currentIndex, index - currentIndex);
-          }
+        // FIXME: Implement reparenting.
+        if ( comp.getParent() != this)
+          throw new AssertionError("Reparenting is not implemented yet");
         else
           {
-            System.arraycopy(component, index, component, index + 1,
-                             currentIndex - index);
+            // Find current component index.
+            int currentIndex = getComponentZOrder(comp);
+            if (currentIndex < index)
+              {
+                System.arraycopy(component, currentIndex + 1, component,
+                                 currentIndex, index - currentIndex);
+              }
+            else
+              {
+                System.arraycopy(component, index, component, index + 1,
+                                 currentIndex - index);
+              }
+            component[index] = comp;
           }
-        component[index] = comp;
       }
   }
 
@@ -1740,19 +1755,22 @@ public class Container extends Component
    */
   public final int getComponentZOrder(Component comp)
   {
-    int index = -1;
-    if (component != null)
+    synchronized (getTreeLock())
       {
-        for (int i = 0; i < ncomponents; i++)
+        int index = -1;
+        if (component != null)
           {
-            if (component[i] == comp)
+            for (int i = 0; i < ncomponents; i++)
               {
-                index = i;
-                break;
+                if (component[i] == comp)
+                  {
+                    index = i;
+                    break;
+                  }
               }
           }
+        return index;
       }
-    return index;
   }
 
   // Hidden helper methods.

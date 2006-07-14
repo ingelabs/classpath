@@ -1,3 +1,26 @@
+2006-07-14  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Component.java
+	(enable): Added tree locking.
+	(disable): Added tree locking.
+	(show): Added tree locking.
+	(hide): Added tree locking.
+	(getLocationOnScreen): Added tree locking.
+	(reshape): Added tree locking.
+	(addHierarchyListener): Added tree locking.
+	(removeHierarchyListener): Added tree locking.
+	(addHierarchyBoundsListener): Added tree locking.
+	(removeHierarchyBoundsListener): Added tree locking.
+	(addNotify): Added tree locking.
+	(removeNotify): Added tree locking.
+	* java/awt/Container.java
+	(invalidateTree): Added tree locking.
+	(getAlignmentX): Added tree locking.
+	(getAlignmentY): Added tree locking.
+	(addNotify): Added tree locking.
+	(setComponentZOrder): Added tree locking.
+	(getComponentZOrder): Added tree locking.
+
 2006-07-14  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/image/MultiPixelPackedSampleModel.java
