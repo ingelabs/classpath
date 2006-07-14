@@ -128,6 +128,8 @@ public final class TextMeasurer implements Cloneable
    */
   public TextLayout getLayout (int start, int limit)
   {
+    if( start >= limit )
+      throw new IllegalArgumentException("Start position must be < limit.");
     return new TextLayout( totalLayout, start, limit );
   }
 

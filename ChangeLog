@@ -1,5 +1,12 @@
 2006-07-14  Sven de Marothy  <sven@physto.se>
 
+	* java/awt/font/TextLayout.java:
+	(hitTestChar): Stub method.
+	* java/awt/font/TextMeasurer.java:
+	(getLayout): Throw exception on invalid argument.
+	
+2006-07-14  Sven de Marothy  <sven@physto.se>
+
 	* java/awt/image/DataBuffer.java
 	(DataBuffer): Call constructors in the correct order,
 	

@@ -664,8 +664,9 @@ public final class TextLayout implements Cloneable
   }
 
   public TextHitInfo hitTestChar (float x, float y, Rectangle2D bounds)
+    throws NotImplementedException
   {
-    return hitTestChar( x, y, getBounds() );
+    throw new Error ("not implemented");
   }
 
   public boolean isLeftToRight ()
