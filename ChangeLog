@@ -1,3 +1,9 @@
+2006-07-14  Mark Wielaard  <mark@klomp.org>
+
+	Revert to previous implementation.
+	* java/awt/GridBagLayout.java (AdjustForGravity): Only adjust for
+	constraints insets.
+
 2006-07-14  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/peer/x/XToolkit.java
