@@ -1,6 +1,12 @@
 2006-07-14  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/image/MultiPixelPackedSampleModel.java
+	(createDataBuffer): Include dataBitOffset in calculating the size for
+	the data buffer.
+
+2006-07-14  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/image/MultiPixelPackedSampleModel.java
 	(getSampleSize()): Return a copy of the array,
 	(getTransferType()): New method override.
 

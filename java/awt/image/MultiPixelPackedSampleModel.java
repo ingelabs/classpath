@@ -131,18 +131,14 @@ public class MultiPixelPackedSampleModel extends SampleModel
    * Creates a DataBuffer for holding pixel data in the format and
    * layout described by this SampleModel. The returned buffer will
    * consist of one single bank.
+   * 
+   * @return A new data buffer.
    */
   public DataBuffer createDataBuffer()
   {
-    int size;
-
-    // FIXME:  The comment refers to SinglePixelPackedSampleModel.  See if the
-    // same can be done for MultiPixelPackedSampleModel.
-    // We can save (scanlineStride - width) pixels at the very end of
-    // the buffer. The Sun reference implementation (J2SE 1.3.1 and
-    // 1.4.1_01) seems to do this; tested with Mauve test code.
-    size = scanlineStride * height;
-
+    int size = scanlineStride * height;
+    if (dataBitOffset > 0)
+      size += (dataBitOffset - 1) / elemBits + 1;
     return Buffers.createBuffer(getDataType(), size);
   }
 
