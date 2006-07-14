@@ -1,3 +1,14 @@
+2006-07-14  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/x/XToolkit.java
+	(XToolkit): Install properties to SystemProperties
+	rather than System, to avoid SecurityManager.
+	(getImage(String)): Return error image when string is invalid.
+	(createImage(URL)): Moved image loading to helper method.
+	(createImage(ImageProducer)): Implemented.
+	(createImage(byte[],int,int)): Implemented.
+	(createImage(InputStream)): New helper method.
+
 2006-07-14  Tania Bento  <tbento@redhat.com>
 
 	* java/awt/FlowLayout.java
