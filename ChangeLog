@@ -1,3 +1,17 @@
+2006-07-15  Sven de Marothy  <sven@physto.se>
+
+        * javax/swing/JFileChooser.java
+        Change default selection mode to FILES_ONLY.
+        * javax/swing/plaf/basic/BasicDirectoryModel.java
+        Document, fix selection mode filtering.
+        (renameFile): Implement
+        * javax/swing/plaf/basic/BasicFileChooserUI.java
+        (selectedDir): New field to handle selected directories,
+        disallow selecting of directories in FILES_ONLY mode.
+        * javax/swing/plaf/metal/MetalFileChooserUI.java:
+        (EditingActionListener.actionPerformed):
+        Stop editing on all actions (e.g. return-key press)
+
 2006-07-15  Mark Wielaard  <mark@klomp.org>
 
 	* doc/vmintegration.texinfo (gnu.java.lang.management): Change xref
