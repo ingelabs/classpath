@@ -402,7 +402,7 @@ Java_gnu_java_awt_peer_gtk_GtkToolkit_getMouseNumberOfButtons
 
   gdk_threads_enter ();
 
-  // FIXME: Why doesn't this return the correct number?
+  /* FIXME: Why doesn't this return the correct number? */
   devices = gdk_devices_list();
 
   while( res == -1 && devices != NULL )
