@@ -1,3 +1,9 @@
+2006-07-15  Keith Seitz  <keiths@redhat.com>
+
+	* NEWS: Update for JVMTI and jvmti.h.
+	* doc/vmintegration.texinfo: Likewise.
+	* include/jvmti.h: New file.
+
 2006-07-15  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkToolkit.c:

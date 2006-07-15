@@ -12,7 +12,7 @@ This file contains important information you will need to know if you
 are going to write an interface between GNU Classpath and a Virtual
 Machine.
 
-Copyright (C) 1998-2002, 2004, 2005 Free Software Foundation, Inc.
+Copyright (C) 1998-2002, 2004, 2005, 2006 Free Software Foundation, Inc.
 
 @ifnotplaintext
 @dircategory GNU Libraries
@@ -66,6 +66,7 @@ This document is incomplete, as we are still in alpha with the interface.
 * Classpath Hooks::             Hooks from Classpath to the VM
 * VM Hooks::                    Hooks from the underlying VM to Classpath
 * JNI Implementation::		Hooking the VM to jni.h
+* JVMTI Implementation::        Hooking the VM to jvmti.h
 * Miscellaneous VM Requirements::  
 @end menu
 
@@ -1791,6 +1792,31 @@ be a sequence of field declarations.
 
 @end itemize
 
+@node JVMTI Implementation, Miscellaneous VM Requirements, VM Hooks, Top
+@comment node-name, next, previous, up
+@chapter JVMTI Implementation
+
+Classpath comes with its own implementation of @file{jvmti.h}.  This
+file can be customized by the VM in a few ways by defining macros that
+affect the interpretation of the file.  These macros are all intended
+for use for use by a VM which uses GNU Classpath and which wants to
+use a single copy of @file{jvmti.h} for both internal and external use.
+
+@itemize @bullet
+@item _CLASSPATH_VM_JVMTI_TYPES_DEFINED
+Some VMs like to define JVMTI ``object'' types in a special way.  If
+this macro is defined, the Classpath @file{jvmti.h} will avoid defining
+these types.  By default these types are defined in @file{jvmti.h}.  
+The full list of types and macros treated this way is: @samp{jthread},
+@samp{jthreadGroup}, @samp{jlocation}, and @samp{jrawMonitorID}.  By
+default @samp{jrawMonitorID} is defined as an opaque pointer which
+must be defined by the VM.
+
+@item _CLASSPATH_JVMTIENV_CONTENTS
+A VM can add fields to the @samp{jvmtiEnv} structure by defining this
+to be a sequence of field declarations.
+
+@end itemize
 
 @node Miscellaneous VM Requirements,  , JNI Implementation, Top
 @comment  node-name,  next,  previous,  up

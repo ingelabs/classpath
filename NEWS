@@ -30,6 +30,7 @@ New in release 0.92 (UNRELEASED)
   binaries to be built for VMs that support the JNI Invocation API.
 * javax.sound.midi providers have been added to read and
   write standard MIDI files.
+* New Java Virtual Machine Tool Interface header, jvmti.h. 
 
 Runtime interface changes:
 
