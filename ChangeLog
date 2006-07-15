@@ -1,3 +1,31 @@
+2006-07-16  Mario Torre  <neugens@limasoftware.net>
+
+	* native/jni/gconf-peer/GConfNativePeer.c (init_gconf_client):
+	Fixed comment. This functions now requires to be called
+	with gdk lock held, the comment states that.
+	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_init_1id_1cache):
+	Introduces gdk locks around critical regions of code.
+	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1gconf_1client_1all_1keys):
+	Likewise.
+	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1gconf_1client_1all_1nodes):
+	Likewise.
+	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1suggest_1sync):
+	Likewise.
+	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1unset):
+	Likewise.
+	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1get_1string):
+	Likewise.
+	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1set_1string):
+	Likewise.
+	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1remove_1dir):
+	Likewise.
+	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1add_1dir):
+	Likewise.
+	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1dir_1exists):
+	Likewise.
+	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_finalize_1class):
+	* native/jni/gconf-peer/Makefile.am: The GConf peer now depends on GTK.
+
 2006-07-15  Sven de Marothy  <sven@physto.se>
 
         * javax/swing/JFileChooser.java
