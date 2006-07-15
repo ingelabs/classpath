@@ -1,3 +1,7 @@
+2006-07-15  Mark Wielaard  <mark@klomp.org>
+
+	* autogen.sh: Recognize autoconf 2.60.
+
 2006-07-15  Keith Seitz  <keiths@redhat.com>
 
 	* NEWS: Update for JVMTI and jvmti.h.
