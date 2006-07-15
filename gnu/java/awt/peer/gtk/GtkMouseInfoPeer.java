@@ -1,5 +1,6 @@
-/* WindowPeer.java -- Interface for window peers
-   Copyright (C) 1999, 2006 Free Software Foundation, Inc.
+/* GtkToolkit.java -- Implements an AWT Toolkit using GTK for peers
+   Copyright (C) 2006
+   Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -35,27 +36,42 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+package gnu.java.awt.peer.gtk;
 
-package java.awt.peer;
+import java.awt.Point;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Window;
+import java.awt.peer.MouseInfoPeer;
 
-public interface WindowPeer extends ContainerPeer
+/**
+ * The MouseInfoPeer is so small, I'm including it here.
+ */
+public class GtkMouseInfoPeer implements MouseInfoPeer
 {
-  void toBack();
-  void toFront();
+  private static GdkGraphicsEnvironment gde = new GdkGraphicsEnvironment();
   
-  /**
-   * Update the always-on-top status of the Window.
-   *
-   * @since 1.5
-   */
-  void updateAlwaysOnTop();
+  public int fillPointWithCoords(Point p)
+  {
+    int[] coords = gde.getMouseCoordinates();
+      p.x = coords[1]; 
+      p.y = coords[2];
+      return coords[0];
+  }
   
-  /**
-   * Request that this window peer be given the window focus.
-   * 
-   * @return true if the window received focus, false otherwise
-   * @since 1.5
-   */
-  boolean requestWindowFocus();
-} // interface WindowPeer 
+  public boolean isWindowUnderMouse(Window w)
+  {
+    int[] coords = gde.getMouseCoordinates();
+    GraphicsDevice[] gds = gde.getScreenDevices();
+
+    // Check if the screen  of the Window and the cursor match
+    if( gds[ coords[0] ] != w.getGraphicsConfiguration().getDevice() )
+      return false;
+
+    // Return the bounds-check.
+    Point p = w.getLocationOnScreen();
+    return (coords[1] >= p.x && coords[1] < p.x + w.getWidth() &&
+	    coords[2] >= p.y && coords[2] < p.y + w.getHeight() );
+    }
+}
 

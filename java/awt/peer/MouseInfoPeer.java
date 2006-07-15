@@ -1,5 +1,5 @@
-/* WindowPeer.java -- Interface for window peers
-   Copyright (C) 1999, 2006 Free Software Foundation, Inc.
+/* MouseInfoPeer.java -- peer interface for MouseInfo
+   Copyright (C) 2006 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -35,27 +35,27 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-
 package java.awt.peer;
 
-public interface WindowPeer extends ContainerPeer
-{
-  void toBack();
-  void toFront();
-  
-  /**
-   * Update the always-on-top status of the Window.
-   *
-   * @since 1.5
-   */
-  void updateAlwaysOnTop();
-  
-  /**
-   * Request that this window peer be given the window focus.
-   * 
-   * @return true if the window received focus, false otherwise
-   * @since 1.5
-   */
-  boolean requestWindowFocus();
-} // interface WindowPeer 
+import java.awt.Point;
+import java.awt.Window;
 
+/**
+ * MouseInfoPeer is the peer interface java.awt.MouseInfo.
+ *
+ * @author Sven de Marothy
+ * @since 1.5
+ */
+public interface MouseInfoPeer
+{
+  /**
+   * Get the mouse pointer coordinates and store them in p (obviously non-null)
+   * returns the index of the current screen device of the mouse.
+   */ 
+  public int fillPointWithCoords(Point p);
+
+  /**
+   * Returns whether a given Window is under the mouse.
+   */ 
+  public boolean isWindowUnderMouse(Window w);
+} 

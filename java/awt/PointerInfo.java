@@ -1,5 +1,5 @@
-/* WindowPeer.java -- Interface for window peers
-   Copyright (C) 1999, 2006 Free Software Foundation, Inc.
+/* PointerInfo.java -- mouse pointer data
+   Copyright (C) 2006 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -35,27 +35,50 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+package java.awt;
 
-package java.awt.peer;
-
-public interface WindowPeer extends ContainerPeer
+/**
+ * PointerInfo represents information about the mouse pointer,
+ * i.e. its GraphicsDevice and location.
+ *
+ * PointerInfo objects cannot be instantiated directly, but are
+ * retrieved from MouseInfo.getPointerInfo(). PointerInfo objects
+ * are immutable and will not be updated for future mouse motions.
+ *
+ * @since 1.5
+ * @author Sven de Marothy
+ */
+public class PointerInfo
 {
-  void toBack();
-  void toFront();
-  
-  /**
-   * Update the always-on-top status of the Window.
-   *
-   * @since 1.5
-   */
-  void updateAlwaysOnTop();
-  
-  /**
-   * Request that this window peer be given the window focus.
-   * 
-   * @return true if the window received focus, false otherwise
-   * @since 1.5
-   */
-  boolean requestWindowFocus();
-} // interface WindowPeer 
+  private GraphicsDevice gd;
+  private Point p;
 
+  /**
+   * Package-private constructor used by MouseInfo.
+   */
+  PointerInfo( GraphicsDevice gd, Point p )
+  {
+    this.gd = gd;
+    this.p = p;
+  }
+
+  /**
+   * Returns the GraphicsDevice on which the mouse pointer was located
+   *
+   * @return a GraphicsDevice object.
+   */
+  public GraphicsDevice getDevice()
+  {
+    return gd;
+  }
+
+  /**
+   * Returns the coordinates of the mouse pointer.
+   *
+   * @return a Point object containing the pointer coordinates.
+   */
+  public Point getLocation()
+  {
+    return p;
+  }
+} 

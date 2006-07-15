@@ -102,6 +102,7 @@ import java.awt.peer.LabelPeer;
 import java.awt.peer.ListPeer;
 import java.awt.peer.MenuBarPeer;
 import java.awt.peer.MenuItemPeer;
+import java.awt.peer.MouseInfoPeer;
 import java.awt.peer.MenuPeer;
 import java.awt.peer.PanelPeer;
 import java.awt.peer.PopupMenuPeer;
@@ -653,4 +654,12 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
   }
 
   public static native void gtkMain();
+
+  protected MouseInfoPeer getMouseInfoPeer()
+  {
+    return new GtkMouseInfoPeer();
+  }
+
+  public native int getMouseNumberOfButtons();
+
 } // class GtkToolkit

@@ -1,3 +1,45 @@
+2006-07-15  Sven de Marothy  <sven@physto.se>
+
+	* gnu/java/awt/peer/gtk/GtkMouseInfoPeer.java,
+	* java/awt/MouseInfo.java,
+	* java/awt/PointerInfo.java,
+	* java/awt/peer/MouseInfoPeer.java:
+	New files.
+
+	* java/awt/Image.java
+	(accelerationPriority): New field.
+	(setAccelerationPriority, getAccelerationPriority): New methods..
+
+	* include/gnu_java_awt_peer_gtk_GdkGraphicsEnvironment.h,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphicsEnvironment.c,
+	* gnu/java/awt/peer/gtk/GdkGraphicsEnvironment.java:
+	(getMouseCoordinates): New method.
+
+	* gnu/java/awt/peer/gtk/GtkFramePeer.java
+	(updateAlwaysOnTop): Remove stub overload.
+
+	* gnu/java/awt/ClasspathToolkit.java,
+	* gnu/java/awt/peer/gtk/GtkToolkit.java,
+	* include/gnu_java_awt_peer_gtk_GtkToolkit.h,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkToolkit.c:
+	(getMouseInfoPeer): New method.
+	(getMouseNumberOfButtons): New method.
+	
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java
+	* include/gnu_java_awt_peer_gtk_GtkWindowPeer.h
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
+	(gtkWindowSetAlwaysOnTop): New method.
+	(updateAlwaysOnTop): Implement.
+
+	* java/awt/Toolkit.java,
+	(getMouseInfoPeer): New method.
+
+	* java/awt/Window.java
+	(alwaysOnTop): New field.
+	(isAlwaysOnTop, setAlwaysOnTop): New methods.
+
+	* java/awt/peer/WindowPeer.java: Doc fix.
+
 2006-07-14  Sven de Marothy  <sven@physto.se>
 
 	* java/awt/font/TextLayout.java:
