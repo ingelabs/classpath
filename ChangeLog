@@ -1,5 +1,17 @@
 2006-07-15  Mark Wielaard  <mark@klomp.org>
 
+	* include/Makefile.am: Remove
+	include/gnu_java_awt_peer_gtk_GdkTextLayout.h.
+	* include/gnu_java_awt_peer_gtk_GdkTextLayout.h: Removed.
+	* native/jni/gtk-peer/Makefile.am: Remove
+	gnu_java_awt_peer_gtk_GdkTextLayout.c
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkTextLayout.c:
+	Removed.
+
+	* include/gnu_java_awt_peer_gtk_GtkWindowPeer.h: Regenerated.
+
+2006-07-15  Mark Wielaard  <mark@klomp.org>
+
 	* autogen.sh: Recognize autoconf 2.60.
 
 2006-07-15  Keith Seitz  <keiths@redhat.com>
