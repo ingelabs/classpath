@@ -1606,7 +1606,7 @@ number of milliseconds for which the garbage collector has run.
 @end itemize
 
 Note that each garbage collector is also a memory manager, and so an
-implementation of the @xref{gnu.java.lang.management.VMMemoryManagerMXBeanImpl}
+implementation of the @code{gnu.java.lang.management.VMMemoryManagerMXBeanImpl}
 methods for its name should also be provided.
 
 @node java.lang.management, Classpath Callbacks, gnu.java.lang.management, Classpath Hooks
@@ -1749,7 +1749,7 @@ reinitialize it yourself, there should be no harm.
 
 @end itemize
 
-@node JNI Implementation, Miscellaneous VM Requirements, VM Hooks, Top
+@node JNI Implementation, JVMTI Implementation, VM Hooks, Top
 @comment  node-name,  next,  previous,  up
 @chapter JNI Implementation
 
@@ -1792,7 +1792,7 @@ be a sequence of field declarations.
 
 @end itemize
 
-@node JVMTI Implementation, Miscellaneous VM Requirements, VM Hooks, Top
+@node JVMTI Implementation, Miscellaneous VM Requirements, JNI Implementation, Top
 @comment node-name, next, previous, up
 @chapter JVMTI Implementation
 
@@ -1818,7 +1818,7 @@ to be a sequence of field declarations.
 
 @end itemize
 
-@node Miscellaneous VM Requirements,  , JNI Implementation, Top
+@node Miscellaneous VM Requirements,  , JVMTI Implementation, Top
 @comment  node-name,  next,  previous,  up
 @chapter Miscellaneous VM Requirements
 
