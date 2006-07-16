@@ -1,5 +1,5 @@
-/* ParserDelegator.java -- Delegator for ParserDocument.
-    Copyright (C) 2005 Free Software Foundation, Inc.
+/* GnuParserDelegator.java -- The parser delegator which uses Swing DTD
+   Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -35,10 +35,8 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package javax.swing.text.html.parser;
 
-import gnu.javax.swing.text.html.parser.HTML_401F;
-import gnu.javax.swing.text.html.parser.htmlAttributeSet;
+package gnu.javax.swing.text.html.parser;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -47,23 +45,24 @@ import java.io.Serializable;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.HTMLEditorKit.ParserCallback;
+import javax.swing.text.html.parser.DTD;
+import javax.swing.text.html.parser.ParserDelegator;
+import javax.swing.text.html.parser.TagElement;
 
 /**
- * This class instantiates and starts the working instance of
- * html parser, being responsible for providing the default DTD.
- *
- * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
+ * This parser delegator uses the different DTD ({@link HTML_401Swing}).
+ * It is derived from the ParserDelegator for the compatibility reasons.
+ * 
+ * @author Audrius Meskauskas (AudriusA@Bioinformatics.org) 
  */
-public class ParserDelegator
-  extends javax.swing.text.html.HTMLEditorKit.Parser
-  implements Serializable
+public class GnuParserDelegator extends ParserDelegator implements Serializable
 {
-  private class gnuParser
+  class gnuParser
     extends gnu.javax.swing.text.html.parser.support.Parser
   {
     private static final long serialVersionUID = 1;
 
-    private gnuParser(DTD d)
+    gnuParser(DTD d)
     {
       super(d);
     }
@@ -121,7 +120,7 @@ public class ParserDelegator
    */
   private static final long serialVersionUID = -1276686502624777206L;
 
-  private static DTD dtd = HTML_401F.getInstance();
+  private DTD theDtd; 
 
   /**
    * The callback.
@@ -135,29 +134,34 @@ public class ParserDelegator
    * This is package-private to avoid an accessor method.
    */
   gnuParser gnu;
+  
+  /**
+   * Create the parser that uses the given DTD to parse the document.
+   * 
+   * @param theDtd the DTD
+   */
+  public GnuParserDelegator(DTD theDtd)
+  {
+    this.theDtd = theDtd;
+    gnu = new gnuParser(theDtd);
+  }
 
   /**
-   * Parses the HTML document, calling methods of the provided
-   * callback. This method must be multithread - safe.
+   * Parses the HTML document, calling methods of the provided callback. This
+   * method must be multithread - safe.
+   * 
    * @param reader The reader to read the HTML document from
-   * @param a_callback The callback that is notifyed about the presence
-   * of HTML elements in the document.
-   * @param ignoreCharSet If thrue, any charset changes during parsing
-   * are ignored.
+   * @param a_callback The callback that is notifyed about the presence of HTML
+   *          elements in the document.
+   * @param ignoreCharSet If thrue, any charset changes during parsing are
+   *          ignored.
    * @throws java.io.IOException
    */
-  public void parse(Reader reader, HTMLEditorKit.ParserCallback a_callback,
-                    boolean ignoreCharSet
-                   )
-             throws IOException
+  public void parse(Reader reader,
+                                 HTMLEditorKit.ParserCallback a_callback,
+                                 boolean ignoreCharSet) throws IOException
   {
     callBack = a_callback;
-
-    if (gnu == null || !dtd.equals(gnu.getDTD()))
-      {
-        gnu = new gnuParser(dtd);
-      }
-
     gnu.parse(reader);
 
     callBack.handleEndOfLineString(gnu.getEndOfLineSequence());
@@ -170,38 +174,5 @@ public class ParserDelegator
         // Convert this into the supported type of exception.
         throw new IOException(ex.getMessage());
       }
-  }
-
-  /**
-   * Calling this method instructs that, if not specified directly,
-   * the documents will be parsed using the default
-   * DTD of the implementation.
-   */
-  protected static void setDefaultDTD()
-  {
-    dtd = HTML_401F.getInstance();
-  }
-
-  /**
-   * Registers the user - written DTD under the given name, also
-   * making it default for the subsequent parsings. This has effect on
-   * all subsequent calls to the parse(...) . If you need to specify
-   * your DTD locally, simply {@link javax.swing.text.html.parser.Parser}
-   * instead.
-   * @param a_dtd The DTD that will be used to parse documents by this class.
-   * @param name The name of this DTD.
-   * @return No standard is specified on which instance of DTD must be
-   * returned by this method, and it is recommended to leave the returned
-   * value without consideration. This implementation returns the DTD
-   * that was previously set as the default DTD, or the implementations
-   * default DTD if none was set.
-   */
-  protected static DTD createDTD(DTD a_dtd, String name)
-  {
-    DTD.putDTDHash(name, a_dtd);
-
-    DTD dtd_prev = dtd;
-    dtd = a_dtd;
-    return dtd_prev;
   }
 }

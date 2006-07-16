@@ -233,7 +233,9 @@ public abstract class htmlValidator
                 Element fe = (Element) v;
 
                 // notify the content model that we add the proposed tag
-                getCurrentContentModel().show(fe);
+                node ccm = getCurrentContentModel();
+                if (ccm != null)
+                  ccm.show(fe);
                 openFictionalTag(fe);
 
                 Object vv = tagIsValidForContext(tElement);
@@ -321,7 +323,7 @@ public abstract class htmlValidator
 
     // Check exclusions and inclusions.
     ListIterator iter = stack.listIterator(stack.size());
-    hTag t;
+    hTag t = null;
     final int idx = tElement.getElement().index;
 
     // Check only known tags.
@@ -343,7 +345,19 @@ public abstract class htmlValidator
               }
           }
         if (!inclusions.get(idx))
-          return Boolean.FALSE;
+          {
+            // If we need to insert the text, and cannot do this, but
+            // it is allowed to insert the paragraph here, insert the 
+            // paragraph.
+            if (tElement.getElement().getName().
+                equalsIgnoreCase(HTML_401F.PCDATA))
+              {
+                Element P = dtd.getElement(HTML_401F.P); 
+                if (inclusions.get(P.index))
+                  return P;
+              }
+            return Boolean.FALSE;
+          }
       }
     return Boolean.TRUE;
   }

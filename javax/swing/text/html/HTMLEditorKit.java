@@ -40,6 +40,8 @@ package javax.swing.text.html;
 
 
 import gnu.classpath.NotImplementedException;
+import gnu.javax.swing.text.html.parser.GnuParserDelegator;
+import gnu.javax.swing.text.html.parser.HTML_401Swing;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -886,7 +888,9 @@ public class HTMLEditorKit
   protected Parser getParser()
   {
     if (parser == null)
-      parser = new ParserDelegator();
+      {
+        parser = new GnuParserDelegator(HTML_401Swing.getInstance());
+      }
     return parser;
   }
   
