@@ -573,8 +573,9 @@ abstract class Command
           throw new InvalidParameterException(Messages.getString("Command.36")); //$NON-NLS-1$
 
         url = userHome.trim() + "/.keystore"; //$NON-NLS-1$
-        // if it does not exist create it
-        new File(url).createNewFile();
+        // if it does not exist create it if required
+        if (createIfNotFound)
+          new File(url).createNewFile();
         url = "file:" + url; //$NON-NLS-1$
       }
     else
