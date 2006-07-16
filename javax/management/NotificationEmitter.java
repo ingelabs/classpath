@@ -67,9 +67,9 @@ public interface NotificationEmitter
    * @see #addNotificationListener(NotificationListener, NotificationFilter,
    *                               java.lang.Object)
    */
-  void removeListener(NotificationListener listener,
-		      NotificationFilter filter,
-		      Object passback)
+  void removeNotificationListener(NotificationListener listener,
+				  NotificationFilter filter,
+				  Object passback)
     throws ListenerNotFoundException;
 
 }

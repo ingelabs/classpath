@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package javax.management;
 
+import java.io.Serializable;
+
 /**
  * Represents a object that acts as a filter for notifications.
  * Implementations of this class are used to determine which
@@ -47,6 +49,7 @@ package javax.management;
  * @since 1.5
  */
 public interface NotificationFilter
+  extends Serializable
 {
   
   /**

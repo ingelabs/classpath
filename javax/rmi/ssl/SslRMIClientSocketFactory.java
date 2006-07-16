@@ -38,6 +38,8 @@ exception statement from your version. */
 package javax.rmi.ssl;
 
 import java.io.IOException;
+import java.io.Serializable;
+
 import java.util.StringTokenizer;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.SSLSocket;
@@ -62,8 +64,15 @@ import java.rmi.server.RMIClientSocketFactory;
  * @author Sven de Marothy
  * @since 1.5
  */
-public class SslRMIClientSocketFactory implements RMIClientSocketFactory
+public class SslRMIClientSocketFactory 
+  implements RMIClientSocketFactory, Serializable
 {
+
+  /**
+   * Compatible with JDK 1.5
+   */
+  private static final long serialVersionUID = -8310631444933958385L;
+
   private String[] enabledCipherSuites, enabledProtocols;
 
   /**

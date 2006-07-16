@@ -1,5 +1,22 @@
 2006-07-16  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	* javax/management/MBeanInfo.java:
+	(getNotifications()): Implemented.
+	* javax/management/NotificationBroadcaster.java:
+	(removeNotificationListener(NotificationListener)):
+	Renamed from removeListener.
+	* javax/management/NotificationEmitter.java:
+	(removeNotificationListener(NotificationListener,
+	NotificationFilter, Object)): Likewise.
+	* javax/management/NotificationFilter.java:
+	Implement Serializable.
+	* javax/management/NotificationListener.java:
+	Implement java.util.EventListener.
+	* javax/rmi/ssl/SslRMIClientSocketFactory.java:
+	Implement Serializable.
+
+2006-07-16  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* java/lang/management/MemoryNotificationInfo.java:
 	New file.
 	

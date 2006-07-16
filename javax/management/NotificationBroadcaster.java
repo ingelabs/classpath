@@ -105,7 +105,7 @@ public interface NotificationBroadcaster
    * @see #addNotificationListener(NotificationListener, NotificationFilter,
    *                               java.lang.Object)
    */
-  void removeListener(NotificationListener listener)
+  void removeNotificationListener(NotificationListener listener)
     throws ListenerNotFoundException;
 
 }

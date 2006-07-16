@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package javax.management;
 
+import java.util.EventListener;
+
 /**
  * Represents a object that can receive notifications from
  * a bean.
@@ -45,6 +47,7 @@ package javax.management;
  * @since 1.5
  */
 public interface NotificationListener
+  extends EventListener
 {
   
   /**
