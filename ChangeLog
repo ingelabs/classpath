@@ -1,5 +1,10 @@
 2006-07-16  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* gnu/javax/crypto/jce/params/BlockCipherParameters.java
+	(engineGetParameterSpec): Should be able to return an IvParameterSpec.
+
+2006-07-16  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* gnu/javax/crypto/cipher/DES.java (adjustParity): Index limit now takes
 	offset into consideration.
 
