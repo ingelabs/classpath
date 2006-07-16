@@ -1,3 +1,9 @@
+2006-07-16  Thomas Minor  <1nocentrabidlamb@sexMagnet.com>
+	    Mark Wielaard  <mark@klomp.org>
+
+	* java/io/PrintStream.java: Added four constructors, for File and
+	String describing a filename with or without explicit encoding.
+
 2006-07-16  Sven de Marothy  <sven@physto.se>
 
 	* javax/rmi/ssl/SslRMIServerSocketFactory.java,
