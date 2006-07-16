@@ -1,3 +1,9 @@
+2006-07-16  Sven de Marothy  <sven@physto.se>
+
+	* javax/rmi/ssl/SslRMIServerSocketFactory.java,
+	* javax/rmi/ssl/SslRMIClientSocketFactory.java:
+	New files.
+
 2006-07-16  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	PR Classpath/28391
