@@ -1,3 +1,7 @@
+2006-07-16  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/StrictMath.java (cbrt): Added '@since'.
+
 2006-07-16  Carsten Neumann  <cn-develop@gmx.net>
 
 	* java/lang/StrictMath.java (cbrt): New method.

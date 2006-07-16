@@ -1,5 +1,5 @@
 /* java.lang.StrictMath -- common mathematical functions, strict Java
-   Copyright (C) 1998, 2001, 2002, 2003 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2001, 2002, 2003, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -680,6 +680,8 @@ public final strictfp class StrictMath
    * @param x the number to take the cube root of
    * @return the cube root of <code>x</code>
    * @see #sqrt(double)
+   *
+   * @since 1.5
    */
   public static double cbrt(double x)
   {
