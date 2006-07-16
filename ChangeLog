@@ -1,3 +1,22 @@
+2006-07-16  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	PR Classpath/28391
+	* tools/gnu/classpath/tools/keytool/Command.java (setKeyStoreParams(5)): 
+	New method.
+	(setKeyStoreParams(4)): Call the above method with false as its 1st arg.
+	(setProviderClassNameParam): Made private.
+	(setKeystoreTypeParam): Likewise.
+	(setKeyPasswordParam): Likewise
+	(setKeystorePasswordParam): Likewise.
+	(setKeystoreURLParam): Now accepts 2 more arguments; the first a boolean to
+	create or not the keystore if it's not there, and the second is the store's
+	password to process before loading the keystore. Amended the code
+	accordingly.
+	* tools/gnu/classpath/tools/keytool/GenKeyCmd.java (setup): Call super's
+	setKeyStoreParams(5) with true as its first argument.
+	* tools/gnu/classpath/tools/keytool/IdentityDBCmd.java (setup): Likewise.
+	* tools/gnu/classpath/tools/keytool/ImportCmd.java (setup): Likewise.
+
 2006-07-16  Sven de Marothy  <sven@physto.se>
 
 	* java/util/UUID.java: New file.
