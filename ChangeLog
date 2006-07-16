@@ -1,3 +1,14 @@
+2006-07-16  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	PR 28392
+	* gnu/javax/swing/text/html/parser/htmlValidator.java 
+	(tagIsValidForContext):	If it is not possible to insert any tag, but 
+	is possible to insert a P, insert a P.
+	* gnu/javax/swing/text/html/parser/HTML_401Swing.java
+	(newInstance): Removed print statement. (getBodyElements):
+	Removed ABBR, ACRONYM, BDO, Q, S, SUB, SUP and ADDRESS from the
+	valid body level tags (will be enclosed into P's).
+
 2006-07-17  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* tools/gnu/classpath/tools/keytool/Command.java (setKeystoreURLParam):

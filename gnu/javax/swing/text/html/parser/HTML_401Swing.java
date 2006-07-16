@@ -38,9 +38,6 @@ exception statement from your version. */
 
 package gnu.javax.swing.text.html.parser;
 
-import java.io.IOException;
-
-import javax.swing.text.html.parser.ContentModel;
 import javax.swing.text.html.parser.DTD;
 
 /**
@@ -64,7 +61,6 @@ public class HTML_401Swing extends HTML_401F
    */
   public static DTD getInstance()
   {
-    System.out.println("HTML_401Swing.java.getInstance:");
     return singleton;
   }  
   
@@ -78,15 +74,13 @@ public class HTML_401Swing extends HTML_401F
   protected String[] getBodyElements()
   {
     return new String[] {
-        ABBR, ACRONYM,
-        APPLET, BASEFONT, BDO, 
+        APPLET, BASEFONT,
         BR, BUTTON, 
-        FONT, IFRAME, IMG,
+        IFRAME, IMG,
         INPUT, LABEL, MAP, OBJECT,
-        Q, S, SCRIPT, SELECT,
-        SPAN, STRIKE, SUB,
-        SUP, TEXTAREA, 
-        ADDRESS, BLOCKQUOTE, CENTER, DEL, DIR,
+        SCRIPT, SELECT,
+        TEXTAREA, 
+        BLOCKQUOTE, CENTER, DEL, DIR,
         DIV, DL, FIELDSET, FORM, H1,
         H2, H3, H4, H5, H6,
         HR, INS, ISINDEX, MENU, NOFRAMES,
@@ -94,5 +88,4 @@ public class HTML_401Swing extends HTML_401F
         UL
       };
   }
-
 }
