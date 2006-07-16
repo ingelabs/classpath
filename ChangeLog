@@ -1,5 +1,16 @@
 2006-07-16  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* gnu/javax/crypto/jce/cipher/KeyWrappingAlgorithmAdapter.java: New file.
+	* gnu/javax/crypto/jce/cipher/AESKeyWrapSpi.java: New file.
+	* gnu/javax/crypto/jce/cipher/AES128KeyWrapSpi.java: Likewise.
+	* gnu/javax/crypto/jce/cipher/AES192KeyWrapSpi.java: Likewise.
+	* gnu/javax/crypto/jce/cipher/AES256KeyWrapSpi.java: Likewise.
+	* gnu/javax/crypto/jce/cipher/TripleDESKeyWrapSpi.java: Likewise.
+	* gnu/javax/crypto/jce/GnuCrypto.java (.run): Added mappings for newly
+	added Key Wrapping Algorithm SPIs.
+
+2006-07-16  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* javax/crypto/Cipher.java (getOutputSize): Allow SPIs initialised for key
 	wrapping/unwrapping to invoke their engineGetOutputSize.
 
