@@ -1,4 +1,4 @@
-/* OperationsException.java -- Thrown by management operations.
+/* NotificationListener.java -- Interface for receivers of notifications.
    Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,39 +38,30 @@ exception statement from your version. */
 package javax.management;
 
 /**
- * A general superclass for all exceptions thrown by
- * operations on management beans.
+ * Represents a object that can receive notifications from
+ * a bean.
  *
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.5
  */
-public class OperationsException
-  extends JMException
+public interface NotificationListener
 {
-
+  
   /**
-   * Compatible with JDK 1.5
-   */
-  private static final long serialVersionUID = -4967597595580536216L;
-
-  /**
-   * Constructs a new <code>OperationsException</code>.
-   */
-  public OperationsException()
-  {
-    super();
-  }
-
-  /**
-   * Constructs a new <code>OperationsException</code>
-   * with the specified message.
+   * Invoked by the notifying bean when a notification is to
+   * be delivered to the recipient.  As the transmission of
+   * notifications takes place sequentially, implementors of
+   * this method should avoid performing lengthy operations,
+   * as the notifying bean will stall until the method is
+   * complete.
    *
-   * @param message the error message to give to the user.
+   * @param notification the notification from the bean.
+   * @param passback the object that was passed to the notifying
+   *                 bean as part of the registration process.
+   * @see NotificationBroadcaster#addListener(NotificationListener,
+   *      NotificationFilter, Object)
    */
-  public OperationsException(String message)
-  {
-    super(message);
-  }
+  void handleNotification(Notification notification, Object passback);
 
 }
 

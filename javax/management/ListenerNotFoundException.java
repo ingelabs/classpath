@@ -1,4 +1,4 @@
-/* OperationsException.java -- Thrown by management operations.
+/* ListenerNotFoundException.java -- Thrown when a listener does not exist.
    Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,36 +38,35 @@ exception statement from your version. */
 package javax.management;
 
 /**
- * A general superclass for all exceptions thrown by
- * operations on management beans.
+ * Thrown when a requested listener does not exist.
  *
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.5
  */
-public class OperationsException
-  extends JMException
+public class ListenerNotFoundException
+  extends OperationsException
 {
 
   /**
    * Compatible with JDK 1.5
    */
-  private static final long serialVersionUID = -4967597595580536216L;
+  private static final long serialVersionUID = -7242605822448519061L;
 
   /**
-   * Constructs a new <code>OperationsException</code>.
+   * Constructs a new <code>ListenerNotFoundException</code>.
    */
-  public OperationsException()
+  public ListenerNotFoundException()
   {
     super();
   }
 
   /**
-   * Constructs a new <code>OperationsException</code>
+   * Constructs a new <code>ListenerNotFoundException</code>
    * with the specified message.
    *
    * @param message the error message to give to the user.
    */
-  public OperationsException(String message)
+  public ListenerNotFoundException(String message)
   {
     super(message);
   }

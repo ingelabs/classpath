@@ -1,4 +1,4 @@
-/* OperationsException.java -- Thrown by management operations.
+/* NotificationFilter.java -- Interface for notification filters.
    Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,39 +38,26 @@ exception statement from your version. */
 package javax.management;
 
 /**
- * A general superclass for all exceptions thrown by
- * operations on management beans.
+ * Represents a object that acts as a filter for notifications.
+ * Implementations of this class are used to determine which
+ * notifications should be passed to a receiving bean, and which
+ * should not.
  *
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.5
  */
-public class OperationsException
-  extends JMException
+public interface NotificationFilter
 {
-
+  
   /**
-   * Compatible with JDK 1.5
-   */
-  private static final long serialVersionUID = -4967597595580536216L;
-
-  /**
-   * Constructs a new <code>OperationsException</code>.
-   */
-  public OperationsException()
-  {
-    super();
-  }
-
-  /**
-   * Constructs a new <code>OperationsException</code>
-   * with the specified message.
+   * Returns true if the specified notification should be passed
+   * on to the listener.
    *
-   * @param message the error message to give to the user.
+   * @param notification the notification being delivered.
+   * @return true if the notification should be passed to the
+   *         listener, false otherwise.
    */
-  public OperationsException(String message)
-  {
-    super(message);
-  }
+  boolean isNotificationEnabled(Notification notification);
 
 }
 

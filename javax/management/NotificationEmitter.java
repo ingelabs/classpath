@@ -1,4 +1,4 @@
-/* OperationsException.java -- Thrown by management operations.
+/* NotificationEmitter.java -- Refined interface for broadcasters.
    Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,39 +38,39 @@ exception statement from your version. */
 package javax.management;
 
 /**
- * A general superclass for all exceptions thrown by
- * operations on management beans.
+ * Represents a bean that can emit notifications when
+ * events occur.  Other beans can use this interface
+ * to add themselves to the list of recipients of such
+ * notifications.
  *
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.5
  */
-public class OperationsException
-  extends JMException
+public interface NotificationEmitter
+  extends NotificationBroadcaster
 {
-
+  
   /**
-   * Compatible with JDK 1.5
-   */
-  private static final long serialVersionUID = -4967597595580536216L;
-
-  /**
-   * Constructs a new <code>OperationsException</code>.
-   */
-  public OperationsException()
-  {
-    super();
-  }
-
-  /**
-   * Constructs a new <code>OperationsException</code>
-   * with the specified message.
+   * Removes the specified listener from the list of recipients
+   * of notifications from this bean.  Only the first instance with
+   * the supplied filter and passback object is removed.
+   * <code>null</code> is used as a valid value for these parameters,
+   * rather than as a way to remove all registration instances for
+   * the specified listener; for this behaviour instead, see the details
+   * of the same method in {@link NotificationBroadcaster}.
    *
-   * @param message the error message to give to the user.
+   * @param listener the listener to remove.
+   * @param filter the filter of the listener to remove.
+   * @param passback the passback object of the listener to remove.
+   * @throws ListenerNotFoundException if the specified listener
+   *                                   is not registered with this bean.
+   * @see #addNotificationListener(NotificationListener, NotificationFilter,
+   *                               java.lang.Object)
    */
-  public OperationsException(String message)
-  {
-    super(message);
-  }
+  void removeListener(NotificationListener listener,
+		      NotificationFilter filter,
+		      Object passback)
+    throws ListenerNotFoundException;
 
 }
 
