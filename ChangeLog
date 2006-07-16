@@ -1,5 +1,17 @@
 2006-07-16  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* gnu/javax/crypto/kwa/TripleDESKeyWrap.java (rnd): New field.
+	(engineInit): If a SecureRandom was specified then use it.
+	(nextRandomBytes): New method.
+	(engineWrap): Use above method.
+	* gnu/javax/crypto/kwa/BaseKeyWrappingAlgorithm.java (prng): New field.
+	(getDefaultPRNG): New method.
+	* gnu/javax/crypto/kwa/AESKeyWrap.java (engineInit): Reset underlying AES.
+	* gnu/javax/crypto/kwa/IKeyWrappingAlgorithm.java (SOURCE_OF_RANDOMNESS):
+	New constant.
+
+2006-07-16  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* gnu/javax/crypto/jce/params/BlockCipherParameters.java
 	(engineGetParameterSpec): Should be able to return an IvParameterSpec.
 
