@@ -1,3 +1,7 @@
+2006-07-16  Sven de Marothy  <sven@physto.se>
+
+	* java/util/UUID.java: New file.
+
 2006-07-16  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* gnu/javax/crypto/jce/cipher/KeyWrappingAlgorithmAdapter.java: New file.
