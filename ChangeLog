@@ -1,5 +1,10 @@
 2006-07-16  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* javax/crypto/Cipher.java (getOutputSize): Allow SPIs initialised for key
+	wrapping/unwrapping to invoke their engineGetOutputSize.
+
+2006-07-16  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* gnu/javax/crypto/kwa/TripleDESKeyWrap.java (rnd): New field.
 	(engineInit): If a SecureRandom was specified then use it.
 	(nextRandomBytes): New method.
