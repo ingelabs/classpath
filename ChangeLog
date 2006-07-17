@@ -1,3 +1,19 @@
+2006-07-17  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/x/XGraphicsEnvironment.java
+	(XGraphicsEnvironment): Make constructor public so that it
+	can be called via Class.forName().newInstance().
+	* gnu/java/awt/peer/x/XImage.java
+	(XImage): Fetch GraphicsEnvironment via
+	GraphicsEnvironment.getLocalGraphicsEnvironment() rather
+	than the XToolkit method, to avoid double instantiation
+	of the XGraphicsEnvironment.
+	* gnu/java/awt/peer/x/XToolkit.java
+	(env): Removed field.
+	(getLocalGraphicsEnvironment): Removed impl. This method
+	should not be called since we set the graphicsenv property
+	in the constructor.
+
 2006-07-16  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/util/UUID.java:
