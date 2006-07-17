@@ -1,5 +1,13 @@
 2006-07-17  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* java/awt/image/SinglePixelPackedSampleModel.java
+	(getSampleSize): Return copy of array,
+	(getOffset): Added API docs,
+	(getScanlineStride): Likewise,
+	(hashCode): Implemented.
+
+2006-07-17  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* java/awt/image/MultiPixelPackedSampleModel.java
 	(getOffset): Updated API docs and source reformatting,
 	(getBitOffset): Source reformatting only,
