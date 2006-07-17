@@ -1,5 +1,14 @@
 2006-07-17  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicButtonListener.java
+	(propertyChange): Only do the text layout caching as long
+	as the noGraphics2D property isn't set.
+	* javax/swing/plaf/basic/BasicMenuItemUI.java
+	(PropertyChangeHandler.propertyChange): Only do the text layout
+	caching as long	as the noGraphics2D property isn't set.
+
+2006-07-17  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/java/awt/peer/x/XGraphicsEnvironment.java
 	(XGraphicsEnvironment): Make constructor public so that it
 	can be called via Class.forName().newInstance().
