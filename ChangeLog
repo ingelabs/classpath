@@ -1,3 +1,29 @@
+2006-07-18  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java: Remove unneeded
+	imports.
+	* gnu/java/awt/peer/gtk/CairoSurface.java: Likewise.
+	* gnu/java/awt/peer/gtk/CairoSurfaceGraphics.java: Likewise.
+	* gnu/java/awt/peer/gtk/ComponentGraphicsCopy.java: Likewise.
+	* gnu/java/awt/peer/gtk/GdkFontPeer.java: Likewise.
+	* gnu/java/awt/peer/gtk/GdkPixbufDecoder.java: Likewise.
+	* gnu/java/awt/peer/gtk/GtkButtonPeer.java: Likewise.
+	* gnu/java/awt/peer/gtk/GtkClipboardNotifier.java: Likewise.
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java: Likewise.
+	* gnu/java/awt/peer/gtk/GtkContainerPeer.java: Likewise.
+	* gnu/java/awt/peer/gtk/GtkDialogPeer.java: Likewise.
+	* gnu/java/awt/peer/gtk/GtkFramePeer.java: Likewise.
+	* gnu/java/awt/peer/gtk/GtkImage.java: Likewise.
+	* gnu/java/awt/peer/gtk/GtkImageConsumer.java: Likewise.
+	* gnu/java/awt/peer/gtk/GtkMenuBarPeer.java: Likewise.
+	* gnu/java/awt/peer/gtk/GtkMenuItemPeer.java: Likewise.
+	* gnu/java/awt/peer/gtk/GtkMouseInfoPeer.java: Likewise.
+	* gnu/java/awt/peer/gtk/GtkPanelPeer.java: Likewise.
+	* gnu/java/awt/peer/gtk/GtkPopupMenuPeer.java: Likewise.
+	* gnu/java/awt/peer/gtk/GtkScrollbarPeer.java: Likewise.
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java: Likewise.
+	* gnu/java/awt/peer/gtk/VolatileImageGraphics.java: Likewise.
+
 2006-07-17  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* javax/swing/text/html/HTMLEditorKit.java: Rearrange import statements
