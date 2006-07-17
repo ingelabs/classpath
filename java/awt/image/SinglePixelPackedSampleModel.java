@@ -221,9 +221,23 @@ public class SinglePixelPackedSampleModel extends SampleModel
     return scanlineStride;
   }
 
+  /**
+   * Creates a new <code>SinglePixelPackedSampleModel</code> that accesses
+   * the specified subset of bands.
+   * 
+   * @param bands  an array containing band indices (<code>null</code> not
+   *     permitted).
+   * 
+   * @return A new sample model.
+   * 
+   * @throws NullPointerException if <code>bands</code> is <code>null</code>.
+   * @throws RasterFormatException if <code>bands.length</code> is greater
+   *     than the number of bands in this model.
+   */
   public SampleModel createSubsetSampleModel(int[] bands)
   {
-    // FIXME: Is this the right way to interpret bands?
+    if (bands.length > numBands)
+      throw new RasterFormatException("Too many bands.");
     
     int numBands = bands.length;
     

@@ -1,3 +1,8 @@
+2006-07-17  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/image/SinglePixelPackedSampleModel.java
+	(createSubsetSampleModel): Added argument check and API docs.
+
 2006-07-17  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/peer/x/XGraphics.java
