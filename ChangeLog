@@ -1,3 +1,38 @@
+2006-07-17  Lillian Angel  <langel@redhat.com>
+
+	* examples/gnu/classpath/examples/awt/Demo.java
+	(Demo): Added new window for DnD demo.
+	(DragDropWindow): New class.
+	* gnu/java/awt/dnd/peer/gtk/GtkDragSourceContextPeer.java:
+	Added new fields and declarations for native functions.
+	(GtkDragSourceContextPeer): Implemented.
+	(getComponentPeer): New function.
+	(startDrag): Partially implemented.
+	(getCursor): Implemented.
+	(setCursor): Implemented.
+	* include/GtkDragSourceContextPeer.h: New file.
+	* include/Makefile.am: Added new header file.
+	* java/awt/Component.java
+	(addNotify): Added call to the dropTarget's addNotify.
+	* java/awt/dnd/DragSource.java
+	(startDrag): Fixed code to use shared instances of peer and
+	context.
+	(getDragThreshold): Added stub.
+	* java/awt/dnd/DropTarget.java
+	(DropTarget): Implemented fully.
+	(addNotify): Added code to get the peer of the parent that is
+	not lightweight.
+	* java/awt/dnd/DropTargetDragEvent.java
+	(getTransferable): Added stub.
+	* native/jni/gtk-peer/GtkDragSourceContextPeer.c: New file.
+	* native/jni/gtk-peer/Makefile.am: Added new c file.
+	* gnu/java/awt/dnd/peer/gtk/GtkDropTargetContextPeer.java:
+	Changed to extend GtkGenericPeer.
+	(GtkDropTargetContextPeer): New constructor.
+	* gnu/java/awt/dnd/peer/gtk/GtkDropTargetPeer.java:
+	Changed to extend GtkGenericPeer.
+	(GtkDropTargetContextPeer): New constructor.
+
 2006-07-17  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/image/SinglePixelPackedSampleModel.java
