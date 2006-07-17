@@ -40,8 +40,6 @@ package javax.swing.text.html;
 
 
 import gnu.classpath.NotImplementedException;
-import gnu.javax.swing.text.html.parser.GnuParserDelegator;
-import gnu.javax.swing.text.html.parser.HTML_401Swing;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -72,6 +70,11 @@ import javax.swing.text.TextAction;
 import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 import javax.swing.text.html.parser.ParserDelegator;
+
+/* Move these imports here after javax.swing.text.html to make it compile
+   with jikes.  */
+import gnu.javax.swing.text.html.parser.GnuParserDelegator;
+import gnu.javax.swing.text.html.parser.HTML_401Swing;
 
 /**
  * @author Lillian Angel (langel at redhat dot com)
