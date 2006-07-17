@@ -1,3 +1,13 @@
+2006-07-17  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/image/MultiPixelPackedSampleModel.java
+	(getOffset): Updated API docs and source reformatting,
+	(getBitOffset): Source reformatting only,
+	(getDataElements): Likewise,
+	(getPixel): Likewise,
+	(getPixels): Removed method override,
+	(setDataElements): Reimplemented.
+
 2006-07-17  Gary Benson  <gbenson@redhat.com>
 
 	* resource/META-INF/services/.cvsignore: New file.
