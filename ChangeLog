@@ -1,3 +1,8 @@
+2006-07-17  Gary Benson  <gbenson@redhat.com>
+
+	* resource/META-INF/services/.cvsignore: New file.
+	* lib/.cvsignore: Updated.	
+
 2006-07-17  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicButtonListener.java

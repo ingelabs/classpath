@@ -34,3 +34,4 @@ Makefile.deps
 lists
 copy-vmresources.sh
 classes.2
+standard.omit
