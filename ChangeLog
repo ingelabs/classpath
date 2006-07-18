@@ -1,3 +1,15 @@
+2006-07-18  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	PR Classpath/27205
+	* tools/gnu/classpath/tools/jarsigner/SFHelper.java (writeDSA): Check
+	certificate validity.
+	(getIssuerName): New method.
+	(getSubjectName): Likewise.
+	(getNotAfterDate): Likewise.
+	(getNotBeforeDate): Likewise.
+	* resource/gnu/classpath/tools/jarsigner/messages.properties: Added
+	messages for newly added messages in SFHelper.
+
 2006-07-18  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/peer/x/XDialogPeer.java: New class.
