@@ -1,5 +1,10 @@
 2006-07-18  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* java/awt/image/BufferedImageOp.java: API docs added,
+	* java/awt/image/RasterOp.java: Likewise.
+
+2006-07-18  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* java/awt/Graphics2D.java: API docs updated.
 
 2006-07-18  David Gilbert  <david.gilbert@object-refinery.com>
