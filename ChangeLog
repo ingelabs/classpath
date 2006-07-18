@@ -1,3 +1,19 @@
+2006-07-18  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/image/BandedSampleModel.java
+	(createDataBuffer): New method override,
+	* java/awt/image/ByteLookupTable.java
+	(ByteLookupTable(int, byte[][])): Create new array to hold references,
+	(ByteLookuptable(int, byte[])): Check for null array,
+	* java/awt/image/ComponentSampleModel.java
+	(createDataBuffer): Removed unnecessary braces,
+	(getSample): Check (x, y) is within bounds,
+	* java/awt/image/ShortLookupTable.java
+	(ShortLookupTable(int, short[][])): Create new array to hold references,
+	(ShortLookupTable(int, short[])): Check for null array,
+	(getTable): Added API docs,
+	(lookupPixel): Source reformatting.
+
 2006-07-18  Tania Bento  <tbento@redhat.com>
 	
 	* java/awt/GridLayout.java

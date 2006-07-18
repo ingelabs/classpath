@@ -36,6 +36,8 @@ exception statement from your version. */
 
 package java.awt.image;
 
+import gnu.java.awt.Buffers;
+
 /**
  * A sample model that reads each sample value from a separate band in the
  * {@link DataBuffer}.
@@ -88,6 +90,17 @@ public final class BandedSampleModel extends ComponentSampleModel
 			   int[] bankIndices, int[] bandOffsets)
   {
     super(dataType, w, h, 1, scanlineStride, bankIndices, bandOffsets);
+  }
+  
+  /**
+   * Creates a new data buffer that is compatible with this sample model.
+   * 
+   * @return The new data buffer.
+   */
+  public DataBuffer createDataBuffer()
+  {
+    int size = scanlineStride * height;
+    return Buffers.createBuffer(getDataType(), size, numBanks);
   }
 
   /**
