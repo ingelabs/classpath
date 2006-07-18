@@ -2,7 +2,7 @@
 # @configure_input@
 
 top_srcdir=@top_srcdir@
-vmdirs=`echo "@vm_classes@" | sed 's%:% %g'`
+vmdirs=`echo "@vm_classes@ ${top_srcdir}/gnu/java/awt/peer/x" | sed 's%:% %g'`
 destMetaDir=`pwd`/META-INF
 destResDir=`pwd`
 

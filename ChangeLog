@@ -1,3 +1,7 @@
+2006-07-18  Roman Kennke  <kennke@aicas.com>
+
+	* lib/copy-vmresources.sh.in: Include properties from X peers.
+
 2006-07-18  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	PR Classpath/27205
