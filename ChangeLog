@@ -1,3 +1,11 @@
+2006-07-18  Sven de Marothy  <sven@physto.se>
+
+	* java/net/Inet6Address.java:
+	Add 1.5 serialized fields.
+	(getByAddress): New methods.
+	(readObject, writeObject): New methods. 
+	(equals): Reimplement.
+
 2006-07-18  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/image/Raster.java: Added API docs and reformatted source
