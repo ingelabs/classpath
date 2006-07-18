@@ -1,3 +1,13 @@
+2006-07-18  Tania Bento  <tbento@redhat.com>
+	
+	* java/awt/GridLayout.java
+	(setHgap): Illegal Argument Exception should not be thrown if 
+	hgap < 0.
+	(setVgap): Illegal Argument Exception should not be thrown if 
+	vgap < 0.
+	(toString): Opening square braket ([) should appear before hgap
+	value, not the name of the class.
+
 2006-07-18  Roman Kennke  <kennke@aicas.com>
 
 	* lib/copy-vmresources.sh.in: Reverted.
