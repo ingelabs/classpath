@@ -38,7 +38,19 @@ exception statement from your version. */
 package gnu.java.lang.management;
 
 import java.lang.management.MemoryMXBean;
+import java.lang.management.MemoryNotificationInfo;
 import java.lang.management.MemoryUsage;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.management.ListenerNotFoundException;
+import javax.management.MBeanNotificationInfo;
+import javax.management.Notification;
+import javax.management.NotificationEmitter;
+import javax.management.NotificationFilter;
+import javax.management.NotificationListener;
 
 /**
  * Provides access to information about the memory 
@@ -51,8 +63,15 @@ import java.lang.management.MemoryUsage;
  */
 public final class MemoryMXBeanImpl
   extends BeanImpl
-  implements MemoryMXBean
+  implements MemoryMXBean, NotificationEmitter
 {
+
+  private List listeners;
+
+  public MemoryMXBeanImpl()
+  {
+    listeners = new ArrayList();
+  }
 
   public void gc()
   {
@@ -83,6 +102,105 @@ public final class MemoryMXBeanImpl
   {
     checkControlPermissions();
     VMMemoryMXBeanImpl.setVerbose(verbose);
+  }
+
+  private class ListenerData
+  {
+    private NotificationListener listener;
+    private NotificationFilter filter;
+    private Object passback;
+
+    public ListenerData(NotificationListener listener,
+			NotificationFilter filter, Object passback)
+    {
+      this.listener = listener;
+      this.filter = filter;
+      this.passback = passback;
+    }
+    
+    public NotificationListener getListener()
+    {
+      return listener;
+    }
+
+    public NotificationFilter getFilter()
+    {
+      return filter;
+    }
+
+    public Object getPassback()
+    {
+      return passback;
+    }
+
+    public boolean equals(Object obj)
+    {
+      if (obj instanceof ListenerData)
+	{
+	  ListenerData data = (ListenerData) obj;
+	  return (data.getListener() == listener &&
+		  data.getFilter() == filter &&
+		  data.getPassback() == passback);
+	}
+      return false;
+    }
+
+  }
+
+  public void addNotificationListener(NotificationListener listener,
+				      NotificationFilter filter,
+				      Object passback)
+  {
+    if (listener == null)
+      throw new IllegalArgumentException("Null listener added to bean.");
+    listeners.add(new ListenerData(listener, filter, passback));
+  }
+
+  public MBeanNotificationInfo[] getNotificationInfo()
+  {
+    return new MBeanNotificationInfo[]
+      {
+	new MBeanNotificationInfo(new String[]
+	  {
+	    MemoryNotificationInfo.MEMORY_COLLECTION_THRESHOLD_EXCEEDED,
+	    MemoryNotificationInfo.MEMORY_THRESHOLD_EXCEEDED
+	  },
+				  Notification.class.getName(), 
+				  "Memory Usage Notifications")
+      };
+  }
+
+  public void removeNotificationListener(NotificationListener listener)
+    throws ListenerNotFoundException
+  {
+    Iterator it = listeners.iterator();
+    boolean foundOne = false;
+    while (it.hasNext())
+      {
+	ListenerData data = (ListenerData) it.next();
+	if (data.getListener() == listener)
+	  {
+	    it.remove();
+	    foundOne = true;
+	  }
+      }
+    if (!foundOne)
+      throw new ListenerNotFoundException("The specified listener, " + listener +
+					  "is not registered with this bean.");
+  }
+
+  public void removeNotificationListener(NotificationListener listener,
+					 NotificationFilter filter,
+					 Object passback)
+    throws ListenerNotFoundException
+  {
+    if (!(listeners.remove(new ListenerData(listener, filter, passback))))
+      {
+	throw new ListenerNotFoundException("The specified listener, " + listener +
+					    " with filter " + filter + 
+					    "and passback " + passback + 
+					    ", is not registered with this bean.");
+      }
   }
 
 }
