@@ -1,3 +1,19 @@
+2006-07-18  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/x/XFontPeer.java
+	(encodeFont): Be more flexible with font sizes.
+	(validSize): New helper method.
+	* gnu/java/awt/peer/x/XGraphics.java
+	(drawImage(Image,int,int,int,int,int,int,int,int,ImageObserver)):
+	Implemented.
+	(drawImage(Image,int,int,int,int,int,int,int,int,Color,ImageObserver)):
+	Implemented.
+	* gnu/java/awt/peer/x/XImage.java
+	(properties): New field.
+	(getProperty): Implemented.
+	* resource/gnu/java/awt/peer/x/fonts.properties:
+	Added copyright header. Fixed font size field.
+
 2006-07-18  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/image/BandedSampleModel.java

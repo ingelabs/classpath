@@ -46,28 +46,15 @@ import gnu.x11.Point;
 
 import java.awt.AWTError;
 import java.awt.Color;
-import java.awt.Composite;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.GraphicsConfiguration;
 import java.awt.Image;
-import java.awt.Paint;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.Shape;
-import java.awt.Stroke;
 import java.awt.Toolkit;
-import java.awt.RenderingHints.Key;
-import java.awt.font.FontRenderContext;
-import java.awt.font.GlyphVector;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
 import java.awt.image.ImageObserver;
 import java.awt.image.ImageProducer;
-import java.awt.image.RenderedImage;
-import java.awt.image.renderable.RenderableImage;
 import java.text.AttributedCharacterIterator;
 import java.util.HashMap;
 
@@ -577,16 +564,41 @@ public class XGraphics
                            int sx1, int sy1, int sx2, int sy2,
                            ImageObserver observer)
   {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
+    return drawImage(image, dx1, dy1, dx2, dy2, sx1, sx2, sy1, sy2, null,
+                     observer);
   }
 
   public boolean drawImage(Image image, int dx1, int dy1, int dx2, int dy2,
                            int sx1, int sy1, int sx2, int sy2, Color bgcolor,
                            ImageObserver observer)
   {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
+
+    // FIXME: What to do with bgcolor?
+
+    // Scale the image.
+    int sw = image.getWidth(observer);
+    int sh = image.getHeight(observer);
+    double scaleX = Math.abs(dx2 - dx1) / (double) Math.abs(sx2 - sx1);
+    double scaleY = Math.abs(dy2 - dy1) / (double) Math.abs(sy2 - sy1);
+    Image scaled = image.getScaledInstance((int) (scaleX * sw),
+                                           (int) (scaleY * sh),
+                                           Image.SCALE_FAST);
+
+    // Scaled source coordinates.
+    int sx1s = (int) (scaleX * Math.min(sx1, sx2));
+    int sx2s = (int) (scaleX * Math.max(sx1, sx2));
+
+    // Temporarily clip to the target rectangle.
+    Rectangle old = clip;
+    clipRect(dx1, dy1, dx2 - dx1, dy2 - dy1);
+
+    // Draw scaled image.
+    boolean res = drawImage(scaled, dx1 - sx1s, dy1 - sx2s, observer);
+
+    // Reset clip.
+    setClip(old);
+
+    return res;
   }
 
   /**
