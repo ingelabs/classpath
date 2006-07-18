@@ -132,6 +132,11 @@ public class XToolkit
   static boolean DEBUG = false;
 
   /**
+   * Maps AWT colors to X colors.
+   */
+  HashMap colorMap = new HashMap();
+
+  /**
    * The system event queue.
    */
   private EventQueue eventQueue;
@@ -160,8 +165,7 @@ public class XToolkit
 
   public GraphicsEnvironment getLocalGraphicsEnvironment()
   {
-    assert false : "Don't call this";
-    return null;
+    return new XGraphicsEnvironment();
   }
 
   /**
@@ -286,8 +290,7 @@ public class XToolkit
 
   protected DialogPeer createDialog(Dialog target)
   {
-    // TODO: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented.");
+    return new XDialogPeer(target);
   }
 
   protected MenuBarPeer createMenuBar(MenuBar target)
@@ -499,8 +502,10 @@ public class XToolkit
 
   public Image createImage(ImageProducer producer)
   {
-    // TODO: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented.");
+    ImageConverter conv = new ImageConverter();
+    producer.startProduction(conv);
+    Image image = conv.getXImage();
+    return image;
   }
 
   public Image createImage(byte[] data, int offset, int len)
@@ -525,10 +530,8 @@ public class XToolkit
     BufferedImage buffered = ImageIO.read(i);
     if (buffered != null)
       {
-        ImageConverter conv = new ImageConverter();
         ImageProducer source = buffered.getSource();
-        source.startProduction(conv);
-        image = conv.getXImage();
+        image = createImage(source);
       }
     else
       {

@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package gnu.java.awt.peer.x;
 
+import gnu.x11.Colormap;
 import gnu.x11.Drawable;
 import gnu.x11.GC;
 import gnu.x11.Pixmap;
@@ -49,7 +50,6 @@ import java.awt.Composite;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 import java.awt.Paint;
@@ -57,6 +57,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.awt.Toolkit;
 import java.awt.RenderingHints.Key;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
@@ -68,10 +69,10 @@ import java.awt.image.ImageProducer;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderableImage;
 import java.text.AttributedCharacterIterator;
-import java.util.Map;
+import java.util.HashMap;
 
 public class XGraphics
-  extends Graphics2D
+  extends Graphics
   implements Cloneable
 {
 
@@ -171,7 +172,18 @@ public class XGraphics
   {
     if (c != null)
       {
-        xgc.set_foreground(c.getRGB());
+        XToolkit tk = (XToolkit) Toolkit.getDefaultToolkit();
+        HashMap colorMap = tk.colorMap;
+        gnu.x11.Color col = (gnu.x11.Color) colorMap.get(c);
+        if (col == null)
+          {
+            Colormap map = xdrawable.display.default_colormap;
+            col = map.alloc_color (c.getRed() * 256,
+                                   c.getGreen() * 256,
+                                   c.getBlue() * 256);
+            colorMap.put(c, col);
+          }
+        xgc.set_foreground(col);
         foreground = c;
       }
   }
@@ -589,213 +601,6 @@ public class XGraphics
         disposed = true;
       }
   }
-
-  // Additional Graphics2D methods.
-  
-  public void draw(Shape shape)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public boolean drawImage(Image image, AffineTransform xform, ImageObserver obs)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public void drawImage(BufferedImage image, BufferedImageOp op, int x, int y)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public void drawRenderedImage(RenderedImage image, AffineTransform xform)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public void drawRenderableImage(RenderableImage image, AffineTransform xform)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public void drawString(String text, float x, float y)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public void drawString(AttributedCharacterIterator iterator, float x, float y)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public void fill(Shape shape)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public boolean hit(Rectangle rect, Shape text, boolean onStroke)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public GraphicsConfiguration getDeviceConfiguration()
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public void setComposite(Composite comp)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public void setPaint(Paint paint)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public void setStroke(Stroke stroke)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public void setRenderingHint(Key hintKey, Object hintValue)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public Object getRenderingHint(Key hintKey)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public void setRenderingHints(Map hints)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public void addRenderingHints(Map hints)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public RenderingHints getRenderingHints()
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public void translate(double tx, double ty)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public void rotate(double theta)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public void rotate(double theta, double x, double y)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public void scale(double scaleX, double scaleY)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public void shear(double shearX, double shearY)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public void transform(AffineTransform Tx)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public void setTransform(AffineTransform Tx)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public AffineTransform getTransform()
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public Paint getPaint()
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public Composite getComposite()
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public void setBackground(Color color)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public Color getBackground()
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public Stroke getStroke()
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public void clip(Shape s)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public FontRenderContext getFontRenderContext()
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  public void drawGlyphVector(GlyphVector g, float x, float y)
-  {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
 
   // Additional helper methods.
 

@@ -1,3 +1,26 @@
+2006-07-18  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/x/XDialogPeer.java: New class.
+	* gnu/java/awt/peer/x/XEventPump.java
+	(handleEvent): Cast to XWindowPeer rather than XFramePeer.
+	* gnu/java/awt/peer/x/XFramePeer.java
+	Made a subclass of XWindowPeer, rather than SwingFramePeer.
+	* gnu/java/awt/peer/x/XGraphics.java
+	Made subclass of Graphics rather than Graphics2D. Removed
+	all Graphics2D specific method stubs.
+	(setColor): Map colors using the X color map that is
+	stored in XToolkit.
+	* gnu/java/awt/peer/x/XToolkit.java
+	(colorMap): New field.
+	(getLocalGraphicsEnvironment): Return new XGraphicsEnvironment
+	instance.
+	(createDialog): Implemented.
+	(createImage(ImageProducer)): Implemented.
+	(createImage(InputStream)): Use createImage(ImageProducer)
+	to convert the BufferedImage to an XImage.
+	* gnu/java/awt/peer/x/XWindowPeer.java
+	(XWindowPeer): Removed debug output.
+
 2006-07-18  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/image/BufferedImageOp.java: API docs added,
