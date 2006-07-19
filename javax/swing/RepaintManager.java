@@ -38,7 +38,6 @@ exception statement from your version. */
 
 package javax.swing;
 
-import java.applet.Applet;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -647,7 +646,7 @@ public class RepaintManager
         width = Math.min(doubleBufferMaximumSize.width, width);
         int height = Math.max(proposedHeight, root.getHeight());
         height = Math.min(doubleBufferMaximumSize.height, height);
-        buffer = component.createImage(width, height);
+        buffer = root.createImage(width, height);
         offscreenBuffers.put(root, buffer);
       }
     return buffer;

@@ -1,5 +1,21 @@
 2006-07-19  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JComponent.java
+	(paintChildren): Refactored. The paintChildrenOptimized method
+	has been moved back in here. Added locking of the tree and
+	only check for completely obscured child components
+	when not optimized drawing enabled. Use Graphics.create() to
+	protect from irreversible changes.
+	(isCompletelyObscured): New helper method.
+	(paintComponent): Also use Graphics.create() for Graphics2D,
+	to protect from irreverible changes.
+	(clipAndTranslateGraphics): Refactored to use more efficient
+	iterative (vs recursive) approach.
+	* javax/swing/RepaintManager.java
+	(getOffscreenBuffer): Create image from root component.
+	
+2006-07-19  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/java/awt/peer/x/XGraphics.java
 	(translate): Don't set the clip on the X server.
 	(clipRect): Use setXClip() to set the clip on the X server.
