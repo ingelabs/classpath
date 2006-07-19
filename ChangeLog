@@ -1,3 +1,19 @@
+2006-07-19  Lillian Angel  <langel@redhat.com>
+
+	* examples/gnu/classpath/examples/awt/Demo.java
+	(DragDropWindow): Fixed typo in Label text.
+	* gnu/java/awt/dnd/peer/gtk/GtkDragSourceContextPeer.java
+	(GtkDragSourceContextPeer): Removed unneeded initialization for field.
+	(startDrag): Initialized context field.
+	(transferablesFlavorsChanged): Removed FIXME. Nothing is done in this
+	function.
+	(dragEnter): New function.
+	(dragExit): Likewise.
+	(dragDropEnd): Likewise.
+	(dragMouseMoved): Likewise.
+	(dragOver): Likewise.
+	(dragActionChanged): Likewise.
+
 2006-07-19  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	PR Classpath/26302
