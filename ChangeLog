@@ -1,5 +1,22 @@
 2006-07-19  Sven de Marothy  <sven@physto.se>
 
+	* gnu/javax/imageio/png/PNGChunk.java,
+	* gnu/javax/imageio/png/PNGData.java,
+	* gnu/javax/imageio/png/PNGDecoder.java,
+	* gnu/javax/imageio/png/PNGEncoder.java,
+	* gnu/javax/imageio/png/PNGException.java,
+	* gnu/javax/imageio/png/PNGFile.java,
+	* gnu/javax/imageio/png/PNGFilter.java,
+	* gnu/javax/imageio/png/PNGGamma.java,
+	* gnu/javax/imageio/png/PNGHeader.java,
+	* gnu/javax/imageio/png/PNGICCProfile.java,
+	* gnu/javax/imageio/png/PNGPalette.java,
+	* gnu/javax/imageio/png/PNGPhys.java,
+	* gnu/javax/imageio/png/PNGTime.java:
+	New files.
+
+2006-07-19  Sven de Marothy  <sven@physto.se>
+
 	* java/net/Inet6Address.java:
 	(getScopedId, getScopedInterface): New methods.
 	
