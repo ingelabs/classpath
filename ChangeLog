@@ -1,3 +1,9 @@
+2006-07-19  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/x/XGraphics.java
+	(drawImage(Image,int,int,int,int,int,int,int,int,ImageObserver)):
+	Fixed ordering of parameters.
+
 2006-07-18  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* gnu/java/lang/management/MemoryMXBeanImpl.java:

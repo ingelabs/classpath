@@ -564,7 +564,7 @@ public class XGraphics
                            int sx1, int sy1, int sx2, int sy2,
                            ImageObserver observer)
   {
-    return drawImage(image, dx1, dy1, dx2, dy2, sx1, sx2, sy1, sy2, null,
+    return drawImage(image, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null,
                      observer);
   }
 
