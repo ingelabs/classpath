@@ -1,3 +1,14 @@
+2006-07-19  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	PR Classpath/26302
+	* resource/java/security/classpath.security: Updated copyright year.
+	(auth.login.defaultCallbackHandler): New property; set to our default
+	callback handler. This is needed by the LoginContext when no callback
+	handler was specified.
+	* javax/security/auth/login/LoginContext.java: Updated copyright year.
+	(LoginContext(4)): Assign passed parameters to local fields before invoking
+	lookup method.
+
 2006-07-19  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/peer/x/XGraphics.java
