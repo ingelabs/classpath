@@ -1,5 +1,18 @@
 2006-07-19  Roman Kennke  <kennke@aicas.com>
 
+	* resource/gnu/regexp/MessagesBundle.properties,
+	* resource/gnu/regexp/MessagesBundle_fr.properties,
+	* resource/gnu/regexp/MessagesBundle_it.properties:
+	Moved to resource/gnu/java/util/regex.
+	* resource/gnu/java/util/regex/MessagesBundle.properties,
+	* resource/gnu/java/util/regex/MessagesBundle_fr.properties,
+	* resource/gnu/java/util/regex/MessagesBundle_it.properties:
+	New files.
+	* gnu/java/util/regex/RE.java
+	Use new resource bundle location.
+
+2006-07-19  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComponent.java
 	(paintChildren): Refactored. The paintChildrenOptimized method
 	has been moved back in here. Added locking of the tree and
