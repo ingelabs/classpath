@@ -1,3 +1,8 @@
+2006-07-19  Keith Seitz  <keiths@redhat.com>
+
+	* include/jvmti.h (JVMTI_VERSION_1_0): Define.
+	(JVMTI_VERSION): Define.
+
 2006-07-19  Roman Kennke  <kennke@aicas.com>
 
 	* resource/gnu/regexp/MessagesBundle.properties,
