@@ -1,3 +1,15 @@
+2006-07-19  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/x/XGraphics.java
+	(translate): Don't set the clip on the X server.
+	(clipRect): Use setXClip() to set the clip on the X server.
+	(hitClip): More efficient and correct implementation.
+	(setClip): Use setXClip() to set the clip on the X server.
+	(setClip(Shape)): Use setXClip() to set the clip on the X server.
+	(copyArea): Translate and clip the source rectangle correctly.
+	(dispose): Only flush when object is not yet disposed.
+	(clone): Use setXClip() to set the clip on the X server.
+
 2006-07-19  Sven de Marothy  <sven@physto.se>
 
 	* gnu/javax/imageio/png/PNGChunk.java,

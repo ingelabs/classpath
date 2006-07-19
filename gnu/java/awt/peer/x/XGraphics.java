@@ -135,7 +135,6 @@ public class XGraphics
       {
         clip.x -= x;
         clip.y -= y;
-        setClip(clip);
       }
   }
 
@@ -256,7 +255,7 @@ public class XGraphics
         computeIntersection(x, y, width, height, clip);
       }
     // Update the X clip setting.
-    setClip(clip.x, clip.y, clip.width, clip.height);
+    setXClip(clip.x, clip.y, clip.width, clip.height);
   }
 
   /**
@@ -281,9 +280,19 @@ public class XGraphics
       }
     else
       {
-        hit = clip.intersects(x, y, w, h);
+        // It's easier to determine if the rectangle lies outside the clip,
+        // so we determine that and reverse the result (if it's not completely
+        // outside, it most likely hits the clip rectangle).
+        int x2 = x + w;
+        int y2 = y + h;
+        int clipX2 = clip.x + clip.width;
+        int clipY2 = clip.y + clip.height;
+        boolean outside = (x < clip.x && x2 < clip.x)     // Left.
+                          || (x > clipX2  && x2 > clipX2) // Right.
+                          || (y < clip.y && y2 < clip.y)  // Top.
+                          || (y > clipY2 && y2 > clipY2); // Bottom.
+        hit = ! outside;
       }
-    //System.err.println("hitClip:  " + hit);
     return hit;
   }
 
@@ -293,10 +302,23 @@ public class XGraphics
       clip.setBounds(x, y, width, height);
     else
       clip = new Rectangle(x, y, width, height);
+    setXClip(clip.x, clip.y, clip.width, clip.height);
+  }
 
+  /**
+   * Sets the clip on the X server GC. The coordinates are not yet translated,
+   * this will be performed by the X server.
+   *
+   * @param x the clip, X coordinate
+   * @param y the clip, Y coordinate
+   * @param w the clip, width
+   * @param h the clip, height
+   */
+  private void setXClip(int x, int y, int w, int h)
+  {
     gnu.x11.Rectangle[] clipRects = new gnu.x11.Rectangle[] {
-                                  new gnu.x11.Rectangle(x, y, width, height) };
-    xgc.set_clip_rectangles(translateX, translateY, clipRects, GC.UN_SORTED);
+                                  new gnu.x11.Rectangle(x, y, w, h) };
+    xgc.set_clip_rectangles(translateX, translateY, clipRects, GC.YX_BANDED);
   }
 
   public Shape getClip()
@@ -308,34 +330,43 @@ public class XGraphics
   /**
    * Sets the current clip.
    *
-   * @param clip the clip to set
+   * @param c the clip to set
    */
-  public void setClip(Shape clip)
+  public void setClip(Shape c)
   {
-    if (clip != null)
+    if (c != null)
       {
         Rectangle b;
-        if (clip instanceof Rectangle)
+        if (c instanceof Rectangle)
           {
-            b = (Rectangle) clip;
+            b = (Rectangle) c;
           }
         else
           {
-            b = clip.getBounds();
+            b = c.getBounds();
           }
-        setClip(b.x, b.y, b.width, b.height);
+        clip.setBounds(b);
+        setXClip(b.x, b.y, b.width, b.height);
       }
     else
       {
-        setClip(0, 0, xdrawable.width, xdrawable.height);
+        clip.setBounds(0, 0, xdrawable.width, xdrawable.height);
+        setXClip(0, 0, xdrawable.width, xdrawable.height);
       }
   }
 
   public void copyArea(int x, int y, int width, int height, int dx, int dy)
   {
-    int srcX = x + translateX;
-    int srcY = y + translateY;
-    xdrawable.copy_area(xdrawable, xgc, srcX, srcY, width, height,
+    // Clip and translate src rectangle.
+    int srcX = Math.min(Math.max(x, clip.x), clip.x + clip.width)
+               + translateX;
+    int srcY = Math.min(Math.max(y, clip.y), clip.y + clip.height)
+               + translateY;
+    int srcWidth = Math.min(Math.max(x + width, clip.x),
+                            clip.x + clip.width) - x;
+    int srcHeight = Math.min(Math.max(y + height, clip.y),
+                            clip.y + clip.height) - y;
+    xdrawable.copy_area(xdrawable, xgc, srcX, srcY, srcWidth, srcHeight,
                         srcX + dx, srcY + dy);
   }
 
@@ -606,10 +637,10 @@ public class XGraphics
    */
   public void dispose()
   {
-    xdrawable.display.flush();
     if (! disposed)
       {
         xgc.free();
+        xdrawable.display.flush();
         disposed = true;
       }
   }
@@ -625,18 +656,18 @@ public class XGraphics
       {
         XGraphics copy = (XGraphics) super.clone();
         copy.xgc = xgc.copy();
-
-        // Save the original clip.
         if (clip != null)
-          copy.clip = new Rectangle(clip);
+          {
+            copy.clip = new Rectangle(clip);
+            copy.setXClip(clip.x, clip.y, clip.width, clip.height);
+          }
         return copy;
       }
     catch (CloneNotSupportedException ex)
       {
-        AWTError err = new AWTError("Error while cloning XGraphics");
-        err.initCause(ex);
-        throw err;
+        assert false;
       }
+    return null;
   }
   
   /**
