@@ -1,3 +1,10 @@
+2006-07-20  David Gilbert  <david.gilbert@object-refinery.com>
+
+	PR Classpath/28422
+	* java/awt/image/ConvolveOp.java
+	(filter(Raster, WritableRaster)): Reimplemented,
+	(fillEdge): New private method.
+
 2006-07-19  Keith Seitz  <keiths@redhat.com>
 
 	* include/jvmti.h (JVMTI_VERSION_1_0): Define.
