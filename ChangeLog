@@ -1,5 +1,17 @@
 2006-07-20  Roman Kennke  <kennke@aicas.com>
 
+	* gnu/java/awt/peer/x/XToolkit.java
+	(createImage(InputStream)): Only copy image to Pixmap if
+	it's actually opaque. Transparent images are left as
+	BufferedImage and composited later onto the screen.
+	* gnu/java/awt/peer/x/XGraphics.java
+	(XGraphics): Fetch some parameters for image rendering.
+	(drawImage): Added special handling of transparent images.
+	(getRGB): New helper method.
+	(setRGB): New helper method.
+
+2006-07-20  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/javax/imageio/IIOInputStream.java: New class. Wraps
 	ImageInputStreams as normal InputStreams.
 	* gnu/javax/imageio/gif/GIFStream.java:
