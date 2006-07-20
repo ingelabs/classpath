@@ -1,3 +1,9 @@
+2006-07-20  Lillian Angel  <langel@redhat.com>
+
+	PR 28440
+	* gnu/java/awt/peer/gtk/GtkCheckboxPeer.java
+	(dispose): Reset all fields.
+
 2006-07-20  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/peer/x/XToolkit.java
