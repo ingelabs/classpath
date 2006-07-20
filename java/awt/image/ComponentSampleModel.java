@@ -676,6 +676,9 @@ public class ComponentSampleModel extends SampleModel
    */
   public int[] getPixel(int x, int y, int[] iArray, DataBuffer data)
   {
+    if (x < 0 || x >= width || y < 0 || y >= height)
+      throw new ArrayIndexOutOfBoundsException("Pixel (" + x + ", " + y 
+                                               + ") is out of bounds.");
     int offset = pixelStride * x + scanlineStride * y;
     if (iArray == null)
       iArray = new int[numBands];
@@ -742,7 +745,8 @@ public class ComponentSampleModel extends SampleModel
   public int getSample(int x, int y, int b, DataBuffer data)
   {
     if (x < 0 || x >= width || y < 0 || y >= height)
-      throw new ArrayIndexOutOfBoundsException("(x, y) is out of bounds.");
+      throw new ArrayIndexOutOfBoundsException("Sample (" + x + ", " + y 
+                                               + ") is out of bounds.");
     return data.getElem(bankIndices[b], getOffset(x, y, b));
   }
 

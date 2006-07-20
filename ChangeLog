@@ -1,5 +1,11 @@
 2006-07-20  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* java/awt/image/ComponentSampleModel.java
+	(getPixel): Added argument check,
+	(getSample): Modified exception message.
+
+2006-07-20  David Gilbert  <david.gilbert@object-refinery.com>
+
 	PR Classpath/28422
 	* java/awt/image/ConvolveOp.java
 	(filter(Raster, WritableRaster)): Reimplemented,
