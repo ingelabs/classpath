@@ -1,3 +1,22 @@
+2006-07-20  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/javax/imageio/IIOInputStream.java: New class. Wraps
+	ImageInputStreams as normal InputStreams.
+	* gnu/javax/imageio/gif/GIFStream.java:
+	Moved to gnu/javax/imageio/IIOInputStream.java.
+	* gnu/javax/imageio/gif/GIFImageReader.java
+	(readImage): Use IIOInputStream.
+	* gnu/javax/imageio/gif/GIFImageReaderSpi.java
+	(canDecodeInput): Use IIOInputStream.
+	* gnu/javax/imageio/png/PNGException.java: Make subclass
+	of IOException.
+	* gnu/javax/imageio/png/PNGImageReader.java: New class.
+	Implements the ImageIO ImageReader for PNG.
+	* gnu/javax/imageio/png/PNGImageReaderSpi.java: New class.
+	Implements the ImageIO ImageReaderSpi for PNG.
+	* javax/imageio/spi/IIORegistry.java:
+	(IIORegistry): Add PNGImageReaderSpi.
+
 2006-07-20  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/image/ComponentSampleModel.java

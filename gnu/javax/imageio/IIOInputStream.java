@@ -35,7 +35,7 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package gnu.javax.imageio.gif;
+package gnu.javax.imageio;
 
 import java.io.InputStream;
 import java.io.IOException;
@@ -43,14 +43,14 @@ import javax.imageio.stream.ImageInputStream;
 
 /**
  * Implements InputStream on an ImageInputStream
- * The purpose of this is to avoid IIO dependencies in GIFFile
- * (which only uses read() anyway).
+ * The purpose of this is to avoid IIO dependencies in the various decoders.
+ * (which only use read() anyway).
  */
-public class GIFStream extends InputStream
+public class IIOInputStream extends InputStream
 {
   private ImageInputStream is;
 
-  public GIFStream( ImageInputStream is )
+  public IIOInputStream( ImageInputStream is )
   {
     this.is = is;
   }

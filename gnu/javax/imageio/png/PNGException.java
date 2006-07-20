@@ -37,7 +37,9 @@ exception statement from your version. */
 
 package gnu.javax.imageio.png;
 
-public class PNGException extends Exception 
+import java.io.IOException;
+
+public class PNGException extends IOException 
 {
   public PNGException(String msg)
   {
