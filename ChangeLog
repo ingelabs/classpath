@@ -1,3 +1,18 @@
+2006-07-20  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JTable.java
+	(tableChanged): Split out handling of the event into multiple
+	subroutines.
+	(handleCompleteChange): New method. Clear the selection and
+	check the lead/anchor indices.
+	(handleInsert): New method. Check the lead/anchor indices.
+	Optimized repainting.
+	(handleDelete): New method. Check the lead/anchor indices.
+	Optimized repainting.
+	(handleUpdate): New method. Optimized repainting.
+	(checkSelection): New helper method.
+	(setSelectionModel): Update lead/anchor indices.
+
 2006-07-20  Lillian Angel  <langel@redhat.com>
 
 	PR 28440
