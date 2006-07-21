@@ -50,11 +50,6 @@ public class GtkMouseDragGestureRecognizer
     extends MouseDragGestureRecognizer
 {
 
-  DragSource ds;
-  Component c;
-  int actions;
-  DragGestureListener dgl;
-
   public GtkMouseDragGestureRecognizer (DragSource ds)
   {
     this(ds, null, 0, null);
@@ -76,11 +71,6 @@ public class GtkMouseDragGestureRecognizer
     super(ds, c, act, dgl);
     
     registerListeners();
-    
-    this.ds = ds;
-    this.c = c;
-    this.actions = act;
-    this.dgl = dgl;
   }
   
   public void mouseClicked (MouseEvent e)
