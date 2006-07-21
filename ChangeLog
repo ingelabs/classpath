@@ -1,5 +1,13 @@
 2006-07-20  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/LightweightDispatcher.java
+	(findTarget): Also consider components that have their eventMask
+	set, for compatibility with stonage AWT. Optimized check
+	for MouseListener.
+	(handleMouseEvent): Likewise.
+
+2006-07-20  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JTable.java
 	(tableChanged): Split out handling of the event into multiple
 	subroutines.

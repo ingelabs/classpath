@@ -152,8 +152,11 @@ class LightweightDispatcher
         target = findTarget(parent, loc);
         while (target == null && parent != null)
           {
-            if (parent.getMouseListeners().length > 0
-                || parent.getMouseMotionListeners().length > 0)
+            if (parent.mouseListener != null
+                || parent.mouseMotionListener != null
+                || (parent.eventMask
+                    & (AWTEvent.MOUSE_EVENT_MASK
+                        | AWTEvent.MOUSE_MOTION_EVENT_MASK)) != 0)
               {
                 target = parent;
               }
@@ -297,8 +300,11 @@ class LightweightDispatcher
             if (child.isShowing())
               {
                 if (child.contains(loc.x - child.getX(), loc.y - child.getY())
-                    && (child.getMouseListeners().length > 0 
-                        || child.getMouseMotionListeners().length > 0))
+                    && (child.mouseListener != null 
+                        || child.mouseMotionListener != null
+                        || (child.eventMask
+                            & (AWTEvent.MOUSE_EVENT_MASK
+                                | AWTEvent.MOUSE_MOTION_EVENT_MASK)) != 0))
                   {
                     target = child;
                     break;
