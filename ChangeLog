@@ -1,3 +1,15 @@
+2006-07-22  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	PR Classpath/28100
+	* gnu/javax/crypto/cipher/TripleDES.java: Updated documentation.
+	(KEY_SIZE): Likewise.
+	(adjustParity(int,byte[],int): New method.
+	(adjustParity(byte[],int): Call above method with 3 as 1st argument.
+	(isParityAdjusted(int,byte[],int)): New method.
+	(isParityAdjusted): Call above method with 3 as 1st argument.
+	(keySizes): Add 8 and 16 as other valid key sizes.
+	(makeKey): Amended to cater for 1, 2 and 3 independent DES keys.
+
 2006-07-22  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* gnu/java/awt/peer/gtk/CairoSurface.java (CairoSurface): Rearrange
