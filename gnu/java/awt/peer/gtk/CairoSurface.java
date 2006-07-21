@@ -175,9 +175,9 @@ public class CairoSurface extends DataBuffer
     int[] data = image.getPixels();
 
     // Swap ordering from GdkPixbuf to Cairo
-    for(int i = 0; i < data.length; i++ )
+    if (ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN)
       {
-	if (ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN)
+	for (int i = 0; i < data.length; i++ )
 	  {
 	    // On a big endian system we get a RRGGBBAA data array.
 	    int alpha = (data[i] & 0xFF);
@@ -195,7 +195,10 @@ public class CairoSurface extends DataBuffer
 		  | ( b  & 0x000000FF);
 	      }
 	  }
-	else
+      }
+    else
+      {
+	for (int i = 0; i < data.length; i++ )
 	  {
 	    // On a little endian system we get a AABBGGRR data array.
 	    int alpha = (data[i] & 0xFF000000) >> 24;
