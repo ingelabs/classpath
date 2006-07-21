@@ -1,3 +1,21 @@
+2006-07-20  Lillian Angel  <langel@redhat.com>
+
+	* gnu/java/awt/dnd/GtkMouseDragGestureRecognizer.java
+	(GtkMouseDragGestureRecognizer): New constructor.
+	(GtkMouseDragGestureRecognizer): New constructor.
+	(GtkMouseDragGestureRecognizer): New constructor.
+	(mouseClicked): Removed FIXME.
+	(mousePressed): Implemented.
+	(mouseReleased): Implemented.
+	(mouseEntered): Implemented.
+	(mouseDragged): Implemented to check mouse point and trigger origin.
+	(mouseMoved): Removed FIXME.
+	(getDropActionFromEvent): New helper function used to convert mouse event
+	modifiers to a drop action.
+	* java/awt/dnd/DragSource.java
+	(getDragThreshold): Changed to return some arbitrary value for testing
+	purposes.
+
 2006-07-20  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/LightweightDispatcher.java
