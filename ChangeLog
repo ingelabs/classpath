@@ -1,5 +1,9 @@
 2006-07-22  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* gnu/java/security/util/IntegerUtil.java: New file.
+
+2006-07-22  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	PR Classpath/28100
 	* gnu/javax/crypto/cipher/TripleDES.java: Updated documentation.
 	(KEY_SIZE): Likewise.
