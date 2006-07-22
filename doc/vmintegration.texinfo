@@ -1551,6 +1551,9 @@ of names of memory managers which manage the specified pool.
 @item @code{(getPeakUsage(String))} -- Returns a
 @code{java.lang.management.MemoryUsage} object for the peak
 usage level of the specified pool.
+@item @code{(getType(String))} -- Returns a string containing
+either @code{"HEAP"} or @code{"NON_HEAP"} which indicates the type of
+memory used by the specified pool.
 @item @code{(getUsage(String))} -- Returns a
 @code{java.lang.management.MemoryUsage} object for the current
 usage level of the specified pool.

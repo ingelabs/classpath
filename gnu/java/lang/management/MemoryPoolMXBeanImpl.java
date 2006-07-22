@@ -125,6 +125,11 @@ public final class MemoryPoolMXBeanImpl
       return null;
   }
 
+  public String getType()
+  {
+    return VMMemoryPoolMXBeanImpl.getType(name);
+  }
+
   public MemoryUsage getUsage()
   {
     if (isValid())
