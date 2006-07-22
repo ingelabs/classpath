@@ -257,8 +257,8 @@ public final class MemoryMXBeanImpl
       }
   }
 
-  public void fireNotification(String type, String poolName, long init, long used,
-			       long committed, long max, long count)
+  void fireNotification(String type, String poolName, long init, long used,
+			long committed, long max, long count)
   {
     Notification notif = new Notification(type, this, notificationCount);
     MemoryUsage usage = new MemoryUsage(init, used, committed, max);
@@ -290,20 +290,20 @@ public final class MemoryMXBeanImpl
     ++notificationCount;
   }
 
-  public void fireThresholdExceededNotification(String poolName, long init,
-						long used, long committed,
-						long max, long count)
+  void fireThresholdExceededNotification(String poolName, long init,
+					 long used, long committed,
+					 long max, long count)
   {
     fireNotification(MemoryNotificationInfo.MEMORY_THRESHOLD_EXCEEDED,
 		     poolName, init, used, committed, max, count);
   }
 
-  public void fireCollectionThresholdExceededNotification(String poolName,
-							  long init,
-							  long used,
-							  long committed,
-							  long max,
-							  long count)
+  void fireCollectionThresholdExceededNotification(String poolName,
+						   long init,
+						   long used,
+						   long committed,
+						   long max,
+						   long count)
   {
     fireNotification(MemoryNotificationInfo.MEMORY_COLLECTION_THRESHOLD_EXCEEDED,
 		     poolName, init, used, committed, max, count);
