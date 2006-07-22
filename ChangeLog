@@ -1,8 +1,13 @@
+2006-07-22  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* doc/vmintegration.texinfo:
+	Move end of itemization block.
+
 2006-07-22  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/plaf/metal/MetalLookAndFeel:
 	(initComponentDefaults): Added new properties, added comments.
-
+	
 2006-07-22  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* doc/vmintegration.texinfo:

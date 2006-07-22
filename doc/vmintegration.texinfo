@@ -1649,7 +1649,6 @@ the group.
 
 @item @code{java.lang.ThreadGroup.removeThread(Thread)}
 Call this method from @code{Thread} when a @code{Thread} is stopped or destroyed.
-@end itemize
 
 @item @code{gnu.java.lang.management.MemoryMXBeanImpl.fireThresholdExceededNotification(String, long, long, long, long)}
 If the monitoring of memory usage thresholds is supported, this method
@@ -1669,6 +1668,8 @@ is an intermittent period where the usage is again below the
 threshold.  The parameters are the memory pool name, the usage levels
 (init, used, committed and max) and the number of times the threshold
 has been crossed.
+
+@end itemize
 
 @node VM Hooks, JNI Implementation, Classpath Hooks, Top
 @comment node-name, next, previous, up
