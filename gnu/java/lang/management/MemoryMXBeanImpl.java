@@ -52,6 +52,13 @@ import javax.management.NotificationEmitter;
 import javax.management.NotificationFilter;
 import javax.management.NotificationListener;
 
+import javax.management.openmbean.CompositeData;
+import javax.management.openmbean.CompositeDataSupport;
+import javax.management.openmbean.CompositeType;
+import javax.management.openmbean.OpenDataException;
+import javax.management.openmbean.OpenType;
+import javax.management.openmbean.SimpleType;
+
 /**
  * Provides access to information about the memory 
  * management of the current invocation of the virtual
@@ -68,9 +75,56 @@ public final class MemoryMXBeanImpl
 
   private List listeners;
 
+  private long notificationCount;
+
+  public static CompositeType notifType;
+
+  public static CompositeType usageType;
+
+  static
+  {
+    try
+      {
+	CompositeType usageType = 
+	  new CompositeType(MemoryUsage.class.getName(),
+			    "Describes the usage levels of a pool",
+			    new String[] { "init", "used",
+					   "committed", "max"
+			    },
+			    new String[] { "Initial level",
+					   "Used level",
+					   "Committed level",
+					   "Maximum level"
+			    },
+			    new OpenType[] {
+			      SimpleType.LONG, SimpleType.LONG,
+			      SimpleType.LONG, SimpleType.LONG
+			    });
+	CompositeType notifType =
+	  new CompositeType(MemoryNotificationInfo.class.getName(),
+			    "Provides the notification info on memory usage",
+			    new String[] { "poolName", "usage", "count" },
+			    new String[] { "Name of the memory pool",
+					   "Usage level of the memory pool",
+					   "Number of times the threshold " +
+					   "has been crossed"
+			    },
+			    new OpenType[] {
+			      SimpleType.STRING, usageType, SimpleType.LONG 
+			    });
+	  }
+	catch (OpenDataException e)
+	  {
+	    throw new IllegalStateException("Something went wrong in creating " +
+					    "the composite data types.", e);
+	  }
+  }
+
+
   public MemoryMXBeanImpl()
   {
     listeners = new ArrayList();
+    notificationCount = 0;
   }
 
   public void gc()
@@ -201,6 +255,58 @@ public final class MemoryMXBeanImpl
 					    "and passback " + passback + 
 					    ", is not registered with this bean.");
       }
+  }
+
+  public void fireNotification(String type, String poolName, long init, long used,
+			       long committed, long max, long count)
+  {
+    Notification notif = new Notification(type, this, notificationCount);
+    MemoryUsage usage = new MemoryUsage(init, used, committed, max);
+    CompositeData data;
+    try
+      {
+	data = new CompositeDataSupport(notifType, 
+					new String[] {
+					  "poolName", "usage", "count"
+					},
+					new Object[] {
+					  poolName, usage, Long.valueOf(count)
+					});
+      }
+    catch (OpenDataException e)
+      {
+	throw new IllegalStateException("Something went wrong in creating " +
+					"the composite data instance.", e);
+      }
+    notif.setUserData(data);
+    Iterator it = listeners.iterator();
+    while (it.hasNext())
+      {
+	ListenerData ldata = (ListenerData) it.next();
+	NotificationFilter filter = ldata.getFilter();
+	if (filter == null || filter.isNotificationEnabled(notif))
+	  ldata.getListener().handleNotification(notif, ldata.getPassback());
+      }
+    ++notificationCount;
+  }
+
+  public void fireThresholdExceededNotification(String poolName, long init,
+						long used, long committed,
+						long max, long count)
+  {
+    fireNotification(MemoryNotificationInfo.MEMORY_THRESHOLD_EXCEEDED,
+		     poolName, init, used, committed, max, count);
+  }
+
+  public void fireCollectionThresholdExceededNotification(String poolName,
+							  long init,
+							  long used,
+							  long committed,
+							  long max,
+							  long count)
+  {
+    fireNotification(MemoryNotificationInfo.MEMORY_COLLECTION_THRESHOLD_EXCEEDED,
+		     poolName, init, used, committed, max, count);
   }
 
 }

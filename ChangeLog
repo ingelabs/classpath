@@ -1,3 +1,20 @@
+2006-07-22  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* gnu/java/lang/management/MemoryMXBeanImpl.java:
+	(fireNotification(String,String,long,long,long,long,long)):
+	Implemented.
+	(fireThresholdExceededNotification(String,long,long,long,
+	long,long)): Likewise.
+	(fireCollectionThresholdExceededNotification(String,long,
+	long,long,long,long)): Likewise.
+	* java/lang/management/MemoryNotificationInfo.java:
+	Use composite type from MemoryMXBeanImpl.
+	* javax/management/openmbean/CompositeData.java:
+	Correct documentation.
+	* javax/management/openmbean/CompositeDataSupport.java,
+	* javax/management/openmbean/InvalidKeyException.java:
+	New files.
+
 2006-07-22  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* gnu/java/security/util/IntegerUtil.java: New file.
