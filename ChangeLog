@@ -1,3 +1,7 @@
+2006-07-23  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/image/Kernel.java: API doc updates.
+
 2006-07-22  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* gnu/java/awt/peer/gtk/CairoSurface.java: Optimize pixel swap code a
