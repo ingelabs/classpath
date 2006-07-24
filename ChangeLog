@@ -1,3 +1,16 @@
+2006-07-24  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(setPaint): Fixed scaleX and scaleY.
+
+2006-07-24  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JTable.java
+	(handleInsert): Repaint the whole table for variable row
+	height tables and an optimized region otherwise.
+	(handleDelete): Likewise.
+	(handleUpdate): Likewise.
+
 2006-07-24  Mario Torre  <neugens@limasoftware.net>
 
 	* gnu/java/awt/peer/gtk/GtkToolkit.java (createDragGestureRecognizer):

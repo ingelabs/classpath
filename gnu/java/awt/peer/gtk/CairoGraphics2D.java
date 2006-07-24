@@ -683,8 +683,8 @@ public abstract class CairoGraphics2D extends Graphics2D
 	int width = (int) tp.getAnchorRect().getWidth();
 	int height = (int) tp.getAnchorRect().getHeight();
 
-	double scaleX = (width+1) / (double) img.getWidth();
-	double scaleY = (height+1) / (double) img.getHeight();
+	double scaleX = width / (double) img.getWidth();
+	double scaleY = height / (double) img.getHeight();
 
 	AffineTransform at = new AffineTransform(scaleX, 0, 0, scaleY, 0, 0);
 	AffineTransformOp op = new AffineTransformOp(at, getRenderingHints());
@@ -1238,6 +1238,9 @@ public abstract class CairoGraphics2D extends Graphics2D
     if (img == null)
       return false;
 
+    if (xform == null)
+      xform = new AffineTransform();
+
     // In this case, xform is an AffineTransform that transforms bounding
     // box of the specified image from image space to user space. However
     // when we pass this transform to cairo, cairo will use this transform
@@ -1336,7 +1339,9 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   public void drawImage(BufferedImage image, BufferedImageOp op, int x, int y)
   {
-    Image filtered = op.filter(image, null);
+    Image filtered = image;
+    if (op != null)
+      filtered = op.filter(image, null);
     drawImage(filtered, new AffineTransform(1f, 0f, 0f, 1f, x, y), null, null);
   }
 
