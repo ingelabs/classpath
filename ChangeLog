@@ -1,3 +1,22 @@
+2006-07-24  Francis Kung  <fkung@redhat.com>
+
+	* javax/swing/JComboBox.java
+	(DefaultKeySelectionManager): Implemented.
+	(createDefaultKeySelectionManager): Implemented.
+	(getKeySelectionManager): Implemented.
+	(processKeyEvent): Removed duplicate code.
+	* javax/swing/JPopupMenu.java
+	(selectionModel): Changed visibility.
+	* javax/swing/plaf/basic/BasicComboBoxUI.java
+	(KeyHandler.keyPressed): Added navigation keys.
+	(configureEditor): Add key listener.
+	(installListeners): Install focus listener to combo box.
+	(isNavigationKey): Added enter, escape, and tab.
+	(selectPreviousPossibleValue): Added out of bounds check.
+	(unconfigureEditor): Remove key listener.
+	* javax/swing/plaf/metal/MetalComboBoxButton.java
+	(paintComponent): Highlight combo box when in focus.
+
 2006-07-24  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/SwingUtilities.java
