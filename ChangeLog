@@ -1,3 +1,15 @@
+2006-07-24  Mario Torre  <neugens@limasoftware.net>
+
+	* gnu/java/awt/peer/gtk/GtkToolkit.java (createDragGestureRecognizer):
+	now explicity registerListeners on GtkMouseDragGestureRecognizer
+	instance.
+	* gnu/java/awt/dnd/GtkMouseDragGestureRecognizer.java
+	(unregisterListeners): new method, overrided from base class
+	to rise visibility (from protected to public).
+	(registerListeners): Likewise.
+	(GtkMouseDragGestureRecognizer): fixed potential threading issue:
+	removed call to registerListeners from the constructor.
+
 2006-07-23  Mark Wielaard  <mark@klomp.org>
 
 	* configure.ac: Check for moc and moc-qt4.

@@ -69,8 +69,16 @@ public class GtkMouseDragGestureRecognizer
                                         DragGestureListener dgl)
   {
     super(ds, c, act, dgl);
-    
-    registerListeners();
+  }
+  
+  public void registerListeners ()
+  {
+    super.registerListeners();
+  }
+  
+  public void unregisterListeners ()
+  {
+    super.unregisterListeners();
   }
   
   public void mouseClicked (MouseEvent e)
