@@ -178,24 +178,22 @@ class LightweightDispatcher
                   new MouseEvent(lastTarget, MouseEvent.MOUSE_EXITED,
                                  ev.getWhen(), ev.getModifiers(), p1.x, p1.y,
                                  ev.getClickCount(), ev.isPopupTrigger());
+                //System.err.println("event: " + mouseExited);
                 lastTarget.dispatchEvent(mouseExited);
               }
             
-            // If a target exists dispatch the MOUSE_ENTERED event only if
-            // there is currently no component from which a drag operation
-            // started (dragTarget == null) or the target is that component
-            // (dragTarget == target)
-            // That way a user can click and hold on a button (putting it into
-            // the armed state), move the cursor above other buttons without
-            // affecting their rollover state and get back to the initial
-            // button.
-            if (target != null && (dragTarget == null || dragTarget == target))
+            // If a target exists dispatch the MOUSE_ENTERED event.
+            // Experimenting shows that the MOUSE_ENTERED is also dispatched
+            // when the mouse is dragging.
+            if (target != null)
               {
                 Point p = convertPointToChild(window, ev.getPoint(), target);
                 MouseEvent mouseEntered =
-                  new MouseEvent(target, MouseEvent.MOUSE_ENTERED, ev.getWhen(),
+                  new MouseEvent(target,
+                                 MouseEvent.MOUSE_ENTERED, ev.getWhen(),
                                  ev.getModifiers(), p.x, p.y, ev.getClickCount(),
                                  ev.isPopupTrigger());
+                //System.err.println("event: " + mouseEntered);
                 target.dispatchEvent(mouseEntered);
               }
           }

@@ -1,5 +1,13 @@
 2006-07-24  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/SwingUtilities.java
+	(isLeftMouseButton): Fixed condition.
+	* java/awt/LightweightDispatcher.java
+	(handleMouseEvent): Dispatch MOUSE_ENTERED even when mouse
+	is dragged.
+
+2006-07-24  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
 	(setPaint): Fixed scaleX and scaleY.
 
