@@ -1,5 +1,14 @@
 2006-07-24  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/text/TabSet.java
+	(TabSet): Check for null argument,
+	(getTab): Throw IllegalArgumentException for index out of bounds,
+	(getTabIndexAfter): Changed test to '<=',
+	and updated API docs all over,
+	* javax/swing/text/TabStop.java: Updated API docs.
+
+2006-07-24  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/text/TabStop.java
 	(toString): Don't use 'left ' prefix, and added space between tab
 	location and '(w/leader)' suffix.

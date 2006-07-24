@@ -39,20 +39,44 @@ package javax.swing.text;
 
 import java.io.Serializable;
 
+/**
+ * A set of tab stops.  Instances of this class are immutable.
+ */
 public class TabSet implements Serializable
 {
   /** The serialization UID (compatible with JDK1.5). */
   private static final long serialVersionUID = 2367703481999080593L;
 
+  /** Storage for the tab stops. */
   TabStop[] tabs;
 
+  /**
+   * Creates a new <code>TabSet</code> containing the specified tab stops.
+   * 
+   * @param t  the tab stops (<code>null</code> permitted).
+   */
   public TabSet(TabStop[] t) 
   {
-    tabs = t;
+    if (t != null)
+      tabs = (TabStop[]) t.clone();
+    else 
+      tabs = new TabStop[0];
   }
  
+  /**
+   * Returns the tab stop with the specified index.
+   * 
+   * @param i  the index.
+   * 
+   * @return The tab stop.
+   * 
+   * @throws IllegalArgumentException if <code>i</code> is not in the range 
+   *     <code>0</code> to <code>getTabCount() - 1</code>.
+   */
   public TabStop getTab(int i) 
   {
+    if (i < 0 || i >= tabs.length)
+      throw new IllegalArgumentException("Index out of bounds.");
     return tabs[i];
   }
 
@@ -65,11 +89,23 @@ public class TabSet implements Serializable
       return tabs[idx];        
   }
 
+  /**
+   * Returns the number of tab stops in this tab set.
+   * 
+   * @return The number of tab stops in this tab set.
+   */
   public int getTabCount() 
   {
     return tabs.length;
   }
 
+  /**
+   * Returns the index of the specified tab, or -1 if the tab is not found.
+   * 
+   * @param tab  the tab (<code>null</code> permitted).
+   * 
+   * @return The index of the specified tab, or -1.
+   */
   public int getTabIndex(TabStop tab) 
   {
     for (int i = 0; i < tabs.length; ++i)
@@ -78,17 +114,28 @@ public class TabSet implements Serializable
     return -1;
   }
 
+  /**
+   * Returns the index of the tab at or after the specified location.
+   * 
+   * @param location  the tab location.
+   * 
+   * @return The index of the tab stop, or -1.
+   */
   public int getTabIndexAfter(float location) 
   {
-    int idx = -1;
-    for (int i = 0; i < tabs.length; ++i)
+    for (int i = 0; i < tabs.length; i++)
       {
-        if (location < tabs[i].getPosition())
-          idx = i;
+        if (location <= tabs[i].getPosition())
+          return i;
       }
-    return idx;
+    return -1;
   }
 
+  /**
+   * Returns a string representation of this <code>TabSet</code>.
+   * 
+   * @return A string representation of this <code>TabSet</code>.
+   */
   public String toString()
   {
     StringBuffer sb = new StringBuffer();
