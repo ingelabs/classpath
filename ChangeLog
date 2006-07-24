@@ -1,3 +1,9 @@
+2006-07-24  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/text/TabStop.java
+	(toString): Don't use 'left ' prefix, and added space between tab
+	location and '(w/leader)' suffix.
+
 2006-07-24  Francis Kung  <fkung@redhat.com>
 
 	* javax/swing/JComboBox.java

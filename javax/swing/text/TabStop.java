@@ -1,5 +1,5 @@
-/* TabSet.java --
-   Copyright (C) 2004 Free Software Foundation, Inc.
+/* TabStop.java --
+   Copyright (C) 2004, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -102,14 +102,16 @@ public class TabStop implements Serializable
     return (int) pos + (int) leader + (int) align;
   }
 
+  /**
+   * Returns a string describing this <code>TabStop</code>.
+   * 
+   * @return A string describing this <code>TabStop</code>.
+   */
   public String toString() 
   {
     String prefix = "";
     switch (align)
       {
-      case ALIGN_LEFT:
-        prefix = "left ";
-        break;
       case ALIGN_RIGHT:
         prefix = "right ";
         break;
@@ -130,7 +132,8 @@ public class TabStop implements Serializable
         break;
       }
     
-    return (prefix + "tab @" + pos + ((leader == LEAD_NONE) ? "" : "(w/leaders)"));
+    return prefix + "tab @" + pos 
+        + ((leader == LEAD_NONE) ? "" : " (w/leaders)");
   }
 
 }
