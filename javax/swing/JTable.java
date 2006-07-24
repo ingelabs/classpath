@@ -2970,18 +2970,18 @@ public class JTable
     if (rowHeights != null)
       {
         rowHeights.insertEntries(first, last - first + 1, rowHeight);
+        // TODO: We repaint the whole thing when the rows have variable
+        // heights. We might want to handle this better though.
+        repaint();
+      }
+    else
+      {
         // Repaint the dirty region and revalidate.
         int rowHeight = getRowHeight();
         Rectangle dirty = new Rectangle(0, first * rowHeight,
                                         getColumnModel().getTotalColumnWidth(),
                                         (getRowCount() - first) * rowHeight);
         repaint(dirty);
-      }
-    else
-      {
-        // TODO: We repaint the whole thing when the rows have variable
-        // heights. We might want to handle this better though.
-        repaint();
       }
     revalidate();
   }
@@ -3012,7 +3012,12 @@ public class JTable
     if (rowHeights != null)
       {
         rowHeights.removeEntries(first, last - first + 1);
-
+        // TODO: We repaint the whole thing when the rows have variable
+        // heights. We might want to handle this better though.
+        repaint();
+      }
+    else
+      {
         // Repaint the dirty region and revalidate.
         int rowHeight = getRowHeight();
         int oldRowCount = getRowCount() + last - first + 1;
@@ -3020,12 +3025,6 @@ public class JTable
                                         getColumnModel().getTotalColumnWidth(),
                                         (oldRowCount - first) * rowHeight);
         repaint(dirty);
-      }
-    else
-      {
-        // TODO: We repaint the whole thing when the rows have variable
-        // heights. We might want to handle this better though.
-        repaint();
       }
     revalidate();
   }
@@ -3037,7 +3036,7 @@ public class JTable
    */
   private void handleUpdate(TableModelEvent ev)
   {
-    if (rowHeights != null)
+    if (rowHeights == null)
       {
         // Some cells have been changed without changing the structure.
         // Figure out the dirty rectangle and repaint.
