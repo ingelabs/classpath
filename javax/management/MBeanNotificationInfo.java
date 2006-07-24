@@ -132,20 +132,19 @@ public class MBeanNotificationInfo
   }
 
   /**
-   * Compares this feature with the supplied object.  This
-   * returns true iff the object is an instance of
-   * {@link MBeanNotificationInfo}, {@link Object#equals()}
-   * returns true for a comparison of both the name and
-   * description of this notification with that of the specified
-   * object, and the two notification type arrays contain the
-   * same elements in the same order (but one may be longer than
-   * the other).
+   * Compares this feature with the supplied object.  This returns
+   * true iff the object is an instance of {@link
+   * MBeanNotificationInfo}, {@link Object#equals()} returns true for
+   * a comparison of both the name and description of this
+   * notification with that of the specified object, and the two
+   * notification type arrays contain the same elements in the same
+   * order (but one may be longer than the other).
    *
    * @param obj the object to compare.
    * @return true if the object is a {@link MBeanNotificationInfo}
    *         instance, 
    *         <code>name.equals(object.getName())</code>,
-   *         <code>description.equals(object.getDescription</code>
+   *         <code>description.equals(object.getDescription())</code>
    *         and the corresponding elements of the type arrays are
    *         equal.
    */
@@ -171,11 +170,11 @@ public class MBeanNotificationInfo
   }
 
   /**
-   * Returns the notification types that the management bean
-   * may emit.  The notification types are strings using the
-   * dot notation familiar from Java property and package
-   * names.  Changing the returned array does not affect
-   * the values retained by this instance.
+   * Returns the notification types that the management bean may emit.
+   * The notification types are strings using the dot notation
+   * familiar from Java property and package names.  Changing the
+   * returned array does not affect the values retained by this
+   * instance.
    *
    * @return the notification types.
    */
@@ -185,10 +184,9 @@ public class MBeanNotificationInfo
   }
 
   /**
-   * Returns the hashcode of the notification
-   * information as the sum of the hashcode of
-   * the superclass and the hashcode of the
-   * types array.
+   * Returns the hashcode of the notification information as the sum
+   * of the hashcode of the superclass and the hashcode of the types
+   * array.
    *
    * @return the hashcode of the notification
    *         information.
