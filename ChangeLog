@@ -1,5 +1,11 @@
 2006-07-25  Robert Schuster <robertschuster@fsfe.org>
 
+        Fixes PR27844.
+	* java/awt/peer/gtk/CairoGraphics.java:
+	(drawLine): Removed calls to shifted().
+
+2006-07-25  Robert Schuster <robertschuster@fsfe.org>
+
 	* javax/swing/JTabbedPane.java:
 	(remove(Component)): Rewritten.
 	(setSelectedIndex): Implemented updating of component visibility state.

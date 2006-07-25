@@ -1038,9 +1038,7 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   public void drawLine(int x1, int y1, int x2, int y2)
   {
-    cairoDrawLine(nativePointer, shifted(x1, shiftDrawCalls),
-                  shifted(y1, shiftDrawCalls), shifted(x2, shiftDrawCalls),
-                  shifted(y2, shiftDrawCalls));
+    cairoDrawLine(nativePointer, x1, y1, x2 + 0.5, y2 + 0.5);
   }
 
   public void drawRect(int x, int y, int width, int height)
