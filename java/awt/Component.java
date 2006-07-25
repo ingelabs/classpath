@@ -4207,56 +4207,7 @@ public abstract class Component
    */
   public void requestFocus ()
   {
-    if (isDisplayable ()
-	&& isShowing ()
-	&& isFocusable ())
-      {
-        synchronized (getTreeLock ())
-          {
-            // Find this Component's top-level ancestor.            
-            Container parent = (this instanceof Container) ? (Container) this
-                                                          : getParent();            
-            while (parent != null
-                   && !(parent instanceof Window))
-              parent = parent.getParent ();
-
-            if (parent == null)
-              return;
-            
-            Window toplevel = (Window) parent;
-            if (toplevel.isFocusableWindow ())
-              {
-                if (peer != null && !isLightweight())
-                  // This call will cause a FOCUS_GAINED event to be
-                  // posted to the system event queue if the native
-                  // windowing system grants the focus request.
-                  peer.requestFocus ();
-                else
-                  {
-                    // Either our peer hasn't been created yet or we're a
-                    // lightweight component.  In either case we want to
-                    // post a FOCUS_GAINED event.
-                    EventQueue eq = Toolkit.getDefaultToolkit ().getSystemEventQueue ();
-                    synchronized (eq)
-                      {
-                        KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager ();
-                        Component currentFocusOwner = manager.getGlobalPermanentFocusOwner ();
-                        if (currentFocusOwner != null)
-                          {
-                            eq.postEvent (new FocusEvent(currentFocusOwner, FocusEvent.FOCUS_LOST,
-                                                         false, this));
-                            eq.postEvent (new FocusEvent(this, FocusEvent.FOCUS_GAINED, false,
-                                                         currentFocusOwner));
-                          }
-                        else
-                          eq.postEvent (new FocusEvent(this, FocusEvent.FOCUS_GAINED, false));
-                      }
-                  }
-              }
-            else
-              pendingFocusRequest = new FocusEvent(this, FocusEvent.FOCUS_GAINED);
-          }
-      }
+    requestFocusImpl(false, true);
   }
 
   /**
@@ -4296,61 +4247,7 @@ public abstract class Component
    */
   protected boolean requestFocus (boolean temporary)
   {
-    if (isDisplayable ()
-	&& isShowing ()
-	&& isFocusable ())
-      {
-        synchronized (getTreeLock ())
-          {
-            // Find this Component's top-level ancestor.
-            Container parent = getParent ();
-
-            while (parent != null
-                   && !(parent instanceof Window))
-              parent = parent.getParent ();
-
-            Window toplevel = (Window) parent;
-            if (toplevel.isFocusableWindow ())
-              {
-                if (peer != null && !isLightweight())
-                  // This call will cause a FOCUS_GAINED event to be
-                  // posted to the system event queue if the native
-                  // windowing system grants the focus request.
-                  peer.requestFocus ();
-                else
-                  {
-                    // Either our peer hasn't been created yet or we're a
-                    // lightweight component.  In either case we want to
-                    // post a FOCUS_GAINED event.
-                    EventQueue eq = Toolkit.getDefaultToolkit ().getSystemEventQueue ();
-                    synchronized (eq)
-                      {
-                        KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager ();
-                        Component currentFocusOwner = manager.getGlobalPermanentFocusOwner ();
-                        if (currentFocusOwner != null)
-                          {
-                            eq.postEvent (new FocusEvent(currentFocusOwner,
-                                                         FocusEvent.FOCUS_LOST,
-                                                         temporary, this));
-                            eq.postEvent (new FocusEvent(this,
-                                                         FocusEvent.FOCUS_GAINED,
-                                                         temporary,
-                                                         currentFocusOwner));
-                          }
-                        else
-                          eq.postEvent (new FocusEvent(this, FocusEvent.FOCUS_GAINED, temporary));
-                      }
-                  }
-              }
-            else
-              // FIXME: need to add a focus listener to our top-level
-              // ancestor, so that we can post this event when it becomes
-              // the focused window.
-              pendingFocusRequest = new FocusEvent(this, FocusEvent.FOCUS_GAINED, temporary);
-          }
-      }
-    // Always return true.
-    return true;
+    return requestFocusImpl(temporary, true);
   }
 
   /**
@@ -4378,7 +4275,7 @@ public abstract class Component
    */
   public boolean requestFocusInWindow ()
   {
-    return requestFocusInWindow (false);
+    return requestFocusImpl(false, false);
   }
 
   /**
@@ -4409,65 +4306,76 @@ public abstract class Component
    */
   protected boolean requestFocusInWindow (boolean temporary)
   {
-    KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager ();
+    return requestFocusImpl(temporary, false);
+  }
 
-    Window focusedWindow = manager.getFocusedWindow ();
-
-    if (isDisplayable ()
-	&& isShowing ()
-	&& isFocusable ())
+  /**
+   * Helper method for all 4 requestFocus variants.
+   *
+   * @param temporary indicates if the focus change is temporary
+   * @param focusWindow indicates if the window focus may be changed
+   *
+   * @return <code>false</code> if the request has been definitely denied,
+   *         <code>true</code> otherwise
+   */
+  private boolean requestFocusImpl(boolean temporary, boolean focusWindow)
+  {
+    boolean retval = false;
+ 
+    // Don't try to focus non-focusable and non-visible components.
+    if (isFocusable() && isVisible())
       {
-        if (focusedWindow != null)
+        ComponentPeer myPeer = peer;
+        if (peer != null)
           {
-            synchronized (getTreeLock ())
+            // Find Window ancestor and find out if we're showing while
+            // doing this.
+            boolean showing = true;
+            Component window = this;
+            while (! (window instanceof Window))
               {
-                Container parent = getParent ();
+                if (! window.isVisible())
+                  showing = false;
+                window = window.parent;
+              }
+            // Don't allow focus when there is no window or the window
+            // is not focusable.
+            if (window != null && ((Window) window).isFocusableWindow()
+                && showing)
+              {
+                // Search for nearest heavy ancestor (including this
+                // component).
+                Component heavyweightParent = this;
+                while (heavyweightParent.peer instanceof LightweightPeer)
+                  heavyweightParent = heavyweightParent.parent;
 
-                while (parent != null
-                       && !(parent instanceof Window))
-                  parent = parent.getParent ();
-
-                Window toplevel = (Window) parent;
-
-                // Check if top-level ancestor is currently focused window.
-                if (focusedWindow == toplevel)
+                // Don't allow focus on lightweight components without
+                // visible heavyweight ancestor
+                if (heavyweightParent != null && heavyweightParent.isVisible())
                   {
-                    if (peer != null
-                        && !isLightweight()
-                        && !(this instanceof Window))
-                      // This call will cause a FOCUS_GAINED event to be
-                      // posted to the system event queue if the native
-                      // windowing system grants the focus request.
-                      peer.requestFocus ();
-                    else
+                    // Don't allow focus when heavyweightParent has no peer.
+                    myPeer = heavyweightParent.peer;
+                    if (myPeer != null)
                       {
-                        // Either our peer hasn't been created yet or we're a
-                        // lightweight component.  In either case we want to
-                        // post a FOCUS_GAINED event.
-                        EventQueue eq = Toolkit.getDefaultToolkit ().getSystemEventQueue ();
-                        synchronized (eq)
+                        // Try to focus the component.
+                        long time = EventQueue.getMostRecentEventTime();
+                        boolean success = myPeer.requestFocus(this, temporary,
+                                                              focusWindow,
+                                                              time);
+                        if (! success)
                           {
-                            Component currentFocusOwner = manager.getGlobalPermanentFocusOwner ();
-                            if (currentFocusOwner != null)
-                              {
-                                eq.postEvent (new FocusEvent(currentFocusOwner, FocusEvent.FOCUS_LOST,
-                                                             temporary, this));
-                                eq.postEvent (new FocusEvent(this, FocusEvent.FOCUS_GAINED, temporary,
-                                                             currentFocusOwner));
-                              }
-                            else
-                              eq.postEvent (new FocusEvent(this, FocusEvent.FOCUS_GAINED, temporary));
+                            // Dequeue key events if focus request failed.
+                            KeyboardFocusManager kfm =
+                              KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                            kfm.dequeueKeyEvents(time, this);
                           }
+                        retval = success;
                       }
                   }
-                else
-                  return false;
               }
           }
-
-        return true;
       }
-    return false;
+    return retval;
   }
 
   /**

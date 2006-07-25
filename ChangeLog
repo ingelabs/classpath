@@ -1,3 +1,45 @@
+2006-07-25  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Component.java
+	(requestFocus()): Reimplemented to use requestFocusImpl().
+	(requestFocus(boolean)): Reimplemented to use requestFocusImpl().
+	(requestFocusInWindow()): Reimplemented to use requestFocusImpl().
+	(requestFocusInWindow(boolean)): Reimplemented to use
+	requestFocusImpl().
+	(requestFocusImpl): Reimplemented focus request to use
+	new peer method. Also added some obvious additional checks
+	for rejecting focus requests early.
+	* java/awt/ComponentPeer.java
+	(requestFocus(Component,boolean,boolean,long)): Documented
+	this method.
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
+	(requestFocus): New field.
+	(gtkWidgetHasFocus): New native method.
+	(gtkWidgetCanFocus): New native method.
+	(requestFocus): Replaced with assert false to prevent
+	usage of obsolete method.
+	(postFocusEvent(int,boolean,Component)): New overloaded method
+	for posting the focus event to a specific target.
+	(postFocusEvent(int,boolean)): Post event to requestFocus
+	component.
+	(requestFocus(Component,boolean,boolean,long)): Implemented.
+	(getWindowFor): New helper method.
+	(isLightweightDescendant): New helper method.
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java
+	(gtkWindowHasFocus): New native method.
+	(requestFocus(Component,boolean,boolean,long)): New method.
+	Overrides GtkComponentPeer method to specially handly the
+	case when a Window receives a focus request for a lightweight
+	child.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	(gtkWidgetHasFocus): New native method.
+	(gtkWidgetCanFocus): New native method.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
+	(gtkWindowHasFocus): New native method.
+	* include/gnu_java_awt_peer_gtk_GtkComponentPeer.h,
+	* include/gnu_java_awt_peer_gtk_GtkWindowPeer.h:
+	Regenerated.
+
 2006-07-25  Francis Kung  <fkung@redhat.com>
 
 	* java/awt/DefaultKeyboardFocusManager.java

@@ -262,12 +262,21 @@ public interface ComponentPeer
    * Requests that this component receives the focus. This is called from
    * {@link Component#requestFocus()}.
    *
-   * @param source TODO
-   * @param bool1 TODO
-   * @param bool2 TODO
-   * @param x TODO
+   * This method is only called for heavyweight component's peers. Lightweight
+   * components ask their nearest heavyweight component to request focus.
+   * It's up to the heavyweight peer to decide if any of it's lightweight
+   * descendants are allowed to receive keyboard input focus or not. If the
+   * focus request is finally approved, then the peer must post a FOCUS_GAINED
+   * event for the requested component.
+   *
+   * @param request the component for which the focus is requested
+   * @param temporary indicates if the focus change is temporary (true) or
+   *        permanent (false)
+   * @param allowWindowFocus indicates if it's allowed to change window focus
+   * @param time the timestamp
    */
-  boolean requestFocus(Component source, boolean bool1, boolean bool2, long x);
+  boolean requestFocus(Component request, boolean temporary,
+                       boolean allowWindowFocus, long time);
 
   /**
    * Notifies the peer that the bounds of this component have changed. This
