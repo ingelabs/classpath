@@ -1,5 +1,29 @@
 2006-07-25  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicPopupMenuUI.java
+	(NavigateAction): New inner class. This is responsible for
+	keyboard navigation through menus.
+	(KeyboardHelper): New inner class. This manages the
+	keyboard mappings and focus when a popup opens or closes.
+	(keyboardHelper): New static field.
+	(numPopups): New static field.
+	(installUI): Create KeyboardHelper for first popup.
+	Call installKeyboardActions().
+	(installKeyboardActions): Removed NotImplementedException.
+	This method is a no-op.
+	(installKeyboardActionsImpl): New method. Installs keyboard
+	mapping when a popup is opened.
+	(getActionMap): New helper method.
+	(createDefaultActions): New helper method.
+	(uninstallUI): Uninstall KeyboardHelper when last Popup is
+	uninstalled. Call uninstallKeyboardActions().
+	(uninstallKeyboardActions): Removed NotImplementedException.
+	This method is a no-op.
+	(uninstallKeyboardActionsImpl): New method. Uninstalls keyboard
+	mapping when a popup is closed.
+	
+2006-07-25  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/Component.java
 	(requestFocus()): Reimplemented to use requestFocusImpl().
 	(requestFocus(boolean)): Reimplemented to use requestFocusImpl().
