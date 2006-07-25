@@ -1,3 +1,9 @@
+2006-07-25  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/LightweightDispatcher.java
+	(handleMouseEvent): Dispatch event to real target if
+	the dragTarget has become invisible in the meantime.
+
 2006-07-25  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/text/TabSet.java

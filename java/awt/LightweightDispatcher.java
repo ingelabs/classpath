@@ -220,7 +220,11 @@ class LightweightDispatcher
             // it was released.
             if (dragTarget != null && dragButton == ev.getButton())
               {
-                target = dragTarget;
+                // Only post MOUSE_RELEASED to dragTarget (set in
+                // MOUSE_PRESSED) when the dragTarget is actually visible.
+                // Otherwise post the event to the normal target.
+                if (dragTarget.isVisible())
+                  target = dragTarget;
                 dragTarget = null;
               }
             
