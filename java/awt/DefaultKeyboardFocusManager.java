@@ -167,7 +167,8 @@ public class DefaultKeyboardFocusManager extends KeyboardFocusManager
             setGlobalFocusedWindow (target);
             FocusTraversalPolicy p = target.getFocusTraversalPolicy();
             Component toFocus = p.getInitialComponent(target);
-            toFocus.requestFocusInWindow();
+            if (toFocus != null)
+              toFocus.requestFocusInWindow();
           }
         else if (e.id != WindowEvent.WINDOW_LOST_FOCUS
                  && e.id != WindowEvent.WINDOW_DEACTIVATED)
