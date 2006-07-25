@@ -1,3 +1,16 @@
+2006-07-25  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	Fixes bug #28413
+	* gnu/java/util/regex/RETokenEnd.java(check_java_line_terminators):
+	New field.
+	(RETokenEnd): New constructer to set check_java_line_terminators.
+	(matchThis): Checck line terminators if check_java_line_terminators.
+	* gnu/java/util/regex/RETokenStart.java: Likewise.
+	* gnu/regexp/RE.java(initialize): Use the new constructors for
+	RETokenEnd and RETokenStart if REG_MULTILINE is set.
+	* java/util/regex/Pattern.java(Patteren): Changed so that
+	gnu/regexp/RE.java may use the new the new constructors.
+
 2006-07-25  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/Container.java

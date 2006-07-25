@@ -750,7 +750,20 @@ public class RE extends REToken {
       else if ((unit.ch == '^') && !(unit.bk || quot)) {
 	addToken(currentToken);
 	currentToken = null;
-	addToken(new RETokenStart(subIndex,((cflags & REG_MULTILINE) > 0) ? syntax.getLineSeparator() : null));
+	RETokenStart token = null;
+	if ((cflags & REG_MULTILINE) > 0) {
+	    String sep = syntax.getLineSeparator();
+	    if (sep == null) {
+	        token = new RETokenStart(subIndex, null, true);
+	    }
+	    else {
+		token = new RETokenStart(subIndex, sep);
+	    }
+	}
+	else {
+	    token = new RETokenStart(subIndex, null);
+	}
+	addToken(token);
       }
 
       // END OF LINE OPERATOR
@@ -759,7 +772,20 @@ public class RE extends REToken {
       else if ((unit.ch == '$') && !(unit.bk || quot)) {
 	addToken(currentToken);
 	currentToken = null;
-	addToken(new RETokenEnd(subIndex,((cflags & REG_MULTILINE) > 0) ? syntax.getLineSeparator() : null));
+	RETokenEnd token = null;
+	if ((cflags & REG_MULTILINE) > 0) {
+	    String sep = syntax.getLineSeparator();
+	    if (sep == null) {
+	        token = new RETokenEnd(subIndex, null, true);
+	    }
+	    else {
+		token = new RETokenEnd(subIndex, sep);
+	    }
+	}
+	else {
+	    token = new RETokenEnd(subIndex, null);
+	}
+	addToken(token);
       }
 
       // MATCH-ANY-CHARACTER OPERATOR (except possibly newline and null)
