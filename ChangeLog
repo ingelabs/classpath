@@ -1,3 +1,12 @@
+2006-07-25  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicMenuBarUI.java
+	(FocusAction): New inner class. Used to grab focus.
+	(installKeyboardActions): Implemented.
+	(uninstallKeyboardActions): Implemented.
+	(getActionMap): New helper method.
+	(createDefaultActions): New helper method.
+
 2006-07-25  Robert Schuster <robertschuster@fsfe.org>
 
 	* examples/gnu/classpath/examples/swing/Demo.java:
