@@ -1038,7 +1038,13 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   public void drawLine(int x1, int y1, int x2, int y2)
   {
-    cairoDrawLine(nativePointer, x1, y1, x2 + 0.5, y2 + 0.5);
+    // The coordinates being pairwise identical means one wants
+    // to draw a single pixel. This is emulated by drawing
+    // a one pixel sized rectangle.
+    if (x1 == x2 && y1 == y2)
+      cairoFillRect(nativePointer, x1, y1, 1, 1);
+    else
+      cairoDrawLine(nativePointer, x1, y1, x2, y2);
   }
 
   public void drawRect(int x, int y, int width, int height)

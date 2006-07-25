@@ -1,5 +1,10 @@
 2006-07-25  Robert Schuster <robertschuster@fsfe.org>
 
+	* java/awt/peer/gtk/CairoGraphics.java:
+	(drawLine): Added special case for 1 pixel lines.
+
+2006-07-25  Robert Schuster <robertschuster@fsfe.org>
+
         Fixes PR27844.
 	* java/awt/peer/gtk/CairoGraphics.java:
 	(drawLine): Removed calls to shifted().
