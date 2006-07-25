@@ -990,7 +990,17 @@ public class JTabbedPane extends JComponent implements Serializable,
     checkIndex(index, -1, tabs.size());
     if (index != getSelectedIndex())
       {
+        // Hiding and showing the involved components
+        // is important for the focus traversal mechanism
+        // to report the correct source and destination
+        // components.
+        Component c = getSelectedComponent();
+        if (c != null)
+          c.setVisible(false);
+        
 	model.setSelectedIndex(index);
+        
+        getSelectedComponent().setVisible(true);
       }
   }
 
@@ -1247,7 +1257,25 @@ public class JTabbedPane extends JComponent implements Serializable,
    */
   public void remove(Component component)
   {
-    super.remove(component);
+    // Container.remove(Component) is implemented in a
+    // way that it calls Container.remove(int). Since
+    // JTabbedPane's remove(int) is overridden to
+    // remove tabs and this in turn should not happen
+    // with components implementing UIResource
+    // we find out the component's index and
+    // call the superclass' remove(int) method
+    // directly.
+    // For non-UIResource implementing components
+    // the normal implementation is suitable.
+    if (component instanceof UIResource)
+      {
+        Component[] cs = getComponents();
+        for (int i = 0; i< cs.length; i++)
+          if (cs[i] == component)
+            super.remove(i);
+      }
+    else
+      super.remove(component);
   }
 
   /**
@@ -1257,7 +1285,6 @@ public class JTabbedPane extends JComponent implements Serializable,
    */
   public void remove(int index)
   {
-    super.remove(index);
     removeTabAt(index);
   }
 
