@@ -188,8 +188,7 @@ public class MBeanNotificationInfo
    * of the hashcode of the superclass and the hashcode of the types
    * array.
    *
-   * @return the hashcode of the notification
-   *         information.
+   * @return the hashcode of the notification information.
    */
   public int hashCode()
   {
