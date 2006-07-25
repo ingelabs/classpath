@@ -1,5 +1,5 @@
 /* TabSet.java --
-   Copyright (C) 2004 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2006, Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -80,6 +80,13 @@ public class TabSet implements Serializable
     return tabs[i];
   }
 
+  /**
+   * Returns the tab following the specified location.
+   * 
+   * @param location  the location.
+   * 
+   * @return The tab following the specified location (or <code>null</code>).
+   */
   public TabStop getTabAfter(float location) 
   {
     int idx = getTabIndexAfter(location);
@@ -130,6 +137,55 @@ public class TabSet implements Serializable
       }
     return -1;
   }
+  
+  /**
+   * Tests this <code>TabSet</code> for equality with an arbitrary object.
+   * 
+   * @param obj  the object (<code>null</code> permitted).
+   * 
+   * @return <code>true</code> if this <code>TabSet</code> is equal to
+   *     <code>obj</code>, and <code>false</code> otherwise.
+   *     
+   * @since 1.5
+   */
+  public boolean equals(Object obj)
+  {
+    if (obj == this)
+      return true;
+    if (!(obj instanceof TabSet))
+      return false;
+    TabSet that = (TabSet) obj;
+    int tabCount = getTabCount();
+    if (tabCount != that.getTabCount())
+      return false;
+    for (int i = 0; i < tabCount; i++)
+      {
+        if (!this.getTab(i).equals(that.getTab(i)))
+          return false;
+      }
+    return true;
+  }
+  
+  /**
+   * Returns a hash code for this <code>TabSet</code>.
+   * 
+   * @return A hash code.
+   * 
+   * @since 1.5
+   */
+  public int hashCode() 
+  {
+    // this hash code won't match Sun's, but that shouldn't matter...
+    int result = 193;
+    int tabs = getTabCount();
+    for (int i = 0; i < tabs; i++)
+      {
+        TabStop t = getTab(i);
+        if (t != null)
+          result = 37 * result + t.hashCode();
+      }
+    return result;
+  }
 
   /**
    * Returns a string representation of this <code>TabSet</code>.
@@ -139,14 +195,14 @@ public class TabSet implements Serializable
   public String toString()
   {
     StringBuffer sb = new StringBuffer();
-    sb.append("[");
+    sb.append("[ ");
     for (int i = 0; i < tabs.length; ++i)
       {
         if (i != 0)
           sb.append(" - ");
         sb.append(tabs[i].toString());
       }
-    sb.append("]");
+    sb.append(" ]");
     return sb.toString();
   }
 }
