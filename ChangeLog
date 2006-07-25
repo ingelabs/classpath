@@ -1,5 +1,22 @@
 2006-07-25  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java
+	(GlassPaneDispatcher.dragTarget): New field.
+	(GlassPaneDispatcher.isDragging): New field.
+	(GlassPaneDispatcher.pressedComponent): Removed field.
+	(GlassPaneDispatcher.tempComponent): Removed field.
+	(GlassPaneDispatcher.pressCount): Removed field.
+	(GlassPaneDispatcher.mousePressed): Call
+	borderListener.mousePressed() to activate the frame.
+	(acquireComponentForMouseEvent): Removed method.
+	(handleEvent): Rewritten.
+	(redispatch): New method.
+	(InternalFramePropertyChangeListener.propertyChange):
+	Make glasspane invisible when frame is selected, and visible
+	if it gets deselected.
+	
+2006-07-25  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/LightweightDispatcher.java
 	(handleMouseEvent): Dispatch event to real target if
 	the dragTarget has become invisible in the meantime.
