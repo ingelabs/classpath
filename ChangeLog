@@ -1,3 +1,9 @@
+2006-07-25  Robert Schuster <robertschuster@fsfe.org>
+
+	* examples/gnu/classpath/examples/swing/Demo.java:
+	(mkMenuBar): Install instantiable basic look and feel.
+	(InstantiableBasicLookAndFeel): New inner class.
+
 2006-07-25  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicInternalFrameUI.java
