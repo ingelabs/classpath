@@ -163,7 +163,12 @@ public class DefaultKeyboardFocusManager extends KeyboardFocusManager
         if (e.id == WindowEvent.WINDOW_ACTIVATED)
           setGlobalActiveWindow (target);
         else if (e.id == WindowEvent.WINDOW_GAINED_FOCUS)
-          setGlobalFocusedWindow (target);
+          {
+            setGlobalFocusedWindow (target);
+            FocusTraversalPolicy p = target.getFocusTraversalPolicy();
+            Component toFocus = p.getInitialComponent(target);
+            toFocus.requestFocusInWindow();
+          }
         else if (e.id != WindowEvent.WINDOW_LOST_FOCUS
                  && e.id != WindowEvent.WINDOW_DEACTIVATED)
           return false;

@@ -98,6 +98,13 @@ public class Container extends Component
    */
   boolean focusCycleRoot;
 
+  /**
+   * Indicates if this container provides a focus traversal policy.
+   *
+   * @since 1.5
+   */
+  private boolean focusTraversalPolicyProvider;
+
   int containerSerializedDataVersion;
 
   /* Anything else is non-serializable, and should be declared "transient". */
@@ -1607,6 +1614,42 @@ public class Container extends Component
   public void setFocusCycleRoot (boolean focusCycleRoot)
   {
     this.focusCycleRoot = focusCycleRoot;
+  }
+
+  /**
+   * Set to <code>true</code> if this container provides a focus traversal
+   * policy, <code>false</code> when the root container's focus
+   * traversal policy should be used.
+   *
+   * @return <code>true</code> if this container provides a focus traversal
+   *        policy, <code>false</code> when the root container's focus
+   *        traversal policy should be used
+   *
+   * @see #setFocusTraversalPolicyProvider(boolean)
+   *
+   * @since 1.5
+   */
+  public final boolean isFocusTraversalPolicyProvider()
+  {
+    return focusTraversalPolicyProvider;
+  }
+
+  /**
+   * Set to <code>true</code> if this container provides a focus traversal
+   * policy, <code>false</code> when the root container's focus
+   * traversal policy should be used.
+   *
+   * @param b <code>true</code> if this container provides a focus traversal
+   *        policy, <code>false</code> when the root container's focus
+   *        traversal policy should be used
+   * 
+   * @see #isFocusTraversalPolicyProvider()
+   *
+   * @since 1.5
+   */
+  public final void setFocusTraversalPolicyProvider(boolean b)
+  {
+    focusTraversalPolicyProvider = b;
   }
 
   /**

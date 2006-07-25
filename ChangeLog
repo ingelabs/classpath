@@ -1,3 +1,16 @@
+2006-07-25  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Container.java
+	(focusTraversalPolicyProvider): New field.
+	(isFocusTraversalPolicyProvider): New method.
+	(setFocusTraversalPolicyProvider): New method.
+	* java/awt/ContainerOrderFocusTraversalPolicy.java
+	(getFirstComponent): Use accept() instead of lengthy checks.
+	Don't fetch getComponents() to avoid copying of array.
+	Traverse down the hierarchy to find the first focused component.
+	* java/awt/DefaultKeyboardFocusManager.java
+	(dispatchEvent): Let the initial component request focus.
+
 2006-07-25  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/text/Segment.java
