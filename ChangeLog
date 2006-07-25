@@ -1,3 +1,11 @@
+2006-07-25  Sven de Marothy  <sven@physto.se>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkVolatileImage.c
+	(init): Default to the actual depth in the worst case.
+	
+	* java/awt/Font.java
+	(createFont(int, File)): New method.
+	
 2006-07-25  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	Fixes bug #28413
