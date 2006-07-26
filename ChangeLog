@@ -1,5 +1,11 @@
 2006-07-26  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalUtils.java
+	(fillMetalPattern): Use fillRect() instead of drawLine() to
+	fill single pixels.
+
+2006-07-26  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/GapContent.java
 	(getChars): Check for negative length and throw
 	BadLocationException.
