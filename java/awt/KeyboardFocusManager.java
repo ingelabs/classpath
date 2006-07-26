@@ -304,10 +304,7 @@ public abstract class KeyboardFocusManager
    */
   public Component getFocusOwner ()
   {
-    Component owner = (Component) getObject (currentFocusOwners);
-    if (owner == null)
-      owner = (Component) getObject (currentPermanentFocusOwners);
-    return owner;
+    return (Component) getObject (currentFocusOwners);
   }
 
   /**
@@ -323,10 +320,7 @@ public abstract class KeyboardFocusManager
    */
   protected Component getGlobalFocusOwner ()
   {
-    // Check if there is a temporary focus owner.
-    Component focusOwner = (Component) getGlobalObject (currentFocusOwners);
-
-    return (focusOwner == null) ? getGlobalPermanentFocusOwner () : focusOwner;
+    return (Component) getGlobalObject(currentFocusOwners);
   }
 
   /**
