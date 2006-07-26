@@ -320,7 +320,7 @@ public abstract class KeyboardFocusManager
    */
   protected Component getGlobalFocusOwner ()
   {
-    return (Component) getGlobalObject(currentFocusOwners);
+    return (Component) getGlobalObject(currentFocusOwners, true);
   }
 
   /**
@@ -403,7 +403,7 @@ public abstract class KeyboardFocusManager
    */
   protected Component getGlobalPermanentFocusOwner ()
   {
-    return (Component) getGlobalObject (currentPermanentFocusOwners);
+    return (Component) getGlobalObject (currentPermanentFocusOwners, true);
   }
 
   /**
@@ -449,7 +449,7 @@ public abstract class KeyboardFocusManager
    */
   protected Window getGlobalFocusedWindow ()
   {
-    return (Window) getGlobalObject (currentFocusedWindows);
+    return (Window) getGlobalObject (currentFocusedWindows, true);
   }
 
   /**
@@ -491,7 +491,7 @@ public abstract class KeyboardFocusManager
    */
   protected Window getGlobalActiveWindow()
   {
-    return (Window) getGlobalObject (currentActiveWindows);
+    return (Window) getGlobalObject (currentActiveWindows, true);
   }
 
   /**
@@ -657,7 +657,7 @@ public abstract class KeyboardFocusManager
    */
   protected Container getGlobalCurrentFocusCycleRoot ()
   {
-    return (Container) getGlobalObject (currentFocusCycleRoots);
+    return (Container) getGlobalObject (currentFocusCycleRoots, true);
   }
 
   /**
@@ -1347,17 +1347,19 @@ public abstract class KeyboardFocusManager
    * @see #getGlobalActiveWindow()
    * @see #getGlobalCurrentFocusCycleRoot()
    */
-  private Object getGlobalObject (Map globalMap)
+  private Object getGlobalObject (Map globalMap, boolean checkThread)
   {
-    ThreadGroup currentGroup = Thread.currentThread ().getThreadGroup ();
-    KeyboardFocusManager managerForCallingThread
-      = (KeyboardFocusManager) currentKeyboardFocusManagers.get (currentGroup);
+    if (checkThread)
+      {
+        ThreadGroup currentGroup = Thread.currentThread ().getThreadGroup ();
+        KeyboardFocusManager managerForCallingThread =
+         (KeyboardFocusManager) currentKeyboardFocusManagers.get(currentGroup);
 
-    if (this != managerForCallingThread)
-      throw new SecurityException ("Attempted to retrieve an object from a "
-                                   + "keyboard focus manager that isn't "
-                                   + "associated with the current thread group.");
-
+        if (this != managerForCallingThread)
+          throw new SecurityException ("Attempted to retrieve an object from a "
+                                       + "keyboard focus manager that isn't "
+                                + "associated with the current thread group.");
+      }
     synchronized (globalMap)
       {
         Collection globalObjects = globalMap.values ();
@@ -1398,7 +1400,7 @@ public abstract class KeyboardFocusManager
     synchronized (globalMap)
       {
         // Save old object.
-        Object oldObject = getGlobalObject (globalMap);
+        Object oldObject = getGlobalObject(globalMap, false);
 
         // Nullify old object.
         Collection threadGroups = globalMap.keySet ();
