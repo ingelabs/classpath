@@ -1,5 +1,10 @@
 2006-07-26  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicMenuBarUI.java
+	(FocusAction): Made class static.
+
+2006-07-26  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicLookAndFeel.java
 	(initComponentDefaults): Add keyboard bindings for
 	PopupMenu.

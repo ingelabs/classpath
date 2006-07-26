@@ -75,7 +75,7 @@ public class BasicMenuBarUI extends MenuBarUI
   /**
    * This action is performed for the action command 'takeFocus'.
    */
-  private class FocusAction
+  private static class FocusAction
     extends AbstractAction
   {
 
