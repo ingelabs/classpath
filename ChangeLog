@@ -1,3 +1,15 @@
+2006-07-26  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Add keyboard bindings for
+	PopupMenu.
+
+2006-07-26  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/UIManager.java
+	(getLookAndFeelDefaults): Return the look and feel defaults.
+	(setLookAndFeel): Improved exception messsage.
+
 2006-07-26  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/text/StringContent.java
