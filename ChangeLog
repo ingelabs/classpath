@@ -1,3 +1,9 @@
+2006-07-26  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/image/BandedSampleModel.java
+	(createCompatibleSampleModel): Fixed typo in loop increment, set
+	correct scanlineStride, and updated API docs.
+
 2006-07-25  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicPopupMenuUI.java
