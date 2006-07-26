@@ -1,5 +1,34 @@
 2006-07-26  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicTableUI.java
+	(FocusHandler.focusGained): Implemented to refresh the
+	lead cell.
+	(FocusHandler.focusLost): Implemented to refresh the
+	lead cell.
+	(FocusHandler.repaintLeadCell): New helper method.
+	(MouseInputHandler.mouseEntered): Do nothing here.
+	(MouseInputHandler.mouseExited): Do nothing here.
+	(MouseInputHandler.mouseMoved): Do nothing here.
+	(installKeyboardActions): Rewritten to use a shared InputMap
+	and ActionMap and correctly install the maps via SwingUtilities
+	methods.
+	(getActionMap): New helper method.
+	(createDefaultActions): New helper method.
+	(ActionListenerProxy): Removed unneeded class.
+	(TableAction): Made class static.
+	(TableAction.actionPerformed): Determine table by fetching
+	the event source. Pass the table to helper methods.
+	Use __command__ hack to determine the action command.
+	(TableAction.getFirstVisibleColumnIndex): Get table as argument.
+	(TableAction.getLastVisibleColumnIndex): Get table as argument.
+	(TableAction.getFirstVisibleRowIndex): Get table as argument.
+	(TableAction.getLastVisibleRowIndex): Get table as argument.
+	(TableAction.advanceMultipleSelection): Get table as argument.
+	(uninstallDefaults): Do nothing here.
+	(uninstallKeyboardActions): Uninstall the keyboard actions.
+
+2006-07-26  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComponent.java
 	(processKeyBinding): Store the action command as property
 	in the Action instance that we call. This allows for
