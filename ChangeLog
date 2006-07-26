@@ -1,5 +1,13 @@
 2006-07-26  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicButtonListener.java
+	(mousePressed): Request focus if appropriate.
+	* javax/swing/text/DefaultCaret.java
+	(mousePressed): Also handle the focus of the text component
+	as specified. Don't consume events.
+
+2006-07-26  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
 	(focusRequest): Removed field.
 	(postFocusEvent(int,boolean,Component)): Removed.

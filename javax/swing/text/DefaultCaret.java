@@ -552,7 +552,6 @@ public class DefaultCaret extends Rectangle
    */
   public void mousePressed(MouseEvent event)
   {
-    int button = event.getButton();
     
     // The implementation assumes that consuming the event makes the AWT event
     // mechanism forget about this event instance and not transfer focus.
@@ -565,23 +564,37 @@ public class DefaultCaret extends Rectangle
     // - a middle-click positions the caret and pastes the clipboard
     //   contents.
     // - a middle-click when shift is held down is ignored
-    
-    if (button == MouseEvent.BUTTON1)
-      if (event.isShiftDown())
-        moveCaret(event);
-      else
-        positionCaret(event);
-      else if(button == MouseEvent.BUTTON2)
-        if (event.isShiftDown())
-          event.consume();
+
+    if (SwingUtilities.isLeftMouseButton(event))
+      {
+        // Handle the caret.
+        if (event.isShiftDown() && getDot() != -1)
+          {
+            moveCaret(event);
+          }
         else
           {
             positionCaret(event);
-            
+          }
+
+        // Handle the focus.
+        if (textComponent != null && textComponent.isEnabled()
+            && textComponent.isRequestFocusEnabled())
+          {
+            textComponent.requestFocus();
+          }
+
+        // TODO: Handle double click for selecting words.
+      }
+    else if(event.getButton() == MouseEvent.BUTTON2)
+      {
+        // Special handling for X11-style pasting.
+        if (! event.isShiftDown())
+          {
+            positionCaret(event);
             textComponent.paste();
           }
-      else
-        event.consume();
+      }
   }
 
   /**
