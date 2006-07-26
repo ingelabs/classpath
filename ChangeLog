@@ -1,5 +1,9 @@
 2006-07-26  Sven de Marothy  <sven@physto.se>
 
+	* java/awt/geom/GeneralPath.java: Fix severe typo.
+	
+2006-07-26  Sven de Marothy  <sven@physto.se>
+
 	* include/java_lang_VMSystem.h
 	* vm/reference/java/lang/VMSystem.java
 	* native/jni/java-lang/java_lang_VMSystem.c
