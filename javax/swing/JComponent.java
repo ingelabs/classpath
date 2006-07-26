@@ -2581,10 +2581,11 @@ public abstract class JComponent extends Container implements Serializable
     if (isEnabled())
       {
         Action act = null;
+        Object cmd = null;
         InputMap map = getInputMap(condition);
         if (map != null)
           {
-            Object cmd = map.get(ks);
+            cmd = map.get(ks);
             if (cmd != null)
               {
                 if (cmd instanceof ActionListenerProxy)
@@ -2594,7 +2595,23 @@ public abstract class JComponent extends Container implements Serializable
               }
           }
         if (act != null && act.isEnabled())
-          return SwingUtilities.notifyAction(act, ks, e, this, e.getModifiers());
+          {
+            // Need to synchronize here so we don't get in trouble with
+            // our __command__ hack.
+            synchronized (act)
+              {
+                // We add the command as value to the action, so that
+                // the action can later determine the command with which it
+                // was called. This is undocumented, but shouldn't affect
+                // compatibility. It allows us to use only one Action instance
+                // to do the work for all components of one type, instead of
+                // having loads of small Actions. This effectivly saves startup
+                // time of Swing.
+                act.putValue("__command__", cmd);
+                return SwingUtilities.notifyAction(act, ks, e, this,
+                                                   e.getModifiers());
+              }
+          }
       }
     return false;
   }

@@ -1,5 +1,12 @@
 2006-07-26  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JComponent.java
+	(processKeyBinding): Store the action command as property
+	in the Action instance that we call. This allows for
+	improvement on the side of the Action.
+
+2006-07-26  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/metal/MetalUtils.java
 	(fillMetalPattern): Use fillRect() instead of drawLine() to
 	fill single pixels.
