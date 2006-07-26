@@ -1,5 +1,27 @@
 2006-07-26  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicToolBarUI.java
+	(ToolBarAction): New inner class for handling keyboard
+	actions.
+	(installKeyboardActions): Implemented.
+	(getActionMap): New helper method.
+	(createDefaultActions): New helper method.
+	(installListeners): Install focus listener on toolbar's
+	children, rather than the toolbar itself.
+	(navigateFocusedComp): Implemented.
+	(uninstallKeyboardActions): Implemented.
+	(uninstallListeners): Uninstall focus listener from
+	toolbar's children, rather than the toolbar itself.
+	(ToolBarContListener.componentAdded): Install focus
+	listener on added child.
+	(ToolBarContListener.componentRemoved): Uninstall focus
+	listener from removed child.
+	(ToolBarFocusListener.ToolBarFocusListener): Nothing to do here.
+	(ToolBarFocusListener.focusGained): Implemented.
+	(ToolBarFocusListener.focusLost): Implemented.
+
+2006-07-26  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/DefaultKeyboardFocusManager.java
 	(dispatchEvent): Notify old focus owner when it has lost
 	focus.
