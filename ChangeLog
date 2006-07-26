@@ -1,3 +1,27 @@
+2006-07-26  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* gnu/java/awt/peer/qt/QtCheckboxPeer.java: Removed unneeded imports.
+	* gnu/java/awt/peer/qt/QtComponentGraphics.java: Likewise.
+	* gnu/java/awt/peer/qt/QtComponentPeer.java: Likewise.
+	* gnu/java/awt/peer/qt/QtContainerPeer.java: Likewise.
+	* gnu/java/awt/peer/qt/QtDialogPeer.java: Likewise.
+	* gnu/java/awt/peer/qt/QtEmbeddedWindowPeer.java: Likewise.
+	* gnu/java/awt/peer/qt/QtFontMetrics.java: Likewise.
+	* gnu/java/awt/peer/qt/QtFontPeer.java: Likewise.
+	* gnu/java/awt/peer/qt/QtGraphics.java: Likewise.
+	* gnu/java/awt/peer/qt/QtGraphicsEnvironment.java: Likewise.
+	* gnu/java/awt/peer/qt/QtImage.java: Likewise.
+	* gnu/java/awt/peer/qt/QtImageConsumer.java: Likewise.
+	* gnu/java/awt/peer/qt/QtImageDirectGraphics.java: Likewise.
+	* gnu/java/awt/peer/qt/QtImageGraphics.java: Likewise.
+	* gnu/java/awt/peer/qt/QtMenuBarPeer.java: Likewise.
+	* gnu/java/awt/peer/qt/QtMenuItemPeer.java: Likewise.
+	* gnu/java/awt/peer/qt/QtPopupMenuPeer.java: Likewise.
+	* gnu/java/awt/peer/qt/QtScreenDeviceConfiguration.java: Likewise.
+	* gnu/java/awt/peer/qt/QtScrollPanePeer.java: Likewise.
+	* gnu/java/awt/peer/qt/QtToolkit.java: Likewise.
+	* gnu/java/awt/peer/qt/QtVolatileImage.java: Likewise.
+
 2006-07-26  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/KeyboardFocusManager.java
