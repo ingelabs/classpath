@@ -1,3 +1,11 @@
+2006-07-27  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoGraphics2D.c
+	(Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoSetMatrix): Remove
+	g_assert from unused obj.
+	(Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoDrawGlyphVector): Mark
+	obj as unused and remove g_assert on it.
+
 2006-07-26  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/RepaintManager.java

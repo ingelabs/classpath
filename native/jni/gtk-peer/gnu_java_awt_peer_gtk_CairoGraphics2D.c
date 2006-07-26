@@ -239,7 +239,6 @@ Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoSetMatrix
 {
   jdouble *native_matrix = NULL;
   struct cairographics2d *gr = JLONG_TO_PTR(struct cairographics2d, pointer);
-  g_assert (obj != NULL);
   g_assert (gr != NULL);
 
   native_matrix = (*env)->GetDoubleArrayElements (env, java_matrix, NULL);  
@@ -275,7 +274,7 @@ Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoScale
 
 JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoDrawGlyphVector
-(JNIEnv *env, jobject obj, jlong pointer,
+(JNIEnv *env, jobject obj __attribute__((unused)), jlong pointer,
  jobject font,
  jfloat x, jfloat y, jint n,
  jintArray java_codes,
@@ -289,7 +288,6 @@ Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoDrawGlyphVector
   float *native_positions;
   jint i = 0;
 
-  g_assert (obj != NULL);
   g_assert (java_codes != NULL);
   g_assert (java_positions != NULL);
 
