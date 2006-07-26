@@ -1,5 +1,11 @@
 2006-07-26  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/DefaultKeyboardFocusManager.java
+	(dispatchEvent): Notify old focus owner when it has lost
+	focus.
+
+2006-07-26  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicTableUI.java
 	(FocusHandler.focusGained): Implemented to refresh the
 	lead cell.

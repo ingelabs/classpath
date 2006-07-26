@@ -179,10 +179,21 @@ public class DefaultKeyboardFocusManager extends KeyboardFocusManager
       }
     else if (e instanceof FocusEvent)
       {
-        Component target = (Component) e.getSource ();
+        FocusEvent fe = (FocusEvent) e;
+        Component target = fe.getComponent ();
 
         if (e.id == FocusEvent.FOCUS_GAINED)
           {
+            // If old focus owner != new focus owner, notify old focus
+            // owner that it has lost focus.
+            Component oldFocusOwner = getGlobalFocusOwner();
+            if (oldFocusOwner != null && oldFocusOwner != target)
+              {
+                FocusEvent lost = new FocusEvent(oldFocusOwner,
+                                                 FocusEvent.FOCUS_LOST,
+                                                 fe.isTemporary(), target);
+                oldFocusOwner.dispatchEvent(lost);
+              }
             if (! (target instanceof Window))
               {
                 if (((FocusEvent) e).isTemporary ())
