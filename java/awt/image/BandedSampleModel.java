@@ -192,6 +192,9 @@ public final class BandedSampleModel extends ComponentSampleModel
    */
   public Object getDataElements(int x, int y, Object obj, DataBuffer data)
   {
+    if (x < 0 || y < 0)
+      throw new ArrayIndexOutOfBoundsException(
+          "x and y must not be less than 0.");
     int pixel = getSample(x, y, 0, data);
     switch (getTransferType())
     {
@@ -294,6 +297,9 @@ public final class BandedSampleModel extends ComponentSampleModel
   public int[] getPixels(int x, int y, int w, int h, int[] iArray,
 			 DataBuffer data)
   {
+    if (x < 0 || y < 0)
+      throw new ArrayIndexOutOfBoundsException(
+          "x and y must not be less than 0.");
     if (iArray == null) 
       iArray = new int[w * h * numBands];
     int outOffset = 0;
@@ -401,6 +407,9 @@ public final class BandedSampleModel extends ComponentSampleModel
   public int[] getSamples(int x, int y, int w, int h, int b, int[] iArray,
 			  DataBuffer data)
   {
+    if (x < 0 || y < 0)
+      throw new ArrayIndexOutOfBoundsException(
+          "x and y must not be less than 0.");
     if (iArray == null) 
       iArray = new int[w * h];
     int outOffset = 0;
@@ -640,6 +649,9 @@ public final class BandedSampleModel extends ComponentSampleModel
   public void setSamples(int x, int y, int w, int h, int b, int[] iArray,
 			 DataBuffer data)
   {
+    if (x < 0 || y < 0)
+      throw new ArrayIndexOutOfBoundsException(
+          "x and y must not be less than 0.");
     int inOffset = 0;
 
     switch (getTransferType())

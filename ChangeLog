@@ -1,3 +1,11 @@
+2006-07-26  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/image/BandedSampleModel.java
+	(getDataElements): Check for negative x or y,
+	(getPixels): Likewise,
+	(getSamples): Likewise,
+	(setSamples): Likewise.
+
 2006-07-26  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicToolBarUI.java
