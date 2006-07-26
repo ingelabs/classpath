@@ -3,6 +3,8 @@
 	* javax/swing/JTabbedPane.java:
 	(setSelectedIndex): Removed updating of component visibility status,
 	added note.
+	(remove(Component)): Use indexOfComponent() to find whether we have
+	to use super.remove(int) or removeTabAt().
 
 2006-07-26  Roman Kennke  <kennke@aicas.com>
 
