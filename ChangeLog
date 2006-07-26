@@ -1,5 +1,14 @@
 2006-07-26  Robert Schuster <robertschuster@fsfe.org>
 
+	* java/awt/image/ColorConvertOp.java: Fixed copyright header.
+	(copyimage): Do not call setRenderingHints() when the respective map
+	does not exist.
+	(filter): Removed code to clone the ColorModel instance.
+	* java/awt/image/ColorModel.java:
+	(cloneColorModel): Removed.
+
+2006-07-26  Robert Schuster <robertschuster@fsfe.org>
+
 	* javax/swing/JTabbedPane.java:
 	(setSelectedIndex): Removed updating of component visibility status,
 	added note.
