@@ -1,3 +1,13 @@
+2006-07-26  Carsten Neumann  <cn-develop@gmx.net>
+
+	* StrictMath.java (cosh): New method.
+	(expm1): New method.
+	(EXPM1_Q1): New field.
+	(EXPM1_Q2): Likewise.
+	(EXPM1_Q3): Likewise.
+	(EXPM1_Q4): Likewise.
+	(EXPM1_Q6): Likewise.
+
 2006-07-26  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicButtonListener.java
