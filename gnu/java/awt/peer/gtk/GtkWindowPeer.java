@@ -324,7 +324,7 @@ public class GtkWindowPeer extends GtkContainerPeer
             // or the actual heavyweight.
             // Since this (native) component is already focused, we simply
             // change the actual focus and be done.
-            postFocusEvent(FocusEvent.FOCUS_GAINED, temporary, request);
+            postFocusEvent(FocusEvent.FOCUS_GAINED, temporary);
             retval = true;
           }
       }

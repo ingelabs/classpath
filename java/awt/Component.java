@@ -4357,6 +4357,14 @@ public abstract class Component
                     myPeer = heavyweightParent.peer;
                     if (myPeer != null)
                       {
+                        // Register lightweight focus request.
+                        if (heavyweightParent != this)
+                          {
+                            KeyboardFocusManager
+                            .addLightweightFocusRequest(heavyweightParent,
+                                                        this);
+                          }
+
                         // Try to focus the component.
                         long time = EventQueue.getMostRecentEventTime();
                         boolean success = myPeer.requestFocus(this, temporary,
@@ -5367,52 +5375,26 @@ p   * <li>the set of backward traversal keys
 
   void dispatchEventImpl(AWTEvent e)
   {
-    // This boolean tells us not to process focus events when the focus
-    // opposite component is the same as the focus component.
-    boolean ignoreFocus = 
-      (e instanceof FocusEvent && 
-       ((FocusEvent)e).getComponent() == ((FocusEvent)e).getOppositeComponent());
-    
-    if (eventTypeEnabled (e.id))
+    // Retarget focus events before dispatching it to the KeyboardFocusManager
+    // in order to handle lightweight components properly.
+    boolean dispatched = false;
+    if (! e.isFocusManagerEvent)
       {
-        if (e.id != PaintEvent.PAINT && e.id != PaintEvent.UPDATE
-            && !ignoreFocus)
-          processEvent(e);
-        
-        // the trick we use to communicate between dispatch and redispatch
-        // is to have KeyboardFocusManager.redispatch synchronize on the
-        // object itself. we then do not redispatch to KeyboardFocusManager
-        // if we are already holding the lock.
-        if (! Thread.holdsLock(e))
-          {
-            switch (e.id)
-              {
-              case WindowEvent.WINDOW_GAINED_FOCUS:
-              case WindowEvent.WINDOW_LOST_FOCUS:
-              case KeyEvent.KEY_PRESSED:
-              case KeyEvent.KEY_RELEASED:
-              case KeyEvent.KEY_TYPED:
-              case FocusEvent.FOCUS_GAINED:
-              case FocusEvent.FOCUS_LOST:
-                if (KeyboardFocusManager
-                    .getCurrentKeyboardFocusManager()
-                    .dispatchEvent(e))
-                    return;
-              case MouseEvent.MOUSE_PRESSED:
-                // A mouse click on an enabled lightweight component
-                // which has not yet been marked as consumed by any
-                // other mouse listener results in a focus traversal
-                // to that component.
-                if (isLightweight()
-                    && isEnabled() && !e.isConsumed())
-                    requestFocus();
-                break;
-              }
-          }
+        e = KeyboardFocusManager.retargetFocusEvent(e);
+        dispatched = KeyboardFocusManager.getCurrentKeyboardFocusManager()
+                                          .dispatchEvent(e);
       }
 
-    if (peer != null)
-      peer.handleEvent(e);
+    if (! dispatched)
+      {
+        if (eventTypeEnabled (e.id))
+          {
+            if (e.id != PaintEvent.PAINT && e.id != PaintEvent.UPDATE)
+              processEvent(e);
+          }
+        if (peer != null)
+          peer.handleEvent(e);
+      }
   }
 
   /**

@@ -1105,11 +1105,9 @@ public abstract class KeyboardFocusManager
    */
   public final void redispatchEvent (Component target, AWTEvent e)
   {
-    synchronized (e)
-      {
-        e.setSource (target);
-        target.dispatchEvent (e);
-      }
+    e.isFocusManagerEvent = true;
+    target.dispatchEvent (e);
+    e.isFocusManagerEvent = false;
   }
 
   /**
@@ -1435,5 +1433,49 @@ public abstract class KeyboardFocusManager
           {
           }
       }
+  }
+
+  
+  /**
+   * Maps focus requests from heavyweight to lightweight components.
+   */
+  private static HashMap focusRequests = new HashMap();
+
+  /**
+   * Retargets focus events that come from the peer (which only know about
+   * heavyweight components) to go to the correct lightweight component
+   * if appropriate.
+   *
+   * @param ev the event to check
+   *
+   * @return the retargetted event
+   */
+  static AWTEvent retargetFocusEvent(AWTEvent ev)
+  {
+    if (ev instanceof FocusEvent)
+      {
+        FocusEvent fe = (FocusEvent) ev;
+        Component target = fe.getComponent();
+        if (focusRequests.containsKey(target))
+          {
+            Component lightweight = (Component) focusRequests.get(target);
+            ev = new FocusEvent(lightweight, fe.id, fe.isTemporary());
+            focusRequests.remove(target);
+          }
+      }
+    return ev;
+  }
+
+  /**
+   * Adds a lightweight focus request for a heavyweight component.
+   *
+   * @param heavyweight the heavyweight from which we will receive a focus
+   *        event soon
+   * @param lightweight the lightweight that ultimately receives the request
+   */
+  static void addLightweightFocusRequest(Component heavyweight,
+                                         Component lightweight)
+  {
+    focusRequests.put(heavyweight, lightweight);
   }
 }

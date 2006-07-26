@@ -90,13 +90,6 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   Insets insets;
 
-  /**
-   * Stores the actually requested focus component. This is used in
-   * {@link #postFocusEvent(int, boolean)} to determine the actual component
-   * which received focus.
-   */
-  private Component focusRequest;
-
   /* this isEnabled differs from Component.isEnabled, in that it
      knows if a parent is disabled.  In that case Component.isEnabled 
      may return true, but our isEnabled will always return false */
@@ -640,11 +633,6 @@ public class GtkComponentPeer extends GtkGenericPeer
       q.postEvent(keyEvent);
   }
 
-  protected void postFocusEvent (int id, boolean temporary, Component target)
-  {
-    q().postEvent (new FocusEvent (target, id, temporary));
-  }
-
   /**
    * Referenced from native code.
    *
@@ -653,7 +641,7 @@ public class GtkComponentPeer extends GtkGenericPeer
    */
   protected void postFocusEvent (int id, boolean temporary)
   {
-    postFocusEvent(id, temporary, focusRequest);
+    q().postEvent (new FocusEvent (awtComponent, id, temporary));
   }
 
   protected void postItemEvent (Object item, int stateChange)
@@ -705,7 +693,7 @@ public class GtkComponentPeer extends GtkGenericPeer
             // or the actual heavyweight.
             // Since this (native) component is already focused, we simply
             // change the actual focus and be done.
-            postFocusEvent(FocusEvent.FOCUS_GAINED, temporary, request);
+            postFocusEvent(FocusEvent.FOCUS_GAINED, temporary);
             retval = true;
           }
       }
@@ -722,7 +710,6 @@ public class GtkComponentPeer extends GtkGenericPeer
               }
             // Store requested focus component so that the corresponding
             // event is dispatched correctly.
-            focusRequest = request;
             gtkWidgetRequestFocus();
             retval = true;
           }

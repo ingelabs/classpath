@@ -1,3 +1,48 @@
+2006-07-26  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
+	(focusRequest): Removed field.
+	(postFocusEvent(int,boolean,Component)): Removed.
+	(postFocusEvent(int,boolean)): Reverted to post event using
+	the heavyweight component.
+	(requestFocus): Post focus event using the heavyweight
+	component.
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java
+	(requestFocus): Post focus event using the heavyweight
+	component.
+	* java/awt/AWTEvent.java
+	(isFocusManagerEvent): New field, indicating if this is
+	an event that is redispatched by the KeyboardFocusManager.
+	* java/awt/Component.java
+	(requestFocusImpl): Register component for
+	heavyweight->lightweight mapping.
+	(dispatchEventImpl): Retarget focus events before dispatching
+	to the KeyboardFocusManager. Use new AWTEvent flag instead
+	of locking hack. Dispatch all events through the
+	KeyboardFocusManager. Don't request focus on lightweight
+	components.
+	* java/awt/DefaultKeyboardFocusManager.java
+	(dispatchEvent): Pulled out handling of FOCUS_GAINED and
+	FOCUS_LOST.
+	(handleFocusGained): Fixed handling of temporary vs permanent
+	focus changes. Added some checks.
+	(handleFocusLost): Fixed handling of temporary vs permanent
+	focus changes. Added some checks.
+	* java/awt/EventDispatchThread.java
+	(run): Don't dispatch to KeyboardFocusManager here. This
+	is done in Component.dispatchEventImpl().
+	* java/awt/KeyboardFocusManager.java
+	(redispatchEvent): Use new AWTEvent flag instead of locking hack.
+	(focusRequests): New field.
+	(retargetFocusEvent): New method. Retargets focus events
+	that come from heavyweights to the correct lightweight component.
+	(addLightweightFocusRequest): New method. Stores a mapping
+	for later retargetting of heavyweight focus events.
+	* java/awt/Window.java
+	(addFocusListener): Removed bogus method. If at all, this
+	should be performed in the KeyboardFocusManager.
+	(Window): Don't install a focus listener on the Window.
+
 2006-07-26  Robert Schuster <robertschuster@fsfe.org>
 
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java:
