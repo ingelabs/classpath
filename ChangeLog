@@ -1,3 +1,11 @@
+2006-07-26  Sven de Marothy  <sven@physto.se>
+
+	* include/java_lang_VMSystem.h
+	* vm/reference/java/lang/VMSystem.java
+	* native/jni/java-lang/java_lang_VMSystem.c
+	(nanoTime, currentTimeMillis): Switch the former to native code and
+	the latter to java.
+	
 2006-07-26  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* gnu/java/awt/peer/qt/QtCheckboxPeer.java: Removed unneeded imports.
