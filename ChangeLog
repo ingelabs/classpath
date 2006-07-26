@@ -1,5 +1,10 @@
 2006-07-26  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/text/StringContent.java
+	(StringContent): Changed initialLength to 10.
+
+2006-07-26  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* java/util/Vector.java: Fixed API doc typo.
 
 2006-07-26  David Gilbert  <david.gilbert@object-refinery.com>
