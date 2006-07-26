@@ -1,3 +1,37 @@
+2006-07-26  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JOptionPane.java
+	(createDialog): Add property change handler for closing
+	the dialog when the value property changes.
+	(ValuePropertyHandler): New inner helper class.
+	* javax/swing/plaf/basic/BasicOptionPaneUI.java
+	(OptionPaneCloseAction): New class.
+	(messageForeground): Removed field.
+	(messageBorder): Removed field.
+	(buttonBorder): Removed field.
+	(addIcon): Configure the new label.
+	(addMessageComponents): Configure newly created labels.
+	(burstStringInto): Likewise.
+	(createButtonArea): Install border here.
+	(createMessageArea): Install border and foreground here.
+	(createSeparator): Added comment and removed
+	NotImplementedException.
+	(installComponents): Don't install the UI defaults for the
+	message and button area here. This is moved to the
+	corresponding create* methods. Adjusted comment about
+	separator.
+	(installDefaults): Removed initialization of removed fields.
+	(installKeyboardActions): Implemented.
+	(getActionMap): New helper method.
+	(createDefaultActions): New helper method.
+	(uninstallDefaults): Removed de-initialization of removed fields.
+	(uninstallKeyboardActions): Implemented.
+	(configureLabel): New helper method.
+	* javax/swing/plaf/basic/BasicTableUI.java
+	(getActionMap): Fixed the UI property names.
+	* javax/swing/plaf/basic/BasicToolBarUI.java
+	(getActionMap): Fixed the UI property names.
+
 2006-07-26  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/image/BandedSampleModel.java

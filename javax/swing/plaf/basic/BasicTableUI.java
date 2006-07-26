@@ -506,7 +506,7 @@ public class BasicTableUI extends TableUI
     if (am == null)
       {
         am = createDefaultActions();
-        UIManager.getLookAndFeelDefaults().put("Tree.actionMap", am);
+        UIManager.getLookAndFeelDefaults().put("Table.actionMap", am);
       }
     return am;
   }

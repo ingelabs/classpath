@@ -672,11 +672,11 @@ public class BasicToolBarUI extends ToolBarUI implements SwingConstants
    */
   private ActionMap getActionMap()
   {
-    ActionMap am = (ActionMap) UIManager.get("Table.actionMap");
+    ActionMap am = (ActionMap) UIManager.get("ToolBar.actionMap");
     if (am == null)
       {
         am = createDefaultActions();
-        UIManager.getLookAndFeelDefaults().put("Tree.actionMap", am);
+        UIManager.getLookAndFeelDefaults().put("ToolBar.actionMap", am);
       }
     return am;
   }
