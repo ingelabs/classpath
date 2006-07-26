@@ -1,4 +1,4 @@
-/* MBeanConstructorInfo.java -- Information about a bean's constructor.
+/* MBeanOperationInfo.java -- Information about a bean's operations.
    Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,12 +37,12 @@ exception statement from your version. */
 
 package javax.management;
 
-import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 import java.util.Arrays;
 
 /**
- * Describes the constructors of a management bean.
+ * Describes the operations of a management bean.
  * The information in this class is immutable as standard.
  * Of course, subclasses may change this, but this
  * behaviour is not recommended.
@@ -50,7 +50,7 @@ import java.util.Arrays;
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.5
  */
-public class MBeanConstructorInfo
+public class MBeanOperationInfo
   extends MBeanFeatureInfo
   implements Cloneable
 {
@@ -58,7 +58,36 @@ public class MBeanConstructorInfo
   /**
    * Compatible with JDK 1.5
    */
-  private static final long serialVersionUID = 4433990064191844427L;
+  private static final long serialVersionUID = -6178860474881375330L;
+
+  /**
+   * Used to signify that the operation merely provides information
+   * (akin to an accessor).
+   */
+  public static final int INFO = 0;
+
+  /**
+   * Used to signify that the operation makes some change to the
+   * state of the bean (akin to a mutator).
+   */
+  public static final int ACTION = 1;
+
+  /**
+   * Used to signify that the operation makes some state change
+   * to the bean and also returns information.
+   */
+  public static final int ACTION_INFO = 2;
+
+  /**
+   * Used to signify that the behaviour of the operation is
+   * unknown.
+   */
+  public static final int UNKNOWN = 3;
+
+  /**
+   * The return type of the method, in the form of its class name.
+   */
+  private String type;
 
   /**
    * The signature of the constructor i.e. the argument types.
@@ -66,45 +95,72 @@ public class MBeanConstructorInfo
   private MBeanParameterInfo[] signature;
 
   /**
-   * Constructs a @link{MBeanConstructorInfo} with the specified
-   * description using the given constructor.  Each parameter is
+   * The impact of the method, as one of {@link #INFO}, {@link #ACTION},
+   * {@link #ACTION_INFO} and {@link #UNKNOWN}.
+   */
+  private int impact;
+
+  /**
+   * Constructs a @link{MBeanOperationInfo} with the specified
+   * description using the given method.  Each parameter is
    * described merely by its type; the name and description are
-   * <code>null</code>.
+   * <code>null</code>.  The return type and impact of the
+   * method are determined from the {@link Method} instance.
    *
    * @param desc a description of the attribute.
-   * @param cons the constructor.
+   * @param method the method.
    */
-  public MBeanConstructorInfo(String desc, Constructor cons)
+  public MBeanOperationInfo(String desc, Method method)
   {
-    super(cons.getName(), desc);
-    Class[] paramTypes = cons.getParameterTypes();
+    super(method.getName(), desc);
+    Class[] paramTypes = method.getParameterTypes();
     signature = new MBeanParameterInfo[paramTypes.length];
     for (int a = 0; a < paramTypes.length; ++a)
       signature[a] = new MBeanParameterInfo(null,
 					    paramTypes[a].getName(),
 					    null);
+    type = method.getReturnType().getName();
+    if (method.getReturnType() == Void.TYPE)
+      {
+	if (paramTypes.length == 0)
+	  impact = UNKNOWN;
+	else
+	  impact = ACTION;
+      }
+    else
+      {
+	if (paramTypes.length == 0)
+	  impact = INFO;
+	else
+	  impact = ACTION_INFO;
+      }
   }
 
   /**
-   * Constructs a @link{MBeanConstructorInfo} with the specified
-   * name, description and parameter information. A <code>null</code>
-   * value for the parameter information is the same as passing in
-   * an empty array.
+   * Constructs a @link{MBeanOperationInfo} with the specified name,
+   * description, parameter information, return type and impact. A
+   * <code>null</code> value for the parameter information is the same
+   * as passing in an empty array.
    *
    * @param name the name of the constructor.
    * @param desc a description of the attribute.
-   * @param sig the signature of the constructor, as a series
+   * @param sig the signature of the method, as a series
    *            of {@link MBeanParameterInfo} objects, one for
    *            each parameter.
+   * @param type the return type of the method, as the class name.
+   * @param impact the impact of performing the operation.
    */
-  public MBeanConstructorInfo(String name, String desc,
-			      MBeanParameterInfo[] sig)
+  public MBeanOperationInfo(String name, String desc,
+			    MBeanParameterInfo[] sig, String type,
+			    int impact)
   {
     super(name, desc);
     if (sig == null)
       signature = new MBeanParameterInfo[0];
     else
       signature = sig;
+    this.type = type;
+    this.impact = impact;
   }
 
   /**
@@ -137,24 +193,27 @@ public class MBeanConstructorInfo
    * MBeanConstructorInfo}, {@link Object#equals()} returns true for a
    * comparison of both the name and description of this notification
    * with that of the specified object (performed by the superclass),
-   * and the two signature arrays contain the same elements in the
-   * same order (but one may be longer than the other).
+   * the return type and impact are equal and the two signature arrays
+   * contain the same elements in the same order (but one may be
+   * longer than the other).
    *
    * @param obj the object to compare.
-   * @return true if the object is a {@link MBeanConstructorInfo}
+   * @return true if the object is a {@link MBeanOperationInfo}
    *         instance, 
    *         <code>name.equals(object.getName())</code>,
-   *         <code>description.equals(object.getDescription())</code>
+   *         <code>description.equals(object.getDescription())</code>,
+   *         <code>type.equals(object.getReturnType())</code>,
+   *         <code>impact == object.getImpact()</code>,
    *         and the corresponding elements of the signature arrays are
    *         equal.
    */
   public boolean equals(Object obj)
   {
-    if (!(obj instanceof MBeanConstructorInfo))
+    if (!(obj instanceof MBeanOperationInfo))
       return false;
     if (!(super.equals(obj)))
       return false;
-    MBeanConstructorInfo o = (MBeanConstructorInfo) obj;
+    MBeanOperationInfo o = (MBeanOperationInfo) obj;
     MBeanParameterInfo[] sig = o.getSignature();
     for (int a = 0; a < signature.length; ++a)
       {
@@ -163,11 +222,47 @@ public class MBeanConstructorInfo
 	if (!(signature[a].equals(sig[a])))
 	  return false;
       }
-    return true;
+    return (type.equals(o.getReturnType()) &&
+	    impact == o.getImpact());
   }
   
   /**
-   * Returns the constructor's signature, in the form of
+   * <p>
+   * Returns the impact of performing this operation.
+   * The value is equal to one of the following:
+   * </p>
+   * <ol>
+   * <li>{@link #INFO} &mdash; the method just returns
+   * information (akin to an accessor).</li>
+   * <li>{@link #ACTION} &mdash; the method just alters
+   * the state of the bean, without returning a value
+   * (akin to a mutator).</li>
+   * <li>{@link #ACTION_INFO} &mdash; the method both makes
+   * state changes and returns a value.</li>
+   * <li>{@link #UNKNOWN} &mdash; the behaviour of the operation
+   * is unknown.</li>
+   * </ol>
+   *
+   * @return the impact of performing the operation.
+   */
+  public int getImpact()
+  {
+    return impact;
+  }
+
+  /**
+   * Returns the return type of the operation, as the class
+   * name.
+   *
+   * @return the return type.
+   */
+  public String getReturnType()
+  {
+    return type;
+  }
+
+  /**
+   * Returns the operation's signature, in the form of
    * information on each parameter.  Each parameter is
    * described by an instance of {@link MBeanParameterInfo}.
    * The returned array is a shallow copy of the array used
@@ -177,7 +272,7 @@ public class MBeanConstructorInfo
    * here.
    *
    * @return an array of {@link MBeanParameterInfo} objects,
-   *         describing the constructor parameters.
+   *         describing the operation parameters.
    */
   public MBeanParameterInfo[] getSignature()
   {
@@ -185,15 +280,16 @@ public class MBeanConstructorInfo
   }
 
   /**
-   * Returns the hashcode of the constructor information as the sum
-   * of the hashcode of the superclass and the hashcode of the parameter
-   * array.
+   * Returns the hashcode of the operation information as the sum of
+   * the hashcode of the superclass, the parameter array, the return
+   * type and the impact factor.
    *
-   * @return the hashcode of the constructor information.
+   * @return the hashcode of the operation information.
    */
   public int hashCode()
   {
-    return super.hashCode() + Arrays.hashCode(signature);
+    return super.hashCode() + Arrays.hashCode(signature)
+      + type.hashCode() + Integer.valueOf(impact).hashCode();
   }
 
 }
