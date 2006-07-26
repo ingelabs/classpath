@@ -492,6 +492,8 @@ public class GapContent
     if ((where + len) > length)
       throw new BadLocationException("len plus where cannot be greater"
           + " than the content length", len + where);
+    if (len < 0)
+      throw new BadLocationException("negative length not allowed: ", len);
 
     // check if requested segment is contiguous
     if ((where < gapStart) && ((gapStart - where) < len))

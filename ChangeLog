@@ -1,5 +1,11 @@
 2006-07-26  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/GapContent.java
+	(getChars): Check for negative length and throw
+	BadLocationException.
+
+2006-07-26  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicMenuBarUI.java
 	(FocusAction): Made class static.
 
