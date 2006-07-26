@@ -1,5 +1,13 @@
 2006-07-26  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/RepaintManager.java
+	(markCompletelyDirty): Add dirty region with Integer.MAX_VALUE
+	for the component.
+	(isCompletelyDirty): Consider a component completely dirty
+	when it has a dirty region with Integer.MAX_VALUE.
+
+2006-07-26  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/KeyboardFocusManager.java
 	(getGlobalFocusOwner): Explicitly check for thread security.
 	(getGlobalPermanentFocusOwner): Explicitly check for thread security.
