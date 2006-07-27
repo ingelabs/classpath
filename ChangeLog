@@ -1,3 +1,99 @@
+2006-07-27  Robert Schuster <robertschuster@fsfe.org>
+
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java: Fixed copyright and
+	authorship.
+	(NavigateAction): New inner class.
+	(NavigatePageDownAction): New inner class.
+	(NavigatePageUpAction): New inner class.
+	(RequestFocusAction): New inner class.
+	(RequestFocusForVisibleComponentAction): New inner class.
+	(FocusHandler.focusGained): Implemented.
+	(FocusHandler.focusLost): Implemented.
+	(MouseHandler.mouseReleased): Implemented.
+	(MouseHandler.mousePressed): Rewritten.
+	(PropertyChangeHandler.propertyChange): Reset currentScrollOffset and
+	currentScrollLocation to 0.
+	(TabbedPaneLayout.calculateSize): Stored tab count in local variable,
+	removed local variables, fixed indentation to stay under 80 column
+	limit.
+	(TabbedPaneLayout.calculateTabRects): Decrease tab area position by
+	one, set selectedIndex to 0 if its negative, corrected start values
+	for normalization, suppressed padding when only one tab run,
+	(TabbedPaneLayout.minimumLayoutSize): Toggled argument value.
+	(TabbedPaneLayout.normalizeTabRuns): Fixed indentation to stay under
+	80 column limit, corrected the starting value for the bounds fixing
+	phase.
+	(TabbedPaneLayout.preferredTabAreaWidth): Fixed indentation.
+	(TabbedPaneLayout.rotateTabInRuns): Corrected comparison value for
+	selectedRun, set start index for loop to 0.
+	(TabbedPaneScrollLayout.preferredLayoutSize): Toggled argument value.
+	(TabbedPaneScrollLayout.calculateTabRects): Rewritten.
+	(TabbedPaneScrollLayout.layoutContainer): Added scrolling button
+	alignment and visibility handling.
+	(TabSelectionHandler.stateChanged): Do revalidation only in wrap tab
+	layout mode.
+	(ScrollingPanel.ScrollingPanelUI.paint): Rewritten.
+	(currentScrollOffset): New field.
+	(tabRuns): Rewritten documentation.
+	(selectedColor): New field.
+	(tempTextRect): New field.
+	(tempIconRect): New field.
+	(scrollTab): New method.
+	(updateButtons): New method.
+	(updateViewPosition): New method.
+	(createLayoutManager): Reordered method calls, predefine new fields,
+	register proper listeners.
+	(uninstallComponents): Implemented.
+	(installDefaults): Corrected property names, fixed indentation,.
+	(uninstallDefaults): Set new fields to null.
+	(uninstallListeners): Remove listeners from components neccessary for
+	scrolling tab layout.
+	(installKeyboardActions): Implemented.
+	(uninstallKeyboardActions): Implemented.
+	(paint): Paint tab area background.
+	(paintTabArea): Fixed indentation, removed usage of local Rectangle
+	objects.
+	(getTabLabelShiftX): Rewritten.
+	(getTabLabelShiftY): Rewritten.
+	(paintFocusIndicator): Reindented.
+	(paintTabBorder): Rewritten.
+	(paintTabBackground): Corrected color usage, rewritten background
+	rectangle painting.
+	(paintContentBorderTopEdge): Rewritten.
+	(paintContentBorderBottomEdge): Rewritten.
+	(paintContentBorderLeftEdge): Rewritten.
+	(paintContentBorderRightEdge): Rewritten.
+	(tabForCoordinate): Return selected index when no tab could be
+	found, removed FIXME note.
+	(getRunForTab): Changed return value for first if-statement.
+	(navigateSelectedTab): Fixed last argument for both
+	getTabRunOffset() calls.
+	(selectedNextTabInRun): Added scrolling code.
+	(selectedPreviousTabInRun): Added scrolling code.
+	(selectedNextTab): Added scrolling code.
+	(selectedPreviousTab): Added scrolling code.
+	(selectAdjacentRunTab): Added scrolling code.
+	(getTextViewForTab): Added FIXME note.
+	(calculateTabHeight): Changed FIXME note.
+	(getTabRunOffset): Fixed indentation.
+	(getNextTabIndexInRun): Corrected return value.
+	(rotateInsets): Make TOP case the default in switch-statement.
+	(getActionMap): New method.
+	(createActionMap): New method.
+	* javax/swing/plaf/metal/MetalTabbedPaneUI.java:
+	(createLayoutManager): Rewritten.
+	(paintLeftTabBorder): Do not paint left line when previous tab
+	is selected but current tab is the first in its run, do not paint
+	left line when current tab is selected and is first in its run.
+	(paintRightTabBorder): Added missing setColor() call, fixed color
+	usage, do not paint right line if previous tab is selected but
+	current tab is the first in its run.
+	(paintBottomTabBorder): Do not paint left line if tab is selected
+	and is the first tab in the last run.
+	(paintFocusIndicator): New method.
+	(getLabelShiftX): New method.
+	(getLabelShiftY): New method.
+
 2006-07-27  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoGraphics2D.c
