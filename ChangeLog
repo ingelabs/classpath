@@ -1,3 +1,29 @@
+2006-07-27  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/AbstractDocument.java
+	(documentCV): Made field private.
+	(bypass): Made field private.
+	(bidiRoot): New field.
+	(AbstractDocument): Initialize bidiRoot.
+	(getBidiRootElement): Return bidiRoot.
+	(getRootElements): Adjusted to also return the bidiRoot element.
+	(BranchElement.startOffset): Removed unneeded field.
+	(BranchElement.endOffset): Removed unneeded field.
+	(BranchElement.BranchElement): Removed unneeded fields.
+	(BranchElement.getEndOffset): Don't explicitly throw NPE here. This is
+	done automatically when there's no element left in the array.
+	(BranchElement.getStartOffset): Likewise.
+	(BranchElement.replace): Reordered calculations to avoid double
+	calculations.
+	(removeImpl): Silently ignore requests with length <= 0.
+	* javax/swing/text/GapContent.java
+	(createPosition): Removed explicit check for correct offset.
+	This class can deal with offsets outside the document.
+	(shiftEnd): Update all positions, even those outside the
+	document.
+	(adjustPositionsInRange): Fixed to also adjust positions outside
+	the document boundary.
+
 2006-07-18  Kyle Galloway  <kgallowa@redhat.com>
 
     * gnu/classpath/jdwp/event/ExceptionEvent.java: Added _klass field to hold
