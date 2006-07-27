@@ -1497,79 +1497,86 @@ public abstract class Component
         int oldwidth = this.width;
         int oldheight = this.height;
     
-        if (this.x == x && this.y == y && this.width == width
-            && this.height == height)
-          return;
-
-        invalidate();
-    
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        if (peer != null)
-          peer.setBounds (x, y, width, height);
-    
-        // Erase old bounds and repaint new bounds for lightweights.
-        if (isLightweight() && isShowing())
-          {
-            if (parent != null)
-              {
-                Rectangle oldBounds = new Rectangle(oldx, oldy, oldwidth,
-                                                    oldheight);
-                Rectangle newBounds = new Rectangle(x, y, width, height);
-                Rectangle destroyed = oldBounds.union(newBounds);
-                if (!destroyed.isEmpty())
-                  parent.repaint(0, destroyed.x, destroyed.y, destroyed.width,
-                                 destroyed.height);
-              }
-          }
-
         boolean resized = oldwidth != width || oldheight != height;
         boolean moved = oldx != x || oldy != y;
-        // Only post an event if this component actually has a listener
-        // or has this event explicitly enabled.
-        if (componentListener != null
-            || (eventMask & AWTEvent.COMPONENT_EVENT_MASK) != 0)
+
+        if (resized || moved)
           {
-            // Fire component event on this component.
-            if (moved)
+            // Update the fields.
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+
+            if (peer != null)
               {
-                ComponentEvent ce = new ComponentEvent(this,
-                                               ComponentEvent.COMPONENT_MOVED);
-                getToolkit().getSystemEventQueue().postEvent(ce);
+                peer.setBounds (x, y, width, height);
+                if (resized)
+                  invalidate();
+                if (parent != null && parent.valid)
+                  parent.invalidate();
               }
-            if (resized)
+
+            // Send some events to interested listeners.
+            notifyReshape(resized, moved);
+
+            // Repaint this component and the parent if appropriate.
+            if (parent != null && peer instanceof LightweightPeer
+                && isShowing())
               {
-                ComponentEvent ce = new ComponentEvent(this,
-                                             ComponentEvent.COMPONENT_RESIZED);
-                getToolkit().getSystemEventQueue().postEvent(ce);
+                // The parent repaints the area that we occupied before.
+                parent.repaint(oldx, oldy, oldwidth, oldheight);
+                // This component repaints the area that we occupy now.
+                repaint();
               }
           }
-        else
+      }
+  }
+
+  private void notifyReshape(boolean resized, boolean moved)
+  {
+    // Only post an event if this component actually has a listener
+    // or has this event explicitly enabled.
+    if (componentListener != null
+        || (eventMask & AWTEvent.COMPONENT_EVENT_MASK) != 0)
+      {
+        // Fire component event on this component.
+        if (moved)
           {
-            // Otherwise we might need to notify child components when this is
-            // a Container.
-            if (this instanceof Container)
+            ComponentEvent ce = new ComponentEvent(this,
+                                           ComponentEvent.COMPONENT_MOVED);
+            getToolkit().getSystemEventQueue().postEvent(ce);
+          }
+        if (resized)
+          {
+            ComponentEvent ce = new ComponentEvent(this,
+                                         ComponentEvent.COMPONENT_RESIZED);
+            getToolkit().getSystemEventQueue().postEvent(ce);
+          }
+      }
+    else
+      {
+        // Otherwise we might need to notify child components when this is
+        // a Container.
+        if (this instanceof Container)
+          {
+            Container cont = (Container) this;
+            if (resized)
               {
-                Container cont = (Container) this;
-                if (resized)
+                for (int i = 0; i < cont.getComponentCount(); i++)
                   {
-                    for (int i = 0; i < cont.getComponentCount(); i++)
-                      {
-                        Component child = cont.getComponent(i);
-                        child.fireHierarchyEvent(HierarchyEvent.ANCESTOR_RESIZED,
-                                                 this, parent, 0);
-                      }
+                    Component child = cont.getComponent(i);
+                    child.fireHierarchyEvent(HierarchyEvent.ANCESTOR_RESIZED,
+                                             this, parent, 0);
                   }
-                if (moved)
+              }
+            if (moved)
+              {
+                for (int i = 0; i < cont.getComponentCount(); i++)
                   {
-                    for (int i = 0; i < cont.getComponentCount(); i++)
-                      {
-                        Component child = cont.getComponent(i);
-                        child.fireHierarchyEvent(HierarchyEvent.ANCESTOR_MOVED,
-                                                 this, parent, 0);
-                      }
+                    Component child = cont.getComponent(i);
+                    child.fireHierarchyEvent(HierarchyEvent.ANCESTOR_MOVED,
+                                             this, parent, 0);
                   }
               }
           }
@@ -2150,11 +2157,9 @@ public abstract class Component
   }
 
   /**
-   * Updates this component. This is called in response to
-   * <code>repaint</code>. This method fills the component with the
-   * background color, then sets the foreground color of the specified
-   * graphics context to the foreground color of this component and calls
-   * the <code>paint()</code> method. The coordinates of the graphics are
+   * Updates this component. This is called for heavyweight components in
+   * response to {@link #repaint()}. The default implementation simply forwards
+   * to {@link #paint(Graphics)}. The coordinates of the graphics are
    * relative to this component. Subclasses should call either
    * <code>super.update(g)</code> or <code>paint(g)</code>.
    *
@@ -2162,27 +2167,17 @@ public abstract class Component
    *
    * @see #paint(Graphics)
    * @see #repaint()
-   *
-   * @specnote In contrast to what the spec says, tests show that the exact
-   *           behaviour is to clear the background on lightweight and
-   *           top-level components only. Heavyweight components are not
-   *           affected by this method and only call paint().
    */
   public void update(Graphics g)
   {
-    // Tests show that the clearing of the background is only done in
-    // two cases:
-    // - If the component is lightweight (yes this is in contrast to the spec).
-    // or
-    // - If the component is a toplevel container.
-    if (isLightweight() || getParent() == null)
-      {
-        Rectangle clip = g.getClipBounds();
-        if (clip == null)
-          g.clearRect(0, 0, width, height);
-        else
-          g.clearRect(clip.x, clip.y, clip.width, clip.height);
-      }
+    // Note 1: We used to clear the background here for lightweights and
+    // toplevel components. Tests show that this is not what the JDK does
+    // here. Note that there is some special handling and background
+    // clearing code in Container.update(Graphics).
+
+    // Note 2 (for peer implementors): The JDK doesn't seem call update() for
+    // toplevel components, even when an UPDATE event is sent (as a result
+    // of repaint).
     paint(g);
   }
 
@@ -2258,11 +2253,46 @@ public abstract class Component
    */
   public void repaint(long tm, int x, int y, int width, int height)
   {
-    if (isShowing())
+    // The repaint() call has previously been delegated to
+    // {@link ComponentPeer.repaint()}. Testing on the JDK using some
+    // dummy peers show that this methods is never called. I think it makes
+    // sense to actually perform the tasks below here, since it's pretty
+    // much peer independent anyway, and makes sure only heavyweights are
+    // bothered by this.
+    ComponentPeer p = peer;
+
+    // Let the nearest heavyweight parent handle repainting for lightweight
+    // components.
+    // This goes up the hierarchy until we hit
+    // a heavyweight component that handles this and translates the
+    // rectangle while doing so.
+
+    // We perform some boundary checking to restrict the paint
+    // region to this component.
+    int px = (x < 0 ? 0 : x);
+    int py = (y < 0 ? 0 : y);
+    int pw = width;
+    int ph = height;
+    Component par = this;
+    while (par != null && p instanceof LightweightPeer)
       {
-        ComponentPeer p = peer;
-        if (p != null)
-          p.repaint(tm, x, y, width, height);
+        px += par.x; 
+        py += par.y; 
+        // We perform some boundary checking to restrict the paint
+        // region to this component.
+        pw = Math.min(pw, par.width);
+        ph = Math.min(ph, par.height);
+        par = par.parent;
+        p = par.peer;
+      }
+
+    // Now send an UPDATE event to the heavyweight component that we've found.
+    if (par != null && par.isVisible() && p != null && pw > 0 && ph > 0)
+      {
+        assert ! (p instanceof LightweightPeer);
+        PaintEvent pe = new PaintEvent(par, PaintEvent.UPDATE,
+                                       new Rectangle(px, py, pw, ph));
+        getToolkit().getSystemEventQueue().postEvent(pe);
       }
   }
 

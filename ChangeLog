@@ -1,3 +1,23 @@
+2006-07-27  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Component.java
+	(reshape): Invalidate the component itself only when the
+	size has changed. Invalidate the parent always. Fixed
+	repainting. Pulled out the notification into
+	notifyReshape().
+	(notifyReshape): New helper method. Notify interested listeners
+	about a reshape.
+	(update): Simply call paint() without clearing the background.
+	This is done in Container.update() if appropriate.
+	(repaint): Delagate the repaint to the nearest heavyweight
+	parent (for lightweights) and send an UPDATE event, rather than
+	calling	ComponentPeer.repaint().
+	* java/awt/Container.java
+	(backCleared): Removed field.
+	(paint): Removed handling of backCleared flag.
+	(update): Only paint if the container is actually
+	showing. Removed handling of backCleared flag.
+
 2006-07-27  Robert Schuster <robertschuster@fsfe.org>
 
 	* javax/swing/plaf/basic/BasicTabbedPaneUI.java: Fixed copyright and
