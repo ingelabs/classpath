@@ -1,3 +1,16 @@
+2006-07-18  Kyle Galloway  <kgallowa@redhat.com>
+
+    * gnu/classpath/jdwp/event/ExceptionEvent.java: Added _klass field to hold
+    defining class.
+    (getParameter): Returns _klass field instead of determining
+    class from _instance.
+    (setCatchLoc): New method.
+    (writeData): Now assumes Location deals with empty locations instead of
+    using null.
+    * gnu/classpath/jdwp/util/Location.java (write): Check for empty
+    locations and write out accordingly.
+    (getEmptyLocation): New method. 
+
 2006-07-27  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/SimpleAttributeSet.java
