@@ -921,21 +921,12 @@ public abstract class CairoGraphics2D extends Graphics2D
   public void draw(Shape s)
   {
     if ((stroke != null && ! (stroke instanceof BasicStroke))
-        || (comp instanceof AlphaComposite
-            && ((AlphaComposite) comp).getAlpha() != 1.0))
+        || (comp instanceof AlphaComposite && ((AlphaComposite) comp).getAlpha() != 1.0))
       {
-        // FIXME: This is a hack to work around BasicStrokes's current
-        // limitations wrt cubic curves.
-        // See CubicSegment.getDisplacedSegments().
-        if (stroke instanceof BasicStroke)
-          {
-            PathIterator flatten = s.getPathIterator(null, 1.0);
-            GeneralPath p = new GeneralPath();
-            p.append(flatten, false);
-            s = p;
-          }
-	fill(stroke.createStrokedShape(s));
-	return;
+        // Cairo doesn't support stroking with alpha, so we create the stroked
+        // shape and fill with alpha instead
+        fill(stroke.createStrokedShape(s));
+        return;
       }
 
     createPath(s);

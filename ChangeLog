@@ -1,3 +1,41 @@
+2006-07-27  Francis Kung  <fkung@redhat.com>
+
+	* gnu/java/awt/java2d/CubicSegment.java: Added import.
+	(cp1): Renamed from first().
+	(c2): Renamed from last().
+	(first): Renamed to cp1().
+	(getDisplacedSegments): Implemented.
+	(last): Renamed to cp2().
+	* gnu/java/awt/java2d/LineSegment.java
+	(cp1): Renamed from first().
+	(c2): Renamed from last().
+	(first): Renamed to cp1().
+	(last): Renamed to cp2().
+	* gnu/java/awt/java2d/QuadSegment.java
+	(cp1): Renamed from first().
+	(c2): Renamed from last().
+	(first): Renamed to cp1().
+	(last): Renamed to cp2().
+	* gnu/java/awt/java2d/Segment.java: Added comments.
+	(first): New field.
+	(Segment): Keep track of first element in list.
+	(add): Update first & last element variables.
+	(cp1): Renamed from first().
+	(c2): Renamed from last().
+	(first()): Renamed to cp1() to reduce ambiguity.
+	(last()): Renamed to cp2() to reduce ambiguity.
+	(reverseAll): Update first element variable..
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(draw): Remove flattening path iterator.
+	* java/awt/BasicStroke.java: Clarified comments.
+	(addSegments): Refactored some code into joinSegments and
+	joinInnerSegments.
+	(capEnd): Rename of Segment.first() and Segment.end().
+	(joinInnerSegments): New method.
+	(joinOuterSegments): New method.
+	(joinSegments): Refactored some code into joinOuterSegments.
+	(solidStroke): Connect segments together properly.
+
 2006-07-27  Tom Tromey  <tromey@redhat.com>
 
 	PR classpath/28486:
