@@ -1,3 +1,9 @@
+2006-07-27  Tom Tromey  <tromey@redhat.com>
+
+	PR classpath/28486:
+	* java/net/URLStreamHandler.java (equals): Properly handle default
+	port.  Rewrote javadoc.  Don't compare 'authority' parts of URLs.
+
 2006-07-27  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/AbstractDocument.java
