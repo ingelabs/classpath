@@ -1,5 +1,13 @@
 2006-07-27  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/SimpleAttributeSet.java
+	(EMPTY): Use EmptyAttributeSet for this field rather than
+	SimpleAttributeSet.
+	* javax/swing/text/EmptyAttributeSet.java: New class. Implements
+	an empty and immutable AttributeSet.
+
+2006-07-27  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/Component.java
 	(reshape): Invalidate the component itself only when the
 	size has changed. Invalidate the parent always. Fixed
