@@ -741,16 +741,23 @@ public abstract class Component
    */
   public Toolkit getToolkit()
   {
-    if (peer != null)
+    // Only heavyweight peers can handle this.
+    ComponentPeer p = peer;
+    Component comp = this;
+    while (p instanceof LightweightPeer)
       {
-        Toolkit tk = peer.getToolkit();
-        if (tk != null)
-          return tk;
+        comp = comp.parent;
+        p = comp == null ? null : comp.peer;
       }
-    // Get toolkit for lightweight component.
-    if (parent != null)
-      return parent.getToolkit();
-    return Toolkit.getDefaultToolkit();
+
+    Toolkit tk = null;
+    if (p != null)
+      {
+        tk = peer.getToolkit();
+      }
+    if (tk == null)
+      tk = Toolkit.getDefaultToolkit();
+    return tk;
   }
 
   /**
@@ -1033,7 +1040,7 @@ public abstract class Component
             visible = false;
 
             // Avoid NullPointerExceptions by creating a local reference.
-            ComponentPeer currentPeer=peer;
+            ComponentPeer currentPeer = peer;
             if (currentPeer != null)
               {
                 currentPeer.hide();
@@ -1292,8 +1299,26 @@ public abstract class Component
     // component.
     synchronized (getTreeLock())
       {
-        // We know peer != null here.
-        return peer.getLocationOnScreen();
+        // Only a heavyweight peer can answer the question for the screen
+        // location. So we are going through the hierarchy until we find
+        // one and add up the offsets while doing so.
+        int offsX = 0;
+        int offsY = 0;
+        ComponentPeer p = peer;
+        Component comp = this;
+        while (p instanceof LightweightPeer)
+          {
+            offsX += comp.x;
+            offsY += comp.y;
+            comp = comp.parent;
+            p = comp == null ? null: comp.peer;
+          }
+        // Now we have a heavyweight component.
+        assert ! (p instanceof LightweightPeer);
+        Point loc = p.getLocationOnScreen();
+        loc.x += offsX;
+        loc.y += offsY;
+        return loc;
       }
   }
 
@@ -1533,7 +1558,17 @@ public abstract class Component
       }
   }
 
-  private void notifyReshape(boolean resized, boolean moved)
+  /**
+   * Sends notification to interested listeners about resizing and/or moving
+   * the component. If this component has interested
+   * component listeners or the corresponding event mask enabled, then
+   * COMPONENT_MOVED and/or COMPONENT_RESIZED events are posted to the event
+   * queue.
+   *
+   * @param resized true if the component has been resized, false otherwise
+   * @param moved true if the component has been moved, false otherwise
+   */
+  void notifyReshape(boolean resized, boolean moved)
   {
     // Only post an event if this component actually has a listener
     // or has this event explicitly enabled.
@@ -1544,41 +1579,14 @@ public abstract class Component
         if (moved)
           {
             ComponentEvent ce = new ComponentEvent(this,
-                                           ComponentEvent.COMPONENT_MOVED);
+                                               ComponentEvent.COMPONENT_MOVED);
             getToolkit().getSystemEventQueue().postEvent(ce);
           }
         if (resized)
           {
             ComponentEvent ce = new ComponentEvent(this,
-                                         ComponentEvent.COMPONENT_RESIZED);
+                                             ComponentEvent.COMPONENT_RESIZED);
             getToolkit().getSystemEventQueue().postEvent(ce);
-          }
-      }
-    else
-      {
-        // Otherwise we might need to notify child components when this is
-        // a Container.
-        if (this instanceof Container)
-          {
-            Container cont = (Container) this;
-            if (resized)
-              {
-                for (int i = 0; i < cont.getComponentCount(); i++)
-                  {
-                    Component child = cont.getComponent(i);
-                    child.fireHierarchyEvent(HierarchyEvent.ANCESTOR_RESIZED,
-                                             this, parent, 0);
-                  }
-              }
-            if (moved)
-              {
-                for (int i = 0; i < cont.getComponentCount(); i++)
-                  {
-                    Component child = cont.getComponent(i);
-                    child.fireHierarchyEvent(HierarchyEvent.ANCESTOR_MOVED,
-                                             this, parent, 0);
-                  }
-              }
           }
       }
   }
@@ -2063,21 +2071,29 @@ public abstract class Component
    */
   public Graphics getGraphics()
   {
-    if (peer != null)
+    // Only heavyweight peers can handle this.
+    ComponentPeer p = peer;
+    Component comp = this;
+    int offsX = 0;
+    int offsY = 0;
+    while (p instanceof LightweightPeer)
       {
-        Graphics gfx = peer.getGraphics();
-        // Create peer for lightweights.
-        if (gfx == null && parent != null)
-          {
-            gfx = parent.getGraphics();
-            gfx.clipRect(getX(), getY(), getWidth(), getHeight());
-            gfx.translate(getX(), getY());
-            return gfx;
-          }
-        gfx.setFont(font);
-        return gfx;
+        offsX += comp.x;
+        offsY += comp.y;
+        comp = comp.parent;
+        p = comp == null ? null : comp.peer;
       }
-    return null;
+
+    Graphics gfx = null;
+    if (p != null)
+      {
+        assert ! (p instanceof LightweightPeer);
+        gfx = p.getGraphics();
+        gfx.translate(offsX, offsY);
+        gfx.clipRect(0, 0, width, height);
+        gfx.setFont(font);
+      }
+    return gfx;
   }
 
   /**
@@ -2091,8 +2107,16 @@ public abstract class Component
    */
   public FontMetrics getFontMetrics(Font font)
   {
-    return peer == null ? getToolkit().getFontMetrics(font)
-      : peer.getFontMetrics(font);
+    ComponentPeer p = peer;
+    Component comp = this;
+    while (p instanceof LightweightPeer)
+      {
+        comp = comp.parent;
+        p = comp == null ? null : comp.peer;
+      }
+
+    return p == null ? getToolkit().getFontMetrics(font)
+           : p.getFontMetrics(font);
   }
 
   /**
@@ -2111,8 +2135,18 @@ public abstract class Component
   public void setCursor(Cursor cursor)
   {
     this.cursor = cursor;
-    if (peer != null)
-      peer.setCursor(cursor);
+
+    // Only heavyweight peers handle this.
+    ComponentPeer p = peer;
+    Component comp = this;
+    while (p instanceof LightweightPeer)
+      {
+        comp = comp.parent;
+        p = comp == null ? null : comp.peer;
+      }
+
+    if (p != null)
+      p.setCursor(cursor);
   }
 
   /**
@@ -2283,7 +2317,7 @@ public abstract class Component
         pw = Math.min(pw, par.width);
         ph = Math.min(ph, par.height);
         par = par.parent;
-        p = par.peer;
+        p = par == null ? null : par.peer;
       }
 
     // Now send an UPDATE event to the heavyweight component that we've found.
@@ -2381,11 +2415,22 @@ public abstract class Component
    */
   public Image createImage(ImageProducer producer)
   {
+    // Only heavyweight peers can handle this.
+    ComponentPeer p = peer;
+    Component comp = this;
+    while (p instanceof LightweightPeer)
+      {
+        comp = comp.parent;
+        p = comp == null ? null : comp.peer;
+      }
+
     // Sun allows producer to be null.
-    if (peer != null)
-      return peer.createImage(producer);
+    Image im;
+    if (p != null)
+      im = p.createImage(producer);
     else
-      return getToolkit().createImage(producer);
+      im = getToolkit().createImage(producer);
+    return im;
   }
 
   /**
@@ -2401,10 +2446,16 @@ public abstract class Component
     Image returnValue = null;
     if (!GraphicsEnvironment.isHeadless ())
       {
-	if (isLightweight () && parent != null)
-	  returnValue = parent.createImage (width, height);
-	else if (peer != null)
-	  returnValue = peer.createImage (width, height);
+        // Only heavyweight peers can handle this.
+        ComponentPeer p = peer;
+        Component comp = this;
+        while (p instanceof LightweightPeer)
+          {
+            comp = comp.parent;
+            p = comp == null ? null : comp.peer;
+          }
+
+        returnValue = p.createImage(width, height);
       }
     return returnValue;
   }
@@ -2420,9 +2471,19 @@ public abstract class Component
    */
   public VolatileImage createVolatileImage(int width, int height)
   {
-    if (peer != null)
-      return peer.createVolatileImage(width, height);
-    return null;
+    // Only heavyweight peers can handle this.
+    ComponentPeer p = peer;
+    Component comp = this;
+    while (p instanceof LightweightPeer)
+      {
+        comp = comp.parent;
+        p = comp == null ? null : comp.peer;
+      }
+
+    VolatileImage im = null;
+    if (p != null)
+      im = p.createVolatileImage(width, height);
+    return im;
   }
 
   /**
@@ -2441,9 +2502,19 @@ public abstract class Component
                                            ImageCapabilities caps)
     throws AWTException
   {
-    if (peer != null)
-      return peer.createVolatileImage(width, height);
-    return null;
+    // Only heavyweight peers can handle this.
+    ComponentPeer p = peer;
+    Component comp = this;
+    while (p instanceof LightweightPeer)
+      {
+        comp = comp.parent;
+        p = comp == null ? null : comp.peer;
+      }
+
+    VolatileImage im = null;
+    if (p != null)
+      im = peer.createVolatileImage(width, height);
+    return im;
   }
 
   /**
@@ -2473,10 +2544,21 @@ public abstract class Component
   public boolean prepareImage(Image image, int width, int height,
                               ImageObserver observer)
   {
-    if (peer != null)
-	return peer.prepareImage(image, width, height, observer);
+    // Only heavyweight peers handle this.
+    ComponentPeer p = peer;
+    Component comp = this;
+    while (p instanceof LightweightPeer)
+      {
+        comp = comp.parent;
+        p = comp == null ? null : comp.peer;
+      }
+
+    boolean retval;
+    if (p != null)
+	retval = p.prepareImage(image, width, height, observer);
     else
-	return getToolkit().prepareImage(image, width, height, observer);
+	retval = getToolkit().prepareImage(image, width, height, observer);
+    return retval;
   }
 
   /**
@@ -2510,9 +2592,21 @@ public abstract class Component
   public int checkImage(Image image, int width, int height,
                         ImageObserver observer)
   {
-    if (peer != null)
-      return peer.checkImage(image, width, height, observer);
-    return getToolkit().checkImage(image, width, height, observer);
+    // Only heavyweight peers handle this.
+    ComponentPeer p = peer;
+    Component comp = this;
+    while (p instanceof LightweightPeer)
+      {
+        comp = comp.parent;
+        p = comp == null ? null : comp.peer;
+      }
+
+    int retval;
+    if (p != null)
+      retval = p.checkImage(image, width, height, observer);
+    else
+      retval = getToolkit().checkImage(image, width, height, observer);
+    return retval;
   }
 
   /**
@@ -2957,7 +3051,7 @@ public abstract class Component
       case HierarchyEvent.ANCESTOR_RESIZED:
         enabled = hierarchyBoundsListener != null
                   || (eventMask & AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK) != 0;
-          break;
+        break;
       default:
         assert false : "Should not reach here";
     }
@@ -3303,18 +3397,48 @@ public abstract class Component
    */
   protected final void enableEvents(long eventsToEnable)
   {
+    // Update the counter for hierarchy (bounds) listeners.
+    if ((eventsToEnable & AWTEvent.HIERARCHY_EVENT_MASK) != 0
+        && (eventMask & AWTEvent.HIERARCHY_EVENT_MASK) == 0)
+      {
+        // Need to lock the tree, otherwise we might end up inconsistent.
+        synchronized (getTreeLock())
+          {
+            numHierarchyListeners++;
+            if (parent != null)
+              parent.updateHierarchyListenerCount
+                                                (AWTEvent.HIERARCHY_EVENT_MASK,
+                                                 1);
+          }
+      }
+    if ((eventsToEnable & AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK) != 0
+        && (eventMask & AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK) == 0)
+      {
+        // Need to lock the tree, otherwise we might end up inconsistent.
+        synchronized (getTreeLock())
+          {
+            numHierarchyBoundsListeners++;
+            if (parent != null)
+              parent.updateHierarchyListenerCount
+                                         (AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK,
+                                          1);
+          }
+      }
+
     eventMask |= eventsToEnable;
-    // TODO: Unlike Sun's implementation, I think we should try and
-    // enable/disable events at the peer (gtk/X) level. This will avoid
-    // clogging the event pipeline with useless mousemove events that
-    // we arn't interested in, etc. This will involve extending the peer
-    // interface, but thats okay because the peer interfaces have been
-    // deprecated for a long time, and no longer feature in the
-    // API specification at all.
-    if (isLightweight() && parent != null)
-      parent.enableEvents(eventsToEnable);
-    else if (peer != null)
-      peer.setEventMask(eventMask);
+
+    // Only heavyweight peers handle this.
+    ComponentPeer p = peer;
+    Component comp = this;
+    while (p instanceof LightweightPeer)
+      {
+        comp = comp.parent;
+        p = comp == null ? null : comp.peer;
+      }
+
+    if (p != null)
+      p.setEventMask(eventMask);
+
   }
 
   /**
@@ -3327,8 +3451,48 @@ public abstract class Component
    */
   protected final void disableEvents(long eventsToDisable)
   {
+    // Update the counter for hierarchy (bounds) listeners.
+    if ((eventsToDisable & AWTEvent.HIERARCHY_EVENT_MASK) != 0
+        && (eventMask & AWTEvent.HIERARCHY_EVENT_MASK) != 0)
+      {
+        // Need to lock the tree, otherwise we might end up inconsistent.
+        synchronized (getTreeLock())
+          {
+            numHierarchyListeners--;
+            if (parent != null)
+              parent.updateHierarchyListenerCount
+                                                (AWTEvent.HIERARCHY_EVENT_MASK,
+                                                 -1);
+          }
+      }
+    if ((eventsToDisable & AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK) != 0
+        && (eventMask & AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK) != 0)
+      {
+        // Need to lock the tree, otherwise we might end up inconsistent.
+        synchronized (getTreeLock())
+          {
+            numHierarchyBoundsListeners--;
+            if (parent != null)
+              parent.updateHierarchyListenerCount
+                                         (AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK,
+                                          -1);
+          }
+      }
+
     eventMask &= ~eventsToDisable;
-    // forward new event mask to peer?
+
+    // Only heavyweight peers handle this.
+    ComponentPeer p = peer;
+    Component comp = this;
+    while (p instanceof LightweightPeer)
+      {
+        comp = comp.parent;
+        p = comp == null ? null : comp.peer;
+      }
+
+    if (p != null)
+      p.setEventMask(eventMask);
+
   }
 
   /**
@@ -3888,6 +4052,13 @@ public abstract class Component
        etc. */
        if (dropTarget != null) 
          dropTarget.addNotify(peer);
+
+       // Notify hierarchy listeners.
+       long flags = HierarchyEvent.DISPLAYABILITY_CHANGED;
+       if (isHierarchyVisible())
+         flags |= HierarchyEvent.SHOWING_CHANGED;
+       fireHierarchyEvent(HierarchyEvent.HIERARCHY_CHANGED, this, parent,
+                          flags);
       }
   }
 
@@ -3917,6 +4088,13 @@ public abstract class Component
             tmp.hide();
             tmp.dispose();
           }
+
+        // Notify hierarchy listeners.
+        long flags = HierarchyEvent.DISPLAYABILITY_CHANGED;
+        if (isHierarchyVisible())
+          flags |= HierarchyEvent.SHOWING_CHANGED;
+        fireHierarchyEvent(HierarchyEvent.HIERARCHY_CHANGED, this, parent,
+                           flags);
       }
   }
 
@@ -5491,6 +5669,26 @@ p   * <li>the set of backward traversal keys
       default:
         return false;
       }
+  }
+
+  /**
+   * Returns <code>true</code> when this component and all of its ancestors
+   * are visible, <code>false</code> otherwise.
+   *
+   * @return <code>true</code> when this component and all of its ancestors
+   *         are visible, <code>false</code> otherwise
+   */
+  boolean isHierarchyVisible()
+  {
+    boolean visible = isVisible();
+    Component comp = parent;
+    while (comp != null && visible)
+      {
+        comp = comp.parent;
+        if (comp != null)
+          visible = visible && comp.isVisible();
+      }
+    return visible;
   }
 
   /**

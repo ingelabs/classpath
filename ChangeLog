@@ -1,3 +1,38 @@
+2006-07-27  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Component.java
+	(getToolkit): Search for heavyweight parent and query the
+	heavyweight's peer.
+	(checkImage(Image,int,int,ImageObserver)): Likewise.
+	(checkImage(ImageProducer)): Likewise.
+	(createImage(int,int)): Likewise.
+	(createVolatileImage(int,int)): Likewise.
+	(createVolatileImage(int,int,ImageCapabilities)): Likewise.
+	(getFontMetrics): Likewise.
+	(getGraphics): Likewise.
+	(getLocationOnScreen): Likewise.
+	(prepareImage): Likewise.
+	(setCursor): Likewise.
+	(repaint): Added null check.
+	(addNotify): Send hierarchy event.
+	(removeNotify): Send hierarchy event.
+	(disableEvents): Update hierarchy listener counters.
+	(enableEvents): Update hierarchy listener counters.
+	(isHierarchyVisible): New helper method.
+	(notifyReshape): Do Container specific handling in
+	Container.
+	* java/awt/Container.java
+	(insets): For lightweights, return (0,0,0,0).
+	* java/awt/Toolkit.java
+	(lightweightPeer): New static field.
+	(createComponent): Return shared instance of GLightweightPeer.
+	(notifyReshape): Override Component method to add some handling
+	that is specific for Container.
+	(removeAll): Also send hierarchy and container events here.
+	Update the hierarchy listener counters.
+	* gnu/java/awt/peer/GLightweightPeer.java: Made all methods
+	stubs and added comment.
+
 2006-07-27  Sven de Marothy  <sven@physto.se>
 
 	* java/math/BigDecimal.java
