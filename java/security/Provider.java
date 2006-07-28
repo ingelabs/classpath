@@ -146,15 +146,9 @@ public abstract class Provider extends Properties implements Serializable
    */
   public Object put(Object key, Object value)
   {
-    return super.put(toCanonicalKey(key), value);
+    return super.put(key, value);
   }
   
-  // overrides same in java.util.Hashtable
-  public Object get(Object key)
-  {
-    return super.get(toCanonicalKey(key));
-  }
-
   /**
    * This method removes the specified key entry (and its associated value)
    * from the property mapping list.
@@ -166,7 +160,7 @@ public abstract class Provider extends Properties implements Serializable
    */
   public Object remove(Object key)
   {
-    return super.remove(toCanonicalKey(key));
+    return super.remove(key);
   }
 
   /**
@@ -192,11 +186,4 @@ public abstract class Provider extends Properties implements Serializable
 	    version);
   }
   
-  private Object toCanonicalKey(Object key)
-  {
-    if (key.getClass().isAssignableFrom(String.class)) // is it ours?
-      return ((String) key).toUpperCase(); // use default locale
-    else
-      return key;
-  }
 }

@@ -42,6 +42,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
+import java.util.Enumeration;
 
 /**
  * Generic implementation of the getInstance methods in the various
@@ -141,26 +142,46 @@ public final class Engine
         || provider == null || initArgs == null)
       throw new IllegalArgumentException();
 
-    // If there is no property "service.algorithm"
-    if (provider.getProperty(service + "." + algorithm) == null)
+    
+    Enumeration enumer = provider.propertyNames();
+    String key;
+    String alias;
+    int count = 0;
+    boolean algorithmFound = false;
+
+    while (enumer.hasMoreElements())
       {
-        // Iterate through aliases, until we find the class name or resolve
-        // too many aliases.
-        String alias = null;
-        int count = 0;
-        while ((alias = provider.getProperty(
-                ALG_ALIAS + service + "." + algorithm)) != null)
+        key = (String) enumer.nextElement();
+
+        if (key.equalsIgnoreCase(service + "." + algorithm))
           {
-            if (algorithm.equals(alias))  // Refers to itself!
-              break;
+            // remove the service portion from the key
+            algorithm = key.substring(service.length() + 1); 
+            
+            algorithmFound = true;
+            break;
+
+          }
+        else if (key.equalsIgnoreCase(ALG_ALIAS + service + "." + algorithm))
+          {
+
+            alias = (String) provider.getProperty(key);
             algorithm = alias;
             if (count++ > MAX_ALIASES)
               throw new NoSuchAlgorithmException("too many aliases");
-          }
-        if (provider.getProperty(service + "." + algorithm) == null)
-          throw new NoSuchAlgorithmException(algorithm);
-      }
 
+            // need to reset enumeration to now look for the alias
+            enumer = provider.propertyNames();
+
+          }
+      }
+    
+    if (! algorithmFound)
+      {
+        throw new NoSuchAlgorithmException(algorithm);
+      }
+    
+    
     // Find and instantiate the implementation.
     Class clazz = null;
     ClassLoader loader = provider.getClass().getClassLoader();

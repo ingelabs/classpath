@@ -1,3 +1,14 @@
+2006-07-28  Matt Wringe  <mwringe@redhat.com>
+
+	* gnu/java/security/Engine.java
+	(getInstance): Add case insentivity to algorithm names 
+	* java/security/Provider.java
+	(put): Stop using canonical key naming
+	(remove): Likewise
+	(toCanonicalKey): Method removed
+	(get): Method removed, no longer needs to overwrite 
+	parent implementation
+	
 2006-07-28  Lillian Angel  <langel@redhat.com>
 
 	* gnu/java/awt/dnd/peer/gtk/GtkDragSourceContextPeer.java
