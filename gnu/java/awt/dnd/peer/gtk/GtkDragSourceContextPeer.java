@@ -78,7 +78,9 @@ public class GtkDragSourceContextPeer
     create(peer);
     connectSignals(peer);
     cursor = comp.getCursor();
-    setTarget(target.getPeer());
+    
+    if (target != null)
+      setTarget(target.getPeer());
   }
   
   ComponentPeer getComponentPeer(Component c)

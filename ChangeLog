@@ -1,5 +1,10 @@
 2006-07-28  Lillian Angel  <langel@redhat.com>
 
+	* gnu/java/awt/dnd/peer/gtk/GtkDragSourceContextPeer.java
+	(GtkDragSourceContextPeer): Added check to avoid NPE.
+
+2006-07-28  Lillian Angel  <langel@redhat.com>
+
 	* native/jni/gtk-peer/GtkDragSourceContextPeer.c:
 	(Java_gnu_java_awt_dnd_peer_gtk_GtkDragSourceContextPeer_create):
 	Fixed to use gref not ptr.
