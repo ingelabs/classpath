@@ -96,7 +96,7 @@ jobject javaObj;
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_dnd_peer_gtk_GtkDragSourceContextPeer_create 
   (JNIEnv *env, jobject obj, jobject comp)
-{
+{  
   gdk_threads_enter ();
  
   javaObj = obj;
@@ -104,7 +104,7 @@ Java_gnu_java_awt_dnd_peer_gtk_GtkDragSourceContextPeer_create
   NSA_SET_GLOBAL_REF (env, comp);
   
   gref = NSA_GET_PTR (env, comp);
-  widget = get_widget (GTK_WIDGET (ptr));
+  widget = get_widget (GTK_WIDGET (gref));
 
   gdk_threads_leave ();
 }
