@@ -1,3 +1,32 @@
+2006-07-28  Tom Tromey  <tromey@redhat.com>
+
+	* NEWS: Updated.
+	* .classpath: Updated.
+	* tools/.cvsignore: Added gjavah.
+	* tools/Makefile.am ($(TOOLS_ZIP)): Only build javah if ASM is
+	available.
+	(GLIBJ_CLASSPATH): Add asm jar.
+	(javah): New macro.
+	(bin_PROGRAMS, bin_SCRIPTS): Added $(javah).
+	(gjavah_SOURCES, gjavah_CFLAGS, gjavah_LDFLAGS): new macros.
+	* tools/gjavah.in: New file.
+	* configure.ac: Added --with-asm option.
+	* tools/gnu/classpath/tools/javah/ClassWrapper.java: New file.
+	* tools/gnu/classpath/tools/javah/CniIncludePrinter.java: Likewise.
+	* tools/gnu/classpath/tools/javah/CniPrintStream.java: Likewise.
+	* tools/gnu/classpath/tools/javah/CniStubPrinter.java: Likewise.
+	* tools/gnu/classpath/tools/javah/FieldHelper.java: Likewise.
+	* tools/gnu/classpath/tools/javah/JniHelper.java: Likewise.
+	* tools/gnu/classpath/tools/javah/JniIncludePrinter.java: Likewise.
+	* tools/gnu/classpath/tools/javah/JniStubPrinter.java: Likewise.
+	* tools/gnu/classpath/tools/javah/Keywords.java: Likewise.
+	* tools/gnu/classpath/tools/javah/Main.java: Likewise.
+	* tools/gnu/classpath/tools/javah/MethodHelper.java: Likewise.
+	* tools/gnu/classpath/tools/javah/PackageWrapper.java: Likewise.
+	* tools/gnu/classpath/tools/javah/PathOptionGroup.java: Likewise.
+	* tools/gnu/classpath/tools/javah/Printer.java: Likewise.
+	* tools/gnu/classpath/tools/javah/Text.java: Likewise.
+
 2006-07-28  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* java/awt/List.java: Committed following patch from Tania.

@@ -1,3 +1,9 @@
+New in release 0.93 (UNRELEASED)
+
+* The 'javah' tool has been added.  It requires the ASM library
+  (see asm.objectweb.org); it can be enabled with the --with-asm
+  option to configure
+
 New in release 0.92 (UNRELEASED)
 
 * libjawtgnu.so has been renamed libjawt.so for binary compatibility.
