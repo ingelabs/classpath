@@ -42,6 +42,7 @@ exception statement from your version. */
 #include <gtk/gtk.h>
 
 static GtkWidget * get_widget (GtkWidget *widget);
+static void connect_signals_for_widget (GtkWidget *widget);
 static void drag_begin_cb (GtkWidget *w, GdkDragContext *dc, gpointer data);
 static gboolean drag_motion_cb (GtkWidget *w, GdkDragContext *dc, 
                                     gint x, gint y, guint t, gpointer data);
@@ -89,21 +90,20 @@ static jmethodID dropCompleteID;
 
 GtkWidget *widget;
 GtkWidget *tgt;
+jobject *gref;
 jobject javaObj;
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_dnd_peer_gtk_GtkDragSourceContextPeer_create 
   (JNIEnv *env, jobject obj, jobject comp)
 {
-  void *ptr;
-  
   gdk_threads_enter ();
  
   javaObj = obj;
   NSA_SET_GLOBAL_REF (env, obj);  
   NSA_SET_GLOBAL_REF (env, comp);
   
-  ptr = NSA_GET_PTR (env, comp);
+  gref = NSA_GET_PTR (env, comp);
   widget = get_widget (GTK_WIDGET (ptr));
 
   gdk_threads_leave ();
@@ -186,32 +186,15 @@ JNIEXPORT void JNICALL
 Java_gnu_java_awt_dnd_peer_gtk_GtkDragSourceContextPeer_connectSignals 
   (JNIEnv *env, jobject obj, jobject comp)
 {
-  jobject *gref;
-  void *ptr;
   jclass gtkdragsourcecontextpeer;
   jclass gtkdroptargetcontextpeer;
   
   gdk_threads_enter ();
 
   javaObj = obj;
-  ptr = NSA_GET_GLOBAL_REF (env, obj);
   gref = NSA_GET_GLOBAL_REF (env, comp);
-
-  g_signal_connect (G_OBJECT (widget), "drag_motion",
-                    G_CALLBACK (drag_motion_cb), *gref);
-  g_signal_connect (G_OBJECT (widget), "drag_data_delete",
-                    G_CALLBACK (drag_data_delete_cb), *gref);
-  g_signal_connect (G_OBJECT (widget), "drag_end",
-                    G_CALLBACK (drag_end_cb), *gref);
-  g_signal_connect (G_OBJECT (widget), "drag_data_get",
-                    G_CALLBACK (drag_data_get_cb), *gref);
-  g_signal_connect (G_OBJECT (widget), "drag_data_received",
-                    G_CALLBACK (drag_data_received_cb), *gref);
-  g_signal_connect (G_OBJECT (widget), "drag_begin",
-                    G_CALLBACK (drag_begin_cb), *gref);  
-  g_signal_connect (G_OBJECT (widget), "drag_drop",
-                    G_CALLBACK (drag_drop_cb), *gref);
-
+  
+  connect_signals_for_widget (widget);
 
   gtkdragsourcecontextpeer = (*cp_gtk_gdk_env())->FindClass (cp_gtk_gdk_env(),
                          "gnu/java/awt/dnd/peer/gtk/GtkDragSourceContextPeer");
@@ -256,6 +239,25 @@ Java_gnu_java_awt_dnd_peer_gtk_GtkDragSourceContextPeer_connectSignals
                                                "dropComplete", "(Z)V");
   
   gdk_threads_leave ();
+}
+
+static void
+connect_signals_for_widget (GtkWidget *w)
+{
+  g_signal_connect (G_OBJECT (w), "drag_motion",
+                    G_CALLBACK (drag_motion_cb), *gref);
+  g_signal_connect (G_OBJECT (w), "drag_data_delete",
+                    G_CALLBACK (drag_data_delete_cb), *gref);
+  g_signal_connect (G_OBJECT (w), "drag_end",
+                    G_CALLBACK (drag_end_cb), *gref);
+  g_signal_connect (G_OBJECT (w), "drag_data_get",
+                    G_CALLBACK (drag_data_get_cb), *gref);
+  g_signal_connect (G_OBJECT (w), "drag_data_received",
+                    G_CALLBACK (drag_data_received_cb), *gref);
+  g_signal_connect (G_OBJECT (w), "drag_begin",
+                    G_CALLBACK (drag_begin_cb), *gref);  
+  g_signal_connect (G_OBJECT (w), "drag_drop",
+                    G_CALLBACK (drag_drop_cb), *gref);
 }
 
 static void 
@@ -318,6 +320,7 @@ Java_gnu_java_awt_dnd_peer_gtk_GtkDragSourceContextPeer_setTarget
   javaObj = obj;
   ptr = NSA_GET_PTR (env, target);
   tgt = get_widget (GTK_WIDGET (ptr));
+  connect_signals_for_widget (tgt);
 
   gdk_threads_leave ();
 }
