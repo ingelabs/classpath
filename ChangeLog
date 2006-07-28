@@ -1,3 +1,17 @@
+2006-07-28  Lillian Angel  <langel@redhat.com>
+
+	* native/jni/gtk-peer/GtkDragSourceContextPeer.c:
+	Removed function declarations.
+	(connect_signals_for_widget): Removed implementation because
+	stub functions have been removed.
+	(drag_begin_cb): Removed function.
+	(drag_motion_cb): Likewise.
+	(drag_data_get_cb): Likewise.
+	(drag_data_delete_cb): Likewise.
+	(drag_drop_cb): Likewise.
+	(drag_end_cb): Likewise.
+	(drag_data_received_cb): Likewise.	
+
 2006-07-28  Mark Wielaard  <mark@klomp.org>
 
 	* configure.ac: Set version to 0.93-pre.

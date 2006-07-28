@@ -43,18 +43,6 @@ exception statement from your version. */
 
 static GtkWidget * get_widget (GtkWidget *widget);
 static void connect_signals_for_widget (GtkWidget *widget);
-static void drag_begin_cb (GtkWidget *w, GdkDragContext *dc, gpointer data);
-static gboolean drag_motion_cb (GtkWidget *w, GdkDragContext *dc, 
-                                    gint x, gint y, guint t, gpointer data);
-static void drag_data_get_cb (GtkWidget *w, GdkDragContext *dc, GtkSelectionData
-                       *selection_data, guint info, guint t, gpointer data);
-static void drag_data_delete_cb (GtkWidget *w, GdkDragContext *dc, gpointer data);
-static gboolean drag_drop_cb (GtkWidget *w, GdkDragContext *dc, gint x, 
-                                            gint y, guint t, gpointer data);
-static void drag_end_cb (GtkWidget *w, GdkDragContext *dc, gpointer data);
-static void drag_data_received_cb (GtkWidget *w, GdkDragContext *dc, gint x, 
-                                    gint y, GtkSelectionData *selection_data,
-                                    guint info, guint t, gpointer data);
                                          
 #define ACTION_COPY 1
 #define ACTION_MOVE 2
@@ -244,69 +232,8 @@ Java_gnu_java_awt_dnd_peer_gtk_GtkDragSourceContextPeer_connectSignals
 static void
 connect_signals_for_widget (GtkWidget *w)
 {
-  g_signal_connect (G_OBJECT (w), "drag_motion",
-                    G_CALLBACK (drag_motion_cb), *gref);
-  g_signal_connect (G_OBJECT (w), "drag_data_delete",
-                    G_CALLBACK (drag_data_delete_cb), *gref);
-  g_signal_connect (G_OBJECT (w), "drag_end",
-                    G_CALLBACK (drag_end_cb), *gref);
-  g_signal_connect (G_OBJECT (w), "drag_data_get",
-                    G_CALLBACK (drag_data_get_cb), *gref);
-  g_signal_connect (G_OBJECT (w), "drag_data_received",
-                    G_CALLBACK (drag_data_received_cb), *gref);
-  g_signal_connect (G_OBJECT (w), "drag_begin",
-                    G_CALLBACK (drag_begin_cb), *gref);  
-  g_signal_connect (G_OBJECT (w), "drag_drop",
-                    G_CALLBACK (drag_drop_cb), *gref);
-}
-
-static void 
-drag_begin_cb (GtkWidget *w, GdkDragContext *dc, gpointer data)
-{
   /* FIXME: Not implemented. */
-}
-
-static gboolean 
-drag_motion_cb (GtkWidget *w, GdkDragContext *dc, 
-                             gint x, gint y, guint t, gpointer data)
-{
-  /* FIXME: Not implemented. */
-  return 0;
-}
-
-static void 
-drag_data_get_cb (GtkWidget *w, GdkDragContext *dc, GtkSelectionData
-                       *selection_data, guint info, guint t, gpointer data)
-{
-  /* FIXME: Not implemented. */
-}
-
-static void 
-drag_data_delete_cb (GtkWidget *w, GdkDragContext *dc, gpointer data)
-{
-  /* FIXME: Not implemented. */
-}
-
-static gboolean 
-drag_drop_cb (GtkWidget *w, GdkDragContext *dc, gint x, 
-                                       gint y, guint t, gpointer data)
-{
-  /* FIXME: Not implemented. */
-  return 0;
-}
-
-static void 
-drag_end_cb (GtkWidget *w, GdkDragContext *dc, gpointer data)
-{
-  /* FIXME: Not implemented. */
-}
-
-static void 
-drag_data_received_cb (GtkWidget *w, GdkDragContext *dc, gint x, 
-                             gint y, GtkSelectionData *selection_data,
-                                    guint info, guint t, gpointer data)
-{
-  /* FIXME: Not implemented. */
+  w = NULL;
 }
 
 JNIEXPORT void JNICALL 
