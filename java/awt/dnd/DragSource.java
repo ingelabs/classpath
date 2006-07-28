@@ -105,7 +105,7 @@ public class DragSource implements Serializable
         ds = null;
         throw new HeadlessException();
       }
-    
+
     if (ds == null)
       ds = new DragSource();
     return ds;
@@ -140,8 +140,6 @@ public class DragSource implements Serializable
     // This function sends the same message to the context, which then forwards
     // it to the peer, passing itself as a parameter. Now, the native system has
     // access to the Transferable through the context.
-
-    // FIXME: Add check to determine if dragging.
     
     try
       {

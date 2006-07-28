@@ -39,6 +39,8 @@ exception statement from your version. */
 
 package java.awt;
 
+import gnu.java.awt.dnd.peer.gtk.GtkDropTargetContextPeer;
+
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.AdjustmentEvent;
@@ -698,6 +700,9 @@ public abstract class Component
   public void setDropTarget(DropTarget dt)
   {
     this.dropTarget = dt;
+    if (dropTarget != null)
+      dropTarget.getDropTargetContext().addNotify(
+                                    new GtkDropTargetContextPeer(this));
   }
 
   /**

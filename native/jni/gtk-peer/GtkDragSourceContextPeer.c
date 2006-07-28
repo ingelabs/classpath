@@ -42,7 +42,19 @@ exception statement from your version. */
 #include <gtk/gtk.h>
 
 static GtkWidget * get_widget (GtkWidget *widget);
-  
+static void drag_begin_cb (GtkWidget *w, GdkDragContext *dc, gpointer data);
+static gboolean drag_motion_cb (GtkWidget *w, GdkDragContext *dc, 
+                                    gint x, gint y, guint t, gpointer data);
+static void drag_data_get_cb (GtkWidget *w, GdkDragContext *dc, GtkSelectionData
+                       *selection_data, guint info, guint t, gpointer data);
+static void drag_data_delete_cb (GtkWidget *w, GdkDragContext *dc, gpointer data);
+static gboolean drag_drop_cb (GtkWidget *w, GdkDragContext *dc, gint x, 
+                                            gint y, guint t, gpointer data);
+static void drag_end_cb (GtkWidget *w, GdkDragContext *dc, gpointer data);
+static void drag_data_received_cb (GtkWidget *w, GdkDragContext *dc, gint x, 
+                                    gint y, GtkSelectionData *selection_data,
+                                    guint info, guint t, gpointer data);
+                                         
 #define ACTION_COPY 1
 #define ACTION_MOVE 2
 #define ACTION_COPY_OR_MOVE  3
@@ -63,7 +75,21 @@ static GtkWidget * get_widget (GtkWidget *widget);
 #define AWT_HAND_CURSOR 12
 #define AWT_MOVE_CURSOR 13
 
+static jmethodID dragEnterID;
+static jmethodID dragExitID;
+static jmethodID dragDropEndID;
+static jmethodID dragMouseMovedID;
+static jmethodID dragOverID;
+static jmethodID dragActionChangedID;
+static jmethodID acceptDragID;
+static jmethodID rejectDragID;
+static jmethodID acceptDropID;
+static jmethodID rejectDropID;
+static jmethodID dropCompleteID;
+
 GtkWidget *widget;
+GtkWidget *tgt;
+jobject javaObj;
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_dnd_peer_gtk_GtkDragSourceContextPeer_create 
@@ -72,7 +98,8 @@ Java_gnu_java_awt_dnd_peer_gtk_GtkDragSourceContextPeer_create
   void *ptr;
   
   gdk_threads_enter ();
-  
+ 
+  javaObj = obj;
   NSA_SET_GLOBAL_REF (env, obj);  
   NSA_SET_GLOBAL_REF (env, comp);
   
@@ -93,6 +120,7 @@ Java_gnu_java_awt_dnd_peer_gtk_GtkDragSourceContextPeer_nativeSetCursor
 
   gdk_threads_enter ();
 
+  javaObj = obj;
   ptr = NSA_GET_GLOBAL_REF (env, obj);
   
   switch (type)
@@ -160,29 +188,137 @@ Java_gnu_java_awt_dnd_peer_gtk_GtkDragSourceContextPeer_connectSignals
 {
   jobject *gref;
   void *ptr;
+  jclass gtkdragsourcecontextpeer;
+  jclass gtkdroptargetcontextpeer;
   
   gdk_threads_enter ();
 
+  javaObj = obj;
   ptr = NSA_GET_GLOBAL_REF (env, obj);
   gref = NSA_GET_GLOBAL_REF (env, comp);
 
- /* Uncomment when needed:
   g_signal_connect (G_OBJECT (widget), "drag_motion",
                     G_CALLBACK (drag_motion_cb), *gref);
-  g_signal_connect (G_OBJECT (widget), "drag_begin",
-                    G_CALLBACK (drag_begin_cb), *gref);
+  g_signal_connect (G_OBJECT (widget), "drag_data_delete",
+                    G_CALLBACK (drag_data_delete_cb), *gref);
   g_signal_connect (G_OBJECT (widget), "drag_end",
                     G_CALLBACK (drag_end_cb), *gref);
   g_signal_connect (G_OBJECT (widget), "drag_data_get",
                     G_CALLBACK (drag_data_get_cb), *gref);
-  g_signal_connect (G_OBJECT (widget), "drag_drop",
-                    G_CALLBACK (drag_drop_cb), *gref);
-  g_signal_connect (G_OBJECT (widget), "drag_data_delete",
-                    G_CALLBACK (drag_data_delete_cb), *gref);
   g_signal_connect (G_OBJECT (widget), "drag_data_received",
                     G_CALLBACK (drag_data_received_cb), *gref);
-  */
-                                 
+  g_signal_connect (G_OBJECT (widget), "drag_begin",
+                    G_CALLBACK (drag_begin_cb), *gref);  
+  g_signal_connect (G_OBJECT (widget), "drag_drop",
+                    G_CALLBACK (drag_drop_cb), *gref);
+
+
+  gtkdragsourcecontextpeer = (*cp_gtk_gdk_env())->FindClass (cp_gtk_gdk_env(),
+                         "gnu/java/awt/dnd/peer/gtk/GtkDragSourceContextPeer");
+  
+  dragEnterID = (*cp_gtk_gdk_env())->GetMethodID (cp_gtk_gdk_env(), 
+                                            gtkdragsourcecontextpeer,
+                                               "dragEnter", "(II)V");
+  dragExitID = (*cp_gtk_gdk_env())->GetMethodID (cp_gtk_gdk_env(), 
+                                            gtkdragsourcecontextpeer,
+                                               "dragExit", "(III)V");
+  dragDropEndID = (*cp_gtk_gdk_env())->GetMethodID (cp_gtk_gdk_env(), 
+                                             gtkdragsourcecontextpeer,
+                                               "dragDropEnd", "(IZII)V");
+  dragMouseMovedID = (*cp_gtk_gdk_env())->GetMethodID (cp_gtk_gdk_env(),
+                                             gtkdragsourcecontextpeer,
+                                               "dragMouseMoved", "(II)V");
+  dragOverID = (*cp_gtk_gdk_env())->GetMethodID (cp_gtk_gdk_env(),
+                                             gtkdragsourcecontextpeer,
+                                               "dragOver", "(II)V");
+  dragActionChangedID = (*cp_gtk_gdk_env())->GetMethodID (cp_gtk_gdk_env(),
+                                             gtkdragsourcecontextpeer,
+                                               "dragActionChanged", "(II)V");
+
+
+  gtkdroptargetcontextpeer = (*cp_gtk_gdk_env())->FindClass (cp_gtk_gdk_env(),
+                         "gnu/java/awt/dnd/peer/gtk/GtkDropTargetContextPeer");
+                         
+  acceptDragID = (*cp_gtk_gdk_env())->GetMethodID (cp_gtk_gdk_env(), 
+                                            gtkdroptargetcontextpeer,
+                                               "acceptDrag", "(I)V");
+  rejectDragID = (*cp_gtk_gdk_env())->GetMethodID (cp_gtk_gdk_env(), 
+                                            gtkdroptargetcontextpeer,
+                                               "rejectDrag", "()V");
+  acceptDropID = (*cp_gtk_gdk_env())->GetMethodID (cp_gtk_gdk_env(), 
+                                             gtkdroptargetcontextpeer,
+                                               "acceptDrop", "(I)V");
+  rejectDropID = (*cp_gtk_gdk_env())->GetMethodID (cp_gtk_gdk_env(),
+                                             gtkdroptargetcontextpeer,
+                                               "rejectDrop", "()V");
+  dropCompleteID = (*cp_gtk_gdk_env())->GetMethodID (cp_gtk_gdk_env(),
+                                             gtkdroptargetcontextpeer,
+                                               "dropComplete", "(Z)V");
+  
+  gdk_threads_leave ();
+}
+
+static void 
+drag_begin_cb (GtkWidget *w, GdkDragContext *dc, gpointer data)
+{
+  /* FIXME: Not implemented. */
+}
+
+static gboolean 
+drag_motion_cb (GtkWidget *w, GdkDragContext *dc, 
+                             gint x, gint y, guint t, gpointer data)
+{
+  /* FIXME: Not implemented. */
+  return 0;
+}
+
+static void 
+drag_data_get_cb (GtkWidget *w, GdkDragContext *dc, GtkSelectionData
+                       *selection_data, guint info, guint t, gpointer data)
+{
+  /* FIXME: Not implemented. */
+}
+
+static void 
+drag_data_delete_cb (GtkWidget *w, GdkDragContext *dc, gpointer data)
+{
+  /* FIXME: Not implemented. */
+}
+
+static gboolean 
+drag_drop_cb (GtkWidget *w, GdkDragContext *dc, gint x, 
+                                       gint y, guint t, gpointer data)
+{
+  /* FIXME: Not implemented. */
+  return 0;
+}
+
+static void 
+drag_end_cb (GtkWidget *w, GdkDragContext *dc, gpointer data)
+{
+  /* FIXME: Not implemented. */
+}
+
+static void 
+drag_data_received_cb (GtkWidget *w, GdkDragContext *dc, gint x, 
+                             gint y, GtkSelectionData *selection_data,
+                                    guint info, guint t, gpointer data)
+{
+  /* FIXME: Not implemented. */
+}
+
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_dnd_peer_gtk_GtkDragSourceContextPeer_setTarget
+  (JNIEnv *env, jobject obj, jobject target)
+{
+  void *ptr;
+  
+  gdk_threads_enter ();
+  
+  javaObj = obj;
+  ptr = NSA_GET_PTR (env, target);
+  tgt = get_widget (GTK_WIDGET (ptr));
+
   gdk_threads_leave ();
 }
 
@@ -200,7 +336,8 @@ Java_gnu_java_awt_dnd_peer_gtk_GtkDragSourceContextPeer_nativeStartDrag
   GdkDragAction action = GDK_ACTION_DEFAULT;
   
   gdk_threads_enter ();
-
+  
+  javaObj = obj;
   ptr = NSA_GET_GLOBAL_REF (env, obj);
 
   data = (*env)->GetStringUTFChars (env, target, NULL);
@@ -225,7 +362,9 @@ Java_gnu_java_awt_dnd_peer_gtk_GtkDragSourceContextPeer_nativeStartDrag
       action = GDK_ACTION_DEFAULT;
     }
 
-  gtk_drag_highlight (widget);
+  gtk_drag_dest_set (widget, GTK_DEST_DEFAULT_ALL, tar,
+                                             sizeof (tar) / sizeof (GtkTargetEntry),
+                                             action);
   context = gtk_drag_begin (widget, 
              gtk_target_list_new (tar, sizeof (tar) / sizeof (GtkTargetEntry)), 
              action, GDK_BUTTON1_MASK | GDK_BUTTON2_MASK, event);
@@ -235,6 +374,11 @@ Java_gnu_java_awt_dnd_peer_gtk_GtkDragSourceContextPeer_nativeStartDrag
     image = cp_gtk_image_get_pixbuf (env, img);
     gtk_drag_set_icon_pixbuf (context, image, x, y);
   }
+  
+  if (tgt != NULL)
+    gtk_drag_dest_set (tgt, GTK_DEST_DEFAULT_ALL, tar,
+                                        sizeof (tar) / sizeof (GtkTargetEntry),
+                                         action);
 
   gdk_event_free (event);
   (*env)->ReleaseStringUTFChars (env, target, data);  

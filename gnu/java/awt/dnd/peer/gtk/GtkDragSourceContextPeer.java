@@ -61,11 +61,13 @@ public class GtkDragSourceContextPeer
   private ComponentPeer peer;
   private Cursor cursor;
   private DragSourceContext context;
+  public static Component target;
   
   native void nativeStartDrag(Image i, int x, int y, int action, String target);
   native void connectSignals(ComponentPeer comp);
   native void create(ComponentPeer comp);
   native void nativeSetCursor(int cursor);
+  native void setTarget(ComponentPeer target);
   
   public GtkDragSourceContextPeer(DragGestureEvent e)
   {
@@ -76,6 +78,7 @@ public class GtkDragSourceContextPeer
     create(peer);
     connectSignals(peer);
     cursor = comp.getCursor();
+    setTarget(target.getPeer());
   }
   
   ComponentPeer getComponentPeer(Component c)
@@ -93,7 +96,7 @@ public class GtkDragSourceContextPeer
       throws InvalidDnDOperationException
   {   
     this.context = context;
-    
+
     if (p == null)
       p = new Point();
     
