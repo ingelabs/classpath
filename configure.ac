@@ -120,9 +120,9 @@ AC_ARG_ENABLE([Werror],
               [case "${enableval}" in
                 yes) ENABLE_WERROR=yes ;;
                 no) ENABLE_WERROR=no ;;
-                *) ENABLE_WERROR=no ;;
+                *) ENABLE_WERROR=default ;;
               esac],
-              [ENABLE_WERROR=no])
+              [ENABLE_WERROR=default])
 
 dnl -----------------------------------------------------------
 dnl Default AWT toolkit
@@ -304,6 +304,17 @@ AC_PROG_LIBTOOL
 dnl AC_PROG_AWK
 AC_PROG_CC
 AC_PROG_CPP
+
+# Handle -Werror default case.
+if test "$ENABLE_WERROR" = default; then
+  case "$host_os" in
+    *linux*)
+      if test "$GCC" = yes; then
+        ENABLE_WERROR=yes
+      fi
+      ;;
+  esac
+fi
 
 if test "x${COMPILE_COLLECTIONS}" = xyes; then
   AC_PATH_PROG(PERL, [perl])

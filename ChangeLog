@@ -1,3 +1,7 @@
+2006-07-28  Tom Tromey  <tromey@redhat.com>
+
+	* configure.ac: Enable -Werror by default on Linux-with-gcc.
+
 2006-07-28  Lillian Angel  <langel@redhat.com>
 
 	* native/jni/gtk-peer/GtkDragSourceContextPeer.c:
