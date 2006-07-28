@@ -1,3 +1,7 @@
+2006-07-28  Mark Wielaard  <mark@klomp.org>
+
+	* configure.ac: Set version to 0.93-pre.
+
 2006-07-29  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* tools/Makefile.am: Added source 1.4 compliance option when ECJ is used.
