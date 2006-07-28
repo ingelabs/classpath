@@ -1,5 +1,9 @@
 2006-07-29  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* tools/Makefile.am: Added source 1.4 compliance option when ECJ is used.
+
+2006-07-29  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* tools/gnu/classpath/tools/keytool/Command.java: Removed unused import.
 	(getCallbackHandler): Fully qualify linked class in javadoc.
 	* tools/gnu/classpath/tools/keytool/GenKeyCmd.java (cmdOptionsParser): Removed.

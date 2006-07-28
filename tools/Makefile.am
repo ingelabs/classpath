@@ -13,7 +13,7 @@ if FOUND_GCJX
 JCOMPILER = $(GCJX) -encoding UTF-8 -bootclasspath '' -sourcepath '' -classpath $(GLIBJ_CLASSPATH):.
 else
 if FOUND_ECJ
-JCOMPILER = $(ECJ) -encoding UTF-8 -bootclasspath $(GLIBJ_CLASSPATH) -classpath .
+JCOMPILER = $(ECJ) -source 1.4 -encoding UTF-8 -bootclasspath $(GLIBJ_CLASSPATH) -classpath .
 else
 error dunno how to setup the JCOMPILER and compile
 endif
