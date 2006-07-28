@@ -1,3 +1,15 @@
+2006-07-27  Sven de Marothy  <sven@physto.se>
+
+	* java/math/BigDecimal.java
+	Adjust copyright date.
+	(divide(BigDecimal): Implement.
+	(precision): Reimplement.
+	(numDigitsInBigInteger, numDigitsInLong): Removed.
+	(toString): Get exponent from string length, 
+	fix negative values with exponential form.
+	(toEngineeringString): Same as for toString.	
+	(setScale): Throw ArithmeticException if scale < 0.
+	
 2006-07-27  Francis Kung  <fkung@redhat.com>
 
 	* gnu/java/awt/java2d/CubicSegment.java: Added import.
