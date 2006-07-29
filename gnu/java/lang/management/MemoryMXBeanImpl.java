@@ -47,6 +47,7 @@ import java.util.List;
 
 import javax.management.ListenerNotFoundException;
 import javax.management.MBeanNotificationInfo;
+import javax.management.NotCompliantMBeanException;
 import javax.management.Notification;
 import javax.management.NotificationEmitter;
 import javax.management.NotificationFilter;
@@ -120,9 +121,18 @@ public final class MemoryMXBeanImpl
 	  }
   }
 
-
+  /**
+   * Constructs a new <code>MemoryMXBeanImpl</code>.
+   *
+   * @throws NotCompliantMBeanException if this class doesn't implement
+   *                                    the interface or a method appears
+   *                                    in the interface that doesn't comply
+   *                                    with the naming conventions.
+   */
   public MemoryMXBeanImpl()
+    throws NotCompliantMBeanException
   {
+    super(MemoryMXBean.class);
     listeners = new ArrayList();
     notificationCount = 0;
   }

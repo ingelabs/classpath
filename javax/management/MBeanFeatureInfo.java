@@ -148,7 +148,8 @@ public class MBeanFeatureInfo
    */
   public int hashCode()
   {
-    return name.hashCode() + description.hashCode();
+    return (name == null ? -1 : name.hashCode())
+      + (description == null ? -1 : description.hashCode());
   }
 
 }

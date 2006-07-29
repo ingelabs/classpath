@@ -1,3 +1,31 @@
+2006-07-29  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+	
+	* gnu/java/lang/management/BeanImpl.java:
+	Extended javax.management.StandardMBean.
+	* gnu/java/lang/management/ClassLoadingMXBeanImpl.java,
+	* gnu/java/lang/management/CompilationMXBeanImpl.java,
+	* gnu/java/lang/management/GarbageCollectorMXBeanImpl.java,
+	* gnu/java/lang/management/MemoryMXBeanImpl.java,
+	* gnu/java/lang/management/MemoryManagerMXBeanImpl.java,
+	* gnu/java/lang/management/MemoryPoolMXBeanImpl.java,
+	* gnu/java/lang/management/OperatingSystemMXBeanImpl.java,
+	* gnu/java/lang/management/RuntimeMXBeanImpl.java,
+	* gnu/java/lang/management/ThreadMXBeanImpl.java:
+	Call the superclass with the appropriate class.
+	* java/lang/management/ManagementFactory.java:
+	(getOperatingSystemMXBean()): Catch exception from
+	StandardMBean.
+	(getRuntimeMXBean()): Likewise.
+	(getClassLoadingMXBean()): Likewise.
+	(getThreadMXBean()): Likewise.
+	(getMemoryMXBean()): Likewise.
+	(getCompilationMXBean()): Likewise.
+	(getMemoryPoolMXBeans()): Likewise.
+	(getMemoryManagerMXBeans()): Likewise.
+	(getGarbageCollectorMXBeans()): Likewise.
+	* javax/management/MBeanFeatureInfo.java:
+	(hashCode()): Fixed to check for null values.
+
 2006-07-28  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* native/jawt/Makefile.am (libjawt_la_LDFLAGS): Add
