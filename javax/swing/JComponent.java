@@ -681,7 +681,7 @@ public abstract class JComponent extends Container implements Serializable
    * Indicates whether the current paint call is already double buffered or
    * not. 
    */
-  static boolean isPaintingDoubleBuffered = false;
+  static boolean paintingDoubleBuffered = false;
 
   /**
    * Indicates whether we are calling paintDoubleBuffered() from
@@ -1846,7 +1846,7 @@ public abstract class JComponent extends Container implements Serializable
     // buffer. When this method completes, the call stack unwinds back to
     // paintDoubleBuffered, where the buffer contents is finally drawn to the
     // screen.
-    if (!isPaintingDoubleBuffered && isDoubleBuffered()
+    if (!paintingDoubleBuffered && isDoubleBuffered()
         && rm.isDoubleBufferingEnabled())
       {
         Rectangle clip = g.getClipBounds();
@@ -2145,7 +2145,7 @@ public abstract class JComponent extends Container implements Serializable
     clipAndTranslateGraphics(root, this, g2);
     g2.clipRect(r.x, r.y, r.width, r.height);
     g2 = getComponentGraphics(g2);
-    isPaintingDoubleBuffered = true;
+    paintingDoubleBuffered = true;
     try
       {
         if (isRepainting) // Called from paintImmediately, go through paint().
@@ -2159,7 +2159,7 @@ public abstract class JComponent extends Container implements Serializable
       }
     finally
       {
-        isPaintingDoubleBuffered = false;
+        paintingDoubleBuffered = false;
         g2.dispose();
       }
 
