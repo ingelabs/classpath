@@ -562,7 +562,13 @@ public class StandardMBean
 	    methods[a].getParameterTypes().length == 0)
 	  {
 	    Method[] amethods;
-	    String attrib = name.substring(3);
+	    String attrib;
+	    if (name.startsWith("is"))
+	      attrib = name.substring(2,3).toLowerCase()
+		+ name.substring(3);
+	    else
+	      attrib = name.substring(3,4).toLowerCase()
+		+ name.substring(4);
 	    if (attributes.containsKey(attrib))
 	      amethods = (Method[]) attributes.get(attrib);
 	    else
@@ -577,7 +583,8 @@ public class StandardMBean
 		 methods[a].getParameterTypes().length == 1)
 	  {
 	    Method[] amethods;
-	    String attrib = name.substring(3);
+	    String attrib = name.substring(3,4).toLowerCase()
+	      + name.substring(4);
 	    if (attributes.containsKey(attrib))
 	      amethods = (Method[]) attributes.get(attrib);
 	    else
@@ -625,8 +632,7 @@ public class StandardMBean
     MBeanConstructorInfo[] cinfo = new MBeanConstructorInfo[cons.length];
     for (int a = 0; a < cinfo.length; ++a)
       {
-	MBeanConstructorInfo oldInfo = new MBeanConstructorInfo("",
-								cons[a]);
+	MBeanConstructorInfo oldInfo = new MBeanConstructorInfo("", cons[a]);
 	String desc = getDescription(oldInfo);
 	MBeanParameterInfo[] params = oldInfo.getSignature();
 	MBeanParameterInfo[] pinfo = new MBeanParameterInfo[params.length];

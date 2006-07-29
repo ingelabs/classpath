@@ -265,4 +265,37 @@ public class MBeanAttributeInfo
     return isWrite;
   }
 
+  /**
+   * <p>
+   * Returns a textual representation of this instance.  This
+   * is constructed using the class name
+   * (<code>javax.management.MBeanAttributeInfo</code>),
+   * the name, description and type of the attribute and the 
+   * current settings of the {@link #isReadable()}, 
+   * {@link #isWritable()} and {@link #isIs()} properties.
+   * </p>
+   * <p>
+   * As instances of this class are immutable, the return value
+   * is computed just once for each instance and reused
+   * throughout its life.
+   * </p>
+   *
+   * @return a @link{java.lang.String} instance representing
+   *         the instance in textual form.
+   */
+  public String toString()
+  {
+    if (string == null)
+      {
+	super.toString();
+	string = string.substring(0, string.length() - 1) 
+	  + ",type=" + attributeType
+	  + ",isReadable=" + (isRead ? "yes" : "no")
+	  + ",isWritable=" + (isWrite ? "yes" : "no")
+	  + ",isIs=" + (is ? "yes" : "no")
+	  + "]";
+      }
+    return string;
+  }
+
 }

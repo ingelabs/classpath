@@ -195,4 +195,33 @@ public class MBeanNotificationInfo
     return super.hashCode() + Arrays.hashCode(types);
   }
 
+  /**
+   * <p>
+   * Returns a textual representation of this instance.  This
+   * is constructed using the class name
+   * (<code>javax.management.MBeanNotificationInfo</code>),
+   * the name and description of the notification and the 
+   * contents of the array of types.
+   * </p>
+   * <p>
+   * As instances of this class are immutable, the return value
+   * is computed just once for each instance and reused
+   * throughout its life.
+   * </p>
+   *
+   * @return a @link{java.lang.String} instance representing
+   *         the instance in textual form.
+   */
+  public String toString()
+  {
+    if (string == null)
+      {
+	super.toString();
+	string = string.substring(0, string.length() - 1) 
+	  + ",types=" + Arrays.toString(types)
+	  + "]";
+      }
+    return string;
+  }
+
 }

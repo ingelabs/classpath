@@ -128,6 +128,11 @@ public class MBeanInfo
   private MBeanNotificationInfo[] notifications;
 
   /**
+   * The <code>toString()</code> result of this instance.
+   */
+  private transient String string;
+
+  /**
    * Constructs a new {@link MBeanInfo} using the supplied
    * class name and description with the given attributes,
    * operations, constructors and notifications.  The class
@@ -356,6 +361,37 @@ public class MBeanInfo
     return className.hashCode() + description.hashCode()
       + Arrays.hashCode(attributes) + Arrays.hashCode(constructors)
       + Arrays.hashCode(operations) + Arrays.hashCode(notifications);
+  }
+
+  /**
+   * <p>
+   * Returns a textual representation of this instance.  This
+   * is constructed using the class name
+   * (<code>javax.management.MBeanInfo</code>),
+   * the name and description of the bean and the contents
+   * of the four arrays.
+   * </p>
+   * <p>
+   * As instances of this class are immutable, the return value
+   * is computed just once for each instance and reused
+   * throughout its life.
+   * </p>
+   *
+   * @return a @link{java.lang.String} instance representing
+   *         the instance in textual form.
+   */
+  public String toString()
+  {
+    if (string == null)
+      string = getClass().getName()
+	+ "[name=" + className 
+	+ ",desc=" + description 
+	+ ",attributes=" + Arrays.toString(attributes)
+	+ ",constructors=" + Arrays.toString(constructors)
+	+ ",operations=" + Arrays.toString(operations)
+	+ ",notifications=" + Arrays.toString(notifications)
+	+ "]";
+    return string;
   }
 
 }

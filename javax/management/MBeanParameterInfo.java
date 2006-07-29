@@ -145,4 +145,32 @@ public class MBeanParameterInfo
     return super.hashCode() + type.hashCode();
   }
 
+  /**
+   * <p>
+   * Returns a textual representation of this instance.  This
+   * is constructed using the class name
+   * (<code>javax.management.MBeanParameterInfo</code>) along
+   * with the name, description and type of the parameter.
+   * </p>
+   * <p>
+   * As instances of this class are immutable, the return value
+   * is computed just once for each instance and reused
+   * throughout its life.
+   * </p>
+   *
+   * @return a @link{java.lang.String} instance representing
+   *         the instance in textual form.
+   */
+  public String toString()
+  {
+    if (string == null)
+      {
+	super.toString();
+	string = string.substring(0, string.length() - 1) 
+	  + ",type=" + type
+	  + "]";
+      }
+    return string;
+  }
+
 }
