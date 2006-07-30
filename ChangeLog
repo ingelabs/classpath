@@ -1,3 +1,8 @@
+2006-07-30  Sven de Marothy  <sven@physto.se>
+
+	* java/awt/Choice:
+	Reformat, fix copyright year.
+
 2006-07-29  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/JComponent.java (paintingDoubleBuffered): Renamed
