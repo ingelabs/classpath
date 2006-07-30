@@ -166,13 +166,16 @@ public final class Engine
           {
 
             alias = (String) provider.getProperty(key);
-            algorithm = alias;
-            if (count++ > MAX_ALIASES)
-              throw new NoSuchAlgorithmException("too many aliases");
-
-            // need to reset enumeration to now look for the alias
-            enumer = provider.propertyNames();
-
+            
+            if (! algorithm.equalsIgnoreCase(alias)) // does not refer to itself
+              {
+                algorithm = alias;
+                if (count++ > MAX_ALIASES)
+                  throw new NoSuchAlgorithmException("too many aliases");
+                
+                // need to reset enumeration to now look for the alias
+                enumer = provider.propertyNames();
+              }
           }
       }
     

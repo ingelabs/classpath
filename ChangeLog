@@ -1,3 +1,8 @@
+2006-07-30  Matt Wringe  <mwringe@redhat.com>
+
+	* gnu/java/security/Engine.java 
+	(getInstance): Ignore self referencing aliases.
+
 2006-07-30  Sven de Marothy  <sven@physto.se>
 
 	* java/awt/Choice.java:
