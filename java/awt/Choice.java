@@ -177,9 +177,8 @@ public class Choice extends Component
       if (i < 0 || i >= pItems.size())
 	return false;
 	    
-      Choice.this.processItemEvent(new ItemEvent(Choice.this,
-						 ItemEvent.ITEM_STATE_CHANGED,
-						 this, ItemEvent.SELECTED));
+      Choice.this.select( i );
+
       return true;
     }
   }
@@ -246,14 +245,11 @@ public class Choice extends Component
 
     pItems.addElement(item);
 
-    int i = pItems.size () - 1;
     if (peer != null)
-      {
-	ChoicePeer cp = (ChoicePeer) peer;
-	cp.add (item, i);
-      }
-    else if (selectedIndex == -1) 
-      select(0);
+      ((ChoicePeer) peer).add(item, getItemCount() - 1);
+
+    if (selectedIndex == -1) 
+      select( 0 );
   }
 
   /**
@@ -293,11 +289,9 @@ public class Choice extends Component
     pItems.insertElementAt(item, index);
 
     if (peer != null)
-      {
-	ChoicePeer cp = (ChoicePeer) peer;
-	cp.add (item, index);
-      }
-    else if (selectedIndex == -1 || selectedIndex >= index)
+      ((ChoicePeer) peer).add (item, index);
+
+    if (selectedIndex == -1 || selectedIndex >= index)
       select(0);
   }
 
@@ -332,20 +326,21 @@ public class Choice extends Component
     pItems.removeElementAt(index);
 
     if (peer != null)
+      ((ChoicePeer) peer).remove( index );
+
+    if( getItemCount() == 0 )
+      selectedIndex = -1;
+    else 
       {
-	ChoicePeer cp = (ChoicePeer) peer;
-	cp.remove (index);
-      }
-    else
-      {
-	if (getItemCount() == 0)
-	  selectedIndex = -1;
-	else if (index == selectedIndex)
-	  select(0);
+	if( index == selectedIndex )
+	  {
+	    if( peer != null ) 
+	      ((ChoicePeer)peer).select( 0 ); // force an event here
+	  }
+	else if( selectedIndex > index )
+	  select( selectedIndex - 1 );
       }
 
-    if (selectedIndex > index)
-      --selectedIndex;
   }
 
   /**
@@ -418,13 +413,12 @@ public class Choice extends Component
     if ((index < 0) || (index >= getItemCount()))
       throw new IllegalArgumentException("Bad index: " + index);
 
-    if (pItems.size() > 0) {
-      selectedIndex = index;
-      ChoicePeer cp = (ChoicePeer) peer;
-      if (cp != null) {
-	cp.select(index);
-      }
-    }
+    if( selectedIndex == index ) 
+      return;
+
+    selectedIndex = index;
+    if( peer != null ) 
+      ((ChoicePeer)peer).select( index );
   }
 
   /**
@@ -437,8 +431,8 @@ public class Choice extends Component
   public synchronized void select(String item)
   {
     int index = pItems.indexOf(item);
-    if (index >= 0)
-      select(index);
+    if( index >= 0 )
+      select( index );
   }
 
   /**
@@ -490,12 +484,12 @@ public class Choice extends Component
 
   void dispatchEventImpl(AWTEvent e)
   {
-    if (e.id <= ItemEvent.ITEM_LAST
-	&& e.id >= ItemEvent.ITEM_FIRST
-	&& (item_listeners != null || (eventMask & AWTEvent.ITEM_EVENT_MASK) != 0))
+    super.dispatchEventImpl(e);
+
+    if( e.id <= ItemEvent.ITEM_LAST && e.id >= ItemEvent.ITEM_FIRST && 
+	( item_listeners != null || 
+	  ( eventMask & AWTEvent.ITEM_EVENT_MASK ) != 0 ) )
       processEvent(e);
-    else
-      super.dispatchEventImpl(e);
   }
 
   /**
@@ -506,9 +500,6 @@ public class Choice extends Component
   protected void processItemEvent(ItemEvent event)
   {
     int index = pItems.indexOf((String) event.getItem());
-    // Don't call back into the peers when selecting index here
-    if (event.getStateChange() == ItemEvent.SELECTED)
-      this.selectedIndex = index;
     if (item_listeners != null)
       item_listeners.itemStateChanged(event);
   }
