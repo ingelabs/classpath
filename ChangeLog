@@ -1,3 +1,19 @@
+2006-07-31  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* java/security/Provider.java: Updated copyright year.
+	Updated documentation.
+	Formatting.
+	(put): Updated documentation.
+	Added security manager check.
+	Canonicalize the key before adding its mapping.
+	(get): Override superclass implementation to use canonicalized keys.
+	(remove): Updated documentation.
+	Added security manager check.
+	Canonicalize the key before removing its mapping.
+	(clear): Updated documentation.
+	Added security manager check.
+	(toCanonicalKey): New method.
+
 2006-07-30  Mark Wielaard  <mark@klomp.org>
 
 	* resource/java/security/classpath.security: Add /dev/urandom as
