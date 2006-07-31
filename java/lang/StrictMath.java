@@ -670,8 +670,8 @@ public final strictfp class StrictMath
 
     double t, w;
     long bits;
-    int hx;
-    int lx;
+    long hx;
+    long lx;
 
     // handle special cases
     if (x != x)
@@ -682,24 +682,24 @@ public final strictfp class StrictMath
       return Double.POSITIVE_INFINITY;
 
     bits = Double.doubleToLongBits(x);
-    hx = getHighDWord(bits) & 0x7fffffff;  // ignore sign
+    hx = getHighDWord(bits) & 0x7fffffffL;  // ignore sign
     lx = getLowDWord(bits);
 
     // |x| in [0, 0.5 * ln(2)], return 1 + expm1(|x|)^2 / (2 * exp(|x|))
-    if (hx < 0x3fd62e43)
+    if (hx < 0x3fd62e43L)
       {
 	t = expm1(abs(x));
 	w = 1.0 + t;
 
 	// for tiny arguments return 1.
-	if (hx < 0x3c800000)
+	if (hx < 0x3c800000L)
 	  return w;
 
 	return 1.0 + (t * t) / (w + w);
       }
 
     // |x| in [0.5 * ln(2), 22], return exp(|x|)/2 + 1 / (2 * exp(|x|))
-    if (hx < 0x40360000)
+    if (hx < 0x40360000L)
       {
 	t = exp(abs(x));
 
@@ -707,16 +707,13 @@ public final strictfp class StrictMath
       }
 
     // |x| in [22, log(Double.MAX_VALUE)], return 0.5 * exp(|x|)
-    if (hx < 0x40862e42)
+    if (hx < 0x40862e42L)
       return 0.5 * exp(abs(x));
 
     // |x| in [log(Double.MAX_VALUE), overflowthreshold],
     // return exp(x/2)/2 * exp(x/2)
-
-    // we need to force an unsigned <= compare, thus can not use lx.
-    if ((hx < 0x408633ce)
-	|| ((hx == 0x408633ce)
-	    && ((bits & 0x00000000ffffffffL) <= 0x8fb9f87dL)))
+    if ((hx < 0x408633ceL)
+	|| ((hx == 0x408633ceL) && (lx <= 0x8fb9f87dL)))
       {
 	w = exp(0.5 * abs(x));
 	t = 0.5 * w;
@@ -733,9 +730,9 @@ public final strictfp class StrictMath
    * used like this:
    * <code>getLowDWord(Double.doubleToLongBits(x))</code>.
    */
-  private static int getLowDWord(long x)
+  private static long getLowDWord(long x)
   {
-    return (int) (x & 0x00000000ffffffffL);
+    return x & 0x00000000ffffffffL;
   }
 
   /**
@@ -743,19 +740,19 @@ public final strictfp class StrictMath
    * used like this:
    * <code>getHighDWord(Double.doubleToLongBits(x))</code>.
    */
-  private static int getHighDWord(long x)
+  private static long getHighDWord(long x)
   {
-    return (int) ((x & 0xffffffff00000000L) >> 32);
+    return (x & 0xffffffff00000000L) >> 32;
   }
 
   /**
    * Returns a double with the IEEE754 bit pattern given in the lower
    * and higher two words <code>lowDWord</code> and <code>highDWord</code>.
    */
-  private static double buildDouble(int lowDWord, int highDWord)
+  private static double buildDouble(long lowDWord, long highDWord)
   {
-    return Double.longBitsToDouble((((long) highDWord & 0xffffffffL) << 32)
-				   | ((long) lowDWord & 0xffffffffL));
+    return Double.longBitsToDouble(((highDWord & 0xffffffffL) << 32)
+				   | (lowDWord & 0xffffffffL));
   }
 
   /**
@@ -788,8 +785,8 @@ public final strictfp class StrictMath
     double w;
 
     long bits;
-    int l;
-    int h;
+    long l;
+    long h;
 
     // handle the special cases
     if (x != x)
@@ -847,7 +844,7 @@ public final strictfp class StrictMath
     s = t * t;		    // t * t is exact
     r = x / s;
     w = t + t;
-    r = (r - t) / (w + r);  // r - s is exact
+    r = (r - t) / (w + r);  // r - t is exact
     t = t + t * r;
 
     return negative ? -t : t;
@@ -1008,8 +1005,8 @@ public final strictfp class StrictMath
     int k;
 
     long bits;
-    int h_bits;
-    int l_bits;
+    long h_bits;
+    long l_bits;
 
     c = 0.0;
     y = abs(x);
@@ -1019,13 +1016,13 @@ public final strictfp class StrictMath
     l_bits = getLowDWord(bits);
 
     // handle special cases and large arguments
-    if (h_bits >= 0x4043687a)        // if |x| >= 56 * ln(2)
+    if (h_bits >= 0x4043687aL)        // if |x| >= 56 * ln(2)
       {
-	if (h_bits >= 0x40862e42)    // if |x| >= EXP_LIMIT_H
+	if (h_bits >= 0x40862e42L)    // if |x| >= EXP_LIMIT_H
 	  {
-	    if (h_bits >= 0x7ff00000)
+	    if (h_bits >= 0x7ff00000L)
 	      {
-		if (((h_bits & 0x000fffff) | (l_bits & 0xffffffff)) != 0)
+		if (((h_bits & 0x000fffffL) | (l_bits & 0xffffffffL)) != 0)
 		  return Double.NaN;               // exp(NaN) = NaN
 		else
 		  return negative ? -1.0 : x;      // exp({+-inf}) = {+inf, -1}
@@ -1040,9 +1037,9 @@ public final strictfp class StrictMath
       }
 
     // argument reduction
-    if (h_bits > 0x3fd62e42)         // |x| > 0.5 * ln(2)
+    if (h_bits > 0x3fd62e42L)        // |x| > 0.5 * ln(2)
       {
-	if (h_bits < 0x3ff0a2b2)     // |x| < 1.5 * ln(2)
+	if (h_bits < 0x3ff0a2b2L)    // |x| < 1.5 * ln(2)
 	  {
 	    if (negative)
 	      {
@@ -1069,7 +1066,7 @@ public final strictfp class StrictMath
 	c = (hi - x) - lo;
 
       }
-    else if (h_bits < 0x3c900000)    // |x| < 2^-54 return x
+    else if (h_bits < 0x3c900000L)   // |x| < 2^-54 return x
       return x;
     else
       k = 0;
@@ -1124,7 +1121,7 @@ public final strictfp class StrictMath
 	if (k < 20)
 	  {
 	    bits = Double.doubleToLongBits(t);
-	    h_bits = 0x3ff00000 - (0x00200000 >> k);
+	    h_bits = 0x3ff00000L - (0x00200000L >> k);
 	    l_bits = getLowDWord(bits);
 
 	    t = buildDouble(l_bits, h_bits);      // t = 1 - 2^(-k)
@@ -1141,7 +1138,7 @@ public final strictfp class StrictMath
 	else
 	  {
 	    bits = Double.doubleToLongBits(t);
-	    h_bits = (0x000003ff - k) << 20;
+	    h_bits = (0x000003ffL - k) << 20;
 	    l_bits = getLowDWord(bits);
 
 	    t = buildDouble(l_bits, h_bits);      // t = 2^(-k)

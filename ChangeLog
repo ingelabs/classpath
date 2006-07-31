@@ -1,3 +1,12 @@
+2006-07-31  Carsten Neumann  <cn-develop@gmx.net>
+
+	* StrictMath.java (getLowDWord): Return long instead of int.
+	(getHighDWord): Likewise.
+	(buildDouble): Take two long arguments.
+	(cbrt): Adapted to int -> long change.
+	(expm1): Likewise.
+	(cosh): Likewise.
+
 2006-07-31  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* native/jni/qt-peer/Makefile.am (libqtpeer_la_LDFLAGS): Add
