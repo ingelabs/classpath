@@ -1,3 +1,18 @@
+2006-07-31  Tom Tromey  <tromey@redhat.com>
+
+	PR libgcj/23682:
+	* java/nio/channels/SelectionKey.java (attach): Now synchronized.
+	(attachment): Likewise.
+	* java/nio/channels/spi/AbstractSelectionKey.java (cancel): Now
+	synchronized.
+	(isValid): Likewise.
+	* gnu/java/nio/SelectionKeyImpl.java (impl): Now final
+	(ch): Likewise.
+	(interestOps): Synchronize.
+	(readyOps): Likewise.
+	* gnu/java/nio/SelectorImpl.java (register): Synchronize around
+	interestOps call.
+
 2006-07-31  Roman Kennke  <kennke@aicas.com>
 
 	* NEWS: Added note about the X peers.
