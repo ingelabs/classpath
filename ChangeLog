@@ -1,5 +1,9 @@
 2006-07-31  Tom Tromey  <tromey@redhat.com>
 
+	* INSTALL: Updated for ASM.
+
+2006-07-31  Tom Tromey  <tromey@redhat.com>
+
 	PR libgcj/23682:
 	* java/nio/channels/SelectionKey.java (attach): Now synchronized.
 	(attachment): Likewise.
