@@ -1,3 +1,8 @@
+2006-07-31  Roman Kennke  <kennke@aicas.com>
+
+	* NEWS: Added note about the X peers.
+	* INSTALL: Added install notes about the X peers.
+
 2006-07-31  Carsten Neumann  <cn-develop@gmx.net>
 
 	* StrictMath.java (getLowDWord): Return long instead of int.
