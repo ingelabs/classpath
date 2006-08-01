@@ -138,21 +138,21 @@ public class OpenMBeanParameterInfoSupport
    * @param name the name of the parameter.
    * @param desc a description of the parameter.
    * @param type the open type of the parameter.
-   * @param defValue the default value of the parameter.
+   * @param defaultValue the default value of the parameter.
    * @throws IllegalArgumentException if the name, description or
    *                                  open type are <code>null</code>
    *                                  or the name or description are
    *                                  the empty string.
-   * @throws OpenDataException if <code>defValue<code> is non-null
+   * @throws OpenDataException if <code>defaultValue<code> is non-null
    *                           and is either not a value of the given
    *                           open type or the open type is an instance
    *                           of {@link ArrayType} or {@link TabularType}.
    */
   public OpenMBeanParameterInfoSupport(String name, String desc, OpenType type,
-				       Object defValue)
+				       Object defaultValue)
     throws OpenDataException
   {
-    this(name, desc, type, defValue, null);
+    this(name, desc, type, defaultValue, null);
   }
 
   /**
@@ -252,7 +252,7 @@ public class OpenMBeanParameterInfoSupport
    * @param name the name of the parameter.
    * @param desc a description of the parameter.
    * @param type the open type of the parameter.
-   * @param defValue the default value of the parameter, or <code>null</code>.
+   * @param defaultValue the default value of the parameter, or <code>null</code>.
    * @param legalValues the legal values of the parameter.  May be
    *                    <code>null</code> or an empty array.
    * @throws IllegalArgumentException if the name, description or
@@ -262,7 +262,7 @@ public class OpenMBeanParameterInfoSupport
    * @throws OpenDataException if any condition in the list above is broken.
    */
   public OpenMBeanParameterInfoSupport(String name, String desc, OpenType type,
-				       Object defValue, Object[] legalValues)
+				       Object defaultValue, Object[] legalValues)
     throws OpenDataException
   {
     super(name, type == null ? null : type.getClassName(), desc);
