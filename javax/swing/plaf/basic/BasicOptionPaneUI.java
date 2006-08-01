@@ -427,17 +427,10 @@ public class BasicOptionPaneUI extends OptionPaneUI
                || e.getPropertyName().equals(JOptionPane.WANTS_INPUT_PROPERTY)
                || e.getPropertyName().equals(JOptionPane.SELECTION_VALUES_PROPERTY))
         {
-          optionPane.remove(messageAreaContainer);
-          messageAreaContainer = createMessageArea();
-          optionPane.add(messageAreaContainer);
-          Container newButtons = createButtonArea();
-          optionPane.remove(buttonContainer);
-          optionPane.add(newButtons);
-          buttonContainer = newButtons;
-          optionPane.add(buttonContainer);
+          uninstallComponents();
+          installComponents();
+          optionPane.validate();
         }
-      optionPane.invalidate();
-      optionPane.repaint();
     }
   }
 
