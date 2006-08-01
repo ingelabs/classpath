@@ -320,9 +320,6 @@ public class Choice extends Component
    */
   public synchronized void remove(int index)
   {
-    if ((index < 0) || (index > getItemCount()))
-      throw new IllegalArgumentException("Bad index: " + index);
-
     pItems.removeElementAt(index);
 
     if (peer != null)
@@ -334,11 +331,16 @@ public class Choice extends Component
       {
 	if( index == selectedIndex )
 	  {
-	    if( peer != null ) 
+	    if( peer != null )
 	      ((ChoicePeer)peer).select( 0 ); // force an event here
+            selectedIndex = 0;
 	  }
 	else if( selectedIndex > index )
-	  select( selectedIndex - 1 );
+          {
+            if ( peer != null)
+              ((ChoicePeer)peer).select(selectedIndex - 1);
+	    select( selectedIndex - 1 );
+          }
       }
 
   }
