@@ -408,24 +408,15 @@ public class BasicOptionPaneUI extends OptionPaneUI
      */
     public void propertyChange(PropertyChangeEvent e)
     {
-      if (e.getPropertyName().equals(JOptionPane.ICON_PROPERTY)
-          || e.getPropertyName().equals(JOptionPane.MESSAGE_TYPE_PROPERTY))
-	addIcon(messageAreaContainer);
-      else if (e.getPropertyName().equals(JOptionPane.INITIAL_SELECTION_VALUE_PROPERTY))
-	resetSelectedValue();
-      else if (e.getPropertyName().equals(JOptionPane.INITIAL_VALUE_PROPERTY)
-               || e.getPropertyName().equals(JOptionPane.OPTIONS_PROPERTY)
-               || e.getPropertyName().equals(JOptionPane.OPTION_TYPE_PROPERTY))
-        {
-	  Container newButtons = createButtonArea();
-	  optionPane.remove(buttonContainer);
-	  optionPane.add(newButtons);
-	  buttonContainer = newButtons;
-        }
-
-      else if (e.getPropertyName().equals(JOptionPane.MESSAGE_PROPERTY)
-               || e.getPropertyName().equals(JOptionPane.WANTS_INPUT_PROPERTY)
-               || e.getPropertyName().equals(JOptionPane.SELECTION_VALUES_PROPERTY))
+      String property = e.getPropertyName();
+      if (property.equals(JOptionPane.ICON_PROPERTY)
+          || property.equals(JOptionPane.INITIAL_SELECTION_VALUE_PROPERTY)
+          || property.equals(JOptionPane.INITIAL_VALUE_PROPERTY)
+          || property.equals(JOptionPane.MESSAGE_PROPERTY)
+          || property.equals(JOptionPane.MESSAGE_TYPE_PROPERTY)
+          || property.equals(JOptionPane.OPTION_TYPE_PROPERTY)
+          || property.equals(JOptionPane.OPTIONS_PROPERTY)
+          || property.equals(JOptionPane.WANTS_INPUT_PROPERTY))
         {
           uninstallComponents();
           installComponents();

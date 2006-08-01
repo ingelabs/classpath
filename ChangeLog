@@ -1,3 +1,10 @@
+2006-08-01  Roman Kennke  <kennke@aicas.com>
+
+	PR 28562
+	* javax/swing/plaf/basic/BasicOptionPaneUI.java
+	(PropertyChangeHandler.propertyChange): Cleanly reinstall
+	components when visual property chanegs.
+
 2006-08-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/management/openmbean/OpenMBeanAttributeInfo.java:
@@ -33,14 +40,14 @@
 	for-loop.  If it is null, selected is instantiated and 
 	the index is added to it.
 
-2006-07-31  Roman Kennke  <kennke@aicas.com>
+2006-08-01  Roman Kennke  <kennke@aicas.com>
 
 	PR 28562
 	* javax/swing/plaf/basic/BasicOptionPaneUI.java
 	(PropertyChangeHandler.propertyChange): Uninstall and reinstall
 	component when visual properties change.
 
-2006-07-31  Roman Kennke  <kennke@aicas.com>
+2006-08-01  Roman Kennke  <kennke@aicas.com>
 
 	PR 28534
 	* javax/swing/JTree.java
