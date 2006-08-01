@@ -1,5 +1,11 @@
 2006-08-01  Tania Bento  <tbento@redhat.com>
 
+	* java/awt/CardLayout.java
+	(toString): Changed format of string outputted.
+	(goToComponent): Changed the order of the if-clause.
+
+2006-08-01  Tania Bento  <tbento@redhat.com>
+
 	* java/awt/List.java
 	(select): Check if selected is null before execution of
 	for-loop.  If it is null, selected is instantiated and 
