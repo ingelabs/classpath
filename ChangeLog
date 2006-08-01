@@ -1,4 +1,9 @@
 2006-08-01  Tania Bento  <tbento@redhat.com>
+
+	* java/awt/Choice.java
+	(remove(int)): Added documentation.
+
+2006-08-01  Tania Bento  <tbento@redhat.com>
 	
 	* java/awt/Choice.java
 	(remove(int)): An IllegalArgumentException should not be thrown
