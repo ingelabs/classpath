@@ -879,26 +879,32 @@ getVisibleIndex()
     ListPeer lp = (ListPeer) getPeer();
     if (lp != null)
       lp.select(index);
-
-    boolean found = false;
-    for (int i = 0; i < selected.length; i++)
-      {
-        if (selected[i] == index)
-          found = true;
-      }
-    if (! found)
-      {
-        if (! isMultipleMode())
-          {
-            selected = new int[] { index };
-            return;
-          }
-        
-        int[] temp = new int[selected.length + 1];
-        System.arraycopy(selected, 0, temp, 0, selected.length);
-        temp[selected.length] = index;
-        selected = temp;
-      }
+    
+   if (selected != null)
+     {
+       boolean found = false;
+       for (int i = 0; i < selected.length; i++)
+         {
+           if (selected[i] == index)
+           found = true;
+         }
+       if (! found)
+         {
+           if (! isMultipleMode())
+             {
+               selected = new int[] { index };
+               return;
+             }       
+           int[] temp = new int[selected.length + 1];
+           System.arraycopy(selected, 0, temp, 0, selected.length);
+           temp[selected.length] = index;
+           selected = temp;
+         }
+     } else 
+       {
+         selected = new int[1];
+         selected[0] = index;
+       }
   }
 
 /*************************************************************************/

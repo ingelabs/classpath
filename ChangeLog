@@ -1,3 +1,10 @@
+2006-08-01  Tania Bento  <tbento@redhat.com>
+
+	* java/awt/List.java
+	(select): Check if selected is null before execution of
+	for-loop.  If it is null, selected is instantiated and 
+	the index is added to it.
+
 2006-07-31  Roman Kennke  <kennke@aicas.com>
 
 	PR 28562
