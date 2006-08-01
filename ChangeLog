@@ -1,3 +1,8 @@
+2006-08-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/management/openmbean/OpenMBeanParameterInfoSupport.java:
+	New file.
+
 2006-08-01  Roman Kennke  <kennke@aicas.com>
 
 	PR 28562
