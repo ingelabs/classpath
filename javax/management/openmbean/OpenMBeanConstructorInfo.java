@@ -1,4 +1,4 @@
-/* OpenMBeanAttributeInfo.java -- Open typed info about an attribute.
+/* OpenMBeanConstructorInfo.java -- Open typed info about a constructor.
    Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,80 +37,72 @@ exception statement from your version. */
 
 package javax.management.openmbean;
 
+import javax.management.MBeanParameterInfo;
+
 /**
- * Describes an attribute associated with an open management bean.
+ * Describes a constructor for an open management bean.
  * This interface includes those methods specified by {@link
- * javax.management.MBeanAttributeInfo}, so implementations should
- * extend this class.
+ * javax.management.MBeanConstructorInfo}, so implementations should
+ * extend this class.  The {@link #getSignature()} method should
+ * return an array containing instances of {@link OpenMBeanParameterInfo}.
  *
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.5
  */
-public interface OpenMBeanAttributeInfo
-  extends OpenMBeanParameterInfo
+public interface OpenMBeanConstructorInfo
 {
 
   /**
    * Compares this attribute with the supplied object.  This returns
-   * true iff the object is an instance of {@link OpenMBeanAttributeInfo}
-   * with an equal name and open type, the same default, minimum,
-   * maximum and legal values and the same access properties
-   * ({@link #isIs()}, {@link #isReadable()}, {@link #isWritable()}).
+   * true iff the object is an instance of {@link OpenMBeanConstructorInfo}
+   * with an equal name and signature.
    *
    * @param obj the object to compare.
    * @return true if the object is a {@link OpenMBeanParameterInfo}
    *         instance, 
    *         <code>name.equals(object.getName())</code>,
-   *         <code>openType.equals(object.getOpenType())</code>,
-   *         <code>defaultValue.equals(object.getDefaultValue())</code>,
-   *         <code>minValue.equals(object.getMinValue())</code>,
-   *         <code>maxValue.equals(object.getMaxValue())</code>,
-   *         <code>legalValues.equals(object.getLegalValues())</code>,
-   *         <code>is == object.isIs()</code>,
-   *         <code>isRead == object.isReadable()</code>,
-   *         and <code>isWrite == object.isWritable()</code>.
+   *         and <code>signature.equals(object.getSignature())</code>.
    */
   boolean equals(Object obj);
 
   /**
-   * Returns the hashcode of the attribute information as the sum of
-   * the hashcodes of the name, open type, default value, maximum
-   * value, minimum value, the set of legal values and the access
-   * properties.
+   * Returns a description of this constructor.
    *
-   * @return the hashcode of the attribute information.
+   * @return a human-readable description.
+   */
+  String getDescription();
+
+  /**
+   * Returns the name of this constructor.
+   *
+   * @return the name of the constructor.
+   */
+  String getName();
+
+  /**
+   * Returns the constructor's signature, in the form of
+   * information on each parameter.  Each parameter is
+   * described by an instance of {@link OpenMBeanParameterInfo}.
+   *
+   * @return an array of {@link OpenMBeanParameterInfo} objects,
+   *         describing the constructor parameters.
+   */
+  MBeanParameterInfo[] getSignature();
+
+  /**
+   * Returns the hashcode of the constructor information as the sum of
+   * the hashcodes of the name and signature (calculated by
+   * <code>java.util.Arrays.asList(signature).hashCode()</code>).
+   *
+   * @return the hashcode of the constructor information.
    */
   int hashCode();
 
   /**
-   * Returns true if the accessor method of this attribute
-   * is of the form <code>isXXX</code>.
-   *
-   * @return true if the accessor takes the form <code>isXXX</code>.
-   */
-  boolean isIs();
-
-  /**
-   * Returns true if value of this attribute can be read.
-   *
-   * @return true if the value of the attribute can be read.
-   */
-  boolean isReadable();
-
-  /**
-   * Returns true if the value of this attribute can be changed.
-   *
-   * @return true if the value of the attribute can be changed.
-   */
-  boolean isWritable();
-
-  /**
    * Returns a textual representation of this instance.  This
    * is constructed using the class name
-   * (<code>javax.management.openmbean.OpenMBeanAttributeInfo</code>)
-   * along with the name, open type, default, minimum, maximum
-   * and legal values of the parameter and the access permissions
-   * ({@link #isIs()}, {@link #isReadable()}, {@link #isWritable()}).
+   * (<code>javax.management.openmbean.OpenMBeanConstructorInfo</code>)
+   * along with the name and signature.
    *
    * @return a @link{java.lang.String} instance representing
    *         the instance in textual form.

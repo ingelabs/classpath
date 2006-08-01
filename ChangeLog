@@ -1,3 +1,14 @@
+2006-08-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/management/openmbean/OpenMBeanAttributeInfo.java:
+	(toString()): Corrected documentation.
+	* javax/management/openmbean/OpenMBeanConstructorInfo.java,
+	* javax/management/openmbean/OpenMBeanInfo.java,
+	* javax/management/openmbean/OpenMBeanOperationInfo.java:
+	New files.
+	* javax/management/openmbean/OpenMBeanParameterInfo.java:
+	(toString()): Corrected documentation.
+	
 2006-08-01  Tania Bento  <tbento@redhat.com>
 
 	* java/awt/Choice.java
