@@ -477,8 +477,18 @@ public class BasicTreeUI
    */
   protected void setCellRenderer(TreeCellRenderer tcr)
   {
-    currentCellRenderer = tcr;
+    // Finish editing before changing the renderer.
+    completeEditing();
+
+    // The renderer is set in updateRenderer.
     updateRenderer();
+
+    // Refresh the layout if necessary.
+    if (treeState != null)
+      {
+	treeState.invalidateSizes();
+	updateSize();
+      }
   }
 
   /**
@@ -1172,10 +1182,26 @@ public class BasicTreeUI
   protected void updateRenderer()
   {
     if (tree != null)
-      currentCellRenderer = tree.getCellRenderer();
-
-    if (currentCellRenderer == null)
-      currentCellRenderer = createDefaultCellRenderer();
+      {
+	TreeCellRenderer rend = tree.getCellRenderer();
+	if (rend != null)
+	  {
+	    createdRenderer = false;
+	    currentCellRenderer = rend;
+	    if (createdCellEditor)
+	      tree.setCellEditor(null);
+	  }
+	else
+	  {
+	    tree.setCellRenderer(createDefaultCellRenderer());
+	    createdRenderer = true;
+	  }
+      }
+    else
+      {
+	currentCellRenderer = null;
+	createdRenderer = false;
+      }
 
     updateCellEditor();
   }

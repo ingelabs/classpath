@@ -1,3 +1,16 @@
+2006-07-31  Roman Kennke  <kennke@aicas.com>
+
+	PR 28534
+	* javax/swing/JTree.java
+	(JTree(TreeModel)): Set cell renderer to null.
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(setCellRenderer): Finish editing before setting the
+	cell renderer. Refresh the layout. Don't set the
+	currentCellRenderer field here (that's done in updateRenderer).
+	(updateRenderer): Handle createdRenderer field here too.
+	Set renderer to a default handler when the current renderer
+	in the JTree is null.
+
 2006-07-31  Tom Tromey  <tromey@redhat.com>
 
 	* INSTALL: Updated for ASM.
