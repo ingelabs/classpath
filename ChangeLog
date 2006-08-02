@@ -1,3 +1,12 @@
+2006-08-02  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	PR Classpath/28556
+	* gnu/java/security/key/rsa/RSAKeyPairPKCS8Codec.java (encodePrivateKey):
+	Updated documentation to clarify that RFC-2459 states that the parameters
+	field of the AlgorithmIdentifier element MUST be NULL if present.
+	Amended the code to reflect the specs.
+	(decodePrivateKey): Handle case of NULL AlgorithmIdentifier.parameters.
+
 2006-08-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/management/openmbean/OpenMBeanParameterInfoSupport.java:
