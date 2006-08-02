@@ -112,9 +112,8 @@ public class DragSource implements Serializable
   }
 
   public static boolean isDragImageSupported()
-    throws NotImplementedException
   {
-    // FIXME: Implement this
+    // In all cases, Sun returns false here.
     return false;
   }
 
@@ -313,7 +312,7 @@ public class DragSource implements Serializable
   
   /**
    * TODO
-   * @return
+   * @return TODO
    * 
    * @since 1.5
    */
@@ -321,6 +320,6 @@ public class DragSource implements Serializable
     throws NotImplementedException
   {
     // FIXME: Not implemented.
-    return 4;
+    return 8;
   }
 } // class DragSource
