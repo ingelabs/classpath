@@ -1,3 +1,11 @@
+2006-08-02  Mark Wielaard  <mark@klomp.org>
+
+	PR 28535
+	* configure.ac (gconf-peer): Check for gdk-2.0.
+	* native/jni/gconf-peer/Makefile.am
+	(AM_LDFLAGS): Use GDK_LIBS.
+	(AM_CFLAGS): Use GDK_CFLAGS.
+
 2006-08-02  Thomas Minor  <1nocentrabidlamb@sexMagnet.com>
 
 	* java/net/URL.java (getContent(Class[])): Implement.
@@ -2704,10 +2712,10 @@
 
 2006-07-10  Mario Torre  <neugens@limasoftware.net>
 
-        * java/awt/BasicStroke.java: Removed unused import.
-        * gnu/java/awt/java2d/CubicSegment.java (clone): Fixed. 
-        * gnu/java/awt/java2d/LineSegment.java (clone): Fixed. 
-        * gnu/java/awt/java2d/QuadSegment.java (clone): Fixed.
+	* java/awt/BasicStroke.java: Removed unused import.
+	* gnu/java/awt/java2d/CubicSegment.java (clone): Fixed. 
+	* gnu/java/awt/java2d/LineSegment.java (clone): Fixed. 
+	* gnu/java/awt/java2d/QuadSegment.java (clone): Fixed.
 
 2006-07-10  Matt Wringe  <mwringe@redhat.com>
 

@@ -478,6 +478,10 @@ if test "x${COMPILE_JNI}" = xyes; then
     PKG_CHECK_MODULES(GCONF, gconf-2.0 >= 2.11.2)
     AC_SUBST(GCONF_CFLAGS)
     AC_SUBST(GCONF_LIBS)
+    dnl we also need gdk for locking
+    PKG_CHECK_MODULES(GDK, gdk-2.0 >= 2.8)
+    AC_SUBST(GDK_CFLAGS)
+    AC_SUBST(GDK_LIBS)
     dnl check if the config value was given form the command line,
     dnl if not, overwrite the default if we have the gconf backend
     dnl compiled in
