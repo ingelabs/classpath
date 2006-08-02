@@ -1,3 +1,7 @@
+2006-08-02  Thomas Minor  <1nocentrabidlamb@sexMagnet.com>
+
+	* java/net/URL.java (getContent(Class[])): Implement.
+
 2006-08-02  Roman Kennke  <kennke@aicas.com>
 
 	PR 27624
