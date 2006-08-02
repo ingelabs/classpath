@@ -471,6 +471,7 @@ public class JComboBox extends JComponent implements ItemSelectable,
   public void setSelectedItem(Object item)
   {
     dataModel.setSelectedItem(item);
+    fireActionEvent();
   }
 
   /**
