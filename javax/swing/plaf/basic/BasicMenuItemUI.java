@@ -411,10 +411,6 @@ public class BasicMenuItemUI extends MenuItemUI
   {
     ArrayList path = new ArrayList();
 
-    // Path to menu should also include its popup menu.
-    if (menuItem instanceof JMenu)
-      path.add(((JMenu) menuItem).getPopupMenu());
-
     Component c = menuItem;
     while (c instanceof MenuElement)
       {

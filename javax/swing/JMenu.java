@@ -40,7 +40,6 @@ package javax.swing;
 
 import java.awt.Component;
 import java.awt.Point;
-import java.awt.PopupMenu;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -99,7 +98,6 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
   {
     super();
     setOpaque(false);
-    setDelay(200);
   }
 
   /**
@@ -113,7 +111,6 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
     popupMenu = new JPopupMenu(); 
     popupMenu.setInvoker(this);
     setOpaque(false);
-    setDelay(200);
   }
 
   /**
@@ -129,7 +126,6 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
     popupMenu = new JPopupMenu();
     popupMenu.setInvoker(this);
     setOpaque(false);
-    setDelay(200);
   }
 
   /**
@@ -143,7 +139,6 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
   {
     // FIXME: tearoff not implemented
     this(text);
-    setDelay(200);
   }
 
   /**
@@ -342,63 +337,6 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
   }
 
   /**
-   * A helper method to handle setSelected calls from both mouse events and 
-   * direct calls to setSelected.  Direct calls shouldn't expand the popup
-   * menu and should select the JMenu even if it is disabled.  Mouse events
-   * only select the JMenu if it is enabled and should expand the popup menu
-   * associated with this JMenu.
-   * @param selected whether or not the JMenu was selected
-   * @param menuEnabled whether or not selecting the menu is "enabled".  This
-   * is always true for direct calls, and is set to isEnabled() for mouse 
-   * based calls.
-   * @param showMenu whether or not to show the popup menu
-   */
-  private void setSelectedHelper(boolean selected, boolean menuEnabled, boolean showMenu)
-  {
-    // If menu is selected and enabled, activates the menu and 
-    // displays associated popup.	
-    if (selected && menuEnabled)
-      {
-	super.setArmed(true);
-	super.setSelected(true);
-
-        // FIXME: The popup menu should be shown on the screen after certain
-        // number of seconds pass. The 'delay' property of this menu indicates
-        // this amount of seconds. 'delay' property is 0 by default.
-	if (isShowing())
-	  {
-	    fireMenuSelected();
-            
-	    int x = 0;
-	    int y = 0;
-            if (showMenu)
-              if (menuLocation == null)
-                {
-                  // Calculate correct position of the popup. Note that location of the popup 
-                  // passed to show() should be relative to the popup's invoker
-                  if (isTopLevelMenu())
-                    y = this.getHeight();
-                  else
-                    x = this.getWidth();
-                  getPopupMenu().show(this, x, y);
-                }
-              else
-                {
-                  getPopupMenu().show(this, menuLocation.x, menuLocation.y);
-                }
-	  }
-      }
-    
-    else
-      {
-	super.setSelected(false);
-	super.setArmed(false);
-	fireMenuDeselected();
-        getPopupMenu().setVisible(false);
-      }
-  }
-
-  /**
    * Changes this menu selected state if selected is true and false otherwise
    * This method fires menuEvents to menu's registered listeners.
    *
@@ -406,7 +344,9 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
    */
   public void setSelected(boolean selected)
   {
-    setSelectedHelper(selected, true, false); 
+    ButtonModel m = getModel();
+    if (selected != m.isSelected())
+      m.setSelected(selected);
   }
 
   /**
@@ -427,8 +367,17 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
    */
   public void setPopupMenuVisible(boolean popup)
   {
-    if (getModel().isEnabled())
-      getPopupMenu().setVisible(popup);
+    if (popup != isPopupMenuVisible() && (isEnabled() || ! popup))
+      {
+        if (popup && isShowing())
+          {
+            // Set location as determined by getPopupLocation().
+            Point loc = getPopupMenuOrigin();
+            getPopupMenu().show(this, loc.x, loc.y);
+          }
+        else
+          getPopupMenu().setVisible(false);
+      }
   }
 
   /**
@@ -438,12 +387,22 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
    */
   protected Point getPopupMenuOrigin()
   {
+    Point point;
+
     // if menu in the menu bar
     if (isTopLevelMenu())
-      return new Point(0, this.getHeight());
+      point = new Point(0, this.getHeight());
 
-    // if submenu            
-    return new Point(this.getWidth(), 0);
+    // if submenu
+    else
+      {
+        int xOffset = UIManager.getInt("Menu.submenuPopupOffsetX");
+        int yOffset = UIManager.getInt("Menu.submenuPopupOffsetY");
+        int x = getWidth() + xOffset;
+        int y = yOffset;
+        point = new Point(x, y);
+      }
+    return point;
   }
 
   /**
@@ -748,7 +707,7 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
   {
     // if this menu selection is true, then activate this menu and 
     // display popup associated with this menu
-    setSelectedHelper(changed, isEnabled(), true);
+    setSelected(changed);
   }
 
   /**

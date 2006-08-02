@@ -1,3 +1,40 @@
+2006-08-02  Roman Kennke  <kennke@aicas.com>
+
+	PR 27624
+	* javax/swing/JMenu.java
+	(JMenu()): Removed setting of delay.
+	(JMenu(String)): Removed setting of delay.
+	(JMenu(Action)): Removed setting of delay.
+	(JMenu(String,boolean)): Removed setting of delay.
+	(setSelectedHelper): Removed unneeded method.
+	(setSelected): Simply set the model state.
+	(setPopupMenuVisible): Recognize the popup location
+	determined by getPopupMenuOrigin().
+	(getPopupMenuOrigin): Recognize the UI properties for
+	X and Y offset.
+	(menuSelectionChanged): Call setSelected() directly.
+	* javax/swing/JPopupMenu.java
+	(menuSelectionChanged): If invoker is a JMenu, then delegate
+	to that to get the position right.
+	* javax/swing/Popup.java
+	(LightweightPopup.show): Insert the popup as first component
+	in the layer, so that it overlaps it's caller.
+	* javax/swing/plaf/basic/BasicMenuItemUI.java
+	(getPath): Don't include the popup.
+	* javax/swing/plaf/basic/BasicMenuUI.java
+	(SelectMenuAction): New class. This invokes the popup when
+	a menu is selected.
+	(installDefaults): Install delay of 200 ms.
+	(setupPostTimer): Implemented.
+	(MouseInputHandler.mouseClicked): Do nothing here.
+	(MouseInputHandler.mouseEntered): Use MenuSelectionManager
+	magic to handle the selection. Open the menu via a timer.
+	(MouseInputHandler.mousePressed): Use MenuSelectionManager
+	magic to handle the selection. Open the menu via a timer.
+	(MenuDragMouseHandler.menuMouseDragged): Probably use
+	timer.
+	(menuDragMouseEntered): Do nothing here.
+
 2006-08-02  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 	
 	* javax/management/openmbean/InvalidOpenTypeException.java,
