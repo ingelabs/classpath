@@ -1,3 +1,17 @@
+2006-08-02  Roman Kennke  <kennke@aicas.com>
+
+	PR 27606
+	* javax/swing/plaf/basic/BasicListUI.java
+	(paintCell): Pass row index to cell renderer.
+	* javax/swing/plaf/basic/MetalFileChooserUI.java
+	(DirectoryComboBoxRenderer.indentIcon): New field.
+	(DirectoryComboBoxRenderer.DirectoryComboBoxRenderer):
+	Initialize indentIcon.
+	(DirectoryComboBoxRenderer.getListCellRendererComponent):
+	Fall back to super and removed standard functionality.
+	Handle indentation.
+	(IndentIcon): New class. Wraps and indents another icon.
+
 2006-08-02  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/management/MBeanConstructorInfo.java:
@@ -53,6 +67,32 @@
 2006-08-02  Carsten Neumann  <cn-develop@gmx.net>
 
 	* java/lang/StrictMath.java (sinh): New method.
+
+2006-08-02  Roman Kennke  <kennke@aicas.com>
+
+	PR 27605
+	* javax/swing/JComboBox.java
+	(setSelectedItem): Fire ActionEvent here.
+	* javax/swing/plaf/basic/BasicDirectoryModel.java
+	(directories): Changed to type Vector.
+	(files): New field.
+	(loadThread): New field.
+	(DirectoryLoadThread): New inner class. This loads the contents
+	of directories asynchronously.
+	(getDirectories): Return cached Vector.
+	(getFiles): Return cached Vector.
+	(getSize): Return plain size of contents Vector.
+	(propertyChange): Reread directory also for DIRECTORY_CHANGED,
+	FILE_FILTER_CHANGED, FILE_HIDING_CHANGED and FILE_VIEW_CHANGED.
+	(sort): Don't store sorted list in contents. This must be done
+	asynchronously from the EventThread.
+	(validateFileCache): Rewritten for asynchronous reading
+	of directory contents.
+	* javax/swing/plaf/basic/BasicFileChooserUI.java
+	(installListeners): Install model as PropertyChangeListener.
+	(uninstallListeners): Uninstall model as PropertyChangeListener.
+	(createPropertyChangeListener): Return null just like the
+	RI.
 
 2006-08-02  Roman Kennke  <kennke@aicas.com>
 
