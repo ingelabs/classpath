@@ -1,3 +1,10 @@
+2006-08-02  Sven de Marothy  <sven@physto.se>
+
+	* java/awt/geom/AffineTransform.java
+	(hashCode): Tweak impl. 
+	* java/awt/font/FontRenderContext.java
+	(hashCode): Implement. 
+
 2006-08-02  Carsten Neumann  <cn-develop@gmx.net>
 
 	* java/lang/StrictMath.java (sinh): New method.
