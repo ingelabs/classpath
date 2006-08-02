@@ -592,8 +592,8 @@ public class MetalFileChooserUI
       FileView fileView = getFileView(getFileChooser());
       File file = (File) value;
       setIcon(fileView.getIcon(file));
-      setText(fileView.getName(file));
-      
+      setText(getFileChooser().getName(file));
+
       if (isSelected)
         {
           setBackground(list.getSelectionBackground());

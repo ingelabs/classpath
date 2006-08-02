@@ -268,7 +268,14 @@ public class BasicFileChooserUI extends FileChooserUI
      */
     public String getName(File f)
     {
-      return f.getName();
+      String name = null;
+      if (f != null)
+        {
+          JFileChooser c = getFileChooser();
+          FileSystemView v = c.getFileSystemView();
+          name = v.getSystemDisplayName(f);
+        }
+      return name;
     }
 
     /**

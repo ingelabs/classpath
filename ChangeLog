@@ -1,3 +1,21 @@
+2006-08-02  Roman Kennke  <kennke@aicas.com>
+
+	PR 27604
+	* javax/swing/plaf/basic/BasicChooserUI.java
+	(BasicFileView.getName): Fetch the real name from the
+	file chooser's FileSystemView.
+	* javax/swing/plaf/metal/MetalChooserUI.java
+	(DirectoryComboBoxRenderer.getListCellRendererComponent):
+	Set the text fetched from the JFileChooser.getName().
+	* javax/swing/FileSystemView.java
+	(createFileObject): When file is a filesystem root,
+	create a filesystem root object first.
+	(getSystemDisplayName): Return the filename. Added specnote
+	about ShellFolder class that is mentioned in the spec.
+	* javax/swing/UnixFileSystemView.java
+	(getSystemDisplayName): Implemented to return the real name
+	of a file, special handling files like '.' or '..'.
+
 2006-08-02  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	PR Classpath/23899
