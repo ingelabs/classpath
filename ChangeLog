@@ -1,3 +1,7 @@
+2006-08-02  Carsten Neumann  <cn-develop@gmx.net>
+
+	* java/lang/StrictMath.java (sinh): New method.
+
 2006-08-02  Roman Kennke  <kennke@aicas.com>
 
 	PR 27604

@@ -633,6 +633,94 @@ public final strictfp class StrictMath
   }
 
   /**
+   * Returns the hyperbolic sine of <code>x</code> which is defined as
+   * (exp(x) - exp(-x)) / 2.
+   *
+   * Special cases:
+   * <ul>
+   * <li>If the argument is NaN, the result is NaN</li>
+   * <li>If the argument is positive infinity, the result is positive
+   * infinity.</li>
+   * <li>If the argument is negative infinity, the result is negative
+   * infinity.</li>
+   * <li>If the argument is zero, the result is zero.</li>
+   * </ul>
+   *
+   * @param x the argument to <em>sinh</em>
+   * @return the hyperbolic sine of <code>x</code>
+   *
+   * @since 1.5
+   */
+  public static double sinh(double x)
+  {
+    // Method :
+    // mathematically sinh(x) if defined to be (exp(x)-exp(-x))/2
+    // 1. Replace x by |x| (sinh(-x) = -sinh(x)).
+    // 2.
+    //                                   E + E/(E+1)
+    //	 0       <= x <= 22     :  sinh(x) := --------------,  E=expm1(x)
+    // 	       			              2
+    //
+    //  22       <= x <= lnovft :  sinh(x) := exp(x)/2
+    //  lnovft   <= x <= ln2ovft:  sinh(x) := exp(x/2)/2 * exp(x/2)
+    //	ln2ovft  <  x           :  sinh(x) := +inf (overflow)
+
+    double t, w, h;
+
+    long bits;
+    long h_bits;
+    long l_bits;
+
+    // handle special cases
+    if (x != x)
+      return Double.NaN;
+    if (x == Double.POSITIVE_INFINITY)
+      return Double.POSITIVE_INFINITY;
+    if (x == Double.NEGATIVE_INFINITY)
+      return Double.NEGATIVE_INFINITY;
+
+    if (x < 0)
+      h = - 0.5;
+    else
+      h = 0.5;
+
+    bits = Double.doubleToLongBits(x);
+    h_bits = getHighDWord(bits) & 0x7fffffffL;  // ignore sign
+    l_bits = getLowDWord(bits);
+
+    // |x| in [0, 22], return sign(x) * 0.5 * (E+E/(E+1))
+    if (h_bits < 0x40360000L)          // |x| < 22
+      {
+	if (h_bits < 0x3e300000L)      // |x| < 2^-28
+	  return x;                    // for tiny arguments return x
+
+	t = expm1(abs(x));
+
+	if (h_bits < 0x3ff00000L)
+	  return h * (2.0 * t - t * t / (t + 1.0));
+
+	return h * (t + t / (t + 1.0));
+      }
+
+    // |x| in [22, log(Double.MAX_VALUE)], return 0.5 * exp(|x|)
+    if (h_bits < 0x40862e42L)
+      return h * exp(abs(x));
+
+    // |x| in [log(Double.MAX_VALUE), overflowthreshold]
+    if ((h_bits < 0x408633ceL)
+	|| ((h_bits == 0x408633ceL) && (l_bits <= 0x8fb9f87dL)))
+      {
+	w = exp(0.5 * abs(x));
+	t = h * w;
+
+	return t * w;
+      }
+
+    // |x| > overflowthershold
+    return h * Double.POSITIVE_INFINITY;
+  }
+
+  /**
    * Returns the hyperbolic cosine of <code>x</code>, which is defined as
    * (exp(x) + exp(-x)) / 2.
    *
