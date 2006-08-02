@@ -1,4 +1,4 @@
-/* OpenMBeanParameterInfoSupport.java -- Open typed info about a parameter.
+/* OpenMBeanAttributeInfoSupport.java -- Open typed info about an attribute.
    Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -41,47 +41,46 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.management.MBeanParameterInfo;
+import javax.management.MBeanAttributeInfo;
 
 /**
- * Describes the parameters of a constructor or operation associated
- * with an open management bean.  
+ * Describes an attribute of an open management bean.  
  *
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.5
  */
-public class OpenMBeanParameterInfoSupport
-  extends MBeanParameterInfo
-  implements OpenMBeanParameterInfo
+public class OpenMBeanAttributeInfoSupport
+  extends MBeanAttributeInfo
+  implements OpenMBeanAttributeInfo
 {
 
   /**
    * Compatible with JDK 1.5
    */
-  private static final long serialVersionUID = -7235016873758443122L;
+  private static final long serialVersionUID = -4867215622149721849L;
 
   /**
-   * The open type of the parameter.
+   * The open type of the attribute.
    */
   private OpenType openType;
 
   /**
-   * The default value of the parameter (may be <code>null</code>).
+   * The default value of the attribute (may be <code>null</code>).
    */
   private Object defaultValue;
 
   /**
-   * The possible legal values of the parameter (may be <code>null</code>).
+   * The possible legal values of the attribute (may be <code>null</code>).
    */
   private Set legalValues;
 
   /**
-   * The minimum value of the parameter (may be <code>null</code>).
+   * The minimum value of the attribute (may be <code>null</code>).
    */
   private Comparable minValue;
 
   /**
-   * The maximum value of the parameter (may be <code>null</code>).
+   * The maximum value of the attribute (may be <code>null</code>).
    */
   private Comparable maxValue;
 
@@ -96,22 +95,29 @@ public class OpenMBeanParameterInfoSupport
   private transient String string;
 
   /**
-   * Constructs a new {@link OpenMBeanParameterInfo} using the specified
-   * name, description and open type.  None of these values may be
-   * <code>null</code> and the name and description may not be equal
-   * to the empty string.
+   * Constructs a new {@link OpenMBeanAttributeInfo} using the
+   * specified name, description, open type and access properties.
+   * The name, description and open type may not be <code>null</code>
+   * and the name and description may not be equal to the empty
+   * string.
    *
-   * @param name the name of the parameter.
-   * @param desc a description of the parameter.
-   * @param type the open type of the parameter.
+   * @param name the name of the attribute.
+   * @param desc a description of the attribute.
+   * @param type the open type of the attribute.
+   * @param isReadable true if the attribute's value can be read.
+   * @param isWritable true if the attribute's value can be changed.
+   * @param isIs true if the attribute uses an accessor of the form isXXX.
    * @throws IllegalArgumentException if the name, description or
    *                                  open type are <code>null</code>
    *                                  or the name or description are
    *                                  the empty string.
    */
-  public OpenMBeanParameterInfoSupport(String name, String desc, OpenType type)
+  public OpenMBeanAttributeInfoSupport(String name, String desc, OpenType type,
+				       boolean isReadable, boolean isWritable,
+				       boolean isIs)
   {
-    super(name, type == null ? null : type.getClassName(), desc);
+    super(name, type == null ? null : type.getClassName(), desc, isReadable,
+	  isWritable, isIs);
     if (name == null)
       throw new IllegalArgumentException("The name may not be null.");
     if (desc == null)
@@ -126,7 +132,7 @@ public class OpenMBeanParameterInfoSupport
   }
 
   /**
-   * Constructs a new {@link OpenMBeanParameterInfo} using the
+   * Constructs a new {@link OpenMBeanAttributeInfo} using the
    * specified name, description, open type and default value.  The
    * name, description and open type cannot be <code>null</code> and
    * the name and description may not be equal to the empty string.
@@ -135,10 +141,13 @@ public class OpenMBeanParameterInfoSupport
    * applicable to the open types, {@link ArrayType} and {@link
    * TabularType}.
    *
-   * @param name the name of the parameter.
-   * @param desc a description of the parameter.
-   * @param type the open type of the parameter.
-   * @param defaultValue the default value of the parameter.
+   * @param name the name of the attribute.
+   * @param desc a description of the attribute.
+   * @param type the open type of the attribute.
+   * @param isReadable true if the attribute's value can be read.
+   * @param isWritable true if the attribute's value can be changed.
+   * @param isIs true if the attribute uses an accessor of the form isXXX.
+   * @param defaultValue the default value of the attribute.
    * @throws IllegalArgumentException if the name, description or
    *                                  open type are <code>null</code>
    *                                  or the name or description are
@@ -148,22 +157,24 @@ public class OpenMBeanParameterInfoSupport
    *                           open type or the open type is an instance
    *                           of {@link ArrayType} or {@link TabularType}.
    */
-  public OpenMBeanParameterInfoSupport(String name, String desc, OpenType type,
-				       Object defaultValue)
+  public OpenMBeanAttributeInfoSupport(String name, String desc, OpenType type,
+				       boolean isReadable, boolean isWritable,
+				       boolean isIs, Object defaultValue)
     throws OpenDataException
   {
-    this(name, desc, type, defaultValue, null);
+    this(name, desc, type, isReadable, isWritable, isIs, defaultValue, null);
   }
 
   /**
    * <p>
-   * Constructs a new {@link OpenMBeanParameterInfo} using the
-   * specified name, description, open type, default, maximum and
-   * minimum values.  The name, description and open type cannot be
-   * <code>null</code> and the name and description may not be equal
-   * to the empty string.  The default, maximum and minimum values may
-   * be <code>null</code>.  The following conditions apply when the
-   * parameters mentioned are non-null:
+   * Constructs a new {@link OpenMBeanAttributeInfo} using the
+   * specified name, description, open type, access properties, 
+   * default, maximum and minimum values.  The name, description
+   * and open type cannot be <code>null</code> and the name and
+   * description may not be equal to the empty string.  The
+   * default, maximum and minimum values may be <code>null</code>.
+   * The following conditions apply when the attributes mentioned
+   * are non-null:
    * </p>
    * <ul>
    * <li>The values must be valid values for the given open type.</li>
@@ -177,24 +188,29 @@ public class OpenMBeanParameterInfoSupport
    * (literally, <code>defaultValue.compareTo(maxValue) <= 0</code>.</li>
    * </ul>
    * 
-   * @param name the name of the parameter.
-   * @param desc a description of the parameter.
-   * @param type the open type of the parameter.
-   * @param defaultValue the default value of the parameter, or <code>null</code>.
-   * @param minimumValue the minimum value of the parameter, or <code>null</code>.
-   * @param maximumValue the maximum value of the parameter, or <code>null</code>.
+   * @param name the name of the attribute.
+   * @param desc a description of the attribute.
+   * @param type the open type of the attribute.
+   * @param isReadable true if the attribute's value can be read.
+   * @param isWritable true if the attribute's value can be changed.
+   * @param isIs true if the attribute uses an accessor of the form isXXX.
+   * @param defaultValue the default value of the attribute, or <code>null</code>.
+   * @param minimumValue the minimum value of the attribute, or <code>null</code>.
+   * @param maximumValue the maximum value of the attribute, or <code>null</code>.
    * @throws IllegalArgumentException if the name, description or
    *                                  open type are <code>null</code>
    *                                  or the name or description are
    *                                  the empty string.
    * @throws OpenDataException if any condition in the list above is broken.
    */
-  public OpenMBeanParameterInfoSupport(String name, String desc, OpenType type,
-				       Object defaultValue, Comparable minimumValue,
+  public OpenMBeanAttributeInfoSupport(String name, String desc, OpenType type,
+				       boolean isReadable, boolean isWritable,
+				       boolean isIs, Object defaultValue,
+				       Comparable minimumValue,
 				       Comparable maximumValue)
     throws OpenDataException
   {
-    this(name, desc, type);
+    this(name, desc, type, isReadable, isWritable, isIs);
     if (defaultValue != null && !(type.isValue(defaultValue)))
       throw new OpenDataException("The default value is not a member of the " +
 				  "open type given.");
@@ -229,13 +245,13 @@ public class OpenMBeanParameterInfoSupport
 
   /**
    * <p>
-   * Constructs a new {@link OpenMBeanParameterInfo} using the
-   * specified name, description, open type, default value and
-   * set of legal values.  The name, description and open type cannot be
-   * <code>null</code> and the name and description may not be equal
-   * to the empty string.  The default, maximum and minimum values may
-   * be <code>null</code>.  The following conditions apply when the
-   * parameters mentioned are non-null:
+   * Constructs a new {@link OpenMBeanAttributeInfo} using the
+   * specified name, description, open type, access properties, default
+   * value and set of legal values.  The name, description and open type
+   * cannot be <code>null</code> and the name and description may not be
+   * equal to the empty string.  The default, maximum and minimum values
+   * may be <code>null</code>.  The following conditions apply when the
+   * attributes mentioned are non-null:
    * </p>
    * <ul>
    * <li>The default value and each of the legal values must be a valid
@@ -249,11 +265,14 @@ public class OpenMBeanParameterInfoSupport
    * so future modifications to the array have no effect.
    * </p>
    *
-   * @param name the name of the parameter.
-   * @param desc a description of the parameter.
-   * @param type the open type of the parameter.
-   * @param defaultValue the default value of the parameter, or <code>null</code>.
-   * @param legalValues the legal values of the parameter.  May be
+   * @param name the name of the attribute.
+   * @param desc a description of the attribute.
+   * @param type the open type of the attribute.
+   * @param isReadable true if the attribute's value can be read.
+   * @param isWritable true if the attribute's value can be changed.
+   * @param isIs true if the attribute uses an accessor of the form isXXX.
+   * @param defaultValue the default value of the attribute, or <code>null</code>.
+   * @param legalValues the legal values of the attribute.  May be
    *                    <code>null</code> or an empty array.
    * @throws IllegalArgumentException if the name, description or
    *                                  open type are <code>null</code>
@@ -261,11 +280,13 @@ public class OpenMBeanParameterInfoSupport
    *                                  the empty string.
    * @throws OpenDataException if any condition in the list above is broken.
    */
-  public OpenMBeanParameterInfoSupport(String name, String desc, OpenType type,
-				       Object defaultValue, Object[] legalValues)
+  public OpenMBeanAttributeInfoSupport(String name, String desc, OpenType type,
+				       boolean isReadable, boolean isWritable,
+				       boolean isIs, Object defaultValue,
+				       Object[] legalValues)
     throws OpenDataException
   {
-    this(name, desc, type);
+    this(name, desc, type, isReadable, isWritable, isIs);
     if (defaultValue != null && !(type.isValue(defaultValue)))
       throw new OpenDataException("The default value is not a member of the " +
 				  "open type given.");
@@ -300,16 +321,19 @@ public class OpenMBeanParameterInfoSupport
   }
 
   /**
-   * Compares this parameter with the supplied object.  This returns
-   * true iff the object is an instance of {@link OpenMBeanParameterInfo}
+   * Compares this attribute with the supplied object.  This returns
+   * true iff the object is an instance of {@link OpenMBeanAttributeInfo}
    * with an equal name and open type and the same default, minimum,
-   * maximum and legal values.
+   * maximum and legal values and the same access properties.
    *
    * @param obj the object to compare.
-   * @return true if the object is a {@link OpenMBeanParameterInfo}
+   * @return true if the object is a {@link OpenMBeanAttributeInfo}
    *         instance, 
    *         <code>name.equals(object.getName())</code>,
    *         <code>openType.equals(object.getOpenType())</code>,
+   *         <code>isRead == object.isReadable()</code>,
+   *         <code>isWrite == object.isWritable()</code>,
+   *         <code>isIs == object.isIs()</code>,
    *         <code>defaultValue.equals(object.getDefaultValue())</code>,
    *         <code>minValue.equals(object.getMinValue())</code>,
    *         <code>maxValue.equals(object.getMaxValue())</code>,
@@ -317,11 +341,14 @@ public class OpenMBeanParameterInfoSupport
    */
   public boolean equals(Object obj)
   {
-    if (!(obj instanceof OpenMBeanParameterInfo))
+    if (!(obj instanceof OpenMBeanAttributeInfo))
       return false;
-    OpenMBeanParameterInfo o = (OpenMBeanParameterInfo) obj;
+    OpenMBeanAttributeInfo o = (OpenMBeanAttributeInfo) obj;
     return getName().equals(o.getName()) &&
       openType.equals(o.getOpenType()) &&
+      isReadable() == o.isReadable() &&
+      isWritable() == o.isWritable() &&
+      isIs() == o.isIs() &&
       (defaultValue == null ? o.getDefaultValue() == null :
        defaultValue.equals(o.getDefaultValue())) &&
       (minValue == null ? o.getMinValue() == null :
@@ -333,10 +360,10 @@ public class OpenMBeanParameterInfoSupport
   }
 
   /**
-   * Returns the default value of this parameter, or <code>null</code>
+   * Returns the default value of this attribute, or <code>null</code>
    * if there is no default value.
    *
-   * @return the default value of the parameter, or <code>null</code>
+   * @return the default value of the attribute, or <code>null</code>
    *         if there is no default.
    */
   public Object getDefaultValue()
@@ -346,8 +373,8 @@ public class OpenMBeanParameterInfoSupport
 
   /**
    * Returns a {@link java.util.Set} enumerating the legal values
-   * of this parameter, or <code>null</code> if no such limited
-   * set exists for this parameter.
+   * of this attribute, or <code>null</code> if no such limited
+   * set exists for this attribute.
    *
    * @return a set of legal values, or <code>null</code> if no such
    *         set exists.
@@ -358,7 +385,7 @@ public class OpenMBeanParameterInfoSupport
   }
 
   /**
-   * Returns the maximum value of this parameter, or <code>null</code>
+   * Returns the maximum value of this attribute, or <code>null</code>
    * if there is no maximum.
    *
    * @return the maximum value, or <code>null</code> if none exists.
@@ -369,7 +396,7 @@ public class OpenMBeanParameterInfoSupport
   }
 
   /**
-   * Returns the minimum value of this parameter, or <code>null</code>
+   * Returns the minimum value of this attribute, or <code>null</code>
    * if there is no minimum.
    *
    * @return the minimum value, or <code>null</code> if none exists.
@@ -381,9 +408,9 @@ public class OpenMBeanParameterInfoSupport
 
   /**
    * Returns the open type instance which represents the type of this
-   * parameter.
+   * attribute.
    *
-   * @return the open type of this parameter.
+   * @return the open type of this attribute.
    */
   public OpenType getOpenType()
   {
@@ -391,10 +418,10 @@ public class OpenMBeanParameterInfoSupport
   }
 
   /**
-   * Returns true if this parameter has a default value
+   * Returns true if this attribute has a default value
    * (i.e. the value is non-null).
    *
-   * @return true if this parameter has a default.
+   * @return true if this attribute has a default.
    */
   public boolean hasDefaultValue()
   {
@@ -403,7 +430,7 @@ public class OpenMBeanParameterInfoSupport
 
   /**
    * <p>
-   * Returns the hashcode of the parameter information as the sum of
+   * Returns the hashcode of the attribute information as the sum of
    * the hashcodes of the name, open type, default value, maximum
    * value, minimum value and the set of legal values.
    * </p>
@@ -413,13 +440,17 @@ public class OpenMBeanParameterInfoSupport
    * throughout its life.
    * </p>
    *
-   * @return the hashcode of the parameter information.
+   * @return the hashcode of the attribute information.
    */
   public int hashCode()
   {
     if (hashCode == null)
       hashCode = Integer.valueOf(getName().hashCode() + 
 				 openType.hashCode() +
+				 Boolean.valueOf(isReadable()).hashCode() +
+				 (2 * 
+				  Boolean.valueOf(isWritable()).hashCode()) +
+				 (4 * Boolean.valueOf(isIs()).hashCode()) +
 				 (defaultValue == null ? 0 :
 				  defaultValue.hashCode()) +
 				 (minValue == null ? 0 :
@@ -433,10 +464,10 @@ public class OpenMBeanParameterInfoSupport
 
   /**
    * Returns true if there is a set of legal values for this
-   * parameter (i.e. the value is non-null).
+   * attribute (i.e. the value is non-null).
    *
    * @return true if a set of legal values exists for this
-   *         parameter.
+   *         attribute.
    */
   public boolean hasLegalValues()
   {
@@ -444,10 +475,10 @@ public class OpenMBeanParameterInfoSupport
   }
 
   /**
-   * Returns true if there is a maximum value for this parameter
+   * Returns true if there is a maximum value for this attribute
    * (i.e. the value is non-null).
    *
-   * @return true if a maximum value exists for this parameter.
+   * @return true if a maximum value exists for this attribute.
    */
   public boolean hasMaxValue()
   {
@@ -455,10 +486,10 @@ public class OpenMBeanParameterInfoSupport
   }
 
   /**
-   * Returns true if there is a minimum value for this parameter.
+   * Returns true if there is a minimum value for this attribute.
    * (i.e. the value is non-null).
    *
-   * @return true if a minimum value exists for this parameter.
+   * @return true if a minimum value exists for this attribute.
    */
   public boolean hasMinValue()
   {
@@ -467,11 +498,11 @@ public class OpenMBeanParameterInfoSupport
 
   /**
    * Returns true if the specified object is a valid value for
-   * this parameter.
+   * this attribute.
    *
    * @param obj the object to test.
    * @return true if <code>obj</code> is a valid value for this
-   *         parameter.
+   *         attribute.
    */
   public boolean isValue(Object obj)
   {
@@ -482,9 +513,9 @@ public class OpenMBeanParameterInfoSupport
    * <p>
    * Returns a textual representation of this instance.  This
    * is constructed using the class name
-   * (<code>javax.management.openmbean.OpenMBeanParameterInfo</code>)
-   * along with the name, open type, default, minimum, maximum
-   * and legal values of the parameter.
+   * (<code>javax.management.openmbean.OpenMBeanAttributeInfo</code>)
+   * along with the name, open type, access properties, default,
+   * minimum, maximum  and legal values of the attribute.
    * </p>
    * <p>
    * As instances of this class are immutable, the return value
@@ -500,7 +531,10 @@ public class OpenMBeanParameterInfoSupport
     if (string == null)
       string = getClass().getName()
 	+ "[name=" + getName() 
-	+ ",openType=" + openType 
+	+ ",openType=" + openType
+	+ ",isReadable=" + isReadable()
+	+ ",isWritable=" + isWritable()
+	+ ",isIs=" + isIs()
 	+ ",defaultValue=" + defaultValue
 	+ ",minValue=" + minValue
 	+ ",maxValue=" + maxValue

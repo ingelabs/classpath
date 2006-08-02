@@ -1,3 +1,30 @@
+2006-08-02  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/management/MBeanConstructorInfo.java:
+	(MBeanConstructorInfo(String,String,MBeanParameterInfo[]):
+	Copy array rather than directly assigning.
+	* javax/management/MBeanInfo.java:
+	(MBeanInfo(String,String,MBeanAttributeInfo[],
+	MBeanConstructorInfo[], MBeanOperationInfo[],
+	MBeanNotificationInfo[])): Likewise.
+	* javax/management/MBeanOperationInfo.java:
+	(MBeanOperationInfo(String,String,MBeanParameterInfo[],String,int)):
+	Likewise.
+	* javax/management/openmbean/OpenMBeanAttributeInfoSupport.java,
+	* javax/management/openmbean/OpenMBeanConstructorInfoSupport.java:
+	New files.
+	* javax/management/openmbean/OpenMBeanInfo.java:
+	Corrected documentation.
+	* javax/management/openmbean/OpenMBeanInfoSupport.java:
+	New file.
+	* javax/management/openmbean/OpenMBeanOperationInfo.java:
+	Corrected documentation.
+	* javax/management/openmbean/OpenMBeanOperationInfoSupport.java:
+	New file.
+	* javax/management/openmbean/OpenMBeanParameterInfoSupport.java:
+	(MBeanParameterInfo(String,String,OpenType,Object,Object[])):
+	Call other constructor rather than reimplementing.
+
 2006-08-02  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/dnd/DragSource.java

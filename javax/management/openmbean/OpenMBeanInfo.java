@@ -61,11 +61,11 @@ public interface OpenMBeanInfo
 
   /**
    * Compares this attribute with the supplied object.  This returns
-   * true iff the object is an instance of {@link OpenMBeanOperationInfo}
+   * true iff the object is an instance of {@link OpenMBeanInfo}
    * with the same class name and equal instances of the info classes.
    *
    * @param obj the object to compare.
-   * @return true if the object is a {@link OpenMBeanParameterInfo}
+   * @return true if the object is a {@link OpenMBeanInfo}
    *         instance, 
    *         <code>className.equals(object.getClassName())</code>
    *         and each info class has an equal in the other object.

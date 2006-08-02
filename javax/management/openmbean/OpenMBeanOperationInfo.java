@@ -62,7 +62,7 @@ public interface OpenMBeanOperationInfo
    *         instance, 
    *         <code>name.equals(object.getName())</code>,
    *         <code>signature.equals(object.getSignature())</code>,
-   *         <code>returnType.equals(object.getOpenReturnType())</code>,
+   *         <code>returnOpenType.equals(object.getReturnOpenType())</code>,
    *         and <code>impact == object.getImpact()</code>.
    */
   boolean equals(Object obj);
