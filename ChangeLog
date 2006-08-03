@@ -1,3 +1,14 @@
+2006-08-03  Roman Kennke  <kennke@aicas.com>
+
+	PR 27637
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java
+	(ComponentHandler.componentResized): Reimplemented to handle
+	arbitrary parents.
+	(InternalFramePropertyChangeHandler.propertyChange): (Un)install
+	component listener on changed ancestor.
+	(installListeners): Install componentListener.
+	(uninstallListeners): Uninstall componentListener.
+
 2006-08-03  Carsten Neumann  <cn-develop@gmx.net>
 
 	* StrictMath.java (cbrt): Return argument if it is a NaN.
