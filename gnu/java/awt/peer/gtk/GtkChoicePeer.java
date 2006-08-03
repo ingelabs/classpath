@@ -92,7 +92,10 @@ public class GtkChoicePeer extends GtkComponentPeer
 
   public void remove( int index )
   {
-    selected = -1; // we do not want to trigger a select event here.
+    // Ensure the triggering of an event when removing item zero if zero is the
+    // selected item, even though the selected index doesn't change.
+    if( index == 0 && selected == 0 )
+      selected = -1; 
     nativeRemove( index );
   }
 
@@ -134,8 +137,7 @@ public class GtkChoicePeer extends GtkComponentPeer
     if( event instanceof ItemEvent )
       if( ((ItemEvent)event).getItemSelectable() == awtComponent &&
 	  ((ItemEvent)event).getStateChange() == ItemEvent.SELECTED )
-	if( ((Choice)awtComponent).getSelectedIndex() != selected )
-	  ((Choice)awtComponent).select( selected );
+	((Choice)awtComponent).select( selected );
   }
 }
 

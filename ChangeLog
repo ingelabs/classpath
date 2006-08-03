@@ -1,3 +1,11 @@
+2006-08-02  Sven de Marothy  <sven@physto.se>
+
+	* gnu/java/awt/peer/gtk/GtkChoicePeer.java
+	(remove): Force event on removing item 0 when it's selected.
+	(handleEvent): Always call Choice.selected().
+	* java/awt/Choice.java:
+	(remove): Simplify and correct.
+
 2006-08-02  Mark Wielaard  <mark@klomp.org>
 
 	PR 28535

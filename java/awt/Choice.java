@@ -329,20 +329,14 @@ public class Choice extends Component
       selectedIndex = -1;
     else 
       {
-	if( index == selectedIndex )
-	  {
-	    if( peer != null )
-	      ((ChoicePeer)peer).select( 0 ); // force an event here
-            selectedIndex = 0;
-	  }
-	else if( selectedIndex > index )
-          {
-            if ( peer != null)
-              ((ChoicePeer)peer).select(selectedIndex - 1);
-	    select( selectedIndex - 1 );
-          }
-      }
+	if( selectedIndex > index ) 
+	  selectedIndex--;
+	else if( selectedIndex == index )
+	  selectedIndex = 0;
 
+	if( peer != null )
+	  ((ChoicePeer)peer).select( selectedIndex );
+      }
   }
 
   /**
