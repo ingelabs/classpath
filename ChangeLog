@@ -1,5 +1,12 @@
 2006-08-03  Carsten Neumann  <cn-develop@gmx.net>
 
+	* StrictMath.java (cbrt): Return argument if it is a NaN.
+	(cosh): Likewise.
+	(expm1): Likewise.
+	(sinh): Likewise.
+
+2006-08-03  Carsten Neumann  <cn-develop@gmx.net>
+
 	* java/lang/StrictMath.java (tanh): New method.
 
 2006-08-03  Raif S. Naffah  <raif@swiftdsl.com.au>

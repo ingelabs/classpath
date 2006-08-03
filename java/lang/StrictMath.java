@@ -673,7 +673,7 @@ public final strictfp class StrictMath
 
     // handle special cases
     if (x != x)
-      return Double.NaN;
+      return x;
     if (x == Double.POSITIVE_INFINITY)
       return Double.POSITIVE_INFINITY;
     if (x == Double.NEGATIVE_INFINITY)
@@ -763,7 +763,7 @@ public final strictfp class StrictMath
 
     // handle special cases
     if (x != x)
-      return Double.NaN;
+      return x;
     if (x == Double.POSITIVE_INFINITY)
       return Double.POSITIVE_INFINITY;
     if (x == Double.NEGATIVE_INFINITY)
@@ -947,7 +947,7 @@ public final strictfp class StrictMath
 
     // handle the special cases
     if (x != x)
-      return Double.NaN;
+      return x;
     if (x == Double.POSITIVE_INFINITY)
       return Double.POSITIVE_INFINITY;
     if (x == Double.NEGATIVE_INFINITY)
@@ -1180,7 +1180,7 @@ public final strictfp class StrictMath
 	    if (h_bits >= 0x7ff00000L)
 	      {
 		if (((h_bits & 0x000fffffL) | (l_bits & 0xffffffffL)) != 0)
-		  return Double.NaN;               // exp(NaN) = NaN
+		  return x;                        // exp(NaN) = NaN
 		else
 		  return negative ? -1.0 : x;      // exp({+-inf}) = {+inf, -1}
 	      }
