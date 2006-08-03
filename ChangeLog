@@ -1,3 +1,15 @@
+2006-08-03  Roman Kennke  <kennke@aicas.com>
+
+	PR 28571
+	* gnu/java/awt/peer/gtk/GtkCanvasPeer.java
+	(getPreferredSize): Renamed method to preferredSize(). That's
+	the one that gets called from java.awt.*.
+	* java/awt/peer/ComponentPeer.java
+	(getPreferredSize): Added specnote about this method never
+	beeing called in the RI.
+	(getMinimumSize): Added specnote about this method never
+	beeing called in the RI.
+
 2006-08-03  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/peer/gtk/ComponentGraphics.java

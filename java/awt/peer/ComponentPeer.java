@@ -153,6 +153,12 @@ public interface ComponentPeer
    * {@link Component#getMinimumSize()}.
    *
    * @return the minimum size for the component
+   *
+   * @specnote Presumably this method got added to replace minimumSize().
+   *           However, testing shows that this is never called in the RI
+   *           (tested with JDK5), but instead minimumSize() is called
+   *           directly. It is advisable to implement this method to delegate
+   *           to minimumSize() and put the real implementation in there.
    */
   Dimension getMinimumSize();
 
@@ -161,6 +167,12 @@ public interface ComponentPeer
    * {@link Component#getPreferredSize()}.
    *
    * @return the preferred size for the component
+   *
+   * @specnote Presumably this method got added to replace preferredSize().
+   *           However, testing shows that this is never called in the RI
+   *           (tested with JDK5), but instead preferredSize() is called
+   *           directly. It is advisable to implement this method to delegate
+   *           to preferredSize() and put the real implementation in there.
    */
   Dimension getPreferredSize();
 
