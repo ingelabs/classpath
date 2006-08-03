@@ -1,3 +1,12 @@
+2006-08-04  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/plaf/metal/MetalMenuBarUI.java:
+	(update): Check size and paint smaller gradient.
+	* javax/swing/plaf/metal/MetalBorders.java:
+	(MenuBarBorder): Removed borderColor field.
+	(MenuBarBorder.paintBorder): Added note, fetch color from UIManager or
+	MetalLookAndFeel.
+
 2006-08-03  Roman Kennke  <kennke@aicas.com>
 
 	PR 27637
