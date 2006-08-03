@@ -1,3 +1,7 @@
+2006-08-03  Carsten Neumann  <cn-develop@gmx.net>
+
+	* java/lang/StrictMath.java (tanh): New method.
+
 2006-08-03  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* scripts/import-cacerts.sh: Batch CA certificates import script.

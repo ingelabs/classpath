@@ -814,6 +814,75 @@ public final strictfp class StrictMath
   }
 
   /**
+   * Returns the hyperbolic tangent of <code>x</code>, which is defined as
+   * (exp(x) - exp(-x)) / (exp(x) + exp(-x)), i.e. sinh(x) / cosh(x).
+   *
+   Special cases:
+   * <ul>
+   * <li>If the argument is NaN, the result is NaN</li>
+   * <li>If the argument is positive infinity, the result is 1.</li>
+   * <li>If the argument is negative infinity, the result is -1.</li>
+   * <li>If the argument is zero, the result is zero.</li>
+   * </ul>
+   *
+   * @param x the argument to <em>tanh</em>
+   * @return the hyperbolic tagent of <code>x</code>
+   *
+   * @since 1.5
+   */
+  public static double tanh(double x)
+  {
+    //  Method :
+    //  0. tanh(x) is defined to be (exp(x) - exp(-x)) / (exp(x) + exp(-x))
+    //  1. reduce x to non-negative by tanh(-x) = -tanh(x).
+    //  2.  0     <= x <= 2^-55 : tanh(x) := x * (1.0 + x)
+    //                                        -t
+    //      2^-55 <  x <= 1     : tanh(x) := -----; t = expm1(-2x)
+    //                                       t + 2
+    //                                              2
+    //      1     <= x <= 22.0  : tanh(x) := 1 -  ----- ; t=expm1(2x)
+    //                                            t + 2
+    //     22.0   <  x <= INF   : tanh(x) := 1.
+
+    double t, z;
+
+    long bits;
+    long h_bits;
+
+    // handle special cases
+    if (x != x)
+      return x;
+    if (x == Double.POSITIVE_INFINITY)
+      return 1.0;
+    if (x == Double.NEGATIVE_INFINITY)
+      return -1.0;
+
+    bits = Double.doubleToLongBits(x);
+    h_bits = getHighDWord(bits) & 0x7fffffffL;  // ingnore sign
+
+    if (h_bits < 0x40360000L)                   // |x| <  22
+      {
+	if (h_bits < 0x3c800000L)               // |x| <  2^-55
+	  return x * (1.0 + x);
+
+	if (h_bits >= 0x3ff00000L)              // |x| >= 1
+	  {
+	    t = expm1(2.0 * abs(x));
+	    z = 1.0 - 2.0 / (t + 2.0);
+	  }
+	else                                    // |x| <  1
+	  {
+	    t = expm1(-2.0 * abs(x));
+	    z = -t / (t + 2.0);
+	  }
+      }
+    else                                        // |x| >= 22
+	z = 1.0;
+
+    return (x >= 0) ? z : -z;
+  }
+
+  /**
    * Returns the lower two words of a long. This is intended to be
    * used like this:
    * <code>getLowDWord(Double.doubleToLongBits(x))</code>.
