@@ -2350,10 +2350,7 @@ public abstract class Component
   }
 
   /**
-   * Prints this component, including all sub-components. This method is
-   * provided so that printing can be done in a different manner from
-   * painting. However, the implementation in this class simply calls the
-   * <code>paintAll()</code> method.
+   * Prints this component, including all sub-components. 
    *
    * @param g the graphics context of the print device
    * 
@@ -2361,7 +2358,9 @@ public abstract class Component
    */
   public void printAll(Graphics g)
   {
-    paintAll(g);
+    if( peer != null )
+      peer.print( g );
+    paintAll( g );
   }
 
   /**

@@ -371,7 +371,7 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public void print (Graphics g) 
   {
-    throw new RuntimeException ();
+    g.drawImage( ComponentGraphics.grab( this ), 0, 0, null );
   }
 
   public void repaint (long tm, int x, int y, int width, int height)
