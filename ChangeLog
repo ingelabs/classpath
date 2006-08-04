@@ -1,3 +1,10 @@
+2006-08-04  Mario Torre  <neugens@limasoftware.net>
+
+	Reported by Raif S. Naffah <raif@swiftdsl.com.au>
+	* native/jni/gconf-peer/GConfNativePeer.c (init_gconf_client):
+	g_type_init earlier in function to correctly initialize the
+	type system used by the backend.
+
 2006-08-04  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	PR 26972
