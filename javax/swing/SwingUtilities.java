@@ -61,6 +61,8 @@ import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleStateSet;
 import javax.swing.plaf.ActionMapUIResource;
 import javax.swing.plaf.InputMapUIResource;
+import javax.swing.plaf.basic.BasicHTML;
+import javax.swing.text.View;
 
 /**
  * A number of static utility functions which are
@@ -751,12 +753,12 @@ public class SwingUtilities
           horizontalAlignment = RIGHT;
       }
     
-    return layoutCompoundLabel(fm, text, icon,
-                               verticalAlignment,
-                               horizontalAlignment,
-                               verticalTextPosition,
-                               horizontalTextPosition,
-                               viewR, iconR, textR, textIconGap);
+    return layoutCompoundLabelImpl(c, fm, text, icon,
+                                   verticalAlignment,
+                                   horizontalAlignment,
+                                   verticalTextPosition,
+                                   horizontalTextPosition,
+                                   viewR, iconR, textR, textIconGap);
   }
 
   /**
@@ -829,6 +831,82 @@ public class SwingUtilities
                                            Rectangle textR,
                                            int textIconGap)
   {
+    return layoutCompoundLabelImpl(null, fm, text, icon, verticalAlignment,
+                                   horizontalAlignment, verticalTextPosition,
+                                   horizontalTextPosition, viewR, iconR, textR,
+                                   textIconGap);
+  }
+
+  /**
+   * <p>Layout a "compound label" consisting of a text string and an icon
+   * which is to be placed near the rendered text. Once the text and icon
+   * are laid out, the text rectangle and icon rectangle parameters are
+   * altered to store the calculated positions.</p>
+   *
+   * <p>The size of the text is calculated from the provided font metrics
+   * object.  This object should be the metrics of the font you intend to
+   * paint the label with.</p>
+   *
+   * <p>The position values control where the text is placed relative to
+   * the icon. The horizontal position value should be one of the constants
+   * <code>LEFT</code>, <code>RIGHT</code> or <code>CENTER</code>. The
+   * vertical position value should be one fo the constants
+   * <code>TOP</code>, <code>BOTTOM</code> or <code>CENTER</code>.</p>
+   *
+   * <p>The text-icon gap value controls the number of pixels between the
+   * icon and the text.</p>
+   *
+   * <p>The alignment values control where the text and icon are placed, as
+   * a combined unit, within the view rectangle. The horizontal alignment
+   * value should be one of the constants <code>LEFT</code>, <code>RIGHT</code> or
+   * <code>CENTER</code>. The vertical alignment valus should be one of the
+   * constants <code>TOP</code>, <code>BOTTOM</code> or
+   * <code>CENTER</code>.</p>
+   *
+   * <p>If the text and icon are equal to or larger than the view
+   * rectangle, the horizontal and vertical alignment values have no
+   * affect.</p>
+   *
+   * <p>Note that this method does <em>not</em> know how to deal with
+   * horizontal alignments or positions given as <code>LEADING</code> or
+   * <code>TRAILING</code> values. Use the other overloaded variant of this
+   * method if you wish to use such values.
+   *
+   * @param fm The font metrics used to measure the text
+   * @param text The text to place in the compound label
+   * @param icon The icon to place next to the text
+   * @param verticalAlignment The vertical alignment of the label relative
+   * to its component
+   * @param horizontalAlignment The horizontal alignment of the label
+   * relative to its component
+   * @param verticalTextPosition The vertical position of the label's text
+   * relative to its icon
+   * @param horizontalTextPosition The horizontal position of the label's
+   * text relative to its icon
+   * @param viewR The view rectangle, specifying the area which layout is
+   * constrained to
+   * @param iconR A rectangle which is modified to hold the laid-out
+   * position of the icon
+   * @param textR A rectangle which is modified to hold the laid-out
+   * position of the text
+   * @param textIconGap The distance between text and icon
+   *
+   * @return The string of characters, possibly truncated with an elipsis,
+   * which is laid out in this label
+   */
+  private static String layoutCompoundLabelImpl(JComponent c,
+                                                FontMetrics fm,
+                                                String text,
+                                                Icon icon,
+                                                int verticalAlignment,
+                                                int horizontalAlignment,
+                                                int verticalTextPosition,
+                                                int horizontalTextPosition,
+                                                Rectangle viewR,
+                                                Rectangle iconR,
+                                                Rectangle textR,
+                                                int textIconGap)
+  {
 
     // Work out basic height and width.
 
@@ -851,13 +929,23 @@ public class SwingUtilities
       }
     else
       {
-        int fromIndex = 0;
-        textR.width = fm.stringWidth(text);
-        textR.height = fm.getHeight(); 
-        while (text.indexOf('\n', fromIndex) != -1)
+        View html = c == null ? null
+                           : (View) c.getClientProperty(BasicHTML.propertyKey);
+        if (html != null)
           {
-            textR.height += fm.getHeight();
-            fromIndex = text.indexOf('\n', fromIndex) + 1;
+            textR.width = (int) html.getPreferredSpan(View.X_AXIS);
+            textR.height = (int) html.getPreferredSpan(View.Y_AXIS);
+          }
+        else
+          {
+            int fromIndex = 0;
+            textR.width = fm.stringWidth(text);
+            textR.height = fm.getHeight(); 
+            while (text.indexOf('\n', fromIndex) != -1)
+              {
+                textR.height += fm.getHeight();
+                fromIndex = text.indexOf('\n', fromIndex) + 1;
+              }
           }
       }
 

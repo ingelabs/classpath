@@ -56,6 +56,7 @@ import javax.swing.UIManager;
 import javax.swing.plaf.ButtonUI;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
+import javax.swing.text.View;
 
 /**
  * A UI delegate for the {@link JButton} component.
@@ -255,7 +256,69 @@ public class BasicButtonUI extends ButtonUI
         installDefaults(b);
         installListeners(b);
         installKeyboardActions(b);
+        BasicHTML.updateRenderer(b, b.getText());
       }
+  }
+
+  /**
+   * Uninstalls the UI from the component.
+   *
+   * @param c the component from which to uninstall the UI
+   */
+  public void uninstallUI(JComponent c)
+  {
+    if (c instanceof AbstractButton)
+      {
+        AbstractButton b = (AbstractButton) c;
+        uninstallKeyboardActions(b);
+        uninstallListeners(b);
+        uninstallDefaults(b);
+        BasicHTML.updateRenderer(b, "");
+      }
+  }
+
+  /**
+   * Calculates the minimum size for the specified component.
+   *
+   * @param c the component for which to compute the minimum size
+   *
+   * @return the minimum size for the specified component
+   */
+  public Dimension getMinimumSize(JComponent c)
+  {
+    Dimension size = getPreferredSize(c);
+    // When the HTML view has a minimum width different from the preferred
+    // width, then substract this here accordingly. The height is not
+    // affected by that.
+    View html = (View) c.getClientProperty(BasicHTML.propertyKey);
+    if (html != null)
+      {
+        size.width -= html.getPreferredSpan(View.X_AXIS)
+                      - html.getPreferredSpan(View.X_AXIS);
+      }
+    return size;
+  }
+
+  /**
+   * Calculates the maximum size for the specified component.
+   *
+   * @param c the component for which to compute the maximum size
+   *
+   * @return the maximum size for the specified component
+   */
+  public Dimension getMaximumSize(JComponent c)
+  {
+    Dimension size = getPreferredSize(c);
+    // When the HTML view has a maximum width different from the preferred
+    // width, then add this here accordingly. The height is not
+    // affected by that.
+    View html = (View) c.getClientProperty(BasicHTML.propertyKey);
+    if (html != null)
+      {
+        size.width += html.getMaximumSpan(View.X_AXIS)
+                      - html.getPreferredSpan(View.X_AXIS);
+      }
+    return size;
   }
 
   /**
@@ -269,8 +332,8 @@ public class BasicButtonUI extends ButtonUI
   public Dimension getPreferredSize(JComponent c) 
   {
     AbstractButton b = (AbstractButton) c;
-    Dimension d = BasicGraphicsUtils.getPreferredButtonSize(b, 
-        defaultTextIconGap + defaultTextShiftOffset);
+    Dimension d = BasicGraphicsUtils.getPreferredButtonSize(b,
+                                                           b.getIconTextGap());
     return d;
   }
 
@@ -344,7 +407,13 @@ public class BasicButtonUI extends ButtonUI
 	
     paintIcon(g, c, ir);
     if (text != null)
-      paintText(g, b, tr, text);
+      {
+        View html = (View) b.getClientProperty(BasicHTML.propertyKey);
+        if (html != null)
+          html.paint(g, tr);
+        else
+          paintText(g, b, tr, text);
+      }
     if (b.isFocusOwner() && b.isFocusPainted())
       paintFocus(g, b, vr, tr, ir);
   }

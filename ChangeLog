@@ -1,3 +1,29 @@
+2006-08-04  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/SwingUtilities.java
+	(layoutCompoundLabel(JComponent,FontMetrics,String,Icon,int,int,int,
+	 int,Rectangle,Rectangle,Rectangle,int)): Delegate to new
+	layoutCompoundLabelImpl().
+	(layoutCompoundLabel(FontMetrics,String,Icon,int,int,int,int,
+	 Rectangle,Rectangle,Rectangle,int)): Delegate to new
+	layoutCompoundLabelImpl().
+	(layoutCompoundLabelImpl): New helper method. Moved impl from
+	layoutCompoundLabel() to here and added handling of HTML.
+	* javax/swing/plaf/basic/BasicButtonUI.java
+	(installUI): Update HTML view if appropriate.
+	(uninstallUI): New method. Do the usual uninstallUI things
+	and uninstall HTML view.
+	(getMinimumSize): New method. Adjusts the minimum size
+	by the HTML view minimum size.
+	(getMaximumSize): New method. Adjusts the maximum size
+	by the HTML view maximum size.
+	(getPreferredSize): Pass the button's iconTextGap to the
+	BasicGraphicsUtils method.
+	(paint): Let HTML view paint the text, if present.
+	* javax/swing/plaf/basic/BasicButtonListener.java
+	(propertyChange): Update the HTML view when the button's
+	text is changed.
+	
 2006-08-04  Mario Torre  <neugens@limasoftware.net>
 
 	Reported by Raif S. Naffah <raif@swiftdsl.com.au>
