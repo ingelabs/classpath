@@ -1,4 +1,10 @@
-2006-08-03  Mark Wielaard  <mark@klomp.org>
+2006-08-04  Robert Schuster  <robertschuster@fsfe.org>
+	Reported by Henrik Gulbrandsen <henrik@gulbra.net>
+        Fixes PR27864.
+        * gnu/xml/dom/DomIterator.java:
+        (successor): Added if-statement.
+
+2006-08-04  Mark Wielaard  <mark@klomp.org>
 
 	* scripts/Makefile.am (EXTRA_DIST): Add import-cacerts.sh.
 
