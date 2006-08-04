@@ -1,3 +1,17 @@
+2006-08-04  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/management/BadAttributeValueExpException.java,
+	* javax/management/BadStringOperationException.java,
+	* javax/management/InstanceAlreadyExistsException.java,
+	* javax/management/InstanceNotFoundException.java,
+	* javax/management/InvalidApplicationException.java,
+	* javax/management/MBeanRegistrationException.java,
+	* javax/management/MalformedObjectNameException.java,
+	* javax/management/RuntimeErrorException.java,
+	* javax/management/RuntimeMBeanException.java,
+	* javax/management/ServiceNotFoundException.java:
+	New files.
+	
 2006-08-04  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/SwingUtilities.java
