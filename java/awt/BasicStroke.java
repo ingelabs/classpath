@@ -554,7 +554,7 @@ public class BasicStroke implements Stroke
                 // segment spans a dash boundry
                 else
                   {
-                    segmentEnd = coords.clone();
+                    segmentEnd = (double[]) coords.clone();
 
                     // Calculate the remaining distance in this dash,
                     // and coordinates of the dash boundary
