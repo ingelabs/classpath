@@ -1,4 +1,12 @@
+2006-08-04  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	PR 26972
+	* javax/naming/Name.java (addAll, getPrefix, getSuffix):
+	Documented.
+	* gnu/javax/naming/ictxImpl/trans/GnuName.java: New file.
+
 2006-08-04  Robert Schuster  <robertschuster@fsfe.org>
+
 	Reported by Henrik Gulbrandsen <henrik@gulbra.net>
         Fixes PR27864.
         * gnu/xml/dom/DomIterator.java:
