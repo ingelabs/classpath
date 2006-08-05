@@ -85,13 +85,17 @@ AM_CONDITIONAL(CREATE_CORE_JNI_LIBRARIES, test "x${COMPILE_CORE_JNI}" = xyes)
 dnl -----------------------------------------------------------
 dnl Default Preference Backend
 dnl -----------------------------------------------------------
-AC_ARG_ENABLE(default-preferences-peer,
-  AS_HELP_STRING([--enable-default-preferences-peer],
-                 [fully qualified class name of default Preferences API Backend]))
-DEFAULT_PREFS_PEER=$enable_default_preferences_peer
-if test "$DEFAULT_PREFS_PEER" = ""; then
-   DEFAULT_PREFS_PEER=gnu.java.util.prefs.FileBasedFactory
-fi
+AC_ARG_ENABLE([default-preferences-peer],
+              [AS_HELP_STRING([--enable-default-preferences-peer@<:@=peer type or class name@:>@],
+                              [specify one of: "gconf" [default] for a GConf based backend, "file" for a file based one, "memory" for a transient one, or a fully qualified class name implementing java.util.prefs.PreferencesFactory])],
+              [case "${enableval}" in 
+                file) DEFAULT_PREFS_PEER=gnu.java.util.prefs.FileBasedFactory  ;;
+                gconf|yes|true) DEFAULT_PREFS_PEER=gnu.java.util.prefs.GConfBasedFactory  ;;
+                memory) DEFAULT_PREFS_PEER=gnu.java.util.prefs.MemoryBasedFactory  ;;
+                no|false) AC_MSG_ERROR(bad value '${enableval}' for --enable-default-preferences-peer) ;;
+                *) DEFAULT_PREFS_PEER=${enableval} ;;
+              esac],
+              [DEFAULT_PREFS_PEER=gnu.java.util.prefs.GConfBasedFactory])
 dnl AC_SUBST(DEFAULT_PREFS_PEER)
 
 dnl -----------------------------------------------------------
