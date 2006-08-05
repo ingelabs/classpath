@@ -611,9 +611,46 @@ public abstract class View implements SwingConstants
     if (b2 != Position.Bias.Forward && b2 != Position.Bias.Backward)
       throw new IllegalArgumentException
 	("b2 must be either Position.Bias.Forward or Position.Bias.Backward");
-    Rectangle s1 = (Rectangle) modelToView(p1, a, b1);
-    Rectangle s2 = (Rectangle) modelToView(p2, a, b2);
-    return SwingUtilities.computeUnion(s1.x, s1.y, s1.width, s1.height, s2);
+
+    Shape s1 = modelToView(p1, a, b1);
+    // Special case for p2 == end index.
+    Shape s2;
+    if (p2 != getEndOffset())
+      {
+        s2 = modelToView(p2, a, b2);
+      }
+    else
+      {
+        try
+          {
+            s2 = modelToView(p2, a, b2);
+          }
+        catch (BadLocationException ex)
+          {
+            // Assume the end rectangle to be at the right edge of the
+            // view.
+            Rectangle aRect = a instanceof Rectangle ? (Rectangle) a
+                                                     : a.getBounds();
+            s2 = new Rectangle(aRect.x + aRect.width - 1, aRect.y, 1,
+                               aRect.height);
+          }
+      }
+
+    // Need to modify the rectangle, so we create a copy in all cases.
+    Rectangle r1 = s1.getBounds();
+    Rectangle r2 = s2 instanceof Rectangle ? (Rectangle) s2
+                                           : s2.getBounds();
+
+    // For multiline view, let the resulting rectangle span the whole view.
+    if (r1.y != r2.y)
+      {
+        Rectangle aRect = a instanceof Rectangle ? (Rectangle) a
+                                                 : a.getBounds();
+        r1.x = aRect.x;
+        r1.width = aRect.width;
+      }
+
+    return SwingUtilities.computeUnion(r2.x, r2.y, r2.width, r2.height, r1);
   }
 
   /**

@@ -1,3 +1,9 @@
+2006-08-05  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/View.java
+	(modelToView): Added special handling for corner case at the end
+	of the view and for multiline views.
+
 2006-08-05  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/management/MBeanFeatureInfo.java:
