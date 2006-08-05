@@ -1,5 +1,17 @@
 2006-08-05  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* gnu/java/security/key/dss/DSSKey.java: Updated documentation.
+	(hasInheritedParameters): New method.
+	(equals): Updated documentation.
+	Take into consideration the outcome of hasInheritedParameters invocation.
+	(toString): Call hasInheritedParameters and adjust the result accordingly.
+	* gnu/java/security/key/dss/DSSKeyPairX509Codec.java (encodePublicKey):
+	Updated documentation.
+	Handle case of public keys with null p, q, and g MPIs.
+	(decodePublicKey): Handle case of absent or NULL p, q and g MPIs.
+
+2006-08-05  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* configure.ac: Better handling of default-preferences-peer option.
 
 2006-08-04  Andreas Tobler  <a.tobler@schweiz.ch>
