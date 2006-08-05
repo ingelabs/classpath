@@ -39,7 +39,7 @@ exception statement from your version. */
 
 package java.awt;
 
-import gnu.java.awt.dnd.peer.gtk.GtkDropTargetContextPeer;
+//import gnu.java.awt.dnd.peer.gtk.GtkDropTargetContextPeer;
 
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
@@ -700,9 +700,10 @@ public abstract class Component
   public void setDropTarget(DropTarget dt)
   {
     this.dropTarget = dt;
-    if (dropTarget != null)
-      dropTarget.getDropTargetContext().addNotify(
-                                    new GtkDropTargetContextPeer(this));
+    // XXX this is bogus, Component cannot have a dependency on GTK
+    // if (dropTarget != null)
+    //   dropTarget.getDropTargetContext().addNotify(
+    //                                 new GtkDropTargetContextPeer(this));
   }
 
   /**
