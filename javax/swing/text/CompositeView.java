@@ -217,25 +217,43 @@ public abstract class CompositeView
   public Shape modelToView(int pos, Shape a, Position.Bias bias)
     throws BadLocationException
   {
-    int childIndex = getViewIndex(pos, bias);
-    if (childIndex == -1)
-      throw new BadLocationException("Position " + pos + " is not represented by view.", pos);
-      
+    boolean backward = bias == Position.Bias.Backward;
+    int testpos = backward ? Math.max(0, pos - 1) : pos;
+
     Shape ret = null;
-
-    View child = getView(childIndex);
-    Shape childAlloc = getChildAllocation(childIndex, a);
-    
-    if (childAlloc == null)
-      ret = createDefaultLocation(a, bias);
-    
-    Shape result = child.modelToView(pos, childAlloc, bias);
-
-    if (result != null)
-      ret = result;
-    else
-      ret =  createDefaultLocation(a, bias);
-
+    if (!backward || testpos >= getStartOffset())
+      {
+        int childIndex = getViewIndexAtPosition(testpos);
+        if (childIndex != -1 && childIndex < getViewCount())
+          {
+            View child = getView(childIndex);
+            if (child != null && testpos >= child.getStartOffset()
+                && testpos < child.getEndOffset())
+              {
+                Shape childAlloc = getChildAllocation(childIndex, a);
+                if (childAlloc != null)
+                  {
+                    ret = child.modelToView(pos, childAlloc, bias);
+                    // Handle corner case.
+                    if (ret == null && child.getEndOffset() == pos)
+                      {
+                        childIndex++;
+                        if (childIndex < getViewCount())
+                          {
+                            child = getView(childIndex);
+                            childAlloc = getChildAllocation(childIndex, a);
+                            ret = child.modelToView(pos, childAlloc, bias);
+                          }
+                      }
+                  }
+              }
+          }
+        else
+          {
+            throw new BadLocationException("Position " + pos
+                                           + " is not represented by view.", pos);
+          }    
+      }
     return ret;
   }
 

@@ -597,12 +597,14 @@ public abstract class FlowView extends BoxView
   protected SizeRequirements calculateMinorAxisRequirements(int axis,
                                                             SizeRequirements r)
   {
-    // We need to call super here so that the alignment is properly
-    // calculated.
-    SizeRequirements res = super.calculateMinorAxisRequirements(axis, r);
+    SizeRequirements res = r;
+    if (res == null)
+      res = new SizeRequirements();
     res.minimum = (int) layoutPool.getMinimumSpan(axis);
-    res.preferred = (int) layoutPool.getPreferredSpan(axis);
-    res.maximum = (int) layoutPool.getMaximumSpan(axis);
+    res.preferred = Math.max(res.minimum,
+                             (int) layoutPool.getMinimumSpan(axis));
+    res.maximum = Integer.MAX_VALUE;
+    res.alignment = 0.5F;
     return res;
   }
 }

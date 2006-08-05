@@ -1,3 +1,50 @@
+2006-08-05  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(damageRange(JTextComponent,int,int)): Call damageRange() with
+	correct biases, rather than null.
+	(damageRange(JTextComponent,int,int,Bias,Bias)): Rewritten
+	to use simpler modelToView() approach without much special
+	casing. This seems not worth the effort and actually
+	caused problems. Added locking of the document.
+	* javax/swing/text/BoxView.java
+	(requirementsValid): New field.
+	(calculateMajorAxisRequirements): Rewritten without using
+	SizeRequirements. The SizeRequirements algorithms are slightly
+	different and too inefficient.
+	(calculateMinorAxisRequirements): Rewritten without using
+	SizeRequirements. The SizeRequirements algorithms are slightly
+	different and too inefficient.
+	(getAlignment): Simply return the alignment of the cached
+	requirements.
+	(getMaximumSpan): Add insets.
+	(getMinimumSpan): Add insets.
+	(getPreferredSpan): Add insets.
+	(layoutMajorAxis): Rewritten without using
+	SizeRequirements. The SizeRequirements algorithms are slightly
+	different and too inefficient.
+	(layoutMinorAxis): Rewritten without using
+	SizeRequirements. The SizeRequirements algorithms are slightly
+	different and too inefficient.
+	(modelToView): Call setSize() rather than layout().
+	(paint): Check clip for more efficient painting.
+	(preferenceChanged): Invalidate requirements here.
+	(replace): Invalidate requirements here.
+	(updateRequirements): Update requirements only when requirements
+	are marked invalid.
+	* javax/swing/text/CompositeView.java
+	(modelToView): Added some more checks and handling of corner cases.
+	* javax/swing/text/FlowView.java
+	(calculateMinorAxisRequirements): Set aligment to 0.5 and maximum
+	span to Integer.MAX_VALUE. Limit preferredSize to minimumSize.
+	* javax/swing/text/IconView.java
+	(getAlignment): Implemented to return 1.0 for vertical alignment.
+	* javax/swing/text/ParagraphView.java
+	(Row.getMaximumSpan): Implemented to let Rows span the whole
+	ParagraphView.
+	(getAlignment): Fixed horizontal alignment and vertical alignment
+	for empty paragraphs to be 0.5.
+
 2006-08-05  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/awt/Component.java (setDropTarget): Commented out GTK specific

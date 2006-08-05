@@ -74,6 +74,19 @@ public class ParagraphView extends FlowView implements TabExpander
       return align;
     }
 
+    /**
+     * Allows rows to span the whole parent view.
+     */
+    public float getMaximumSpan(int axis)
+    {
+      float max;
+      if (axis == X_AXIS)
+        max = Float.MAX_VALUE;
+      else
+        max = super.getMaximumSpan(axis);
+      return max;
+    }
+
     protected void loadChildren(ViewFactory vf)
     {
       // Do nothing here. The children are added while layouting.
@@ -140,7 +153,7 @@ public class ParagraphView extends FlowView implements TabExpander
   {
     float align;
     if (axis == X_AXIS)
-      align = super.getAlignment(axis);
+      align = 0.5F;
     else if (getViewCount() > 0)
       {
         float prefHeight = getPreferredSpan(Y_AXIS);
@@ -148,7 +161,7 @@ public class ParagraphView extends FlowView implements TabExpander
         align = (firstRowHeight / 2.F) / prefHeight;
       }
     else
-      align = 0.0F;
+      align = 0.5F;
     return align;
   }
 
