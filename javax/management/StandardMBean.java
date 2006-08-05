@@ -679,7 +679,7 @@ public class StandardMBean
    *
    * @return the management interface.
    */
-  public Class getMBeanInterface()
+  public final Class getMBeanInterface()
   {
     return iface;
   }
