@@ -180,10 +180,10 @@ public class OpenMBeanInfoSupport
     if (string == null)
       string = getClass().getName()
 	+ "[className=" + getClassName() 
-	+ ",attributes=" + getAttributes()
-	+ ",constructors=" + getConstructors()
-	+ ",notifications=" + getNotifications()
-	+ ",operations=" + getOperations()
+	+ ",attributes=" + Arrays.toString(getAttributes())
+	+ ",constructors=" + Arrays.toString(getConstructors())
+	+ ",notifications=" + Arrays.toString(getNotifications())
+	+ ",operations=" + Arrays.toString(getOperations())
 	+ "]";
     return string;
   }

@@ -229,7 +229,7 @@ public class OpenMBeanOperationInfoSupport
 	  }
 	string = getClass().getName()
 	  + "[name=" + getName() 
-	  + ",signature=" + getSignature()
+	  + ",signature=" + Arrays.toString(getSignature())
 	  + ",returnOpenType=" + returnOpenType
 	  + ",impact=" + impactString
 	  + "]";

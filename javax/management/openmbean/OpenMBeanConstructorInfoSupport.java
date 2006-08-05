@@ -166,7 +166,7 @@ public class OpenMBeanConstructorInfoSupport
     if (string == null)
       string = getClass().getName()
 	+ "[name=" + getName() 
-	+ ",signature=" + getSignature()
+	+ ",signature=" + Arrays.toString(getSignature())
 	+ "]";
     return string;
   }

@@ -123,6 +123,7 @@ public class OpenMBeanParameterInfoSupport
     if (desc.length() == 0)
       throw new IllegalArgumentException("The description may not be the " +
 					 "empty string.");
+    openType = type;
   }
 
   /**
@@ -221,7 +222,6 @@ public class OpenMBeanParameterInfoSupport
       throw new OpenDataException("The default value is greater than the " +
 				  "maximum.");
     
-    openType = type;
     this.defaultValue = defaultValue;
     minValue = minimumValue;
     maxValue = maximumValue;
@@ -295,7 +295,6 @@ public class OpenMBeanParameterInfoSupport
 				      "of legal values.");
 	this.legalValues = Collections.unmodifiableSet(lv);
       }
-    openType = type;
     this.defaultValue = defaultValue;
   }
 
