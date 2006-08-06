@@ -1458,8 +1458,11 @@ public abstract class CairoGraphics2D extends Graphics2D
         float[] positions = gv.getGlyphPositions (0, n, null);
 
         setFont (gv.getFont ());
-        cairoDrawGlyphVector(nativePointer, (GdkFontPeer)getFont().getPeer(),
-                             x, y, n, codes, positions);
+	synchronized( this.font ) 
+	  { 
+	    cairoDrawGlyphVector(nativePointer, (GdkFontPeer)getFont().getPeer(),
+				 x, y, n, codes, positions);
+	  }
       }
     else
       {
