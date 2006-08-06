@@ -1,3 +1,12 @@
+2006-08-06  C. Scott Marshall  <csm@gnu.org>
+
+	Fixes PR 28608.
+	* java/nio/DirectByteBufferImpl.java (duplicate): only reset if
+	the mark has been set.
+	* native/jni/java-nio/java_nio_VMDirectByteBuffer.c
+	(Java_java_nio_VMDirectByteBuffer_allocate): zero out the
+	allocated data.
+
 2006-08-06  Mark Wielaard  <mark@klomp.org>
 
 	PR 28555
