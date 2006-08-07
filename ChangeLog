@@ -1,3 +1,28 @@
+2006-08-07  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	PR 27383
+	* gnu/CORBA/Connected_objects.java (size): New method.
+	* gnu/CORBA/OrbFunctional.java (countConnectedObjects):
+	New method.
+	* javax/naming/spi/NamingManager.java (getURLContext):
+	Also seach for the URL context factories in 
+	gnu/javax/naming/jndi/url.
+	* gnu/javax/naming/giop/ContextContinuation.java,
+	gnu/javax/naming/giop/CorbalocParser.java,
+	gnu/javax/naming/giop/GiopNamingEnumeration.java,
+	gnu/javax/naming/giop/GiopNamingServiceFactory.java,
+	gnu/javax/naming/giop/GiopNamingServiceURLContext.java,
+	gnu/javax/naming/giop/ListBindingsEnumeration.java,
+	gnu/javax/naming/giop/ListEnumeration.java,
+	gnu/javax/naming/jndi/url/corbaname/corbanameURLContextFactory.java,
+	gnu/javax/naming/jndi/url/rmi/ContextContinuation.java,
+	gnu/javax/naming/jndi/url/rmi/ListBindingsEnumeration.java,
+	gnu/javax/naming/jndi/url/rmi/ListEnumeration.java,
+	gnu/javax/naming/jndi/url/rmi/RmiContinuation.java,
+	gnu/javax/naming/jndi/url/rmi/RmiNamingEnumeration.java,
+	gnu/javax/naming/jndi/url/rmi/rmiURLContext.java,
+	gnu/javax/naming/jndi/url/rmi/rmiURLContextFactory.java: New files.
+
 2006-08-06  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
