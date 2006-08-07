@@ -1,11 +1,15 @@
 2006-08-07  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* NEWS: Added entry about the context factories for JNDI.
+
+2006-08-07  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	PR 27383
 	* gnu/CORBA/Connected_objects.java (size): New method.
 	* gnu/CORBA/OrbFunctional.java (countConnectedObjects):
 	New method.
 	* javax/naming/spi/NamingManager.java (getURLContext):
-	Also seach for the URL context factories in 
+	Also search for the URL context factories in 
 	gnu/javax/naming/jndi/url.
 	* gnu/javax/naming/giop/ContextContinuation.java,
 	gnu/javax/naming/giop/CorbalocParser.java,
