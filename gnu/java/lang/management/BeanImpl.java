@@ -39,24 +39,32 @@ package gnu.java.lang.management;
 
 import java.lang.management.ManagementPermission;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.TypeVariable;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import javax.management.AttributeNotFoundException;
 import javax.management.MBeanAttributeInfo;
 import javax.management.MBeanConstructorInfo;
+import javax.management.MBeanException;
 import javax.management.MBeanInfo;
 import javax.management.MBeanOperationInfo;
 import javax.management.MBeanParameterInfo;
 import javax.management.MBeanInfo;
 import javax.management.NotCompliantMBeanException;
+import javax.management.ReflectionException;
 import javax.management.StandardMBean;
 
 import javax.management.openmbean.ArrayType;
 import javax.management.openmbean.CompositeData;
+import javax.management.openmbean.CompositeDataSupport;
 import javax.management.openmbean.CompositeType;
 import javax.management.openmbean.OpenDataException;
 import javax.management.openmbean.OpenMBeanAttributeInfo;
@@ -71,6 +79,8 @@ import javax.management.openmbean.OpenMBeanParameterInfo;
 import javax.management.openmbean.OpenMBeanParameterInfoSupport;
 import javax.management.openmbean.OpenType;
 import javax.management.openmbean.SimpleType;
+import javax.management.openmbean.TabularData;
+import javax.management.openmbean.TabularDataSupport;
 import javax.management.openmbean.TabularType;
 
 /**
@@ -182,6 +192,122 @@ public class BeanImpl
       sm.checkPermission(new ManagementPermission("control"));
   }
 
+  public Object getAttribute(String attribute)
+    throws AttributeNotFoundException, MBeanException,
+	   ReflectionException
+  {
+    Object value = super.getAttribute(attribute);
+    if (value instanceof Enum)
+      return ((Enum) value).name();
+    Class vClass = value.getClass();
+    if (vClass.isArray())
+      return value;
+    String cName = vClass.getName();
+    String[] allowedTypes = OpenType.ALLOWED_CLASSNAMES;
+    for (int a = 0; a < allowedTypes.length; ++a)
+      if (cName.equals(allowedTypes[a]))
+	return value;
+    if (value instanceof List)
+      {
+	List l = (List) value;
+	Class e = null;
+	TypeVariable[] vars = vClass.getTypeParameters();
+	for (int a = 0; a < vars.length; ++a)
+	  if (vars[a].getName().equals("E"))
+	    e = (Class) vars[a].getGenericDeclaration();
+	if (e == null)
+	  e = Object.class;
+	Object[] array = (Object[]) Array.newInstance(e, l.size());
+	return l.toArray(array);
+      }
+    OpenMBeanInfo info = (OpenMBeanInfo) getMBeanInfo();
+    OpenMBeanAttributeInfo[] attribs =
+      (OpenMBeanAttributeInfo[]) info.getAttributes();
+    OpenType type = null;
+    for (int a = 0; a < attribs.length; ++a)
+      if (attribs[a].getName().equals("attribute"))
+	type = attribs[a].getOpenType();
+    if (value instanceof Map)
+      {
+	TabularType ttype = (TabularType) type;
+	TabularData data = new TabularDataSupport(ttype);
+	Iterator it = ((Map) value).entrySet().iterator();
+	while (it.hasNext())
+	  {
+	    Map.Entry entry = (Map.Entry) it.next();
+	    try 
+	      {
+		data.put(new CompositeDataSupport(ttype.getRowType(),
+						  new String[] { 
+						    "key", 
+						    "value" 
+						  },
+						  new Object[] { 
+						    entry.getKey(),
+						    entry.getValue()
+						  }));
+	      }
+	    catch (OpenDataException e)
+	      {
+		throw (InternalError) (new InternalError("A problem occurred " +
+							 "converting the map " +
+							 "to a composite data " +
+							 "structure.").initCause(e));
+	      }
+	  }
+	return data;
+      }
+    CompositeType cType = (CompositeType) type;
+    Set names = cType.keySet();
+    Iterator it = names.iterator();
+    List values = new ArrayList(names.size());
+    while (it.hasNext())
+      {
+	String field = (String) it.next();
+	Method getter = null;
+	try 
+	  {
+	    getter = vClass.getMethod("get" + field, null);
+	  }
+	catch (NoSuchMethodException e)
+	  {
+	    /* Ignored; the type tells us it's there. */
+	  }
+	try
+	  {
+	    values.add(getter.invoke(value, null));
+	  }
+	catch (IllegalAccessException e)
+	  {
+	    throw new ReflectionException(e, "Failed to retrieve " + field);
+	  }
+	catch (IllegalArgumentException e)
+	  {
+	    throw new ReflectionException(e, "Failed to retrieve " + field);
+	  }
+	catch (InvocationTargetException e)
+	  {
+	    throw new MBeanException((Exception) e.getCause(),
+				     "The getter of " + field +
+				     " threw an exception");
+	  }
+      }
+    try
+      {
+	return new CompositeDataSupport(cType, 
+					(String[]) 
+					names.toArray(new String[names.size()]),
+					values.toArray());
+      }
+    catch (OpenDataException e)
+      {
+	throw (InternalError) (new InternalError("A problem occurred " +
+						 "converting the value " +
+						 "to a composite data " +
+						 "structure.").initCause(e));
+      }
+  }
+  
   protected MBeanInfo getCachedMBeanInfo()
   {
     return (MBeanInfo) openInfo;
