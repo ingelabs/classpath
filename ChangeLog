@@ -1,5 +1,48 @@
 2006-08-05  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/JTextComponent.java
+	(AccessibleJTextComponent.dot): Renamed field into caretDot.
+	(AccessibleJTextComponent.textComp): Removed field
+	and replace with JTextComponent.this construct.
+	(AccessibleJTextComponent.AccessibleJTextComponent):
+	Fetch caret position.
+	(caretUpdate): Implemented. Fires property change events and
+	updates the caretDot field.
+	(changedUpdate): Implemented. Fires property change events.
+	(insertUpdate): Implemented. Fires property change events.
+	(removeUpdate): Implemented. Fires property change events.
+	(cut): Replaced textComp with JTextComponent.this construct.
+	(paste): Replaced textComp with JTextComponent.this construct.
+	(replaceText): Replaced textComp with JTextComponent.this construct.
+	(selectText): Replaced textComp with JTextComponent.this construct.
+	(getCaretPosition): Replaced textComp with JTextComponent.this
+	construct.
+	(getCharCount): Replaced textComp with JTextComponent.this construct.
+	(getSelectedText): Replaced textComp with JTextComponent.this
+	construct.
+	(getSelectionEnd): Replaced textComp with JTextComponent.this
+	construct.
+	(getSelectionStart): Replaced textComp with JTextComponent.this
+	construct.
+	(getTextRange): Replaced textComp with JTextComponent.this
+	construct.
+	(doAccessibleAction): Implemented.
+	(getAccessibleActionCount): Implemented.
+	(getAccessibleActionDescription): Implemented.
+	(getAccessibleStateSet): Implemented.
+	(getAfterIndex): Implemented.
+	(getBeforeIndex): Implemented.
+	(getAtIndex): Implemented.
+	(getAtIndexImpl): New helper method.
+	(getCharacterAttribute): Implemented.
+	(getCharacterBounds): Implemented.
+	(getIndexAtPoint): Implemented.	
+	(insertTextAtIndex): Implemented.
+	(setAttributes): Implemented.
+	(setTextContents): Implemented.
+
+2006-08-05  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicTextUI.java
 	(modelToView): Read-lock the document. Set size of the
 	root view before fetching the model-to-view mapping.
