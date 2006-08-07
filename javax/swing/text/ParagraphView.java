@@ -87,6 +87,26 @@ public class ParagraphView extends FlowView implements TabExpander
       return max;
     }
 
+    /**
+     * Overridden because child views are not necessarily laid out in model
+     * order.
+     */
+    protected int getViewIndexAtPosition(int pos)
+    {
+      int index = -1;
+      if (pos >= getStartOffset() && pos < getEndOffset())
+        {
+          int nviews = getViewCount();
+          for (int i = 0; i < nviews && index == -1; i++)
+            {
+              View child = getView(i);
+              if (pos >= child.getStartOffset() && pos < child.getEndOffset())
+                index = i;
+            }
+        }
+      return index;
+    }
+
     protected void loadChildren(ViewFactory vf)
     {
       // Do nothing here. The children are added while layouting.

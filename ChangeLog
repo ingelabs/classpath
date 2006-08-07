@@ -1,3 +1,30 @@
+2006-08-05  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(modelToView): Read-lock the document. Set size of the
+	root view before fetching the model-to-view mapping.
+	(getViewIndex): Check of the position is inside the range and
+	return -1 if this is not the case.
+	(getViewAtPosition(int,Rectangle): Update child allocation for valid
+	view index.
+	(getViewIndexAtPosition(int)): Delegate the index search to
+	the element since we have a 1:1 mapping between elements and
+	views here.
+	* javax/swing/text/DefaultCaret.java
+	(appear): Ignore BadLocationException.
+	(paint): Ignore BadLocationException.
+	* javax/swing/text/FlowView.java
+	(changedUpdate): Also notify the layoutPool view.
+	(removeUpdate): Also notify the layoutPool view.
+	* javax/swing/text/ParagraphView.java
+	(Row.getViewIndexAtPosition): Overridden to search linearily
+	through the view instead of relying on a 1:1 model to view
+	mapping.
+	* javax/swing/text/View.java
+	(removeUpdate): Clear ElementChange object if updateChildren
+	returns false.
+	(forwardUpdate): Special handle some boundary cases.
+
 2006-08-07  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* NEWS: Added entry about the context factories for JNDI.

@@ -911,10 +911,10 @@ public class DefaultCaret extends Rectangle
       }
     catch (BadLocationException e)
       {
-    	AssertionError ae;
-    	ae = new AssertionError("Unexpected bad caret location: " + dot);
-    	ae.initCause(e);
-    	throw ae;
+        // Let's ignore that. This shouldn't really occur. But if it
+        // does (it seems that this happens when the model is mutating),
+        // it causes no real damage. Uncomment this for debugging.
+        // e.printStackTrace();
       }
 
     if (rect == null)
@@ -1148,10 +1148,10 @@ public class DefaultCaret extends Rectangle
           }
         catch (BadLocationException e)
           {
-	    AssertionError ae;
-	    ae = new AssertionError("Unexpected bad caret location: " + dot);
-	    ae.initCause(e);
-	    throw ae;
+            // Let's ignore that. This shouldn't really occur. But if it
+            // does (it seems that this happens when the model is mutating),
+            // it causes no real damage. Uncomment this for debugging.
+            // e.printStackTrace();
           }
         if (area != null)
           damage(area);

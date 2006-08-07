@@ -1187,10 +1187,29 @@ public abstract class BasicTextUI extends TextUI
   public Rectangle modelToView(JTextComponent t, int pos, Position.Bias bias)
     throws BadLocationException
   {
-    Rectangle r = getVisibleEditorRect();
-    
-    return (r != null) ? rootView.modelToView(pos, r, bias).getBounds()
-                       : null;
+    // We need to read-lock here because we depend on the document
+    // structure not beeing changed in between.
+    Document doc = textComponent.getDocument();
+    if (doc instanceof AbstractDocument)
+      ((AbstractDocument) doc).readLock();
+    Rectangle rect = null;
+    try
+      {
+        Rectangle r = getVisibleEditorRect();
+        if (r != null)
+          {
+            rootView.setSize(r.width, r.height);
+            Shape s = rootView.modelToView(pos, r, bias);
+            if (s != null)
+              rect = s.getBounds();
+          }
+      }
+    finally
+      {
+        if (doc instanceof AbstractDocument)
+          ((AbstractDocument) doc).readUnlock();
+      }
+    return rect;
   }
 
   /**

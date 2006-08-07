@@ -524,6 +524,7 @@ public abstract class FlowView extends BoxView
    */
   public void removeUpdate(DocumentEvent changes, Shape a, ViewFactory vf)
   {
+    layoutPool.removeUpdate(changes, a, vf);
     strategy.removeUpdate(this, changes, getInsideAllocation(a));
     layoutDirty = true;
   }
@@ -539,6 +540,7 @@ public abstract class FlowView extends BoxView
    */
   public void changedUpdate(DocumentEvent changes, Shape a, ViewFactory vf)
   {
+    layoutPool.changedUpdate(changes, a, vf);
     strategy.changedUpdate(this, changes, getInsideAllocation(a));
     layoutDirty = true;
   }
