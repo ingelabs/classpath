@@ -40,7 +40,6 @@ package gnu.java.awt.dnd.peer.gtk;
 
 import gnu.java.awt.peer.gtk.GtkGenericPeer;
 
-import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DropTarget;
@@ -55,7 +54,6 @@ public class GtkDropTargetContextPeer
   public GtkDropTargetContextPeer(Object obj)
   {
     super(obj);
-    GtkDragSourceContextPeer.target = (Component) obj;
   }
   
   public void setTargetActions(int actions)

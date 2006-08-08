@@ -1,3 +1,13 @@
+2006-08-08  Lillian Angel  <langel@redhat.com>
+
+	* gnu/java/awt/dnd/peer/gtk/GtkDragSourceContextPeer.java
+	(GtkDragSourceContextPeer): Added FIXME. Changed call
+	to setTarget. 
+	* gnu/java/awt/dnd/peer/gtk/GtkDropTargetContextPeer.java
+	(GtkDropTargetContextPeer): Removed target initialization.
+	* java/awt/Component.java
+	(setTarget): Removed commented out code.
+
 2006-08-08  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/text/DefaultHighlighter.java: Qualify

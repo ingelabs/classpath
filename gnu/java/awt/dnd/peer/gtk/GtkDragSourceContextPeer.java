@@ -67,7 +67,7 @@ public class GtkDragSourceContextPeer
   native void connectSignals(ComponentPeer comp);
   native void create(ComponentPeer comp);
   native void nativeSetCursor(int cursor);
-  native void setTarget(ComponentPeer target);
+  native void setTarget(GtkDropTargetContextPeer target);
   
   public GtkDragSourceContextPeer(DragGestureEvent e)
   {
@@ -79,8 +79,10 @@ public class GtkDragSourceContextPeer
     connectSignals(peer);
     cursor = comp.getCursor();
     
-    if (target != null)
-      setTarget(target.getPeer());
+    // FIXME: Where do we set the target?
+    
+    if ((target != null))
+      setTarget(new GtkDropTargetContextPeer(target));
   }
   
   ComponentPeer getComponentPeer(Component c)

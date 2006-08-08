@@ -700,10 +700,7 @@ public abstract class Component
   public void setDropTarget(DropTarget dt)
   {
     this.dropTarget = dt;
-    // XXX this is bogus, Component cannot have a dependency on GTK
-    // if (dropTarget != null)
-    //   dropTarget.getDropTargetContext().addNotify(
-    //                                 new GtkDropTargetContextPeer(this));
+    dropTarget.addNotify(peer);
   }
 
   /**
