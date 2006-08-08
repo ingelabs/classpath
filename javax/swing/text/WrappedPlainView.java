@@ -449,10 +449,34 @@ public class WrappedPlainView extends BoxView implements TabExpander
       int currStart = getStartOffset();
       int currEnd;
       int count = 0;
+
+      // Determine layered highlights.
+      Container c = getContainer();
+      LayeredHighlighter lh = null;
+      JTextComponent tc = null;
+      if (c instanceof JTextComponent)
+        {
+          tc = (JTextComponent) c;
+          Highlighter h = tc.getHighlighter();
+          if (h instanceof LayeredHighlighter)
+            lh = (LayeredHighlighter) h;
+        }
+
       while (currStart < end)
         {
           currEnd = calculateBreakPosition(currStart, end);
 
+          // Paint layered highlights, if any.
+          if (lh != null)
+            {
+              // Exclude trailing newline in last line.
+              if (currEnd == end)
+                lh.paintLayeredHighlights(g, currStart, currEnd - 1, s, tc,
+                                          this);
+              else
+                lh.paintLayeredHighlights(g, currStart, currEnd, s, tc, this);
+                
+            }
           drawLine(currStart, currEnd, g, rect.x, rect.y + metrics.getAscent());
           
           rect.y += lineHeight;          

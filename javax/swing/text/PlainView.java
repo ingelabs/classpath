@@ -266,13 +266,34 @@ public class PlainView extends View implements TabExpander
 
     // FIXME: Text may be scrolled.
     Document document = textComponent.getDocument();
-    Element root = document.getDefaultRootElement();
+    Element root = getElement();
     int y = rect.y + metrics.getAscent();
     int height = metrics.getHeight();
-    
+
+    // For layered highlighters we need to paint the layered highlights
+    // before painting any text.
+    LayeredHighlighter hl = null;
+    Highlighter h = textComponent.getHighlighter();
+    if (h instanceof LayeredHighlighter)
+      hl = (LayeredHighlighter) h;
+
     int count = root.getElementCount();
+
     for (int i = 0; i < count; i++)
       {
+        if (hl != null)
+          {
+            Element lineEl = root.getElement(i);
+            // Exclude the trailing newline from beeing highlighted.
+            if (i == count)
+              hl.paintLayeredHighlights(g, lineEl.getStartOffset(),
+                                        lineEl.getEndOffset(), s, textComponent,
+                                        this);
+            else
+              hl.paintLayeredHighlights(g, lineEl.getStartOffset(),
+                                        lineEl.getEndOffset() - 1, s,
+                                        textComponent, this);
+          }
         drawLine(i, g, rect.x, y);
         y += height;
       }

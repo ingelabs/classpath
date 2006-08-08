@@ -1,3 +1,32 @@
+2006-08-05  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/DefaultHighlight.java
+	(DefaultHighlightPainter.paintHighlight): Removed method.
+	(DefaultHighlightPainter.paintLayer): Implemented.
+	(DefaultHighlightPainter.paint): Implemented more efficient
+	painting for multiline-highlights.
+	(HighlightEntry.p0): Changed to be a Position.
+	(HighlightEntry.p1): Changed to be a Position.
+	(HighlightEntry.HighlightEntry): Changed to take Position
+	arfuments.
+	(HighlightEntry.getStartOffset): Changed to return p0.getOffset();
+	(HighlightEntry.getEndOffset): Changed to return p1.getOffset();
+	(LayerHighlightEntry): New inner class. Extends HighlightEntry
+	and tracks the painted rectangle for efficient repainting.
+	(addHighlight): Handle layered highlight.
+	(changeHighlight): Handle layered highlight.
+	(paintLayeredHighlights): Implemented.
+	(paint): Paint only non-layered highlights here.
+	(removeAllHighlights): Trigger correct repaint.
+	(removeHighlight): Handle layered highlight here for
+	more efficient repainting.
+	* javax/swing/text/GlyphView.java
+	(paint): Handle layered highlights.
+	* javax/swing/text/PlainView.java
+	(paint): Handle layered highlights.
+	* javax/swing/text/WrappedPlainView.java
+	(WrappedLine.paint): Handle layered highlights.
+
 2006-08-07  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	PR 26972
