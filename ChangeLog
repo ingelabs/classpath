@@ -1,5 +1,10 @@
 2006-08-08  Lillian Angel  <langel@redhat.com>
 
+	* java/awt/Component.java
+	(setDropTarget): Added check.
+
+2006-08-08  Lillian Angel  <langel@redhat.com>
+
 	* gnu/java/awt/dnd/peer/gtk/GtkDragSourceContextPeer.java
 	(GtkDragSourceContextPeer): Added FIXME. Changed call
 	to setTarget. 

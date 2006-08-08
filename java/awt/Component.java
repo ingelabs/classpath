@@ -700,7 +700,9 @@ public abstract class Component
   public void setDropTarget(DropTarget dt)
   {
     this.dropTarget = dt;
-    dropTarget.addNotify(peer);
+    
+    if (peer != null)
+      dropTarget.addNotify(peer);
   }
 
   /**
