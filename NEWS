@@ -44,6 +44,7 @@ New in release 0.92 (UNRELEASED)
   release), top level components as well as mouse and keyboard input.
   It is capable of running many Swing applications. Graphics2D and
   AWT widgets are not yet supported.
+* Fixes in the JNDI InitialContext now allows to plug-in user implementation.
 
 Runtime interface changes:
 
