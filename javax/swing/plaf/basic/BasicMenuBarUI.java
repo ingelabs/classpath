@@ -246,11 +246,11 @@ public class BasicMenuBarUI extends MenuBarUI
    */
   private ActionMap getActionMap()
   {
-    ActionMap am = (ActionMap) UIManager.get("Tree.actionMap");
+    ActionMap am = (ActionMap) UIManager.get("MenuBar.actionMap");
     if (am == null)
       {
         am = createDefaultActions();
-        UIManager.getLookAndFeelDefaults().put("Tree.actionMap", am);
+        UIManager.getLookAndFeelDefaults().put("MenuBar.actionMap", am);
       }
     return am;
   }

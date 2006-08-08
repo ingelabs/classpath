@@ -238,9 +238,6 @@ public class BasicTreeUI
   /** Set to true if the editor has a different size than the renderer. */
   protected boolean editorHasDifferentSize;
 
-  /** The action bound to KeyStrokes. */
-  TreeAction action;
-
   /** Boolean to keep track of editing. */
   boolean isEditing;
 
@@ -1081,7 +1078,6 @@ public class BasicTreeUI
    */
   protected void uninstallKeyboardActions()
   {
-    action = null;
     tree.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).setParent(
                                                                               null);
     tree.getActionMap().setParent(null);
@@ -1298,8 +1294,6 @@ public class BasicTreeUI
                                  JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
                                  ancestorInputMap);
 
-    action = new TreeAction();
-
     SwingUtilities.replaceUIActionMap(tree, getActionMap());
   }
 
@@ -1328,9 +1322,6 @@ public class BasicTreeUI
   {
     ActionMapUIResource am = new ActionMapUIResource();
     Action action;
-
-    action = new TreeAction();
-    am.put(action.getValue(Action.NAME), action);
 
     // TreeHomeAction.
     action = new TreeHomeAction(-1, "selectFirst");
@@ -2060,94 +2051,6 @@ public class BasicTreeUI
   }  
 
   /**
-   * This class implements the actions that we want to happen when specific keys
-   * are pressed for the JTree. The actionPerformed method is called when a key
-   * that has been registered for the JTree is received.
-   */
-  class TreeAction
-      extends AbstractAction
-  {
-
-    /**
-     * What to do when this action is called.
-     * 
-     * @param e the ActionEvent that caused this action.
-     */
-    public void actionPerformed(ActionEvent e)
-    {
-      String command = e.getActionCommand();
-      TreePath lead = tree.getLeadSelectionPath();
-
-      if (command.equals("selectPreviousChangeLead")
-          || command.equals("selectPreviousExtendSelection")
-          || command.equals("selectPrevious") || command.equals("selectNext")
-          || command.equals("selectNextExtendSelection")
-          || command.equals("selectNextChangeLead"))
-        (new TreeIncrementAction(0, "")).actionPerformed(e);
-      else if (command.equals("selectParent") || command.equals("selectChild"))
-        (new TreeTraverseAction(0, "")).actionPerformed(e);
-      else if (command.equals("selectAll"))
-        {
-          TreePath[] paths = new TreePath[treeState.getRowCount()];
-          for (int i = 0; i < paths.length; i++)
-            paths[i] = treeState.getPathForRow(i);
-          tree.addSelectionPaths(paths);
-        }
-      else if (command.equals("startEditing"))
-        tree.startEditingAtPath(lead);
-      else if (command.equals("toggle"))
-        {
-          if (tree.isEditing())
-            tree.stopEditing();
-          else
-            {
-              Object last = lead.getLastPathComponent();
-              TreePath path = new TreePath(getPathToRoot(last, 0));
-              if (! treeModel.isLeaf(last))
-                toggleExpandState(path);
-            }
-        }
-      else if (command.equals("clearSelection"))
-        tree.clearSelection();
-
-      if (tree.isEditing() && ! command.equals("startEditing"))
-        tree.stopEditing();
-
-      tree.scrollPathToVisible(tree.getLeadSelectionPath());
-    }
-  }
-
-  /**
-   * This class is used to mimic the behaviour of the JDK when registering
-   * keyboard actions. It is the same as the private class used in JComponent
-   * for the same reason. This class receives an action event and dispatches it
-   * to the true receiver after altering the actionCommand property of the
-   * event.
-   */
-  private static class ActionListenerProxy
-      extends AbstractAction
-  {
-    ActionListener target;
-
-    String bindingCommandName;
-
-    public ActionListenerProxy(ActionListener li, String cmd)
-    {
-      target = li;
-      bindingCommandName = cmd;
-    }
-
-    public void actionPerformed(ActionEvent e)
-    {
-      ActionEvent derivedEvent = new ActionEvent(e.getSource(), e.getID(),
-                                                 bindingCommandName,
-                                                 e.getModifiers());
-
-      target.actionPerformed(derivedEvent);
-    }
-  }
-
-  /**
    * Updates the preferred size when scrolling, if necessary.
    */
   public class ComponentHandler
@@ -2529,6 +2432,9 @@ public class BasicTreeUI
                 }
             }
         }
+
+      // We need to request the focus.
+      tree.requestFocusInWindow();
     }
 
     /**
