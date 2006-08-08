@@ -1,5 +1,11 @@
 2006-08-05  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicListUI.java
+	(MouseInputHandler.mousePressed): Request focus on list
+	component.
+
+2006-08-05  Roman Kennke  <kennke@aicas.com>
+
 	PR 28650
 	* javax/swing/plaf/basic/BasicMenuBarUI.java
 	(getActionMap): Store ActionMap in MenuBar.actionMap, rather

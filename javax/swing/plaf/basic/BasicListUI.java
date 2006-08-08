@@ -479,7 +479,8 @@ public class BasicListUI extends ListUI
      */
     public void mousePressed(MouseEvent event)
     {
-      // TODO: What should be done here, if anything?
+      // We need to explicitly request focus.
+      list.requestFocusInWindow();
     }
 
     /**
