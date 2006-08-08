@@ -177,7 +177,8 @@ public class DefaultHighlighter extends LayeredHighlighter
     Position p1;
     Highlighter.HighlightPainter painter;
 
-    public HighlightEntry(Position p0, Position p1, HighlightPainter painter)
+    public HighlightEntry(Position p0, Position p1,
+                          Highlighter.HighlightPainter painter)
     {
       this.p0 = p0;
       this.p1 = p1;
@@ -215,7 +216,8 @@ public class DefaultHighlighter extends LayeredHighlighter
      */
     Rectangle paintRect = new Rectangle();
 
-    LayerHighlightEntry(Position p0, Position p1, HighlightPainter p)
+    LayerHighlightEntry(Position p0, Position p1,
+                        Highlighter.HighlightPainter p)
     {
       super(p0, p1, p);
     }
@@ -231,7 +233,7 @@ public class DefaultHighlighter extends LayeredHighlighter
       p0 = Math.max(getStartOffset(), p0);
       p1 = Math.min(getEndOffset(), p1);
 
-      HighlightPainter painter = getPainter();
+      Highlighter.HighlightPainter painter = getPainter();
       if (painter instanceof LayerPainter)
 	{
 	  LayerPainter layerPainter = (LayerPainter) painter;
@@ -297,7 +299,8 @@ public class DefaultHighlighter extends LayeredHighlighter
     textComponent = null;
   }
 
-  public Object addHighlight(int p0, int p1, HighlightPainter painter)
+  public Object addHighlight(int p0, int p1,
+                             Highlighter.HighlightPainter painter)
     throws BadLocationException
   {
     checkPositions(p0, p1);
