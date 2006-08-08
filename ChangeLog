@@ -1,5 +1,11 @@
 2006-08-05  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicTableUI.java
+	(MouseInputHandler.mousePressed): Request focus on list
+	component.
+
+2006-08-05  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicListUI.java
 	(MouseInputHandler.mousePressed): Request focus on list
 	component.

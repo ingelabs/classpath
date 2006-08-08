@@ -308,6 +308,9 @@ public class BasicTableUI extends TableUI
               colLead != colModel.getLeadSelectionIndex())
             if (table.isEditing())
               table.editingStopped(new ChangeEvent(e));
+
+          // Must request focus explicitly.
+          table.requestFocusInWindow();
         }
     }
 
