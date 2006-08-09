@@ -175,8 +175,8 @@ public class Main
 
   private Parser getParser()
   {
-    ClasspathToolParser result = new ClasspathToolParser("gcjh", true);
-    result.setHeader("usage: gcjh [OPTIONS] CLASS...");
+    ClasspathToolParser result = new ClasspathToolParser("javah", true);
+    result.setHeader("usage: javah [OPTIONS] CLASS...");
     result.add(classpath);
     result.add(new Option('d', "Set output directory", "DIR")
     {
