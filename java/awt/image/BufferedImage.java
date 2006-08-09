@@ -138,7 +138,7 @@ public class BufferedImage extends Image
    * @throws IllegalArgumentException if <code>type</code> is not one of the
    *     specified values.
    */
-  public BufferedImage(int w, int h, int type)
+  public BufferedImage(int width, int height, int type)
   {
     SampleModel sm = null;
     ColorModel cm = null;
