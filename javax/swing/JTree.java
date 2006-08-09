@@ -1509,8 +1509,7 @@ public class JTree extends JComponent implements Scrollable, Accessible
   public JTree(TreeModel model)
   {
     setRootVisible(true);
-    setSelectionModel(new EmptySelectionModel());
-    selectionModel.setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+    setSelectionModel( new DefaultTreeSelectionModel() );
     
     // The root node appears expanded by default.
     nodeStates = new Hashtable();
@@ -2050,14 +2049,16 @@ public class JTree extends JComponent implements Scrollable, Accessible
     if (selectionModel == model)
       return;
 
+    if( model == null )
+      model = EmptySelectionModel.sharedInstance();
+
     if (selectionModel != null)
       selectionModel.removeTreeSelectionListener(selectionRedirector);
 
     TreeSelectionModel oldValue = selectionModel;
     selectionModel = model;
 
-    if (selectionModel != null)
-      selectionModel.addTreeSelectionListener(selectionRedirector);
+    selectionModel.addTreeSelectionListener(selectionRedirector);
 
     firePropertyChange(SELECTION_MODEL_PROPERTY, oldValue, model);
     revalidate();
