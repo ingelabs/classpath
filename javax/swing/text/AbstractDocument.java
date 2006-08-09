@@ -574,11 +574,19 @@ public abstract class AbstractDocument implements Document, Serializable
     // Bail out if we have a bogus insertion (Behavior observed in RI).
     if (text == null || text.length() == 0)
       return;
-    
-    if (documentFilter == null)
-      insertStringImpl(offset, text, attributes);
-    else
-      documentFilter.insertString(getBypass(), offset, text, attributes);
+
+    writeLock();
+    try
+      {
+        if (documentFilter == null)
+          insertStringImpl(offset, text, attributes);
+        else
+          documentFilter.insertString(getBypass(), offset, text, attributes);
+      }
+    finally
+      {
+        writeUnlock();
+      }
   }
 
   void insertStringImpl(int offset, String text, AttributeSet attributes)
@@ -591,23 +599,16 @@ public abstract class AbstractDocument implements Document, Serializable
       new DefaultDocumentEvent(offset, text.length(),
 			       DocumentEvent.EventType.INSERT);
 
-    try
-      {
-        writeLock();
-        UndoableEdit undo = content.insertString(offset, text);
-        if (undo != null)
-          event.addEdit(undo);
+    UndoableEdit undo = content.insertString(offset, text);
+    if (undo != null)
+      event.addEdit(undo);
 
-        insertUpdate(event, attributes);
+    insertUpdate(event, attributes);
 
-        fireInsertUpdate(event);
-        if (undo != null)
-          fireUndoableEditUpdate(new UndoableEditEvent(this, undo));
-      }
-    finally
-      {
-        writeUnlock();
-      }
+    fireInsertUpdate(event);
+
+    if (undo != null)
+      fireUndoableEditUpdate(new UndoableEditEvent(this, undo));
   }
 
   /**
@@ -814,21 +815,28 @@ public abstract class AbstractDocument implements Document, Serializable
     if (length == 0 
         && (text == null || text.length() == 0))
       return;
-    
-    if (documentFilter == null)
+
+    writeLock();
+    try
       {
-        // It is important to call the methods which again do the checks
-        // of the arguments and the DocumentFilter because subclasses may
-        // have overridden these methods and provide crucial behavior
-        // which would be skipped if we call the non-checking variants.
-        // An example for this is PlainDocument where insertString can
-        // provide a filtering of newlines.
-        remove(offset, length);
-        insertString(offset, text, attributes);
+        if (documentFilter == null)
+          {
+            // It is important to call the methods which again do the checks
+            // of the arguments and the DocumentFilter because subclasses may
+            // have overridden these methods and provide crucial behavior
+            // which would be skipped if we call the non-checking variants.
+            // An example for this is PlainDocument where insertString can
+            // provide a filtering of newlines.
+            remove(offset, length);
+            insertString(offset, text, attributes);
+          }
+        else
+          documentFilter.replace(getBypass(), offset, length, text, attributes);
       }
-    else
-      documentFilter.replace(getBypass(), offset, length, text, attributes);
-    
+    finally
+      {
+        writeUnlock();
+      }
   }
   
   void replaceImpl(int offset, int length, String text,
@@ -1255,7 +1263,7 @@ public abstract class AbstractDocument implements Document, Serializable
       AttributeContext ctx = getAttributeContext();
       attributes = ctx.getEmptySet();
       if (s != null)
-        attributes = ctx.addAttributes(attributes, s);
+        addAttributes(s);
     }
 
     /**
@@ -1567,7 +1575,7 @@ public abstract class AbstractDocument implements Document, Serializable
      */
     public String getName()
     {
-      return (String) getAttribute(NameAttribute);
+      return (String) attributes.getAttribute(ElementNameAttribute);
     }
 
     /**
@@ -1705,6 +1713,11 @@ public abstract class AbstractDocument implements Document, Serializable
     private int numChildren;
 
     /**
+     * The last found index in getElementIndex(). Used for faster searching.
+     */
+    private int lastIndex;
+
+    /**
      * Creates a new <code>BranchElement</code> with the specified
      * parent and attributes.
      *
@@ -1717,6 +1730,7 @@ public abstract class AbstractDocument implements Document, Serializable
       super(parent, attributes);
       children = new Element[1];
       numChildren = 0;
+      lastIndex = -1;
     }
 
     /**
@@ -1785,35 +1799,73 @@ public abstract class AbstractDocument implements Document, Serializable
      */
     public int getElementIndex(int offset)
     {
-      // If offset is less than the start offset of our first child,
-      // return 0
-      if (offset < getStartOffset())
-        return 0;
+      // Implemented using an improved linear search.
+      // This makes use of the fact that searches are not random but often
+      // close to the previous search. So we try to start the binary
+      // search at the last found index.
 
-      // XXX: There is surely a better algorithm
-      // as beginning from first element each time.
-      for (int index = 0; index < numChildren - 1; ++index)
+      int i0 = 0; // The lower bounds.
+      int i1 = numChildren - 1; // The upper bounds.
+      int index = -1; // The found index.
+
+      int p0 = getStartOffset();
+      int p1; // Start and end offset local variables.
+
+      if (numChildren == 0)
+        index = 0;
+      else if (offset >= getEndOffset())
+        index = numChildren - 1;
+      else
         {
-          Element elem = children[index];
-
-          if ((elem.getStartOffset() <= offset)
-               && (offset < elem.getEndOffset()))
-            return index;
-          // If the next element's start offset is greater than offset
-          // then we have to return the closest Element, since no Elements
-          // will contain the offset
-          if (children[index + 1].getStartOffset() > offset)
+          // Try lastIndex.
+          if (lastIndex >= i0 && lastIndex <= i1)
             {
-              if ((offset - elem.getEndOffset()) > (children[index + 1].getStartOffset() - offset))
-                return index + 1;
+              Element last = getElement(lastIndex);
+              p0 = last.getStartOffset();
+              p1 = last.getEndOffset();
+              if (offset >= p0 && offset < p1)
+                index = lastIndex;
               else
-                return index;
+                {
+                  // Narrow the search bounds using the lastIndex, even
+                  // if it hasn't been a hit.
+                  if (offset < p0)
+                    i1 = lastIndex;
+                  else
+                    i0 = lastIndex;
+                }
             }
-        }
+          // The actual search.
+          int i = 0;
+          while (i0 <= i1 && index == -1)
+            {
+              i = i0 + (i1 - i0) / 2;
+              Element el = getElement(i);
+              p0 = el.getStartOffset();
+              p1 = el.getEndOffset();
+              if (offset >= p0 && offset < p1)
+                {
+                  // Found it!
+                  index = i;
+                }
+              else if (offset < p0)
+                i1 = i - 1;
+              else
+                i0 = i + 1;
+            }
 
-      // If offset is greater than the index of the last element, return
-      // the index of the last element.
-      return getElementCount() - 1;
+          if (index == -1)
+            {
+              // Didn't find it. Return the boundary index.
+              if (offset < p0)
+                index = i;
+              else
+                index = i + 1;
+            }
+
+          lastIndex = index;
+        }
+      return index;
     }
 
     /**
