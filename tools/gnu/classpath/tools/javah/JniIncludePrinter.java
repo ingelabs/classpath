@@ -67,16 +67,23 @@ public class JniIncludePrinter
           {
             FieldNode field = (FieldNode) i.next();
             if (! Modifier.isStatic(field.access)
-                || ! Modifier.isFinal(field.access) || field.value == null)
+                || ! Modifier.isFinal(field.access))
               continue;
-            String name = (JniHelper.mangle(klass.name) + "_" + JniHelper.mangle(field.name));
+            if (! (field.value instanceof Integer)
+                && ! (field.value instanceof Long))
+              continue;
+            
+            // Note that we don't want to mangle the field name.
+            String name = (JniHelper.mangle(klass.name) + "_" + field.name);
             out.print("#undef ");
             out.println(name);
             out.print("#define ");
             out.print(name);
             out.print(" ");
             out.print(field.value);
-            if (field.value instanceof Long)
+            if (field.value instanceof Integer)
+              out.print("L");
+            else if (field.value instanceof Long)
               out.print("LL");
             out.println();
             wroteAny = true;

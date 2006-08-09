@@ -1,5 +1,13 @@
 2006-08-09  Tom Tromey  <tromey@redhat.com>
 
+	* tools/gnu/classpath/tools/javah/JniHelper.java (getName): Properly
+	handle arrays.
+	* tools/gnu/classpath/tools/javah/JniIncludePrinter.java
+	(writeFields): Print "L" after int constant.  Don't mangle the field
+	name.  Only print int/long fields.
+
+2006-08-09  Tom Tromey  <tromey@redhat.com>
+
 	* tools/gnu/classpath/tools/javah/Main.java (getParser): Name program
 	"javah".
 

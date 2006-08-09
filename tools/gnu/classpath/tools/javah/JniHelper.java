@@ -69,12 +69,12 @@ public class JniHelper
       {
         Type elt = type.getElementType();
         int eltSort = elt.getSort();
-        if (eltSort != Type.OBJECT && eltSort != Type.ARRAY)
+        if (type.getDimensions() == 1 && eltSort != Type.OBJECT)
           return getName(classpath, elt) + "Array";
-        return "jarray";
+        return "jobjectArray";
       }
 
-    assert type.getSort() == Type.OBJECT;
+    // assert type.getSort() == Type.OBJECT;
     String className = type.getClassName();
     // FIXME: is this correct?
     if (className.equals("java/lang/Class")
