@@ -1,3 +1,9 @@
+2006-08-09  Tom Tromey  <tromey@redhat.com>
+
+	PR classpath/28658:
+	* java/text/SimpleDateFormat.java (parse): Let an unquoted space in
+	the pattern match any number of spaces in the text.
+
 2006-08-09  Sven de Marothy  <sven@physto.se>
 
 	* java/awt/image/BufferedImage.java
