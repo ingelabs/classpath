@@ -1,3 +1,67 @@
+2006-08-09  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/DefaultStyledDocument.java
+	(Edit): Moved this inner class into ElementBuffer where it
+	is actually needed.
+	(edits): Moved this field into ElementBuffer.
+	(getEditForParagraphAndIndex): Removed obsolete method.
+	(insertUpdate): Added some optimizations and fixes. Split
+	out handling insertion after newlines.
+	(insertAfterNewline): New helper method. Handles insertions
+	after a newline.
+	(ElementBuffer.Edit): New inner class. Moved here from
+	DefaultStyledDocument.
+	(ElementBuffer.createdFracture): New field.
+	(ElementBuffer.documentEvent): Made private.
+	(ElementBuffer.edits): New field. Moved here from
+	DefaultStyledDocument.
+	(ElementBuffer.fracNotCreated): Replaced by createdFracture.
+	(ElementBuffer.fracturedChild): New field.
+	(ElementBuffer.fracturedParent): New field.
+	(ElementBuffer.insertPath): New field.
+	(ElementBuffer.lastFractured): Removed. Replaced by fracturedChild and
+	fracturedParent.
+	(ElementBuffer.offsetLastIndex): New field.
+	(ElementBuffer.offsetLastIndexReplace): New field.
+	(ElementBuffer.recreateLeafs): New field.
+	(ElementBuffer.ElementBuffer): Don't initialize stack here.
+	(ElementBuffer.canJoin): New helper method.
+	(ElementBuffer.changeUpdate): Changed to use elementStack with
+	Edits rather than Elements. Let the split method do the work.
+	(ElementBuffer.cloneAsNecessary): New helper method.
+	(ElementBuffer.createFracture): Changed to fracture the bottommost
+	child in the stack.
+	(ElementBuffer.finishEdit): New helper method. Moved out
+	from insertUpdate to perform the actual changes and update
+	the event.
+	(fracture): New helper method.
+	(insertContentTag): Fixed some bugs and changed to use Edit
+	instances in the stack, rather then Elements.
+	(insertElement): New helper method. Moved out from insertUpdate()
+	to process the ElementSpecs.
+	(insertFirstContentTag): Fixed some problems and changed to use Edit
+	instances in the stack, rather then Elements.
+	(insertFracture): Removed. Basically moved into createFracture()
+	and fracture().
+	(insertParagraph): Removed.
+	(insertUpdate): Split out the ElementSpec processing into
+	insertElement(). Use Edit instances in the stack. Fixed some
+	problems.
+	(insert): Split out the preparation and finishing code into
+	prepareEdit() and finishEdit().
+	(join): New helper method.
+	(pop): New helper method.
+	(prepareEdit): New helper method.
+	(recreateFracturedElement): New helper method.
+	(recreateLeaves): Removed.
+	(recreate): New helper method.
+	(removeElements): New helper method. Split out from removeUpdate().
+	(removeUpdate): Split out the actual removal. Use the
+	Edit stack to perform removal and perform the remove actions
+	and event updates afterwards, just like in insertImpl().
+	(remove): Use prepareEdit() and finishEdit().
+	(split): Replaced with more flexible impl.
+
 2006-08-09  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/peer/gtk/CairoSurface.java
