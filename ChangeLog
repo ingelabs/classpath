@@ -1,5 +1,19 @@
 2006-08-10  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/BoxView.java
+	(calculateMajorAxisRequirements): Sum up the preferred and
+	maximum sizes.
+	(isAfter): Also add in the rectangle's with/height.
+	(childAllocation): Don't trigger layout here.
+	(layoutMinorAxis): Removed debug output.
+	(getWidth): Consider the insets.
+	(getHeight): Consider the insets.
+	(setSize): Consider the insets.
+	(updateRequirements): Check axis and throw
+	IllegalArgumentException.
+
+2006-08-10  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/AbstractDocument.java
 	(BidiRootName): New constant field, denotes the element name
 	for bidi root elements.
