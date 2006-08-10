@@ -495,29 +495,43 @@ public class GapContent
     if (len < 0)
       throw new BadLocationException("negative length not allowed: ", len);
 
-    // check if requested segment is contiguous
-    if ((where < gapStart) && ((gapStart - where) < len))
-    {
-      // requested segment is not contiguous -> copy the pieces together
-      char[] copy = new char[len];
-      int lenFirst = gapStart - where; // the length of the first segment
-      System.arraycopy(buffer, where, copy, 0, lenFirst);
-      System.arraycopy(buffer, gapEnd, copy, lenFirst, len - lenFirst);
-      txt.array = copy;
-      txt.offset = 0;
-      txt.count = len;
-    }
-    else
-    {
-      // requested segment is contiguous -> we can simply return the
-      // actual content
-      txt.array = buffer;
-      if (where < gapStart)
+    // Optimized to copy only when really needed. 
+    if (where + len <= gapStart)
+      {
+        // Simple case: completely before gap.
+        txt.array = buffer;
         txt.offset = where;
-      else
-        txt.offset = where + (gapEnd - gapStart);
-      txt.count = len;
-    }
+        txt.count = len;
+      }
+    else if (where > gapStart)
+      {
+        // Completely after gap, adjust offset.
+        txt.array = buffer;
+        txt.offset = gapEnd + where - gapStart;
+        txt.count = len;
+      }
+    else
+      {
+        // Spans the gap.
+        int beforeGap = gapStart - where;
+        if (txt.isPartialReturn())
+          {
+            // Return the part before the gap when partial return is allowed.
+            txt.array = buffer;
+            txt.offset = where;
+            txt.count = beforeGap;
+          }
+        else
+          {
+            // Copy pieces together otherwise.
+            txt.array = new char[len];
+            txt.offset = 0;
+            System.arraycopy(buffer, where, txt.array, 0, beforeGap);
+            System.arraycopy(buffer, gapEnd, txt.array, beforeGap,
+                             len - beforeGap);
+            txt.count = len;
+          }
+      }
   }
 
   /**
