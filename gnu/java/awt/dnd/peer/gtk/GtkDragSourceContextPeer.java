@@ -87,6 +87,9 @@ public class GtkDragSourceContextPeer
   
   ComponentPeer getComponentPeer(Component c)
   {
+    if (c == null)
+      return null;
+    
     Component curr = c;
     while (curr.getPeer() instanceof LightweightPeer)
       curr = curr.getParent();
