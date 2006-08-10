@@ -1,5 +1,41 @@
 2006-08-10  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/AbstractDocument.java
+	(BidiRootName): New constant field, denotes the element name
+	for bidi root elements.
+	(AsyncLoadPriority): New constant field, denotes the property
+	to store the asynchronousLoadPriority.
+	(I18N): New constant field, denotes the property for
+	I18N support.
+	(bidiRoot): Made field type BidiRootElement.
+	(AbstractDocument): Build initial element structure for
+	bidi.
+	(getAsynchronousLoadPriority): Implemented. Returns the
+	value stored in the document properties.
+	(setAsynchronousLoadPriority): Implemented. Sets the
+	value stored in the document properties.
+	(getEndPosition): Implemented to use a Position from the
+	content.
+	(getStartPosition): Implemented to use a Position from the
+	content.
+	(insertStringImpl): Update the I18N setting if necessary.
+	(insertUpdate): Update the bidi structure if necessary.
+	(postRemoveUpdate): Update the bidi structure if necessary.
+	(putProperty): Update the I18N setting and bidi structure
+	if necessary.
+	(updateBidi): New helper method for updating the bidi
+	structure.
+	(getBidis): New helper method. Fetches the Bidi analysers
+	for the paragraphs of the range to check.
+	(dump): Also dump the bidi structure.
+	(AbstractElement.dump): Indent the '>' correctly.
+	(AbstractElement.children): Check numChildren rather then
+	children.length.
+	(BidiRootElement): New inner class.
+	(BidiElement): New inner class.
+
+2006-08-10  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/GapContent.java
 	(getChars): Optimized to only copy array when really necessary.
 	Respect the partialReturn property.
