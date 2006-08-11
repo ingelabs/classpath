@@ -1,3 +1,24 @@
+2006-08-11  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/GapContent.java
+	(UndoPosRef): New inner class. Used for resetting positions
+	after undo/redo operations.
+	(InsertUndo.positions): New field.
+	(InsertUndo.undo): Store positions in removed range.
+	(InsertUndo.redo): Restore positions in re-inserted range.
+	(UndoRemove.positions): New field.
+	(UndoRemove.UndoRemove): Store positions in removed range.
+	(UndoRemove.undo): Restore positions in re-inserted range.
+	(UndoRemove.redo): Store positions in removed range.
+	(insertString): Create InsertUndo instance before actually
+	inserting the string.
+	(remove): Create UndoRemove instance before actually
+	removing.
+	(getPositionsInRange): Don't clear the Vector. Return Vector
+	of UndoPosRefs.
+	(updateUndoPositions): Implemented to reset all UndoPosRefs
+	in the vector.
+
 2006-08-11  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/io/ObjectInputStream.java (readClassDescriptor):

@@ -195,10 +195,52 @@ public class GapContent
     }
   }
 
+  /**
+   * Stores a reference to a mark that can be resetted to the original value
+   * after a mark has been moved. This is used for undoing actions. 
+   */
+  private class UndoPosRef
+  {
+    /**
+     * The mark that might need to be reset.
+     */
+    private Mark mark;
+
+    /**
+     * The original offset to reset the mark to.
+     */
+    private int undoOffset;
+
+    /**
+     * Creates a new UndoPosRef.
+     *
+     * @param m the mark
+     */
+    UndoPosRef(Mark m)
+    {
+      mark = m;
+      undoOffset = mark.getOffset();
+    }
+
+    /**
+     * Resets the position of the mark to the value that it had when
+     * creating this UndoPosRef.
+     */
+    void reset()
+    {
+      if (undoOffset <= gapStart)
+        mark.mark = undoOffset;
+      else
+        mark.mark = (gapEnd - gapStart) + undoOffset;
+    }
+  }
+
   private class InsertUndo extends AbstractUndoableEdit
   {
     public int where, length;
     String text;
+    private Vector positions;
+
     public InsertUndo(int start, int len)
     {
       where = start;
@@ -209,27 +251,33 @@ public class GapContent
     {
       super.undo();
       try
-      {
-        text = getString(where, length);
-        remove(where, length);
-      }
+        {
+          positions = getPositionsInRange(null, where, length);
+          text = getString(where, length);
+          remove(where, length);
+        }
       catch (BadLocationException ble)
-      {
-        throw new CannotUndoException();
-      }
+        {
+          throw new CannotUndoException();
+        }
     }
     
     public void redo () throws CannotUndoException
     {
       super.redo();
       try
-      {
-        insertString(where, text);
-      }
+        {
+          insertString(where, text);
+          if (positions != null)
+            {
+              updateUndoPositions(positions, where, length);
+              positions = null;
+            }
+        }
       catch (BadLocationException ble)
-      {
-        throw new CannotRedoException();
-      }
+        {
+          throw new CannotRedoException();
+        }
     }
     
   }
@@ -238,10 +286,17 @@ public class GapContent
   {
     public int where;
     String text;
+
+    /**
+     * The positions in the removed range.
+     */
+    private Vector positions;
+
     public UndoRemove(int start, String removedText)
     {
       where = start;
       text = removedText;
+      positions = getPositionsInRange(null, start, removedText.length());
     }
 
     public void undo () throws CannotUndoException
@@ -250,6 +305,8 @@ public class GapContent
       try
       {
         insertString(where, text);
+        if (positions != null)
+          updateUndoPositions(positions, where, text.length());
       }
       catch (BadLocationException ble)
       {
@@ -261,13 +318,15 @@ public class GapContent
     {
       super.redo();
       try
-      {
-        remove(where, text.length());
-      }
+        {
+          text = getString(where, text.length());
+          positions = getPositionsInRange(null, where, text.length());
+          remove(where, text.length());
+        }
       catch (BadLocationException ble)
-      {
-        throw new CannotRedoException();
-      }
+        {
+          throw new CannotRedoException();
+        }
     }
     
   }
@@ -403,9 +462,10 @@ public class GapContent
       throw new BadLocationException("The where argument cannot be greater"
           + " than the content length", where);
 
+    InsertUndo undo = new InsertUndo(where, strLen);
     replace(where, 0, str.toCharArray(), strLen);
 
-    return new InsertUndo(where, strLen);
+    return undo;
   }
 
   /**
@@ -429,9 +489,10 @@ public class GapContent
           + " than the content length", where + nitems);
     
     String removedText = getString(where, nitems);
+    UndoRemove undoRemove = new UndoRemove(where, removedText);
     replace(where, nitems, null, 0);
 
-    return new UndoRemove(where, removedText);
+    return undoRemove;
   }
 
   /**
@@ -750,8 +811,6 @@ public class GapContent
     Vector res = v;
     if (res == null)
       res = new Vector();
-    else
-      res.clear();
 
     int endOffs = offset + length;
 
@@ -760,8 +819,8 @@ public class GapContent
       {
         GapContentPosition p = (GapContentPosition) i.next();
         int offs = p.getOffset();
-        if (offs >= offset && offs < endOffs)
-          res.add(p);
+        if (offs >= offset && offs <= endOffs)
+          res.add(new UndoPosRef(p.mark));
       }
 
     return res;
@@ -858,14 +917,26 @@ public class GapContent
   }
 
   /**
-   * @specnote This method is not very well specified and the positions vector
-   *           is implementation specific. The undo positions are managed
-   *           differently in this implementation, this method is only here
-   *           for binary compatibility.
+   * Resets the positions in the specified range to their original offset
+   * after a undo operation is performed. For example, after removing some
+   * content, the positions in the removed range will all be set to one
+   * offset. This method restores the positions to their original offsets
+   * after an undo.
+   *
+   * @param positions the positions to update
+   * @param offset
+   * @param length
    */
   protected void updateUndoPositions(Vector positions, int offset, int length)
   {
-    // We do nothing here.
+    for (Iterator i = positions.iterator(); i.hasNext();)
+      {
+        UndoPosRef undoPosRef = (UndoPosRef) i.next();
+        undoPosRef.reset();
+      }
+
+    // Resort marks.
+    Collections.sort(marks);
   }
 
   /**
