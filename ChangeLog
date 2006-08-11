@@ -1,5 +1,24 @@
 2006-08-11  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/GlyphView.java
+	(DefaultGlyphPainter.modelToView): Fixed model->view mapping.
+	* javax/swing/text/LabelView.java
+	(valid): New flag indicating if the text attributes are valid.
+	(LabelView): Initialize valid field with false.
+	(setPropertiesFromAttributes): Call setter methods instead
+	of setting properties directly. Set valid to true.
+	(changedUpdate): Invalidate attributes. Call super.
+	(getBackground): Sync attributes if necessary.
+	(getForeground): Sync attributes if necessary.
+	(getFont): Sync attributes if necessary.
+	(isUnderline): Sync attributes if necessary.
+	(isSuperscript): Sync attributes if necessary.
+	(isStrikeThrough): Sync attributes if necessary.
+	(getFontMetrics): Sync attributes if necessary. Fetch font metrics
+	from toolkit if Container is not available yet.
+
+2006-08-11  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/PlainView.java
 	(tabBase): New field.
 	(tabSize): New field.

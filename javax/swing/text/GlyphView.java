@@ -355,11 +355,14 @@ public class GlyphView extends View implements TabableView, Cloneable
       Font font = view.getFont();
       FontMetrics fm = view.getContainer().getFontMetrics(font);
       Segment txt = view.getText(el.getStartOffset(), pos);
-      int width = fm.charsWidth(txt.array, txt.offset, txt.count);
+      Rectangle bounds = a instanceof Rectangle ? (Rectangle) a
+                                                : a.getBounds();
+      TabExpander expander = view.getTabExpander();
+      int width = Utilities.getTabbedTextWidth(txt, fm, bounds.x, expander,
+                                               view.getStartOffset());
       int height = fm.getHeight();
-      Rectangle bounds = a.getBounds();
       Rectangle result = new Rectangle(bounds.x + width, bounds.y,
-                                       bounds.x + width, height);
+                                       0, height);
       return result;
     }
 
