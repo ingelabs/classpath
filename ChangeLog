@@ -1,3 +1,12 @@
+2006-08-11  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/io/ObjectInputStream.java (readClassDescriptor):
+	Use class's class loader to resolve field types.
+	* java/io/ObjectStreamField.java
+	(ObjectStreamField(String,String,ClassLoader)): Removed.
+	(ObjectStreamField(String,String)): Don't try to resolve typename.
+	(resolveType): New method.
+
 2006-08-10  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/BoxView.java
