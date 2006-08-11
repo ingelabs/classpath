@@ -43,7 +43,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.text.BreakIterator;
 
-import javax.swing.SwingConstants;
 import javax.swing.text.Position.Bias;
 
 /**
@@ -109,7 +108,7 @@ public class Utilities
     for (int offset = s.offset; offset < end; ++offset)
       {
         char c = buffer[offset];
-        if (c == '\t' || c == '\n')
+        if (c == '\t')
           {
             if (len > 0) {
               g.drawChars(buffer, pos, len, pixelX, pixelY + ascent);            
@@ -130,11 +129,6 @@ public class Utilities
 					   startOffset + offset - s.offset);
 	    else
 	      pixelX += metrics.charWidth(' ');
-	    break;
-	  case '\n':
-	    // In case we have a newline, we must jump to the next line.
-	    pixelY += metrics.getHeight();
-	    pixelX = x;
 	    break;
 	  default:
             ++len;

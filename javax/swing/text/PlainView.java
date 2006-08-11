@@ -87,6 +87,16 @@ public class PlainView extends View implements TabExpander
    */
   private transient Segment lineBuffer;
 
+  /**
+   * The base offset for tab calculations.
+   */
+  private int tabBase;
+
+  /**
+   * The tab size.
+   */
+  private int tabSize;
+
   public PlainView(Element elem)
   {
     super(elem);
@@ -104,6 +114,7 @@ public class PlainView extends View implements TabExpander
       {
 	this.font = font;
 	metrics = component.getFontMetrics(font);
+        tabSize = getTabSize() * metrics.charWidth('m');
       }
   }
   
@@ -115,7 +126,7 @@ public class PlainView extends View implements TabExpander
     // Ensure metrics are up-to-date.
     updateMetrics();
     
-    Rectangle rect = a.getBounds();
+    Rectangle rect = a instanceof Rectangle ? (Rectangle) a : a.getBounds();
     int fontHeight = metrics.getHeight();
     return new Rectangle(rect.x, rect.y + (line * fontHeight),
 			 rect.width, fontHeight);
@@ -132,13 +143,14 @@ public class PlainView extends View implements TabExpander
     // Get rectangle of the line containing position.
     int lineIndex = getElement().getElementIndex(position);
     Rectangle rect = lineToRect(a, lineIndex);
+    tabBase = rect.x;
 
     // Get the rectangle for position.
     Element line = getElement().getElement(lineIndex);
     int lineStart = line.getStartOffset();
     Segment segment = getLineBuffer();
     document.getText(lineStart, position - lineStart, segment);
-    int xoffset = Utilities.getTabbedTextWidth(segment, metrics, rect.x,
+    int xoffset = Utilities.getTabbedTextWidth(segment, metrics, tabBase,
 					       this, lineStart);
 
     // Calc the real rectangle.
@@ -262,7 +274,8 @@ public class PlainView extends View implements TabExpander
     selectionStart = textComponent.getSelectionStart();
     selectionEnd = textComponent.getSelectionEnd();
 
-    Rectangle rect = s.getBounds();
+    Rectangle rect = s instanceof Rectangle ? (Rectangle) s : s.getBounds();
+    tabBase = rect.x;
 
     // FIXME: Text may be scrolled.
     Document document = textComponent.getDocument();
@@ -324,8 +337,13 @@ public class PlainView extends View implements TabExpander
    */
   public float nextTabStop(float x, int tabStop)
   {
-    float tabSizePixels = getTabSize() * metrics.charWidth('m');
-    return (float) (Math.floor(x / tabSizePixels) + 1) * tabSizePixels;
+    float next = x;
+    if (tabSize != 0)
+      {
+        int numTabs = (((int) x) - tabBase) / tabSize;
+        next = tabBase + (numTabs + 1) * tabSize;
+      }
+    return next; 
   }
 
   /**
@@ -411,41 +429,58 @@ public class PlainView extends View implements TabExpander
    */
   public int viewToModel(float x, float y, Shape a, Position.Bias[] b)
   {
-    Rectangle rec = a.getBounds();
-    Document doc = getDocument();
-    Element root = doc.getDefaultRootElement();
-    
-    // PlainView doesn't support line-wrapping so we can find out which
-    // Element was clicked on just by the y-position.    
-    // Since the coordinates may be outside of the coordinate space
-    // of the allocation area (e.g. user dragged mouse outside
-    // the component) we have to limit the values.
-    // This has the nice effect that the user can drag the
-    // mouse above or below the component and it will still
-    // react to the x values (e.g. when selecting).
-    int lineClicked
-      = Math.min(Math.max((int) (y - rec.y) / metrics.getHeight(), 0),
-                          root.getElementCount() - 1);
-    
-    Element line = root.getElement(lineClicked);
-    
-    Segment s = getLineBuffer();
-    int start = line.getStartOffset();
-    // We don't want the \n at the end of the line.
-    int end = line.getEndOffset() - 1;
-    try
+    Rectangle rec = a instanceof Rectangle ? (Rectangle) a : a.getBounds();
+    tabBase = rec.x;
+
+    int pos;
+    if ((int) y < rec.y)
+      // Above our area vertically. Return start offset.
+      pos = getStartOffset();
+    else if ((int) y > rec.y + rec.height)
+      // Below our area vertically. Return end offset.
+      pos = getEndOffset() - 1;
+    else
       {
-        doc.getText(start, end - start, s);
+        // Inside the allocation vertically. Determine line and X offset.
+        Document doc = getDocument();
+        Element root = doc.getDefaultRootElement();
+        int line = Math.abs(((int) y - rec.y) / metrics.getHeight());
+        if (line >= root.getElementCount())
+          pos = getEndOffset() - 1;
+        else
+          {
+            Element lineEl = root.getElement(line);
+            if (x < rec.x)
+              // To the left of the allocation area.
+              pos = lineEl.getStartOffset();
+            else if (x > rec.x + rec.width)
+              // To the right of the allocation area.
+              pos = lineEl.getEndOffset() - 1;
+            else
+              {
+                try
+                  {
+                    int p0 = lineEl.getStartOffset();
+                    int p1 = lineEl.getEndOffset();
+                    Segment s = new Segment();
+                    doc.getText(p0, p1 - p0, s);
+                    tabBase = rec.x;
+                    pos = p0 + Utilities.getTabbedTextOffset(s, metrics,
+                                                             tabBase, (int) x,
+                                                             this, p0);
+                  }
+                catch (BadLocationException ex)
+                  {
+                    // Should not happen.
+                    pos = -1;
+                  }
+              }
+            
+          }
       }
-    catch (BadLocationException ble)
-      {
-        AssertionError ae = new AssertionError("Unexpected bad location");
-        ae.initCause(ble);
-        throw ae;
-      }
-    
-    int pos = Utilities.getTabbedTextOffset(s, metrics, rec.x, (int)x, this, start);
-    return Math.max (0, pos);
+    // Bias is always forward.
+    b[0] = Position.Bias.Forward;
+    return pos;
   }     
   
   /**
@@ -675,7 +710,7 @@ public class PlainView extends View implements TabExpander
         throw err;
       }
 
-    return Utilities.getTabbedTextWidth(buffer, metrics, 0, this,
+    return Utilities.getTabbedTextWidth(buffer, metrics, tabBase, this,
                                         lineEl.getStartOffset());
   }
 }

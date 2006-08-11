@@ -1,5 +1,22 @@
 2006-08-11  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/PlainView.java
+	(tabBase): New field.
+	(tabSize): New field.
+	(updateMetrics): Update tabSize.
+	(lineToRect): Only allocate when really necessary.
+	(modelToView): Use tabBase for offset calculations.
+	(paint): Only allocate when really necessary. Update tabBase.
+	(nextTabStop): Fixed tab calculation.
+	(viewToModel): Correctly handle multiline text and locations
+	outside the view's bounds. Set bias.
+	(getLineLength): Use tabBase.
+	* javax/swing/text/Utilities.java
+	(drawTabbedText): Don't special case newlines. The views
+	must take care of this.
+
+2006-08-11  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/GapContent.java
 	(UndoPosRef): New inner class. Used for resetting positions
 	after undo/redo operations.
