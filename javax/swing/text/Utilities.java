@@ -706,12 +706,12 @@ public class Utilities
                                          offset,
                                          Bias.Forward,
                                          direction,
-                                         null)
+                                         new Position.Bias[1])
           : t.getUI().getNextVisualPositionFrom(t,
                                                 offset,
                                                 Bias.Forward,
                                                 direction,
-                                                null);
+                                                new Position.Bias[1]);
       }
     catch (BadLocationException ble)
     {

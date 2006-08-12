@@ -1,3 +1,35 @@
+2006-08-13  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JEditorPane.java
+	(getScrollableTracksViewportHeight): Also check maximum size.
+	* javax/swing/JTextPane.java
+	(insertIcon): Use input attributes for adding the icon
+	attribute.
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(RootView.setSize): Overridden to forward to real view.
+	(getPreferredSize): Trigger setSize() on the view.
+	(viewToModel(JTextComponent,Point)): Pass Position.Bias array
+	to viewToModel() call, rather then null.
+	* javax/swing/text/ParagraphView.java
+	(changedUpdate): Invalide layout. Call super.
+	* javax/swing/text/SimpleAttributeSet.java
+	(clone): Use super's clone method to create clone.
+	* javax/swing/text/StyleConstants.java
+	(setIcon): Also set element name attribute.
+	* javax/swing/text/StyledEditorKit.java
+	(BoldAction.actionPerformed): Actually set the bold attribute,
+	not italic.
+	(setCharacterAttributes): Replaced with more straightforward
+	impl.
+	* javax/swing/text/TextAction.java
+	(getFocusedComponent): Implemented.
+	* javax/swing/text/Utilities.java
+	(getNextVisualPositionFrom): Pass Position.Bias arrays instead
+	of null.
+	* javax/swing/text/View.java
+	(changedUpdate): Nullify element change when updateChildren
+	says so.
+
 2006-08-11  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* vm/reference/gnu/java/lang/management/VMMemoryMXBeanImpl.java:
