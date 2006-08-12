@@ -177,6 +177,12 @@
 
 2006-08-09  Mark Wielaard  <mark@klomp.org>
 
+	* doc/www.gnu.org/newsitems.txt: Add 0.92.
+	* doc/www.gnu.org/downloads/downloads.wml: Likewise.
+	* doc/www.gnu.org/announce/20060809.wml: New file.
+
+2006-08-09  Mark Wielaard  <mark@klomp.org>
+
 	* NEWS: Add updates for 0.92 release.
 
 2006-08-09  Tom Tromey  <tromey@redhat.com>
