@@ -1,3 +1,49 @@
+2006-08-13  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	PR Classpath/28678
+	* gnu/java/security/Engine.java (getInstance(String, String, Provider)):
+	Updated documentation.
+	Formatting.
+	(getInstance(String, String, Provider, Object[])): Likewise.
+	Separate checks for null and empty string arguments.
+	Include as much information as possible in the exception's message.
+	Do not swallow original exception; instead use it as the cause of the
+	resulting exception.
+	* gnu/javax/security/auth/callback/AbstractCallbackHandler.java
+	(getInstance(String)): Updated documentation.
+	Formatting.
+	Store last exception caught when iterating through all providers.
+	If no implementation found, raise last exception if one was caught.
+	(getInstance(String, String)): Updated documentation.
+	Formatting.
+	Check for null or empty provider as per RI-5's documentation.
+	(getInstance(String, Provider)): Updated documentation.
+	Formatting.
+	Use as much information as possible in the exception message.
+	Do not swallow original exception; instead use it as the cause for the
+	ultimate raised exception(s).
+	* java/security/cert/CertificateFactory.java: Likewise.
+	* java/security/cert/CertPathBuilder.java: Likewise.
+	* java/security/cert/CertPathValidator.java: Likewise.
+	* java/security/cert/CertStore.java: Likewise.
+	* java/security/AlgorithmParameterGenerator.java: Likewise.
+	* java/security/AlgorithmParameters.java: Likewise.
+	* java/security/KeyFactory.java: Likewise.
+	* java/security/KeyPairGenerator.java: Likewise.
+	* java/security/KeyStore.java: Likewise.
+	* java/security/MessageDigest.java: Likewise.
+	* java/security/SecureRandom.java: Likewise.
+	* java/security/Signature.java: Likewise.
+	* javax/crypto/Cipher.java: Likewise.
+	* javax/crypto/ExemptionMechanism.java: Likewise.
+	* javax/crypto/KeyAgreement.java: Likewise.
+	* javax/crypto/KeyGenerator.java: Likewise.
+	* javax/crypto/Mac.java: Likewise.
+	* javax/crypto/SecretKeyFactory.java: Likewise.
+	* javax/net/ssl/KeyManagerFactory.java: Likewise.
+	* javax/net/ssl/SSLContext.java: Likewise.
+	* javax/net/ssl/TrustManagerFactory.java: Likewise.
+
 2006-08-13  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JEditorPane.java
