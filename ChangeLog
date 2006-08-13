@@ -1,5 +1,13 @@
 2006-08-13  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicScrollBarUI.java
+	(scrollByUnit): Scroll by -unit when direction is not positive
+	and +unit otherwise.
+	(scrollByBlock): Scroll by -unit when direction is not positive
+	and +unit otherwise.
+
+2006-08-13  Roman Kennke  <kennke@aicas.com>
+
 	PR 28028
 	* javax/swing/text/PlainView.java
 	(paint): Limit painted area to the lines inside the clip
