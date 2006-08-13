@@ -1,3 +1,11 @@
+2006-08-13  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JTabbedPane.java
+	(JTabbedPane): Call setModel() here and let this install the
+	change listener correctly.
+	(setModel): Correctly uninstall and reinstall ChangeListener when
+	model changes.
+
 2006-08-13  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	PR Classpath/23952
