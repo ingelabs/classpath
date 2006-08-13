@@ -1,5 +1,12 @@
 2006-08-13  Roman Kennke  <kennke@aicas.com>
 
+	PR 28028
+	* javax/swing/text/PlainView.java
+	(paint): Limit painted area to the lines inside the clip
+	and allocation.
+
+2006-08-13  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicTextUI.java
 	(uninstallListeners): Unregister document listener.
 

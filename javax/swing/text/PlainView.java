@@ -280,7 +280,6 @@ public class PlainView extends View implements TabExpander
     // FIXME: Text may be scrolled.
     Document document = textComponent.getDocument();
     Element root = getElement();
-    int y = rect.y + metrics.getAscent();
     int height = metrics.getHeight();
 
     // For layered highlighters we need to paint the layered highlights
@@ -292,7 +291,16 @@ public class PlainView extends View implements TabExpander
 
     int count = root.getElementCount();
 
-    for (int i = 0; i < count; i++)
+    // Determine first and last line inside the clip.
+    Rectangle clip = g.getClipBounds();
+    SwingUtilities.computeIntersection(rect.x, rect.y, rect.width, rect.height,
+                                       clip);
+    int line0 = (clip.y - rect.y) / height;
+    line0 = Math.max(0, Math.min(line0, count - 1));
+    int line1 = (clip.y + clip.height - rect.y) / height;
+    line1 = Math.max(0, Math.min(line1, count - 1));
+    int y = rect.y + metrics.getAscent() + height * line0;
+    for (int i = line0; i <= line1; i++)
       {
         if (hl != null)
           {
