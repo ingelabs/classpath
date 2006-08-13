@@ -1,5 +1,14 @@
 2006-08-13  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JTree.java
+	(getScrollableUnitIncrement): Fixed direction.
+	(getScrollableBlockIncrement): Implemented to scroll one
+	page.
+	* javax/swing/tree/VariableHeightLayoutCache.java
+	(distance): Consider y + height already outside the node.
+
+2006-08-13  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JTable.java
 	(getScrollableUnitIncrement): Fixed direction. Make it behave
 	like the RI.
