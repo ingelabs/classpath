@@ -1,5 +1,12 @@
 2006-08-13  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JList.java
+	(getScrollableUnitIncrement): Fixed direction. Implemented
+	horizontal scrolling. Improved usability.
+	(getScrollableBlockIncrement): Fixed direction. Improved usability.
+
+2006-08-13  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicScrollBarUI.java
 	(scrollByUnit): Scroll by -unit when direction is not positive
 	and +unit otherwise.
