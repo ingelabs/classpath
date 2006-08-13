@@ -1,5 +1,13 @@
 2006-08-13  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JTable.java
+	(getScrollableUnitIncrement): Fixed direction. Make it behave
+	like the RI.
+	(getScrollableBlockIncrement): Fixed direction. Make it behave
+	like the RI.
+
+2006-08-13  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JList.java
 	(getScrollableUnitIncrement): Fixed direction. Implemented
 	horizontal scrolling. Improved usability.

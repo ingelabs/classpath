@@ -3303,10 +3303,21 @@ public class JTable
   
   public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction)
   {
-    if (orientation == SwingConstants.VERTICAL)
-      return visibleRect.height * direction;
+    int block;
+    if (orientation == SwingConstants.HORIZONTAL)
+      {
+        block = visibleRect.width;
+      }
     else
-      return visibleRect.width * direction;
+      {
+        int rowHeight = getRowHeight();
+        if (rowHeight > 0)
+          block = Math.max(rowHeight, // Little hack for useful rounding.
+                           (visibleRect.height / rowHeight) * rowHeight);
+        else
+          block = visibleRect.height;
+      }
+    return block;
   }
 
   /**
@@ -3350,19 +3361,12 @@ public class JTable
   public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation,
                                         int direction)
   {
-    int h = (rowHeight + rowMargin);
-    int delta = h * direction;
-
-    // Round so that the top would start from the row boundary
-    if (orientation == SwingConstants.VERTICAL)
-      {
-        // Completely expose the top row
-        int near = ((visibleRect.y + delta + h / 2) / h) * h;
-        int diff = visibleRect.y + delta - near;
-        delta -= diff;
-      }
-    return delta;
-    // TODO when scrollng horizontally, scroll into the column boundary.
+    int unit;
+    if (orientation == SwingConstants.HORIZONTAL)
+      unit = 100;
+    else
+      unit = getRowHeight();
+    return unit;
   }
 
   /**
