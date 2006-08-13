@@ -1,5 +1,11 @@
 2006-08-13  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JMenu.java
+	(changeListener): Renamed to menuChangeListener to avoid
+	shadowing changeListener field from AbstractButton.
+
+2006-08-13  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JTree.java
 	(getScrollableUnitIncrement): Fixed direction.
 	(getScrollableBlockIncrement): Implemented to scroll one

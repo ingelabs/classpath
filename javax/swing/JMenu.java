@@ -128,7 +128,7 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
    *
    * @see MenuChangeListener
    */
-  private ChangeListener changeListener;
+  private ChangeListener menuChangeListener;
 
   /**
    * Creates a new JMenu object.
