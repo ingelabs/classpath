@@ -866,6 +866,7 @@ public abstract class BasicTextUI extends TextUI
   protected void uninstallListeners()
   {
     textComponent.removeFocusListener(focuslistener);
+    textComponent.getDocument().removeDocumentListener(documentHandler);
   }
 
   /**
