@@ -1,3 +1,12 @@
+2006-08-13  Sven de Marothy  <sven@physto.se>
+
+	* java/util/Locale.java
+	(hashcodeCache): New field.
+	(hashCode): use the above field instead of the serialized one
+	(writeObject): Removed method.
+	(readObject): Intern strings.
+	(equals): Revert to previous method.
+
 2006-08-13  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JTabbedPane.java

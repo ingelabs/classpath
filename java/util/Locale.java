@@ -188,11 +188,17 @@ public final class Locale implements Serializable, Cloneable
   private String variant;
 
   /**
-   * This is the cached hashcode. When writing to stream, we write -1.
+   * This is where the JDK caches its hashcode. This is is only here
+   * for serialization purposes. The actual cache is hashcodeCache
    *
    * @serial should be -1 in serial streams
    */
-  private int hashcode;
+  private int hashcode = -1;
+
+  /**
+   * This is the cached hashcode. 
+   */
+  private transient int hashcodeCache;
 
   /**
    * Array storing all available locales.
@@ -324,7 +330,7 @@ public final class Locale implements Serializable, Cloneable
     this.language = language;
     this.country = country;
     this.variant = variant;
-    hashcode = language.hashCode() ^ country.hashCode() ^ variant.hashCode();
+    hashcodeCache = language.hashCode() ^ country.hashCode() ^ variant.hashCode();
   }
 
   /**
@@ -899,7 +905,7 @@ public final class Locale implements Serializable, Cloneable
    */
   public int hashCode()
   {
-    return hashcode;
+    return hashcodeCache;
   }
 
   /**
@@ -917,29 +923,9 @@ public final class Locale implements Serializable, Cloneable
       return false;
     Locale l = (Locale) obj;
 
-    return (language.equals( l.language )
-            && country.equals( l.country )
-            && variant.equals( l.variant ) );
-  }
-
-  /**
-   * Write the locale to an object stream.
-   *
-   * @param s the stream to write to
-   * @throws IOException if the write fails
-   * @serialData The first three fields are Strings representing language,
-   *             country, and variant. The fourth field is a placeholder for 
-   *             the cached hashcode, but this is always written as -1, and 
-   *             recomputed when reading it back.
-   */
-  private void writeObject(ObjectOutputStream s)
-    throws IOException
-  {
-    // Hashcode field is always written as -1.
-    int temp = hashcode;
-    hashcode = -1;
-    s.defaultWriteObject();
-    hashcode = temp;
+    return (language == l.language 
+            && country == l.country 
+            && variant == l.variant);
   }
 
   /**
@@ -954,7 +940,9 @@ public final class Locale implements Serializable, Cloneable
     throws IOException, ClassNotFoundException
   {
     s.defaultReadObject();
-    // Recompute hashcode.
-    hashcode = language.hashCode() ^ country.hashCode() ^ variant.hashCode();
+    language = language.intern();
+    country = country.intern();
+    variant = variant.intern();
+    hashcodeCache = language.hashCode() ^ country.hashCode() ^ variant.hashCode();
   }
 } // class Locale
