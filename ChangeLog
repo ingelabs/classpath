@@ -1,3 +1,13 @@
+2006-08-13  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JMenu.java
+	(MenuChangeListener): New inner class, helps firing menu events.
+	(changeListener): New field.
+	(add(text)): Create new JMenuItem here and call add(JMenuItem).
+	(add(Action)): Create Action using createActionComponent()
+	and add via add(Component).
+	(setModel): Install and uninstall MenuChangeListener here.
+
 2006-08-13  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	PR Classpath/27372

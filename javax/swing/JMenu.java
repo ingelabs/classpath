@@ -53,6 +53,8 @@ import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleContext;
 import javax.accessibility.AccessibleRole;
 import javax.accessibility.AccessibleSelection;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.plaf.MenuItemUI;
@@ -71,6 +73,36 @@ import javax.swing.plaf.MenuItemUI;
  */
 public class JMenu extends JMenuItem implements Accessible, MenuElement
 {
+  /**
+   * Receives notifications when the JMenu's ButtonModel is changed and
+   * fires menuSelected or menuDeselected events when appropriate.
+   */
+  private class MenuChangeListener
+    implements ChangeListener
+  {
+    /**
+     * Indicates the last selected state.
+     */
+    private boolean selected;
+
+    /**
+     * Receives notification when the JMenu's ButtonModel changes.
+     */
+    public void stateChanged(ChangeEvent ev)
+    {
+      ButtonModel m = (ButtonModel) ev.getSource();
+      boolean s = m.isSelected();
+      if (s != selected)
+        {
+          if (s)
+            fireMenuSelected();
+          else
+            fireMenuDeselected();
+          selected = s;
+        }
+    }
+  }
+
   private static final long serialVersionUID = 4227225638931828014L;
 
   /** A Popup menu associated with this menu, which pops up when menu is selected */
@@ -90,6 +122,13 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
   /** Location at which popup menu associated with this menu will be
      displayed */
   private Point menuLocation;
+
+  /**
+   * The ChangeListener for the ButtonModel.
+   *
+   * @see MenuChangeListener
+   */
+  private ChangeListener changeListener;
 
   /**
    * Creates a new JMenu object.
@@ -188,7 +227,7 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
    */
   public JMenuItem add(String text)
   {
-    return getPopupMenu().add(text);
+    return add(new JMenuItem(text));
   }
 
   /**
@@ -200,7 +239,10 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
    */
   public JMenuItem add(Action action)
   {
-    return getPopupMenu().add(action);
+    JMenuItem i = createActionComponent(action);
+    i.setAction(action);
+    add(i);
+    return i;
   }
 
   /**
@@ -323,7 +365,18 @@ public class JMenu extends JMenuItem implements Accessible, MenuElement
    */
   public void setModel(ButtonModel model)
   {
+    ButtonModel oldModel = getModel();
+    if (oldModel != null && changeListener != null)
+      oldModel.removeChangeListener(changeListener);
+
     super.setModel(model);
+
+    if (model != null)
+      {
+        if (changeListener == null)
+          changeListener = new MenuChangeListener();
+        model.addChangeListener(changeListener);
+      }
   }
 
   /**
