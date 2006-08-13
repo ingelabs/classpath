@@ -192,7 +192,7 @@ public final class Locale implements Serializable, Cloneable
    *
    * @serial should be -1 in serial streams
    */
-  private transient int hashcode;
+  private int hashcode;
 
   /**
    * Array storing all available locales.
@@ -917,9 +917,9 @@ public final class Locale implements Serializable, Cloneable
       return false;
     Locale l = (Locale) obj;
 
-    return (language == l.language
-            && country == l.country
-            && variant == l.variant);
+    return (language.equals( l.language )
+            && country.equals( l.country )
+            && variant.equals( l.variant ) );
   }
 
   /**
@@ -935,11 +935,11 @@ public final class Locale implements Serializable, Cloneable
   private void writeObject(ObjectOutputStream s)
     throws IOException
   {
-    s.writeObject(language);
-    s.writeObject(country);
-    s.writeObject(variant);
     // Hashcode field is always written as -1.
-    s.writeInt(-1);
+    int temp = hashcode;
+    hashcode = -1;
+    s.defaultWriteObject();
+    hashcode = temp;
   }
 
   /**
@@ -953,9 +953,7 @@ public final class Locale implements Serializable, Cloneable
   private void readObject(ObjectInputStream s)
     throws IOException, ClassNotFoundException
   {
-    language = ((String) s.readObject()).intern();
-    country = ((String) s.readObject()).intern();
-    variant = ((String) s.readObject()).intern();
+    s.defaultReadObject();
     // Recompute hashcode.
     hashcode = language.hashCode() ^ country.hashCode() ^ variant.hashCode();
   }
