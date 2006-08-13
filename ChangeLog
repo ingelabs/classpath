@@ -1,3 +1,16 @@
+2006-08-13  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	PR Classpath/23952
+	* java/util/ResourceBundle.java (CACHE_SIZE): New constant.
+	(bundleCache): Replaced with an LRU of CACHE_SIZE elements.
+	(lastDefaultLocale): Removed.
+	(emptyLocale): Likewise.
+	(BundleKey.defaultLocale): New field.
+	(BundleKey.BundleKey): Add a Locale (as a 1st positional) argument.
+	(BundleKey.set): Likewise.
+	(BundleKey.equals): Take defaultLocal field into consideration.
+	(getBundle(String, Locale, ClassLoader)): Use updated BundleKey and LRU.
+
 2006-08-13  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JMenu.java
