@@ -1,5 +1,23 @@
 2006-08-13  Roman Kennke  <kennke@aicas.com>
 
+	PR 28135
+	* javax/swing/ScrollPaneLayout.java
+	(layoutContainer): Consider the viewportBorder of the
+	JScrollPane.
+	(minimumLayoutSize): Consider the viewportBorder of the
+	JScrollPane.
+	(preferredLayoutSize): Consider the viewportBorder of the
+	JScrollPane.
+	* javax/swing/plaf/basic/BasicScrollPaneUI.java
+	(installDefaults): Also install viewportBorder if specified.
+	(paint): Paint viewportBorder if present.
+	(uninstallDefaults): Uninstall viewportBorder if appropriate.
+	Don't nullify foreground, background and font. Uninstall
+	border via LookAndFeel helper method to avoid uninstall
+	user set border.
+
+2006-08-13  Roman Kennke  <kennke@aicas.com>
+
 	PR 28696
 	* javax/swing/plaf/basic/BasicHTML.java
 	(HTMLRootView.HTMLRootView): Trigger initial layout.
