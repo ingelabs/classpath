@@ -1,5 +1,30 @@
 2006-08-13  Roman Kennke  <kennke@aicas.com>
 
+	PR 28696
+	* javax/swing/plaf/basic/BasicHTML.java
+	(HTMLRootView.HTMLRootView): Trigger initial layout.
+	(HTMLRootView.setSize): Overridden to forward to real view.
+	* javax/swing/plaf/basic/BasicToolTipUI.java
+	(PropertyChangeHandler): New inner class. Updates the HTML
+	renderer.
+	(propertyChangeHandler): New field.
+	(getMaximumSize): Add HTML width delta.
+	(getMinimumSize): Add HTML width delta.
+	(getPreferredSize): Reimplemented to use HTML view for size
+	calculation if appropriate, otherwise use simple stringWidth()
+	measurement.
+	(installListeners): Install propertyChangeHandler.
+	(uninstallListeners): Uninstall propertyChangeHandler.
+	(installUI): Update HTML renderer.
+	(uninstallUI): Update HTML renderer.
+	(paint): Reimplemented to use HTML view for rendering if
+	appropriate, simple drawString otherwise.
+	* javax/swing/plaf/metal/MetalToolTipUI.java
+	(getPreferredSize): Call super and add accelerator delta.
+	(paint): Simply call super.
+
+2006-08-13  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JMenu.java
 	(changeListener): Renamed to menuChangeListener to avoid
 	shadowing changeListener field from AbstractButton.
