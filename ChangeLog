@@ -1,5 +1,13 @@
 2006-08-13  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicTableHeaderUI.java
+	(installKeyboardAction): Unmarked as stub. Added comment
+	explaining that the RI seems to do nothing here.
+	(uninstallKeyboardAction): Unmarked as stub. Added comment
+	explaining that the RI seems to do nothing here.
+
+2006-08-13  Roman Kennke  <kennke@aicas.com>
+
 	PR 28135
 	* javax/swing/ScrollPaneLayout.java
 	(layoutContainer): Consider the viewportBorder of the
