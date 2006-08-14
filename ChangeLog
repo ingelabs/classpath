@@ -1,3 +1,10 @@
+2006-08-14  Roman Kennke  <kennke@aicas.com>
+
+	PR 28720
+	* javax/swing/JTable
+	(getScrollableUnitIncrement): Expose partially exposed
+	row in scrolling direction.
+
 2006-08-14  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/JTable (getScrollableUnitIncrement): 

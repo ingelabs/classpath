@@ -3366,7 +3366,29 @@ public class JTable
     if (orientation == SwingConstants.HORIZONTAL)
       unit = 100;
     else
-      unit = getRowHeight();
+      {
+        unit = getRowHeight();
+        // The following adjustment doesn't work for variable height rows.
+        // It fully exposes partially visible rows in the scrolling direction.
+        if (rowHeights == null)
+          {
+            if (direction > 0)
+              {
+                // Scroll down.
+                // How much pixles are exposed from the last item?
+                int exposed = (visibleRect.y + visibleRect.height) % unit;
+                if (exposed > 0 && exposed < unit - 1)
+                  unit = unit - exposed - 1;
+              }
+            else
+              {
+                // Scroll up.
+                int exposed = visibleRect.y % unit;
+                if (exposed > 0 && exposed < unit)
+                  unit = exposed;
+              }
+          }
+      }
     return unit;
   }
 
