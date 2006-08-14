@@ -1,4 +1,11 @@
 2006-08-14  Francis Kung  <fkung@redhat.com>
+
+	PR 28694
+	* java/awt/image/ColorModel.java
+	(coerceData): Added check for non-transparent images.
+
+2006-08-14  Francis Kung  <fkung@redhat.com>
+
 	* java/awt/image/BandCombineOp.java
 	(BandCombineOp): Perform checks on validity of matrix.
 	(createCompatibleDestRaster): Add checks and choose raster type dynamically.
@@ -7,6 +14,7 @@
 	(getPoint2D): Formatting change.
 
 2006-08-14  Francis Kung  <fkung@redhat.com>
+
 	* java/awt/image/AffineTransformOp.java
 	(AffineTransformOp): Updated javadoc.
 	(createCompatibleDestImage): Match behaviour of reference implementation.
