@@ -3356,7 +3356,8 @@ public class JTable
    *          The values greater than one means that more mouse wheel or similar
    *          events were generated, and hence it is better to scroll the longer
    *          distance.
-   * @author Audrius Meskauskas (audriusa@bioinformatics.org)
+   *          
+   * @author Roman Kennke (kennke@aicas.com)
    */
   public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation,
                                         int direction)

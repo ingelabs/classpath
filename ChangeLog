@@ -1,3 +1,9 @@
+2006-08-14  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/JTable (getScrollableUnitIncrement): 
+	Removing my name as the whole method body have been
+	recently completely replaced.
+
 2006-08-14  Roman Kennke  <kennke@aicas.com>
 
 	PR 28028
