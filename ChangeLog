@@ -1,3 +1,16 @@
+2006-08-14  Francis Kung  <fkung@redhat.com>
+	* java/awt/image/AffineTransformOp.java
+	(AffineTransformOp): Updated javadoc.
+	(createCompatibleDestImage): Match behaviour of reference implementation.
+	(createCompatibleDestRaster): Formatting changes.
+	(filter(BufferedImage, BufferedImage)): Create compatible destination image.
+	(filter(Raster, WritableRaster)): Re-implemented.
+	(filterBicubic): New private method.
+	(filterBilinear): New private method.
+	(filterNearest): New private method.
+	(getBounds2D): No longer fixed around one point for rotations.
+	(getInterpolationType): Add support for bicubic interpolation.
+
 2006-08-14  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/metal/MetalLookAndFeel.java
