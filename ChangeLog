@@ -1,3 +1,41 @@
+2006-08-14  Roman Kennke  <kennke@aicas.com>
+
+	PR 28693
+	* javax/swing/plaf/basic/BasicSplitPaneDivider.java
+	(BasicOneTouchButton): New inner class.
+	(DividerLayout.changeButtonOrientation): Removed.
+	(DividerLayout.positionButtons): Moved into layoutContainer.
+	(DividerLayout.layoutContainer): Reworked for correct layout.
+	(OneTouchAction): New inner class.
+	(centerOneTouchButtons): New field.
+	(BasicSplitPaneDivider): Initialize centerOneTouchButton from
+	UIManager.
+	(createLeftOneTouchButton): Reimplemented to return
+	BasicOneTouchButton.
+	(createRightOneTouchButton): Reimplemented to return
+	BasicOneTouchButton.
+	(getPreferredSize): Reimplemented to return fixed preferredSize.
+	(oneTouchExpandableChanged): Add OneTouchAction action to
+	buttons. Don't install mouse listeners.
+	(MouseHandler.mousePressed): Removed handling of one touch buttons.
+	(paint): Don't trigger extra paint for buttons.
+	(propertyChange): Revalidate splitPane when orientation is changed.
+	(setBasicSplitPaneUI): Call oneTouchExpandableChanged only when
+	oneTouchExpandable is true.
+	* javax/swing/plaf/basic/BasicSplitPaneUI.java
+	(installDefaults): Install dividerSize on the divider too.
+	* javax/swing/plaf/metal/MetalSplitPaneDivider.java
+	(MetalDividerLayout): Removed. Functionality is already
+	in BasicSplitPaneDivider.DividerLayout.
+	(MetalOneTouchButton): New inner class.
+	(BUTTON_SPRITE): New constant field.
+	(MetalSplitPaneDivider): Don't change layout.
+	(createLeftOneTouchButton): Overridden to return custom button
+	for Metal.
+	(createRightOneTouchButton): Overridden to return custom button
+	for Metal.
+	(paint): Don't trigger button painting. Call super instead.
+
 2006-08-13  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicTableHeaderUI.java

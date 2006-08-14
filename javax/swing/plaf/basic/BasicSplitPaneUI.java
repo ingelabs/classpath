@@ -1007,8 +1007,10 @@ public class BasicSplitPaneUI extends SplitPaneUI
     nonContinuousLayoutDivider = createDefaultNonContinuousLayoutDivider();
     splitPane.add(divider, JSplitPane.DIVIDER);
 
-    // There is no need to add the nonContinuousLayoutDivider
-    splitPane.setDividerSize(UIManager.getInt("SplitPane.dividerSize"));
+    // There is no need to add the nonContinuousLayoutDivider.
+    dividerSize = UIManager.getInt("SplitPane.dividerSize");
+    splitPane.setDividerSize(dividerSize);
+    divider.setDividerSize(dividerSize);
     splitPane.setOpaque(true);
   }
 
