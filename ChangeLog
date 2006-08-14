@@ -1,5 +1,11 @@
 2006-08-14  Roman Kennke  <kennke@aicas.com>
 
+	PR 28028
+	* javax/swing/text/Utilities.java
+	(getTabbedTextOffset): Don't add p0 here.
+
+2006-08-14  Roman Kennke  <kennke@aicas.com>
+
 	PR 28719
 	* javax/swing/plaf/basic/BasicScrollPaneUI.java
 	(MouseWheelHandler.mouseWheelMoved): Scroll negative delta

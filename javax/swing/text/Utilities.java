@@ -269,7 +269,7 @@ public class Utilities
         currentX += width;
       }
 
-    return pos + p0;
+    return pos;
   }
 
   /**
