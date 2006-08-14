@@ -557,6 +557,9 @@ if test "x${COMPILE_JNI}" = xyes; then
     if test "x${MOZILLA_FOUND}" = xno; then
       PKG_CHECK_MODULES(MOZILLA, mozilla-firefox-plugin, [MOZILLA_FOUND=yes], [MOZILLA_FOUND=no])
     fi
+    if test "x${MOZILLA_FOUND}" = xno; then
+      PKG_CHECK_MODULES(MOZILLA, seamonkey-plugin, [MOZILLA_FOUND=yes], [MOZILLA_FOUND=no])
+    fi
     PKG_CHECK_MODULES(GLIB, glib-2.0)
 
     AC_SUBST(MOZILLA_CFLAGS)

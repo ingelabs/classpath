@@ -1,3 +1,9 @@
+2006-08-14  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	PR classpath/27723
+	* configure.ac (MOZILLA_FOUND): Add pkg-config check for
+	seamonkey-plugin.
+
 2006-08-14  Francis Kung  <fkung@redhat.com>
 
 	PR 28694
