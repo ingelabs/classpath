@@ -1,3 +1,10 @@
+2006-08-14  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkPixbufDecoder.c
+	(query_formats): g_free 'name' after usage.
+	g_strfreev 'ch', the gdk_pixbuf_format_get_extensions instance.
+	g_strfreev 'ch', the gdk_pixbuf_format_get_mime_types instance.
+
 2006-08-14  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	PR classpath/27723
