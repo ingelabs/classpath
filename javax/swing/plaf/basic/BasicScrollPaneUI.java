@@ -280,7 +280,7 @@ public class BasicScrollPaneUI extends ScrollPaneUI
               // Scroll non scrollables.
               delta = wheel * SCROLL_NON_SCROLLABLES;
             }
-          scroll(bar, delta);
+          scroll(bar, wheel > 0 ? delta : -delta);
         }
       // If not, try to scroll horizontally
       else

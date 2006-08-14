@@ -1,5 +1,12 @@
 2006-08-14  Roman Kennke  <kennke@aicas.com>
 
+	PR 28719
+	* javax/swing/plaf/basic/BasicScrollPaneUI.java
+	(MouseWheelHandler.mouseWheelMoved): Scroll negative delta
+	when wheel is going up.
+
+2006-08-14  Roman Kennke  <kennke@aicas.com>
+
 	PR 28693
 	* javax/swing/plaf/basic/BasicSplitPaneDivider.java
 	(BasicOneTouchButton): New inner class.
