@@ -1,3 +1,55 @@
+2006-08-14  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicSplitPaneDivider.java
+	(DividerLayout.layoutContainer): Removed debug output.
+	* javax/swing/plaf/basic/BasicSplitPaneUI.java
+	(BasicHorizontalLayoutManager.axis): New field.
+	(BasicHorizontalLayoutManager.BasicHorizontalLayoutManager(int)):
+	New constructor.
+	(BasicHorizontalLayoutManager.BasicHorizontalLayoutManager()):
+	Call new axis constructor.
+	(BasicHorizontalLayoutManager.getAvailableSize): Refactored to
+	handle direction.
+	(BasicHorizontalLayoutManager.getInitialLocation): Refactored to
+	handle direction.
+	(BasicHorizontalLayoutManager.getPreferredSizeOfComponent):
+	Refactored to handle direction.
+	(BasicHorizontalLayoutManager.getSizeOfComponent): Refactored
+	to handle direction.
+	(BasicHorizontalLayoutManager.minimumLayoutSize): Refactored to
+	handle direction.
+	(BasicHorizontalLayoutManager.preferredLayoutSize): Refactored
+	to handle direction.
+	(BasicHorizontalLayoutManager.minimumSizeOfComponent): Refactored
+	to handle direction.
+	(BasicHorizontalLayoutManager.setComponentToSize): Refactored
+	to handle direction.
+	(BasicHorizontalLayoutManager.updateComponents): Don't reset
+	divider size.
+	(BasicVerticalLayoutManager.BasicVerticalLayoutManager):
+	New explicit constructor. Calls super with vertical axis.
+	(BasicVerticalLayoutManager.getAvailableSize): Functionality moved
+	to BasicHorizontalLayoutManager.
+	(BasicVerticalLayoutManager.getInitialLocation): Functionality
+	moved to BasicHorizontalLayoutManager.
+	(BasicVerticalLayoutManager.getPreferredSizeOfComponent):
+	Functionality moved to BasicHorizontalLayoutManager.
+	(BasicVerticalLayoutManager.getSizeOfComponent): Functionality
+	moved to BasicHorizontalLayoutManager.
+	(BasicVerticalLayoutManager.minimumLayoutSize): Functionality
+	moved to BasicHorizontalLayoutManager.
+	(BasicVerticalLayoutManager.minimumSizeOfComponent):
+	Functionality moved to BasicHorizontalLayoutManager.
+	(BasicVerticalLayoutManager.preferredLayoutSize): Functionality
+	moved to BasicHorizontalLayoutManager.
+	(BasicVerticalLayoutManager.setComponentToSize): Functionality
+	moved to BasicHorizontalLayoutManager.
+	* javax/swing/plaf/metal/MetalSplitPaneDivider.java
+	(BUTTON_SPRITE): Renamed to BUTTON_SPRITE_L.
+	(BUTTON_SPRITE_R): New constant field.
+	(MetalOneTouchButton.paint): Paint R sprite for right buttons,
+	L sprite for left buttons.
+	
 2006-08-14  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkPixbufDecoder.c

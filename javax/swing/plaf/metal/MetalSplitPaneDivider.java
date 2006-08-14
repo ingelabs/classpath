@@ -40,6 +40,7 @@ package javax.swing.plaf.metal;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Insets;
 
 import javax.swing.JButton;
 import javax.swing.JSplitPane;
@@ -56,12 +57,26 @@ class MetalSplitPaneDivider extends BasicSplitPaneDivider
 {
   /**
    * The button pixel data, as indices into the colors array below.
+   * This is the version for 'left' buttons.
+   *
+   * This is slightly different from the icon in Sun's version, it is
+   * one pixel smaller and is more consistent with BUTTON_SPRITE_R.
    */
-  static final byte[][] BUTTON_SPRITE = {{ 0, 0, 0, 2, 2, 0, 0, 0, 0 },
-                                         { 0, 0, 2, 1, 1, 1, 0, 0, 0 },
-                                         { 0, 2, 1, 1, 1, 1, 1, 0, 0 },
-                                         { 2, 1, 1, 1, 1, 1, 1, 1, 0 },
-                                         { 0, 3, 3, 3, 3, 3, 3, 3, 3 }};
+  static final byte[][] BUTTON_SPRITE_L = {{ 0, 0, 0, 2, 0, 0, 0, 0 },
+                                           { 0, 0, 2, 1, 1, 0, 0, 0 },
+                                           { 0, 2, 1, 1, 1, 1, 0, 0 },
+                                           { 2, 1, 1, 1, 1, 1, 1, 0 },
+                                           { 0, 3, 3, 3, 3, 3, 3, 3 }};
+
+  /**
+   * The button pixel data, as indices into the colors array below.
+   * This is the version for 'right' buttons.
+   */
+  static final byte[][] BUTTON_SPRITE_R = {{ 2, 2, 2, 2, 2, 2, 2, 2 },
+                                           { 0, 1, 1, 1, 1, 1, 1, 3 },
+                                           { 0, 0, 1, 1, 1, 1, 3, 0 },
+                                           { 0, 0, 0, 1, 1, 3, 0, 0 },
+                                           { 0, 0, 0, 0, 3, 0, 0, 0 }};
 
   private class MetalOneTouchButton
     extends JButton
@@ -133,80 +148,42 @@ class MetalSplitPaneDivider extends BasicSplitPaneDivider
           if (getModel().isPressed())
             colors[1] = colors[2];
 
+          byte[][] sprite;
           if (direction == LEFT)
+            sprite = BUTTON_SPRITE_L;
+          else
+            sprite = BUTTON_SPRITE_R;
+
+          if (orientation == JSplitPane.VERTICAL_SPLIT)
             {
-              if (orientation == JSplitPane.VERTICAL_SPLIT)
+              // Draw the sprite as it is.
+              for (int y = 0; y < sprite.length; y++)
                 {
-                  // Draw the sprite as it is.
-                  for (int y = 0; y < BUTTON_SPRITE.length; y++)
+                  byte[] line = sprite[y];
+                  for (int x = 0; x < line.length; x++)
                     {
-                      byte[] line = BUTTON_SPRITE[y];
-                      for (int x = 0; x < line.length; x++)
+                      int c = line[x];
+                      if (c != 0)
                         {
-                          int c = line[x];
-                          if (c != 0)
-                            {
-                              g.setColor(colors[c]);
-                              g.fillRect(x, y, 1, 1);
-                            }
-                        }
-                    }
-                }
-              else
-                {
-                  // Draw the sprite with swapped X and Y axis.
-                  for (int y = 0; y < BUTTON_SPRITE.length; y++)
-                    {
-                      byte[] line = BUTTON_SPRITE[y];
-                      for (int x = 0; x < line.length; x++)
-                        {
-                          int c = line[x];
-                          if (c != 0)
-                            {
-                              g.setColor(colors[c]);
-                              g.fillRect(y, x, 1, 1);
-                            }
+                          g.setColor(colors[c]);
+                          g.fillRect(x + 1, y + 1, 1, 1);
                         }
                     }
                 }
             }
           else
             {
-              if (orientation == JSplitPane.VERTICAL_SPLIT)
+              // Draw the sprite with swapped X and Y axis.
+              for (int y = 0; y < sprite.length; y++)
                 {
-                  // Draw sprite mirrored.
-                  int ySize = BUTTON_SPRITE.length;
-                  for (int y = 0; y < ySize; y++)
+                  byte[] line = sprite[y];
+                  for (int x = 0; x < line.length; x++)
                     {
-                      byte[] line = BUTTON_SPRITE[y];
-                      int xSize = line.length;
-                      for (int x = 0; x < xSize; x++)
+                      int c = line[x];
+                      if (c != 0)
                         {
-                          int c = line[x];
-                          if (c != 0)
-                            {
-                              g.setColor(colors[c]);
-                              g.fillRect(xSize - x - 1, ySize - y - 1, 1, 1);
-                            }
-                        }
-                    }
-                }
-              else
-                {
-                  // Draw sprite mirrored and X-Y-swapped.
-                  int ySize = BUTTON_SPRITE.length;
-                  for (int y = 0; y < ySize; y++)
-                    {
-                      byte[] line = BUTTON_SPRITE[y];
-                      int xSize = line.length;
-                      for (int x = 0; x < xSize; x++)
-                        {
-                          int c = line[x];
-                          if (c != 0)
-                            {
-                              g.setColor(colors[c]);
-                              g.fillRect(ySize - y - 1, xSize - x - 1, 1, 1);
-                            }
+                          g.setColor(colors[c]);
+                          g.fillRect(y + 1, x + 1, 1, 1);
                         }
                     }
                 }
@@ -261,7 +238,10 @@ class MetalSplitPaneDivider extends BasicSplitPaneDivider
     if (border != null)
       border.paintBorder(this, g, 0, 0, s.width, s.height);
 
-    MetalUtils.fillMetalPattern(splitPane, g, 2, 2, s.width - 4, s.height - 4,
+    Insets i = getInsets();
+    MetalUtils.fillMetalPattern(splitPane, g, i.left + 2, i.top + 2,
+                                s.width - i.left - i.right - 4,
+                                s.height - i.top - i.bottom - 4,
                                 light, dark);
     super.paint(g);
   }

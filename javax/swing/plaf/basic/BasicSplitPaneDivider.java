@@ -1005,7 +1005,6 @@ public class BasicSplitPaneDivider extends Container
                                        size * 2);
                   rightButton.setBounds(x, y + ONE_TOUCH_OFFSET
                                         + ONE_TOUCH_SIZE * 2, size, size * 2);
-                  System.err.println("leftButton:" + leftButton.getBounds());
                 }
               else
                 {
