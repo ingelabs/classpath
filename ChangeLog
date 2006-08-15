@@ -1,5 +1,14 @@
 2006-08-15  Roman Kennke  <kennke@aicas.com>
 
+	* java/util/zip/ZipFile.java
+	(UTF8DECODER): Removed.
+	(UTF8CHARSET): New constant field. Stores the UTF8 charset.
+	(utf8Decoder): New instance field.
+	(decodeChars): Lazily create UTF8 decoder. Use instance
+	field rather than a static field to avoid corruption.
+
+2006-08-15  Roman Kennke  <kennke@aicas.com>
+
 	* java/io/PrintStream.java
 	(line_separator): Provide default for system property.
 	* java/io/FileDescriptor.java

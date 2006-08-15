@@ -520,10 +520,14 @@ public class ZipFile implements ZipConstants
   private static final class PartialInputStream extends InputStream
   {
     /**
-     * The UTF-8 decoder use for decoding the filenames.
+     * The UTF-8 charset use for decoding the filenames.
      */
-    private static final CharsetDecoder UTF8DECODER =
-      Charset.forName("UTF-8").newDecoder();
+    private static final Charset UTF8CHARSET = Charset.forName("UTF-8");
+
+    /**
+     * The actual UTF-8 decoder. Created on demand. 
+     */
+    private CharsetDecoder utf8Decoder;
 
     private final RandomAccessFile raf;
     private final byte[] buffer;
@@ -734,8 +738,10 @@ public class ZipFile implements ZipConstants
       else
         {
           ByteBuffer bufferBuffer = ByteBuffer.wrap(buffer, pos, length);
-          UTF8DECODER.reset();
-          char [] characters = UTF8DECODER.decode(bufferBuffer).array();
+          if (utf8Decoder == null)
+            utf8Decoder = UTF8CHARSET.newDecoder();
+          utf8Decoder.reset();
+          char [] characters = utf8Decoder.decode(bufferBuffer).array();
           result = String.valueOf(characters);
         }
       return result;
