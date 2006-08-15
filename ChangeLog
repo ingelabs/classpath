@@ -1,3 +1,11 @@
+2006-08-15  Roman Kennke  <kennke@aicas.com>
+
+	* java/io/PrintStream.java
+	(line_separator): Provide default for system property.
+	* java/io/FileDescriptor.java
+	(valid): Create local copy of channel field for better
+	threading safetly.
+
 2006-08-15  Ingo Proetel  <proetel@aicas.com>
 
 	* java/util/zip/ZipFile.java
