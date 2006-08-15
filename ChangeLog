@@ -1,3 +1,15 @@
+2006-08-15  Ingo Proetel  <proetel@aicas.com>
+
+	* java/util/zip/ZipFile.java
+	(PartialInputStream.UTF8DECODER): New constant field, used
+	for decoding UTF8 strings.
+	(readLeShort): Access buffer directly if it has enough bytes
+	available.
+	(readLeInt): Access buffer directly if it has enough bytes
+	available.
+	(decodeChars): New helper method for decoding UTF8 strings.
+	(readString): Avoid NIO charset decoder if possible.
+
 2006-08-15  Roman Kennke  <kennke@aicas.com>
 
 	* java/util/Vector.java
@@ -7,18 +19,6 @@
 	(retainAll): Don't explicitly null-check here. The RI allows
 	null arguments when Vector is empty. In other cases we
 	implicitly throw an NPE.
-
-2006-08-15  Roman Kennke  <kennke@aicas.com>
-
-	* java/io/File.java
-	(getAbsolutePath): Fetch absolute path from
-	VMFile.getAbsolutePath(). Moved actual impl to there.
-	(isAbsolute): Let VMFile determine the absoluteness.
-	(toURL): Let VMFile convert the filename.
-	* vm/reference/java/io/VMFile.java
-	(getAbsolutePath): New method.
-	(isAbsolute): New method.
-	(toURL): New method.
 
 2006-08-14  Roman Kennke  <kennke@aicas.com>
 
