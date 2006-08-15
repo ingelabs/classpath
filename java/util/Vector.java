@@ -720,9 +720,6 @@ public class Vector extends AbstractList
    */
   public synchronized boolean removeAll(Collection c)
   {
-    if (c == null)
-      throw new NullPointerException();
-
     int i;
     int j;
     for (i = 0; i < elementCount; i++)
@@ -749,9 +746,6 @@ public class Vector extends AbstractList
    */
   public synchronized boolean retainAll(Collection c)
   {
-    if (c == null)
-      throw new NullPointerException();
-
     int i;
     int j;
     for (i = 0; i < elementCount; i++)

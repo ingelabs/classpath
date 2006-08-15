@@ -1,3 +1,25 @@
+2006-08-15  Roman Kennke  <kennke@aicas.com>
+
+	* java/util/Vector.java
+	(removeAll): Don't explicitly null-check here. The RI allows
+	null arguments when Vector is empty. In other cases we
+	implicitly throw an NPE.
+	(retainAll): Don't explicitly null-check here. The RI allows
+	null arguments when Vector is empty. In other cases we
+	implicitly throw an NPE.
+
+2006-08-15  Roman Kennke  <kennke@aicas.com>
+
+	* java/io/File.java
+	(getAbsolutePath): Fetch absolute path from
+	VMFile.getAbsolutePath(). Moved actual impl to there.
+	(isAbsolute): Let VMFile determine the absoluteness.
+	(toURL): Let VMFile convert the filename.
+	* vm/reference/java/io/VMFile.java
+	(getAbsolutePath): New method.
+	(isAbsolute): New method.
+	(toURL): New method.
+
 2006-08-14  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicSplitPaneDivider.java
