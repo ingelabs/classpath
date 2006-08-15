@@ -298,47 +298,61 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
           if(!decrButton.isEnabled())
             return;
         
-          // The scroll location may be zero but the offset
-          // greater than zero because of an adjustement to
-          // make a partially visible tab completely visible.
-          if (currentScrollLocation > 0)
-            currentScrollLocation--;
+           // The scroll location may be zero but the offset
+           // greater than zero because of an adjustement to
+           // make a partially visible tab completely visible.
+           if (currentScrollLocation > 0)
+             currentScrollLocation--;
         
-          // Set the offset back to 0 and recompute it.
-          currentScrollOffset = 0;
+           // Set the offset back to 0 and recompute it.
+           currentScrollOffset = 0;
 
-          switch (placement)
-            {
-              case JTabbedPane.TOP:
-              case JTabbedPane.BOTTOM: 
-                // Take the tab area inset into account.
-                if (currentScrollLocation > 0)
-                  currentScrollOffset = getTabAreaInsets(placement).left;
-                // Recompute scroll offset.
-        for (int i = 0; i < currentScrollLocation; i++)
-          currentScrollOffset += rects[i].width;
-        break;
-        default:
-          // Take the tab area inset into account.
-          if (currentScrollLocation > 0)
-            currentScrollOffset = getTabAreaInsets(placement).top;
+           switch (placement)
+             {
+               case JTabbedPane.TOP:
+               case JTabbedPane.BOTTOM: 
+                 // Take the tab area inset into account.
+                 if (currentScrollLocation > 0)
+                   currentScrollOffset = getTabAreaInsets(placement).left;
+                 // Recompute scroll offset.
+                 for (int i = 0; i < currentScrollLocation; i++)
+                   currentScrollOffset += rects[i].width;
+                 break;
+               default:
+                 // Take the tab area inset into account.
+                 if (currentScrollLocation > 0)
+                   currentScrollOffset = getTabAreaInsets(placement).top;
+                
+                 for (int i = 0; i < currentScrollLocation; i++)
+                   currentScrollOffset += rects[i].height;
+             }          
         
-          for (int i = 0; i < currentScrollLocation; i++)
-            currentScrollOffset += rects[i].height;
-        }          
+           updateViewPosition();
+           updateButtons();
         
-       updateViewPosition();
-       updateButtons();
-        
-       tabPane.repaint();
-      } else if (tabPane.isEnabled())
+           tabPane.repaint();
+        }
+      else if (tabPane.isEnabled())
         {
           int index = tabForCoordinate(tabPane, e.getX(), e.getY());
+          if (!tabPane.isEnabledAt(index))
+            return;
+          
           if (tabPane.getTabLayoutPolicy() == JTabbedPane.SCROLL_TAB_LAYOUT
               && s == panel)
+            {
               scrollTab(index, placement);
+              
+              tabPane.setSelectedIndex(index);
+              tabPane.repaint();
+            }
+          else
+            {
+              tabPane.setSelectedIndex(index);
+              tabPane.revalidate();
+              tabPane.repaint();
+            }
           
-          tabPane.setSelectedIndex(index);
         }
       
     }

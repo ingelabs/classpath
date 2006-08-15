@@ -1,5 +1,11 @@
 2006-08-16  Robert Schuster  <robertschuster@fsfe.org>
 
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java:
+	(MouseHandler.mousePressed): Fixed indentation, intercept clicks on
+	disabled tabs, do proper revalidation in WRAP_TAB_LAYOUT mode.
+
+2006-08-16  Robert Schuster  <robertschuster@fsfe.org>
+
 	* javax/swing/text/WrappedPlainView.java:
 	(WrappedLine.modelToView): Provide variable pos as argument and not a fixed value.
 	(calculateBreakPosition): Add p0 to return value.
