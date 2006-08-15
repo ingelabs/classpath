@@ -1,3 +1,9 @@
+2006-08-16  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/text/WrappedPlainView.java:
+	(WrappedLine.modelToView): Provide variable pos as argument and not a fixed value.
+	(calculateBreakPosition): Add p0 to return value.
+
 2006-08-15  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java

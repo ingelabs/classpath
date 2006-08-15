@@ -300,8 +300,8 @@ public class WrappedPlainView extends BoxView implements TabExpander
       }
 
     if (wordWrap)
-      return Utilities.getBreakLocation(lineBuffer, metrics, alloc.x,
-                                          alloc.x + alloc.width, this, p0);
+      return p0 + Utilities.getBreakLocation(lineBuffer, metrics, alloc.x,
+                                          alloc.x + alloc.width, this, 0);
     else
       return p0 + Utilities.getTabbedTextOffset(lineBuffer, metrics, alloc.x,
                                              alloc.x + alloc.width, this, 0,
@@ -571,7 +571,7 @@ public class WrappedPlainView extends BoxView implements TabExpander
       // Throwing a BadLocationException is an observed behavior of the RI.
       if (rect.isEmpty())
         throw new BadLocationException("Unable to calculate view coordinates "
-                                       + "when allocation area is empty.", 5);
+                                       + "when allocation area is empty.", pos);
       
       Segment s = getLineBuffer();
       int lineHeight = metrics.getHeight();
