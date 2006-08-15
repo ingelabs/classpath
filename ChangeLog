@@ -1,5 +1,11 @@
 2006-08-15  Roman Kennke  <kennke@aicas.com>
 
+	* java/util/Vector.java
+	(removeAll): Added comment about NPE.
+	(retainAll): Added comment about NPE.
+
+2006-08-15  Roman Kennke  <kennke@aicas.com>
+
 	* java/util/zip/ZipFile.java
 	(UTF8DECODER): Removed.
 	(UTF8CHARSET): New constant field. Stores the UTF8 charset.

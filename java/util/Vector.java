@@ -720,6 +720,11 @@ public class Vector extends AbstractList
    */
   public synchronized boolean removeAll(Collection c)
   {
+    // The NullPointerException is thrown implicitly when the Vector
+    // is not empty and c is null. The RI allows null arguments when
+    // the vector is empty. See Mauve test:
+    // gnu/testlet/java/util/Vector/removeAll.java
+
     int i;
     int j;
     for (i = 0; i < elementCount; i++)
@@ -746,6 +751,11 @@ public class Vector extends AbstractList
    */
   public synchronized boolean retainAll(Collection c)
   {
+    // The NullPointerException is thrown implicitly when the Vector
+    // is not empty and c is null. The RI allows null arguments when
+    // the vector is empty. See Mauve test:
+    // gnu/testlet/java/util/Vector/retainAll.java
+
     int i;
     int j;
     for (i = 0; i < elementCount; i++)
