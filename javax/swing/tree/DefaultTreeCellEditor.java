@@ -59,6 +59,7 @@ import javax.swing.Icon;
 import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.CellEditorListener;
@@ -76,12 +77,6 @@ import javax.swing.event.TreeSelectionListener;
 public class DefaultTreeCellEditor
   implements ActionListener, TreeCellEditor, TreeSelectionListener
 {
-  /**
-   * The number of the fast mouse clicks, required to start the editing 
-   * session.
-   */
-  static int CLICK_COUNT_TO_START = 3;
-  
   /**
    * This container that appears on the tree during editing session.
    * It contains the editing component displays various other editor - 
@@ -367,20 +362,12 @@ public class DefaultTreeCellEditor
   public DefaultTreeCellEditor(JTree tree, DefaultTreeCellRenderer renderer,
                                TreeCellEditor editor)
   {
-    setTree(tree);
     this.renderer = renderer;
-    
-    if (editor == null)
-      editor = createTreeCellEditor();
-    else
-      editor.addCellEditorListener(new RealEditorListener());
-    
     realEditor = editor;
-    
-    lastPath = tree.getLeadSelectionPath();
-    tree.addTreeSelectionListener(this);
+    if (realEditor == null)
+      realEditor = createTreeCellEditor();
     editingContainer = createContainer();
-    setFont(UIManager.getFont("Tree.font"));
+    setTree(tree);
     setBorderSelectionColor(UIManager.getColor("Tree.selectionBorderColor"));
   }
 
@@ -517,7 +504,7 @@ public class DefaultTreeCellEditor
 
   /**
    * Returns the value currently being edited (requests it from the
-   * {@link realEditor}.
+   * {@link #realEditor}.
    * 
    * @return the value currently being edited
    */
@@ -535,16 +522,48 @@ public class DefaultTreeCellEditor
    * @return true if editing can be started
    */
   public boolean isCellEditable(EventObject event)
-  { 
-    if (editingComponent == null)
-        configureEditingComponent(tree, renderer, realEditor);
-    
-    if (editingComponent != null && realEditor.isCellEditable(event))
+  {
+    boolean ret = false;
+    boolean ed = false;
+    if (event != null)
       {
-        prepareForEditing();
-        return true;
+        if (event.getSource() instanceof JTree)
+          {
+            setTree((JTree) event.getSource());
+            if (event instanceof MouseEvent)
+              {
+                MouseEvent me = (MouseEvent) event;
+                TreePath path = tree.getPathForLocation(me.getX(), me.getY());
+                ed = lastPath != null && path != null && lastPath.equals(path);
+                if (path != null)
+                  {
+                    lastRow = tree.getRowForPath(path);
+                    Object val = path.getLastPathComponent();
+                    boolean isSelected = tree.isRowSelected(lastRow);
+                    boolean isExpanded = tree.isExpanded(path);
+                    TreeModel m = tree.getModel();
+                    boolean isLeaf = m.isLeaf(val);
+                    determineOffset(tree, val, isSelected, isExpanded, isLeaf,
+                                    lastRow);
+                  }
+              }
+          }
       }
-    return false;
+    if (! realEditor.isCellEditable(event))
+      ret = false;
+    else 
+      {
+        if (canEditImmediately(event))
+          ret = true;
+        else if (ed && shouldStartEditingTimer(event))
+          startEditingTimer();
+        else if (timer != null && timer.isRunning())
+          timer.stop();
+      }
+    if (ret)
+      prepareForEditing();
+    return ret;
+        
   }
 
   /**
@@ -653,6 +672,8 @@ public class DefaultTreeCellEditor
    */
   public void actionPerformed(ActionEvent e)
   {
+    if (tree != null && lastPath != null)
+      tree.startEditingAtPath(lastPath);
   }
 
   /**
@@ -664,7 +685,17 @@ public class DefaultTreeCellEditor
    */
   protected void setTree(JTree newTree)
   {
-    tree = newTree;
+    if (tree != newTree)
+      {
+        if (tree != null)
+          tree.removeTreeSelectionListener(this);
+        tree = newTree;
+        if (tree != null)
+          tree.addTreeSelectionListener(this);
+
+        if (timer != null)
+          timer.stop();
+      }
   }
 
   /**
@@ -675,10 +706,14 @@ public class DefaultTreeCellEditor
    */
   protected boolean shouldStartEditingTimer(EventObject event)
   {
-    if ((event instanceof MouseEvent) && 
-        ((MouseEvent) event).getClickCount() == 1)
-      return true;
-    return false;
+    boolean ret = false;
+    if (event instanceof MouseEvent)
+      {
+        MouseEvent me = (MouseEvent) event;
+        ret = SwingUtilities.isLeftMouseButton(me) && me.getClickCount() == 1
+              && inHitRegion(me.getX(), me.getY());
+      }
+    return ret;
   }
 
   /**
@@ -686,8 +721,12 @@ public class DefaultTreeCellEditor
    */
   protected void startEditingTimer()
   {
-    if (timer != null)
-      timer.start();
+    if (timer == null)
+      {
+        timer = new Timer(1200, this);
+        timer.setRepeats(false);
+      }
+    timer.start();
   }
 
   /**
@@ -723,7 +762,6 @@ public class DefaultTreeCellEditor
   protected boolean inHitRegion(int x, int y)
   {
     Rectangle bounds = tree.getPathBounds(lastPath);
-    
     return bounds.contains(x, y);
   }
 
@@ -754,8 +792,8 @@ public class DefaultTreeCellEditor
    */
   protected void prepareForEditing()
   {
-    editingContainer.removeAll();
-    editingContainer.add(editingComponent);
+    if (editingComponent != null)
+      editingContainer.add(editingComponent);
   }
 
   /**
@@ -776,10 +814,11 @@ public class DefaultTreeCellEditor
    */
   protected TreeCellEditor createTreeCellEditor()
   {
-    DefaultCellEditor editor = new DefaultCellEditor(new DefaultTreeCellEditor.DefaultTextField(
-                                  UIManager.getBorder("Tree.selectionBorder")));
+    Border border = UIManager.getBorder("Tree.editorBorder");
+    JTextField tf = new DefaultTreeCellEditor.DefaultTextField(border);
+    DefaultCellEditor editor = new DefaultCellEditor(tf);
     editor.addCellEditorListener(new RealEditorListener());
-    editor.setClickCountToStart(CLICK_COUNT_TO_START);
+    editor.setClickCountToStart(1);
     realEditor = editor;
     return editor;
   }

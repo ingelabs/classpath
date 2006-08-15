@@ -38,7 +38,6 @@
 
 package javax.swing.plaf.basic;
 
-import gnu.classpath.NotImplementedException;
 import gnu.javax.swing.tree.GnuPath;
 
 import java.awt.Color;
@@ -49,6 +48,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Label;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -274,13 +274,6 @@ public class BasicTreeUI
 
   TreeModelListener treeModelListener;
 
-  /**
-   * This timer fires the editing action after about 1200 ms if not reset during
-   * that time. It handles the editing start with the single mouse click (and
-   * not the double mouse click) on the selected tree node.
-   */
-  Timer startEditTimer;
-  
   /**
    * The zero size icon, used for expand controls, if they are not visible.
    */
@@ -590,8 +583,7 @@ public class BasicTreeUI
    */
   protected void setCellEditor(TreeCellEditor editor)
   {
-    cellEditor = editor;
-    createdCellEditor = true;
+    updateCellEditor();
   }
 
   /**
@@ -611,7 +603,7 @@ public class BasicTreeUI
    */
   protected void setEditable(boolean newValue)
   {
-    tree.setEditable(newValue);
+    updateCellEditor();
   }
 
   /**
@@ -787,12 +779,13 @@ public class BasicTreeUI
    */
   public boolean stopEditing(JTree tree)
   {
-    if (isEditing(tree))
+    boolean ret = false;
+    if (editingComponent != null && cellEditor.stopCellEditing())
       {
         completeEditing(false, false, true);
-        finish();
+        ret = true;
       }
-    return ! isEditing(tree);
+    return ret;
   }
 
   /**
@@ -818,7 +811,9 @@ public class BasicTreeUI
    */
   public void startEditingAtPath(JTree tree, TreePath path)
   {
-    startEditing(path, null);
+    tree.scrollPathToVisible(path);
+    if (path != null && tree.isVisible(path))
+      startEditing(path, null);
   }
 
   /**
@@ -1167,9 +1162,33 @@ public class BasicTreeUI
    */
   protected void updateCellEditor()
   {
-    if (tree.isEditable() && cellEditor == null)
-      setCellEditor(createDefaultCellEditor());
-    createdCellEditor = true;
+    completeEditing();
+    TreeCellEditor newEd = null;
+    if (tree != null && tree.isEditable())
+      {
+        newEd = tree.getCellEditor();
+        if (newEd == null)
+          {
+            newEd = createDefaultCellEditor();
+            if (newEd != null)
+              {
+                tree.setCellEditor(newEd);
+                createdCellEditor = true;
+              }
+          }
+      }
+    // Update listeners.
+    if (newEd != cellEditor)
+      {
+        if (cellEditor != null && cellEditorListener != null)
+          cellEditor.removeCellEditorListener(cellEditorListener);
+        cellEditor = newEd;
+        if (cellEditorListener == null)
+          cellEditorListener = createCellEditorListener();
+        if (cellEditor != null && cellEditorListener != null)
+          cellEditor.addCellEditorListener(cellEditorListener);
+        createdCellEditor = false;
+      }
   }
 
   /**
@@ -1772,11 +1791,15 @@ public class BasicTreeUI
    */
   protected boolean startEditing(TreePath path, MouseEvent event)
   {
-    updateCellEditor();
-    TreeCellEditor ed = getCellEditor();
+    // Maybe cancel editing.
+    if (isEditing(tree) && tree.getInvokesStopCellEditing()
+        && ! stopEditing(tree))
+      return false;
 
-    if (ed != null && (event == EDIT || ed.shouldSelectCell(event))
-        && ed.isCellEditable(event))
+    completeEditing();
+
+    TreeCellEditor ed = cellEditor;
+    if (ed != null && ed.isCellEditable(event))
       {
         Rectangle bounds = getPathBounds(tree, path);
 
@@ -1802,11 +1825,24 @@ public class BasicTreeUI
 
         // The editing component must be added to its container. We add the
         // container, not the editing component itself.
-        Component container = editingComponent.getParent();
-        container.setBounds(bounds);
-        tree.add(container);
+        editingComponent.setBounds(bounds);
+        tree.add(editingComponent);
         editingComponent.requestFocus();
 
+        // Register MouseInputHandler to redispatch initial mouse events
+        // correctly.
+        if (event != null)
+          {
+            Point p = SwingUtilities.convertPoint(tree, event.getX(), event.getY(),
+                                                  editingComponent);
+            Component active =
+              SwingUtilities.getDeepestComponentAt(editingComponent, p.x, p.y);
+            if (active != null)
+              {
+                MouseInputHandler ih = new MouseInputHandler(tree, active, event);
+                
+              }
+          }
         return true;
       }
     return false;
@@ -2347,9 +2383,15 @@ public class BasicTreeUI
    * events.
    */
   public class MouseHandler
-      extends MouseAdapter
-      implements MouseMotionListener
+    extends MouseAdapter
+    implements MouseMotionListener
   {
+    
+    /**
+     * If the cell has been selected on mouse press.
+     */
+    private boolean selectedOnPress;
+
     /**
      * Constructor
      */
@@ -2365,76 +2407,15 @@ public class BasicTreeUI
      */
     public void mousePressed(MouseEvent e)
     {
-      // Any mouse click cancels the previous waiting edit action, initiated
-      // by the single click on the selected node.
-      if (startEditTimer != null)
+      if (! e.isConsumed())
         {
-          startEditTimer.stop();
-          startEditTimer = null;
+          handleEvent(e);
+          selectedOnPress = true;
         }
-
-      if (tree != null && tree.isEnabled())
+      else
         {
-          // Always end the current editing session if clicked on the
-          // tree and outside the bounds of the editing component.
-          if (isEditing(tree))
-            if (!stopEditing(tree))
-            // Return if we have failed to cancel the editing session.
-              return;
- 
-          int x = e.getX();
-          int y = e.getY();
-          TreePath path = getClosestPathForLocation(tree, x, y);
-
-          if (path != null)
-            {
-              Rectangle bounds = getPathBounds(tree, path);
-              if (SwingUtilities.isLeftMouseButton(e))
-                checkForClickInExpandControl(path, x, y);
-
-              if (x > bounds.x && x <= (bounds.x + bounds.width))
-                {
-                  TreePath currentLead = tree.getLeadSelectionPath();
-                  if (currentLead != null && currentLead.equals(path)
-                      && e.getClickCount() == 1 && tree.isEditable())
-                    {
-                      // Schedule the editing session.
-                      final TreePath editPath = path;
-                      
-                      // The code below handles the required click-pause-click
-                      // functionality which must be present in the tree UI. 
-                      // If the next click comes after the
-                      // time longer than the double click interval AND
-                      // the same node stays focused for the WAIT_TILL_EDITING
-                      // duration, the timer starts the editing session.
-                      if (startEditTimer != null)
-                        startEditTimer.stop();
-
-                      startEditTimer = new Timer(WAIT_TILL_EDITING,
-                         new ActionListener()
-                           {
-                              public void actionPerformed(ActionEvent e)
-                                {
-                                   startEditing(editPath, EDIT);
-                                }
-                            });
-                      
-                      startEditTimer.setRepeats(false);
-                      startEditTimer.start();
-                    }
-                  else
-                    {
-                      if (e.getClickCount() == 2)
-                        toggleExpandState(path);
-                      else
-                        selectPathForEvent(path, e);
-                    }
-                }
-            }
+          selectedOnPress = false;
         }
-
-      // We need to request the focus.
-      tree.requestFocusInWindow();
     }
 
     /**
@@ -2446,9 +2427,8 @@ public class BasicTreeUI
      * @param e is the mouse event that occured
      */
     public void mouseDragged(MouseEvent e)
-    throws NotImplementedException
     {
-      // TODO: What should be done here, if anything?
+      // Nothing to do here.
     }
 
     /**
@@ -2458,9 +2438,8 @@ public class BasicTreeUI
      * @param e the mouse event that occured
      */
     public void mouseMoved(MouseEvent e)
-    throws NotImplementedException
     {
-      // TODO: What should be done here, if anything?
+      // Nothing to do here.
     }
 
     /**
@@ -2469,9 +2448,46 @@ public class BasicTreeUI
      * @param e is the mouse event that occured
      */
     public void mouseReleased(MouseEvent e)
-    throws NotImplementedException
     {
-      // TODO: What should be done here, if anything?
+      if (! e.isConsumed() && ! selectedOnPress)
+        handleEvent(e);
+    }
+
+    /**
+     * Handles press and release events.
+     *
+     * @param e the mouse event
+     */
+    private void handleEvent(MouseEvent e)
+    {
+      if (tree != null && tree.isEnabled())
+        {
+          // Maybe stop editing.
+          if (isEditing(tree) && tree.getInvokesStopCellEditing()
+              && ! stopEditing(tree))
+            return;
+
+          // Explicitly request focus.
+          tree.requestFocusInWindow();
+
+          int x = e.getX();
+          int y = e.getY();
+          TreePath path = getClosestPathForLocation(tree, x, y);
+          if (path != null)
+            {
+              Rectangle b = getPathBounds(tree, path);
+              if (y <= b.y + b.height)
+                {
+                  if (SwingUtilities.isLeftMouseButton(e))
+                    checkForClickInExpandControl(path, x, y);
+                  if (x > b.x && x <= b.x + b.width)
+                    {
+                      if (! startEditing(path, e))
+                        selectPathForEvent(path, e);
+                    }
+                }
+            }
+        }
     }
   }
 
@@ -2501,6 +2517,9 @@ public class BasicTreeUI
     {
       this.source = source;
       this.destination = destination;
+      source.addMouseListener(this);
+      source.addMouseMotionListener(this);
+      dispatch(e);
     }
 
     /**
@@ -2510,9 +2529,8 @@ public class BasicTreeUI
      * @param e mouse event that occured
      */
     public void mouseClicked(MouseEvent e)
-    throws NotImplementedException
     {
-      // TODO: What should be done here, if anything?
+      dispatch(e);
     }
 
     /**
@@ -2521,9 +2539,8 @@ public class BasicTreeUI
      * @param e mouse event that occured
      */
     public void mousePressed(MouseEvent e)
-    throws NotImplementedException
     {
-      // TODO: What should be done here, if anything?
+      // Nothing to do here.
     }
 
     /**
@@ -2532,9 +2549,9 @@ public class BasicTreeUI
      * @param e mouse event that occured
      */
     public void mouseReleased(MouseEvent e)
-    throws NotImplementedException
     {
-      // TODO: What should be done here, if anything?
+      dispatch(e);
+      removeFromSource();
     }
 
     /**
@@ -2543,9 +2560,9 @@ public class BasicTreeUI
      * @param e mouse event that occured
      */
     public void mouseEntered(MouseEvent e)
-    throws NotImplementedException
     {
-      // TODO: What should be done here, if anything?
+      if (! SwingUtilities.isLeftMouseButton(e))
+        removeFromSource();
     }
 
     /**
@@ -2554,9 +2571,9 @@ public class BasicTreeUI
      * @param e mouse event that occured
      */
     public void mouseExited(MouseEvent e)
-    throws NotImplementedException
     {
-      // TODO: What should be done here, if anything?
+      if (! SwingUtilities.isLeftMouseButton(e))
+        removeFromSource();
     }
 
     /**
@@ -2568,9 +2585,8 @@ public class BasicTreeUI
      * @param e mouse event that occured
      */
     public void mouseDragged(MouseEvent e)
-    throws NotImplementedException
     {
-      // TODO: What should be done here, if anything?
+      dispatch(e);
     }
 
     /**
@@ -2580,18 +2596,37 @@ public class BasicTreeUI
      * @param e mouse event that occured
      */
     public void mouseMoved(MouseEvent e)
-    throws NotImplementedException
     {
-      // TODO: What should be done here, if anything?
+      removeFromSource();
     }
 
     /**
      * Removes event from the source
      */
     protected void removeFromSource()
-    throws NotImplementedException
     {
-      // TODO: Implement this properly.
+      if (source != null)
+        {
+          source.removeMouseListener(this);
+          source.removeMouseMotionListener(this);
+        }
+      source = null;
+      destination = null;
+    }
+
+    /**
+     * Redispatches mouse events to the destination.
+     *
+     * @param e the mouse event to redispatch
+     */
+    private void dispatch(MouseEvent e)
+    {
+      if (destination != null)
+        {
+          MouseEvent e2 = SwingUtilities.convertMouseEvent(source, e,
+                                                           destination);
+          destination.dispatchEvent(e2);
+        }
     }
   }
 
@@ -2706,6 +2741,9 @@ public class BasicTreeUI
           if (treeState != null)
             treeState.invalidateSizes();
         }
+      else if (property.equals(JTree.EDITABLE_PROPERTY))
+        setEditable(((Boolean) event.getNewValue()).booleanValue());
+        
     }
   }
 
@@ -2714,7 +2752,7 @@ public class BasicTreeUI
    * properties of the model change.
    */
   public class SelectionModelPropertyChangeHandler
-      implements PropertyChangeListener
+    implements PropertyChangeListener
   {
 
     /**
@@ -2732,9 +2770,8 @@ public class BasicTreeUI
      *          the property that has changed.
      */
     public void propertyChange(PropertyChangeEvent event)
-    throws NotImplementedException
     {
-      // TODO: What should be done here, if anything?
+      treeSelectionModel.resetRowSelection();
     }
   }
 

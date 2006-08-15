@@ -1,3 +1,64 @@
+2006-08-15  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(MouseHandler.selectedOnPress): New field.
+	(MouseHandler.handleEvent): New helper method for handling
+	selection and start/stop editing for mouse events.
+	(MouseHandler.mouseDragged): Commented as no-op method.
+	(MouseHandler.mouseMoved): Commented as no-op method.
+	(MouseHandler.mousePressed): Use handleEvent() to handle
+	selection and editing handling.
+	(MouseHandler.mouseReleased): Use handleEvent() to handle
+	selection and editing handling.
+	(MouseInputHandler.MouseInputHandler): Register itself
+	as mouse listener on source. Redispatch event to
+	destination.
+	(MouseInputHandler.dispatch): New helper method.
+	(MouseInputHandler.mouseClicked): Dispatch event.
+	(MouseInputHandler.mouseDragged): Dispatch event.
+	(MouseInputHandler.mouseEntered): Stop dispatching
+	if dragging stopped.
+	(MouseInputHandler.mouseExited): Stop dispatching
+	if dragging stopped.
+	(MouseInputHandler.mouseMoved): Stop dispatching.
+	(MouseInputHandler.mousePressed): Marked as no-op.
+	(MouseInputHandler.mouseReleased): Dispatch and stop
+	dispatching afterwards.
+	(MouseInputHandler.removeFromSource): Implemented.
+	(PropertyChangeHandler.propertyChange): Also handle
+	editable property changes by calling setEditable().
+	(SelectionModelPropertyChangeHandler.propertyChange):
+	Reset row selection.
+	(startEditTimer): Removed.
+	(setCellEditor): Call updateEditor().
+	(setEditable): Call updateEditor().
+	(startEditingAtPath): Make path fully visible before starting
+	editing.
+	(startEditing): Maybe cancel previous edit session. Add
+	editing component itself, not its parent container.
+	Register MouseInputHandler for correctly redispatching
+	initial events.
+	(stopEditing): Message cellEditor and only completeEditing()
+	when approved by cell editor.
+	(updateCellEditor): Complete editing before updating
+	the cell editor. Get cell editor from JTree if possible,
+	otherwise create default editor. Update the listeners
+	on the editor.
+	* javax/swing/tree/DefaultTreeCellEditor.java
+	(CLICK_COUNT_TO_START): Removed.
+	(DefaultTreeCellEditor): Install correct border. Let setTree()
+	update the listeners. Don't initialize lastPath and font yet.
+	(actionPerformed): Implemented to start editing.
+	(createTreeCellEditor): Set click count to start to 1, rather than
+	3.
+	(isCellEditable): Prepare editor here. Determine if we can
+	start immediately, or if we trigger a timer to do so.
+	(prepareForEditing): Don't removeAll() (not necessary),
+	check editingComponent to be non-null.
+	(setTree): Update listeners.
+	(shouldStartEditingTimer): Check for left mouse button.
+	(startEditingTimer): Lazily create timer.
+
 2006-08-15  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/dnd/DropTargetDragEvent.java
