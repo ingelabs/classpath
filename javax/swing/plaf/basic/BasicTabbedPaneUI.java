@@ -252,7 +252,16 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
   {
     public void mouseReleased(MouseEvent e)
     {
-     // Nothing to do here. 
+      Object s = e.getSource();
+
+      // Event may originate from the viewport in
+      // SCROLL_TAB_LAYOUT mode. It is redisptached
+      // through the tabbed pane then.
+      if (tabPane != e.getSource())
+        {
+          redispatchEvent(e);
+          e.setSource(s);
+        }
     }
     
     /**
@@ -264,6 +273,16 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
     public void mousePressed(MouseEvent e)
     {
       Object s = e.getSource();
+
+      // Event may originate from the viewport in
+      // SCROLL_TAB_LAYOUT mode. It is redisptached
+      // through the tabbed pane then.
+      if (tabPane != e.getSource())
+        {
+          redispatchEvent(e);
+          e.setSource(s);
+        }
+      
       int placement = tabPane.getTabPlacement();
     
       if (s == incrButton)
@@ -361,11 +380,22 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
      * Receives notification when the mouse pointer has entered the tabbed
      * pane.
      *
-     * @param ev the mouse event
+     * @param e the mouse event
      */
-    public void mouseEntered(MouseEvent ev)
+    public void mouseEntered(MouseEvent e)
     {
-      int tabIndex = tabForCoordinate(tabPane, ev.getX(), ev.getY());
+      Object s = e.getSource();
+
+      // Event may originate from the viewport in
+      // SCROLL_TAB_LAYOUT mode. It is redisptached
+      // through the tabbed pane then.
+      if (tabPane != e.getSource())
+        {
+          redispatchEvent(e);
+          e.setSource(s);
+        }
+      
+      int tabIndex = tabForCoordinate(tabPane, e.getX(), e.getY());
       setRolloverTab(tabIndex);
     }
 
@@ -373,10 +403,21 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
      * Receives notification when the mouse pointer has exited the tabbed
      * pane.
      *
-     * @param ev the mouse event
+     * @param e the mouse event
      */
-    public void mouseExited(MouseEvent ev)
+    public void mouseExited(MouseEvent e)
     {
+      Object s = e.getSource();
+
+      // Event may originate from the viewport in
+      // SCROLL_TAB_LAYOUT mode. It is redisptached
+      // through the tabbed pane then.
+      if (tabPane != e.getSource())
+        {
+          redispatchEvent(e);
+          e.setSource(s);
+        }
+      
       setRolloverTab(-1);
     }
 
@@ -388,9 +429,37 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
      */
     public void mouseMoved(MouseEvent ev)
     {
+      Object s = ev.getSource();
+
+      if (tabPane != ev.getSource())
+        {
+          ev.setSource(tabPane);
+          tabPane.dispatchEvent(ev);
+          
+          ev.setSource(s);
+        }
+
       int tabIndex = tabForCoordinate(tabPane, ev.getX(), ev.getY());
       setRolloverTab(tabIndex);
     }
+    
+    /** Modifies the mouse event to originate from 
+     * the tabbed pane and redispatches it.
+     * 
+     * @param me
+     */
+    void redispatchEvent(MouseEvent me)
+    {
+      me.setSource(tabPane);
+      Point viewPos = viewport.getViewPosition();
+      viewPos.x -= viewport.getX();
+      viewPos.y -= viewport.getY();
+      me.translatePoint(-viewPos.x, -viewPos.y);
+      tabPane.dispatchEvent(me);
+      
+      me.translatePoint(viewPos.x, viewPos.y);
+    }
+    
   }
 
   /**
@@ -410,20 +479,56 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
      */
     public void propertyChange(PropertyChangeEvent e)
     {
-      if (e.getPropertyName().equals("tabLayoutPolicy"))
+      out:
         {
-          currentScrollLocation = currentScrollOffset = 0;
-          
-          layoutManager = createLayoutManager();
-          
-          tabPane.setLayout(layoutManager);
+          if (e.getPropertyName().equals("tabLayoutPolicy"))
+            {
+              currentScrollLocation = currentScrollOffset = 0;
+              
+              layoutManager = createLayoutManager();
+              
+              tabPane.setLayout(layoutManager);
+            }
+          else if (e.getPropertyName().equals("tabPlacement")
+                   && tabPane.getTabLayoutPolicy() 
+                   == JTabbedPane.SCROLL_TAB_LAYOUT)
+            {
+              incrButton = createIncreaseButton();
+              decrButton = createDecreaseButton();
+              
+              // If the tab placement value was changed of a tabbed pane
+              // in SCROLL_TAB_LAYOUT mode we investigate the change to
+              // implement the following behavior which was observed in
+              // the RI:
+              // The scrolling offset will be reset if we change to
+              // a direction which is orthogonal to the current
+              // direction and stays the same if it is parallel.
+              
+              int oldPlacement = ((Integer) e.getOldValue()).intValue();
+              int newPlacement = ((Integer) e.getNewValue()).intValue();
+              switch (newPlacement)
+                {
+                  case JTabbedPane.TOP:
+                  case JTabbedPane.BOTTOM:
+                    if (oldPlacement == JTabbedPane.TOP
+                        || oldPlacement == JTabbedPane.BOTTOM)
+                      break out;
+                  
+                    currentScrollOffset = getTabAreaInsets(newPlacement).left;
+                    break;
+                  default:
+                    if (oldPlacement == JTabbedPane.LEFT
+                       || oldPlacement == JTabbedPane.RIGHT)
+                      break out;
+                  
+                    currentScrollOffset = getTabAreaInsets(newPlacement).top;
+                }
+              
+              updateViewPosition();
+              updateButtons();
+            }
         }
-      else if (e.getPropertyName().equals("tabPlacement")
-          && tabPane.getTabLayoutPolicy() == JTabbedPane.SCROLL_TAB_LAYOUT)
-        {
-          incrButton = createIncreaseButton();
-          decrButton = createDecreaseButton();
-        }
+    
       tabPane.revalidate();
       tabPane.repaint();
     }
@@ -1906,15 +2011,19 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
   final void updateViewPosition()
   {
     Point p = viewport.getViewPosition();
-  
+    
+    // The unneeded coordinate must be set to zero
+    // in order to correctly handle placement changes.
     switch (tabPane.getTabPlacement())
     {
       case JTabbedPane.LEFT:
       case JTabbedPane.RIGHT:
+        p.x = 0;
         p.y = currentScrollOffset;
         break;
       default:
         p.x = currentScrollOffset;
+        p.y = 0;
     }
     
     viewport.setViewPosition(p);

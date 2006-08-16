@@ -1,3 +1,16 @@
+2006-08-17  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java:
+	(MouseHandler.mouseReleased): Implemented.
+	(MouseHandler.mousePressed): Added delegation to tabbed pane.
+	(MouseHandler.mouseEntered): Dito.
+	(MouseHandler.mouseExited): Dito.
+	(MouseHandler.mouseMoved): Dito.
+	(MouseHandler.redispatchEvent): New method.
+	(PropertyChangeHandler.propertyChange): Added extra block level,
+	added code to handle tab placement changes, added comment.
+	(updateViewPosition): Set unneeded coordinate to 0, added comment.
+
 2006-08-16  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/javax/swing/text/html/css/CSSScanner.java: New file.
