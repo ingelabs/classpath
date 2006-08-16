@@ -1,6 +1,15 @@
 2006-08-17  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/plaf/basic/BasicTabbedPaneUI.java:
+	(getTabBounds(JTabbedPane, int)): Added code to shift rectangle
+	by current scroll offset, added method documention.
+	(getTabBounds(int, Rectangle)): Added method documentation.
+	* javax/swing/plaf/metal/MetalTabbedPaneUI.java:
+	(paintContentBorderLeftEdge): Changed y to 1.
+
+2006-08-17  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java:
 	(MouseHandler.mouseReleased): Implemented.
 	(MouseHandler.mousePressed): Added delegation to tabbed pane.
 	(MouseHandler.mouseEntered): Dito.

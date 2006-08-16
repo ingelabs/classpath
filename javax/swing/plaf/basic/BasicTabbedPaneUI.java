@@ -3111,8 +3111,13 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
   }
 
   /**
-   * This method returns the tab bounds for the given index.
-   *
+   * <p>This method returns the bounds of a tab for the given index
+   * and shifts it by the current scrolling offset if the tabbed
+   * pane is in scrolling tab layout mode.</p>
+   * 
+   * <p>Subclassses should retrievs a tab's bounds by this method
+   * if they want to find out whether the tab is currently visible.</p>
+   * 
    * @param pane The JTabbedPane.
    * @param i The index to look for.
    *
@@ -3123,6 +3128,26 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
     // Need to re-layout container if tab does not exist.
     if (i >= rects.length)
       layoutManager.layoutContainer(pane);
+    
+    // Properly shift coordinates if scrolling has taken
+    // place.
+    if (pane.getTabLayoutPolicy() == JTabbedPane.SCROLL_TAB_LAYOUT)
+      {
+        Rectangle r = new Rectangle(rects[i]);
+        
+        switch(pane.getTabPlacement())
+        {
+          case SwingConstants.TOP:
+          case SwingConstants.BOTTOM:
+            r.x -= currentScrollOffset;
+            break;
+          default:
+            r.y -= currentScrollOffset;
+        }
+        
+        return r;
+      }
+    
     return rects[i];
   }
 
@@ -3171,7 +3196,10 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
   }
 
   /**
-   * This method returns the tab bounds in the given rectangle.
+   * <p>This method returns the tab bounds in the given rectangle.</p>
+   * 
+   * <p>The returned rectangle will be shifted by the current scroll
+   * offset if the tabbed pane is in scrolling tab layout mode.</p>.
    *
    * @param tabIndex The index to get bounds for.
    * @param dest The rectangle to store bounds in.
