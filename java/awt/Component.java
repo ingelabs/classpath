@@ -579,7 +579,7 @@ public abstract class Component
   transient ComponentPeer peer;
 
   /** The preferred component orientation. */
-  transient ComponentOrientation orientation = ComponentOrientation.UNKNOWN;
+  transient ComponentOrientation componentOrientation = ComponentOrientation.UNKNOWN;
 
   /**
    * The associated graphics configuration.
@@ -5243,8 +5243,8 @@ p   * <li>the set of backward traversal keys
   public void setComponentOrientation(ComponentOrientation o)
   {
  
-    ComponentOrientation oldOrientation = orientation;
-    orientation = o;
+    ComponentOrientation oldOrientation = componentOrientation;
+    componentOrientation = o;
     firePropertyChange("componentOrientation", oldOrientation, o);
   }
 
@@ -5256,7 +5256,7 @@ p   * <li>the set of backward traversal keys
    */
   public ComponentOrientation getComponentOrientation()
   {
-    return orientation;
+    return componentOrientation;
   }
 
   /**
