@@ -1,5 +1,66 @@
 2006-08-16  Roman Kennke  <kennke@aicas.com>
 
+	PR 28750
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(CellEditorHandler.editingCancelled): Call completeEditing
+	directly.
+	(CellEditorHandler.editingStopped): Call completeEditing
+	directly.
+	(NodeDimensionHandler.getNodeDimensions): Rewritten
+	to use the preferred sizes of the renderer and editor.
+	(TreeExpansionHandler.treeCollapsed): Complete editing
+	here.
+	(TreeSelectionHandler.valueChanged): Complete editing
+	here.
+	(cancelEditing): Call completeEditing with false, false and
+	false. Don't call finish (removed method).
+	(completeEditing(boolean,boolean,boolean): Only do something when
+	stopEditingInCompleteEditing is true. Nullify editingComponent
+	and editingPath. Remove editingComponent from tree. Update
+	the layout when necessary and repaint.
+	(completeEditing): Stop editing when necessary.
+	(editorRequestFocus): New helper method. Request focus
+	on the actual editor.
+	(finish) Removed. This is now done in completeEditing().
+	(prepareForUIInstall): Set stopEditingInCompleteEditing to true.
+	(setLargeModel): Complete editing here.
+	(setRootVisible): Complete editing here.
+	(setRowHeight): Complete editing here.
+	(setSelectionModel): Complete editing here.
+	(startEditing): Correctly initialize and start editing.
+	(updateExpandedDescendants): Complete editing here.
+	* javax/swing/tree/DefaultTreeCellEditor.java
+	(DefaultTextField): Fetch size from super and use renderer's height
+	if appropriate.
+	(EditorContainer.EditorContainer): Set layout to null, just
+	to make sure.
+	(EditorContainer.doLayout): Layout so that the editor
+	is offset to the right of the icon.
+	(EditorContainer.getPreferredSize): Implemented to
+	provide a reasonable preferred size.
+	(EditorContainer.paint): Position icon in the middle.
+	Also paint border if appropriate.
+	(EditorContainer.setBounds): Removed.
+	(RealEditorListener): Removed.
+	(DefaultTreeCellEditor): Set correct border.
+	(cancelCellEditing): Message real editor. Call finish().
+	(createCellEditor): Don't add listener.
+	(determineOffset): Correctly determine offset, and update
+	the icon.
+	(finish): New helper method.
+	(getTreeCellEditorComponent): Set correct font. Call
+	prepareForEditing() and determineOffset() to correctly initialize
+	the state.
+	(stopCellEditing): Messsage realEditor to stop editing. Call
+	finish to clean up.
+	(stopEditingTimer): Removed.
+	(valueChanged): Correctly reset lastPath.
+	* javax/swing/tree/DefaultTreeCellRenderer.java
+	(getPreferredSize): Return super plus some extra space for
+	better readability.
+
+2006-08-16  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/metal/MetalTreeUI.java
 	(LineStyleListener): New property listener, that updates
 	the line style setting if the corresponding property

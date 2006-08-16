@@ -42,9 +42,8 @@ import gnu.javax.swing.tree.GnuPath;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Label;
@@ -421,6 +420,7 @@ public class BasicTreeUI
   {
     if (largeModel != this.largeModel)
       {
+        completeEditing();
         tree.removeComponentListener(componentListener);
         this.largeModel = largeModel;
         tree.addComponentListener(componentListener);
@@ -444,6 +444,7 @@ public class BasicTreeUI
    */
   protected void setRowHeight(int rowHeight)
   {
+    completeEditing();
     if (rowHeight == 0)
       rowHeight = getMaxHeight(tree);
     treeState.setRowHeight(rowHeight);
@@ -537,6 +538,7 @@ public class BasicTreeUI
    */
   protected void setRootVisible(boolean newValue)
   {
+    completeEditing();
     tree.setRootVisible(newValue);
   }
 
@@ -624,6 +626,7 @@ public class BasicTreeUI
    */
   protected void setSelectionModel(TreeSelectionModel newLSM)
   {
+    completeEditing();
     if (newLSM != null)
       {
         treeSelectionModel = newLSM;
@@ -798,8 +801,8 @@ public class BasicTreeUI
     // There is no need to send the cancel message to the editor,
     // as the cancellation event itself arrives from it. This would
     // only be necessary when cancelling the editing programatically.
-    completeEditing(false, false, false);
-    finish();
+    if (editingComponent != null)
+      completeEditing(false, true, false);
   }
 
   /**
@@ -837,6 +840,7 @@ public class BasicTreeUI
     preferredSize = new Dimension();
     largeModel = tree.isLargeModel();
     preferredSize = new Dimension();
+    stopEditingInCompleteEditing = true;
     setModel(tree.getModel());
   }
 
@@ -1131,6 +1135,7 @@ public class BasicTreeUI
    */
   protected void updateExpandedDescendants(TreePath path)
   {
+    completeEditing();
     Enumeration expanded = tree.getExpandedDescendants(path);
     while (expanded.hasMoreElements())
       treeState.setExpandedState((TreePath) expanded.nextElement(), true);
@@ -1738,6 +1743,10 @@ public class BasicTreeUI
    */
   protected void completeEditing()
   {
+    if (tree.getInvokesStopCellEditing() && stopEditingInCompleteEditing
+        && editingComponent != null)
+      cellEditor.stopCellEditing();
+
     completeEditing(false, true, false);
   }
 
@@ -1755,28 +1764,35 @@ public class BasicTreeUI
                                  boolean messageTree)
   {
     // Make no attempt to complete the non existing editing session.
-    if (!isEditing(tree))
-      return;
-    
-    if (messageStop)
+    if (stopEditingInCompleteEditing && editingComponent != null)
       {
-        getCellEditor().stopCellEditing();
-        stopEditingInCompleteEditing = true;
-      }
+        Component comp = editingComponent;
+        TreePath p = editingPath;
+        editingComponent = null;
+        editingPath = null;
+        if (messageStop)
+          cellEditor.stopCellEditing();
+        else if (messageCancel)
+          cellEditor.cancelCellEditing();
 
-    if (messageCancel)
-      {
-        getCellEditor().cancelCellEditing();
-        stopEditingInCompleteEditing = true;
-      }
+        tree.remove(comp);
 
-    if (messageTree)
-      {
-        TreeCellEditor editor = getCellEditor();
-        if (editor != null)
+        if (editorHasDifferentSize)
           {
-            Object value = editor.getCellEditorValue();
-            treeModel.valueForPathChanged(tree.getLeadSelectionPath(), value);
+            treeState.invalidatePathBounds(p);
+            updateSize();
+          }
+        else
+          {
+            // Need to refresh the tree.
+            Rectangle b = getPathBounds(tree, p);
+            tree.repaint(0, b.y, tree.getWidth(), b.height);
+          }
+
+        if (messageTree)
+          {
+            Object value = cellEditor.getCellEditorValue();
+            treeModel.valueForPathChanged(p, value);
           }
       }
   }
@@ -1797,55 +1813,96 @@ public class BasicTreeUI
       return false;
 
     completeEditing();
-
     TreeCellEditor ed = cellEditor;
-    if (ed != null && ed.isCellEditable(event))
+    if (ed != null && tree.isPathEditable(path))
       {
-        Rectangle bounds = getPathBounds(tree, path);
-
-        // Extend the right boundary till the tree width.
-        bounds.width = tree.getWidth() - bounds.x;
-
-        editingPath = path;
-        editingRow = tree.getRowForPath(editingPath);
-
-        Object value = editingPath.getLastPathComponent();
-
-        stopEditingInCompleteEditing = false;
-        boolean expanded = tree.isExpanded(editingPath);
-        isEditing = true;
-        editingComponent = ed.getTreeCellEditorComponent(tree, value, true,
-                                                         expanded,
-                                                         isLeaf(editingRow),
-                                                         editingRow);
-
-        // Remove all previous components (if still present). Only one
-        // container with the editing component inside is allowed in the tree.
-        tree.removeAll();
-
-        // The editing component must be added to its container. We add the
-        // container, not the editing component itself.
-        editingComponent.setBounds(bounds);
-        tree.add(editingComponent);
-        editingComponent.requestFocus();
-
-        // Register MouseInputHandler to redispatch initial mouse events
-        // correctly.
-        if (event != null)
+        if (ed.isCellEditable(event))
           {
-            Point p = SwingUtilities.convertPoint(tree, event.getX(), event.getY(),
-                                                  editingComponent);
-            Component active =
-              SwingUtilities.getDeepestComponentAt(editingComponent, p.x, p.y);
-            if (active != null)
+            editingRow = getRowForPath(tree, path); 
+            Object value = path.getLastPathComponent();
+            boolean isSelected = tree.isPathSelected(path);
+            boolean isExpanded = tree.isExpanded(editingPath);
+            boolean isLeaf = treeModel.isLeaf(value);
+            editingComponent = ed.getTreeCellEditorComponent(tree, value,
+                                                             isSelected,
+                                                             isExpanded,
+                                                             isLeaf,
+                                                             editingRow);
+
+            Rectangle bounds = getPathBounds(tree, path);
+
+            Dimension size = editingComponent.getPreferredSize();
+            int rowHeight = getRowHeight();
+            if (size.height != bounds.height && rowHeight > 0)
+              size.height = rowHeight;
+
+            if (size.width != bounds.width || size.height != bounds.height)
               {
-                MouseInputHandler ih = new MouseInputHandler(tree, active, event);
-                
+                editorHasDifferentSize = true;
+                treeState.invalidatePathBounds(path);
+                updateSize();
               }
+            else
+              editorHasDifferentSize = false;
+            
+            // The editing component must be added to its container. We add the
+            // container, not the editing component itself.
+            tree.add(editingComponent);
+            editingComponent.setBounds(bounds.x, bounds.y, size.width,
+                                       size.height);
+            editingComponent.validate();
+            editingPath = path;
+
+            if (ed.shouldSelectCell(event))
+              {
+                stopEditingInCompleteEditing = false;
+                tree.setSelectionRow(editingRow);
+                stopEditingInCompleteEditing = true;
+              }
+
+            editorRequestFocus(editingComponent);
+            // Register MouseInputHandler to redispatch initial mouse events
+            // correctly.
+            if (event instanceof MouseEvent)
+              {
+                Point p = SwingUtilities.convertPoint(tree, event.getX(), event.getY(),
+                                                      editingComponent);
+                Component active =
+                  SwingUtilities.getDeepestComponentAt(editingComponent, p.x, p.y);
+                if (active != null)
+                  {
+                    MouseInputHandler ih = new MouseInputHandler(tree, active, event);
+                    
+                  }
+              }
+
+            return true;
           }
-        return true;
+        else
+          editingComponent = null;
       }
     return false;
+  }
+
+  /**
+   * Requests focus on the editor. The method is necessary since the
+   * DefaultTreeCellEditor returns a container that contains the
+   * actual editor, and we want to request focus on the editor, not the
+   * container.
+   */
+  private void editorRequestFocus(Component c)
+  {
+    if (c instanceof Container)
+      {
+        // TODO: Maybe do something more reasonable here, like queriying the
+        // FocusTraversalPolicy.
+        Container cont = (Container) c;
+        if (cont.getComponentCount() > 0)
+          cont.getComponent(0).requestFocus();
+      }
+    else if (c.isFocusable())
+      c.requestFocus();
+      
   }
 
   /**
@@ -2216,7 +2273,7 @@ public class BasicTreeUI
      */
     public void editingStopped(ChangeEvent e)
     {
-      stopEditing(tree);
+      completeEditing(false, false, true);
     }
 
     /**
@@ -2227,7 +2284,7 @@ public class BasicTreeUI
      */
     public void editingCanceled(ChangeEvent e)
     {
-      cancelEditing(tree);
+      completeEditing(false, false, false);
     }
   } // CellEditorHandler
 
@@ -2662,24 +2719,42 @@ public class BasicTreeUI
     public Rectangle getNodeDimensions(Object cell, int row, int depth,
                                        boolean expanded, Rectangle size)
     {
-      if (size == null || cell == null)
-        return null;
-
-      String s = cell.toString();
-      Font f = tree.getFont();
-      FontMetrics fm = tree.getToolkit().getFontMetrics(f);
-
-      if (s != null)
+      Dimension prefSize;
+      if (editingComponent != null && editingRow == row)
         {
-          TreePath path = treeState.getPathForRow(row);
-          size.x = getRowX(row, depth);
-          size.width = SwingUtilities.computeStringWidth(fm, s);
-          size.width = size.width + getCurrentControlIcon(path).getIconWidth()
-                       + gap + getNodeIcon(path).getIconWidth();
-          size.height = getMaxHeight(tree);
-          size.y = size.height * row;
+          // Editing, ask editor for preferred size.
+          prefSize = editingComponent.getPreferredSize();
+          int rowHeight = getRowHeight();
+          if (rowHeight > 0 && rowHeight != prefSize.height)
+            prefSize.height = rowHeight;
         }
-
+      else
+        {
+          // Not editing, ask renderer for preferred size.
+          Component rend =
+            currentCellRenderer.getTreeCellRendererComponent(tree, cell,
+                                                       tree.isRowSelected(row),
+                                                       expanded,
+                                                       treeModel.isLeaf(cell),
+                                                       row, false);
+          // Make sure the layout is valid.
+          rendererPane.add(rend);
+          rend.validate();
+          prefSize = rend.getPreferredSize();
+        }
+      if (size != null)
+        {
+          size.x = getRowX(row, depth);
+          // FIXME: This should be handled by the layout cache.
+          size.y = prefSize.height * row;
+          size.width =  prefSize.width;
+          size.height = prefSize.height;
+        }
+      else
+        // FIXME: The y should be handled by the layout cache.
+        size = new Rectangle(getRowX(row, depth), prefSize.height * row, prefSize.width,
+                             prefSize.height);
+      
       return size;
     }
 
@@ -2841,6 +2916,7 @@ public class BasicTreeUI
      */
     public void treeCollapsed(TreeExpansionEvent event)
     {
+      completeEditing();
       validCachedPreferredSize = false;
       treeState.setExpandedState(event.getPath(), false);
       // The maximal cell height may change
@@ -3306,8 +3382,7 @@ public class BasicTreeUI
      */
     public void valueChanged(TreeSelectionEvent event)
     {
-      if (tree.isEditing())
-        tree.cancelEditing();
+      completeEditing();
 
       TreePath op = event.getOldLeadSelectionPath();
       TreePath np = event.getNewLeadSelectionPath();
@@ -3844,25 +3919,6 @@ public class BasicTreeUI
     return ! isLeaf && hasControlIcons();
   }
 
-  /**
-   * Finish the editing session.
-   */
-  void finish()
-  {
-    treeState.invalidatePathBounds(treeState.getPathForRow(editingRow));
-    editingPath = null;
-    editingRow = - 1;
-    stopEditingInCompleteEditing = false;
-    isEditing = false;
-    Rectangle bounds = editingComponent.getParent().getBounds();
-    tree.removeAll();
-    validCachedPreferredSize = false;
-    // Repaint the region, where was the editing component.
-    tree.repaint(bounds);
-    editingComponent = null;
-    tree.requestFocus();
-  }
-  
   /**
    * Returns the amount to indent the given row
    * 
