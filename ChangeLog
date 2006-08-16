@@ -1,3 +1,32 @@
+2006-08-16  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/metal/MetalTreeUI.java
+	(LineStyleListener): New property listener, that updates
+	the line style setting if the corresponding property
+	changes.
+	(lineStyleListener): New field.
+	(lineStyle): New field.
+	(LINE_STYLE_ANGLED): New constant field.
+	(LINE_STYLE_HORIZONTAL): New constant field.
+	(LINE_STYLE_NONE): New constant field.
+	(LINE_STYLE_VALUE_ANGLED): New constant field.
+	(LINE_STYLE_VALUE_HORIZONTAL): New constant field.
+	(LINE_STYLE_VALUE_NONE): New constant field.
+	(LINE_STYLE_PROPERTY): New constant field.
+	(decodeLineStyle): Implemented.
+	(installUI): Install line style listener. Set initial
+	lineStyle.
+	(uninstallUI): Uninstall line style listener.
+	(paintHorizontalPartOfLeg): Only call super for angled
+	lineStyle.
+	(paintVerticalPartOfLeg): Only call super for angled
+	lineStyle.
+	(paintHorizontalSeparators): Implemented.
+	(paint): If lineStyle==HORIZONTAL, call
+	paintHorizontalSeparators().
+	* examples/gnu/classpath/examples/swing/TreeDemo.java
+	(createContent): Add panel for selecting line styles.	
+
 2006-08-16  Robert Schuster  <robertschuster@fsfe.org>
 	
 	* examples/gnu/classpath/demo/swing/TabbedPaneDemo.java:
