@@ -1,4 +1,13 @@
 2006-08-16  Robert Schuster  <robertschuster@fsfe.org>
+	
+	* examples/gnu/classpath/demo/swing/TabbedPaneDemo.java:
+	(createContent): Rewritten.
+	(createPlacementChangingMenuItem): New method.
+	(createLayoutPolicyChangingMenuItem): New method.
+	(createTabbedPane): New method.
+	(createTabContent): New method.
+
+2006-08-16  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/plaf/basic/BasicTabbedPaneUI.java:
 	(MouseHandler.mousePressed): Fixed indentation, intercept clicks on
