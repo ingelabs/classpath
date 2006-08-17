@@ -39,6 +39,7 @@ exception statement from your version. */
 
 package java.io;
 
+import gnu.classpath.VMStackWalker;
 import gnu.java.io.ObjectIdentityWrapper;
 
 import java.lang.reflect.Array;
@@ -817,7 +818,7 @@ public class ObjectInputStream extends InputStream
    */
   private ClassLoader currentLoader()
   {
-    return VMObjectInputStream.currentClassLoader();
+    return VMStackWalker.firstNonNullClassLoader();
   }
 
   /**

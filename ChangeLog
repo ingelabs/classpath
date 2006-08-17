@@ -1,3 +1,22 @@
+2006-08-17  Jeroen Frijters  <jeroen@frijters.net>
+
+	* gnu/java/rmi/server/RMIClassLoaderImpl.java
+	(loadClass): Rewritten to use getClassLoader.
+	(loadProxyClass): Implemented.
+	(getClassLoader): Fixed support for null or empty codebase.
+	* gnu/java/rmi/server/RMIObjectInputStream.java
+	(resolveClass): Use user class loader as default class loader.
+	(resolveProxyClass): Delegate to RMIClassLoader.loadProxyClass.
+	* gnu/javax/rmi/CORBA/UtilDelegateImpl.java
+	(loadClass): Simplified and use user class loader instead of
+	context class loader as default.
+	* java/io/ObjectInputStream.java
+	(currentLoader): Use VMStackWalker.firstNonNullClassLoader().
+	* vm/reference/gnu/classpath/VMStackWalker.java
+	(firstNonNullClassLoader): New method.
+	* vm/reference/java/io/VMObjectInputStream.java
+	(loaderAction, currentClassLoader): Removed.
+
 2006-08-17  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/plaf/basic/BasicTabbedPaneUI.java:
