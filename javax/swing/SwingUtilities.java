@@ -40,7 +40,6 @@ package javax.swing;
 
 import java.applet.Applet;
 import java.awt.Component;
-import java.awt.ComponentOrientation;
 import java.awt.Container;
 import java.awt.FontMetrics;
 import java.awt.Frame;
@@ -721,38 +720,35 @@ public class SwingUtilities
 
     // Fix up the orientation-based horizontal positions.
 
-    if (horizontalTextPosition == LEADING)
+    boolean ltr = true;
+    if (c != null && ! c.getComponentOrientation().isLeftToRight())
+      ltr = false;
+
+    switch (horizontalTextPosition)
       {
-        if (c.getComponentOrientation() == ComponentOrientation.RIGHT_TO_LEFT)
-          horizontalTextPosition = RIGHT;
-        else
-          horizontalTextPosition = LEFT;
-      }
-    else if (horizontalTextPosition == TRAILING)
-      {
-        if (c.getComponentOrientation() == ComponentOrientation.RIGHT_TO_LEFT)
-          horizontalTextPosition = LEFT;
-        else
-          horizontalTextPosition = RIGHT;
+      case LEADING:
+        horizontalTextPosition = ltr ? LEFT : RIGHT;
+        break;
+      case TRAILING:
+        horizontalTextPosition = ltr ? RIGHT : LEFT;
+        break;
+      default:
+        // Nothing to do in the other cases.
       }
 
     // Fix up the orientation-based alignments.
+    switch (horizontalAlignment)
+      {
+        case LEADING:
+          horizontalAlignment = ltr ? LEFT : RIGHT;
+          break;
+        case TRAILING:
+          horizontalAlignment = ltr ? RIGHT : LEFT;
+          break;
+        default:
+          // Nothing to do in the other cases.
+      }
 
-    if (horizontalAlignment == LEADING)
-      {
-        if (c.getComponentOrientation() == ComponentOrientation.RIGHT_TO_LEFT)
-          horizontalAlignment = RIGHT;
-        else
-          horizontalAlignment = LEFT;
-      }
-    else if (horizontalAlignment == TRAILING)
-      {
-        if (c.getComponentOrientation() == ComponentOrientation.RIGHT_TO_LEFT)
-          horizontalAlignment = LEFT;
-        else
-          horizontalAlignment = RIGHT;
-      }
-    
     return layoutCompoundLabelImpl(c, fm, text, icon,
                                    verticalAlignment,
                                    horizontalAlignment,
@@ -921,104 +917,108 @@ public class SwingUtilities
         iconR.width = icon.getIconWidth();
         iconR.height = icon.getIconHeight();
       }
+
     if (text == null || text.equals(""))
       {
         textIconGap = 0;
 	textR.width = 0;
 	textR.height = 0;
+        text = "";
       }
     else
       {
+        int availableWidth = viewR.width;
+        if (horizontalTextPosition != CENTER)
+          availableWidth -= iconR.width + textIconGap;
         View html = c == null ? null
                            : (View) c.getClientProperty(BasicHTML.propertyKey);
         if (html != null)
           {
             textR.width = (int) html.getPreferredSpan(View.X_AXIS);
+            textR.width = Math.min(availableWidth, textR.width);
             textR.height = (int) html.getPreferredSpan(View.Y_AXIS);
           }
         else
           {
             int fromIndex = 0;
             textR.width = fm.stringWidth(text);
-            textR.height = fm.getHeight(); 
-            while (text.indexOf('\n', fromIndex) != -1)
+            textR.height = fm.getHeight();
+            if (textR.width > availableWidth)
               {
-                textR.height += fm.getHeight();
-                fromIndex = text.indexOf('\n', fromIndex) + 1;
+                text = clipString(c, fm, text, availableWidth);
+                textR.width = fm.stringWidth(text);
               }
           }
       }
 
-    // Work out the position of text and icon, assuming the top-left coord
+    // Work out the position of text, assuming the top-left coord
     // starts at (0,0). We will fix that up momentarily, after these
     // "position" decisions are made and we look at alignment.
-
-    switch (horizontalTextPosition)
-      {
-      case LEFT:
-        textR.x = 0;
-        iconR.x = textR.width + textIconGap;
-        break;
-      case RIGHT:
-        iconR.x = 0;
-        textR.x = iconR.width + textIconGap;
-        break;
-      case CENTER:
-        int centerLine = Math.max(textR.width, iconR.width) / 2;
-        textR.x = centerLine - textR.width/2;
-        iconR.x = centerLine - iconR.width/2;
-        break;
-      }
 
     switch (verticalTextPosition)
       {
       case TOP:
-        textR.y = 0;
-        iconR.y = (horizontalTextPosition == CENTER 
-                   ? textR.height + textIconGap : 0);
+        textR.y = horizontalTextPosition == CENTER ?
+                  - textR.height - textIconGap : 0;
         break;
       case BOTTOM:
-        iconR.y = 0;
-        textR.y = (horizontalTextPosition == CENTER
-                   ? iconR.height + textIconGap 
-                   : Math.max(iconR.height - textR.height, 0));
+        textR.y = horizontalTextPosition == CENTER ?
+                  iconR.height + textIconGap : iconR.height - textR.height;
         break;
       case CENTER:
-        int centerLine = Math.max(textR.height, iconR.height) / 2;
-        textR.y = centerLine - textR.height/2;
-        iconR.y = centerLine - iconR.height/2;
+        textR.y = iconR.height / 2 - textR.height / 2;
         break;
       }
+
+    switch (horizontalTextPosition)
+      {
+      case LEFT:
+        textR.x = -(textR.width + textIconGap);
+        break;
+      case RIGHT:
+        textR.x = iconR.width + textIconGap;
+        break;
+      case CENTER:
+        textR.x = iconR.width / 2 - textR.width / 2;
+        break;
+      }
+
     // The two rectangles are laid out correctly now, but only assuming
     // that their upper left corner is at (0,0). If we have any alignment other
     // than TOP and LEFT, we need to adjust them.
 
-    Rectangle u = textR.union(iconR);
-    int horizontalAdjustment = viewR.x;
-    int verticalAdjustment = viewR.y;
+    // These coordinates specify the rectangle that contains both the
+    // icon and text. Move it so that it fullfills the alignment properties.
+    int lx = Math.min(iconR.x, textR.x);
+    int lw = Math.max(iconR.x + iconR.width, textR.x + textR.width) - lx;
+    int ly = Math.min(iconR.y, textR.y);
+    int lh = Math.max(iconR.y + iconR.height, textR.y + textR.height) - ly;
+    int horizontalAdjustment = 0;
+    int verticalAdjustment = 0;
     switch (verticalAlignment)
       {
       case TOP:
+        verticalAdjustment = viewR.y - ly;
         break;
       case BOTTOM:
-        verticalAdjustment += (viewR.height - u.height);
+        verticalAdjustment = viewR.y + viewR.height - ly - lh;
         break;
       case CENTER:
-        verticalAdjustment += ((viewR.height/2) - (u.height/2));
+        verticalAdjustment = viewR.y + viewR.height / 2 - ly  - lh / 2;
         break;
       }
     switch (horizontalAlignment)
       {
       case LEFT:
+        horizontalAdjustment = viewR.x - lx;
         break;
       case RIGHT:
-        horizontalAdjustment += (viewR.width - u.width);
+        horizontalAdjustment = viewR.x + viewR.width - lx - lw;
         break;
       case CENTER:
-        horizontalAdjustment += ((viewR.width/2) - (u.width/2));
+        horizontalAdjustment = (viewR.x + (viewR.width / 2)) - (lx + (lw / 2));
         break;
       }
-
     iconR.x += horizontalAdjustment;
     iconR.y += verticalAdjustment;
 
@@ -1026,6 +1026,48 @@ public class SwingUtilities
     textR.y += verticalAdjustment;
 
     return text;
+  }
+
+  /**
+   * The method clips the specified string so that it fits into the
+   * available width. It is only called when the text really doesn't fit,
+   * so we don't need to check that again.
+   *
+   * @param c the component
+   * @param fm the font metrics
+   * @param text the text
+   * @param availableWidth the available width
+   *
+   * @return the clipped string
+   */
+  private static String clipString(JComponent c, FontMetrics fm, String text,
+                                   int availableWidth)
+  {
+    String dots = "...";
+    int dotsWidth = fm.stringWidth(dots);
+    char[] string = text.toCharArray();
+    int endIndex = string.length;
+    while (fm.charsWidth(string, 0, endIndex) + dotsWidth > availableWidth
+           && endIndex > 0)
+      endIndex--;
+    String clipped;
+    if (string.length >= endIndex + 3)
+      {
+        string[endIndex] = '.';
+        string[endIndex + 1] = '.';
+        string[endIndex + 2] = '.';
+        clipped = new String(string, 0, endIndex + 3);
+      }
+    else
+      {
+        char[] clippedChars = new char[string.length + 3];
+        System.arraycopy(string, 0, clippedChars, 0, string.length);
+        clippedChars[endIndex] = '.';
+        clippedChars[endIndex + 1] = '.';
+        clippedChars[endIndex + 2] = '.';
+        clipped = new String(clippedChars, 0, endIndex + 3);
+      }
+    return clipped;
   }
 
   /** 

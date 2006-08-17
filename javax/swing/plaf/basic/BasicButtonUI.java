@@ -42,6 +42,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Insets;
 import java.awt.Rectangle;
 
 import javax.swing.AbstractButton;
@@ -63,6 +64,24 @@ import javax.swing.text.View;
  */
 public class BasicButtonUI extends ButtonUI
 {
+  /**
+   * Cached rectangle for layouting the label. Used in paint() and
+   * BasicGraphicsUtils.getPreferredButtonSize().
+   */
+  static Rectangle viewR = new Rectangle();
+
+  /**
+   * Cached rectangle for layouting the label. Used in paint() and
+   * BasicGraphicsUtils.getPreferredButtonSize().
+   */
+  static Rectangle iconR = new Rectangle();
+
+  /**
+   * Cached rectangle for layouting the label. Used in paint() and
+   * BasicGraphicsUtils.getPreferredButtonSize().
+   */
+  static Rectangle textR = new Rectangle();
+
   /**
    * A constant used to pad out elements in the button's layout and
    * preferred size calculations.
@@ -378,44 +397,50 @@ public class BasicButtonUI extends ButtonUI
   {
     AbstractButton b = (AbstractButton) c;
 
-    Rectangle tr = new Rectangle();
-    Rectangle ir = new Rectangle();
-    Rectangle vr = new Rectangle();
+    Insets i = c.getInsets();
+    viewR.x = i.left;
+    viewR.y = i.top;
+    viewR.width = c.getWidth() - i.left - i.right;
+    viewR.height = c.getHeight() - i.top - i.bottom;
+    textR.x = 0;
+    textR.y = 0;
+    textR.width = 0;
+    textR.height = 0;
+    iconR.x = 0;
+    iconR.y = 0;
+    iconR.width = 0;
+    iconR.height = 0;
 
     Font f = c.getFont();
-
     g.setFont(f);
+    Icon icon = b.getIcon();
+    String text = b.getText();
+    text = SwingUtilities.layoutCompoundLabel(c, g.getFontMetrics(f), 
+                                              text, icon,
+                                              b.getVerticalAlignment(), 
+                                              b.getHorizontalAlignment(),
+                                              b.getVerticalTextPosition(), 
+                                              b.getHorizontalTextPosition(),
+                                              viewR, iconR, textR, 
+                                              text == null ? 0
+                                                         : b.getIconTextGap());
 
-    if (b.isBorderPainted())
-      SwingUtilities.calculateInnerArea(b, vr);
-    else
-      vr = SwingUtilities.getLocalBounds(b);
-    String text = SwingUtilities.layoutCompoundLabel(c, g.getFontMetrics(f), 
-                                                     b.getText(),
-                                                     currentIcon(b),
-                                                     b.getVerticalAlignment(), 
-                                                     b.getHorizontalAlignment(),
-                                                     b.getVerticalTextPosition(), 
-                                                     b.getHorizontalTextPosition(),
-                                                     vr, ir, tr, 
-                                                     b.getIconTextGap() 
-                                                     + defaultTextShiftOffset);
-    
-    if ((b.getModel().isArmed() && b.getModel().isPressed()) 
-        || b.isSelected())
+    ButtonModel model = b.getModel();
+    if (model.isArmed() && model.isPressed())
       paintButtonPressed(g, b);
-	
-    paintIcon(g, c, ir);
+
+    if (icon != null)
+      paintIcon(g, c, iconR);
     if (text != null)
       {
         View html = (View) b.getClientProperty(BasicHTML.propertyKey);
         if (html != null)
-          html.paint(g, tr);
+          html.paint(g, textR);
         else
-          paintText(g, b, tr, text);
+          paintText(g, b, textR, text);
       }
     if (b.isFocusOwner() && b.isFocusPainted())
-      paintFocus(g, b, vr, tr, ir);
+      paintFocus(g, b, viewR, textR, iconR);
   }
 
   /**

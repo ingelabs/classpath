@@ -1,3 +1,37 @@
+2006-08-17  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/SwingUtilities.java
+	(clipString): New helper method for trimming strings.
+	(layoutCompoundLabelImpl): Fixed algorithm to conform
+	testsuites. Trim text if it's too long. Avoid creating
+	new Rectangles. Optimized for performance.
+	(layoutCompoundLabel): Use switch rather then if-else-chain.
+	* javax/swing/plaf/basic/BasicButtonUI.java
+	(viewR): New field.
+	(iconR): New field.
+	(textR): New field.
+	(paint): Reset and use cached rectangles. Only call paintIcon()
+	if icon is not null. Don't call paintButtonPressed() when
+	button is selected, only when it is both armed and pressed.
+	* javax/swing/plaf/basic/BasicGraphicsUtils.java
+	(getPreferredButtonSize): Reused cached rectangles rather
+	then creating new ones. Don't create new Rectangle via
+	Rectangle.union().
+	* javax/swing/plaf/basic/BasicLabelUI.java
+	(getPreferredSize): Correctly reset cached rectangles. Especially
+	the view rect must have a big size to give it room for layouting.
+	Short cut layout when text == null.
+	(paint): Correctly reset cached rectangles.
+	* javax/swing/plaf/basic/BasicMenuItemUI.java
+	(resetRectangles): New helper method.
+	(getPreferredMenuItemSize): Correctly reset the cached rectangles.
+	(paintMenuItem): Correctly reset the cached rectangles.
+	* javax/swing/plaf/basic/BasicRadioButtonUI.java
+	(getPreferredSize): Use cached Rectangle objects and initialize
+	them correctly.
+	(paint): Use cached Rectangle objects and initialize
+	them correctly.
+
 2006-08-17  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/util/Calendar.java: API doc additions.
