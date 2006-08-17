@@ -1,3 +1,7 @@
+2006-08-17  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/util/Calendar.java: API doc additions.
+
 2006-08-17  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/DefaultButtonModel.java:
