@@ -1,5 +1,18 @@
 2006-08-17  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/RepaintManager.java
+	(blitBuffer): Removed. This is now done in commitBuffer().
+	(commitBuffer): Always paint on the root window or applet.
+	No need to look for intermediate heavyweights. Optimized
+	rectangle translation.
+	(commitRemainingBuffers): Removed. Not needed anymore.
+	(getHeavyweightParent): Removed. Not needed anymore.
+	(getOffscreenBuffer): Fetch offscreen image from the
+	actual root component.
+	(paintDirtyRegions): Don't call commitRemainingBuffers().
+
+2006-08-17  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/SwingUtilities.java
 	(clipString): New helper method for trimming strings.
 	(layoutCompoundLabelImpl): Fixed algorithm to conform
