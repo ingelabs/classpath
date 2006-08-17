@@ -1,3 +1,11 @@
+2006-08-17  Jeroen Frijters  <jeroen@frijters.net>
+
+	* javax/swing/filechooser/FileSystemView.java
+	(getFileSystemView): Always return UnixFileSystemView, since
+	that's the only one we got. Marked with NotImplementedException.
+	* javax/swing/plaf/basic/BasicFileChooserUI.java
+	(mouseClicked, installUI): Don't parse path by hand.
+
 2006-08-17  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JComponent.java
