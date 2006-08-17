@@ -1,5 +1,11 @@
 2006-08-17  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JComponent.java
+	(scrollRectToVisible): Handle intermediate non-JComponents
+	more gracefully.
+
+2006-08-17  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/RepaintManager.java
 	(blitBuffer): Removed. This is now done in commitBuffer().
 	(commitBuffer): Always paint on the root window or applet.
