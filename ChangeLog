@@ -1,3 +1,9 @@
+2006-08-17  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	PR classpath/28537
+	* native/plugin/Makefile.am (libgcjwebplugin_la_CXXFLAGS):
+	Transform gappletviewer name using program_transform_name.
+
 2006-08-17  Jeroen Frijters  <jeroen@frijters.net>
 
 	* javax/swing/filechooser/FileSystemView.java
