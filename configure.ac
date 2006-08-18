@@ -287,7 +287,11 @@ dnl -----------------------------------------------------------
 AC_ARG_ENABLE([tool-wrappers],
               [AS_HELP_STRING(--enable-tool-wrappers,create tool wrapper binaries [default=no])],
               [case x"${enableval}" in
-                xyes) COMPILE_WRAPPERS=yes ;;
+                xyes)
+                  COMPILE_WRAPPERS=yes;
+                  AC_CHECK_HEADERS([ltdl.h],, [AC_MSG_ERROR(cannot find ltdl.h)])
+                  AC_CHECK_LIB(ltdl, lt_dlopen,, [AC_MSG_ERROR(cannot find libltdl)])
+                  ;;
                 xno) COMPILE_WRAPPERS=no ;;
 		x) COMPILE_WRAPPERS=yes ;;
                 *) COMPILE_WRAPPERS=yes ;;

@@ -1,3 +1,14 @@
+2006-08-18  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* configure.ac (tool-wrappers): Check for ltdl support when tool
+	wrapper binaries are enabled.
+	* tools/Makefile.am (LIBJVM): Remove variable.
+	(AM_CPPFLAGS): Add LIBJVM define.
+	(gappletviewer_LDFLAGS, gjarsigner_LDFLAGS, gkeytool_LDFLAGS,
+	gjar_LDFLAGS, gnative2ascii_LDFLAGS, gserialver_LDFLAGS,
+	gjavah_LDFLAGS): Remove variables.
+	* tools/toolwrapper.c (main): Use dlopen to load libjvm library.
+
 2006-08-18  Tom Tromey  <tromey@redhat.com>
 
 	* gnu/java/util/prefs/NodeWriter.java (writeParents): Removed
