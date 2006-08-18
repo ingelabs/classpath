@@ -1,3 +1,7 @@
+2006-08-18  Roger Sayle  <roger@eyesopen.com>
+
+	* lib/Makefile.am (resources): Fix some shell portability issues.
+
 2006-08-18  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* configure.ac (tool-wrappers): Check for ltdl support when tool

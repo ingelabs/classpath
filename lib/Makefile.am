@@ -103,12 +103,12 @@ glibj.zip: classes compile-classes resources
 endif # USE_PREBUILT_GLIBJ_ZIP
 
 resources: copy-vmresources.sh
-	if ! [ -e gnu ]; then mkdir gnu; fi
-	if ! [ -e gnu/java ]; then mkdir gnu/java; fi
-	if ! [ -e gnu/java/locale ]; then mkdir gnu/java/locale; fi
-	if ! [ -e gnu/javax/swing/plaf/gtk/icons ]; then mkdir -p gnu/javax/swing/plaf/gtk/icons; fi
+	if ! test -d gnu; then mkdir gnu; fi
+	if ! test -d gnu/java; then mkdir gnu/java; fi
+	if ! test -d gnu/java/locale; then mkdir gnu/java/locale; fi
+	if ! test -d gnu/javax/swing/plaf/gtk/icons; then mkdir -p gnu/javax/swing/plaf/gtk/icons; fi
 	@list='$(propertydirs)'; for p in $$list; do \
-	  if ! [ -e $$p ]; then mkdir $$p; fi; \
+	  if ! test -d $$p; then mkdir $$p; fi; \
 	done
 	@list='$(propertyfiles)'; for p in $$list; do \
 	  cp $(top_srcdir)/resource/$$p $$p; \
