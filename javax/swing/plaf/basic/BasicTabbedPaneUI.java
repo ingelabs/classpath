@@ -2454,7 +2454,6 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
     paintTabBorder(g, tabPlacement, tabIndex, rect.x, rect.y, rect.width,
                    rect.height, isSelected);
 
-
     // Layout label.
     FontMetrics fm = getFontMetrics();
     Icon icon = getIconForTab(tabIndex);
@@ -2492,6 +2491,16 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
                              Rectangle tabRect, Rectangle iconRect,
                              Rectangle textRect, boolean isSelected)
   {
+    // Reset the icon and text rectangles, as the result is not specified
+    // when the locations are not (0,0).
+    textRect.x = 0;
+    textRect.y = 0;
+    textRect.width = 0;
+    textRect.height = 0;
+    iconRect.x = 0;
+    iconRect.y = 0;
+    iconRect.width = 0;
+    iconRect.height = 0;
     SwingUtilities.layoutCompoundLabel(metrics, title, icon,
                                        SwingConstants.CENTER,
                                        SwingConstants.CENTER,
