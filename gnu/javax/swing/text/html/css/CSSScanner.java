@@ -602,7 +602,7 @@ class CSSScanner
         chc = (char) ch;
       }
     // Push back last character read.
-    lookahead[0] = chc;
+    lookahead[0] = ch;
     
   }
 
