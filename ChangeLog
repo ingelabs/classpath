@@ -1,5 +1,10 @@
 2006-08-18  Roger Sayle  <roger@eyesopen.com>
 
+	* scripts/check_jni_methods.sh: Don't use the "set -C" command
+	which isn't available in all shells.
+
+2006-08-18  Roger Sayle  <roger@eyesopen.com>
+
 	* lib/Makefile.am (resources): Fix some shell portability issues.
 
 2006-08-18  Thomas Fitzsimmons  <fitzsim@redhat.com>
