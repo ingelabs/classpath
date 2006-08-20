@@ -1,3 +1,31 @@
+2006-08-20  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	Fixes bug #28412
+	* gnu/java/util/regex/CharIndexed.java(move1, setHitEnd, hitEnd):
+	New methods.
+	* gnu/java/util/regex/CharIndexedCharSequence.java,
+	gnu/java/util/regex/CharIndexedInputStream.java: Implemented the
+	new methods above.
+	* gnu/java/util/regex/RE.java(REG_FIX_STARTING_POSITION): New flag,
+	(match): call the new method setHitEnd of the input,
+	(getMatchImpl): Handle the new flag REG_FIX_STARTING_POSITION,
+	Some optimization commented out, Use CharIndexed#move1 instead of move.
+	* gnu/java/util/regex/REMatch.java: Made some debugging methods public.
+	* gnu/java/util/regex/REToken.java(match): The method body has been
+	moved to an internal private method, (matchFake): New method,
+	(setHitEnd): New method.
+	* gnu/java/util/regex/RETokenChar.java(matchThis): Call setHitEnd
+	if the match is not complete, (matchOneString): Count the number of
+	characters which matched the pattern.
+	* gnu/java/util/regex/RETokenEnd.java(fake): New field,
+	(setFake): New method, (match): Call super.match or super.matchFake.
+	* gnu/java/util/regex/RETokenEndSub.java(setHitEnd): New method.
+	* gnu/java/util/regex/RETokenOneOf.java(match): call the new method
+	setHitEnd of the input,
+	* gnu/java/util/regex/RETokenRepeated.java(match): Likewise.
+	* java/util/regex/Matcher.java(lookingAt, match): Use the new flag
+	RE.REG_FIX_STARTING_POSITION, (hitEnd, toString): New methods.
+
 2006-08-18  Tom Tromey  <tromey@redhat.com>
 
 	* gnu/javax/swing/text/html/css/CSSScanner.java (readWhitespace): Push
