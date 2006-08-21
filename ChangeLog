@@ -1,3 +1,7 @@
+2006-08-21  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/io/File.java (normalizePath): Fixed handling of "//" and "\\".
+
 2006-08-21  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/javax/swing/text/html/css/CSSScanner.java

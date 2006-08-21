@@ -286,7 +286,8 @@ public class File implements Serializable, Comparable
         // example, is a valid and minimal path).
         if (plen > 1 && p.charAt (plen - 1) == separatorChar)
 	  {
-	    if (! (separatorChar == '\\' && plen == 3 && p.charAt (1) == ':'))
+	    if (! (separatorChar == '\\' && ((plen == 3 && p.charAt(1) == ':')
+                || (plen == 2 && p.charAt(0) == separatorChar))))
 	      return p.substring (0, plen - 1);
 	  }
 	else
@@ -303,7 +304,16 @@ public class File implements Serializable, Comparable
 	  {
 	    dupIndex++;
 	    if (dupIndex == plen)
-	      return newpath.toString();
+              {
+                if ((separatorChar == '\\'
+                    && newpath.length() == 2
+                    && newpath.charAt(1) == ':')
+                    || (separatorChar != '\\' && newpath.length() == 0))
+                  {
+                    newpath.append(separatorChar);
+                  }
+	        return newpath.toString();
+              }
 	  }
 	newpath.append(separatorChar);
 	last = dupIndex;
@@ -315,7 +325,9 @@ public class File implements Serializable, Comparable
     int end;
     if (plen > 1 && p.charAt (plen - 1) == separatorChar)
     {
-      if (separatorChar == '\\' && plen == 3 && p.charAt (1) == ':')
+      if (separatorChar == '\\'
+        && ((plen == 3 && p.charAt(1) == ':')
+            || (plen == 2 && p.charAt(0) == separatorChar)))
         end = plen;
       else
         end = plen - 1;
