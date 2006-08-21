@@ -1,5 +1,5 @@
-/* ???.h - ???
-   Copyright (C) 1998 Free Software Foundation, Inc.
+/* cpproc.c -
+   Copyright (C) 2003, 2004, 2005, 2006  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -35,45 +35,97 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-/*
-Description: Linux target defintions of file functions
-Systems    : all
-*/
-
-#ifndef __TARGET_NATIVE_FILE__
-#define __TARGET_NATIVE_FILE__
-
-/****************************** Includes *******************************/
-/* do not move; needed here because of some macro definitions */
-#include <config.h>
-
+#include "config.h"
+#include <jni.h>
+#include "cpproc.h"
+#include <signal.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#include <errno.h>
 #include <stdlib.h>
 
-/****************** Conditional compilation switches *******************/
+static void close_all_fds(int *fds, int numFds)
+{
+  int i;
 
-/***************************** Constants *******************************/
-
-/***************************** Datatypes *******************************/
-
-/***************************** Variables *******************************/
-
-/****************************** Macros *********************************/
-
-/***************************** Functions *******************************/
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#ifdef __cplusplus
+  for (i = 0; i < numFds; i++)
+    close(fds[i]);
 }
-#endif
 
-/* include rest of definitions from generic file (do not move it to 
-   another position!) */
-#include "target_generic_file.h"
+int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron, int *fds, pid_t *out_pid, const char *wd)
+{
+  int local_fds[6];
+  int i;
+  pid_t pid;
 
-#endif /* __TARGET_NATIVE_FILE__ */
+  for (i = 0; i < 6; i += 2)
+    {
+      if (pipe(&local_fds[i]) < 0)
+	{
+	  int err = errno;
 
-/* end of file */
+	  close_all_fds(local_fds, i);
+	  
+	  return err;
+	}
+    }
+  
+  pid = fork();
+  
+  switch (pid)
+    {
+    case 0:
+      dup2(local_fds[0], 0);
+      dup2(local_fds[3], 1);
+      dup2(local_fds[5], 2);
 
+      close_all_fds(local_fds, 6);
+
+      chdir(wd);
+      if (newEnviron == NULL)
+	execvp(commandLine[0], commandLine);
+      else
+	execve(commandLine[0], commandLine, newEnviron);
+      
+      abort();
+      
+      break;
+    case -1:
+      {
+	int err = errno;
+	
+	close_all_fds(local_fds, 6);
+	return err;
+      }
+    default: 
+      close(local_fds[0]);
+      close(local_fds[3]);
+      close(local_fds[5]);
+
+      fds[0] = local_fds[1];
+      fds[1] = local_fds[2];
+      fds[2] = local_fds[4];
+      *out_pid = pid;
+      return 0;
+    }
+}
+
+int cpproc_waitpid (pid_t pid, int *status, pid_t *outpid, int options)
+{
+  pid_t wp = waitpid(pid, status, options);
+
+  if (wp < 0)
+    return errno;
+
+  *outpid = wp;
+  return 0;
+}
+
+int cpproc_kill (pid_t pid, int signal)
+{
+  if (kill(pid, signal) < 0)
+    return errno;
+
+  return 0;
+}

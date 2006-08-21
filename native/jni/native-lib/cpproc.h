@@ -1,5 +1,5 @@
-/* ???.h - ???
-   Copyright (C) 1998 Free Software Foundation, Inc.
+/* cpproc.h -
+   Copyright (C) 2006  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -34,45 +34,18 @@ or based on this library.  If you modify this library, you may extend
 this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
+#ifndef _CLASSPATH_PROC_H_INCLUDED
+#define _CLASSPATH_PROC_H_INCLUDED
 
-/*
-Description: Linux target defintions of miscellaneous functions
-Systems    : all
-*/
+#include <sys/types.h>
 
-#ifndef __TARGET_NATIVE_IO__
-#define __TARGET_NATIVE_IO__
+#define CPIO_EXEC_STDIN 0
+#define CPIO_EXEC_STDOUT 1
+#define CPIO_EXEC_STDERR 2
+#define CPIO_EXEC_NUM_PIPES 3
 
-/****************************** Includes *******************************/
-/* do not move; needed here because of some macro definitions */
-#include <config.h>
+JNIEXPORT int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron, int *fds, pid_t *pid, const char *wd);
+JNIEXPORT int cpproc_waitpid (pid_t pid, int *status, pid_t *outpid, int options);
+JNIEXPORT int cpproc_kill (pid_t pid, int signal);
 
-#include <stdlib.h>
-
-/****************** Conditional compilation switches *******************/
-
-/***************************** Constants *******************************/
-
-/***************************** Datatypes *******************************/
-
-/***************************** Variables *******************************/
-
-/****************************** Macros *********************************/
-
-/***************************** Functions *******************************/
-
-#ifdef __cplusplus
-extern "C" {
 #endif
-
-#ifdef __cplusplus
-}
-#endif
-
-/* include rest of definitions from generic file (do not move it to 
-   another position!) */
-#include "target_generic_io.h"
-
-#endif /* __TARGET_NATIVE_MISC__ */
-
-/* end of file */

@@ -1,3 +1,198 @@
+2006-08-21  Mark Wielaard  <mark@klomp.org>
+
+	Merge NATIVE_LAYER branch.
+
+	2006-08-20  Mark Wielaard  <mark@klomp.org>
+
+	* doc/tools.texinfo: Add file from trunk.
+	* native/jni/Makefile.am (DIST_SUBDIRS): Add native-lib.
+	* native/jni/java-io/java_io_VMFile.c: Include lstat and readlink
+	headers.
+	* native/jni/java-lang/java_lang_VMProcess.c
+	(Java_java_lang_VMProcess_nativeSpawn): Remove redirect argument.
+	* native/jni/java-net/java_net_VMInetAddress.c
+	(Java_java_net_VMInetAddress_getHostByName): Remove unused variable.
+	* native/jni/native-lib/Makefile.am: Remove empty and nonexisting
+	files.
+	* native/jni/native-lib/cpio.c (cpio_setFileReadonly): Use correct
+	mask.
+	* native/jni/native-lib/cpnet.c (cpnet_connect): Removed unused
+	theaddr.
+	* native/jni/native-lib/cpnet.h (cpnet_freeAddresses): Moved from
+	cpnet.h.
+	* native/jni/native-lib/cpnet.h (cpnet_freeAddresses): Declare,
+	don't implement.
+	* vm/reference/java/lang/VMProcess.java: Removed unused redirect
+	argument.
+	* include/java_lang_VMProcess.h: Regenerated.
+
+	2006-07-09  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* native/jni/java-net/gnu_java_net_VMPlainDatagramSocketImpl.c
+	(nativeReceive): Fixed the type of the arrays (use java types).
+	(nativeSendTo): Force throwing an exception if port is 0.
+
+	* native/jni/java-net/javanet.c:
+	(_javanet_accept): Throw SocketTimeoutException if ETIMEDOUT is
+	returned.
+	(_javanet_recvfrom): Likewise.
+	(_javanet_sendto): Throw a NullPointerException if the socket is
+	not connected and no address is given.
+	
+	* native/jni/java-net/javanet.h
+	(NULL_EXCEPTION): Defined.
+
+	2006-06-16  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* native/jni/java-net/java_net_VMInetAddress.c
+	(Java_java_net_VMInetAddress_getHostByName): Fix detection of
+	error.
+
+	* native/jni/java-net/javanet.c
+	(_javanet_accept): Fixed bogus call to TARGET.
+	(_javanet_create_inetaddress): Fixed address generation. Fixed
+	bogus memory free.
+	(_javanet_bind): set "Reuse address" flag.
+
+	* native/jni/native-lib/cpio.c
+	(cpio_getModificationTime): Fixed type.
+	(cpio_removeFile): Use rmdir too.
+
+	* native/jni/native-lib/cpnet.c
+	(cpnet_getHostByName): Fixed error detection.
+
+	* native/jni/native-lib/cpnet.h
+	(cpnet_newIPV4address, cpnet_newIPV6address): Put zero in the
+	memory.
+	(cpnet_IPV4AddressToBytes): Fixed types.
+	
+	2006-06-10  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* native/jni/native-lib/cpio.c
+	(cpio_openDir, cpio_closeDir, cpio_readDir): Implemented.
+
+	* native/jni/native-lib/cpnet.h:
+	(cpnet_bytesToIPV4Address): Fixed type casting to avoid being
+	messed by signs in jbyte.
+	
+	* native/jni/native-lib/cpproc.h
+	(CPIO_EXEC_NUM_PIPES): Compilation fix.
+
+	2006-05-09  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* native/jni/native-lib/cpnet.c
+	(cpnet_getSocketTimeout, cpnet_setSocketTimeout): Reimplemented.
+	(waitForWritable, waitForReadable): New functions.
+	(socketTimeouts): New static global table to hold timeouts for all
+	socket fds.
+	(cpnet_accept,cpnet_bind,cpnet_sendTo,cpnet_recv,cpnet_recvFrom):
+	Added waitForXXXX safeguards to handle socket timeouts.
+
+	* native/jni/java-net/javanet.c
+	(_javanet_accept): Check for the right error value when a timeout
+	occurs.
+	
+	2006-03-25  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* native/jni/java-io/Makefile.am,
+	native/jni/java-lang/Makefile.am,
+	native/jni/java-net/Makefile.am,
+	native/jni/java-nio/Makefile.am: Link to libclasspathnative.la now.
+
+	* native/jni/native-lib/Makefile.am: Added cpproc.c
+
+	* native/jni/native-lib/cpio.c: Implemented missing functions for
+	CPIO.
+
+	* native/jni/native-lib/cpnet.c
+	(cpnet_getHostByName): Fixed address array initialization.
+	
+	* native/jni/native-lib/cpproc.c: Implemented.
+	
+	2006-02-19  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* configure.ac: Invoke GCC_ATTRIBUTE_UNUSED.
+
+	* m4/gcc_attribute.m4: New file from ac_archive.
+	
+	* native/jni/java-net/javanet.c: Adapted to cpnet API
+	modification.
+
+	* native/jni/native-lib/cpnet.c: Implemented.
+
+	* native/jni/native-lib/cpnet.h
+	(cpnet_openSocketDatagram,
+	cpnet_openSocketStream): These calls need an address family now.
+	(cpnet_IPV4AddressToBytes,
+	cpnet_bytesToIPV4Address): Convert the address to network order.
+	
+	2006-02-19  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* native/jni/java-io/java_io_VMFile.c,
+	native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c,
+	native/jni/midi-dssi/dssi_data.h,
+	native/jni/native-lib/cpio.c,
+	native/jni/native-lib/cpmath.h: Removed cpmath
+	dependency. Fixed coding style.
+
+	2006-02-18  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* native/jni/java-lang/java_lang_VMProcess.c: Removed TARGET
+	dependency. Simplified the JNI code by moving some part into the
+	native layer.
+
+	* native/jni/native-lib/cpproc.h: New interface to handle processes.
+
+	2006-02-18  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* native/jni/java-net/java_net_VMInetAddress.c: Fixed compilation
+	errors. Removed any remaining TARGET invocations.
+
+	* native/jni/java-net/javanet.c
+	(_javanet_create_inetaddress): Removed spurious arr and
+	octets. Fixed compilation errors.
+
+	* native/jni/native-lib/cpnet.h
+	(cpnet_getHostname, cpnet_getHostByName, cpnet_getHostByAddr,
+	cpnet_setIPV4Any, cpnet_freeAddresses, cpnet_isIPV6Address,
+	cpnet_isIPV4Address): New functions.
+	(cpnet_bytesToIPV4Address): Fixed interface to be consistent with
+	the rest.
+	
+	2006-01-28  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* native/jni/java-io/java_io_VMFile.c,
+	native/jni/java-net/gnu_java_net_VMPlainDatagramSocketImpl.c,
+	native/jni/java-net/gnu_java_net_VMPlainSocketImpl.c,
+	native/jni/java-net/javanet.c,
+	native/jni/java-net/javanet.h: Adapted the VM layer code
+	to the new native layer.
+
+	* native/jni/native-lib/cpnet.h
+	(cpnet_addMembership,
+	cpnet_dropMembership,
+	cpnet_getAvailableBytes): Added the declarations of
+	some new functions.
+	(cpnet_newIPV6Address,
+	cpnet_IPV6AddressToBytes,
+	cpnet_bytesToIPV6Address): Implemented.
+	(cpnet_newIPV4Address): Initialize the sin_family field.
+
+	2006-01-28  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* native/target: Removed.
+
+	* configure.ac: Removed target from CLASSPATH_INCLUDES and
+	Makefile generation.
+
+	* native/jni/native-lib/Makefile.am,
+	native/jni/native-lib/cpnet.h,
+	native/jni/native-lib/cpnet.c
+	native/jni/native-lib/cpio.h,
+	native/jni/native-lib/cpio.c,
+	native/jni/native-lib/cpmath.h: Imported new native compatibility
+	layer.
+
 2006-08-21  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/javax/swing/text/html/css/CSSParser.java:

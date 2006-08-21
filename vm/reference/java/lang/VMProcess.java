@@ -95,7 +95,6 @@ final class VMProcess extends Process
   InputStream stdout;			       // process output stream
   InputStream stderr;			       // process error stream
   int exitValue;			       // process exit value
-  boolean redirect;			       // redirect stderr -> stdout
 
   //
   // Dedicated thread that does all the fork()'ing and wait()'ing
@@ -200,8 +199,7 @@ final class VMProcess extends Process
 	{
 	  try
 	    {
-	      process.nativeSpawn(process.cmd, process.env, process.dir,
-				  process.redirect);
+	      process.nativeSpawn(process.cmd, process.env, process.dir);
 	      process.state = RUNNING;
 	      activeMap.put(new Long(process.pid), process);
 	    }
@@ -220,7 +218,7 @@ final class VMProcess extends Process
   }
 
   // Constructor
-  private VMProcess(String[] cmd, String[] env, File dir, boolean redirect)
+  private VMProcess(String[] cmd, String[] env, File dir)
     throws IOException
   {
     
@@ -229,7 +227,6 @@ final class VMProcess extends Process
     this.cmd = cmd;
     this.env = env;
     this.dir = dir;
-    this.redirect = redirect;
   
     // Add process to the new process work list and wakeup processThread
     synchronized (workList)
@@ -304,11 +301,10 @@ final class VMProcess extends Process
    */
   static Process exec(String[] cmd, String[] env, File dir) throws IOException
   {
-    return new VMProcess(cmd, env, dir, false);
+    return new VMProcess(cmd, env, dir);
   }
 
-  static Process exec(List cmd, Map env,
-		      File dir, boolean redirect) throws IOException
+  static Process exec(List cmd, Map env, File dir) throws IOException
   {
     String[] acmd = (String[]) cmd.toArray(new String[cmd.size()]);
     String[] aenv = new String[env.size()];
@@ -321,7 +317,7 @@ final class VMProcess extends Process
 	aenv[i++] = entry.getKey() + "=" + entry.getValue();
       }
 
-    return new VMProcess(acmd, aenv, dir, redirect);
+    return new VMProcess(acmd, aenv, dir);
   }
 
   public OutputStream getOutputStream()
@@ -380,8 +376,7 @@ final class VMProcess extends Process
    *
    * @throws IOException if the O/S process could not be created.
    */
-  native void nativeSpawn(String[] cmd, String[] env, File dir,
-			  boolean redirect)
+  native void nativeSpawn(String[] cmd, String[] env, File dir)
     throws IOException;
 
   /**
