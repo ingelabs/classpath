@@ -1,3 +1,15 @@
+2006-08-21  Roman Kennke  <kennke@aicas.com>
+
+	* java/io/File.java
+	(getAbsolutePath): Fetch absolute path from
+	VMFile.getAbsolutePath(). Moved actual impl to there.
+	(isAbsolute): Let VMFile determine the absoluteness.
+	(toURL): Let VMFile convert the filename.
+	* vm/reference/java/io/VMFile.java
+	(getAbsolutePath): New method.
+	(isAbsolute): New method.
+	(toURL): New method.
+
 2006-08-21  Jeroen Frijters  <jeroen@frijters.net>
 
 	* NEWS: Added note about updated VM interface.
