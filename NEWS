@@ -5,6 +5,11 @@ New in release 0.93 (UNRELEASED)
   option to configure
 * Added the rmi and corbaname URL context factories for JNDI.
 * Fixes in the JNDI InitialContext now allows to plug-in user implementation.
+* Removed currentClassLoader method from
+  vm/reference/java/io/ObjectInputStream.java.
+* Added firstNonNullClassLoader method to
+  vm/reference/gnu/classpath/VMStackWalker.java. VMs are encouraged to
+  provide a more efficient implementation.
 
 New in release 0.92 (Aug 9, 2006)
 
