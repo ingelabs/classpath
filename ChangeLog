@@ -1,3 +1,69 @@
+2006-08-21  Friedjof Siebert  <siebert@aicas.com>
+
+	* java/io/ObjectInputStream.java
+	(objectLookupTable): Changed to be a Vector.
+	(ObjectInputStream): Initialize objectLookupTable as Vector.
+	(assignNewHandle): Store Object using handle index rather than
+	Hashtable, using the new rememberHandle() method.
+	(hierarchy): New method. This replaces inputGetObjectStreamClasses()
+	with a caching in ObjectStreamClass.
+	(inputGetObjectStreamClass): Replaced by hierarchy().
+	(lookupHandle): New method. Looks up an object by it's handle
+	index.
+	(parseContent): Avoid creating of Integer objects. Use
+	hierarchy() method for looking up the class hierarchy.
+	(processResolution): Use rememberHandle() to store
+	handle per index, rather than Hashtabling the object.
+	(readFields): 
+	(rememberHandle): New method.
+	* java/io/ObjectOutputStream.java
+	(OIDLookupTable): Use ObjectIdentityMap2Int instead of
+	Hashtable for improved lookup performance.
+	(ObjectOutputStream): Initialize OIDLookupTable as
+	ObjectIdentityMap2Int.
+	(assignNewHandle): Change to use ObjectIdentityMap2Int.
+	(findHandle): Change to use ObjectIdentityMap2Int.
+	(getBooleanField): Removed.
+	(getByteField): Removed.
+	(getCharField): Removed.
+	(getDoubleField): Removed.
+	(getField): Removed.
+	(getFloatField): Removed.
+	(getIntField): Removed.
+	(getLongField): Removed.
+	(getObjectField): Removed.
+	(writeFields(Object,ObjectStreamClass)): Use new helper method.
+	(writeFields(Object,ObjectStreamField)): New helper method.
+	Use switch rather then if-else cascade.
+	(writeObject): Use int handle, rather then Integer.
+	* java/io/ObjectStreamClass.java
+	(hierarchy): New field. Caches the class hierarchy.
+	(methodCache): New field. Caches methods.
+	(readObjectSignature): New field. Stores the read signature.
+	(uidCache): New field. Caches UIDs.
+	(writeObjectSignature): New field. Stores the write signature.
+	(cacheMethods): Cache methods in methodCache.
+	(calculateClassID): Outsourced from getClassUID()
+	for computing the UIDs.
+	(getClassUIDFromField): Outsourced from getClassUID() for
+	fetching the UID from the class field.
+	(getClassUID): Use cached uid if possible. Use new helper
+	methods for fetching the UID from the field or computing
+	from scratch.
+	(getObjectStreamClasses): Removed. Replaced by more
+	efficient hierarchy() method, that also caches the result.
+	(hierarchy): Replaces getObjectStreamClasses() for caching
+	the result.
+	(loadedByBootOrApplicationClassLoader): New helper method.
+	(setClass): Invalidate hierarchy cache.
+	(setSuperclass): Invalidate hierarchy cache.
+	* java/io/ObjectStreamField.java
+	(field): Made field package private for access from other
+	classes.
+	* gnu/java/io/ObjectIdentityWrapper.java: Removed.
+	* gnu/java/io/ObjectIdentityMap2Int.java: Efficient
+	hashtable for mapping objects to ints.
+
 2006-08-21  Roman Kennke  <kennke@aicas.com>
 
 	* java/io/File.java
