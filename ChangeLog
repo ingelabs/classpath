@@ -1,3 +1,18 @@
+2006-08-21  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/javax/swing/text/html/css/CSSScanner.java
+	(main): Use buffered input stream.
+	(nextToken): Removed 65536 workaround. Use int value directly
+	without cast to char.
+	(readComment): Use int value directly without cast to char.
+	Cast to char only when putting the character into the buffer.
+	(readEscape): Likewise.
+	(readIdent): Likewise.
+	(readName): Likewise.
+	(readNum): Likewise.
+	(readString): Likewise.
+	(readWhitespace): Likewise.
+
 2006-08-21  Ingo Proetel  <proetel@aicas.com>
 
 	* java/io/InputStreamReader.java

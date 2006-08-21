@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package gnu.javax.swing.text.html.css;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -121,63 +122,60 @@ class CSSScanner
     tokenEnd = 0;
     int token = -1;
     int next = read();
-    if (next == 65535)
-      System.err.println("BUG");
-    if (next != -1 && next != 65535) // Workaround.
+    if (next != -1)
       {
-        char ch = (char) next;
-        switch (ch)
+        switch (next)
         {
           case ';':
-            parseBuffer[0] = ch;
+            parseBuffer[0] = (char) next;
             tokenEnd = 1;
             token = SEMICOLON;
             break;
           case '{':
-            parseBuffer[0] = ch;
+            parseBuffer[0] = (char) next;
             tokenEnd = 1;
             token = CURLY_LEFT;
             break;
           case '}':
-            parseBuffer[0] = ch;
+            parseBuffer[0] = (char) next;
             tokenEnd = 1;
             token = CURLY_RIGHT;
             break;
           case '(':
-            parseBuffer[0] = ch;
+            parseBuffer[0] = (char) next;
             tokenEnd = 1;
             token = PAREN_LEFT;
             break;
           case ')':
-            parseBuffer[0] = ch;
+            parseBuffer[0] = (char) next;
             tokenEnd = 1;
             token = PAREN_RIGHT;
             break;
           case '[':
-            parseBuffer[0] = ch;
+            parseBuffer[0] = (char) next;
             tokenEnd = 1;
             token = BRACE_LEFT;
             break;
           case ']':
-            parseBuffer[0] = ch;
+            parseBuffer[0] = (char) next;
             tokenEnd = 1;
             token = BRACE_RIGHT;
             break;
           case '@':
-            parseBuffer[0] = ch;
+            parseBuffer[0] = (char) next;
             tokenEnd = 1;
             readIdent();
             token = ATKEYWORD;
             break;
           case '#':
-            parseBuffer[0] = ch;
+            parseBuffer[0] = (char) next;
             tokenEnd = 1;
             readName();
             token = HASH;
             break;
           case '\'':
           case '"':
-            lookahead[0] = ch;
+            lookahead[0] = next;
             readString();
             token = STRING;
             break;
@@ -186,7 +184,7 @@ class CSSScanner
           case '\r':
           case '\n':
           case '\f':
-            lookahead[0] = ch;
+            lookahead[0] = next;
             readWhitespace();
             token = S;
             break;
@@ -197,7 +195,7 @@ class CSSScanner
 //            token = URI;
 //            break;
           case '<':
-            parseBuffer[0] = ch;
+            parseBuffer[0] = (char) next;
             parseBuffer[1] = (char) read();
             parseBuffer[2] = (char) read();
             parseBuffer[3] = (char) read();
@@ -211,12 +209,12 @@ class CSSScanner
               throw new CSSLexicalException("expected CDO token");
             break;
           case '/':
-            lookahead[0] = ch;
+            lookahead[0] = next;
             readComment();
             token = COMMENT;
             break;
           case '~':
-            parseBuffer[0] = ch;
+            parseBuffer[0] = (char) next;
             parseBuffer[1] = (char) read();
             if (parseBuffer[1] == '=')
               token = INCLUDES;
@@ -224,7 +222,7 @@ class CSSScanner
               throw new CSSLexicalException("expected INCLUDES token");
             break;
           case '|':
-            parseBuffer[0] = ch;
+            parseBuffer[0] = (char) next;
             parseBuffer[1] = (char) read();
             if (parseBuffer[1] == '=')
               token = DASHMATCH;
@@ -232,15 +230,15 @@ class CSSScanner
               throw new CSSLexicalException("expected DASHMATCH token");
             break;
           case '-':
-            char ch2 = (char) read();
+            int ch2 = read();
             if (ch2 == '-')
               {
-                char ch3 = (char) read();
+                int ch3 = read();
                 if (ch3 == '>')
                   {
-                    parseBuffer[0] = ch;
-                    parseBuffer[1] = ch2;
-                    parseBuffer[2] = ch3;
+                    parseBuffer[0] = (char) next;
+                    parseBuffer[1] = (char) ch2;
+                    parseBuffer[2] = (char) ch3;
                     tokenEnd = 3;
                     token = CDC;
                   }
@@ -249,11 +247,11 @@ class CSSScanner
               }
             else
               {
-                lookahead[0] = ch;
+                lookahead[0] = next;
                 lookahead[1] = ch2;
                 readIdent();
                 int ch3 = read();
-                if (ch3 == -1 || ((char) ch3) != '(')
+                if (ch3 == -1 || ch3 != '(')
                   {
                     lookahead[0] = ch3;
                     token = IDENT;
@@ -276,20 +274,19 @@ class CSSScanner
           case '7':
           case '8':
           case '9':
-            lookahead[0] = ch;
+            lookahead[0] = next;
             readNum();
             int ch3 = read();
-            char ch3c = (char) ch3;
-            if (ch3c == '%')
+            if (ch3 == '%')
               {
-                parseBuffer[tokenEnd] = ch3c;
+                parseBuffer[tokenEnd] = (char) ch3;
                 tokenEnd++;
                 token = PERCENTAGE;
               }
-            else if (ch3 == -1 || (! (ch3c == '_'
-                                      || (ch3c >= 'a' && ch3c <= 'z')
-                                      || (ch3c >= 'A' && ch3c <= 'Z')
-                                      || ch3c == '\\' || ch3c > 177)))
+            else if (ch3 == -1 || (! (ch3 == '_'
+                                      || (ch3 >= 'a' && ch3 <= 'z')
+                                      || (ch3 >= 'A' && ch3 <= 'Z')
+                                      || ch3 == '\\' || ch3 > 177)))
               {
                 lookahead[0] = ch3;
                 token = NUMBER;
@@ -303,15 +300,15 @@ class CSSScanner
             break;
           default:
             // Handle IDENT that don't begin with '-'.
-            if (ch == '_' || (ch >= 'a' && ch <= 'z')
-                || (ch >= 'A' && ch <= 'Z') || ch == '\\' || ch > 177)
+            if (next == '_' || (next >= 'a' && next <= 'z')
+                || (next >= 'A' && next <= 'Z') || next == '\\' || next > 177)
               {
-                lookahead[0] = ch;
+                lookahead[0] = next;
                 readIdent();
                 int ch4 = read();
-                if (ch4 == -1 || ((char) ch4) != '(')
+                if (ch4 == -1 || ch4 != '(')
                   {
-                  token = IDENT;
+                    token = IDENT;
                   }
                 else
                   {
@@ -322,7 +319,7 @@ class CSSScanner
               }
             else
               {
-                parseBuffer[0] = ch;
+                parseBuffer[0] = (char) next;
                 tokenEnd = 1;
                 token = DELIM;
               }
@@ -375,20 +372,20 @@ class CSSScanner
   private void readIdent()
     throws IOException
   {
-    char ch1 = (char) read();
+    int ch1 = read();
     // Read possibly leading '-'.
     if (ch1 == '-')
       {
-        parseBuffer[tokenEnd] = ch1;
+        parseBuffer[tokenEnd] = (char) ch1;
         tokenEnd++;
-        ch1 = (char) read();
+        ch1 = read();
       }
     // What follows must be '_' or a-z or A-Z or nonascii (>177) or an
     // escape.
     if (ch1 == '_' || (ch1 >= 'a' && ch1 <= 'z')
         || (ch1 >= 'A' && ch1 <= 'Z') || ch1 > 177)
       {
-        parseBuffer[tokenEnd] = ch1;
+        parseBuffer[tokenEnd] = (char) ch1;
         tokenEnd++;
       }
     else if (ch1 == '\\')
@@ -402,14 +399,12 @@ class CSSScanner
 
     // Read any number of [_a-zA-Z0-9-] chars.
     int ch = read();
-    char chc = (char) ch;
-    while (ch != -1 && (chc == '_' || chc == '-' || (chc >= 'a' && chc <= 'z')
-           || (chc >= 'A' && chc <= 'Z') || (chc >= '0' && chc <= '9')))
+    while (ch != -1 && (ch == '_' || ch == '-' || (ch >= 'a' && ch <= 'z')
+           || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9')))
       {
-        parseBuffer[tokenEnd] = chc;
+        parseBuffer[tokenEnd] = (char) ch;
         tokenEnd++;
         ch = read();
-        chc = (char) ch;
       }
 
     // Push back last read character since it doesn't belong to the IDENT.
@@ -426,39 +421,34 @@ class CSSScanner
     throws IOException
   {
     int ch = read();
-    char chc = (char) ch;
-    if (ch != -1 && chc == '\\')
+    if (ch != -1 && ch == '\\')
       {
-        parseBuffer[tokenEnd] = chc;
+        parseBuffer[tokenEnd] = (char) ch;
         tokenEnd++;
         ch = read();
-        chc = (char) ch;
-        if ((chc >= '0' && chc <= '9') || (chc >= 'a' && chc <= 'f'))
+        if ((ch >= '0' && ch <= '9') || (ch >= 'a' && ch <= 'f'))
           {
             // Read unicode escape.
             // Zero to five 0-9a-f chars can follow.
             int hexcount = 0;
             ch = read();
-            chc = (char) ch;
-            while (((chc >= '0' && chc <= '9') || (chc >= 'a' && chc <= 'f'))
+            while (((ch >= '0' && ch <= '9') || (ch >= 'a' && ch <= 'f'))
                    && hexcount < 5)
               {
-                parseBuffer[tokenEnd] = chc;
+                parseBuffer[tokenEnd] = (char) ch;
                 tokenEnd++;
                 hexcount++;
                 ch = read();
-                chc = (char) ch;
               }
             // Now we can have a \r\n or any whitespace character following.
             if (ch == '\r')
               {
-                parseBuffer[tokenEnd] = chc;
+                parseBuffer[tokenEnd] = (char) ch;
                 tokenEnd++;
                 ch = read();
-                chc = (char) ch;
-                if (chc == '\n')
+                if (ch == '\n')
                   {
-                    parseBuffer[tokenEnd] = chc;
+                    parseBuffer[tokenEnd] = (char) ch;
                     tokenEnd++;
                   }
                 else
@@ -468,7 +458,7 @@ class CSSScanner
               }
             else if (ch == ' ' || ch == '\n' || ch == '\f' || ch == '\t')
               {
-                parseBuffer[tokenEnd] = chc;
+                parseBuffer[tokenEnd] = (char) ch;
                 tokenEnd++;
               }
             else
@@ -476,9 +466,9 @@ class CSSScanner
                 lookahead[0] = ch;
               }
           }
-        else if (chc != '\n' && chc != '\r' && chc != '\f')
+        else if (ch != '\n' && ch != '\r' && ch != '\f')
           {
-            parseBuffer[tokenEnd] = chc;
+            parseBuffer[tokenEnd] = (char) ch;
             tokenEnd++;
           }
         else
@@ -494,11 +484,10 @@ class CSSScanner
   {
     // Read first name character.
     int ch = read();
-    char chc = (char) ch;
-    if (ch != -1 && (chc == '_' || chc == '-' || (chc >= 'a' && chc <= 'z')
-           || (chc >= 'A' && chc <= 'Z') || (chc >= '0' && chc <= '9')))
+    if (ch != -1 && (ch == '_' || ch == '-' || (ch >= 'a' && ch <= 'z')
+           || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9')))
       {
-        parseBuffer[tokenEnd] = chc;
+        parseBuffer[tokenEnd] = (char) ch;
         tokenEnd++;
       }
     else
@@ -506,11 +495,10 @@ class CSSScanner
 
     // Read any number (at least one) of [_a-zA-Z0-9-] chars.
     ch = read();
-    chc = (char) ch;
-    while (ch != -1 && (chc == '_' || chc == '-' || (chc >= 'a' && chc <= 'z')
-           || (chc >= 'A' && chc <= 'Z') || (chc >= '0' && chc <= '9')))
+    while (ch != -1 && (ch == '_' || ch == '-' || (ch >= 'a' && ch <= 'z')
+           || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9')))
       {
-        parseBuffer[tokenEnd] = chc;
+        parseBuffer[tokenEnd] = (char) ch;
         tokenEnd++;
       }
 
@@ -527,40 +515,37 @@ class CSSScanner
     throws IOException
   {
     int ch1 = read();
-    char chc1 = (char) ch1;
-    if (ch1 != -1 && (chc1 == '\'' || chc1 == '\"'))
+    if (ch1 != -1 && (ch1 == '\'' || ch1 == '\"'))
       {
-        parseBuffer[tokenEnd] = chc1;
+        parseBuffer[tokenEnd] = (char) ch1;
         tokenEnd++;
 
         // Read any number of chars until we hit another chc1 char.
         // Reject newlines, except if prefixed with \.
         int ch = read();
-        char chc = (char) ch;
-        while (ch != -1 && chc != chc1)
+        while (ch != -1 && ch != ch1)
           {
             // Every non-newline and non-\ char should be ok.
             if (ch != '\n' && ch != '\r' && ch != '\f' && ch != '\\')
               {
-                parseBuffer[tokenEnd] = chc;
+                parseBuffer[tokenEnd] = (char) ch;
                 tokenEnd++;
               }
             // Ok when followed by newline or as part of escape.
             else if (ch == '\\')
               {
                 int ch2 = read();
-                char chc2 = (char) ch2;
-                if (chc2 == '\n' || chc2 == '\r')
+                if (ch2 == '\n' || ch2 == '\r')
                   {
-                    parseBuffer[tokenEnd] = chc;
-                    parseBuffer[tokenEnd + 1] = chc2;
+                    parseBuffer[tokenEnd] = (char) ch;
+                    parseBuffer[tokenEnd + 1] = (char) ch2;
                     tokenEnd += 2;
                   }
                 else
                   {
                     // Try to parse an escape.
-                    lookahead[0] = chc;
-                    lookahead[1] = chc2;
+                    lookahead[0] = ch;
+                    lookahead[1] = ch2;
                     readEscape();
                   }
               }
@@ -568,12 +553,11 @@ class CSSScanner
               throw new CSSLexicalException("Invalid string");
 
             ch = read();
-            chc = (char) ch;
           }
         if (ch != -1)
           {
             // Push the final char on the buffer.
-            parseBuffer[tokenEnd] = chc;
+            parseBuffer[tokenEnd] = (char) ch;
             tokenEnd++;
           }
         else
@@ -592,14 +576,12 @@ class CSSScanner
     throws IOException
   {
     int ch = read();
-    char chc = (char) ch;
-    while (ch != -1 && (chc == ' ' || chc == '\t' || chc == '\r' || chc == '\n'
-           || chc == '\f'))
+    while (ch != -1 && (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n'
+           || ch == '\f'))
       {
-        parseBuffer[tokenEnd] = chc;
+        parseBuffer[tokenEnd] = (char) ch;
         tokenEnd++;
         ch = read();
-        chc = (char) ch;
       }
     // Push back last character read.
     lookahead[0] = ch;
@@ -622,34 +604,29 @@ class CSSScanner
   {
     // First we need a / and a *
     int ch = read();
-    char chc = (char) ch;
-    if (ch != -1 && chc == '/')
+    if (ch != -1 && ch == '/')
       {
-        parseBuffer[tokenEnd] = chc;
+        parseBuffer[tokenEnd] = (char) ch;
         tokenEnd++;
         ch = read();
-        chc = (char) ch;
-        if (ch != -1 && chc == '*')
+        if (ch != -1 && ch == '*')
           {
-            parseBuffer[tokenEnd] = chc;
+            parseBuffer[tokenEnd] = (char) ch;
             tokenEnd++;
             ch = read();
-            chc = (char) ch;
-            parseBuffer[tokenEnd] = chc;
+            parseBuffer[tokenEnd] = (char) ch;
             tokenEnd++;
             boolean finished = false;
-            char lastChar = chc;
+            int lastChar = ch;
             ch = read();
-            chc = (char) ch;
             while (! finished && ch != -1)
               {
-                if (lastChar == '*' && chc == '/')
+                if (lastChar == '*' && ch == '/')
                   finished = true;
-                parseBuffer[tokenEnd] = chc;
+                parseBuffer[tokenEnd] = (char) ch;
                 tokenEnd++;
-                lastChar = chc;
+                lastChar = ch;
                 ch = read();
-                chc = (char) ch;
               }
           }
       }
@@ -657,7 +634,7 @@ class CSSScanner
       throw new CSSLexicalException("Unterminated comment");
     
     // Push back last character read.
-    lookahead[0] = chc;
+    lookahead[0] = ch;
   }
 
   /**
@@ -671,26 +648,23 @@ class CSSScanner
     boolean hadDot = false;
     // First char must be number or .
     int ch = read();
-    char chc = (char) ch;
-    if (ch != -1 && ((chc >= '0' && chc <= '9') || chc == '.'))
+    if (ch != -1 && ((ch >= '0' && ch <= '9') || ch == '.'))
       {
-        if (chc == '.')
+        if (ch == '.')
           hadDot = true;
-        parseBuffer[tokenEnd] = chc;
+        parseBuffer[tokenEnd] = (char) ch;
         tokenEnd++;
         // Now read in any number of digits afterwards, and maybe one dot,
         // if we hadn't one already.
         ch = read();
-        chc = (char) ch;
-        while (ch != -1 && ((chc >= '0' && chc <= '9')
-                            || (chc == '.' && ! hadDot)))
+        while (ch != -1 && ((ch >= '0' && ch <= '9')
+                            || (ch == '.' && ! hadDot)))
           {
-            if (chc == '.')
+            if (ch == '.')
               hadDot = true;
-            parseBuffer[tokenEnd] = chc;
+            parseBuffer[tokenEnd] = (char) ch;
             tokenEnd++;
             ch = read();
-            chc = (char) ch;
           }                            
       }
     else
@@ -701,7 +675,7 @@ class CSSScanner
       throw new CSSLexicalException("Invalid number");
 
     // Push back last character read.
-    lookahead[0] = chc;
+    lookahead[0] = ch;
   }
 
   /**
@@ -715,7 +689,8 @@ class CSSScanner
       {
         String name = "/javax/swing/text/html/default.css";
         InputStream in = CSSScanner.class.getResourceAsStream(name);
-        InputStreamReader r = new InputStreamReader(in);
+        BufferedInputStream bin = new BufferedInputStream(in);
+        InputStreamReader r = new InputStreamReader(bin);
         CSSScanner s = new CSSScanner(r);
         int token;
         do
