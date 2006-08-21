@@ -1,3 +1,11 @@
+2006-08-21  Ingo Proetel  <proetel@aicas.com>
+
+	* java/io/InputStreamReader.java
+	(bytesCache): New field.
+	(cacheLock): New field.
+	(read(byte[],int,int): Avoid allocations of new byte
+	array on every call and reuse cached byte array if possible.
+
 2006-08-21  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/net/local/LocalSocketImpl.java
