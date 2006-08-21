@@ -1,3 +1,20 @@
+2006-08-21  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/javax/swing/text/html/css/CSSParser.java:
+	New class.
+	* gnu/javax/swing/text/html/css/CSSParserCallback.java:
+	New interface.
+	* gnu/javax/swing/text/html/css/CSSParserException.java:
+	New exception.
+	* gnu/javax/swing/text/html/css/CSSScanner.java:
+	Adjusted API comments. Made all constants package private.
+	(EOF): New constant field.
+	(parseBuffer): Made package private.
+	(tokenEnd): Made package private.
+	(CSSScanner): Initialize lookahead buffer with -1.
+	(main): Print out to System.out rather then System.err.
+	(nextToken): Push back character after IDENT.
+
 2006-08-21  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/io/File.java (normalizePath): Fixed handling of "//" and "\\".

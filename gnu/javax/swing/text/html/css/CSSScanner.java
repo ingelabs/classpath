@@ -45,42 +45,48 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 /**
- * A parser for CSS stylesheets. This is based on the grammar from:
+ * A tokenizer for CSS stylesheets. This is based on the scanner definition
+ * from:
  *
- * http://www.w3.org/TR/CSS21/syndata.html
+ * http://www.w3.org/TR/CSS21/syndata.html#tokenization
  *
  * @author Roman Kennke (kennke@aicas.com)
  */
+// TODO: Maybe implement more restrictive scanner:
+// http://www.w3.org/TR/CSS21/grammar.html#q2
 class CSSScanner
 {
 
   // The tokens. This list is taken from:
   // http://www.w3.org/TR/CSS21/syndata.html#tokenization
-  private static final int IDENT = 1;
-  private static final int ATKEYWORD = 2;
-  private static final int STRING = 3;
-  private static final int INVALID = 4;
-  private static final int HASH = 5;
-  private static final int NUMBER = 6;
-  private static final int PERCENTAGE = 7;
-  private static final int DIMENSION = 8;
-  private static final int URI = 9;
-  private static final int UNICODE_RANGE = 10;
-  private static final int CDO = 11;
-  private static final int CDC = 12;
-  private static final int SEMICOLON = 13;
-  private static final int CURLY_LEFT = 14;
-  private static final int CURLY_RIGHT = 15;
-  private static final int PAREN_LEFT = 16;
-  private static final int PAREN_RIGHT = 17;
-  private static final int BRACE_LEFT = 16;
-  private static final int BRACE_RIGHT = 17;
-  private static final int S = 18;
-  private static final int COMMENT = 19;
-  private static final int FUNCTION = 20;
-  private static final int INCLUDES = 21;
-  private static final int DASHMATCH = 22;
-  private static final int DELIM = 23;
+  static final int IDENT = 1;
+  static final int ATKEYWORD = 2;
+  static final int STRING = 3;
+  static final int INVALID = 4;
+  static final int HASH = 5;
+  static final int NUMBER = 6;
+  static final int PERCENTAGE = 7;
+  static final int DIMENSION = 8;
+  static final int URI = 9;
+  static final int UNICODE_RANGE = 10;
+  static final int CDO = 11;
+  static final int CDC = 12;
+  static final int SEMICOLON = 13;
+  static final int CURLY_LEFT = 14;
+  static final int CURLY_RIGHT = 15;
+  static final int PAREN_LEFT = 16;
+  static final int PAREN_RIGHT = 17;
+  static final int BRACE_LEFT = 16;
+  static final int BRACE_RIGHT = 17;
+  static final int S = 18;
+  static final int COMMENT = 19;
+  static final int FUNCTION = 20;
+  static final int INCLUDES = 21;
+  static final int DASHMATCH = 22;
+  static final int DELIM = 23;
+
+  // Additional tokens defined for convenience.
+  static final int EOF = -1;
 
   /**
    * The input source.
@@ -90,12 +96,12 @@ class CSSScanner
   /**
    * The parse buffer.
    */
-  private char[] parseBuffer;
+  char[] parseBuffer;
 
   /**
    * The end index in the parseBuffer of the current token.
    */
-  private int tokenEnd;
+  int tokenEnd;
 
   /**
    * The lookahead 'buffer'.
@@ -105,6 +111,8 @@ class CSSScanner
   CSSScanner(Reader r)
   {
     lookahead = new int[2];
+    lookahead[0] = -1;
+    lookahead[1] = -1;
     parseBuffer = new char[2048];
     in = r;
   }
@@ -308,6 +316,7 @@ class CSSScanner
                 int ch4 = read();
                 if (ch4 == -1 || ch4 != '(')
                   {
+                    lookahead[0] = ch4;
                     token = IDENT;
                   }
                 else
@@ -696,7 +705,7 @@ class CSSScanner
         do
           {
             token = s.nextToken();
-            System.err.println("token: " + token + ": "
+            System.out.println("token: " + token + ": "
                                + s.currentTokenString());
           } while (token != -1);
       }
