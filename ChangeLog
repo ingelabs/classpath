@@ -1,3 +1,12 @@
+2006-08-21  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/net/local/LocalSocketImpl.java
+	Only load native lib if this is supported by runtime.
+	* native/jni/java-net/local.c
+	Include config.h unconditionally.
+	* native/jni/java-net/gnu_java_net_local_LocalSocketImpl.c
+	Include config.h unconditionally.
+
 2006-08-21  Friedjof Siebert  <siebert@aicas.com>
 
 	* java/io/ObjectInputStream.java
