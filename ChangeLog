@@ -1,5 +1,24 @@
 2006-08-22  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JComponent.java
+	(preferredSize): Removed field.
+	(maximumSize): Removed field.
+	(minimumSize): Removed field.
+	(getMaximumSize): Adjusted to delegate to Component, rather
+	then managing the size in JComponent.
+	(getMinimumSize): Adjusted to delegate to Component, rather
+	then managing the size in JComponent.
+	(getPreferredSize): Adjusted to delegate to Component, rather
+	then managing the size in JComponent.
+	(isMaximumSizeSet): Removed.
+	(isMinimumSizeSet): Removed.
+	(isPreferredSizeSet): Removed.
+	(setMaximumSize): Removed.
+	(setMinimumSize): Removed
+	(setPreferredSize): Removed.
+
+2006-08-22  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/AbstractButton.java
 	(ButtonChangeListener.stateChanged): Delegate to combined
 	handler.

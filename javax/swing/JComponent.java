@@ -503,27 +503,6 @@ public abstract class JComponent extends Container implements Serializable
     }
   }
 
-  /** 
-   * An explicit value for the component's preferred size; if not set by a
-   * user, this is calculated on the fly by delegating to the {@link
-   * ComponentUI#getPreferredSize} method on the {@link #ui} property. 
-   */
-  Dimension preferredSize;
-
-  /** 
-   * An explicit value for the component's minimum size; if not set by a
-   * user, this is calculated on the fly by delegating to the {@link
-   * ComponentUI#getMinimumSize} method on the {@link #ui} property. 
-   */
-  Dimension minimumSize;
-
-  /** 
-   * An explicit value for the component's maximum size; if not set by a
-   * user, this is calculated on the fly by delegating to the {@link
-   * ComponentUI#getMaximumSize} method on the {@link #ui} property.
-   */
-  Dimension maximumSize;
-
   /**
    * A value between 0.0 and 1.0 indicating the preferred horizontal
    * alignment of the component, relative to its siblings. The values
@@ -1270,37 +1249,38 @@ public abstract class JComponent extends Container implements Serializable
   }
 
   /**
-   * Get the component's maximum size. If the {@link #maximumSize} property
-   * has been explicitly set, it is returned. If the {@link #maximumSize}
+   * Get the component's maximum size. If the <code>maximumSize</code> property
+   * has been explicitly set, it is returned. If the <code>maximumSize</code>
    * property has not been set but the {@link #ui} property has been, the
    * result of {@link ComponentUI#getMaximumSize} is returned. If neither
    * property has been set, the result of {@link Container#getMaximumSize}
    * is returned.
    *
-   * @return The maximum size of the component
+   * @return the maximum size of the component
    *
-   * @see #maximumSize
-   * @see #setMaximumSize
+   * @see Component#setMaximumSize
+   * @see Component#getMaximumSize()
+   * @see Component#isMaximumSizeSet()
+   * @see ComponentUI#getMaximumSize(JComponent)
    */
   public Dimension getMaximumSize()
   {
-    if (maximumSize != null)
-      return maximumSize;
-
-    if (ui != null)
+    Dimension size = null; 
+    if (isMaximumSizeSet())
+      size = super.getMaximumSize();
+    else
       {
-        Dimension s = ui.getMaximumSize(this);
-        if (s != null)
-          return s;
+        if (ui != null)
+          size = ui.getMaximumSize(this);
+        if (size == null)
+          size = super.getMaximumSize();
       }
-
-    Dimension p = super.getMaximumSize();
-    return p;
+    return size;
   }
 
   /**
-   * Get the component's minimum size. If the {@link #minimumSize} property
-   * has been explicitly set, it is returned. If the {@link #minimumSize}
+   * Get the component's minimum size. If the <code>minimumSize</code> property
+   * has been explicitly set, it is returned. If the <code>minimumSize</code>
    * property has not been set but the {@link #ui} property has been, the
    * result of {@link ComponentUI#getMinimumSize} is returned. If neither
    * property has been set, the result of {@link Container#getMinimumSize}
@@ -1308,96 +1288,56 @@ public abstract class JComponent extends Container implements Serializable
    *
    * @return The minimum size of the component
    *
-   * @see #minimumSize
-   * @see #setMinimumSize
+   * @see Component#setMinimumSize
+   * @see Component#getMinimumSize()
+   * @see Component#isMinimumSizeSet()
+   * @see ComponentUI#getMinimumSize(JComponent)
    */
   public Dimension getMinimumSize()
   {
-    if (minimumSize != null)
-      return minimumSize;
-
-    if (ui != null)
+    Dimension size = null; 
+    if (isMinimumSizeSet())
+      size = super.getMinimumSize();
+    else
       {
-        Dimension s = ui.getMinimumSize(this);
-        if (s != null)
-          return s;
+        if (ui != null)
+          size = ui.getMinimumSize(this);
+        if (size == null)
+          size = super.getMinimumSize();
       }
-
-    Dimension p = super.getMinimumSize();
-    return p;
+    return size;
   }
 
   /**
-   * Get the component's preferred size. If the {@link #preferredSize}
-   * property has been explicitly set, it is returned. If the {@link
-   * #preferredSize} property has not been set but the {@link #ui} property
-   * has been, the result of {@link ComponentUI#getPreferredSize} is
+   * Get the component's preferred size. If the <code>preferredSize</code>
+   * property has been explicitly set, it is returned. If the
+   * <code>preferredSize</code> property has not been set but the {@link #ui}
+   * property has been, the result of {@link ComponentUI#getPreferredSize} is
    * returned. If neither property has been set, the result of {@link
    * Container#getPreferredSize} is returned.
    *
    * @return The preferred size of the component
    *
-   * @see #preferredSize
-   * @see #setPreferredSize
+   * @see Component#setPreferredSize
+   * @see Component#getPreferredSize()
+   * @see Component#isPreferredSizeSet()
+   * @see ComponentUI#getPreferredSize(JComponent)
    */
   public Dimension getPreferredSize()
   {
-    Dimension prefSize = null;
-    if (preferredSize != null)
-      prefSize = new Dimension(preferredSize);
-
-    else if (ui != null)
+    Dimension size = null; 
+    if (isPreferredSizeSet())
+      size = super.getPreferredSize();
+    else
       {
-        Dimension s = ui.getPreferredSize(this);
-        if (s != null)
-          prefSize = s;
+        if (ui != null)
+          size = ui.getPreferredSize(this);
+        if (size == null)
+          size = super.getPreferredSize();
       }
-
-    if (prefSize == null)
-      prefSize = super.getPreferredSize();
-
-    return prefSize;
+    return size;
   }
 
-  /**
-   * Checks if a maximum size was explicitely set on the component.
-   *
-   * @return <code>true</code> if a maximum size was set,
-   * <code>false</code> otherwise
-   * 
-   * @since 1.3
-   */
-  public boolean isMaximumSizeSet()
-  {
-    return maximumSize != null;
-  }
-
-  /**
-   * Checks if a minimum size was explicitely set on the component.
-   *
-   * @return <code>true</code> if a minimum size was set,
-   * <code>false</code> otherwise
-   * 
-   * @since 1.3
-   */
-  public boolean isMinimumSizeSet()
-  {
-    return minimumSize != null;
-  }
-
-  /**
-   * Checks if a preferred size was explicitely set on the component.
-   *
-   * @return <code>true</code> if a preferred size was set,
-   * <code>false</code> otherwise
-   * 
-   * @since 1.3
-   */
-  public boolean isPreferredSizeSet()
-  {
-    return preferredSize != null;
-  }
-  
   /**
    * Return the value of the <code>nextFocusableComponent</code> property.
    *
@@ -2875,57 +2815,6 @@ public abstract class JComponent extends Container implements Serializable
       return;
     super.setForeground(fg);
     repaint();
-  }
-
-  /**
-   * Set the value of the {@link #maximumSize} property. The passed value is
-   * copied, the later direct changes on the argument have no effect on the
-   * property value.
-   *
-   * @param max The new value of the property
-   */
-  public void setMaximumSize(Dimension max)
-  {
-    Dimension oldMaximumSize = maximumSize;
-    if (max != null) 
-      maximumSize = new Dimension(max);
-    else
-      maximumSize = null;
-    firePropertyChange("maximumSize", oldMaximumSize, maximumSize);
-  }
-
-  /**
-   * Set the value of the {@link #minimumSize} property. The passed value is
-   * copied, the later direct changes on the argument have no effect on the
-   * property value.
-   *
-   * @param min The new value of the property
-   */
-  public void setMinimumSize(Dimension min)
-  {
-    Dimension oldMinimumSize = minimumSize;
-    if (min != null)
-      minimumSize = new Dimension(min);
-    else
-      minimumSize = null;
-    firePropertyChange("minimumSize", oldMinimumSize, minimumSize);
-  }
-
-  /**
-   * Set the value of the {@link #preferredSize} property. The passed value is
-   * copied, the later direct changes on the argument have no effect on the
-   * property value.
-   *
-   * @param pref The new value of the property
-   */
-  public void setPreferredSize(Dimension pref)
-  {
-    Dimension oldPreferredSize = preferredSize;
-    if (pref != null)
-      preferredSize = new Dimension(pref);
-    else
-      preferredSize = null;
-    firePropertyChange("preferredSize", oldPreferredSize, preferredSize);
   }
 
   /**
