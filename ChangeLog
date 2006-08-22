@@ -1,3 +1,65 @@
+2006-08-22  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/AbstractButton.java
+	(ButtonChangeListener.stateChanged): Delegate to combined
+	handler.
+	(EventHandler): New inner class. Handles all three types
+	of events on the model.
+	(eventHandler): New field. Stores the combined event
+	handler.
+	(AbstractButton): Moved listener initialization to
+	setModel().
+	(createActionListener): Return combined handler.
+	(createChangeListener): Return combined handler.
+	(createItemListener): Return combined handler.
+	(getEventHandler): New helper method for creating the combined
+	handler.
+	(setModel): Initialize listeners here.
+	* javax/swing/plaf/basic/BasicButtonListener.java
+	(ButtonAction): New class. Implements the keyboard action
+	for buttons.
+	(checkOpacity): Implemented.
+	(createDefaultActionMap): New helper method.
+	(installKeyboardActions): Rewritten to install InputMap
+	and ActionMap according to 'new' keyboard input method.
+	(mouseClicked): Commented as no-op.
+	(mouseDragged): Commented as no-op.
+	(mouseMoved): Commented as no-op.
+	(propertyChange): Check for contentAreaFilled change and
+	update opacity. Pull handling of HTLM in font and text handler.
+	(stateChanged): Repaint button.
+	(uninstallKeyboardActions): Properly uninstall keyboard actions.
+	* javax/swing/plaf/basic/BasicButtonUI.java
+	(listener): Removed.
+	(sharedListener): New static field. Stores the shared listener.
+	(sharedUI): New static field. Stores the shared UI.
+	(createButtonListener): Return shared instance here.
+	(createUI): Return shared instance here.
+	(getButtonListener): New helper method. Looks for the
+	BasicButtonListener installed on a button and returns it.
+	(installDefaults): Correctly install rollover property here.
+	Fetch defaultTextShiftOffset. Initialize opaqueness correctly.
+	(installKeyboardActions): Fetch listener with new helper method.
+	(installListeners): Don't use removed field. Check for null.
+	(installUI): Added comment about order of method invocations.
+	(uninstallDefaults): Don't uninstall non-uninstallable properties.
+	(uninstallKeyboardActions): Fetch listener with new helper method.
+	(uninstallListeners): Fetch listener with new helper method.
+	(paintIcon): Paint icon offset when pressed and armed.
+	* javax/swing/plaf/metal/MetalButtonListener.java: Removed.
+	* javax/swing/plaf/metal/MetalButtonUI.java
+	(sharedUI): New field. Stores the shared UI.
+	(MetalButtonUI): Don't initialize fields here.
+	(createButtonListener): Removed method. Use super impl.
+	(createUI): Return shared instance.
+	(getDisabledTextColor): Update field here.
+	(getFocusColor): Update field here.
+	(getSelectColor): Update field here.
+	(installDefaults): Don't handle rollover property here.
+	(uninstallDefaults): Don't handle rollover property here.
+	(paintButtonPressed): Use accessor method to update the
+	field value.
+
 2006-08-21  Mark Wielaard  <mark@klomp.org>
 
 	Merge NATIVE_LAYER branch.
