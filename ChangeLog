@@ -1,3 +1,9 @@
+2006-08-23  Tania Bento  <tbento@redhat.com>
+
+	* java/awt/Color.java
+	(brighter): Modified algorithm to correctly determine the
+	new brighter colour.
+
 2006-08-23  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/Container.java
