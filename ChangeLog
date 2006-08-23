@@ -1,3 +1,10 @@
+2006-08-23  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Container.java
+	(maxSize): Removed field. This is already declared in Component.
+	(validateTree): Check for ContainerPeer. Don't addNotify here.
+	Only validate Component instances if they are invalid.
+
 2006-08-22  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JComponent.java
