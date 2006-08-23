@@ -1,3 +1,53 @@
+2006-08-23  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JComponent.java
+	(isRepainting): Made package private.
+	(paintChild): New field.
+	(findOpaqueParent): Removed method. This is now in
+	paintImmediately().
+	(findOverlapFreeParent): Removed method. This is now
+	in paintImmediately2().
+	(findPaintRoot): Removed method. This is now
+	in paintImmediately2().
+	(isCompletelyObscured): Changed to take rectangle as single
+	ints as argument.
+	(isPaintingDoubleBuffered): Removed method. This is now
+	in paintImmediately2().
+	(isPartiallyObscured): New helper method.
+	(onTop): New helper method for optimization.
+	(paintChildren): Paint only to specific child when
+	requested like this from paintImmediately2().
+	(paintDoubleBuffered): Changed to take rectangle as single int
+	arguments.
+	(paintImmediately2): Changed to take rectangle as single int
+	arguments. Optimized determination of paint root.
+	(paintImmediately(Rectangle)): Change to delegate to
+	paintImmediately(int,int,int,int).
+	(paintImmediately(int,int,int,int)): Look for opaque ancestor
+	and start painting there.
+	(paint): Call paintDoubleBuffered() with int arguments. Only
+	paint component, when not completely occupied by opaque child.
+	(processKeyBinding): Removed unnecessary cast.
+	(isOccupiedByChild): New helper method.
+	* javax/swing/RepaintManager.java
+	(repaintUnderway): Removed obsolete field.
+	(commitRequests): Removed obsolete field.
+	(RepaintManager): Removed initialization of obsolete fields.
+	(addDirtyRegion): Removed unused statement.
+	(commitBuffer): Changed to take plain ints as argument.
+	(compileRepaintRoots): Optimized to avoid use of Rectangle.
+	Compute offsets in place, rather than using SwingUtilities.
+	(paintDirtyRegions): Removed unused field.
+	* javax/swing/JMenuItem.java
+	(onTop): Return true when not descendant of JInternalFrame.
+	* javax/swing/JPopupMenu.java
+	(onTop): Return true.
+	* javax/swing/JToolTip.java
+	(onTop): Return true.
+	* javax/swing/JViewport.java
+	(paintImmediately2): Change signature to match the
+	corresponding JComponent method.
+
 2006-08-23  Tania Bento  <tbento@redhat.com>
 
 	* java/awt/Color.java
