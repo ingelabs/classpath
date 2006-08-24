@@ -1,5 +1,70 @@
 2006-08-24  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/html/CSSParser.java: Removed.
+	* javax/swing/text/html/CSS.java
+	(getValue): New helper method. Returns special converter
+	instances for certain kinds of property values.
+	* javax/swing/text/html/HTMLDocument.java
+	(HTMLReader.CharacterAction.start): Don't translate tags
+	here. Instead, store the attributes directly with the tag
+	as key.
+	(content): Removed field. The Content object is handled
+	by AbstractDocument.
+	(styleSheet): Removed field. The styleSheet is the styleContext
+	of this document and handled by the DefaultStyledDocument already.
+	(HTMLDocument(Content,StyleSheet): Simply call super here.
+	The super classes already handle the content and styleContext.
+	(HTMLDocument()): Call this() with a default GapContent and
+	StyleSheet.
+	(getStyleSheet): Return the styleContext here.
+	(insertUpdate): New method. Overridden to add the
+	CONTENT dummy tag to the element's attributes.
+	(setBase): Set the base on the styleContext.
+	* javax/swing/text/html/HTMLEditorKit.java
+	(styleContext): Removed unneeded field.
+	(styleSheet): Made field private.
+	(HTMLEditorKit): Do nothing here. The StyleSheet is
+	created lazily in getStyleSheet(). A styleContext is not
+	needed here.
+	(getStyleSheet): Create StyleSheet correctly.
+	(insertHTML): Removed unneeded cast.
+	* javax/swing/text/html/InlineView.java
+	(attributes): New field.
+	(changedUpdate): Reload attributes. Trigger preferenceChanged.
+	(getAttributes): Implemented to fetch the attributes from
+	the stylesheet.
+	* javax/swing/text/html/MultiAttributeSet.java: New class.
+	Multiplexes between several AttributeSets.
+	* javax/swing/text/html/MultiStyle.java: New class.
+	Multiplexes between several Styles.
+	* javax/swing/text/html/ParagraphView.java
+	(attributes): New field.
+	(getAttributes): Implemented to fetch the attributes from
+	the stylesheet.
+	* javax/swing/text/html/StyleSheet.java
+	(CssParser): Removed inner class.
+	(CSSStyle): New inner class. Represents a style defined
+	by a CSS rule.
+	(CSSStyleSheetParserCallback): New class, for parsing
+	CSS stylesheets.
+	(css): New field. Stores the CSS rules.
+	(resolvedStyles): New field. Stores resolved styles.
+	(StyleSheet): Initialize resolvedStyles map.
+	(addRule): Removed bogus impl.
+	(getFont): Implemented to fetch font, based on CSS rules.
+	(getResolvedStyle): New helper method. Looks up resolved
+	styles, and resolves a style if necessary.
+	(resolveStyle): New pair of helper methods. Resolves
+	CSS style rules.
+	(getRule(String)): Provide rudimentary implementation.
+	(getRule(Tag,Element)): Implemented.
+	(getViewAttributes): Implemented.
+	(loadRules): Implemented.
+	(translateHTMLToCSS): Tagged as not implemented.
+	* javax/swing/text/html/ViewAttributeSet.java: New class.
+
+2006-08-24  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/FlowView.java:
 	(LogicalView.getAttributes): New method. Overrides super
 	impl to return the attributes of the FlowView instance.

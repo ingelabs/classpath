@@ -39,7 +39,6 @@ exception statement from your version. */
 package javax.swing.text.html;
 
 import gnu.classpath.NotImplementedException;
-import gnu.javax.swing.text.html.CharacterAttributeTranslator;
 import gnu.javax.swing.text.html.parser.htmlAttributeSet;
 
 import java.io.IOException;
@@ -50,8 +49,6 @@ import java.util.Stack;
 import java.util.Vector;
 
 import javax.swing.JEditorPane;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.HyperlinkEvent.EventType;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -87,8 +84,6 @@ public class HTMLDocument extends DefaultStyledDocument
   boolean preservesUnknownTags = true;
   int tokenThreshold = Integer.MAX_VALUE;
   HTMLEditorKit.Parser parser;
-  StyleSheet styleSheet;
-  AbstractDocument.Content content;
   
   /**
    * Constructs an HTML document using the default buffer size and a default
@@ -96,7 +91,7 @@ public class HTMLDocument extends DefaultStyledDocument
    */
   public HTMLDocument()
   {
-    this(null);
+    this(new GapContent(BUFFER_SIZE_DEFAULT), new StyleSheet());
   }
   
   /**
@@ -119,14 +114,7 @@ public class HTMLDocument extends DefaultStyledDocument
    */
   public HTMLDocument(AbstractDocument.Content c, StyleSheet styles)
   {
-    this.content = c;
-    if (styles == null)
-      {
-        styles = new StyleSheet();
-        styles.importStyleSheet(getClass().getResource(HTMLEditorKit.
-                                                       DEFAULT_CSS));
-      }
-    this.styleSheet = styles;
+    super(c, styles);
   }
   
   /**
@@ -137,7 +125,7 @@ public class HTMLDocument extends DefaultStyledDocument
    */
   public StyleSheet getStyleSheet()
   {
-    return styleSheet;
+    return (StyleSheet) getAttributeContext();
   }
   
   /**
@@ -269,7 +257,7 @@ public class HTMLDocument extends DefaultStyledDocument
   public void setBase(URL u)
   {
     baseURL = u;
-    styleSheet.setBase(u);
+    getStyleSheet().setBase(u);
   }
   
   /**
@@ -633,13 +621,8 @@ public class HTMLDocument extends DefaultStyledDocument
         // Put the old attribute set on the stack.
         pushCharacterStyle();
 
-	// Translate tag.. return if succesful.
-	if(CharacterAttributeTranslator.translateTag(charAttr, t, a))
-	  return;
-
         // Just add the attributes in <code>a</code>.
- 	if (a != null)
- 	  charAttr.addAttribute(t, a.copyAttributes());          
+        charAttr.addAttribute(t, a.copyAttributes());
       }
 
       /**
@@ -1727,5 +1710,20 @@ public void setOuterHTML(Element elem, String htmlText)
 
     // TODO charset
     getParser().parse(new StringReader(htmlText), reader, true);
+  }
+
+  /**
+   * Overridden to tag content with the synthetic HTML.Tag.CONTENT
+   * tag.
+   */
+  protected void insertUpdate(DefaultDocumentEvent evt, AttributeSet att)
+  {
+    if (att == null)
+      {
+        SimpleAttributeSet sas = new SimpleAttributeSet();
+        sas.addAttribute(StyleConstants.NameAttribute, HTML.Tag.CONTENT);
+        att = sas;
+      }
+    super.insertUpdate(evt, att);
   }
 }
