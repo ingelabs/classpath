@@ -1,3 +1,11 @@
+2006-08-24  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/javax/swing/text/html/css/FontSize.java,
+	* gnu/javax/swing/text/html/css/FontStyle.java,
+	* gnu/javax/swing/text/html/css/FontWeight.java:
+	New classes. Used to convert CSS font attributes to AWT/Swing
+	Font constants.
+
 2006-08-24  Francis Kung  <fkung@redhat.com>
 	* gnu/java/awt/color/PyccConverter.java: Throw UnsupportedOperationExceptions.
 	* java/awt/image/ColorConvertOp.java: Updated javadocs.
