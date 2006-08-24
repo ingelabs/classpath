@@ -1,5 +1,16 @@
 2006-08-24  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/FlowView.java:
+	(LogicalView.getAttributes): New method. Overrides super
+	impl to return the attributes of the FlowView instance.
+	* javax/swing/text/LabelView.java:
+	(setPropertiesFromAttributes): Fetch attributes from
+	View, rather then from the Element. (In the HTML
+	package the getAttributes() method is overridden to
+	return different attributes). Fetch font from the StyledDocument.
+
+2006-08-24  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/DefaultEditorKit.java:
 	(DefaultKeyTypedAction.actionPerform): Also filter
 	ALT and CTRL modifiers.
