@@ -1,5 +1,13 @@
 2006-08-24  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/Utilities.java
+	(BUF_LENGTH): Removed unused field.
+	(drawTabbedText): Removed unneeded cast.
+	(getBreakLocation): Removed unneeded cast.
+	Fixed offset to account for Segments not starting at 0.
+
+2006-08-24  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
 	(TabbedPaneLayout.normalizeTabRuns): Removed unused statement.
 	(TabbedPaneScrollLayout.layoutContainer): Likewise.

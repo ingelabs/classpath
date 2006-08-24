@@ -54,10 +54,6 @@ import javax.swing.text.Position.Bias;
  */
 public class Utilities
 {
-  /**
-   * The length of the char buffer that holds the characters to be drawn.
-   */
-  private static final int BUF_LENGTH = 64;
 
   /**
    * Creates a new <code>Utilities</code> object.
@@ -125,8 +121,8 @@ public class Utilities
 	    // In case we have a tab, we just 'jump' over the tab.
 	    // When we have no tab expander we just use the width of ' '.
 	    if (e != null)
-	      pixelX = (int) e.nextTabStop((float) pixelX,
-					   startOffset + offset - s.offset);
+	      pixelX = (int) e.nextTabStop(pixelX,
+                                           startOffset + offset - s.offset);
 	    else
 	      pixelX += metrics.charWidth(' ');
 	    break;
@@ -176,7 +172,7 @@ public class Utilities
 	    // In case we have a tab, we just 'jump' over the tab.
 	    // When we have no tab expander we just use the width of 'm'.
 	    if (e != null)
-	      pixelX = (int) e.nextTabStop((float) pixelX,
+	      pixelX = (int) e.nextTabStop(pixelX,
 					   startOffset + offset - s.offset);
 	    else
 	      pixelX += metrics.charWidth(' ');
@@ -551,7 +547,7 @@ public class Utilities
     
     // Try to find a word boundary previous to the mark at which we 
     // can break the text.
-    int preceding = breaker.preceding(mark + 1 - shift);
+    int preceding = breaker.preceding(mark + 1 + s.offset);
     
     if (preceding != 0)
       return preceding + shift;
