@@ -1,3 +1,20 @@
+2006-08-24  Francis Kung  <fkung@redhat.com>
+	* gnu/java/awt/color/PyccConverter.java: Throw UnsupportedOperationExceptions.
+	* java/awt/image/ColorConvertOp.java: Updated javadocs.
+	(srccs, dstcs, rasterValid): Variables removed.
+	(ColorConvertOp(RenderingHints)): Initialize spaces to empty array.
+	(copyRaster): Check for null rendering hints
+	(createCompatibleColorModel): New private method.
+	(createCompatibleDestImage): Re-implemented.
+	(createCompatibleDestRaster(Raster, ColorSpace, boolean)): New private method.
+	(createCompatibleDestRaster(Raster)): Re-implemented.
+	(filter(BufferedImage, BufferedImage)): Add checks; fix temp image creation.
+	(filter(Raster, WritableRaster)): Add checks; fix temp raster creation.
+	(getPoint2D): Clean up formatting.
+	* java/awt/image/ComponentColorModel.java
+	(constructor): use findBits method instead of passing null.
+	(findBits): New method.
+
 2006-08-24  Gary Benson  <gbenson@redhat.com>
 
 	* java/net/NetworkInterface.java (getInetAddresses): Bracket IPv6
