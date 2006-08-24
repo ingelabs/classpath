@@ -1,5 +1,17 @@
 2006-08-24  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/lang/ref/Reference.java
+	(queue, nextOnQueue): Made volatile.
+	(enqueue): Made thread safe.
+	* java/lang/ref/ReferenceQueue.java
+	(lock): New field.
+	(poll): Removed synchronized.
+	(enqueue): Changed to synchronize on lock object, to update Reference
+	state and return success status.
+	(dequeue, remove): Synchronize on lock object.
+
+2006-08-24  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/security/SecureClassLoader.java
 	(protectionDomainCache): Changed to HashMap.
 	(SecureClassLoader): Removed redundant security check.
