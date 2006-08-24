@@ -1,5 +1,19 @@
 2006-08-24  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	(TabbedPaneLayout.normalizeTabRuns): Removed unused statement.
+	(TabbedPaneScrollLayout.layoutContainer): Likewise.
+	(ScrollingPane.updateUI): Likewise.
+	(calculateTabWidth): Rewritten to correctly and efficiently
+	layout the tab width.
+	(layoutLabel): Call SwingUtilities method with the tabPane
+	as argument.
+	(paintContentBorderLeftEdge): Removed unused statement.
+	(paintContentBorderRightEdge): Removed unused statement.
+	(paintContentBorder): Removed unused statement.
+
+2006-08-24  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicTextUI.java
 	(RootView.getAttributes): Overridden to return null,
 	as the RootView has no parent.
