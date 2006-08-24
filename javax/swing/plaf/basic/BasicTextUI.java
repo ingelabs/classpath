@@ -71,6 +71,7 @@ import javax.swing.plaf.InputMapUIResource;
 import javax.swing.plaf.TextUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Caret;
 import javax.swing.text.DefaultCaret;
@@ -405,6 +406,14 @@ public abstract class BasicTextUI extends TextUI
     public Document getDocument()
     {
       return textComponent.getDocument();
+    }
+
+    /**
+     * Returns the attributes, which is null for the RootView.
+     */
+    public AttributeSet getAttributes()
+    {
+      return null;
     }
   }
 

@@ -1,5 +1,11 @@
 2006-08-24  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(RootView.getAttributes): Overridden to return null,
+	as the RootView has no parent.
+
+2006-08-24  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/html/CSSParser.java: Removed.
 	* javax/swing/text/html/CSS.java
 	(getValue): New helper method. Returns special converter
