@@ -1,5 +1,11 @@
 2006-08-24  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/DefaultEditorKit.java:
+	(DefaultKeyTypedAction.actionPerform): Also filter
+	ALT and CTRL modifiers.
+
+2006-08-24  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/javax/swing/text/html/css/FontSize.java,
 	* gnu/javax/swing/text/html/css/FontStyle.java,
 	* gnu/javax/swing/text/html/css/FontWeight.java:
