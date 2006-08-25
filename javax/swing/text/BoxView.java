@@ -92,11 +92,6 @@ public class BoxView
   private int[] span = new int[2];
 
   /**
-   * The SizeRequirements of the child views along the X_AXIS and Y_AXIS.
-   */
-  private SizeRequirements[][] childReqs = new SizeRequirements[2][];
-
-  /**
    * Creates a new <code>BoxView</code> for the given
    * <code>Element</code> and axis. Valid values for the axis are
    * {@link View#X_AXIS} and {@link View#Y_AXIS}.
@@ -373,9 +368,9 @@ public class BoxView
   }
 
   /**
-   * This method is obsolete and no longer in use. It is replaced by
-   * {@link #calculateMajorAxisRequirements(int, SizeRequirements)} and
-   * {@link #calculateMinorAxisRequirements(int, SizeRequirements)}.
+   * Calculates size requirements for a baseline layout. This is not
+   * used by the BoxView itself, but by subclasses that wish to perform
+   * a baseline layout, like the FlowView's rows.
    *
    * @param axis the axis that is examined
    * @param sr the <code>SizeRequirements</code> object to hold the result,
@@ -387,50 +382,94 @@ public class BoxView
   protected SizeRequirements baselineRequirements(int axis,
                                                   SizeRequirements sr)
   {
-    updateChildRequirements(axis);
+    // Create new instance if sr == null.
+    if (sr == null)
+      sr = new SizeRequirements();
+    sr.alignment = 0.5F;
 
-    SizeRequirements res = sr;
-    if (res == null)
-      res = new SizeRequirements();
-
-    float minLeft = 0;
-    float minRight = 0;
-    float prefLeft = 0;
-    float prefRight = 0;
-    float maxLeft = 0;
-    float maxRight = 0;
-    for (int i = 0; i < childReqs[axis].length; i++)
+    // Calculate overall ascent and descent.
+    int totalAscentMin = 0;
+    int totalAscentPref = 0;
+    int totalAscentMax = 0;
+    int totalDescentMin = 0;
+    int totalDescentPref = 0;
+    int totalDescentMax = 0;
+    
+    int count = getViewCount();
+    for (int i = 0; i < count; i++)
       {
-        float myMinLeft = childReqs[axis][i].minimum * childReqs[axis][i].alignment;
-        float myMinRight = childReqs[axis][i].minimum - myMinLeft;
-        minLeft = Math.max(myMinLeft, minLeft);
-        minRight = Math.max(myMinRight, minRight);
-        float myPrefLeft = childReqs[axis][i].preferred * childReqs[axis][i].alignment;
-        float myPrefRight = childReqs[axis][i].preferred - myPrefLeft;
-        prefLeft = Math.max(myPrefLeft, prefLeft);
-        prefRight = Math.max(myPrefRight, prefRight);
-        float myMaxLeft = childReqs[axis][i].maximum * childReqs[axis][i].alignment;
-        float myMaxRight = childReqs[axis][i].maximum - myMaxLeft;
-        maxLeft = Math.max(myMaxLeft, maxLeft);
-        maxRight = Math.max(myMaxRight, maxRight);
-      }
-    int minSize = (int) (minLeft + minRight);
-    int prefSize = (int) (prefLeft + prefRight);
-    int maxSize = (int) (maxLeft + maxRight);
-    float align = prefLeft / (prefRight + prefLeft);
-    if (Float.isNaN(align))
-      align = 0;
+        View v = getView(i);
+        float align = v.getAlignment(axis);
+        int span = (int) v.getPreferredSpan(axis);
+        int ascent = (int) (align * span);
+        int descent = span - ascent;
 
-    res.alignment = align;
-    res.maximum = maxSize;
-    res.preferred = prefSize;
-    res.minimum = minSize;
-    return res;
+        totalAscentPref = Math.max(ascent, totalAscentPref);
+        totalDescentPref = Math.max(descent, totalDescentPref);
+        if (v.getResizeWeight(axis) > 0)
+          {
+            // If the view is resizable, then use the min and max size
+            // of the view.
+            span = (int) v.getMinimumSpan(axis);
+            ascent = (int) (align * span);
+            descent = span - ascent;
+            totalAscentMin = Math.max(ascent, totalAscentMin);
+            totalDescentMin = Math.max(descent, totalDescentMin);
+
+            span = (int) v.getMaximumSpan(axis);
+            ascent = (int) (align * span);
+            descent = span - ascent;
+            totalAscentMax = Math.max(ascent, totalAscentMax);
+            totalDescentMax = Math.max(descent, totalDescentMax);
+          }
+        else
+          {
+            // If the view is not resizable, use the preferred span.
+            totalAscentMin = Math.max(ascent, totalAscentMin);
+            totalDescentMin = Math.max(descent, totalDescentMin);
+            totalAscentMax = Math.max(ascent, totalAscentMax);
+            totalDescentMax = Math.max(descent, totalDescentMax);
+          }
+      }
+
+    // Preferred overall span is the sum of the preferred ascent and descent.
+    // With overflow check.
+    sr.preferred = (int) Math.min((long) totalAscentPref
+                                  + (long) totalDescentPref,
+                                  Integer.MAX_VALUE);
+
+    // Align along the baseline.
+    if (sr.preferred > 0)
+      sr.alignment = (float) totalAscentPref / sr.preferred;
+
+    if (sr.alignment == 0)
+      {
+        // Nothing above the baseline, use the descent.
+        sr.minimum = totalDescentMin;
+        sr.maximum = totalDescentMax;
+      }
+    else if (sr.alignment == 1.0F)
+      {
+        // Nothing below the baseline, use the descent.
+        sr.minimum = totalAscentMin;
+        sr.maximum = totalAscentMax;
+      }
+    else
+      {
+        sr.minimum = Math.max((int) (totalAscentMin / sr.alignment),
+                              (int) (totalDescentMin / (1.0F - sr.alignment)));
+        sr.maximum = Math.min((int) (totalAscentMax / sr.alignment),
+                              (int) (totalDescentMax / (1.0F - sr.alignment)));
+      }
+    return sr;
   }
 
   /**
-   * Calculates the layout of the children of this <code>BoxView</code> along
-   * the specified axis.
+   * Calculates the baseline layout of the children of this
+   * <code>BoxView</code> along the specified axis.
+   *
+   * This is not used by the BoxView itself, but by subclasses that wish to
+   * perform a baseline layout, like the FlowView's rows.
    *
    * @param span the target span
    * @param axis the axis that is examined
@@ -440,13 +479,36 @@ public class BoxView
   protected void baselineLayout(int span, int axis, int[] offsets,
                                 int[] spans)
   {
-    updateChildRequirements(axis);
-    updateRequirements(axis);
+    int totalAscent = (int) (span * getAlignment(axis));
+    int totalDescent = span - totalAscent;
 
-    // Calculate the spans and offsets using the SizeRequirements uility
-    // methods.
-    SizeRequirements.calculateAlignedPositions(span, requirements[axis],
-                                               childReqs[axis], offsets, spans);
+    int count = getViewCount();
+    for (int i = 0; i < count; i++)
+      {
+        View v = getView(i);
+        float align = v.getAlignment(axis);
+        int viewSpan;
+        if (v.getResizeWeight(axis) > 0)
+          {
+            // If possible, then resize for best fit.
+            int min = (int) v.getMinimumSpan(axis);
+            int max = (int) v.getMaximumSpan(axis);
+            if (align == 0.0F)
+              viewSpan = Math.max(Math.min(max, totalDescent), min);
+            else if (align == 1.0F)
+              viewSpan = Math.max(Math.min(max, totalAscent), min);
+            else
+              {
+                int fit = (int) Math.min(totalAscent / align,
+                                         totalDescent / (1.0F - align));
+                viewSpan = Math.max(Math.min(max, fit), min);
+              }
+          }
+        else
+          viewSpan = (int) v.getPreferredSpan(axis);
+        offsets[i] = totalAscent - (int) (viewSpan * align);
+        spans[i] = viewSpan;
+      }
   }
 
   /**
@@ -985,32 +1047,6 @@ public class BoxView
   {
     // FIXME: What to do here?
     return super.flipEastAndWestAtEnds(position, bias);
-  }
-
-  /**
-   * Updates the child requirements along the specified axis. The requirements
-   * are only updated if the layout for the specified axis is marked as
-   * invalid.
-   *
-   * @param axis the axis to be updated
-   */
-  private void updateChildRequirements(int axis)
-  {
-    if (! isLayoutValid(axis))
-      {
-        int numChildren = getViewCount();
-        if (childReqs[axis] == null || childReqs[axis].length != numChildren)
-          childReqs[axis] = new SizeRequirements[numChildren];
-        for (int i = 0; i < numChildren; ++i)
-          {
-            View child = getView(i);
-            childReqs[axis][i] =
-              new SizeRequirements((int) child.getMinimumSpan(axis),
-                                   (int) child.getPreferredSpan(axis),
-                                   (int) child.getMaximumSpan(axis),
-                                   child.getAlignment(axis));
-          }
-      }
   }
 
   /**

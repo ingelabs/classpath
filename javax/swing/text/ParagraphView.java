@@ -40,6 +40,7 @@ package javax.swing.text;
 
 import java.awt.Shape;
 
+import javax.swing.SizeRequirements;
 import javax.swing.event.DocumentEvent;
 
 /**
@@ -105,6 +106,27 @@ public class ParagraphView extends FlowView implements TabExpander
             }
         }
       return index;
+    }
+
+
+    /**
+     * Overridden to perform a baseline layout. The normal BoxView layout
+     * isn't completely suitable for rows.
+     */
+    protected void layoutMinorAxis(int targetSpan, int axis, int[] offsets,
+                                   int[] spans)
+    {
+      baselineLayout(targetSpan, axis, offsets, spans);
+    }
+
+    /**
+     * Overridden to perform a baseline layout. The normal BoxView layout
+     * isn't completely suitable for rows.
+     */
+    protected SizeRequirements calculateMinorAxisRequirements(int axis,
+                                                            SizeRequirements r)
+    {
+      return baselineRequirements(axis, r);
     }
 
     protected void loadChildren(ViewFactory vf)

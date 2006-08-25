@@ -1,5 +1,35 @@
 2006-08-24  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/BoxView.java
+	(childReqs): Removed obsolete field.
+	(baselineLayout): Reimplemented for correct baseline layout.
+	(baselineRequirements): Reimplemented for correct baseline
+	layout.
+	(updateChildRequirements): Removed obsolete method.
+	* javax/swing/text/GlyphView.java
+	(DefaultGlyphPainter.getSpan): Removed unused statement.
+	(DefaultGlyphPainter.paint): Dont paint subscript/superscript
+	specially. The subscript/superscript layout is performed
+	via the alignment, the font is supplied by the StyleContext.
+	(breakView): Removed unused statements.
+	(getAlignment): Adjust alignment according to the
+	superscript/subscript setting.
+	(getFont): Reimplemented to fetch the font from the style
+	context, or from the document if the stylecontext is not
+	available.
+	(getPreferredSpan): Adjust span for superscript. Use switch
+	instead of if-else.
+	* javax/swing/text/LabelView.java
+	(setPropertiesFromAttributes): Fetch background and foreground
+	from document / style context.
+	(isSubscript): Resync properties if needed.
+	* javax/swing/text/ParagraphView.java
+	(Row.calculateMinorAxisRequirements): Overridden to perform
+	a baseline layout.
+	(Row.layoutMinorAxis): Overridden to perform a baseline layout.
+
+2006-08-24  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/Utilities.java
 	(BUF_LENGTH): Removed unused field.
 	(drawTabbedText): Removed unneeded cast.
