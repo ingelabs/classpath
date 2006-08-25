@@ -1,4 +1,19 @@
-2006-08-24  Roman Kennke  <kennke@aicas.com>
+2006-08-25  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/LabelView.java
+	(setPropertiesFromAttributes): Only set background when
+	the corresponding attribute is actually defined, otherwise
+	set to null, as the StyleConstants would return black.
+	* javax/swing/text/DefaultStyledDocument.java
+	(ElementBuffer.documentEvent): Removed obsolete field.
+	(ElementBuffer.change): Do prepareEdits() and finishEdits()
+	to correctly update the element structure.
+	(ElementBuffer.insertContentTag): Removed unused statement.
+	(ElementBuffer.recreateAfterFracture): Removed
+	unused obsolete method.
+	(setCharacterAttributes): Removed unused statement.
+
+2006-08-25  Roman Kennke  <kennke@aicas.com>
 
 	* examples/gnu/classpath/examples/swing/Demo.java
 	(LaterMain.run): Removed unused local variable.
@@ -15,7 +30,7 @@
 	(DEBUG): New field. Set to true for debugging output.
 	(createContent): Dump element tree after parsing.
 
-2006-08-24  Roman Kennke  <kennke@aicas.com>
+2006-08-25  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/html/CSS.java
 	(getValue): Added color value conversion.
@@ -43,7 +58,7 @@
 	Removed. This is more or less replaced by CSSColor and the
 	ConvertAction in HTMLReader.
 
-2006-08-24  Roman Kennke  <kennke@aicas.com>
+2006-08-25  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/BoxView.java
 	(childReqs): Removed obsolete field.

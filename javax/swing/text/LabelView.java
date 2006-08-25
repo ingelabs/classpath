@@ -115,10 +115,6 @@ public class LabelView extends GlyphView
   protected void setPropertiesFromAttributes()
   {
     AttributeSet atts = getAttributes();
-    // We cannot use StyleConstants.getBackground() here, because that returns
-    // BLACK as default (when background == null). What we need is the
-    // background setting of the text component instead, which is what we get
-    // when background == null anyway.
     setStrikeThrough(StyleConstants.isStrikeThrough(atts));
     setSubscript(StyleConstants.isSubscript(atts));
     setSuperscript(StyleConstants.isSuperscript(atts));
@@ -130,7 +126,10 @@ public class LabelView extends GlyphView
       {
         StyledDocument doc = (StyledDocument) d;
         font = doc.getFont(atts);
-        background = doc.getBackground(atts);
+        if (atts.isDefined(StyleConstants.Background))
+          background = doc.getBackground(atts);
+        else
+          background = null;
         foreground = doc.getForeground(atts);
       }
     valid = true;
