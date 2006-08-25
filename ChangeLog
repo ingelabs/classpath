@@ -1,5 +1,28 @@
 2006-08-25  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/CompositeView.java
+	(insets): Removed. Replaced by single short fields.
+	(top): New field. Replaces insets.
+	(bottom): New field. Replaces insets.
+	(left): New field. Replaces insets.
+	(right): New field. Replaces insets.
+	(CompositeView): Initialize insets fields.
+	(createDefaultLocation): Removed unneeded method.
+	(getBottomInset): Return field directly.
+	(getTopInset): Return field directly.
+	(getLeftInset): Return field directly.
+	(getRightInset): Return field directly.
+	(getInsideAllocation): Adjusted to work on new insets fields.
+	(getViewIndex): Fixed check.
+	(loadChildren): Don't replace the old children.
+	(replace): Make sure that there is an array to operate on.
+	Only set parent to null, when it is this View.
+	(setInsets): Adjusted to work with new insets fields.
+	(setParagraphInsets): Fixed to pull insets directly from
+	StyleConstants.
+
+2006-08-25  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/ComponentView.java
 	(Interceptor): New inner helper class. Used to propagate
 	invalidate requests and cache component layout sizes.
