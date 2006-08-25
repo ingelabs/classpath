@@ -1,5 +1,33 @@
 2006-08-24  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/html/CSS.java
+	(getValue): Added color value conversion.
+	* javax/swing/text/html/HTMLDocument.java
+	(HTMLReader.ConvertAction): New class, converts HTML style tags
+	to CSS attributes.
+	(HTMLReader.initTags): Register ConvertAction for <font> tag.
+	* javax/swing/text/html/InlineView.java
+	(setPropertiesFromAttributes): Implemented to fetch
+	CSS character attributes.
+	* javax/swing/text/html/StyleSheet.java
+	(addCSSAttribute): Convert value.
+	(getBackground): Implemented to fetch CSS background color
+	attribute.
+	(getForeground): Implemented to fetch CSS color
+	attribute.
+	(getFont): Adjust font size for superscript and subscript.
+	(translateHTMLToCSS): Rudimentary implementation that
+	copies the original attributes, so that any CSS attributes in
+	there are preserved.
+	(stringToColor): Use CSSColor for conversion.
+	* gnu/javax/swing/text/html/css/CSSColor.java:
+	New class. Converts CSS color values to RGB color values.
+	* gnu/javax/swing/text/html/CharacterAttributeTranslator.java:
+	Removed. This is more or less replaced by CSSColor and the
+	ConvertAction in HTMLReader.
+
+2006-08-24  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/BoxView.java
 	(childReqs): Removed obsolete field.
 	(baselineLayout): Reimplemented for correct baseline layout.

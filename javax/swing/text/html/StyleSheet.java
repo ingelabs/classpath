@@ -39,7 +39,7 @@ exception statement from your version. */
 package javax.swing.text.html;
 
 import gnu.classpath.NotImplementedException;
-import gnu.javax.swing.text.html.CharacterAttributeTranslator;
+import gnu.javax.swing.text.html.css.CSSColor;
 import gnu.javax.swing.text.html.css.CSSParser;
 import gnu.javax.swing.text.html.css.CSSParserCallback;
 import gnu.javax.swing.text.html.css.FontSize;
@@ -570,7 +570,8 @@ public class StyleSheet extends StyleContext
   public void addCSSAttribute(MutableAttributeSet attr, CSS.Attribute key,
                               String value)
   {
-    attr.addAttribute(key, value);
+    Object val = CSS.getValue(key, value);
+    attr.addAttribute(key, val);
   }
   
   /**
@@ -599,10 +600,12 @@ public class StyleSheet extends StyleContext
    * @return the set of CSS attributes
    */
   public AttributeSet translateHTMLToCSS(AttributeSet htmlAttrSet)
-    throws NotImplementedException
   {
-    // FIXME: Implement me.
-    return SimpleAttributeSet.EMPTY;
+    // FIXME: Really convert HTML to CSS here.
+    AttributeSet cssAttr = htmlAttrSet.copyAttributes();
+    MutableAttributeSet cssStyle = addStyle(null, null);
+    cssStyle.addAttributes(cssAttr);
+    return cssStyle;
   }
 
   /**
@@ -721,6 +724,15 @@ public class StyleSheet extends StyleContext
     if (size != null)
       realSize = size.getValue();
 
+    // Decrement size for subscript and superscript.
+    Object valign = a.getAttribute(CSS.Attribute.VERTICAL_ALIGN);
+    if (valign != null)
+      {
+        String v = valign.toString();
+        if (v.contains("sup") || v.contains("sub"))
+          realSize -= 2;
+      }
+
     // TODO: Convert font family.
     String family = "SansSerif";
 
@@ -744,7 +756,11 @@ public class StyleSheet extends StyleContext
    */
   public Color getForeground(AttributeSet a)
   {
-    return super.getForeground(a);     
+    CSSColor c = (CSSColor) a.getAttribute(CSS.Attribute.COLOR);
+    Color color = null;
+    if (c != null)
+      color = c.getValue();
+    return color;     
   }
   
   /**
@@ -757,7 +773,11 @@ public class StyleSheet extends StyleContext
    */
   public Color getBackground(AttributeSet a)
   {
-    return super.getBackground(a);     
+    CSSColor c = (CSSColor) a.getAttribute(CSS.Attribute.BACKGROUND_COLOR);
+    Color color = null;
+    if (c != null)
+      color = c.getValue();
+    return color;     
   }
   
   /**
@@ -871,7 +891,7 @@ public class StyleSheet extends StyleContext
    */
   public Color stringToColor(String colorName)
   {
-    return CharacterAttributeTranslator.getColor(colorName);
+    return CSSColor.convertValue(colorName);
   }
   
   /**

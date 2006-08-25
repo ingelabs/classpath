@@ -37,6 +37,7 @@ exception statement from your version. */
 
 package javax.swing.text.html;
 
+import gnu.javax.swing.text.html.css.CSSColor;
 import gnu.javax.swing.text.html.css.FontSize;
 import gnu.javax.swing.text.html.css.FontStyle;
 import gnu.javax.swing.text.html.css.FontWeight;
@@ -482,6 +483,8 @@ public class CSS implements Serializable
       o = new FontWeight(v);
     else if (att == Attribute.FONT_STYLE)
       o = new FontStyle(v);
+    else if (att == Attribute.COLOR || att == Attribute.BACKGROUND_COLOR)
+      o = new CSSColor(v);
     else
       o = v;
     return o;

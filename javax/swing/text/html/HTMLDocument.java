@@ -795,7 +795,42 @@ public class HTMLDocument extends DefaultStyledDocument
         print ("AreaAction.end not implemented");
       } 
     }
-    
+
+    /**
+     * Converts HTML tags to CSS attributes.
+     */
+    class ConvertAction
+      extends TagAction
+    {
+
+      public void start(HTML.Tag tag, MutableAttributeSet atts)
+      {
+        pushCharacterStyle();
+        charAttr.addAttribute(tag, atts.copyAttributes());
+        StyleSheet styleSheet = getStyleSheet();
+        // TODO: Add other tags here.
+        if (tag == HTML.Tag.FONT)
+          {
+            String color = (String) atts.getAttribute(HTML.Attribute.COLOR);
+            if (color != null)
+              styleSheet.addCSSAttribute(charAttr, CSS.Attribute.COLOR, color);
+            String face = (String) atts.getAttribute(HTML.Attribute.FACE);
+            if (face != null)
+              styleSheet.addCSSAttribute(charAttr, CSS.Attribute.FONT_FAMILY,
+                                         face);
+            String size = (String) atts.getAttribute(HTML.Attribute.SIZE);
+            if (size != null)
+              styleSheet.addCSSAttribute(charAttr, CSS.Attribute.FONT_SIZE,
+                                         size);
+          }
+      }
+
+      public void end(HTML.Tag tag)
+      {
+        popCharacterStyle();
+      }
+    }
+
     class BaseAction extends TagAction
     {
       /**
@@ -1011,7 +1046,7 @@ public class HTMLDocument extends DefaultStyledDocument
       StyleAction styleAction = new StyleAction();
       TitleAction titleAction = new TitleAction();
       
-      
+      ConvertAction convertAction = new ConvertAction();
       tagToAction.put(HTML.Tag.A, characterAction);
       tagToAction.put(HTML.Tag.ADDRESS, characterAction);
       tagToAction.put(HTML.Tag.APPLET, hiddenAction);
@@ -1034,7 +1069,7 @@ public class HTMLDocument extends DefaultStyledDocument
       tagToAction.put(HTML.Tag.DL, blockAction);
       tagToAction.put(HTML.Tag.DT, paragraphAction);
       tagToAction.put(HTML.Tag.EM, characterAction);
-      tagToAction.put(HTML.Tag.FONT, characterAction);
+      tagToAction.put(HTML.Tag.FONT, convertAction);
       tagToAction.put(HTML.Tag.FORM, blockAction);
       tagToAction.put(HTML.Tag.FRAME, specialAction);
       tagToAction.put(HTML.Tag.FRAMESET, blockAction);
