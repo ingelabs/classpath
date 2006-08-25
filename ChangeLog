@@ -1,5 +1,28 @@
 2006-08-25  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/ComponentView.java
+	(Interceptor): New inner helper class. Used to propagate
+	invalidate requests and cache component layout sizes.
+	(interceptor): New field.
+	(getAlignment): Fetch alignment from interceptor container.
+	(getComponent): Don't create component here. This is done
+	in setParent().
+	(getMaximumSpan): Fetch layout info from interceptor. Check
+	for illegal axis.
+	(getMinimumSpan): Fetch layout info from interceptor. Check
+	for illegal axis.
+	(getPreferredSpan): Fetch layout info from interceptor. Check
+	for illegal axis.
+	(modelToView): Fixed model to view mapping.
+	(viewToModel): Fixed view to model mapping.
+	(paint): Check for null. Set bounds on interceptor rather
+	then component.
+	(setParentImpl): Install interceptor between component
+	and hosting container.
+	(setParent): Call super.setParent() immediately.
+
+2006-08-25  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/LabelView.java
 	(setPropertiesFromAttributes): Only set background when
 	the corresponding attribute is actually defined, otherwise
