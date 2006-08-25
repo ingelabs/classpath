@@ -1,5 +1,22 @@
 2006-08-24  Roman Kennke  <kennke@aicas.com>
 
+	* examples/gnu/classpath/examples/swing/Demo.java
+	(LaterMain.run): Removed unused local variable.
+	(Demo): Don't put desktop in scrollpane.
+	(addChildren): Removed unused method.
+	(mkButtonBar): Added HTML demo.
+	(mkMenuBar): Added HTML demo.
+	(mkPanel): Removed unused method.
+	(mkScrollPane): Removed unused method.
+	(mkTree): Removed unused method.
+	(valign2str): Removed unused method.
+	* examples/gnu/classpath/examples/swing/HtmlDemo.java:
+	Initialize text field with some HTML that already works.
+	(DEBUG): New field. Set to true for debugging output.
+	(createContent): Dump element tree after parsing.
+
+2006-08-24  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/html/CSS.java
 	(getValue): Added color value conversion.
 	* javax/swing/text/html/HTMLDocument.java
