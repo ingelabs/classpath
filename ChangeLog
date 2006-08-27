@@ -1,3 +1,103 @@
+2006-08-27  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/StyleContext.java
+	(NamedStyle.attributes): Made field transient.
+	(NamedStyle.changeEvent): Made field transient.
+	(NamedStyle.name): Removed field. The name is stored as
+	attribute.
+	(NamedStyle.NamedStyle(String,Style)): Call setName() for
+	storing the name and check for null name and resolveParent.
+	Don't initialize changeEvent.
+	(NamedStyle.copyAttributes): Return a new NamedStyle,
+	rather than a plain copy of the attributes field.
+	(NamedStyle.fireStateChange): Lazily create changeEvent
+	field.
+	(NamedStyle.getName): Fetch name from attributes.
+	(NamedStyle.setName): Store name from attributes.
+	(NamedStyle.readObject): Implemented for correct
+	deserialization.
+	(NamedStyle.writeObject): Implemented for correct
+	serialization.
+	(NamedStyle.setResolveParent): When new parent is null,
+	remove resolveParent attribute. Use addAttribute() method
+	rather than StyleContext addAttribute().
+	(NamedStyle.toString): Fixed to produce output equal to the
+	RI.
+	(SmallAttributeSet.resolveParent): New field.
+	(SmallAttributeSet.SmallAttributeSet(AttributeSet)): Update
+	the resolveParent field correctly.
+	(SmallAttributeSet.SmallAttributeSet(Object[])): Don't copy
+	array but store it directly. Update
+	the resolveParent field correctly.
+	(SmallAttributeSet.clone): Return this as the object is
+	immutable.
+	(SmallAttributeSet.containsAttributes): Make sure that keys
+	and values are the same.
+	(SmallAttributeSet.containsAttribute):  Make sure that keys
+	and values are the same.
+	(SmallAttributeSet.copyAttributes): Return this as the object is
+	immutable.
+	(SmallAttributeSet.equals): Fixed comparison. Two AttributeSet
+	are equal if they have the same number of attributes and
+	one contains the other.
+	(SmallAttributeSet.getAttribute): Improved lookup of
+	resolveParent.
+	(SmallAttributeSet.getResolveParent): Improved lookup of
+	resolveParent.
+	(SmallAttributeSet.isEqual): When comparing object is a
+	SmallAttributeSet, consider them equal only if they are the
+	same object.
+	(SmallAttributeSet.toString): Fixed to produce output equal to the
+	RI.
+	(attributeSetPool): New field.
+	(defaultStyleContext): Initialize lazily.
+	(defaultStyle): Removed field. This is stored in the style context
+	as attribute.
+	(listenerList): Removed field. The NamedStyle stores the
+	listeners.
+	(readAttributeKeys): New static field. Used for looking up
+	the serialization mappings when reading.
+	(search): New field. Used as search key.
+	(staticAttributeKeys): Replaced by read/writeAttributeKeys.
+	(styles): New field. Stores the styles and listeners.
+	(styleTable): Removed field. Replaced by styles field.
+	(writeAttributeKeys): New static field. Used for looking up
+	the serialization mappings when writing.
+	(static_initializer): Register mappings for all keys in
+	StyleConstants.
+	(StyleContext): Initialize styles correctly.
+	(addAttributes): Fixed caching of immutable attributes.
+	(addAttribute): Fixed caching of immutable attributes.
+	(removeAttributes): Fixed caching of immutable attributes.
+	(removeAttribute): Fixed caching of immutable attributes.
+	(addChangeListener): Add listener to styles field.
+	(removeChangeListener): Remove listener from styles field.
+	(getChangeListeners): Fetch listeners from styles field.
+	(addStyle): Add style to styles field.
+	(cleanupPool): New method.
+	(getDefaultStyleContext): Lazily create context.
+	(getEmptySet): Simply return SimpleAttributeSet.EMPTY.
+	(getMutableAttributeSet): New helper method. Used for
+	caching.
+	(getStaticAttribute): Fetch key from readAttributeKeys.
+	(getStyleNames): Return names from styles field.
+	(getStyle): Lookup style in styles field.
+	(removeStyle): Remove style from styles field.
+	(readAttributeSet): Fixed deserialization.
+	(writeAttributeSet): Fixed serialization.
+	(readObject): Fixed deserialization.
+	(writeObject): Fixed serialization.
+	(reclaim): Simply cleanup the pool.
+	(registerStaticAttributeKey): Store mapping in both ways.
+	(searchImmutableSet): New helper method for caching.
+	(toString): Fixed for output like the RI.
+	* javax/swing/text/StyleConstants.java
+	(keys): New field. Stores all known keys.
+	(StyleConstants): Store created key in keys list.
+	* javax/swing/event/EventListenerList.java
+	(readObject): Fixed deserialization.
+	(writeObject): Fixed serialization.
+
 2006-08-25  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/CompositeView.java
