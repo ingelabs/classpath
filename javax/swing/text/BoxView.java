@@ -581,7 +581,7 @@ public class BoxView
 
     res.minimum = 0;
     res.preferred = 0;
-    res.maximum = 0;
+    res.maximum = Integer.MAX_VALUE;
     res.alignment = 0.5F;
     int n = getViewCount();
     for (int i = 0; i < n; i++)

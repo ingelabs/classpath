@@ -1,5 +1,25 @@
 2006-08-28  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/BoxView.java
+	(calculateMinorAxisRequirements): Initialize max size
+	with Integer.MAX_VALUE.
+	* javax/swing/text/Utilities.java
+	(getBreakLocation): For simple chars, scan the text directly.
+	* javax/swing/text/WrappedPlainView.java
+	(tabBase): New field.
+	(tabSize): New field.
+	(calculateBreakPosition): Use Utilities. Fixed for correct
+	break calculation.
+	(changedUpdate): Update children directly.
+	(insertUpdate): Update children directly. Notify children.
+	(removeUpdate): Update children directly. Notify children.
+	(updateChildren): New helper method.
+	(nextTabStop): Fixed to return correct results.
+	(paint): Update tabBase.
+	(updateMetrics): Update tab size.
+
+2006-08-28  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/Position.java
 	(Bias.Forward): Initialize with 'Forward' rather then 'forward'.
 	(Bias.Backward): Initialize with 'Backward' rather then 'backward'.
