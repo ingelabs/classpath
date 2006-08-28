@@ -1,5 +1,46 @@
 2006-08-27  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/StringContent.java
+	(InsertUndo.positions): New field.
+	(InsertUndo.redo): Update the undo positions.
+	(InsertUndo.undo): Fetch the undo positions.
+	(Mark): New class. Layer of indirection to allow Positions
+	to be GC'ed while we still hold references to the Mark.
+	(RemoveUndo.len): New field.
+	(RemoveUndo.positions): New field.
+	(RemoveUndo.RemoveUndo): Fetch undo positions.
+	(RemoveUndo.redo): Re-fetch positions and string.
+	(RemoveUndo.undo): Update undo positions.
+	(StickyPosition.mark): New field.
+	(StickyPosition.offset): Removed field.
+	(StickyPosition.StickyPosition): Create new Mark. Register
+	Position in queueOfDeath. Update reference count on mark.
+	(StickyPosition.getOffset): Return offset stored in mark.
+	(StickyPosition.setOffset): Removed unneeded method.
+	(UndoPosRef): New class. Handles undo/redo on positions/marks.
+	(EMPTY): New field.
+	(marks): New field. Stores the marks.
+	(positions): Removed field.
+	(queueOfDeath): New field. Used for GCing the positions.
+	(StringContent): Initialize queueOfDeath.
+	(createPosition): Lazily create marks vector.
+	(garbageCollect): New helper method. Collects positions
+	to be GCed and updates their marks.
+	(getChars): Fixed bounds check.
+	(getPositionsInRange): When v == null, create new Vector,
+	otherwise use v. Store UndoPosRefs in vector.
+	(getString): Added comment about bug in RI.
+	(insertString): Use new helper method for replacing the array.
+	Correctly update positions.
+	(length): Removed this qualifier.
+	(remove): Use new helper method for replacing the array.
+	Correctly update positions.
+	(replace): New helper method for growing or patching the array.
+	(updateUndoPositions): Implemented. Updates the positions
+	for undo/redo operations.
+
+2006-08-27  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/StyleContext.java
 	(NamedStyle.attributes): Made field transient.
 	(NamedStyle.changeEvent): Made field transient.
