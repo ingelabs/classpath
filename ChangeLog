@@ -1,3 +1,32 @@
+2006-08-28  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/View.java
+	(height): Removed unneeded field.
+	(width): Removed unneeded field.
+	(getBreakWeight): Return GoodBreakWeight when pos is after
+	the view's span.
+	(getToolTipText): Check view index more carefully. Avoid
+	Rectangle creation.
+	(insertUpdate): Only execute method body if view count > 0.
+	When updateChildren returns false, clear the ec variable.
+	(updateChildren): Added null checks.
+	(viewToModel): Initialize bias array correctly.
+	* javax/swing/text/CompositeView.java
+	(children): Made private.
+	(numChildren): New field.
+	(loadChildren): Check factory for null. Don't load children
+	when factory is null.
+	(replace): Removed null check. Nullify removed children. Made
+	growing the array more efficient.
+	(getViewCount): Return numChildren rather then the real array
+	size.
+	* javax/swing/text/BoxView.java
+	(getViewAtPoint): Fixed algorithm for finding the view.
+	(replace): Made array growing more efficient.
+	(replaceLayoutArray): New helper method for growing/patching
+	the layout arrays.
+	(viewToModel): Make sure we have a valid layout.
+
 2006-08-28  Tania Bento  <tbento@redhat.com>
 
 	* java/awt/MenuShortcut.java
@@ -5,13 +34,13 @@
 	(toString): Modified string output.
 	(setKeyName): New private method.
 
-2006-08-27  Roman Kennke  <kennke@aicas.com>
+2006-08-28  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/GapContent.java
 	(Mark.getOffset): Made assert less strict, include boundary.
 	(search): Made package private to avoid accessor method.
 
-2006-08-27  Roman Kennke  <kennke@aicas.com>
+2006-08-28  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/StringContent.java
 	(InsertUndo.positions): New field.

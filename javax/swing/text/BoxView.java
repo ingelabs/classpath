@@ -222,53 +222,63 @@ public class BoxView
    */
   public void replace(int offset, int length, View[] views)
   {
-    int numViews = 0;
-    if (views != null)
-      numViews = views.length;
-
-    // Resize and copy data for cache arrays.
-    // The spansX cache.
-    int oldSize = getViewCount();
-
-    int[] newSpansX = new int[oldSize - length + numViews];
-    System.arraycopy(spans[X_AXIS], 0, newSpansX, 0, offset);
-    System.arraycopy(spans[X_AXIS], offset + length, newSpansX,
-                     offset + numViews,
-                     oldSize - (offset + length));
-    spans[X_AXIS] = newSpansX;
-
-    // The spansY cache.
-    int[] newSpansY = new int[oldSize - length + numViews];
-    System.arraycopy(spans[Y_AXIS], 0, newSpansY, 0, offset);
-    System.arraycopy(spans[Y_AXIS], offset + length, newSpansY,
-                     offset + numViews,
-                     oldSize - (offset + length));
-    spans[Y_AXIS] = newSpansY;
-
-    // The offsetsX cache.
-    int[] newOffsetsX = new int[oldSize - length + numViews];
-    System.arraycopy(offsets[X_AXIS], 0, newOffsetsX, 0, offset);
-    System.arraycopy(offsets[X_AXIS], offset + length, newOffsetsX,
-                     offset + numViews,
-                     oldSize - (offset + length));
-    offsets[X_AXIS] = newOffsetsX;
-
-    // The offsetsY cache.
-    int[] newOffsetsY = new int[oldSize - length + numViews];
-    System.arraycopy(offsets[Y_AXIS], 0, newOffsetsY, 0, offset);
-    System.arraycopy(offsets[Y_AXIS], offset + length, newOffsetsY,
-                     offset + numViews,
-                     oldSize - (offset + length));
-    offsets[Y_AXIS] = newOffsetsY;
+    int oldNumChildren = getViewCount();
 
     // Actually perform the replace.
     super.replace(offset, length, views);
+
+    // Resize and copy data for cache arrays.
+    int newItems = views != null ? views.length : 0;
+    int delta = newItems - length;
+    int src = offset + length;
+    int numMove = oldNumChildren - src;
+    int dst = src + delta;
+    offsets[X_AXIS] = replaceLayoutArray(offsets[X_AXIS], offset,
+                                         oldNumChildren, delta, src, dst,
+                                         numMove);
+    spans[X_AXIS] = replaceLayoutArray(spans[X_AXIS], offset,
+                                       oldNumChildren, delta, src, dst,
+                                       numMove);
+    offsets[Y_AXIS] = replaceLayoutArray(offsets[Y_AXIS], offset,
+                                         oldNumChildren, delta, src, dst,
+                                         numMove);
+    spans[Y_AXIS] = replaceLayoutArray(spans[Y_AXIS], offset,
+                                       oldNumChildren, delta, src, dst,
+                                       numMove);
 
     // Invalidate layout information.
     layoutValid[X_AXIS] = false;
     requirementsValid[X_AXIS] = false;
     layoutValid[Y_AXIS] = false;
     requirementsValid[Y_AXIS] = false;
+  }
+
+  /**
+   * Helper method. This updates the layout cache arrays in response
+   * to a call to {@link #replace(int, int, View[])}.
+   *
+   * @param oldArray the old array
+   *
+   * @return the replaced array
+   */
+  private int[] replaceLayoutArray(int[] oldArray, int offset, int numChildren,
+                                   int delta, int src, int dst, int numMove)
+
+  {
+    int[] newArray;
+    if (numChildren + delta > oldArray.length)
+      {
+        int newLength = Math.max(2 * oldArray.length, numChildren + delta);
+        newArray = new int[newLength];
+        System.arraycopy(oldArray, 0, newArray, 0, offset);
+        System.arraycopy(oldArray, src, newArray, dst, numMove);
+      }
+    else
+      {
+        newArray = oldArray;
+        System.arraycopy(newArray, src, newArray, dst, numMove);
+      }
+    return newArray;
   }
 
   /**
@@ -651,24 +661,54 @@ public class BoxView
   {
     View result = null;
     int count = getViewCount();
-    Rectangle copy = new Rectangle(r);
-
-    for (int i = 0; i < count; ++i)
+    if (myAxis == X_AXIS)
       {
-        copy.setBounds(r);
-        // The next call modifies copy.
-        childAllocation(i, copy);
-        if (copy.contains(x, y))
+        // Border case. Requested point is left from the box.
+        if (x < r.x + offsets[X_AXIS][0])
           {
-            // Modify r on success.
-            r.setBounds(copy);
-            result = getView(i);
-            break;
+            childAllocation(0, r);
+            result = getView(0);
+          }
+        else
+          {
+            // Search views inside box.
+            for (int i = 0; i < count && result == null; i++)
+              {
+                if (x < r.x + offsets[X_AXIS][i])
+                  {
+                    childAllocation(i - 1, r);
+                    result = getView(i - 1);
+                  }
+              }
           }
       }
-    
-    if (result == null && count > 0)
-      return getView(count - 1);
+    else // Same algorithm for Y_AXIS.
+      {
+        // Border case. Requested point is above the box.
+        if (y < r.y + offsets[Y_AXIS][0])
+          {
+            childAllocation(0, r);
+            result = getView(0);
+          }
+        else
+          {
+            // Search views inside box.
+            for (int i = 0; i < count && result == null; i++)
+              {
+                if (y < r.y + offsets[Y_AXIS][i])
+                  {
+                    childAllocation(i - 1, r);
+                    result = getView(i - 1);
+                  }
+              }
+          }
+      }
+    // Not found, other border case: point is right from or below the box.
+    if (result == null)
+      {
+        childAllocation(count - 1, r);
+        result = getView(count - 1);
+      }
     return result;
   }
 
@@ -1039,7 +1079,11 @@ public class BoxView
 
   public int viewToModel(float x, float y, Shape a, Position.Bias[] bias)
   {
-    // FIXME: What to do here?
+    if (! isAllocationValid())
+      {
+        Rectangle r = a instanceof Rectangle ? (Rectangle) a : a.getBounds();
+        setSize(r.width, r.height);
+      }
     return super.viewToModel(x, y, a, bias);
   }
 

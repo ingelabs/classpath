@@ -56,7 +56,12 @@ public abstract class CompositeView
   /**
    * The child views of this <code>CompositeView</code>.
    */
-  View[] children;
+  private View[] children;
+
+  /**
+   * The number of child views.
+   */
+  private int numChildren;
 
   /**
    * The allocation of this <code>View</code> minus its insets. This is
@@ -101,19 +106,22 @@ public abstract class CompositeView
    */
   protected void loadChildren(ViewFactory f)
   {
-    Element el = getElement();
-    int count = el.getElementCount();
-    View[] newChildren = new View[count];
-    for (int i = 0; i < count; ++i)
+    if (f != null)
       {
-        Element child = el.getElement(i);
-        View view = f.create(child);
-        newChildren[i] = view;
+        Element el = getElement();
+        int count = el.getElementCount();
+        View[] newChildren = new View[count];
+        for (int i = 0; i < count; ++i)
+          {
+            Element child = el.getElement(i);
+            View view = f.create(child);
+            newChildren[i] = view;
+          }
+        // I'd have called replace(0, getViewCount(), newChildren) here
+        // in order to replace all existing views. However according to
+        // Harmony's tests this is not what the RI does.
+        replace(0, 0, newChildren);
       }
-    // I'd have called replace(0, getViewCount(), newChildren) here
-    // in order to replace all existing views. However according to
-    // Harmony's tests this is not what the RI does.
-    replace(0, 0, newChildren);
   }
 
   /**
@@ -137,7 +145,7 @@ public abstract class CompositeView
    */
   public int getViewCount()
   {
-    return children.length;
+    return numChildren;
   }
 
   /**
@@ -169,27 +177,37 @@ public abstract class CompositeView
     if (views == null)
       views = new View[0];
 
-    // Check for null views to add.
-    for (int i = 0; i < views.length; ++i)
-      if (views[i] == null)
-        throw new NullPointerException("Added views must not be null");
-
-    int endOffset = offset + length;
-
     // First we set the parent of the removed children to null.
+    int endOffset = offset + length;
     for (int i = offset; i < endOffset; ++i)
       {
         if (children[i].getParent() == this)
           children[i].setParent(null);
+        children[i] = null;
       }
 
-    View[] newChildren = new View[children.length - length + views.length];
-    System.arraycopy(children, 0, newChildren, 0, offset);
-    System.arraycopy(views, 0, newChildren, offset, views.length);
-    System.arraycopy(children, offset + length, newChildren,
-                     offset + views.length,
-                     children.length - (offset + length));
-    children = newChildren;
+    // Update the children array.
+    int delta = views.length - length;
+    int src = offset + length;
+    int numMove = numChildren - src;
+    int dst = src + delta;
+    if (numChildren + delta > children.length)
+      {
+        // Grow array.
+        int newLength = Math.max(2 * children.length, numChildren + delta);
+        View[] newChildren = new View[newLength];
+        System.arraycopy(children, 0, newChildren, 0, offset);
+        System.arraycopy(views, 0, newChildren, offset, views.length);
+        System.arraycopy(children, src, newChildren, dst, numMove);
+        children = newChildren;
+      }
+    else
+      {
+        // Patch existing array.
+        System.arraycopy(children, src, children, dst, numMove);
+        System.arraycopy(views, 0, children, offset, views.length);
+      }
+    numChildren += delta;
 
     // Finally we set the parent of the added children to this.
     for (int i = 0; i < views.length; ++i)
