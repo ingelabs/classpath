@@ -1,5 +1,11 @@
 2006-08-28  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/Position.java
+	(Bias.Forward): Initialize with 'Forward' rather then 'forward'.
+	(Bias.Backward): Initialize with 'Backward' rather then 'backward'.
+
+2006-08-28  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/View.java
 	(height): Removed unneeded field.
 	(width): Removed unneeded field.
