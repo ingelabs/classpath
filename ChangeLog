@@ -1,5 +1,11 @@
 2006-08-27  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/GapContent.java
+	(Mark.getOffset): Made assert less strict, include boundary.
+	(search): Made package private to avoid accessor method.
+
+2006-08-27  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/StringContent.java
 	(InsertUndo.positions): New field.
 	(InsertUndo.redo): Update the undo positions.
