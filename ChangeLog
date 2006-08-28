@@ -1,3 +1,10 @@
+2006-08-28  Tania Bento  <tbento@redhat.com>
+
+	* java/awt/MenuShortcut.java
+	(MenuShortcut (int, boolean)): Set keyName.
+	(toString): Modified string output.
+	(setKeyName): New private method.
+
 2006-08-27  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/GapContent.java
