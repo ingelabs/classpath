@@ -1,3 +1,41 @@
+2006-08-29  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(FocusHandler): New class. This is moved from the anonymous
+	inner focus listener class to a static member class, and
+	is now shared between components.
+	(DocumentHandler): This class is combined with the PropertyHandler
+	into the Handler class.
+	(PropertyChangeHandler): This class is combined with the
+	DocumentHandler into the Handler class.
+	(Handler): New class. This combines the Property and Document
+	handler into one class.
+	(RootView.changedUpdate): Only forward if real view != null.
+	(RootView.insertUpdate): Only forward if real view != null.
+	(RootView.removeUpdate): Only forward if real view != null.
+	(documentHandler): Removed field and replaced by handler.
+	(focuslistener): Made field static and renamed to focusListener.
+	(handler): New field.
+	(kit): Lazily initialize field.
+	(rootView): Lazily initialize field.
+	(updateHandler): Removed and replaced by handler.
+	(getEditorKit): Lazily instantiate field.
+	(installDefaults): Don't set margin twice. Install correct
+	property for disabledTextColor. Moved caret and highlighter
+	initialization to installFixedDefaults.
+	(installFixedDefaults): New method. Installs defaults that
+	can't be overridden by subclasses.
+	(installListeners): Only install focus handler when new
+	system property gnu.swing.text.no-xlike-clipboard is not set.
+	Lazily initialize focus handler.
+	(installUI): Lazily initialize rootView. Install handler
+	both for property and document changes.
+	(uninstallDefaults): Uninstall the UI defaults.
+	(uninstallFixedDefaults): New method. Uninstalls the fixed
+	defaults.
+	(installListeners): Only uninstall focus handler when not null.
+	(uninstallUI): Uninstall property and document listener here.
+
 2006-08-29  Gary Benson  <gbenson@redhat.com>
 
 	* java/net/SocketPermission.java
