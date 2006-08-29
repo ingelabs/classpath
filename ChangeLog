@@ -1,5 +1,48 @@
 2006-08-29  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/InternationalFormatter.java
+	(stringToValue): Fixed bounds check.
+	* javax/swing/text/MaskFormatter.java
+	(MaskFormatter): Don't explicitly set allosInvalid property.
+	(convertStringToValue): New helper method.
+	(convertValueToString): New helper method.
+	(convertValue): Removed. Replaced by the 2 convert* methods
+	above.
+	(getPadCharAt): Removed.
+	(isCharValid): Removed.
+	(pad): Removed.
+	(stringToValue): Fixed stringToValue conversion.
+	(stripLiterals): Removed.
+	(valueToString): Fixed valueToString conversion.
+	* javax/swing/text/DefaultFormatter.java
+	(DefaultFormatter): Default to commitsOnValidEdit = false.
+
+2006-08-29  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/TextAction.java
+	(getTextComponent): Check event for null and return null in
+	this case.
+	(augmentList): Augment Actions based on their names.
+	* javax/swing/text/DefaultEditorKit.java
+	(BeginAction.actionPerformed): Check target for null.
+	(BeginLineAction.actionPerformed): Check target for null.
+	(CopyAction.actionPerformed): Check target for null.
+	(CutAction.actionPerformed): Check target for null.
+	(EndAction.actionPerformed): Check target for null.
+	(EndLineAction.actionPerformed): Check target for null.
+	(InsertBreakAction.actionPerformed): Check target for null.
+	(InsertTabAction.actionPerformed): Check target for null.
+	(PasteAction.actionPerformed): Check target for null.
+	(SelectAllAction.actionPerformed): Check target for null.
+	(SelectionBeginAction.actionPerformed): Check target for null.
+	(SelectionBeginLineAction.actionPerformed): Check target for null.
+	(SelectionEndAction.actionPerformed): Check target for null.
+	(SelectionEndLineAction.actionPerformed): Check target for null.
+	(SelectLineAction.actionPerformed): Check target for null.
+	(SelectWordAction.actionPerformed): Check target for null.
+
+2006-08-29  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicTextUI.java
 	(FocusHandler): New class. This is moved from the anonymous
 	inner focus listener class to a static member class, and
