@@ -39,6 +39,7 @@ exception statement from your version. */
 package javax.swing.text;
 
 import java.awt.Shape;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.swing.event.DocumentEvent;
@@ -264,33 +265,78 @@ public class ZoneView
     return zone;
   }
 
-  /**
-   * A helper method to unload the oldest zones when there are more loaded
-   * zones then allowed.
-   */
-  private void unloadOldestZones()
-  {
-    int maxZones = getMaxZonesLoaded();
-    while (loadedZones.size() > maxZones)
-      {
-        View zone = (View) loadedZones.removeFirst();
-        unloadZone(zone);
-      }
-  }
-
   // --------------------------------------------------------------------------
   // CompositeView methods.
   // --------------------------------------------------------------------------
 
+  /**
+   * Overridden to not load all the child views. This methods creates
+   * initial zones without actually loading them.
+   *
+   * @param vf not used
+   */
   protected void loadChildren(ViewFactory vf)
   {
-    // TODO: Implement this.
+    int p0 = getStartOffset();
+    int p1 = getEndOffset();
+    append(createZone(p0, p1));
+    checkZoneAt(p0);
   }
 
+  /**
+   * Returns the index of the child view at the document position
+   * <code>pos</code>.
+   *
+   * This overrides the CompositeView implementation because the ZoneView does
+   * not provide a one to one mapping from Elements to Views.
+   *
+   * @param pos the document position
+   *
+   * @return the index of the child view at the document position
+   *         <code>pos</code>
+   */
   protected int getViewIndexAtPosition(int pos)
   {
-    // TODO: Implement this.
-    return -1;
+    int index = -1;
+    boolean found = false;
+    if (pos >= getStartOffset() && pos <= getEndOffset())
+      {
+        int upper = getViewCount() - 1;
+        int lower = 0;
+        index = (upper - lower) / 2 + lower;
+        int bias = 0;
+        do
+          {
+            View child = getView(index);
+            int childStart = child.getStartOffset();
+            int childEnd = child.getEndOffset();
+            if (pos >= childStart && pos < childEnd)
+              found = true;
+            else if (pos < childStart)
+              {
+                upper = index;
+                bias = -1;
+              }
+            else if (pos >= childEnd)
+              {
+                lower = index;
+                bias = 1;
+              }
+            if (! found)
+              {
+                int newIndex = (upper - lower) / 2 + lower;
+                if (newIndex == index)
+                  index = newIndex + bias;
+                else
+                  index = newIndex;
+              }
+          } while (upper != lower && ! found);
+      }
+    // If no child view actually covers the specified offset, reset index to
+    // -1.
+    if (! found)
+      index = -1;
+    return index;
   }
 
   // --------------------------------------------------------------------------
@@ -314,4 +360,82 @@ public class ZoneView
     return false;
   }
 
+  // --------------------------------------------------------------------------
+  // Internal helper methods.
+  // --------------------------------------------------------------------------
+
+  /**
+   * A helper method to unload the oldest zones when there are more loaded
+   * zones then allowed.
+   */
+  private void unloadOldestZones()
+  {
+    int maxZones = getMaxZonesLoaded();
+    while (loadedZones.size() > maxZones)
+      {
+        View zone = (View) loadedZones.removeFirst();
+        unloadZone(zone);
+      }
+  }
+
+  /**
+   * Checks if the zone view at position <code>pos</code> should be split
+   * (its size is greater than maximumZoneSize) and tries to split it.
+   *
+   * @param pos the document position to check
+   */
+  private void checkZoneAt(int pos)
+  {
+    int viewIndex = getViewIndexAtPosition(pos); //, Position.Bias.Forward);
+    View view = getView(viewIndex);
+    int p0 = view.getStartOffset();
+    int p1 = view.getEndOffset();
+    if (p1 - p0 > maximumZoneSize)
+      splitZone(viewIndex, p0, p1);
+  }
+
+  /**
+   * Tries to break the view at the specified index and inside the specified
+   * range into pieces that are acceptable with respect to the maximum zone
+   * size.
+   *
+   * @param index the index of the view to split
+   * @param p0 the start offset
+   * @param p1 the end offset
+   */
+  private void splitZone(int index, int p0, int p1)
+  {
+    ArrayList newZones = new ArrayList();
+    int p = p0;
+    do
+      {
+        p0 = p;
+        p = Math.min(getPreferredZoneEnd(p0), p1);
+        newZones.add(createZone(p0, p));
+      } while (p < p1);
+    View[] newViews = new View[newZones.size()];
+    newViews = (View[]) newZones.toArray(newViews);
+    replace(index, 1, newViews);
+  }
+
+  /**
+   * Calculates the positions at which a zone split is performed. This
+   * tries to create zones sized close to half the maximum zone size.
+   *
+   * @param start the start offset
+   *
+   * @return the preferred end offset
+   */
+  private int getPreferredZoneEnd(int start)
+  {
+    Element el = getElement();
+    int index = el.getElementIndex(start + (maximumZoneSize / 2));
+    Element child = el.getElement(index);
+    int p0 = child.getStartOffset();
+    int p1 = child.getEndOffset();
+    int end = p1;
+    if (p0 - start > maximumZoneSize && p0 > start)
+      end = p0;
+    return end;
+  }
 }

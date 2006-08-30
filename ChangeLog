@@ -1,5 +1,14 @@
 2006-08-29  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/ZoneView.java
+	(loadChildren): Implemented.
+	(getViewIndexAtPosition): Implemented.
+	(checkZoneAt): New helper method.
+	(splitZone): New helper method.
+	(getPreferredZoneEnd): New helper method.
+
+2006-08-29  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/ZoneView.java: New class.
 
 2006-08-29  Roman Kennke  <kennke@aicas.com>
