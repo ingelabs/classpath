@@ -1,5 +1,18 @@
 2006-08-29  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JMenu.java
+	(getMenu): Removed unneeded cast.
+	(getPopupMenuOrigin): Made positioning algorithm better respect
+	the screen bounds.
+	(setMenuLocation): Also set the location on the popup if it's
+	not null.
+	(setModel): Use menuChangeListener so that we don't override
+	the changeListener field from AbstractButton.
+	(setPopupMenuVisible): Use custom location if set, otherwise
+	fallback to getPopupMenuOrigin().
+
+2006-08-29  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/InternationalFormatter.java
 	(stringToValue): Fixed bounds check.
 	* javax/swing/text/MaskFormatter.java
