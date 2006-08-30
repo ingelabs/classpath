@@ -1,5 +1,9 @@
 2006-08-29  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/ZoneView.java: New class.
+
+2006-08-29  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JMenu.java
 	(getMenu): Removed unneeded cast.
 	(getPopupMenuOrigin): Made positioning algorithm better respect
