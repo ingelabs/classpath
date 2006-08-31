@@ -1,3 +1,11 @@
+2006-08-31  Gary Benson  <gbenson@redhat.com>
+
+	* java/net/SocketPermission.java
+	(maybeBracketIPv6Address): Renamed to processHostport.
+	(processHostport): Also translate "" to "localhost".
+	(setHostPort): Remove special cases for empty hostport and for
+	extra colons in hostport (processHostport handles these now).
+
 2006-08-31  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/text/ZoneView.java (Zone): Make static class.
