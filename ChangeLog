@@ -1,5 +1,9 @@
 2006-08-31  Keith Seitz  <keiths@redhat.com>
 
+	* include/jvmti.h: Include jvmti_md.h.
+
+2006-08-31  Keith Seitz  <keiths@redhat.com>
+
 	From Martin Platter  <motse@complang.tuwien.ac.at>:
 	* Makefile.am (include_HEADERS): Include jvmti.h.
 	* include/jvmti.h (jvmtiEnv) [!__cplusplus]: Add missing '*'.

@@ -45,6 +45,8 @@ exception statement from your version. */
 #define _CLASSPATH_JVMTI_H
 #include <jni.h>
 
+#include "jvmti_md.h"
+
 /* The VM might define JVMTI base types */
 #ifndef _CLASSPATH_VM_JVMTI_TYPES_DEFINED
 
