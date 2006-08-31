@@ -1,3 +1,20 @@
+2006-08-31  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JEditorPane.java
+	(getPreferredSize): Replace preferred size with minimum
+	UI size only if the scrollable does _not_ track the viewport
+	size and only if the viewport's size is smaller than the
+	scrollable's size.
+	(getScrollableTracksViewportWidth): Avoid unnecessary multiple
+	method calls.
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(getPreferredSize): Read-lock the document to avoid
+	concurrency problems.
+	(getMaximumSize): Return maximum size of the view.
+	Read-lock the document to avoid	concurrency problems.
+	(getMinimumSize): Return minimum size of the view.
+	Read-lock the document to avoid	concurrency problems.
+
 2006-08-31  Gary Benson  <gbenson@redhat.com>
 
 	* java/net/SocketPermission.java
@@ -12,7 +29,7 @@
 	Constructor takes axis parameter.
 	(createZone): Create Zone with getAxis() as major axis.
 
-2006-08-29  Roman Kennke  <kennke@aicas.com>
+2006-08-30  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/ZoneView.java
 	(loadChildren): Implemented.
@@ -21,11 +38,11 @@
 	(splitZone): New helper method.
 	(getPreferredZoneEnd): New helper method.
 
-2006-08-29  Roman Kennke  <kennke@aicas.com>
+2006-08-30  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/ZoneView.java: New class.
 
-2006-08-29  Roman Kennke  <kennke@aicas.com>
+2006-08-30  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JMenu.java
 	(getMenu): Removed unneeded cast.

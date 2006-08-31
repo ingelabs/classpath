@@ -373,7 +373,7 @@ public abstract class BasicTextUI extends TextUI
     public float getPreferredSpan(int axis)
     {
       if (view != null)
-	return view.getPreferredSpan(axis);
+        return view.getPreferredSpan(axis);
 
       return Integer.MAX_VALUE;
     }
@@ -965,14 +965,28 @@ public abstract class BasicTextUI extends TextUI
   {
     Dimension d = c.getSize();
     Insets i = c.getInsets();
-    if (d.width > (i.left + i.right) && d.height > (i.top + i.bottom))
+    // We need to lock here, since we require the view hierarchy to _not_
+    // change in between.
+    float w;
+    float h;
+    Document doc = textComponent.getDocument();
+    if (doc instanceof AbstractDocument)
+      ((AbstractDocument) doc).readLock();
+    try
       {
-        rootView.setSize(d.width - i.left - i.right,
-                         d.height - i.top - i.bottom);
+        if (d.width > (i.left + i.right) && d.height > (i.top + i.bottom))
+          {
+            rootView.setSize(d.width - i.left - i.right,
+                             d.height - i.top - i.bottom);
+          }
+        w = rootView.getPreferredSpan(View.X_AXIS);
+        h = rootView.getPreferredSpan(View.Y_AXIS);
       }
-    float w = rootView.getPreferredSpan(View.X_AXIS);
-    float h = rootView.getPreferredSpan(View.Y_AXIS);
-
+    finally
+      {
+        if (doc instanceof AbstractDocument)
+          ((AbstractDocument) doc).readUnlock();
+      }
     Dimension size =  new Dimension((int) w + i.left + i.right,
                          (int) h + i.top + i.bottom);
     return size;
@@ -989,8 +1003,26 @@ public abstract class BasicTextUI extends TextUI
    */
   public Dimension getMaximumSize(JComponent c)
   {
-    // Sun's implementation returns Integer.MAX_VALUE here, so do we.
-    return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
+    Dimension d = new Dimension();
+    Document doc = textComponent.getDocument();
+    // We need to lock here, since we require the view hierarchy to _not_
+    // change in between.
+    if (doc instanceof AbstractDocument)
+      ((AbstractDocument) doc).readLock();
+    try
+      {
+        d.width = (int) rootView.getMaximumSpan(View.X_AXIS);
+        d.height = (int) rootView.getMaximumSpan(View.Y_AXIS);
+      }
+    finally
+      {
+        if (doc instanceof AbstractDocument)
+          ((AbstractDocument) doc).readUnlock();
+      }
+    Insets i = c.getInsets();
+    d.width += i.left + i.right;
+    d.height += i.top + i.bottom;
+    return d;
   }
 
   /**
@@ -1001,8 +1033,26 @@ public abstract class BasicTextUI extends TextUI
    */
   public Dimension getMinimumSize(JComponent c)
   {
+    Dimension d = new Dimension();
+    Document doc = textComponent.getDocument();
+    // We need to lock here, since we require the view hierarchy to _not_
+    // change in between.
+    if (doc instanceof AbstractDocument)
+      ((AbstractDocument) doc).readLock();
+    try
+      {
+        d.width = (int) rootView.getMinimumSpan(View.X_AXIS);
+        d.height = (int) rootView.getMinimumSpan(View.Y_AXIS);
+      }
+    finally
+      {
+        if (doc instanceof AbstractDocument)
+          ((AbstractDocument) doc).readUnlock();
+      }
     Insets i = c.getInsets();
-    return new Dimension(i.left + i.right, i.top + i.bottom);
+    d.width += i.left + i.right;
+    d.height += i.top + i.bottom;
+    return d;
   }
 
   /**
