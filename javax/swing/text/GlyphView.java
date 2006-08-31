@@ -455,7 +455,7 @@ public class GlyphView extends View implements TabableView, Cloneable
     {
       Rectangle b = a.getBounds();
       int pos = getBoundedPosition(v, v.getStartOffset(), b.x, x - b.x);
-      return pos;
+      return pos + v.getStartOffset();
     }
   }
 

@@ -1,3 +1,36 @@
+2006-08-31  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/BoxView.java
+	(getWidth): Return the width with insets added, not with one
+	added and one removed.
+	(getHeight): Return the height with insets added, not with one
+	added and one removed.
+	* javax/swing/text/GlyphView.java
+	(DefaultGlyphPainter.viewToModel): Need to add the start offset.
+	* javax/swing/text/ParagraphView.java
+	(Row.getAlignment): Adjust alignment with respect to
+	the justification attribute.
+	(Row.getLeftInset): Overridden to adjust for firstLineIndent
+	attribute.
+	* javax/swing/text/html/CSS.java
+	(getValue): Convert length values.
+	* javax/swing/text/html/Paragraph.java
+	(painter): New field.
+	(paint): Implemented to delegate painting to the BoxPainter too.
+	(setPropertiesFromAttributes): Implemented to load attributes
+	from CSS.
+	* javax/swing/text/html/StyleSheet.java
+	(BoxPainter.as): Removed field.
+	(BoxPainter.leftInset): New field.
+	(BoxPainter.bottomInset): New field.
+	(BoxPainter.rightInset): New field.
+	(BoxPainter.topInset): New field.
+	(BoxPainter.BoxPainter): Implemented to load the insets from
+	CSS.
+	(BoxPainter.getInset): Implemented.
+	* gnu/javax/swing/text/html/Length.java: New class.
+	Converts CSS length units to usable values.
+
 2006-08-31  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* configure.ac: Add check for gethostbyname_r.

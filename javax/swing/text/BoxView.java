@@ -910,7 +910,9 @@ public class BoxView
    */
   public int getWidth()
   {
-    return span[X_AXIS] + getLeftInset() - getRightInset();
+    // The RI returns the following here, however, I'd think that is a bug.
+    // return span[X_AXIS] + getLeftInset() - getRightInset();
+    return span[X_AXIS] + getLeftInset() + getRightInset();
   }
 
   /**
@@ -920,7 +922,9 @@ public class BoxView
    */
   public int getHeight()
   {
-    return span[Y_AXIS] + getTopInset() - getBottomInset();
+    // The RI returns the following here, however, I'd think that is a bug.
+    // return span[Y_AXIS] + getTopInset() - getBottomInset();
+    return span[Y_AXIS] + getTopInset() + getBottomInset();
   }
 
   /**

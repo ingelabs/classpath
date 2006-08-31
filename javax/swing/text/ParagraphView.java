@@ -65,11 +65,39 @@ public class ParagraphView extends FlowView implements TabExpander
       super(el, X_AXIS);
     }
 
+    /**
+     * Overridden to adjust when we are the first line, and firstLineIndent
+     * is not 0.
+     */
+    public short getLeftInset()
+    {
+      short leftInset = super.getLeftInset();
+      View parent = getParent();
+      if (parent != null)
+        {
+          if (parent.getView(0) == this)
+            leftInset += firstLineIndent;
+        }
+      return leftInset;
+    }
+
     public float getAlignment(int axis)
     {
       float align;
       if (axis == X_AXIS)
-        align = 0.0F; // TODO: Implement according to justification
+        switch (justification)
+          {
+          case StyleConstants.ALIGN_RIGHT:
+            align = 1.0F;
+            break;
+          case StyleConstants.ALIGN_CENTER:
+          case StyleConstants.ALIGN_JUSTIFIED:
+            align = 0.5F;
+            break;
+          case StyleConstants.ALIGN_LEFT:
+          default:
+            align = 0.0F;
+          }
       else
         align = super.getAlignment(axis);
       return align;
