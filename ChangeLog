@@ -1,3 +1,7 @@
+2006-08-31  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* lib/Makefile.am (cssfiles): Add new rule to install css files.
+
 2006-08-31  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JEditorPane.java

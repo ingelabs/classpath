@@ -7,6 +7,7 @@ sinclude $(JAVA_DEPEND)
 
 propertydirs :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java javax org META-INF -type d ! -name CVS -print)
 propertyfiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java javax org -name \*\.properties -print)
+cssfiles := $(shell cd $(top_srcdir) && $(FIND) gnu java javax org -name \*\.css -print)
 metafiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) META-INF -name CVS -prune -o -name \*\.in -prune -o -type f -print)
 iconfiles :=  $(shell cd $(top_srcdir) && $(FIND) gnu/javax/swing/plaf/gtk/icons -name *.png -type f -print)
 
@@ -112,6 +113,9 @@ resources: copy-vmresources.sh
 	done
 	@list='$(propertyfiles)'; for p in $$list; do \
 	  cp $(top_srcdir)/resource/$$p $$p; \
+	done
+	@list='$(cssfiles)'; for p in $$list; do \
+	  cp $(top_srcdir)/$$p $$p; \
 	done
 	@list='$(metafiles)'; for p in $$list; do \
 	  cp $(top_srcdir)/resource/$$p $$p; \
