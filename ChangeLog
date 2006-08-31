@@ -1,5 +1,16 @@
 2006-08-31  Andreas Tobler  <a.tobler@schweiz.ch>
 
+	* configure.ac: Add check for gethostbyname_r.
+	Add check for MSG_NOSIGNAL and SO_NOSIGPIPE.
+	* native/jni/native-lib/cpnet.c (SOCKET_NOSIGNAL): Define
+	SOCKET_NOSIGNAL according to the configure check.
+	(cpnet_send): Use SOCKET_NOSIGNAL.
+	(cpnet_sendTo): Likewise.
+	(cpnet_getHostByName): Use gethostbyname in case gethostbyname_r is not
+	defined.
+	* native/jni/native-lib/cpio.c: Define O_SYNC and O_DSYNC in case they
+	are not available.
+
 	* lib/Makefile.am (cssfiles): Add new rule to install css files.
 
 2006-08-31  Roman Kennke  <kennke@aicas.com>

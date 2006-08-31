@@ -54,6 +54,14 @@ exception statement from your version. */
 
 #define SOCKET_DEFAULT_TIMEOUT -1 /* milliseconds */
 
+#if defined (HAVE_MSG_NOSIGNAL)
+#define SOCKET_NOSIGNAL MSG_NOSIGNAL
+#elif defined (HAVE_SO_NOSIGPIPE)
+#define SOCKET_NOSIGNAL SO_NOSIGPIPE
+#else
+#error "No suitable flag found to ommit a SIGPIPE on signal errors with send()."
+#endif
+
 static int socketTimeouts[FD_SETSIZE];
 
 static jint waitForWritable(jint fd)
@@ -247,7 +255,7 @@ jint cpnet_send (JNIEnv *env UNUSED, jint fd, jbyte *data, jint len, jint *bytes
   if (waitForWritable(fd) < 0)
     return ETIMEDOUT;
 
-  ret = send(fd, data, len, MSG_NOSIGNAL);
+  ret = send(fd, data, len, SOCKET_NOSIGNAL);
   if (ret < 0)
     return errno;
 
@@ -263,7 +271,8 @@ jint cpnet_sendTo (JNIEnv *env UNUSED, jint fd, jbyte *data, jint len, cpnet_add
   if (waitForWritable(fd) < 0)
     return ETIMEDOUT;
 
-  ret = sendto(fd, data, len, MSG_NOSIGNAL, (struct sockaddr *)addr->data, addr->len);
+  ret = sendto(fd, data, len, SOCKET_NOSIGNAL, (struct sockaddr *)addr->data,
+	       addr->len);
   if (ret < 0)
     return errno;
 
@@ -598,7 +607,11 @@ jint cpnet_getHostByName (JNIEnv *env, const char *hostname, cpnet_address ***ad
   do
     {
       buf = (char *)JCL_malloc(env, buflen);
+#ifdef HAVE_GETHOSTBYNAME_R
       ret = gethostbyname_r (hostname, &hret, buf, buflen, &result, &herr);
+#else
+      ret = gethostbyname (hostname);
+#endif
       if (ret != 0 || result == NULL)
 	{
 	  if (herr == ERANGE)

@@ -76,6 +76,18 @@ exception statement from your version. */
 #include "cpnative.h"
 #include "cpio.h"
 
+/* Some POSIX systems don't have O_SYNC and O_DYSNC so we define them here.  */
+#if !defined (O_SYNC) && defined (O_FSYNC)
+#define O_SYNC O_FSYNC
+#endif
+#if !defined (O_DSYNC) && defined (O_FSYNC)
+#define O_DSYNC O_FSYNC
+#endif
+/* If O_DSYNC is still not defined, use O_SYNC (needed for newlib).  */
+#if !defined (O_DSYNC)
+#define O_DSYNC O_SYNC
+#endif
+
 JNIEXPORT int cpio_openFile (const char *filename, int *fd, int flags, int permissions)
 {
   int sflags = 0;

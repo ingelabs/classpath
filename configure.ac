@@ -368,7 +368,7 @@ if test "x${COMPILE_JNI}" = xyes; then
 		  lseek fstat read write htonl memset htons connect \
 		  getsockname getpeername bind listen accept \
 		  recvfrom send sendto setsockopt getsockopt time mktime \
-		  localtime_r \
+		  gethostbyname_r localtime_r \
 		  strerror_r \
                   fcntl \
 		  mmap munmap mincore msync madvise getpagesize sysconf \
@@ -550,6 +550,28 @@ if test "x${COMPILE_JNI}" = xyes; then
     AC_SUBST(QT_CFLAGS)
     AC_SUBST(QT_LIBS)
   fi
+  dnl **********************************************************************
+  dnl Check for MSG_NOSIGNAL
+  dnl **********************************************************************
+  AC_MSG_CHECKING(for MSG_NOSIGNAL)
+  AC_TRY_COMPILE([#include <sys/socket.h>],
+   [ int f = MSG_NOSIGNAL; ],
+   [ AC_MSG_RESULT(yes)
+     AC_DEFINE(HAVE_MSG_NOSIGNAL, 1,
+     	       [Define this symbol if you have MSG_NOSIGNAL]) ],
+   [ AC_MSG_RESULT(no)]
+  )
+ dnl **********************************************************************
+ dnl Check for SO_NOSIGPIPE (Darwin equivalent for MSG_NOSIGNAL)
+ dnl **********************************************************************
+ AC_MSG_CHECKING(for SO_NOSIGPIPE )
+ AC_TRY_COMPILE([#include <sys/socket.h>],
+  [ int f = SO_NOSIGPIPE; ],
+  [ AC_MSG_RESULT(yes)
+    AC_DEFINE(HAVE_SO_NOSIGPIPE, 1,
+    	      [Define this symbol if you have SO_NOSIGPIPE]) ],
+  [ AC_MSG_RESULT(no)]
+ )
 
   dnl Check for plugin support headers and libraries.
   if test "x${COMPILE_PLUGIN}" = xyes; then
