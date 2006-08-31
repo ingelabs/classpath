@@ -1,3 +1,9 @@
+2006-08-31  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/text/ZoneView.java (Zone): Make static class.
+	Constructor takes axis parameter.
+	(createZone): Create Zone with getAxis() as major axis.
+
 2006-08-29  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/ZoneView.java

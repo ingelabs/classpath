@@ -62,7 +62,7 @@ public class ZoneView
    * The default zone view implementation. The specs suggest that this is
    * a subclass of AsyncBoxView, so do we.
    */
-  private class Zone
+  static class Zone
     extends AsyncBoxView
   {
     /**
@@ -81,10 +81,11 @@ public class ZoneView
      * @param el the element
      * @param pos0 the start position
      * @param pos1 the end position
+     * @param axis the major axis
      */
-    Zone(Element el, Position pos0, Position pos1)
+    Zone(Element el, Position pos0, Position pos1, int axis)
     {
-      super(el, ZoneView.this.getAxis());
+      super(el, axis);
       p0 = pos0;
       p1 = pos1;
     }
@@ -261,7 +262,7 @@ public class ZoneView
       {
         assert false : "Must not happen";
       }
-    Zone zone = new Zone(getElement(), pos0, pos1);
+    Zone zone = new Zone(getElement(), pos0, pos1, getAxis());
     return zone;
   }
 
