@@ -1,3 +1,19 @@
+2006-08-31  Keith Seitz  <keiths@redhat.com>
+
+	From Martin Platter  <motse@complang.tuwien.ac.at>:
+	* Makefile.am (include_HEADERS): Include jvmti.h.
+	* include/jvmti.h (jvmtiEnv) [!__cplusplus]: Add missing '*'.
+	(jvmtiError): Remove superfluous comma after last entry.
+	(jvmtiEvent): It's "BREAKPOINT" not "BERAKPOINT".
+	(_Jv_jvmtiEnv.StopThread): Add missing exception parameter.
+	(_Jv_jvmtiEnv.RawMonitorWait): Add missing millis parameter.
+	(_Jv_jvmtiEnv.GetSourceFileName): source_name_ptr is pointer to
+	character pointer.
+	(_Jv_JVMTIEnv::StopThread): Add missing exception parameter.
+	(_Jv_JVMTIEnv::RawMonitorWait): Add missing millis parameter.
+	(_Jv_JVMTIEnv::GetSourceFileName): source_name_ptr is pointer to
+	character pointer.
+
 2006-08-31  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/BoxView.java

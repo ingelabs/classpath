@@ -79,7 +79,7 @@ typedef struct _jvmtiAddrLocationMap jvmtiAddrLocationMap;
 #ifdef __cplusplus
 typedef struct _Jv_JVMTIEnv jvmtiEnv;
 #else
-typedef const struct _Jv_jvmtiEnv jvmtiEnv;
+typedef const struct _Jv_jvmtiEnv *jvmtiEnv;
 #endif
 
 /*
@@ -140,7 +140,7 @@ typedef enum
   JVMTI_ERROR_UNSUPPORTED_REDEFINITION_CLASS_MODIFIERS_CHANGED = 70,
   JVMTI_ERROR_UNSUPPORTED_REDEFINITION_METHOD_MODIFIERS_CHANGED = 71,
   JVMTI_ERROR_MUST_POSSESS_CAPABILITY = 99,
-  JVMTI_ERROR_ILLEGAL_ARGUMENT = 103,
+  JVMTI_ERROR_ILLEGAL_ARGUMENT = 103
 } jvmtiError;
 
 /*
@@ -283,7 +283,7 @@ typedef enum
   JVMTI_EVENT_EXCEPTION_CATCH = 59,
   JVMTI_EVENT_SINGLE_STEP =  60,
   JVMTI_EVENT_FRAME_POP = 61,
-  JVMTI_EVENT_BERAKPOINT = 62,
+  JVMTI_EVENT_BREAKPOINT = 62,
   JVMTI_EVENT_FIELD_ACCESS = 63,
   JVMTI_EVENT_FIELD_MODIFICATION = 64,
   JVMTI_EVENT_METHOD_ENTRY = 65,
@@ -658,7 +658,8 @@ struct _Jv_jvmtiEnv
 				      jthread thread);
 
   jvmtiError (JNICALL *StopThread) (jvmtiEnv *env,
-				    jthread thread);
+				    jthread thread,
+                                    jobject exception);
 
   jvmtiError (JNICALL *InterruptThread) (jvmtiEnv *env,
 					 jthread thread);
@@ -790,7 +791,8 @@ struct _Jv_jvmtiEnv
 					jrawMonitorID monitor);
 
   jvmtiError (JNICALL *RawMonitorWait) (jvmtiEnv *env,
-					jrawMonitorID monitor);
+					jrawMonitorID monitor,
+                                        jlong millis);
 
   jvmtiError (JNICALL *RawMonitorNotify) (jvmtiEnv *env,
 					  jrawMonitorID monitor);
@@ -844,7 +846,7 @@ struct _Jv_jvmtiEnv
 
   jvmtiError (JNICALL *GetSourceFileName) (jvmtiEnv *env,
 					   jclass klass,
-					   char *source_name_ptr);
+					   char **source_name_ptr);
 
   jvmtiError (JNICALL *GetClassModifiers) (jvmtiEnv *env,
 					   jclass klass,
@@ -1249,8 +1251,8 @@ class _Jv_JVMTIEnv
   jvmtiError ResumeThread (jthread thread)
   { return p->ResumeThread (this, thread); }
 
-  jvmtiError StopThread (jthread thread)
-  { return p->StopThread (this, thread); }
+  jvmtiError StopThread (jthread thread, jobject exception)
+  { return p->StopThread (this, thread, exception); }
 
   jvmtiError InterruptThread (jthread thread)
   { return p->InterruptThread (this, thread); }
@@ -1360,8 +1362,8 @@ class _Jv_JVMTIEnv
   jvmtiError RawMonitorExit (jrawMonitorID monitor)
   { return p->RawMonitorExit (this, monitor); }
 
-  jvmtiError RawMonitorWait (jrawMonitorID monitor)
-  { return p->RawMonitorWait (this, monitor); }
+  jvmtiError RawMonitorWait (jrawMonitorID monitor, jlong millis)
+  { return p->RawMonitorWait (this, monitor, millis); }
 
   jvmtiError RawMonitorNotify (jrawMonitorID monitor)
   { return p->RawMonitorNotify (this, monitor); }
@@ -1400,7 +1402,7 @@ class _Jv_JVMTIEnv
   jvmtiError GetClassStatus (jclass klass, jint *status_ptr)
   { return p->GetClassStatus (this, klass, status_ptr); }
 
-  jvmtiError GetSourceFileName (jclass klass, char *source_name_ptr)
+  jvmtiError GetSourceFileName (jclass klass, char **source_name_ptr)
   { return p->GetSourceFileName (this, klass, source_name_ptr); }
 
   jvmtiError GetClassModifiers (jclass klass, jint *modifiers_ptr)
