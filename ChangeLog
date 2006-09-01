@@ -1,3 +1,11 @@
+2006-09-01  Roman Kennke  <kennke@aicas.com>
+
+	PR 28922
+	* javax/swing/plaf/basic/BasicHTML.java
+	(HTMLRootView.getAttributes): Overridden to return null.
+	(HTMLRootView.getElement): Overridden to return the view's
+	element.
+
 2006-09-01  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/plaf/basic/BasicTabbedPaneUI.java:
