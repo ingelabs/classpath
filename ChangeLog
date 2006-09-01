@@ -1,3 +1,10 @@
+2006-09-01  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java:
+	(calculateTabAreaHeight): Use getTabRunOverlay method instead
+	of accessing variable directly.
+	(calculateTabAreaWidth): Dito.
+
 2006-08-31  Keith Seitz  <keiths@redhat.com>
 
 	* include/jvmti.h: Include jvmti_md.h.

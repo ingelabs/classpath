@@ -902,6 +902,7 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
             default:
               tabAreaHeight = calculateTabAreaHeight(tabPlacement, runCount,
                                                      maxTabHeight);
+            
               compX = insets.left + contentBorderInsets.left;
               compY = tabAreaHeight + insets.top + contentBorderInsets.top;
           }
@@ -3528,7 +3529,8 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
   {
     Insets insets = getTabAreaInsets(tabPlacement);
     int tabAreaHeight = horizRunCount * maxTabHeight
-                        - (horizRunCount - 1) * tabRunOverlay;
+                        - (horizRunCount - 1)
+                        * getTabRunOverlay(tabPlacement);
 
     tabAreaHeight += insets.top + insets.bottom;
 
@@ -3550,7 +3552,8 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
   {
     Insets insets = getTabAreaInsets(tabPlacement);
     int tabAreaWidth = vertRunCount * maxTabWidth
-                       - (vertRunCount - 1) * tabRunOverlay;
+                       - (vertRunCount - 1)
+                       * getTabRunOverlay(tabPlacement);
 
     tabAreaWidth += insets.left + insets.right;
 
