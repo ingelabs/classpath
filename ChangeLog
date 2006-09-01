@@ -1,5 +1,11 @@
 2006-09-01  Robert Schuster  <robertschuster@fsfe.org>
 
+        * javax/swing/plaf/basic/BasicSplitPaneUI.java:
+        (BasicHorizontalLayout.getAlignmentX): Return fixed value.
+        (BasicHorizontalLayout.getAlignmentY): Return fixed value.
+
+2006-09-01  Robert Schuster  <robertschuster@fsfe.org>
+
 	* javax/swing/plaf/metal/MetalCheckBoxIcon.java:
 	(paintIcon): Removed unused import statements, lowered cast requirement
 	from JCheckBox to AbstractButton.
