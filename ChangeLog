@@ -1,3 +1,8 @@
+2006-09-01  Robert Schuster  <robertschuster@fsfe.org>
+
+	* examples/gnu/classpath/examples/swing/TabbedPaneDemo.java:
+	(createContent): Changed menu item name and tab naming.
+
 2006-09-01  Roman Kennke  <kennke@aicas.com>
 
 	PR 28922
