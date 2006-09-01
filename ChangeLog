@@ -1,5 +1,10 @@
 2006-09-01  Robert Schuster  <robertschuster@fsfe.org>
 
+	* javax/swing/table/DefaultTableModel.java:
+	(checkSize): Added null check for dataVector.
+
+2006-09-01  Robert Schuster  <robertschuster@fsfe.org>
+
         * javax/swing/plaf/basic/BasicSplitPaneUI.java:
         (BasicHorizontalLayout.getAlignmentX): Return fixed value.
         (BasicHorizontalLayout.getAlignmentY): Return fixed value.
