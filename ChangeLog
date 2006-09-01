@@ -1,5 +1,10 @@
 2006-09-01  Robert Schuster  <robertschuster@fsfe.org>
 
+	* javax/swing/plaf/basic/BasicLookAndFeel.java:
+	(initComponentDefaults): Added and changed some tabbed pane properties.
+
+2006-09-01  Robert Schuster  <robertschuster@fsfe.org>
+
 	* examples/gnu/classpath/examples/swing/TabbedPaneDemo.java:
 	(createContent): Changed menu item name and tab naming.
 
