@@ -362,22 +362,6 @@ public abstract class BasicTextUI extends TextUI
       return textComponent;
     }
 
-    /**
-     * Returns the preferred span along the specified <code>axis</code>.
-     * This is delegated to the real root view.
-     *
-     * @param axis the axis for which the preferred span is queried
-     *
-     * @return the preferred span along the axis
-     */
-    public float getPreferredSpan(int axis)
-    {
-      if (view != null)
-        return view.getPreferredSpan(axis);
-
-      return Integer.MAX_VALUE;
-    }
-
     public void setSize(float w, float h)
     {
       if (view != null)
@@ -553,6 +537,40 @@ public abstract class BasicTextUI extends TextUI
     public AttributeSet getAttributes()
     {
       return null;
+    }
+
+    /**
+     * Overridden to forward to the view.
+     */
+    public float getPreferredSpan(int axis)
+    {
+      // The RI returns 10 in the degenerate case.
+      float span = 10;
+      if (view != null)
+        span = view.getPreferredSpan(axis);
+      return span;
+    }
+
+    /**
+     * Overridden to forward to the real view.
+     */
+    public float getMinimumSpan(int axis)
+    {
+      // The RI returns 10 in the degenerate case.
+      float span = 10;
+      if (view != null)
+        span = view.getMinimumSpan(axis);
+      return span;
+    }
+
+    /**
+     * Overridden to return Integer.MAX_VALUE.
+     */
+    public float getMaximumSpan(int axis)
+    {
+      // The RI returns Integer.MAX_VALUE here, regardless of the real view's
+      // maximum size.
+      return Integer.MAX_VALUE;
     }
   }
 
@@ -1004,6 +1022,7 @@ public abstract class BasicTextUI extends TextUI
   public Dimension getMaximumSize(JComponent c)
   {
     Dimension d = new Dimension();
+    Insets i = c.getInsets();
     Document doc = textComponent.getDocument();
     // We need to lock here, since we require the view hierarchy to _not_
     // change in between.
@@ -1011,17 +1030,17 @@ public abstract class BasicTextUI extends TextUI
       ((AbstractDocument) doc).readLock();
     try
       {
-        d.width = (int) rootView.getMaximumSpan(View.X_AXIS);
-        d.height = (int) rootView.getMaximumSpan(View.Y_AXIS);
+        // Check for overflow here.
+        d.width = (int) Math.min((long) rootView.getMaximumSpan(View.X_AXIS)
+                                 + i.left + i.right, Integer.MAX_VALUE);
+        d.height = (int) Math.min((long) rootView.getMaximumSpan(View.Y_AXIS)
+                                  + i.top + i.bottom, Integer.MAX_VALUE);
       }
     finally
       {
         if (doc instanceof AbstractDocument)
           ((AbstractDocument) doc).readUnlock();
       }
-    Insets i = c.getInsets();
-    d.width += i.left + i.right;
-    d.height += i.top + i.bottom;
     return d;
   }
 
@@ -1123,7 +1142,6 @@ public abstract class BasicTextUI extends TextUI
         g.setColor(oldColor);
       }
       
-
     rootView.paint(g, getVisibleEditorRect());
 
     if (caret != null && textComponent.hasFocus())

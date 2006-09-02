@@ -1,3 +1,16 @@
+2006-09-02  Roman Kennke  <kennke@aicas.com>
+
+	PR 28928
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(RootView.getPreferredSpan): Default to 10 when there is no
+	real view.
+	(RootView.getMinimumSpan): Forward to view and default to 10
+	when there is no real view.
+	(RootView.getMaximumSpan): Return Integer.MAX_VALUE.
+	(getMaximumSize): Check for overflow.
+	* javax/swing/text/FieldView.java
+	(getResizeWeight): Removed unneeded assignment.
+
 2006-09-01  Francis Kung  <fkung@redhat.com>
 	* java/awt/image/ColorConvertOp.java
 	(copyImage): Updated javadoc and comments.
