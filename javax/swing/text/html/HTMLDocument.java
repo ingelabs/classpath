@@ -1181,7 +1181,7 @@ public class HTMLDocument extends DefaultStyledDocument
      */
     public void handleText(char[] data, int pos)
     {
-      if (data != null && data.length > 0)
+      if (shouldInsert() && data != null && data.length > 0)
         addContent(data, 0, data.length);
     }
     

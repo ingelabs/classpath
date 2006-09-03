@@ -1,3 +1,12 @@
+2006-09-03  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/javax/swing/text/html/parser/HTML_401F.java (defineElements):
+	Disallow H1 - H6 in the paragraphs.
+	* gnu/javax/swing/text/html/parser/support/textPreProcessor.java
+	(preprocess): Leave at most one leading and/or trailing space.
+	* javax/swing/text/html/HTMLDocument.java (HTMLReader.handleText):
+	Do not add any text after closing the HTML tag.
+
 2006-09-02  Roman Kennke  <kennke@aicas.com>
 
 	PR 28928
