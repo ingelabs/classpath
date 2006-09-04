@@ -1,3 +1,9 @@
+2006-09-04  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/Rectangle.java
+	(setRect(double, double, double, double)): Modified rounding of input
+	values.
+
 2006-09-03  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/javax/swing/text/html/parser/HTML_401F.java (defineElements):
