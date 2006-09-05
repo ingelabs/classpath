@@ -1,3 +1,8 @@
+2006-09-05  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/Choice.java
+	(addItem): Fixed API doc glitch.
+
 2006-09-05  Francis Kung  <fkung@redhat.com>
 
 	* java/awt/image/LookupOp.java: Updated documentation & formatting.
