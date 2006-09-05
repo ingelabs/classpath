@@ -1,3 +1,23 @@
+2006-09-05  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/CORBA/CollocatedOrbs.java,
+	gnu/CORBA/SafeForDirectCalls.java: New files.
+	* gnu/CORBA/NamingService/Binding_iterator_impl.java:
+	Implement gnu.CORBA.SafeForDirectCalls.
+	* gnu/CORBA/NamingService/Ext.java: Likewise.
+	* gnu/CORBA/NamingService/TransientContext.java: Likewise.
+	* gnu/CORBA/OrbFunctional.java (createIor):Cache the address
+	of the local host. (ior_to_object): Return the local object
+	where possible. (run): Register/unregister this ORB.
+	* gnu/CORBA/Poa/LocalRequest.java (v_invoke): Call gnuPOA.checkDiscarding.	
+	* gnu/CORBA/Poa/gnuPOA.java (checkDiscarding): Made package private.
+	* gnu/CORBA/Poa/gnuServantObject.java (noRetain): New field.
+	(constructors): Initialize noRetain. (_invoke): Drop servant
+	if noRetain is true. (getHandler): Always seach for the new servant
+	if noRetain is true.
+	* gnu/CORBA/SimpleDelegate.java (create_request): Implemented.
+	* NEWS: Added note about the new feature.
+
 2006-09-05  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/Choice.java

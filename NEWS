@@ -1,5 +1,11 @@
 New in release 0.93 (UNRELEASED)
 
+* CORBA objects that exist on the same virtual machine and only are connected
+  to another ORB are now accessed directly and no longer via network. It is
+  the same feature that RMI implementation provides. These faster calls should
+  be completely transparent, as the parameters are cloned, where required. 
+  Currently the direct calls are only possible for the non-deprecated objects
+  that are connected to the ORB via POA.
 * The 'javah' tool has been added.  It requires the ASM library
   (see asm.objectweb.org); it can be enabled with the --with-asm
   option to configure
