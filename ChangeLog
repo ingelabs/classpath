@@ -1,3 +1,11 @@
+2006-09-05  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkVolatileImage.c: Adjust
+	__attribute to __attribute__.
+
+	* native/jni/java-nio/java_nio_MappedByteBufferImpl.c: Remove duplicate
+	header include.
+
 2006-09-05  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/List.java: Source code reformatted.
