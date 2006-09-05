@@ -111,6 +111,7 @@ public class List extends Component
    * and multi-select disabled.
    *
    * @exception HeadlessException If GraphicsEnvironment.isHeadless() is true.
+   * @since 1.1
    */
   public List()
   {
@@ -159,6 +160,8 @@ public class List extends Component
    * Returns the number of items in this list.
    *
    * @return The number of items in this list.
+   * 
+   * @since 1.1
    */
   public int getItemCount()
   {
@@ -182,6 +185,8 @@ public class List extends Component
    * Returns the complete list of items.
    *
    * @return The complete list of items in the list.
+   * 
+   * @since 1.1
    */
   public synchronized String[] getItems()
   {
@@ -218,6 +223,8 @@ public class List extends Component
    *
    * @return <code>true</code> if multi-select mode is enabled,
    * <code>false</code> otherwise.
+   * 
+   * @since 1.1
    */
   public boolean isMultipleMode()
   {
@@ -244,6 +251,8 @@ public class List extends Component
    *
    * @param multipleMode <code>true</code> to enable multiple mode,
    * <code>false</code> otherwise.
+   * 
+   * @since 1.1
    */
   public void setMultipleMode(boolean multipleMode)
   {
@@ -273,6 +282,8 @@ public class List extends Component
    * Returns the minimum size of this component.
    *
    * @return The minimum size of this component.
+   * 
+   * @since 1.1
    */
   public Dimension getMinimumSize()
   {
@@ -299,6 +310,8 @@ public class List extends Component
    * @param rows The number of rows to size for.
    *
    * @return The minimum size of this component.
+   * 
+   * @since 1.1
    */
   public Dimension getMinimumSize(int rows)
   {
@@ -329,6 +342,8 @@ public class List extends Component
    * Returns the preferred size of this component.
    *
    * @return The preferred size of this component.
+   * 
+   * @since 1.1
    */
   public Dimension getPreferredSize()
   {
@@ -355,6 +370,8 @@ public class List extends Component
    * @param rows The number of rows to size for.
    *
    * @return The preferred size of this component.
+   * 
+   * @since 1.1
    */
   public Dimension getPreferredSize(int rows)
   {
@@ -385,6 +402,8 @@ public class List extends Component
    * This method adds the specified item to the end of the list.
    *
    * @param item The item to add to the list.
+   * 
+   * @since 1.1
    */
   public void add(String item)
   {
@@ -411,6 +430,8 @@ public class List extends Component
    * @param item The item to add to the list.
    * @param index The location in the list to add the item, or -1 to add
    * to the end.
+   * 
+   * @since 1.1
    */
   public void add(String item, int index)
   {
@@ -480,6 +501,8 @@ public class List extends Component
    * @param index The index of the item to delete.
    *
    * @exception IllegalArgumentException If the index is not valid
+   * 
+   * @since 1.1
    */
   public void remove(int index) throws IllegalArgumentException
   {
@@ -515,6 +538,8 @@ public class List extends Component
    * @param item The item to delete.
    *
    * @exception IllegalArgumentException If the specified item does not exist.
+   * 
+   * @since 1.1
    */
   public synchronized void remove(String item) throws IllegalArgumentException
   {
@@ -527,6 +552,8 @@ public class List extends Component
 
   /**
    * Deletes all of the items from the list.
+   * 
+   * @since 1.1
    */
   public synchronized void removeAll()
   {
@@ -676,6 +703,8 @@ public class List extends Component
    *
    * @return <code>true</code> if the index is selected, <code>false</code>
    * otherwise.
+   * 
+   * @since 1.1
    */
   public boolean isIndexSelected(int index)
   {
@@ -823,6 +852,8 @@ public class List extends Component
    * registered listeners for this object.
    *
    * @param listener The listener to add.
+   * 
+   * @since 1.1
    */
   public synchronized void addActionListener(ActionListener listener)
   {
@@ -834,6 +865,8 @@ public class List extends Component
    * registers listeners for this object.
    *
    * @param listener The listener to remove.
+   * 
+   * @since 1.1
    */
   public synchronized void removeActionListener(ActionListener listener)
   {
@@ -845,6 +878,8 @@ public class List extends Component
    * registered listeners for this object.
    *
    * @param listener The listener to add.
+   * 
+   * @since 1.1
    */
   public synchronized void addItemListener(ItemListener listener)
   {
@@ -856,6 +891,8 @@ public class List extends Component
    * registers listeners for this object.
    *
    * @param listener The listener to remove.
+   * 
+   * @since 1.1
    */
   public synchronized void removeItemListener(ItemListener listener)
   {
@@ -871,6 +908,8 @@ public class List extends Component
    * superclass method is called to process this event.
    *
    * @param event The event to process.
+   * 
+   * @since 1.1
    */
   protected void processEvent(AWTEvent event)
   {
@@ -890,6 +929,8 @@ public class List extends Component
    * the <code>enableEvents()</code> method.
    *
    * @param event The event to process.
+   * 
+   * @since 1.1
    */
   protected void processActionEvent(ActionEvent event)
   {
@@ -905,6 +946,8 @@ public class List extends Component
    * the <code>enableEvents()</code> method.
    *
    * @param event The event to process.
+   * 
+   * @since 1.1
    */
   protected void processItemEvent(ItemEvent event)
   {
@@ -945,6 +988,8 @@ public class List extends Component
    *
    * @exception ClassCastException If listenerType doesn't specify a class or
    * interface that implements java.util.EventListener.
+   * 
+   * @since 1.3
    */
   public EventListener[] getListeners (Class listenerType)
   {
@@ -959,6 +1004,8 @@ public class List extends Component
 
   /**
    * Returns all action listeners registered to this object.
+   * 
+   * @since 1.4
    */
   public ActionListener[] getActionListeners ()
   {
@@ -967,6 +1014,8 @@ public class List extends Component
   
   /**
    * Returns all action listeners registered to this object.
+   * 
+   * @since 1.4
    */
   public ItemListener[] getItemListeners ()
   {
