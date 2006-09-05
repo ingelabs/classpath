@@ -1,3 +1,7 @@
+2006-09-05  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/List.java: Source code reformatted.
+
 2006-09-05  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/CORBA/CollocatedOrbs.java,
