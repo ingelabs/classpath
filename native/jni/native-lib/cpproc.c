@@ -53,13 +53,14 @@ static void close_all_fds(int *fds, int numFds)
     close(fds[i]);
 }
 
-int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron, int *fds, pid_t *out_pid, const char *wd)
+int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
+			int *fds, int pipe_count, pid_t *out_pid, const char *wd)
 {
   int local_fds[6];
   int i;
   pid_t pid;
 
-  for (i = 0; i < 6; i += 2)
+  for (i = 0; i < (pipe_count * 2); i += 2)
     {
       if (pipe(&local_fds[i]) < 0)
 	{
@@ -78,9 +79,12 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron, in
     case 0:
       dup2(local_fds[0], 0);
       dup2(local_fds[3], 1);
-      dup2(local_fds[5], 2);
+      if (pipe_count == 3)
+	dup2(local_fds[5], 2);
+      else
+	dup2(1, 2);
 
-      close_all_fds(local_fds, 6);
+      close_all_fds(local_fds, pipe_count * 2);
 
       chdir(wd);
       if (newEnviron == NULL)
@@ -95,13 +99,14 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron, in
       {
 	int err = errno;
 	
-	close_all_fds(local_fds, 6);
+	close_all_fds(local_fds, pipe_count * 2);
 	return err;
       }
     default: 
       close(local_fds[0]);
       close(local_fds[3]);
-      close(local_fds[5]);
+      if (pipe_count == 3)
+	close(local_fds[5]);
 
       fds[0] = local_fds[1];
       fds[1] = local_fds[2];

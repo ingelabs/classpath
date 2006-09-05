@@ -123,7 +123,8 @@ copy_elem (JNIEnv * env, jobject stringArray, jint i)
 JNIEXPORT void JNICALL
 Java_java_lang_VMProcess_nativeSpawn (JNIEnv * env, jobject this,
 				      jobjectArray cmdArray,
-				      jobjectArray envArray, jobject dirFile)
+				      jobjectArray envArray, jobject dirFile,
+				      jboolean redirect)
 {
   int fds[CPIO_EXEC_NUM_PIPES];
   jobject streams[CPIO_EXEC_NUM_PIPES] = { NULL, NULL, NULL };
@@ -139,6 +140,7 @@ Java_java_lang_VMProcess_nativeSpawn (JNIEnv * env, jobject this,
   jmethodID method;
   jclass clazz;
   int i;
+  int pipe_count = redirect ? 2 : 3;
   int err;
 
   /* Check for null */
@@ -203,7 +205,8 @@ Java_java_lang_VMProcess_nativeSpawn (JNIEnv * env, jobject this,
 	goto done;
     }
 
-  err = cpproc_forkAndExec(strings, newEnviron, fds, &pid, dir);
+  /* Create inter-process pipes */
+  err = cpproc_forkAndExec(strings, newEnviron, fds, pipe_count, &pid, dir);
   if (err != 0)
     {
       strncpy(errbuf, cpnative_getErrorString (err), sizeof(errbuf));
@@ -217,11 +220,11 @@ Java_java_lang_VMProcess_nativeSpawn (JNIEnv * env, jobject this,
   method = (*env)->GetMethodID (env, clazz, "<init>", "(II)V");
   if ((*env)->ExceptionOccurred (env))
     goto done;
-  for (i = 0; i < CPIO_EXEC_NUM_PIPES; i++)
+  for (i = 0; i < pipe_count; i++)
     {
       /* Mode is WRITE (2) for in and READ (1) for out and err. */
       const int fd = fds[i];
-      const int mode = (i == CPIO_EXEC_STDIN) ? 2 : 1;
+      const int mode = ((i == CPIO_EXEC_STDIN) ? 2 : 1);
       jclass sclazz;
       jmethodID smethod;
 
@@ -257,7 +260,10 @@ Java_java_lang_VMProcess_nativeSpawn (JNIEnv * env, jobject this,
   if ((*env)->ExceptionOccurred (env))
     goto done;
   (*env)->CallVoidMethod (env, this, method,
-			  streams[CPIO_EXEC_STDIN], streams[CPIO_EXEC_STDOUT], streams[CPIO_EXEC_STDERR], (jlong) pid);
+			  streams[CPIO_EXEC_STDIN],
+			  streams[CPIO_EXEC_STDOUT],
+			  streams[CPIO_EXEC_STDERR],
+			  (jlong) pid);
   if ((*env)->ExceptionOccurred (env))
     goto done;
 
@@ -273,7 +279,7 @@ done:
    * was created for a file descriptor, we don't close it because it
    * will get closed when the Stream object is finalized.
    */
-  for (i = 0; i < CPIO_EXEC_NUM_PIPES; i++)
+  for (i = 0; i < pipe_count; i++)
     {
       const int fd = fds[i];
 
@@ -287,7 +293,6 @@ done:
   free (strings);
   if (dir != NULL)
     free(dir);
-
   /* Done */
   return;
 
@@ -329,7 +334,7 @@ Java_java_lang_VMProcess_nativeReap (JNIEnv * env, jclass clazz)
   int err;
 
   /* Try to reap a child process, but don't block */
-  err = cpproc_waitpid ((pid_t) -1, &status, &pid, WNOHANG);
+  err = cpproc_waitpid((pid_t)-1, &status, &pid, WNOHANG);
   if (err == 0 && pid == 0)
     return JNI_FALSE;
 
@@ -338,9 +343,8 @@ Java_java_lang_VMProcess_nativeReap (JNIEnv * env, jclass clazz)
     {
       if (err == ECHILD || err == EINTR)
 	return JNI_FALSE;
-      snprintf (ebuf, sizeof (ebuf), "waitpid(%ld): %s",
-		(long) pid, cpnative_getErrorString (err));
-
+      snprintf(ebuf, sizeof (ebuf), "waitpid(%ld): %s",
+	       (long) pid, cpnative_getErrorString(errno));
       clazz = (*env)->FindClass (env, "java/lang/InternalError");
       if ((*env)->ExceptionOccurred (env))
 	return JNI_FALSE;
@@ -383,13 +387,11 @@ Java_java_lang_VMProcess_nativeKill (JNIEnv * env, jclass clazz, jlong pid)
 {
   char ebuf[64];
   int err;
-
-  err = cpproc_kill ((pid_t) pid, SIGKILL);
-
+  
+  err = cpproc_kill((pid_t) pid, SIGKILL);
   if (err != 0)
-    {      
-      snprintf (ebuf,
-		sizeof (ebuf), "kill(%ld): %s",
+    {
+      snprintf (ebuf, sizeof (ebuf), "kill(%ld): %s",
 		(long) pid, cpnative_getErrorString (err));
       clazz = (*env)->FindClass (env, "java/lang/InternalError");
       if ((*env)->ExceptionOccurred (env))

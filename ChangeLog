@@ -1,3 +1,15 @@
+2006-09-05  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* native/jni/native-lib/cpprocess.c:
+	(forkAndExec(char*,char*,int,int,pid_t,char*)):
+	Add redirection of stdout to stderr.
+	* native/jni/native-lib/cpprocess.h:
+	Added redirect argument.
+	* native/jni/java-lang/java_lang_VMProcess.c
+	(Java_java_lang_VMProcess_nativeSpawn): Readd redirect argument.
+	* vm/reference/java/lang/VMProcess.java: Likewise.
+	* include/java_lang_VMProcess.h: Regenerated.
+	
 2006-09-05  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkVolatileImage.c: Adjust
