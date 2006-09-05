@@ -1,3 +1,11 @@
+2006-09-05  Francis Kung  <fkung@redhat.com>
+
+	* java/awt/image/LookupOp.java: Updated documentation & formatting.
+	(createCompatibleDestImage): Re-implemented.
+	(filter(BufferedImage, BufferedImage)): Added check for src/dest image
+	compatibility, and use ColorConvertOp for color conversion if needed.
+	(filter(Raster, WritableRaster)): Made exceptions more descriptive.
+
 2006-09-05  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	gnu/CORBA/CDR/Vio.java,
