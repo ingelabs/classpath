@@ -154,8 +154,16 @@ public class UIManager implements Serializable
 
     UIDefaults fallback;
 
+    /**
+     * Creates a new <code>MultiplexUIDefaults</code> instance with 
+     * <code>d</code> as the fallback defaults.
+     * 
+     * @param d  the fallback defaults (<code>null</code> not permitted).
+     */
     MultiplexUIDefaults(UIDefaults d)
     {
+      if (d == null) 
+        throw new NullPointerException();
       fallback = d;
     }
 
@@ -483,7 +491,7 @@ public class UIManager implements Serializable
   public static UIDefaults getDefaults()
   {
     if (currentUIDefaults == null)
-      currentUIDefaults = new MultiplexUIDefaults(null);
+      currentUIDefaults = new MultiplexUIDefaults(new UIDefaults());
     return currentUIDefaults;
   }
 

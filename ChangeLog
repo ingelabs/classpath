@@ -1,5 +1,11 @@
 2006-09-06  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/UIManager.java
+	(MultiplexUIDefaults.MultiplexUIDefaults()): Don't allow null fallback,
+	(getDefaults): Initialise MultiplexUIDefaults with empty fallback.
+
+2006-09-06  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/metal/MetalLookAndFeel.java
 	(initComponentDefaults): Corrected various font defaults.
 
