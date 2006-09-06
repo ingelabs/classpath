@@ -1,3 +1,15 @@
+2006-09-06  Francis Kung  <fkung@redhat.com>
+
+	* java/awt/image/RescaleOp.java: Updated documentation and formatting.
+	(constructor): Make copy of arrays.
+	(createCompatibleDestImage): Changed treatment of null ColorModel.
+	(filter(BufferedImage, BufferedImage)): Re-implemented.
+	(filter(Raster, WritableRaster, boolean[])): New method.
+	(filter(Raster, WritableRaster)): Re-implemented.
+	(getOffsets): Prevent ArrayIndexOutOfBoundsException.
+	(getPoint2D): Cleaned up formatting.
+	(getScaleFactors): Prevent ArrayIndexOutOfBoundsException.
+
 2006-09-06  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/UIManager.java
