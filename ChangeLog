@@ -1,6 +1,28 @@
 2006-09-06  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/UIManager.java
+	(getBoolean(Object)): Reimplemented,
+	(getBoolean(Object, Locale)): Likewise,
+	(getBorder(Object)): Likewise,
+	(getBorder(Object, Locale)): Likewise,
+	(getColor(Object)): Likewise,
+	(getColor(Object, Locale)): Likewise,
+	(getDimension(Object)): Likewise,
+	(getDimension(Object, Locale)): Likewise,
+	(getFont(Object)): Likewise,
+	(getFont(Object, Locale)): Likewise,
+	(getIcon(Object)): Likewise,
+	(getIcon(Object, Locale)): Likewise,
+	(getInsets(Object)): Updated API docs,
+	(getInsets(Object, Locale)): Likewise,
+	(getInt(Object)): Reimplemented,
+	(getInt(Object, Locale)): Likewise,
+	(getString(Object)): Likewise,
+	(getString(Object, Locale)): Likewise.
+
+2006-09-06  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/UIManager.java
 	(MultiplexUIDefaults.MultiplexUIDefaults()): Don't allow null fallback,
 	(getDefaults): Initialise MultiplexUIDefaults with empty fallback.
 
