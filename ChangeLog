@@ -1,3 +1,7 @@
+2006-09-07  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/image/MemoryImageSource.java: Added API docs.
+
 2006-09-06  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicScrollBarUI.java
