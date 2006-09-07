@@ -1,5 +1,12 @@
 2006-09-07  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/metal/MetalScrollBarUI.java
+	(installDefaults): Initialise scrollBarWidth from UI defaults here,
+	(createDecreaseButton): Don't fetch scrollBarWidth here, 
+	(createIncreaseButton): Likewise.
+
+2006-09-07  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* java/awt/image/MemoryImageSource.java: Added API docs.
 
 2006-09-06  David Gilbert  <david.gilbert@object-refinery.com>
