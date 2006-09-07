@@ -1,3 +1,10 @@
+2006-09-07  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/CORBA/NamingService/NameParser.java (corbaloc):
+	Remove unused variable alt_addr.
+	* gnu/CORBA/NamingService/NameTransformer.java (toName):
+	Remove unused variables.
+
 2006-09-07  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalScrollBarUI.java
