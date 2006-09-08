@@ -1,3 +1,13 @@
+2006-09-08  Francis Kung  <fkung@redhat.com>
+
+	* java/awt/image/AffineTransformOp.java: Updated documentation.
+	(createCompatibleDestRaster): Updated formatting.
+	(filter(BufferedImage, BufferedImage)): Updated formatting.
+	(filter(Raster, WritableRaster)): Delegated processing to native peers for
+	if colour model is compatible.
+	(filterBicubic): Get entire pixel at once, and use appropriate array type.
+	(filterBilinear): Get entire pixel at once, and use appropriate array type.
+
 2006-09-08  Gary Benson  <gbenson@redhat.com>
 
 	* java/net/InetAddress.java
