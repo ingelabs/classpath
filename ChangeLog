@@ -1,3 +1,8 @@
+2006-09-08  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* tools/gnu/classpath/tools/appletviewer/Main.java: Warn about
+	missing security manager when run in standalone mode.
+
 2006-09-08  Francis Kung  <fkung@redhat.com>
 
 	* java/awt/image/AffineTransformOp.java: Updated documentation.
