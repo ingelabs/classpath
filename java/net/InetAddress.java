@@ -159,150 +159,144 @@ public class InetAddress implements Serializable
    * An address is multicast if the high four bits are "1110".  These are
    * also known as "Class D" addresses.
    *
+   * <p>This method cannot be abstract for backward compatibility reasons. By
+   * default it always throws {@link UnsupportedOperationException} unless
+   * overridden.</p>
+   * 
    * @return true if mulitcast, false if not
    *
    * @since 1.1
    */
   public boolean isMulticastAddress()
   {
-    // Mask against high order bits of 1110
-    if (addr.length == 4)
-      return (addr[0] & 0xf0) == 0xe0;
-
-    return false;
+    throw new UnsupportedOperationException();
   }
 
   /**
    * Utility routine to check if the InetAddress in a wildcard address
    *
+   * <p>This method cannot be abstract for backward compatibility reasons. By
+   * default it always throws {@link UnsupportedOperationException} unless
+   * overridden.</p>
+   * 
    * @since 1.4
    */
   public boolean isAnyLocalAddress()
   {
-    // This is the IPv4 implementation.
-    // Any class derived from InetAddress should override this.
-    return equals(ANY_IF);
+    throw new UnsupportedOperationException();
   }
 
   /**
    * Utility routine to check if the InetAddress is a loopback address
    *
+   * <p>This method cannot be abstract for backward compatibility reasons. By
+   * default it always throws {@link UnsupportedOperationException} unless
+   * overridden.</p>
+   * 
    * @since 1.4
    */
   public boolean isLoopbackAddress()
   {
-    // This is the IPv4 implementation.
-    // Any class derived from InetAddress should override this.
-    return (addr[0] & 0xff) == 0x7f;
+    throw new UnsupportedOperationException();
   }
 
   /**
    * Utility routine to check if InetAddress is a link local address
    *
+   * <p>This method cannot be abstract for backward compatibility reasons. By
+   * default it always throws {@link UnsupportedOperationException} unless
+   * overridden.</p>
+   * 
    * @since 1.4
    */
   public boolean isLinkLocalAddress()
   {
-    // This is the IPv4 implementation.
-    // Any class derived from InetAddress should override this.
-    // XXX: This seems to not exist with IPv4 addresses
-    return false;
+    throw new UnsupportedOperationException();
   }
 
   /**
    * Utility routine to check if InetAddress is a site local address
    *
+   * <p>This method cannot be abstract for backward compatibility reasons. By
+   * default it always throws {@link UnsupportedOperationException} unless
+   * overridden.</p>
+   * 
    * @since 1.4
    */
   public boolean isSiteLocalAddress()
   {
-    // This is the IPv4 implementation.
-    // Any class derived from InetAddress should override this.
-
-    // 10.0.0.0/8
-    if ((addr[0] & 0xff) == 0x0a)
-      return true;
-
-    // 172.16.0.0/12
-    if ((addr[0] & 0xff) == 0xac && (addr[1] & 0xf0) == 0x10)
-      return true;
-
-    // 192.168.0.0/16
-    if ((addr[0] & 0xff) == 0xc0 && (addr[1] & 0xff) == 0xa8)
-      return true;
-
-    // XXX: Do we need to check more addresses here ?
-    return false;
+    throw new UnsupportedOperationException();
   }
 
   /**
    * Utility routine to check if InetAddress is a global multicast address
    *
+   * <p>This method cannot be abstract for backward compatibility reasons. By
+   * default it always throws {@link UnsupportedOperationException} unless
+   * overridden.</p>
+   * 
    * @since 1.4
    */
   public boolean isMCGlobal()
   {
-    // This is the IPv4 implementation.
-    // Any class derived from InetAddress should override this.
-    // XXX: This seems to not exist with IPv4 addresses
-    return false;
+    throw new UnsupportedOperationException();
   }
 
   /**
    * Utility routine to check if InetAddress is a node local multicast address.
    *
+   * <p>This method cannot be abstract for backward compatibility reasons. By
+   * default it always throws {@link UnsupportedOperationException} unless
+   * overridden.</p>
+   * 
    * @since 1.4
    */
   public boolean isMCNodeLocal()
   {
-    // This is the IPv4 implementation.
-    // Any class derived from InetAddress should override this.
-    // XXX: This seems to not exist with IPv4 addresses
-    return false;
+    throw new UnsupportedOperationException();
   }
 
   /**
    * Utility routine to check if InetAddress is a link local multicast address.
    *
+   * <p>This method cannot be abstract for backward compatibility reasons. By
+   * default it always throws {@link UnsupportedOperationException} unless
+   * overridden.</p>
+   * 
    * @since 1.4
    */
   public boolean isMCLinkLocal()
   {
-    // This is the IPv4 implementation.
-    // Any class derived from InetAddress should override this.
-    if (! isMulticastAddress())
-      return false;
-
-    return ((addr[0] & 0xff) == 0xe0
-	    && (addr[1] & 0xff)  == 0x00
-	    && (addr[2] & 0xff)  == 0x00);
+    throw new UnsupportedOperationException();
   }
 
   /**
    * Utility routine to check if InetAddress is a site local multicast address.
    *
+   * <p>This method cannot be abstract for backward compatibility reasons. By
+   * default it always throws {@link UnsupportedOperationException} unless
+   * overridden.</p>
+   * 
    * @since 1.4
    */
   public boolean isMCSiteLocal()
   {
-    // This is the IPv4 implementation.
-    // Any class derived from InetAddress should override this.
-    // XXX: This seems to not exist with IPv4 addresses
-    return false;
+    throw new UnsupportedOperationException();
   }
 
   /**
    * Utility routine to check if InetAddress is a organization local
    * multicast address.
    *
+   * <p>This method cannot be abstract for backward compatibility reasons. By
+   * default it always throws {@link UnsupportedOperationException} unless
+   * overridden.</p>
+   * 
    * @since 1.4
    */
   public boolean isMCOrgLocal()
   {
-    // This is the IPv4 implementation.
-    // Any class derived from InetAddress should override this.
-    // XXX: This seems to not exist with IPv4 addresses
-    return false;
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -373,32 +367,19 @@ public class InetAddress implements Serializable
   }
 
   /**
-   * Returns the IP address of this object as a String.  The address is in
-   * the dotted octet notation, for example, "127.0.0.1".
+   * Returns the IP address of this object as a String.
    *
+   * <p>This method cannot be abstract for backward compatibility reasons. By
+   * default it always throws {@link UnsupportedOperationException} unless
+   * overridden.</p>
+   * 
    * @return The IP address of this object in String form
    *
    * @since 1.0.2
    */
   public String getHostAddress()
   {
-    StringBuffer sb = new StringBuffer(40);
-
-    int len = addr.length;
-    int i = 0;
-    
-    for ( ; ; )
-      {
-        sb.append(addr[i] & 0xff);
-        i++;
-	
-        if (i == len)
-          break;
-	
-        sb.append('.');
-      }
-
-    return sb.toString();
+    throw new UnsupportedOperationException();
   }
 
   /**

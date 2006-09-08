@@ -1,5 +1,18 @@
 2006-09-08  Gary Benson  <gbenson@redhat.com>
 
+	* java/net/Inet4Address.java (isMulticastAddress,
+	isLoopbackAddress, isAnyLocalAddress, isLinkLocalAddress,
+	isSiteLocalAddress, isMCGlobal, isMCNodeLocal, isMCLinkLocal,
+	isMCSiteLocal, isMCOrgLocal, getHostAddress): Moved
+	implementations from InetAddress.
+	* java/net/InetAddress.java (isMulticastAddress,
+	isLoopbackAddress, isAnyLocalAddress, isLinkLocalAddress,
+	isSiteLocalAddress, isMCGlobal, isMCNodeLocal, isMCLinkLocal,
+	isMCSiteLocal, isMCOrgLocal, getHostAddress): Replace
+	implementations with UnsupportedOperationExceptions.
+	
+2006-09-08  Gary Benson  <gbenson@redhat.com>
+
 	* java/net/InetAddress.java
 	(inaddr_any): Removed.
 	(ANY_IF, LOCALHOST): Create using getByAddress.
