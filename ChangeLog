@@ -1,3 +1,31 @@
+2006-09-08  Gary Benson  <gbenson@redhat.com>
+
+	* java/net/InetAddress.java
+	(inaddr_any): Removed.
+	(ANY_IF, LOCALHOST): Create using getByAddress.
+	(<init>): Updated javadoc.
+	(getHostName): Cache hostname even if the lookup failed.
+	(getByAddress): Create Inet4Address objects when passed
+	IPv4-mapped IPv6 addresses.
+	(aton): Removed.
+	(getAllByName): Create address objects using getByAddress.
+	Do not perform security checks unless actually required.
+	Do not strip whitespace from the hostname.
+	(getInaddrAny): Removed.
+	(getLocalHost): Return the loopback address if getByName
+	throws a SecurityException.
+	(readResolve): Updated javadoc.
+	* vm/reference/java/net/VMInetAddress.java (aton): Declared.
+	* include/java_net_VMInetAddress.h
+	(Java_java_net_VMInetAddress_aton): Likewise.
+	* native/jni/java-net/java_net_VMInetAddress.c
+	(Java_java_net_VMInetAddress_aton): New method.
+	* native/jni/native-lib/cpnet.h (cpnet_aton): Declared.
+	* native/jni/native-lib/cpnet.c (cpnet_aton): New method.
+	* configure.ac (AC_CHECK_FUNCS): Checks for cpnet_aton.
+	* java/net/Inet4Address.java (writeReplace): Updated javadoc.
+	* NEWS: Added note about updated VM interface.
+
 2006-09-07  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicInternalFrameUI.java
