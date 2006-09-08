@@ -1,5 +1,12 @@
 2006-09-08  Gary Benson  <gbenson@redhat.com>
 
+	* java/net/InetAddress.java
+	(getHostName): Move lookup into getCanonicalHostName.
+	(getCanonicalHostName): Move lookup from getHostName,
+	Perform security check on canonical name (ie after lookup).
+
+2006-09-08  Gary Benson  <gbenson@redhat.com>
+
 	* java/net/Inet4Address.java (isMulticastAddress,
 	isLoopbackAddress, isAnyLocalAddress, isLinkLocalAddress,
 	isSiteLocalAddress, isMCGlobal, isMCNodeLocal, isMCLinkLocal,

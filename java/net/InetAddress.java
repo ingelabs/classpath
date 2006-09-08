@@ -307,17 +307,8 @@ public class InetAddress implements Serializable
    */
   public String getHostName()
   {
-    if (hostName != null)
-      return hostName;
-
-    try
-      {
-	hostName = VMInetAddress.getHostByAddr(addr);
-      }
-    catch (UnknownHostException e)
-      {
-	hostName = getHostAddress();
-      }
+    if (hostName == null)
+      hostName = getCanonicalHostName();
 
     return hostName;
   }
@@ -329,12 +320,22 @@ public class InetAddress implements Serializable
    */
   public String getCanonicalHostName()
   {
+    String hostname;
+    try
+      {
+	hostname = VMInetAddress.getHostByAddr(addr);
+      }
+    catch (UnknownHostException e)
+      {
+	return getHostAddress();
+      }
+
     SecurityManager sm = System.getSecurityManager();
     if (sm != null)
       {
         try
 	  {
-            sm.checkConnect(hostName, -1);
+            sm.checkConnect(hostname, -1);
 	  }
 	catch (SecurityException e)
 	  {
@@ -342,16 +343,7 @@ public class InetAddress implements Serializable
 	  }
       }
 
-    // Try to find the FDQN now
-    InetAddress address;
-    byte[] ipaddr = getAddress();
-
-    if (ipaddr.length == 16)
-      address = new Inet6Address(getAddress(), null);
-    else
-      address = new Inet4Address(getAddress(), null);
-
-    return address.getHostName();
+    return hostname;
   }
 
   /**
