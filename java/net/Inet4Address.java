@@ -1,5 +1,5 @@
 /* Inet4Address.java --
-   Copyright (C) 2002, 2003, 2004, 2005  Free Software Foundation, Inc.
+   Copyright (C) 2002, 2003, 2004, 2005, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -57,11 +57,16 @@ public final class Inet4Address extends InetAddress
   static final long serialVersionUID = 3286316764910316507L;
 
   /**
+   * The address family of these addresses.
+   */
+  private static final int AF_INET = 2;
+
+  /**
    * Inet4Address objects are serialized as InetAddress objects.
    */
   private Object writeReplace() throws ObjectStreamException
   {
-    return new InetAddress(addr, hostName);
+    return new InetAddress(addr, hostName, AF_INET);
   }
   
   /**
@@ -74,7 +79,7 @@ public final class Inet4Address extends InetAddress
    */
   Inet4Address(byte[] addr, String host)
   {
-    super(addr, host);
+    super(addr, host, AF_INET);
   }
 
   /**

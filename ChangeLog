@@ -1,6 +1,20 @@
 2006-09-08  Gary Benson  <gbenson@redhat.com>
 
 	* java/net/InetAddress.java
+	(family): Updated javadoc and made private.
+	(<init>): Add an address family argument.
+	(readObject): Don't overwrite family.
+	* java/net/Inet4Address.java
+	(AF_INET): New constant.
+	(<init>): Use AF_INET as the family.
+	(writeReplace): Likewise.
+	* java/net/Inet6Address.java
+	(AF_INET6): New constant.
+	(<init>): Use AF_INET6 as the family.
+
+2006-09-08  Gary Benson  <gbenson@redhat.com>
+
+	* java/net/InetAddress.java
 	(getHostName): Move lookup into getCanonicalHostName.
 	(getCanonicalHostName): Move lookup from getHostName,
 	Perform security check on canonical name (ie after lookup).

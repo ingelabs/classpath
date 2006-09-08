@@ -126,13 +126,9 @@ public class InetAddress implements Serializable
   String hostName;
 
   /**
-   * The field 'family' seems to be the AF_ value.
-   * FIXME: Much of the code in the other java.net classes does not make
-   * use of this family field.  A better implementation would be to make
-   * use of getaddrinfo() and have other methods just check the family
-   * field rather than examining the length of the address each time.
+   * Needed for serialization.
    */
-  int family;
+  private int family;
 
   /**
    * Constructor.  Prior to the introduction of IPv6 support in 1.4,
@@ -145,13 +141,13 @@ public class InetAddress implements Serializable
    *
    * @param ipaddr The IP number of this address as an array of bytes
    * @param hostname The hostname of this IP address.
+   * @param family The address family of this IP address.
    */
-  InetAddress(byte[] ipaddr, String hostname)
+  InetAddress(byte[] ipaddr, String hostname, int family)
   {
     addr = (null == ipaddr) ? null : (byte[]) ipaddr.clone();
     hostName = hostname;
-    
-    family = 2; /* AF_INET */
+    this.family = family;
   }
 
   /**
@@ -607,8 +603,6 @@ public class InetAddress implements Serializable
 
     for (int i = 2; i >= 0; --i)
       addr[i] = (byte) (address >>= 8);
-
-    family = 2; /* AF_INET  */
   }
 
   private void writeObject(ObjectOutputStream oos) throws IOException
