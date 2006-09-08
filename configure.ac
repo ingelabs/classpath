@@ -373,6 +373,7 @@ if test "x${COMPILE_JNI}" = xyes; then
                   fcntl \
 		  mmap munmap mincore msync madvise getpagesize sysconf \
 		  lstat readlink \
+		  inet_aton inet_addr inet_pton \
 		  ])
 
   LIBMAGIC=

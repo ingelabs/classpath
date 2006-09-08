@@ -299,4 +299,91 @@ Java_java_net_VMInetAddress_getHostByName (JNIEnv * env,
 #endif /* not WITHOUT_NETWORK */
 }
 
+/*************************************************************************/
+
+/*
+ * Return the IP address represented by a literal address.
+ * Will return null if the literal address is not valid.
+ */
+JNIEXPORT jbyteArray JNICALL
+Java_java_net_VMInetAddress_aton (JNIEnv *env,
+				  jclass class
+				  __attribute__ ((__unused__)),
+				  jstring host)
+{
+#ifndef WITHOUT_NETWORK
+  const char *hostname;
+  cpnet_address *address;
+  int result;
+  jbyte *octets;
+  jbyteArray ret_octets;
+
+  hostname = (*env)->GetStringUTFChars (env, host, 0);
+  if (!hostname)
+    {
+      JCL_ThrowException (env, UNKNOWN_HOST_EXCEPTION, "Null hostname");
+      return (jbyteArray) NULL;
+    }
+
+  result = cpnet_aton (env, hostname, &address);
+  if (result != CPNATIVE_OK)
+    {
+      JCL_ThrowException (env, UNKNOWN_HOST_EXCEPTION, "Internal Error");
+      if (address)
+	cpnet_freeAddress (env, address);
+      return (jbyteArray) NULL;
+    }
+  if (!address)
+    return (jbyteArray) NULL;
+
+  if (cpnet_isIPV6Address (address))
+    {
+      ret_octets = (jbyteArray) (*env)->NewByteArray (env, 16);
+
+      if (!ret_octets)
+	{
+	  JCL_ThrowException (env, UNKNOWN_HOST_EXCEPTION, "Internal Error");
+	  cpnet_freeAddress (env, address);
+	  return (jbyteArray) NULL;
+	}
+	  
+      octets = (*env)->GetByteArrayElements (env, ret_octets, 0);
+
+      cpnet_IPV6AddressToBytes (address, octets);
+
+      (*env)->ReleaseByteArrayElements (env, ret_octets, octets, 0);
+    }
+  else if (cpnet_isIPV4Address (address))
+    {
+      ret_octets = (jbyteArray) (*env)->NewByteArray (env, 4);
+
+      if (!ret_octets)
+	{
+	  JCL_ThrowException (env, UNKNOWN_HOST_EXCEPTION, "Internal Error");
+	  cpnet_freeAddress (env, address);
+	  return (jbyteArray) NULL;
+	}
+	  
+      octets = (*env)->GetByteArrayElements (env, ret_octets, 0);
+
+      cpnet_IPV4AddressToBytes (address, octets);
+
+      (*env)->ReleaseByteArrayElements (env, ret_octets, octets, 0);
+    }
+  else
+    {
+      JCL_ThrowException (env, UNKNOWN_HOST_EXCEPTION, "Internal Error");
+      cpnet_freeAddress (env, address);
+      return (jbyteArray) NULL;
+    }
+
+  cpnet_freeAddress (env, address);
+
+  return (ret_octets);
+  
+#else /* not WITHOUT_NETWORK */
+  return (jbyteArray) NULL;
+#endif /* not WITHOUT_NETWORK */
+}
+
 /* end of file */

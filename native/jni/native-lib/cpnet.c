@@ -49,6 +49,7 @@ exception statement from your version. */
 #include <sys/ioctl.h>
 #include <sys/time.h>
 #include <unistd.h>
+#include <arpa/inet.h>
 
 #include "cpnet.h"
 
@@ -706,6 +707,49 @@ jint cpnet_getHostByAddr (JNIEnv *env UNUSED, cpnet_address *addr, char *hostnam
     }
   strncpy(hostname, ret->h_name, hostname_len);
 
+  return 0;
+}
+
+jint cpnet_aton (JNIEnv *env, const char *hostname, cpnet_address **addr)
+{
+  jbyte *bytes = NULL;
+#ifdef HAVE_INET_PTON
+  jbyte inet6_addr[16];
+#endif
+
+#ifdef HAVE_INET_ATON
+  struct in_addr laddr;
+  if (inet_aton (hostname, &laddr))
+    {
+      bytes = (jbyte *) &laddr;
+    }
+#elif defined(HAVE_INET_ADDR)
+#if ! HAVE_IN_ADDR_T
+  typedef jint in_addr_t;
+#endif
+  in_addr_t laddr = inet_addr (hostname);
+  if (laddr != (in_addr_t)(-1))
+    {
+      bytes = (jbyte *) &laddr;
+    }
+#endif
+  if (bytes)
+    {
+      *addr = cpnet_newIPV4Address(env);
+      cpnet_bytesToIPV4Address(*addr, bytes);
+      return 0;
+    }
+
+#ifdef HAVE_INET_PTON
+  if (inet_pton (AF_INET6, hostname, inet6_addr) > 0)
+    {
+      *addr = cpnet_newIPV6Address(env);
+      cpnet_bytesToIPV6Address(*addr, inet6_addr);
+      return 0;
+    }
+#endif
+
+  *addr = NULL;
   return 0;
 }
 

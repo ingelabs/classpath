@@ -57,7 +57,7 @@ public final class Inet4Address extends InetAddress
   static final long serialVersionUID = 3286316764910316507L;
 
   /**
-   * needed for serialization
+   * Inet4Address objects are serialized as InetAddress objects.
    */
   private Object writeReplace() throws ObjectStreamException
   {

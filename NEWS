@@ -16,6 +16,7 @@ New in release 0.93 (UNRELEASED)
 * Added firstNonNullClassLoader method to
   vm/reference/gnu/classpath/VMStackWalker.java. VMs are encouraged to
   provide a more efficient implementation.
+* Added aton method to vm/reference/java/net/VMInetAddress.java.
 
 New in release 0.92 (Aug 9, 2006)
 
