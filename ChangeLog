@@ -1,3 +1,12 @@
+2006-09-10  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	Fixes bug #28867
+	Originally in Kaffe: 2004-04-16  Helmer Kraemer <hkraemer@freenet.de>
+	* java/net/ServerSocket.java(implAccept): Deleted socket.implCreated.
+	* java/net/Socket.java: Avoid creating a redundant file descriptor.
+	(implCreated): Deleted, (getImpl): Don't check impleCreated,
+	(bind): Call getImpl().create(true).
+
 2006-09-09  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/xpath/Expr.java: Ensure that node-set evaluation returns
