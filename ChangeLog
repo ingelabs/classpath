@@ -1,3 +1,11 @@
+2006-09-11  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/text/AttributedCharacterIterator.java: Added @since tag, 
+	renamed some variables (no underscores) and removed some spaces to
+	match the common style,
+	* java/text/AttributedString.java: Likewise,
+	* java/text/AttributedStringIterator.java: Likewise.
+
 2006-09-11  Gary Benson  <gbenson@redhat.com>
 
 	* java/net/Inet4Address.java
