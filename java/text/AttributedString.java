@@ -1,5 +1,5 @@
 /* AttributedString.java -- Models text with attributes
-   Copyright (C) 1998, 1999, 2004, 2005 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2004, 2005, 2006, Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -206,9 +206,10 @@ public class AttributedString
               (AttributedCharacterIterator.Attribute)obj;
 
             // Make sure the attribute is defined.
-            int rl = aci.getRunLimit(attrib);
-            if (rl == -1)
+            Object attrib_obj = aci.getAttribute(attrib);
+            if (attrib_obj == null)
               continue;
+            int rl = aci.getRunLimit(attrib);
             if (rl > end)
               rl = end;
             rl -= begin;
@@ -220,8 +221,7 @@ public class AttributedString
 
             // If the attribute run starts before the beginning index, we
             // need to junk it if it is an Annotation.
-            Object attrib_obj = aci.getAttribute(attrib);
-	    rs -= begin;
+            rs -= begin;
             if (rs < 0)
               {
                 if (attrib_obj instanceof Annotation)
