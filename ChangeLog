@@ -1,3 +1,12 @@
+2006-09-11  Gary Benson  <gbenson@redhat.com>
+
+	* java/net/Inet4Address.java
+	(AF_INET): Renamed to FAMILY.
+	(<init>, writeReplace): Reflect the above.
+	* java/net/Inet6Address.java
+	(AF_INET6): Renamed to FAMILY.
+	(<init>): Reflect the above.
+
 2006-09-10  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	Fixes bug #28867

@@ -93,9 +93,9 @@ public final class Inet6Address extends InetAddress
   private transient NetworkInterface nif; 
 
   /**
-   * The address family of these addresses.
+   * The address family of these addresses.  Used for serialization.
    */
-  private static final int AF_INET6 = 10;
+  private static final int FAMILY = 10; // AF_INET6
 
   /**
    * Create an Inet6Address object
@@ -105,7 +105,7 @@ public final class Inet6Address extends InetAddress
    */
   Inet6Address(byte[] addr, String host)
   {
-    super(addr, host, AF_INET6);
+    super(addr, host, FAMILY);
     // Super constructor clones the addr.  Get a reference to the clone.
     this.ipaddress = this.addr;
     ifname = null;

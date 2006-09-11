@@ -57,16 +57,16 @@ public final class Inet4Address extends InetAddress
   static final long serialVersionUID = 3286316764910316507L;
 
   /**
-   * The address family of these addresses.
+   * The address family of these addresses.  Used for serialization.
    */
-  private static final int AF_INET = 2;
+  private static final int FAMILY = 2; // AF_INET
 
   /**
    * Inet4Address objects are serialized as InetAddress objects.
    */
   private Object writeReplace() throws ObjectStreamException
   {
-    return new InetAddress(addr, hostName, AF_INET);
+    return new InetAddress(addr, hostName, FAMILY);
   }
   
   /**
@@ -79,7 +79,7 @@ public final class Inet4Address extends InetAddress
    */
   Inet4Address(byte[] addr, String host)
   {
-    super(addr, host, AF_INET);
+    super(addr, host, FAMILY);
   }
 
   /**
