@@ -1,3 +1,8 @@
+2006-09-11  Tom Tromey  <tromey@redhat.com>
+
+	* tools/gnu/classpath/tools/javah/FieldHelper.java (print): Print
+	"volatile" when needed.
+
 2006-09-11  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/text/AttributedCharacterIterator.java
