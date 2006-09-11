@@ -187,7 +187,7 @@ class AttributedStringIterator implements AttributedCharacterIterator
 
   public int getRunLimit()
   {
-    return(getRunLimit(getAttributes().keySet()));
+    return getRunLimit(getAllAttributeKeys());
   }
 
   public int getRunLimit(AttributedCharacterIterator.Attribute attrib)

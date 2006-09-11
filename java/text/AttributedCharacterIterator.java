@@ -70,7 +70,7 @@ public interface AttributedCharacterIterator extends CharacterIterator
      * This is the attribute for the language of the text.  The value of
      * attributes of this key type are instances of <code>Locale</code>.
      */
-    public static final Attribute LANGUAGE = new Attribute("LANGUAGE");
+    public static final Attribute LANGUAGE = new Attribute("language");
 
     /**
      * This is the attribute for the reading form of text.  This is used
@@ -79,7 +79,7 @@ public interface AttributedCharacterIterator extends CharacterIterator
      * instances of <code>Annotation</code> which wrappers a 
      * <code>String</code>.
      */
-    public static final Attribute READING = new Attribute("READING");
+    public static final Attribute READING = new Attribute("reading");
 
     /**
      * This is the attribute for input method segments.  The value of attributes
@@ -87,7 +87,7 @@ public interface AttributedCharacterIterator extends CharacterIterator
      * a <code>String</code>.
      */
     public static final Attribute INPUT_METHOD_SEGMENT =
-      new Attribute("INPUT_METHOD_SEGMENT");
+      new Attribute("input_method_segment");
 
     /**
      * The name of the attribute key
