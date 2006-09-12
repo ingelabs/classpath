@@ -1,5 +1,10 @@
 2006-09-12  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/metal/OceanTheme.java
+	(addCustomEntriesToTable): Added 'List.focusCellHighlightBorder' entry.
+
+2006-09-12  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/metal/MetalIconFactory.java
 	(InternalFrameDefaultMenuIcon.paintIcon): Use theme colors.
 
