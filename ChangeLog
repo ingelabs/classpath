@@ -1,5 +1,10 @@
 2006-09-12  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/metal/MetalIconFactory.java
+	(InternalFrameDefaultMenuIcon.paintIcon): Use theme colors.
+
+2006-09-12  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/AbstractSpinnerModel.java: API doc updates.
 
 2006-09-12  David Gilbert  <david.gilbert@object-refinery.com>
