@@ -1,3 +1,17 @@
+2006-09-12  Francis Kung  <fkung@redhat.com>
+
+	PR 27940
+	* gnu/java/awt/java2d/TexturePaintContext.java
+	(constructor): Fixed typo, getMinY instead of getMaxX.
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(setPaint): Implemented support for custom Paint classes.
+	(setPaintPixels): Renamed from setTexturePixels, added repeat parameter.
+	(setTexturePixels): Renamed to setPaintPixels, added repeat parameter.
+	* include/gnu_java_awt_peer_gtk_CairoGraphics2D.h: Renamed setTexturePixels
+	to setPaintPixels, and added repeat parameter.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoGraphics2D.c:
+	 Renamed setTexturePixels to setPaintPixels, and added repeat parameter.
+
 2006-09-12  Gary Benson  <gbenson@redhat.com>
 
 	* java/net/NetworkInterface.java (getInetAddresses):

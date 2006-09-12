@@ -53,6 +53,8 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 import java.awt.Paint;
+import java.awt.PaintContext;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -316,8 +318,8 @@ public abstract class CairoGraphics2D extends Graphics2D
                                   int r1, int g1, int b1, int a1, int r2,
                                   int g2, int b2, int a2, boolean cyclic);
   
-  private native void setTexturePixels(long pointer, int[] pixels, int w,
-                                       int h, int stride);
+  private native void setPaintPixels(long pointer, int[] pixels, int w,
+                                       int h, int stride, boolean repeat);
 
   /**
    * Set the current transform matrix
@@ -690,7 +692,7 @@ public abstract class CairoGraphics2D extends Graphics2D
 	AffineTransformOp op = new AffineTransformOp(at, getRenderingHints());
 	BufferedImage texture = op.filter(img, null);
 	int[] pixels = texture.getRGB(0, 0, width, height, null, 0, width);
-	setTexturePixels(nativePointer, pixels, width, height, width);
+	setPaintPixels(nativePointer, pixels, width, height, width, true);
       }
     else if (paint instanceof GradientPaint)
       {
@@ -705,7 +707,52 @@ public abstract class CairoGraphics2D extends Graphics2D
                     gp.isCyclic());
       }
     else
-      throw new java.lang.UnsupportedOperationException();
+      {
+        // Get bounds in device space
+        int minX = 0;
+        int minY = 0;
+        int width = (int)getRealBounds().getWidth();
+        int height = (int)getRealBounds().getHeight();
+        
+        Point2D origin = transform.transform(new Point2D.Double(minX, minY),
+                                             null);
+        Point2D extreme = transform.transform(new Point2D.Double(width + minX,
+                                                                 height + minY),
+                                              null);
+        minX = (int)origin.getX();
+        minY = (int)origin.getY();
+        width = (int)extreme.getX() - minX;
+        height = (int)extreme.getY() - minY;
+
+        // Get raster of the paint background
+        PaintContext pc = paint.createContext(ColorModel.getRGBdefault(),
+                                              new Rectangle(minX, minY,
+                                                            width, height),
+                                              getRealBounds(),
+                                              transform, hints);
+        
+        Raster raster = pc.getRaster(minX, minY, width, height);
+        
+        // Work around colorspace issues, and force use of the
+        // BufferedImage.getRGB method... this can be improved upon.
+        WritableRaster wr = Raster.createWritableRaster(raster.getSampleModel(),
+                                                        new Point(raster.getMinX(),
+                                                                  raster.getMinY()));
+        wr.setRect(raster);
+        
+        BufferedImage img2 = new BufferedImage(pc.getColorModel(), wr,
+                                               pc.getColorModel().isAlphaPremultiplied(),
+                                               null);
+        
+        // Set pixels in cairo
+        setPaintPixels(nativePointer,
+                       img2.getRGB(0, 0, width, height, null, 0, width),
+                       width, height, width, false);
+        //  setPaintPixels(nativePointer,
+        //                 raster.getPixels(0, 0, width, height, (int[])null),
+        //                 width, height, width, false);
+        // doesn't work... but would be much more efficient!
+      }
   }
 
   public Stroke getStroke()
