@@ -1,5 +1,9 @@
 2006-09-12  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/AbstractSpinnerModel.java: API doc updates.
+
+2006-09-12  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/AbstractButton.java
 	(AbstractButton): Initialise textIconGap field.
 
