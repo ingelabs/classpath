@@ -1,5 +1,14 @@
 2006-09-12  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/metal/DefaultMetalTheme.java
+	(CONTROL_TEXT_FONT): Renamed 'controlTextFont',
+	(MENU_TEXT_FONT): Renamed 'menuTextFont',
+	(getControlTextFont): Check 'swing.boldMetal' setting before 
+	initialising font,
+	(getMenuTextFont): Likewise.
+
+2006-09-12  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/metal/OceanTheme.java
 	(addCustomEntriesToTable): Added 'List.focusCellHighlightBorder' entry.
 
