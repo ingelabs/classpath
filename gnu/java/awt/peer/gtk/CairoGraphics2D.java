@@ -668,7 +668,7 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   public void setPaint(Paint p)
   {
-    if (paint == null)
+    if (p == null)
       return;
 
     paint = p;
