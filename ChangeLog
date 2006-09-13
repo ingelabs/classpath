@@ -1,3 +1,10 @@
+2006-09-13  Francis Kung  <fkung@redhat.com>
+
+	* java/awt/image/ConvolveOp.java (filter(Raster, WritableRaster)):
+	Removed hard-coded max sample value.
+	* java/awt/image/RescaleOp.java (filter(Raster, WritableRaster)): 
+	Fixed finding of max sample value.
+
 2006-09-12  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
