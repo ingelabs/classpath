@@ -1,3 +1,8 @@
+2006-09-13  Francis Kung  <fkung@redhat.com>
+
+	* java/awt/image/BandCombineOp.java: Updated documentation.
+	(filter(Raster, WritableRaster)): Use int arrays, and added simple cache.
+
 2006-09-13  Tom Tromey  <tromey@redhat.com>
 
 	PR classpath/29034:
