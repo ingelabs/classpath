@@ -1,3 +1,9 @@
+2006-09-13  Tom Tromey  <tromey@redhat.com>
+
+	PR classpath/29034:
+	* java/io/PipedReader.java (read): Return early if len==0.
+	* java/io/PipedInputStream.java (read): Return early if len==0.
+
 2006-09-13  Francis Kung  <fkung@redhat.com>
 
 	* java/awt/image/ConvolveOp.java (filter(Raster, WritableRaster)):
