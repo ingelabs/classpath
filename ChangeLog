@@ -1,3 +1,13 @@
+2006-09-14  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	Fixes PR22800
+	* native/fdlibm/mprec.h (Storeinc): Define correctly for LE
+	architectures (like Arm).
+	* native/jni/java-lang/java_lang_VMDouble.c (doubleToLongBits):
+	Reverted SWAP_DOUBLE patch.
+	(doubleToRawLongBits): Likewise.
+	(longBitsToDouble): Likewise.
+
 2006-09-14  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/Menu.java: Reformatted source file.
