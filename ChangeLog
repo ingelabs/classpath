@@ -1,3 +1,10 @@
+2006-09-14  David Gilbert  <david.gilbert@object-refinery.com>
+
+	Fixes PR28699
+	* java/awt/Menu.java
+	(insert(MenuItem, int)): Fixed loop range,
+	(insert(String, int)): Updated API docs.
+
 2006-09-14  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	Fixes PR22800

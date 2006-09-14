@@ -216,13 +216,15 @@ public class Menu extends MenuItem implements MenuContainer, Serializable
   }
 
   /**
-   * Inserts the specified menu item into this menu at the specified index.
+   * Inserts the specified menu item into this menu at the specified index.  If
+   * the index is greater than or equal to the number of items already in the
+   * menu, the new item is added as the last item in the menu.
    *
-   * @param item The menu item to add.
-   * @param index The index of the menu item.
+   * @param item The menu item to add (<code>null</code> not permitted).
+   * @param index The index of the menu item (>= 0).
    *
-   * @exception IllegalArgumentException If the index is less than zero.
-   * @exception ArrayIndexOutOfBoundsException If the index is otherwise invalid.
+   * @throws IllegalArgumentException if the index is less than zero.
+   * @throws NullPointerException if <code>item</code> is <code>null</code>.
    */
   public void insert(MenuItem item, int index)
   {
@@ -252,20 +254,23 @@ public class Menu extends MenuItem implements MenuContainer, Serializable
         item.addNotify();
         peer.addItem(item);
 
-        for (int i = index; i < count; i++)
+        // bear in mind that count is the number of items *before* the new
+        // item was added
+        for (int i = index + 1; i <= count; i++)
           peer.addItem((MenuItem) items.elementAt(i));
       }
 
   }
 
   /**
-   * Inserts an item with the specified label into this menu at the specified index.
+   * Inserts an item with the specified label into this menu at the specified 
+   * index.  If the index is greater than or equal to the number of items 
+   * already in the menu, the new item is added as the last item in the menu.
    *
    * @param label The label of the item to add.
-   * @param index The index of the menu item.
+   * @param index The index of the menu item (>= 0).
    *
-   * @exception IllegalArgumentException If the index is less than zero.
-   * @exception ArrayIndexOutOfBoundsException If the index is otherwise invalid.
+   * @throws IllegalArgumentException If the index is less than zero.
    */
   public void insert(String label, int index)
   {
