@@ -1,5 +1,11 @@
 2006-09-14  Francis Kung  <fkung@redhat.com>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoGraphics2D.c
+	(gnu_java_awt_peer_gtk_CairoGraphics2D_setGradient): Updated constants to
+	be compatibe with Cairo 1.2.x.
+
+2006-09-14  Francis Kung  <fkung@redhat.com>
+
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java: Added interpolation constants.
 	(cairoSurfaceSetFilter): Removed method.
 	(drawImage): Pass interpolation type as argument to drawing methods.

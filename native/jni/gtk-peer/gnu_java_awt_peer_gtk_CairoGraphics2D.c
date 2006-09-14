@@ -134,7 +134,11 @@ Java_gnu_java_awt_peer_gtk_CairoGraphics2D_setGradient
   cairo_pattern_add_color_stop_rgba(pattern, 1.0, r2 / 255.0, g2 / 255.0, 
 				    b2 / 255.0, a2 / 255.0);
 
-  extend = (cyclic == JNI_TRUE) ? CAIRO_EXTEND_REFLECT : CAIRO_EXTEND_NONE;
+  #if CAIRO_VERSION >= CAIRO_VERSION_ENCODE(1, 2, 0)
+  	extend = (cyclic == JNI_TRUE) ? CAIRO_EXTEND_REFLECT : CAIRO_EXTEND_PAD;
+  #else
+  	extend = (cyclic == JNI_TRUE) ? CAIRO_EXTEND_REFLECT : CAIRO_EXTEND_NONE;
+  #endif
 
   cairo_pattern_set_extend( pattern, extend );
 
