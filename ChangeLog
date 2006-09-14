@@ -1,3 +1,17 @@
+2006-09-14  Gary Benson  <gbenson@redhat.com>
+
+	* java/net/InetAddress.java
+	(internalGetCanonicalHostName): New method.
+	(getCanonicalHostName): Use internalGetCanonicalHostName.
+	(getByLiteral): New method.
+	(getAllByName): Use getByLiteral.
+	* java/net/SocketPermission.java
+	(host): Replaced with...
+	(hostname, address): New fields.
+	(equals, hashcode): Reflect the above.
+	(setHostPort): Parse host into hostname or address.
+	(implies): Rewrite host checks.
+
 2006-09-14  David Gilbert  <david.gilbert@object-refinery.com>
 
 	Fixes PR28699
