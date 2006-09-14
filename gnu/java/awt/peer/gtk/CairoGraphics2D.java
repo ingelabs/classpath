@@ -192,6 +192,18 @@ public abstract class CairoGraphics2D extends Graphics2D
 						  0xFF000000);
 
   /**
+   * Native constants for interpolation methods.
+   * Note, this corresponds to an enum in native/jni/gtk-peer/cairographics2d.h
+   */
+  public static final int INTERPOLATION_NEAREST         = 0,
+                          INTERPOLATION_BILINEAR        = 1,
+                          INTERPOLATION_BICUBIC         = 5,
+                          ALPHA_INTERPOLATION_SPEED     = 2,
+                          ALPHA_INTERPOLATION_QUALITY   = 3,
+                          ALPHA_INTERPOLATION_DEFAULT   = 4;
+  // TODO: Does ALPHA_INTERPOLATION really correspond to CAIRO_FILTER_FAST/BEST/GOOD?
+  
+  /**
    * Constructor does nothing.
    */
   public CairoGraphics2D()
@@ -311,7 +323,8 @@ public abstract class CairoGraphics2D extends Graphics2D
    * @param i2u - affine transform array
    */
   private native void drawPixels(long pointer, int[] pixels, int w, int h,
-                                 int stride, double[] i2u, double alpha);
+                                 int stride, double[] i2u, double alpha,
+                                 int interpolation);
 
   private native void setGradient(long pointer, double x1, double y1,
                                   double x2, double y2,
@@ -441,11 +454,6 @@ public abstract class CairoGraphics2D extends Graphics2D
    * Save clip
    */
   private native void cairoResetClip(long pointer);
-
-  /**
-   * Set interpolation types
-   */
-  private native void cairoSurfaceSetFilter(long pointer, int filter);
 
   /**
    * Draws a line from (x1,y1) to (x2,y2).
@@ -1197,31 +1205,9 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   ///////////////////////// RENDERING HINTS ///////////////////////////////////
 
-  /**
-   * FIXME- support better
-   */
   public void setRenderingHint(RenderingHints.Key hintKey, Object hintValue)
   {
     hints.put(hintKey, hintValue);
-
-    if (hintKey.equals(RenderingHints.KEY_INTERPOLATION)
-        || hintKey.equals(RenderingHints.KEY_ALPHA_INTERPOLATION))
-      {
-	if (hintValue.equals(RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR))
-	  cairoSurfaceSetFilter(nativePointer, 0);
-
-	else if (hintValue.equals(RenderingHints.VALUE_INTERPOLATION_BILINEAR))
-	  cairoSurfaceSetFilter(nativePointer, 1);
-
-	else if (hintValue.equals(RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED))
-	  cairoSurfaceSetFilter(nativePointer, 2);
-
-	else if (hintValue.equals(RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY))
-	  cairoSurfaceSetFilter(nativePointer, 3);
-
-	else if (hintValue.equals(RenderingHints.VALUE_ALPHA_INTERPOLATION_DEFAULT))
-	  cairoSurfaceSetFilter(nativePointer, 4);
-      }
 
     shiftDrawCalls = hints.containsValue(RenderingHints.VALUE_STROKE_NORMALIZE)
       || hints.containsValue(RenderingHints.VALUE_STROKE_DEFAULT);
@@ -1236,28 +1222,7 @@ public abstract class CairoGraphics2D extends Graphics2D
   {
     this.hints = new RenderingHints(getDefaultHints());
     this.hints.add(new RenderingHints(hints));
-
-    if (hints.containsKey(RenderingHints.KEY_INTERPOLATION))
-      {
-	if (hints.containsValue(RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR))
-	  cairoSurfaceSetFilter(nativePointer, 0);
-
-	else if (hints.containsValue(RenderingHints.VALUE_INTERPOLATION_BILINEAR))
-	  cairoSurfaceSetFilter(nativePointer, 1);
-      }
-
-    if (hints.containsKey(RenderingHints.KEY_ALPHA_INTERPOLATION))
-      {
-	if (hints.containsValue(RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED))
-	  cairoSurfaceSetFilter(nativePointer, 2);
-
-	else if (hints.containsValue(RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY))
-	  cairoSurfaceSetFilter(nativePointer, 3);
-
-	else if (hints.containsValue(RenderingHints.VALUE_ALPHA_INTERPOLATION_DEFAULT))
-	  cairoSurfaceSetFilter(nativePointer, 4);
-      }
-
+    
     shiftDrawCalls = hints.containsValue(RenderingHints.VALUE_STROKE_NORMALIZE)
       || hints.containsValue(RenderingHints.VALUE_STROKE_DEFAULT);
   }
@@ -1270,6 +1235,30 @@ public abstract class CairoGraphics2D extends Graphics2D
   public RenderingHints getRenderingHints()
   {
     return hints;
+  }
+  
+  private int getInterpolation()
+  {
+    if (this.hints.containsValue(RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR))
+      return INTERPOLATION_NEAREST;
+
+    else if (hints.containsValue(RenderingHints.VALUE_INTERPOLATION_BILINEAR))
+      return INTERPOLATION_BILINEAR;
+
+    else if (hints.containsValue(RenderingHints.VALUE_INTERPOLATION_BICUBIC))
+      return INTERPOLATION_BICUBIC;
+
+    else if (hints.containsValue(RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED))
+      return ALPHA_INTERPOLATION_SPEED;
+
+    else if (hints.containsValue(RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY))
+      return ALPHA_INTERPOLATION_QUALITY;
+
+    else if (hints.containsValue(RenderingHints.VALUE_ALPHA_INTERPOLATION_DEFAULT))
+      return ALPHA_INTERPOLATION_DEFAULT;
+
+    // Do bilinear interpolation as default
+    return INTERPOLATION_BILINEAR;
   }
 
   ///////////////////////// IMAGE. METHODS ///////////////////////////////////
@@ -1337,7 +1326,8 @@ public abstract class CairoGraphics2D extends Graphics2D
 
     if(raster instanceof CairoSurface)
       {
-	((CairoSurface)raster).drawSurface(nativePointer, i2u, alpha);
+	((CairoSurface)raster).drawSurface(nativePointer, i2u, alpha,
+                                           getInterpolation());
         updateColor();
 	return true;
       }
@@ -1357,7 +1347,8 @@ public abstract class CairoGraphics2D extends Graphics2D
 
     int[] pixels = b.getRGB(0, 0, width, height, null, 0, width);
 
-    drawPixels(nativePointer, pixels, width, height, width, i2u, alpha);
+    drawPixels(nativePointer, pixels, width, height, width, i2u, alpha,
+               getInterpolation());
 
     // Cairo seems to lose the current color which must be restored.
     updateColor();
@@ -1673,7 +1664,7 @@ public abstract class CairoGraphics2D extends Graphics2D
     if (comp instanceof AlphaComposite)
       alpha = ((AlphaComposite) comp).getAlpha();
     drawPixels(nativePointer, pixels, r.getWidth(), r.getHeight(),
-               r.getWidth(), i2u, alpha);
+               r.getWidth(), i2u, alpha, getInterpolation());
 
     // Cairo seems to lose the current color which must be restored.
     updateColor();

@@ -1,3 +1,30 @@
+2006-09-14  Francis Kung  <fkung@redhat.com>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java: Added interpolation constants.
+	(cairoSurfaceSetFilter): Removed method.
+	(drawImage): Pass interpolation type as argument to drawing methods.
+	(drawPixels): Added interpolation parameter.
+	(drawRaster): Pass interpolation type as argument to drawing method.
+	(getInterpolation): New method.
+	(setRenderingHint): Store hints, but do not set interpolation in cairo.
+	(setRenderingHints): Store hints, but do not set interpolation in cairo.
+	* gnu/java/awt/peer/gtk/CairoSurface.java
+	(drawSurface): Added interpolation parameter.
+	(nativeDrawSurface): Added interpolation parameter.
+	* include/gnu_java_awt_peer_gtk_CairoGraphics2D.h
+	(Java_gnu_java_awt_peer_gtk_CairoGraphics2D_drawPixels): Added interpolation
+	parameter.
+	(Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoSurfaceSetFilter): Removed.
+	* native/jni/gtk-peer/cairographics2d.h
+	(java_awt_rendering_hints_filter): Added bicubic interpolation constant.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoGraphics2D.c
+	(Java_gnu_java_awt_peer_gtk_CairoGraphics2D_drawPixels): Added interpolation
+	parameter.
+	(Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoSurfaceSetFilter): Removed.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c
+	(Java_gnu_java_awt_peer_gtk_CairoSurface_nativeDrawSurface): Added
+	interpolation parameter.
+
 2006-09-14  Gary Benson  <gbenson@redhat.com>
 
 	* java/net/InetAddress.java
