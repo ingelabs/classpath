@@ -1,5 +1,10 @@
 2006-09-14  Jeroen Frijters  <jeroen@frijters.net>
 
+	* gnu/java/rmi/server/ActivatableRef.java
+	(readExternal, writeExternal): Partial fix for serialization format.
+
+2006-09-14  Jeroen Frijters  <jeroen@frijters.net>
+
 	PR classpath/28984
 	* java/io/InputStreamReader.java
 	(read(char[],int,int)): Fixed bug.
