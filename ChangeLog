@@ -1,3 +1,9 @@
+2006-09-14  Jeroen Frijters  <jeroen@frijters.net>
+
+	PR classpath/28984
+	* java/io/InputStreamReader.java
+	(read(char[],int,int)): Fixed bug.
+
 2006-09-13  Francis Kung  <fkung@redhat.com>
 
 	* java/awt/image/BandCombineOp.java: Updated documentation.
