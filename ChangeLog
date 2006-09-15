@@ -1,3 +1,8 @@
+2006-09-15  Chistian Elias Naur  <elias@oddlabs.com>
+
+	* java/io/ObjectStreamClass.java (setClass(Class, ObjectStreamClass)):
+	Added !cl.isArray() to serialVersionUID mismatch check.
+
 2006-09-14  Francis Kung  <fkung@redhat.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoGraphics2D.c
