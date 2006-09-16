@@ -1,3 +1,8 @@
+2006-09-16  Chris Burdess  <dog@gnu.org>
+
+	Fixes PR 27293.
+	* gnu/xml/dom/DomNode.java: Increment length of node during insert.
+
 2006-09-14  Michael Koch  <konqueror@gmx.de>
 
 	* include/gnu_java_awt_peer_gtk_CairoGraphics2D.h: Recreated.
