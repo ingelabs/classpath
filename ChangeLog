@@ -1,5 +1,11 @@
 2006-09-16  Chris Burdess  <dog@gnu.org>
 
+	Fixes PR 28572.
+	* gnu/xml/transform/StreamSerializer.java: Don't escape XML entities
+	  when in text output mode.
+
+2006-09-16  Chris Burdess  <dog@gnu.org>
+
 	Fixes PR 27293.
 	* gnu/xml/dom/DomNode.java: Increment length of node during insert.
 
