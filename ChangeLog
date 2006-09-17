@@ -1,5 +1,9 @@
 2006-09-17  Mark Wielaard  <mark@klomp.org>
 
+	* javax/swing/JTree.java (setLeadSelectionPath): Handle null path.
+
+2006-09-17  Mark Wielaard  <mark@klomp.org>
+
 	* native/jni/java-nio/javanio.c (cpnio_fcntl): Last argument is long.
 	* native/jni/java-nio/javanio.h (cpnio_fcntl): Likewise.
 	* native/jni/java-nio/gnu_java_nio_VMChannel.c
