@@ -297,7 +297,7 @@ CPNIO_EXPORT ssize_t cpnio_recvfrom (int fd, void *buf, size_t len, int flags,
  * Allowed ERRNO values:
  *  FIXME
  */
-CPNIO_EXPORT int cpnio_fcntl (int fd, int cmd, int arg);
+CPNIO_EXPORT int cpnio_fcntl (int fd, int cmd, long arg);
 
 
 /**

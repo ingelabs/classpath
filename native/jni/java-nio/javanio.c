@@ -104,7 +104,7 @@ cpnio_recvfrom (int fd, void *buf, size_t len, int flags,
 }
 
 extern inline int
-cpnio_fcntl (int fd, int cmd, int arg)
+cpnio_fcntl (int fd, int cmd, long arg)
 {
 #ifdef HAVE_FCNTL
   return fcntl (fd, cmd, arg);
