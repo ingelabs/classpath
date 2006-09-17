@@ -1,5 +1,10 @@
 2006-09-17  Mark Wielaard  <mark@klomp.org>
 
+	* javax/swing/text/html/HTMLEditorKit (getStyleSheet): Load
+	resource from HTMLEditorKit.class.
+
+2006-09-17  Mark Wielaard  <mark@klomp.org>
+
 	* javax/swing/plaf/basic/BasicToolBarUI.java
 	(setBorderToNonRollover): Check whether border is null.
 	(setBorderToRollover): Likewise.
