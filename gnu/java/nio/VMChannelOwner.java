@@ -1,5 +1,5 @@
-/* NIOSocket.java -- 
-   Copyright (C) 2003 Free Software Foundation, Inc.
+/* NativeFD.java -- interface for Channels that have an underlying file descriptor.
+   Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,43 +38,23 @@ exception statement from your version. */
 
 package gnu.java.nio;
 
-import gnu.java.net.PlainSocketImpl;
-import java.io.IOException;
-import java.net.Socket;
-import java.nio.channels.SocketChannel;
+import java.nio.channels.Channel;
+import java.nio.channels.Selector;
 
 /**
- * @author Michael Koch
+ * This interface is meant to be implemented by any {@link Channel}
+ * implementation we support that uses a platform-specific {@link VMChannel}
+ * at their core. This is primarily used by {@link Selector} implementations,
+ *  for easier access to the native state.
+ *
+ * @author Casey Marshall (csm@gnu.org)
  */
-public final class NIOSocket extends Socket
+interface VMChannelOwner
 {
-  private SocketChannelImpl channel;
-    
-  protected NIOSocket (SocketChannelImpl channel)
-    throws IOException
-  {
-    super (new NIOSocketImpl(channel));
-    this.channel = channel;
-  }
-
-  //public final PlainSocketImpl getPlainSocketImpl()
-  //{
-  //  return impl;
-  //}
-
-  //final void setChannel (SocketChannelImpl channel)
-  //{
-  //  this.impl = channel.getPlainSocketImpl();
-  //  this.channel = channel;
-  //}
-  
-  public final SocketChannel getChannel()
-  {
-    return channel;
-  }
-  
-  public boolean isConnected()
-  {
-    return channel.isConnected();
-  }
+  /**
+   * Return the underlying platform-specific Channel instance.
+   * 
+   * @return The platform channel object.
+   */
+  VMChannel getVMChannel();
 }

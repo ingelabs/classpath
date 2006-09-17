@@ -1,5 +1,5 @@
-/* NIOSocket.java -- 
-   Copyright (C) 2003 Free Software Foundation, Inc.
+/* NIOSocketImpl.java -- subclass of PlainSocketImpl for NIO.
+   Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -39,42 +39,72 @@ exception statement from your version. */
 package gnu.java.nio;
 
 import gnu.java.net.PlainSocketImpl;
+
 import java.io.IOException;
-import java.net.Socket;
-import java.nio.channels.SocketChannel;
+import java.net.InetAddress;
 
 /**
- * @author Michael Koch
+ * @author Casey Marshall (csm@gnu.org)
  */
-public final class NIOSocket extends Socket
+public class NIOSocketImpl extends PlainSocketImpl
 {
-  private SocketChannelImpl channel;
-    
-  protected NIOSocket (SocketChannelImpl channel)
-    throws IOException
+
+  private final SocketChannelImpl channel;
+  
+  NIOSocketImpl(SocketChannelImpl channel) throws IOException
   {
-    super (new NIOSocketImpl(channel));
     this.channel = channel;
+    impl.getState().setChannelFD(channel.getVMChannel().getState());
   }
 
-  //public final PlainSocketImpl getPlainSocketImpl()
-  //{
-  //  return impl;
-  //}
-
-  //final void setChannel (SocketChannelImpl channel)
-  //{
-  //  this.impl = channel.getPlainSocketImpl();
-  //  this.channel = channel;
-  //}
-  
-  public final SocketChannel getChannel()
+  /* (non-Javadoc)
+   * @see java.net.SocketImpl#getInetAddress()
+   */
+  //@Override
+  protected InetAddress getInetAddress()
   {
-    return channel;
+    try
+      {
+        return channel.getVMChannel().getPeerAddress().getAddress();
+      }
+    catch (IOException ioe)
+      {
+        return null;
+      }
+    catch (NullPointerException npe)
+      {
+        // Socket is not connected yet.
+        return null;
+      }
   }
-  
-  public boolean isConnected()
+
+  /* (non-Javadoc)
+   * @see java.net.SocketImpl#getPort()
+   */
+  //@Override
+  protected int getPort()
   {
-    return channel.isConnected();
+    try
+      {
+        return channel.getVMChannel().getPeerAddress().getPort();
+      }
+    catch (IOException ioe)
+      {
+        return -1;
+      }
+    catch (NullPointerException npe)
+      {
+        // Socket is not connected yet.
+        return -1;
+      }
+  }
+
+  /* (non-Javadoc)
+   * @see gnu.java.net.PlainSocketImpl#create(boolean)
+   */
+  //@Override
+  protected synchronized void create(boolean stream)
+  {
+    // Ignored; the socket has already been created.
   }
 }
