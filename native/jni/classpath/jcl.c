@@ -51,15 +51,15 @@ exception statement from your version. */
 /*
  * Cached Pointer class info.
  */
-static jclass rawDataClass;
-static jfieldID rawData_fid;
-static jmethodID rawData_mid;
+static jclass rawDataClass = NULL;
+static jfieldID rawData_fid = NULL;
+static jmethodID rawData_mid = NULL;
 
 /*
  * JNI OnLoad constructor.
  */
 jint
-JNI_OnLoad (JavaVM *vm, void *reserved)
+JNI_OnLoad (JavaVM *vm, void *reserved __attribute__((unused)))
 {
   JNIEnv *env;
   void *envp;

@@ -1,3 +1,8 @@
+2006-09-17  Casey Marshall  <csm@gnu.org>
+
+	* native/jni/classpath/jcl.c (JNI_OnLoad): mark `reserved' as
+	unused.
+
 2006-09-17  Chris Burdess  <dog@gnu.org>
 
 	Fixes PR 27610 27687.
