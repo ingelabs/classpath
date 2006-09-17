@@ -1,5 +1,11 @@
 2006-09-17  Mark Wielaard  <mark@klomp.org>
 
+	* javax/swing/plaf/basic/BasicToolBarUI.java
+	(setBorderToNonRollover): Check whether border is null.
+	(setBorderToRollover): Likewise.
+
+2006-09-17  Mark Wielaard  <mark@klomp.org>
+
 	* javax/swing/JTree.java (setLeadSelectionPath): Handle null path.
 
 2006-09-17  Mark Wielaard  <mark@klomp.org>
