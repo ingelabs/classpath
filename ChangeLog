@@ -1,3 +1,32 @@
+2006-09-18  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/EventQueue.java
+	(INITIAL_QUEUE_DEPTH): Removed obsolete field.
+	(next_in): Removed obsolete field.
+	(next_out): Removed obsolete field.
+	(queueHead): New field. Markes the head of the queue.
+	(queueTail): New field. Markes the tail of the queue.
+	(queue): Removed obsolete field.
+	(EventQueue): Documented empty block.
+	(getNextEvent): Changed array based implementation to single-linked
+	list based implementation.
+	(invokeAndWait): Use an Object as synchronization object rather
+	than the current thread.
+	(peekEvent(int)): Changed array based implementation to single-linked
+	list based implementation.
+	(peekEvent()): Changed array based implementation to single-linked
+	list based implementation.
+	(pop()): Changed array based implementation to single-linked
+	list based implementation.
+	(postEvent): Foward to postEventImpl.
+	(postEventImpl): Changed array based implementation to single-linked
+	list based implementation.
+	(push): Changed array based implementation to single-linked
+	list based implementation.
+	* java/awt/AWTEvent.java
+	(queueNext): New field. Implements a single-linked list for
+	the EventQueue.
+
 2006-09-17  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/text/html/HTMLEditorKit (getStyleSheet): Load
