@@ -146,23 +146,21 @@ class LightweightDispatcher
     Container parent = deepest.getParent();
     Point loc = ev.getPoint();
     loc = convertPointToChild(window, loc, parent);
-    Component target = null;
+    Component target = deepest;
     if (parent != null)
       {
-        target = findTarget(parent, loc);
-        while (target == null && parent != null)
+        Component newTarget = findTarget(parent, loc, ev.getID());
+        while (newTarget == null && parent != null)
           {
-            if (parent.mouseListener != null
-                || parent.mouseMotionListener != null
-                || (parent.eventMask
-                    & (AWTEvent.MOUSE_EVENT_MASK
-                        | AWTEvent.MOUSE_MOTION_EVENT_MASK)) != 0)
+            if (parent.eventTypeEnabled(ev.getID()))
               {
-                target = parent;
+                newTarget = parent;
               }
             else
               parent = parent.getParent();
           }
+        if (newTarget != null)
+          target = newTarget;
       }
     if (target == null || target.isLightweight())
       {
@@ -178,7 +176,6 @@ class LightweightDispatcher
                   new MouseEvent(lastTarget, MouseEvent.MOUSE_EXITED,
                                  ev.getWhen(), ev.getModifiers(), p1.x, p1.y,
                                  ev.getClickCount(), ev.isPopupTrigger());
-                //System.err.println("event: " + mouseExited);
                 lastTarget.dispatchEvent(mouseExited);
               }
             
@@ -189,11 +186,9 @@ class LightweightDispatcher
               {
                 Point p = convertPointToChild(window, ev.getPoint(), target);
                 MouseEvent mouseEntered =
-                  new MouseEvent(target,
-                                 MouseEvent.MOUSE_ENTERED, ev.getWhen(),
+                  new MouseEvent(target, MouseEvent.MOUSE_ENTERED, ev.getWhen(),
                                  ev.getModifiers(), p.x, p.y, ev.getClickCount(),
                                  ev.isPopupTrigger());
-                //System.err.println("event: " + mouseEntered);
                 target.dispatchEvent(mouseEntered);
               }
           }
@@ -290,23 +285,23 @@ class LightweightDispatcher
    * @return the actual receiver of the mouse event, or null, if no such
    *         component has been found
    */
-  private Component findTarget(Container c, Point loc)
+  private Component findTarget(Container c, Point loc, int id)
   {
     int numComponents = c.getComponentCount();
     Component target = null;
     if (c != null)
       {
+        int childX;
+        int childY;
         for (int i = 0; i < numComponents; i++)
           {
             Component child = c.getComponent(i);
             if (child.isShowing())
               {
-                if (child.contains(loc.x - child.getX(), loc.y - child.getY())
-                    && (child.mouseListener != null 
-                        || child.mouseMotionListener != null
-                        || (child.eventMask
-                            & (AWTEvent.MOUSE_EVENT_MASK
-                                | AWTEvent.MOUSE_MOTION_EVENT_MASK)) != 0))
+                childX = loc.x - child.getX();
+                childY = loc.y - child.getY();
+                if (child.contains(childX, childY)
+                    && child.eventTypeEnabled(id))
                   {
                     target = child;
                     break;
@@ -316,7 +311,6 @@ class LightweightDispatcher
       }
     return target;
   }
-
   /**
    * Converts a point in the parent's coordinate system to a child coordinate
    * system. The resulting point is stored in the same Point object and

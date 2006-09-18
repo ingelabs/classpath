@@ -1,5 +1,15 @@
 2006-09-18  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/LightweightDispatcher.java
+	(findTarget): Correctly translate child coordinates.
+	Use Component.eventTypeEnabled() for checking if a component
+	has a certain event enabled.
+	(handleMouseEvent): Find the correct mouse event target.
+ 	Use Component.eventTypeEnabled() for checking if a component
+	has a certain event enabled.
+
+2006-09-18  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/Component.java
 	(show): Test for the peer beeing lightweight directly.
 	(paintAll): Validate before painting. Don't paint when not
