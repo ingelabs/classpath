@@ -1,3 +1,9 @@
+2006-09-18  David Pirkle  <dpirkle@symyx.com>
+
+	Fixes PR 28589
+	* gnu/xml/transform/XSLURIResolver.java: Test SAXSource for specific
+	  input stream during resolution.
+
 2006-09-18  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/LightweightDispatcher.java
