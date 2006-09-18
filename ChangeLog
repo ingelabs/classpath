@@ -1,5 +1,49 @@
 2006-09-18  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/Component.java
+	(show): Test for the peer beeing lightweight directly.
+	(paintAll): Validate before painting. Don't paint when not
+	showing. Call peer.paint() when the component is heavyweight.
+	(repaint): Delegate to the parent when lightweight, rather
+	than skipping to the nearest heavyweight.
+	(createImage): Added null check to prevent NPE.
+	(dispatchEvent): Moved old event dispatching and toolkit
+	event dispatching to dispatchEventImpl.
+	(addComponentListener): Don't enable event. Only add listener
+	when not null. Switch to new event dispatching only.
+	(addFocusListener): Likewise.
+	(addHierarchyListener): Likewise.
+	(addHierarchyBoundsListener): Likewise.
+	(addKeyListener): Likewise.
+	(addMouseListener): Likewise.
+	(addMouseMotionListener): Likewise.
+	(addMouseWheelListener): Likewise.
+	(addInputMethodListener): Likewise.
+	(coalesceEvents): For mouse events coalesce them only when
+	their modifiers are equal. For paint events coalesce the events
+	when one contains the other, without going through complicated
+	heuristics.
+	(dispatchEventImpl): Moved old event dispatching and toolkit
+	event dispatching to dispatchEventImpl.
+	(coalescePaintEvents): Removed.
+	(HeavyweightInLightweightListener.componentHidden):
+	Fixed condition.
+	* java/awt/Container.java
+	(addImpl): Don't enable events on lightweights.
+	(remove): Reordered operations. Don't remove any listeners.
+	Throw ArrayIndexOutOfBoundsException when index >= ncomponents.
+	Only removeNotify() when peer is != null. Only invalidate if 
+	not already invalid. Only fire ContainerEvent if there is
+	an interested listener or the event is enabled. Dispatch this
+	event directly without the event queue.
+	(removeAll): Likewise.
+	(paintComponents): Only paint when showing. Also paint heavyweights.
+	Don't paint the container itself.
+	(removeNotify): Create local variables for improved thread safety.
+	(addNotifyContainerChildren): Don't enable events for lightweights.
+
+2006-09-18  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/EventQueue.java
 	(INITIAL_QUEUE_DEPTH): Removed obsolete field.
 	(next_in): Removed obsolete field.

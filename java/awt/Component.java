@@ -971,14 +971,14 @@ public abstract class Component
     // case lightweight components are not initially painted --
     // Container.paint first calls isShowing () before painting itself
     // and its children.
-    if(!isVisible())
+    if(! visible)
       {
         // Need to lock the tree here to avoid races and inconsistencies.
         synchronized (getTreeLock())
           {
             visible = true;
             // Avoid NullPointerExceptions by creating a local reference.
-            ComponentPeer currentPeer=peer;
+            ComponentPeer currentPeer = peer;
             if (currentPeer != null)
               {
                 currentPeer.show();
@@ -990,7 +990,7 @@ public abstract class Component
 
                 // The JDK repaints the component before invalidating the parent.
                 // So do we.
-                if (isLightweight())
+                if (peer instanceof LightweightPeer)
                   repaint();
               }
 
@@ -1037,7 +1037,7 @@ public abstract class Component
    */
   public void hide()
   {
-    if (isVisible())
+    if (visible)
       {
         // Need to lock the tree here to avoid races and inconsistencies.
         synchronized (getTreeLock())
@@ -2229,9 +2229,14 @@ public abstract class Component
    */
   public void paintAll(Graphics g)
   {
-    if (! visible)
-      return;
-    paint(g);
+    if (isShowing())
+      {
+        validate();
+        if (peer instanceof LightweightPeer)
+          paint(g);
+        else
+          peer.paint(g);
+      }
   }
 
   /**
@@ -2302,36 +2307,32 @@ public abstract class Component
 
     // Let the nearest heavyweight parent handle repainting for lightweight
     // components.
-    // This goes up the hierarchy until we hit
-    // a heavyweight component that handles this and translates the
-    // rectangle while doing so.
+    // We need to recursivly call repaint() on the parent here, since
+    // a (lightweight) parent component might have overridden repaint()
+    // to perform additional custom tasks.
 
-    // We perform some boundary checking to restrict the paint
-    // region to this component.
-    int px = (x < 0 ? 0 : x);
-    int py = (y < 0 ? 0 : y);
-    int pw = width;
-    int ph = height;
-    Component par = this;
-    while (par != null && p instanceof LightweightPeer)
+    if (p instanceof LightweightPeer)
       {
-        px += par.x; 
-        py += par.y; 
         // We perform some boundary checking to restrict the paint
         // region to this component.
-        pw = Math.min(pw, par.width);
-        ph = Math.min(ph, par.height);
-        par = par.parent;
-        p = par == null ? null : par.peer;
+        if (parent != null)
+          {
+            int px = this.x + Math.max(0, x); 
+            int py = this.y + Math.max(0, y);
+            int pw = Math.min(this.width, width);
+            int ph = Math.min(this.height, height);
+            parent.repaint(tm, px, py, pw, ph);
+          }
       }
-
-    // Now send an UPDATE event to the heavyweight component that we've found.
-    if (par != null && par.isVisible() && p != null && pw > 0 && ph > 0)
+    else
       {
-        assert ! (p instanceof LightweightPeer);
-        PaintEvent pe = new PaintEvent(par, PaintEvent.UPDATE,
-                                       new Rectangle(px, py, pw, ph));
-        getToolkit().getSystemEventQueue().postEvent(pe);
+        // Now send an UPDATE event to the heavyweight component that we've found.
+        if (isVisible() && p != null && width > 0 && height > 0)
+          {
+            PaintEvent pe = new PaintEvent(this, PaintEvent.UPDATE,
+                                           new Rectangle(x, y, width, height));
+            getToolkit().getSystemEventQueue().postEvent(pe);
+          }
       }
   }
 
@@ -2459,7 +2460,8 @@ public abstract class Component
             p = comp == null ? null : comp.peer;
           }
 
-        returnValue = p.createImage(width, height);
+        if (p != null)
+          returnValue = p.createImage(width, height);
       }
     return returnValue;
   }
@@ -2756,14 +2758,6 @@ public abstract class Component
    */
   public final void dispatchEvent(AWTEvent e)
   {
-    Event oldEvent = translateEvent(e);
-    if (oldEvent != null)
-      postEvent (oldEvent);
-
-    // Give toolkit a chance to dispatch the event
-    // to globally registered listeners.
-    Toolkit.getDefaultToolkit().globalDispatchEvent(e);
-
     // Some subclasses in the AWT package need to override this behavior,
     // hence the use of dispatchEventImpl().
     dispatchEventImpl(e);
@@ -2814,9 +2808,12 @@ public abstract class Component
    */
   public synchronized void addComponentListener(ComponentListener listener)
   {
-    componentListener = AWTEventMulticaster.add(componentListener, listener);
-    if (componentListener != null)
-      enableEvents(AWTEvent.COMPONENT_EVENT_MASK);
+    if (listener != null)
+      {
+        componentListener = AWTEventMulticaster.add(componentListener,
+                                                    listener);
+        newEventsOnly = true;
+      }
   }
 
   /**
@@ -2862,9 +2859,11 @@ public abstract class Component
    */
   public synchronized void addFocusListener(FocusListener listener)
   {
-    focusListener = AWTEventMulticaster.add(focusListener, listener);
-    if (focusListener != null)
-      enableEvents(AWTEvent.FOCUS_EVENT_MASK);
+    if (listener != null)
+      {
+        focusListener = AWTEventMulticaster.add(focusListener, listener);
+        newEventsOnly = true;
+      }
   }
 
   /**
@@ -2909,16 +2908,19 @@ public abstract class Component
    */
   public synchronized void addHierarchyListener(HierarchyListener listener)
   {
-    hierarchyListener = AWTEventMulticaster.add(hierarchyListener, listener);
-    if (hierarchyListener != null)
-      enableEvents(AWTEvent.HIERARCHY_EVENT_MASK);
-
-    // Need to lock the tree, otherwise we might end up inconsistent.
-    synchronized (getTreeLock())
+    if (listener != null)
       {
-        numHierarchyListeners++;
-        if (parent != null)
-          parent.updateHierarchyListenerCount(AWTEvent.HIERARCHY_EVENT_MASK, 1);
+        hierarchyListener = AWTEventMulticaster.add(hierarchyListener,
+                                                    listener);
+        newEventsOnly = true;
+        // Need to lock the tree, otherwise we might end up inconsistent.
+        synchronized (getTreeLock())
+        {
+          numHierarchyListeners++;
+          if (parent != null)
+            parent.updateHierarchyListenerCount(AWTEvent.HIERARCHY_EVENT_MASK,
+                                                1);
+        }
       }
   }
 
@@ -2975,19 +2977,20 @@ public abstract class Component
   public synchronized void
     addHierarchyBoundsListener(HierarchyBoundsListener listener)
   {
-    hierarchyBoundsListener =
-      AWTEventMulticaster.add(hierarchyBoundsListener, listener);
-    if (hierarchyBoundsListener != null)
-      enableEvents(AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK);
-
-    // Need to lock the tree, otherwise we might end up inconsistent.
-    synchronized (getTreeLock())
+    if (listener != null)
       {
-        numHierarchyBoundsListeners++;
-        if (parent != null)
-          parent.updateHierarchyListenerCount
-                                        (AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK,
-                                         1);
+        hierarchyBoundsListener =
+          AWTEventMulticaster.add(hierarchyBoundsListener, listener);
+        newEventsOnly = true;
+
+        // Need to lock the tree, otherwise we might end up inconsistent.
+        synchronized (getTreeLock())
+        {
+          numHierarchyBoundsListeners++;
+          if (parent != null)
+            parent.updateHierarchyListenerCount
+                                     (AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK, 1);
+        }
       }
   }
 
@@ -3080,9 +3083,11 @@ public abstract class Component
    */
   public synchronized void addKeyListener(KeyListener listener)
   {
-    keyListener = AWTEventMulticaster.add(keyListener, listener);
-    if (keyListener != null)
-      enableEvents(AWTEvent.KEY_EVENT_MASK);
+    if (listener != null)
+      {
+        keyListener = AWTEventMulticaster.add(keyListener, listener);
+        newEventsOnly = true;
+      }
   }
 
   /**
@@ -3127,9 +3132,11 @@ public abstract class Component
    */
   public synchronized void addMouseListener(MouseListener listener)
   {
-    mouseListener = AWTEventMulticaster.add(mouseListener, listener);
-    if (mouseListener != null)
-      enableEvents(AWTEvent.MOUSE_EVENT_MASK);
+    if (listener != null)
+      {
+        mouseListener = AWTEventMulticaster.add(mouseListener, listener);
+        newEventsOnly = true;
+      }
   }
 
   /**
@@ -3174,9 +3181,12 @@ public abstract class Component
    */
   public synchronized void addMouseMotionListener(MouseMotionListener listener)
   {
-    mouseMotionListener = AWTEventMulticaster.add(mouseMotionListener, listener);
-    if (mouseMotionListener != null)
-      enableEvents(AWTEvent.MOUSE_MOTION_EVENT_MASK);
+    if (listener != null)
+      {
+        mouseMotionListener = AWTEventMulticaster.add(mouseMotionListener,
+                                                      listener);
+        newEventsOnly = true;
+      }
   }
 
   /**
@@ -3223,9 +3233,12 @@ public abstract class Component
    */
   public synchronized void addMouseWheelListener(MouseWheelListener listener)
   {
-    mouseWheelListener = AWTEventMulticaster.add(mouseWheelListener, listener);
-    if (mouseWheelListener != null)
-      enableEvents(AWTEvent.MOUSE_WHEEL_EVENT_MASK);
+    if (listener != null)
+      {
+        mouseWheelListener = AWTEventMulticaster.add(mouseWheelListener,
+                                                     listener);
+        newEventsOnly = true;
+      }
   }
 
   /**
@@ -3273,9 +3286,12 @@ public abstract class Component
    */
   public synchronized void addInputMethodListener(InputMethodListener listener)
   {
-    inputMethodListener = AWTEventMulticaster.add(inputMethodListener, listener);
-    if (inputMethodListener != null)
-      enableEvents(AWTEvent.INPUT_METHOD_EVENT_MASK);
+    if (listener != null)
+      {
+        inputMethodListener = AWTEventMulticaster.add(inputMethodListener,
+                                                      listener);
+        newEventsOnly = true;
+      }
   }
 
   /**
@@ -3512,19 +3528,36 @@ public abstract class Component
    */
   protected AWTEvent coalesceEvents(AWTEvent existingEvent, AWTEvent newEvent)
   {
+    AWTEvent coalesced = null;
     switch (existingEvent.id)
       {
       case MouseEvent.MOUSE_MOVED:
       case MouseEvent.MOUSE_DRAGGED:
         // Just drop the old (intermediate) event and return the new one.
-        return newEvent;
+        MouseEvent me1 = (MouseEvent) existingEvent;
+        MouseEvent me2 = (MouseEvent) newEvent;
+        if (me1.getModifiers() == me2.getModifiers())
+          coalesced = newEvent;
+        break;
       case PaintEvent.PAINT:
       case PaintEvent.UPDATE:
-        return coalescePaintEvents((PaintEvent) existingEvent,
-                                   (PaintEvent) newEvent);
+        // For heavyweights the EventQueue should ask the peer.
+        if (peer == null || peer instanceof LightweightPeer)
+          {
+            PaintEvent pe1 = (PaintEvent) existingEvent;
+            PaintEvent pe2 = (PaintEvent) newEvent;
+            Rectangle r1 = pe1.getUpdateRect();
+            Rectangle r2 = pe2.getUpdateRect();
+            if (r1.contains(r2))
+              coalesced = existingEvent;
+            else if (r2.contains(r1))
+              coalesced = newEvent;
+          }
+        break;
       default:
-        return null;
+        coalesced = null;
       }
+    return coalesced;
   }
 
   /**
@@ -5599,10 +5632,20 @@ p   * <li>the set of backward traversal keys
 
     if (! dispatched)
       {
-        if (eventTypeEnabled (e.id))
+        // Give toolkit a chance to dispatch the event
+        // to globally registered listeners.
+        Toolkit.getDefaultToolkit().globalDispatchEvent(e);
+
+        if (newEventsOnly)
           {
-            if (e.id != PaintEvent.PAINT && e.id != PaintEvent.UPDATE)
+            if (eventTypeEnabled(e.id))
               processEvent(e);
+          }
+        else
+          {
+            Event oldEvent = translateEvent(e);
+            if (oldEvent != null)
+              postEvent (oldEvent);
           }
         if (peer != null)
           peer.handleEvent(e);
@@ -5693,45 +5736,6 @@ p   * <li>the set of backward traversal keys
           visible = visible && comp.isVisible();
       }
     return visible;
-  }
-
-  /**
-   * Coalesce paint events. Current heuristic is: Merge if the union of
-   * areas is less than twice that of the sum of the areas. The X server
-   * tend to create a lot of paint events that are adjacent but not
-   * overlapping.
-   *
-   * <pre>
-   * +------+
-   * |      +-----+  ...will be merged
-   * |      |     |
-   * |      |     |
-   * +------+     |
-   *        +-----+
-   *
-   * +---------------+--+
-   * |               |  |  ...will not be merged
-   * +---------------+  |
-   *                 |  |
-   *                 |  |
-   *                 |  |
-   *                 |  |
-   *                 |  |
-   *                 +--+
-   * </pre>
-   *
-   * @param queuedEvent the first paint event
-   * @param newEvent the second paint event
-   * @return the combined paint event, or null
-   */
-  private PaintEvent coalescePaintEvents(PaintEvent queuedEvent,
-                                         PaintEvent newEvent)
-  {
-    Rectangle r1 = queuedEvent.getUpdateRect();
-    Rectangle r2 = newEvent.getUpdateRect();
-    Rectangle union = r1.union(r2);
-    newEvent.setUpdateRect(union);
-    return newEvent;
   }
 
   /**
@@ -5874,7 +5878,7 @@ p   * <li>the set of backward traversal keys
      */
     public void componentHidden(ComponentEvent event)
     {
-      if (!isShowing())
+      if (isShowing())
         peer.hide();
     }
   }
