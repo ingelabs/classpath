@@ -1,3 +1,9 @@
+2006-09-19  Gary Benson  <gbenson@redhat.com>
+
+	* java/net/ResolverCache.java: New class (a DNS cache).
+	* java/net/InetAddress.java
+	(internalGetCanonicalHostName, getAllByName): Use the above.
+
 2006-09-19  Jeroen Frijters  <jeroen@frijters.net>
 
 	* gnu/java/nio/SocketChannelImpl.java: Removed unused import.

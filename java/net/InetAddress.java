@@ -316,7 +316,7 @@ public class InetAddress implements Serializable
   {
     try
       {
-	return VMInetAddress.getHostByAddr(addr);
+	return ResolverCache.getHostByAddr(addr);
       }
     catch (UnknownHostException e)
       {
@@ -587,7 +587,7 @@ public class InetAddress implements Serializable
       sm.checkConnect(hostname, -1);
 
     // Resolve the hostname
-    byte[][] iplist = VMInetAddress.getHostByName(hostname);
+    byte[][] iplist = ResolverCache.getHostByName(hostname);
     if (iplist.length == 0)
       throw new UnknownHostException(hostname);
 
