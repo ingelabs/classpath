@@ -1,3 +1,17 @@
+2006-09-19  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/AbstractButton.java
+	(AbstractButton): Don't call updateUI(),
+	* javax/swing/JButton.java
+	(JButton(String, Icon)): Call setModel() before init(),
+	* javax/swing/JMenuItem.java
+	(JMenuItem()): Delegate to another constructor,
+	(JMenuItem(Icon)): Likewise,
+	(JMenuItem(Action)): Set model,
+	(JMenuItem(String, Icon)): Likewise,
+	* javax/swing/JToggleButton.java
+	(init): Call setModel() before init().
+
 2006-09-19  Mark Wielaard  <mark@klomp.org>
 
 	Fixes bug #29137
