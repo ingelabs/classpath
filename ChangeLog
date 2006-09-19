@@ -1,3 +1,15 @@
+2006-09-19  Jeroen Frijters  <jeroen@frijters.net>
+
+	* gnu/java/nio/SocketChannelImpl.java: Removed unused import.
+	* java/net/ServerSocket.java
+	(port): New field.
+	(bind): Set port field.
+	(close): Set impl to null.
+	(isClosed): Check impl and channel instead of using VMChannel.
+	(toString): Use port field and getLocalPort() method.
+	* java/net/Socket.java
+	(isClosed): Check impl and channel instead of using VMChannel.
+
 2006-09-18  Casey Marshall  <csm@gnu.org>
 
 	* native/jni/java-net/gnu_java_net_VMPlainSocketImpl.c

@@ -39,7 +39,6 @@ exception statement from your version. */
 package java.net;
 
 import gnu.java.net.PlainSocketImpl;
-import gnu.java.nio.VMChannel;
 
 import java.io.IOException;
 import java.nio.channels.IllegalBlockingModeException;
@@ -80,6 +79,7 @@ public class ServerSocket
    * We need to retain the local address even after the socket is closed.
    */
   private InetSocketAddress local;
+  private int port;
 
   /*
    * This constructor is only used by java.nio.
@@ -238,7 +238,8 @@ public class ServerSocket
 
     try
       {
-	impl.bind(addr, tmp.getPort());
+        port = tmp.getPort();
+	impl.bind(addr, port);
 	impl.listen(backlog);
 	local = new InetSocketAddress(
             (InetAddress) impl.getOption(SocketOptions.SO_BINDADDR),
@@ -379,10 +380,11 @@ public class ServerSocket
    */
   public void close() throws IOException
   {
-    if (isClosed())
-      return;
-
-    impl.close();
+    if (impl != null)
+      {
+        impl.close();
+        impl = null;
+      }
   }
 
   /**
@@ -422,10 +424,8 @@ public class ServerSocket
    */
   public boolean isClosed()
   {
-    VMChannel vmchannel = ((PlainSocketImpl) impl).getVMChannel();
-    if (vmchannel == null) // Not created yet.
-      return false;
-    return vmchannel.getState().isClosed();
+    ServerSocketChannel channel = getChannel();
+    return impl == null || (channel != null && ! channel.isOpen());
   }
 
   /**
@@ -573,7 +573,7 @@ public class ServerSocket
       return "ServerSocket[unbound]";
 
     return ("ServerSocket[addr=" + getInetAddress() + ",port="
-           + impl.getPort() + ",localport=" + impl.getLocalPort() + "]");
+           + port + ",localport=" + getLocalPort() + "]");
   }
 
   /**
