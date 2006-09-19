@@ -1,3 +1,18 @@
+2006-09-19  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicScrollPaneUI.java
+	(HSBChangeListener.stateChanged): Moved handling of header to
+	syncScrollPaneWithViewport().
+	(VSBChangeListener.stateChanged): Moved handling of header to
+	syncScrollPaneWithViewport().
+	(ViewportChangedHandler.stateChanged): Removed unused statements.
+	(syncScrollPaneWithViewport): Added null checks. Use setValues
+	rather then the single setter methods to avoid multiple
+	adjustments and side effects. Also snyc the headers here.
+	(updateScrollBarDisplayPolicy): Revalidate and repaint here.
+	(uninstallUI): Removed unnecessary cast and this qualifier as well
+	as the call to super.
+
 2006-09-19  Gary Benson  <gbenson@redhat.com>
 
 	* java/net/ResolverCache.java: New class (a DNS cache).

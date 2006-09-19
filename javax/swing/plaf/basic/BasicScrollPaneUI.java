@@ -108,12 +108,6 @@ public class BasicScrollPaneUI extends ScrollPaneUI
           viewPosition.x = xpos;
           vp.setViewPosition(viewPosition);
         }
-
-      viewPosition.y = 0;
-      JViewport columnHeader = scrollpane.getColumnHeader();
-      if (columnHeader != null 
-          && !columnHeader.getViewPosition().equals(viewPosition))
-        columnHeader.setViewPosition(viewPosition);
     }
 
   }
@@ -144,12 +138,6 @@ public class BasicScrollPaneUI extends ScrollPaneUI
           viewPosition.y = ypos;
           vp.setViewPosition(viewPosition);
         }
-
-      viewPosition.x = 0;
-      JViewport rowHeader = scrollpane.getRowHeader();
-      if (rowHeader != null 
-          && !rowHeader.getViewPosition().equals(viewPosition))
-        rowHeader.setViewPosition(viewPosition);
     }
  
   }
@@ -173,9 +161,6 @@ public class BasicScrollPaneUI extends ScrollPaneUI
      */
     public void stateChanged(ChangeEvent event)
     {
-      JViewport vp = scrollpane.getViewport();
-      JScrollBar hsb = scrollpane.getHorizontalScrollBar();
-      JScrollBar vsb = scrollpane.getVerticalScrollBar();
       syncScrollPaneWithViewport();
     }
 
@@ -778,8 +763,8 @@ public class BasicScrollPaneUI extends ScrollPaneUI
   public void uninstallUI(final JComponent c) 
   {
     super.uninstallUI(c);
-    this.uninstallDefaults((JScrollPane) c);
-    uninstallListeners((JScrollPane) c);
+    uninstallDefaults((JScrollPane) c);
+    uninstallListeners(c);
     installKeyboardActions((JScrollPane) c);
   }
 
@@ -815,7 +800,7 @@ public class BasicScrollPaneUI extends ScrollPaneUI
   }
 
   public void paint(Graphics g, JComponent c)
-  {      
+  {
     Border vpBorder = scrollpane.getViewportBorder();
     if (vpBorder != null)
       {
@@ -825,23 +810,54 @@ public class BasicScrollPaneUI extends ScrollPaneUI
   }
 
   /**
-   * Synchronizes the scrollbars with the viewport's extents.
+   * Synchronizes the scrollbar and header settings positions and extent
+   * with the viewport's view position and extent.
    */
   protected void syncScrollPaneWithViewport()
   {
     JViewport vp = scrollpane.getViewport();
 
-    // Update the horizontal scrollbar.
-    JScrollBar hsb = scrollpane.getHorizontalScrollBar();
-    hsb.setMaximum(vp.getViewSize().width);
-    hsb.setValue(vp.getViewPosition().x);
-    hsb.setVisibleAmount(vp.getExtentSize().width);
-    
-    // Update the vertical scrollbar.
-    JScrollBar vsb = scrollpane.getVerticalScrollBar();
-    vsb.setMaximum(vp.getViewSize().height);
-    vsb.setValue(vp.getViewPosition().y);
-    vsb.setVisibleAmount(vp.getExtentSize().height);
+    if (vp != null)
+      {
+        Dimension extentSize = vp.getExtentSize();
+        Rectangle viewBounds = vp.getViewRect();
+
+        // Update the vertical scrollbar.
+        JScrollBar vsb = scrollpane.getVerticalScrollBar();
+        if (vsb != null)
+          {
+            int extent = extentSize.height;
+            int max = viewBounds.height;
+            vsb.setValues(Math.max(0, Math.min(viewBounds.y, max - extent)),
+                          extent, 0, max);
+          }
+
+        // Update the horizontal scrollbar.
+        JScrollBar hsb = scrollpane.getHorizontalScrollBar();
+        if (hsb != null)
+          {
+            int extent = extentSize.width;
+            int max = viewBounds.width;
+            vsb.setValues(Math.max(0, Math.min(viewBounds.x, max - extent)),
+                          extent, 0, max);
+          }
+
+        // Update the row header.
+        JViewport rowHeader = scrollpane.getRowHeader();
+        if (rowHeader != null)
+          {
+            Point p = new Point(0, viewBounds.y);
+            rowHeader.setViewPosition(p);
+          }
+
+        // Update the column header.
+        JViewport colHeader = scrollpane.getColumnHeader();
+        if (colHeader != null)
+          {
+            Point p = new Point(viewBounds.x, 0);
+            colHeader.setViewPosition(p);
+          }
+      }
   }
 
   /**
@@ -874,7 +890,8 @@ public class BasicScrollPaneUI extends ScrollPaneUI
    */
   protected void updateScrollBarDisplayPolicy(PropertyChangeEvent ev)
   {
-    // TODO: Find out what should be done here. Or is this only a hook?
+    scrollpane.revalidate();
+    scrollpane.repaint();
   }
 
   /**
