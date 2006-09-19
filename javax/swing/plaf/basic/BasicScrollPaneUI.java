@@ -762,7 +762,6 @@ public class BasicScrollPaneUI extends ScrollPaneUI
 
   public void uninstallUI(final JComponent c) 
   {
-    super.uninstallUI(c);
     uninstallDefaults((JScrollPane) c);
     uninstallListeners(c);
     installKeyboardActions((JScrollPane) c);
