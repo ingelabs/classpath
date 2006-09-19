@@ -1,3 +1,9 @@
+2006-09-19  Cameron McCormack  <cam@mcc.id.au>
+
+	PR 29012
+	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java:
+	(constructor): Copy image field.
+
 2006-09-19  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JMenuBar.java

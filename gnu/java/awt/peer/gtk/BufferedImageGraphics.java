@@ -158,6 +158,7 @@ public class BufferedImageGraphics extends CairoGraphics2D
   
   BufferedImageGraphics(BufferedImageGraphics copyFrom)
   {
+    image = copyFrom.image;
     surface = copyFrom.surface;
     cairo_t = surface.newCairoContext();
     imageWidth = copyFrom.imageWidth;
