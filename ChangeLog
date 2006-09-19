@@ -1,5 +1,12 @@
 2006-09-19  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/JMenuBar.java
+	(getHelpMenu): Implemented to throw an Error, and added API docs,
+	(getMargin): Added API docs,
+	(setMargin): Likewise.
+
+2006-09-19  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/AbstractButton.java
 	(AbstractButton): Don't call updateUI(),
 	* javax/swing/JButton.java
