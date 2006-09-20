@@ -1,3 +1,12 @@
+2006-09-20  Francis Kung  <fkung@redhat.com>
+
+	PR 29011
+	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java:
+	(getGlyphTransform): Use translation instead of scale.
+	(performDefaultLayout): Increment position values instead of resetting, and
+	pre-increment instead of post-increment.
+	(setGlyphTransform): Handle null case with identity transform.
+
 2006-09-20  Casey Marshall  <csm@gnu.org>
 
 	* configure.ac (AC_CHECK_HEADERS): check for `sys/epoll.h.'
