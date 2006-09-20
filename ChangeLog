@@ -1,3 +1,8 @@
+2006-09-20  Casey Marshall  <csm@gnu.org>
+
+	* native/jni/java-nio/gnu_java_nio_EpollSelectorImpl.c
+	(Java_gnu_java_nio_EpollSelectorImpl_epoll_1delete): ignore ENOENT.
+
 2006-09-20  Francis Kung  <fkung@redhat.com>
 
 	PR 29011

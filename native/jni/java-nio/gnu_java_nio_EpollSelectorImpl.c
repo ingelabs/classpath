@@ -246,6 +246,8 @@ Java_gnu_java_nio_EpollSelectorImpl_epoll_1delete (JNIEnv *env,
       if (ENOSYS == errno)
         JCL_ThrowException (env, "java/lang/InternalError",
                             strerror (errno));
+      else if (ENOENT == errno)
+        return; /* fd is closed; it's already removed. */
       else
         JCL_ThrowException (env, IO_EXCEPTION, strerror (errno));
     }
