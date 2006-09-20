@@ -39,14 +39,14 @@ package gnu.java.awt.peer.gtk;
 
 import java.awt.Font;
 import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.GeneralPath;
+import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphJustificationInfo;
 import java.awt.font.GlyphMetrics;
 import java.awt.font.GlyphVector;
-import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 public class FreetypeGlyphVector extends GlyphVector
 {
@@ -155,14 +155,15 @@ public class FreetypeGlyphVector extends GlyphVector
       }
 
     glyphCodes = new int[ nGlyphs ];
-    glyphPositions = new float[ nGlyphs ];
+    glyphPositions = new float[(nGlyphs + 1) * 2];
     glyphTransforms = new AffineTransform[ nGlyphs ];
     for(int i = 0; i < nGlyphs; i++ )
       {
-	glyphTransforms[ i ] = new AffineTransform( gv.glyphTransforms[ i ] );
-	glyphCodes[i] = gv.glyphCodes[ i ];
-	glyphPositions[i] = gv.glyphPositions[ i ];
+        glyphTransforms[ i ] = new AffineTransform( gv.glyphTransforms[ i ] );
+        glyphCodes[i] = gv.glyphCodes[ i ];
       }
+    System.arraycopy(gv.glyphPositions, 0, glyphPositions, 0,
+                     glyphPositions.length);
   }
 
   /**
@@ -242,22 +243,26 @@ public class FreetypeGlyphVector extends GlyphVector
   public void performDefaultLayout()
   {
     logicalBounds = null; // invalidate caches.
-    glyphPositions = null;
+    glyphPositions = new float[(nGlyphs + 1) * 2];
+    glyphTransforms = new AffineTransform[nGlyphs];
 
-    glyphTransforms = new AffineTransform[ nGlyphs ]; 
-    double x = 0;
-
+    GlyphMetrics gm = null;
     for(int i = 0; i < nGlyphs; i++)
       {
-	GlyphMetrics gm = getGlyphMetrics( i );
-	glyphTransforms[ i ] = AffineTransform.getTranslateInstance(x, 0);
-	x += gm.getAdvanceX();
-	if( i > 0 )
-	  {
-	    Point2D p = getKerning( glyphCodes[ i - 1 ], glyphCodes[ i ] );
-	    x += p.getX();
-	  }
+        gm = getGlyphMetrics( i );
+        glyphPositions[i*2] += gm.getAdvanceX();
+        glyphPositions[i*2 + 1] += gm.getAdvanceY();
+        glyphTransforms[i] = null;
+        
+        if (i != 0 && i != (nGlyphs + 1))
+          {
+            Point2D p = getKerning(glyphCodes[i - 1], glyphCodes[i]);
+            glyphPositions[i * 2] += p.getX();
+            glyphPositions[i * 2 + 1] += p.getY();
+          }
       }
+    glyphPositions[nGlyphs * 2] = gm.getAdvanceX();
+    glyphPositions[nGlyphs * 2 + 1] = gm.getAdvanceY();
   }
 
   /**
@@ -352,7 +357,7 @@ public class FreetypeGlyphVector extends GlyphVector
   public Shape getGlyphOutline(int glyphIndex)
   {
     GeneralPath gp = getGlyphOutlineNative( glyphCodes[ glyphIndex ] );
-    gp.transform( glyphTransforms[ glyphIndex ] );
+    gp.transform( getGlyphTransform(glyphIndex));
     return gp;
   }
 
@@ -361,8 +366,8 @@ public class FreetypeGlyphVector extends GlyphVector
    */
   public Point2D getGlyphPosition(int glyphIndex)
   {
-    return glyphTransforms[ glyphIndex ].transform( new Point2D.Double(0, 0),
-						   null );
+    return new Point2D.Float(glyphPositions[glyphIndex*2],
+                             glyphPositions[glyphIndex*2 + 1]);
   }
 
   /**
@@ -371,25 +376,12 @@ public class FreetypeGlyphVector extends GlyphVector
   public float[] getGlyphPositions(int beginGlyphIndex, int numEntries, 
 				   float[] positionReturn)
   {
-    if( glyphPositions != null )
-      return glyphPositions;
-
-    float[] rval;
-
-    if( positionReturn == null )
-      rval = new float[2 * numEntries];
-    else
-      rval = positionReturn;
-
-    for( int i = beginGlyphIndex; i < numEntries; i++ )
-      {
-	Point2D p = getGlyphPosition( i );
-	rval[i * 2] = (float)p.getX();
-	rval[i * 2 + 1] = (float)p.getY();
-      }
-
-    glyphPositions = rval;
-    return rval;
+    if (positionReturn == null)
+      positionReturn = new float[numEntries*2];
+    
+    System.arraycopy(glyphPositions, beginGlyphIndex*2, positionReturn, 0,
+                     numEntries*2);
+    return positionReturn;
   }
 
   /**
@@ -397,7 +389,11 @@ public class FreetypeGlyphVector extends GlyphVector
    */
   public AffineTransform getGlyphTransform(int glyphIndex)
   {
-    return new AffineTransform( glyphTransforms[ glyphIndex ] );
+    if (glyphTransforms[glyphIndex] == null)
+      glyphTransforms[glyphIndex] = AffineTransform.getScaleInstance(glyphPositions[glyphIndex*2],
+                                                                     glyphPositions[glyphIndex*2 + 1]);
+    
+    return glyphTransforms[glyphIndex];
   }
 
   /**
@@ -486,10 +482,12 @@ public class FreetypeGlyphVector extends GlyphVector
   public void setGlyphPosition(int glyphIndex, Point2D newPos)
   {
     // FIXME: Scaling, etc.?
-    glyphTransforms[ glyphIndex ].setToTranslation( newPos.getX(), 
-						    newPos.getY() );
+    glyphPositions[glyphIndex*2] = (float)(newPos.getX());
+    glyphPositions[glyphIndex*2 + 1] = (float)(newPos.getY());
     logicalBounds = null;
-    glyphPositions = null;
+    
+    if (glyphIndex != nGlyphs)
+      glyphTransforms[glyphIndex] = null;
   }
 
   /**
@@ -497,8 +495,11 @@ public class FreetypeGlyphVector extends GlyphVector
    */
   public void setGlyphTransform(int glyphIndex, AffineTransform newTX)
   {
-    glyphTransforms[ glyphIndex ].setTransform( newTX );
+    // FIXME: Scaling, etc.?
     logicalBounds = null;
-    glyphPositions = null;
+    Point2D pt = newTX.transform(new Point2D.Double(0, 0), null);
+    glyphPositions[glyphIndex*2] = (float)(pt.getX());
+    glyphPositions[glyphIndex*2 + 1] = (float)(pt.getY());
+    glyphTransforms[glyphIndex] = newTX;
   }
 }

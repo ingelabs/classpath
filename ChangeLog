@@ -1,3 +1,16 @@
+2006-09-20  Francis Kung  <fkung@redhat.com>
+
+	PR 29011
+	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java:
+	(constructor): Expanded glyphPositions array to accomodate Y-coordinates.
+	(getGlyphOutline): Call getGylphTransform to generate transform.
+	(getGylphPosition): Read position directly out of array.
+	(getGlyphPositions): Read positions directly out of array.
+	(getGlyphTransform): Generate transform based on gylphPositions array.
+	(performDefaultLayout): Populate glyphPositions array instead of transforms.
+	(setGlyphPosition): Set position directly into array.
+	(setGlyphTransform): Update positions array as well.
+
 2006-09-20  David Daney  <ddaney@avtrex.com>
 
 	PR classpath/28661
