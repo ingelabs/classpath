@@ -357,7 +357,7 @@ if test "x${COMPILE_JNI}" = xyes; then
                     fcntl.h \
 		    sys/mman.h \
 		    magic.h \
-                    sys/event.h])
+                    sys/event.h sys/epoll.h])
 
   AC_EGREP_HEADER(uint32_t, stdint.h, AC_DEFINE(HAVE_INT32_DEFINED, 1, [Define to 1 if you have uint32_t]))
   AC_EGREP_HEADER(uint32_t, inttypes.h, AC_DEFINE(HAVE_INT32_DEFINED, 1, [Define to 1 if you have uint32_t]))
@@ -375,7 +375,7 @@ if test "x${COMPILE_JNI}" = xyes; then
 		  mmap munmap mincore msync madvise getpagesize sysconf \
 		  lstat readlink \
  		  inet_aton inet_addr inet_pton \
-		  getifaddrs kqueue kevent])
+		  getifaddrs kqueue kevent epoll_create])
 
   LIBMAGIC=
   AC_CHECK_LIB(magic, magic_open, LIBMAGIC=-lmagic)

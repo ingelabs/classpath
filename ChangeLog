@@ -1,5 +1,21 @@
 2006-09-20  Casey Marshall  <csm@gnu.org>
 
+	* configure.ac (AC_CHECK_HEADERS): check for `sys/epoll.h.'
+	(AC_CHECK_FUNCS): check for `epoll_create.'
+	* gnu/java/nio/EpollSelectionKeyImpl.java: new file.
+	* gnu/java/nio/EpollSelectorImpl.java: new file.
+	* gnu/java/nio/SelectorProviderImpl.java (epoll_failed): new class
+	field.
+	(openSelector): return epoll selector if requested and available.
+	* include/Makefile.am (H_FILES): add gnu_java_nio_EpollSelectorImpl.h.
+	(gnu_java_nio_EpollSelectorImpl.h): new target.
+	* include/gnu_java_nio_EpollSelectorImpl.h: new file.
+	* native/jni/java-nio/Makefile.am (libjavanio_la_SOURCES): add
+	gnu_java_nio_EpollSelectorImpl.c.
+	* native/jni/java-nio/gnu_java_nio_EpollSelectorImpl.c: new file.
+
+2006-09-20  Casey Marshall  <csm@gnu.org>
+
 	* gnu/java/nio/SocketChannelImpl.java (finishConnect): don't
 	call `isConnected.'
 	(isConnected): return false if `connectionPending' is true.

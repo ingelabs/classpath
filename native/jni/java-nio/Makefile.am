@@ -8,6 +8,7 @@ libjavanio_la_SOURCES = gnu_java_nio_VMPipe.c \
 			gnu_java_nio_channels_FileChannelImpl.c \
 			java_nio_MappedByteBufferImpl.c \
 			java_nio_VMDirectByteBuffer.c \
+			gnu_java_nio_EpollSelectorImpl.c \
 			gnu_java_nio_KqueueSelectorImpl.c \
 			javanio.h
 
