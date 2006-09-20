@@ -1,3 +1,9 @@
+2006-09-20  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/java-nio/Makefile.am (libjavanio_la_SOURCES):
+	Add gnu_java_nio_channels_FileChannelImpl.c and javanio.h.
+	(EXTRA_DIST): Include javanio.c.
+
 2006-09-20  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/geom/RoundRectangle2D.java:
