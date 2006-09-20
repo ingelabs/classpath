@@ -1,3 +1,9 @@
+2006-09-20  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/geom/RoundRectangle2D.java:
+	(getPathIterator): Reimplemented,
+	and updated various API doc comments.
+
 2006-09-20  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/Container.java
