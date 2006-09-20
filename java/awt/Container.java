@@ -323,16 +323,6 @@ public class Container extends Component
         // we are.
         if (comp.parent != null)
           comp.parent.remove(comp);
-        comp.parent = this;
-
-        if (peer != null)
-          {
-	    // Notify the component that it has a new parent.
-	    comp.addNotify();
-          }
-
-        // Invalidate the layout of the added component and its ancestors.
-        comp.invalidate();
 
         if (component == null)
           component = new Component[4]; // FIXME, better initial size?
@@ -357,6 +347,9 @@ public class Container extends Component
             ++ncomponents;
           }
 
+        // Give the new component a parent.
+        comp.parent = this;
+
         // Update the counter for Hierarchy(Bounds)Listeners.
         int childHierarchyListeners = comp.numHierarchyListeners;
         if (childHierarchyListeners > 0)
@@ -366,6 +359,18 @@ public class Container extends Component
         if (childHierarchyBoundsListeners > 0)
           updateHierarchyListenerCount(AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK,
                                        childHierarchyListeners);
+
+        // Invalidate the layout of this container.
+        if (valid)
+          invalidate();
+
+        // Create the peer _after_ the component has been added, so that
+        // the peer gets to know about the component hierarchy.
+        if (peer != null)
+          {
+            // Notify the component that it has a new parent.
+            comp.addNotify();
+          }
 
         // Notify the layout manager.
         if (layoutMgr != null)
@@ -386,13 +391,15 @@ public class Container extends Component
         // We previously only sent an event when this container is showing.
         // Also, the event was posted to the event queue. A Mauve test shows
         // that this event is not delivered using the event queue and it is
-        // also sent when the container is not showing. 
-        ContainerEvent ce = new ContainerEvent(this,
-                                               ContainerEvent.COMPONENT_ADDED,
-                                               comp);
-        ContainerListener[] listeners = getContainerListeners();
-        for (int i = 0; i < listeners.length; i++)
-          listeners[i].componentAdded(ce);
+        // also sent when the container is not showing.
+        if (containerListener != null
+            || (eventMask & AWTEvent.CONTAINER_EVENT_MASK) != 0)
+          {
+            ContainerEvent ce = new ContainerEvent(this,
+                                                ContainerEvent.COMPONENT_ADDED,
+                                                comp);
+            dispatchEvent(ce);
+          }
 
         // Notify hierarchy listeners.
         comp.fireHierarchyEvent(HierarchyEvent.HIERARCHY_CHANGED, comp,

@@ -1,5 +1,19 @@
 2006-09-20  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/Container.java
+	(addImpl): Set the new component's parent after it has been
+	added to the array. Call addNotify() and invalidate()
+	after the component has been added, so that the peer
+	gets to know about the component structure when it is created.
+	* java/awt/Window.java
+	(dispatchEventImpl): Only revalidate when window is resized,
+	let the other stuff be processed by the superclass.
+	(dispose): Post WINDOW_CLOSED event only when some listener
+	is registered or event is explicitly enabled.
+	(show): Post WINDOW_OPENED event when appropriate.
+
+2006-09-20  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/Component.java
 	(addNotify): Invalidate here. Fetch peer font.
 	(getFont): Delegate to helper method, to protect from
