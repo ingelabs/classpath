@@ -1,3 +1,10 @@
+2006-09-20  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicRadioButtonUI.java
+	(BasicRadioButtonUI): Don't fetch icon here,
+	(installDefaults): Initialise icon here,
+	(getDefaultIcon): Just return icon.
+
 2006-09-20  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/java-nio/Makefile.am (libjavanio_la_SOURCES):
