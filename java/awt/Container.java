@@ -39,7 +39,6 @@ exception statement from your version. */
 
 package java.awt;
 
-import java.awt.event.ComponentListener;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
 import java.awt.event.HierarchyEvent;
@@ -611,24 +610,20 @@ public class Container extends Component
   /**
    * Recursively invalidates the container tree.
    */
-  void invalidateTree()
+  private final void invalidateTree()
   {
     synchronized (getTreeLock())
       {
-        super.invalidate();  // Clean cached layout state.
         for (int i = 0; i < ncomponents; i++)
           {
             Component comp = component[i];
-            comp.invalidate();
             if (comp instanceof Container)
               ((Container) comp).invalidateTree();
+            else if (comp.valid)
+              comp.invalidate();
           }
-
-        if (layoutMgr != null && layoutMgr instanceof LayoutManager2)
-          {
-            LayoutManager2 lm2 = (LayoutManager2) layoutMgr;
-            lm2.invalidateLayout(this);
-          }
+        if (valid)
+          invalidate();
       }
   }
 
@@ -679,13 +674,11 @@ public class Container extends Component
 
   public void setFont(Font f)
   {
-    if( (f != null && (font == null || !font.equals(f)))
-        || f == null)
+    Font oldFont = getFont();
+    super.setFont(f);
+    Font newFont = getFont();
+    if (newFont != oldFont && (oldFont == null || ! oldFont.equals(newFont)))
       {
-        super.setFont(f);
-        // FIXME: Although it might make more sense to invalidate only
-        // those children whose font == null, Sun invalidates all children.
-        // So we'll do the same.
         invalidateTree();
       }
   }
@@ -1876,6 +1869,7 @@ public class Container extends Component
                              bounds.height);
     try
       {
+        g2.setFont(comp.getFont());
         visitor.visit(comp, g2);
       }
     finally

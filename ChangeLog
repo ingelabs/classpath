@@ -1,3 +1,29 @@
+2006-09-20  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Component.java
+	(addNotify): Invalidate here. Fetch peer font.
+	(getFont): Delegate to helper method, to protect from
+	overriding client code. Lock the tree while fetching the font.
+	(getFontImpl): New helper method. Moved code from getFont() in
+	here.
+	(removeNotify): Nullify peerFont too.
+	(setFont): Synchronize on tree and component to avoid threading
+	issues. Update the peerFont correctly.
+	(validate): Update the peer font if necessary, before validating.
+	(getGraphics): Revert to recursive graphics fetching.
+	Set component font on the Graphics object.
+	(translateEvent): Removed unnecessary cast.
+	* java/awt/Container.java
+	(invalidateTree): Made final and private. Made implementation
+	slightly more efficient.
+	(setFont): Get old and new font via getFont() to account for
+	the real font, and only invalidate the tree when they are not
+	the same and not equal.
+	(visitChild): Set the font of the child on the component graphics.
+	* java/awt/Frame.java
+	(setMenuBar): Create local reference of peer for thread safety.
+	Only call simple invalidate, not invalidateTree().
+
 2006-09-19  Cameron McCormack  <cam@mcc.id.au>
 
 	PR 29012

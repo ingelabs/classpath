@@ -1180,31 +1180,78 @@ public abstract class Component
    */
   public Font getFont()
   {
-    Font f = font;
-    if (f != null)
-      return f;
+    Font f;
+    synchronized (getTreeLock())
+      {
+        f = getFontImpl();
+      }
+    return f;
+  }
 
-    Component p = parent;
-    if (p != null)
-      return p.getFont();
-    return null;
+  /**
+   * Implementation of getFont(). This is pulled out of getFont() to prevent
+   * client programs from overriding this. This method is executed within
+   * a tree lock, so we can assume that the hierarchy doesn't change in
+   * between.
+   *
+   * @return the font of this component
+   */
+  private final Font getFontImpl()
+  {
+    Font f = font;
+    if (f == null)
+      {
+        Component p = parent;
+        if (p != null)
+          f = p.getFontImpl();
+      }
+    return f;
   }
 
   /**
    * Sets the font for this component to the specified font. This is a bound
    * property.
    *
-   * @param newFont the new font for this component
+   * @param f the new font for this component
    * 
    * @see #getFont()
    */
-  public void setFont(Font newFont)
+  public void setFont(Font f)
   {
-    Font oldFont = font;
-    font = newFont;
-    if (peer != null)
-      peer.setFont(font);
+    Font oldFont;
+    Font newFont;
+    // Synchronize on the tree because getFontImpl() relies on the hierarchy
+    // not beeing changed.
+    synchronized (getTreeLock())
+      {
+        // Synchronize on this here to guarantee thread safety wrt to the
+        // property values.
+        synchronized (this)
+          {
+            oldFont = font;
+            font = f;
+            newFont = f;
+          }
+        // Create local variable here for thread safety.
+        ComponentPeer p = peer;
+        if (p != null)
+          {
+            // The peer receives the real font setting, which can depend on 
+            // the parent font when this component's font has been set to null.
+            f = getFont();
+            if (f != null)
+              {
+                p.setFont(f);
+                peerFont = f;
+              }
+          }
+      }
+
+    // Fire property change event.
     firePropertyChange("font", oldFont, newFont);
+
+    // Invalidate when necessary as font changes can change the size of the
+    // component.
     if (valid)
       invalidate();
   }
@@ -2036,7 +2083,32 @@ public abstract class Component
    */
   public void validate()
   {
-    valid = true;
+    if (! valid)
+      {
+        // Synchronize on the tree here as this might change the layout
+        // of the hierarchy.
+        synchronized (getTreeLock())
+          {
+            // Create local variables for thread safety.
+            ComponentPeer p = peer;
+            if (p != null)
+              {
+                // Possibly update the peer's font.
+                Font newFont = getFont();
+                Font oldFont = peerFont;
+                // Only update when the font really changed.
+                if (newFont != oldFont
+                    && (oldFont == null || ! oldFont.equals(newFont)))
+                  {
+                    p.setFont(newFont);
+                    peerFont = newFont;
+                  }
+                // Let the peer perform any layout.
+                p.layout();
+              }
+          }
+        valid = true;
+      }
   }
 
   /**
@@ -2078,27 +2150,26 @@ public abstract class Component
   {
     // Only heavyweight peers can handle this.
     ComponentPeer p = peer;
-    Component comp = this;
-    int offsX = 0;
-    int offsY = 0;
-    while (p instanceof LightweightPeer)
+    Graphics g = null;
+    if (p instanceof LightweightPeer)
       {
-        offsX += comp.x;
-        offsY += comp.y;
-        comp = comp.parent;
-        p = comp == null ? null : comp.peer;
+        if (parent != null)
+          {
+            g = parent.getGraphics();
+            if (g != null)
+              {
+                g.translate(x, y);
+                g.setClip(0, 0, width, height);
+                g.setFont(getFont());
+              }
+          }
       }
-
-    Graphics gfx = null;
-    if (p != null)
+    else
       {
-        assert ! (p instanceof LightweightPeer);
-        gfx = p.getGraphics();
-        gfx.translate(offsX, offsY);
-        gfx.clipRect(0, 0, width, height);
-        gfx.setFont(font);
+        if (p != null)
+          g = p.getGraphics();
       }
-    return gfx;
+    return g;
   }
 
   /**
@@ -4079,23 +4150,29 @@ public abstract class Component
           peer = getToolkit().createComponent(this);
         else if (parent != null && parent.isLightweight())
           new HeavyweightInLightweightListener(parent);
-        /* Now that all the children has gotten their peers, we should
-       have the event mask needed for this component and its
-       lightweight subcomponents. */
+        // Now that all the children has gotten their peers, we should
+        // have the event mask needed for this component and its
+        //lightweight subcomponents.
         peer.setEventMask(eventMask);
-        /* We do not invalidate here, but rather leave that job up to
-       the peer. For efficiency, the peer can choose not to
-       invalidate if it is happy with the current dimensions,
-       etc. */
-       if (dropTarget != null) 
-         dropTarget.addNotify(peer);
 
-       // Notify hierarchy listeners.
-       long flags = HierarchyEvent.DISPLAYABILITY_CHANGED;
-       if (isHierarchyVisible())
-         flags |= HierarchyEvent.SHOWING_CHANGED;
-       fireHierarchyEvent(HierarchyEvent.HIERARCHY_CHANGED, this, parent,
-                          flags);
+        // We used to leave the invalidate() to the peer. However, I put it
+        // back here for 2 reasons: 1) The RI does call invalidate() from
+        // addNotify(); 2) The peer shouldn't be bother with validation too
+        // much.
+        invalidate();
+
+        if (dropTarget != null) 
+          dropTarget.addNotify(peer);
+
+        // Fetch the peerFont for later installation in validate().
+        peerFont = getFont();
+
+        // Notify hierarchy listeners.
+        long flags = HierarchyEvent.DISPLAYABILITY_CHANGED;
+        if (isHierarchyVisible())
+          flags |= HierarchyEvent.SHOWING_CHANGED;
+        fireHierarchyEvent(HierarchyEvent.HIERARCHY_CHANGED, this, parent,
+                           flags);
       }
   }
 
@@ -4120,6 +4197,7 @@ public abstract class Component
 
         ComponentPeer tmp = peer;
         peer = null;
+        peerFont = null;
         if (tmp != null)
           {
             tmp.hide();
@@ -5574,7 +5652,7 @@ p   * <li>the set of backward traversal keys
                 oldKey = Event.UP;
                 break;
               default:
-                oldKey = (int) ((KeyEvent) e).getKeyChar();
+                oldKey = ((KeyEvent) e).getKeyChar();
               }
 
             translated = new Event (target, when, oldID,
