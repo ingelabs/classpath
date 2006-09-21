@@ -1,5 +1,14 @@
 2006-09-21  Francis Kung  <fkung@redhat.com>
 
+	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java:
+	(getLogicalBounds): Respect glyph transformations.
+	(getGlyphOutline): Added null pointer check.
+	(getGlyphTransform): Do not generate identity transform (API permits null).
+	(setGlyphPosition): Do not invalidate transform.
+	(setGlyphTransform): Do not modify glyph position.
+
+2006-09-21  Francis Kung  <fkung@redhat.com>
+
 	* java/awt/image/ColorModel.java (coerceData): Set alpha premultiplied flag.
 
 2006-09-21  Francis Kung  <fkung@redhat.com>

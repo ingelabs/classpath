@@ -297,9 +297,6 @@ public class FreetypeGlyphVector extends GlyphVector
     return rval;
   }
 
-  /**
-   * FIXME: Implement me.
-   */
   public Shape getGlyphLogicalBounds(int glyphIndex)
   {
     GlyphMetrics gm = getGlyphMetrics( glyphIndex );
@@ -307,10 +304,17 @@ public class FreetypeGlyphVector extends GlyphVector
       return null; 
     Rectangle2D r = gm.getBounds2D();
     Point2D p = getGlyphPosition( glyphIndex );
-    return new Rectangle2D.Double( p.getX() + r.getX() - gm.getLSB(), 
-				   p.getY() + r.getY(),
-				   gm.getAdvanceX(), 
-				   r.getHeight() );
+    
+    double[] bounds = new double[] {p.getX() + r.getX() - gm.getLSB(),
+                                    p.getY() + r.getY(),
+                                    p.getX() + r.getX() - gm.getLSB() + gm.getAdvanceX(),
+                                    p.getY() + r.getY() + r.getHeight()};
+    
+    if (glyphTransforms[glyphIndex] != null)
+      glyphTransforms[glyphIndex].transform(bounds, 0, bounds, 0, 4);
+    
+    return new Rectangle2D.Double(bounds[0], bounds[1], bounds[2] - bounds[0],
+                                  bounds[3] - bounds[1]);
   }
 
   /*
@@ -363,7 +367,9 @@ public class FreetypeGlyphVector extends GlyphVector
   public Shape getGlyphOutline(int glyphIndex)
   {
     GeneralPath gp = getGlyphOutlineNative( glyphCodes[ glyphIndex ] );
-    gp.transform( getGlyphTransform(glyphIndex));
+    if (glyphTransforms[glyphIndex] != null)
+      gp.transform( glyphTransforms[glyphIndex]);
+    
     return gp;
   }
 
@@ -395,10 +401,6 @@ public class FreetypeGlyphVector extends GlyphVector
    */
   public AffineTransform getGlyphTransform(int glyphIndex)
   {
-    if (glyphTransforms[glyphIndex] == null)
-      glyphTransforms[glyphIndex] = AffineTransform.getTranslateInstance(glyphPositions[glyphIndex*2],
-                                                                         glyphPositions[glyphIndex*2 + 1]);
-    
     return glyphTransforms[glyphIndex];
   }
 
@@ -487,13 +489,9 @@ public class FreetypeGlyphVector extends GlyphVector
    */
   public void setGlyphPosition(int glyphIndex, Point2D newPos)
   {
-    // FIXME: Scaling, etc.?
     glyphPositions[glyphIndex*2] = (float)(newPos.getX());
     glyphPositions[glyphIndex*2 + 1] = (float)(newPos.getY());
     logicalBounds = null;
-    
-    if (glyphIndex != nGlyphs)
-      glyphTransforms[glyphIndex] = null;
   }
 
   /**
@@ -501,15 +499,7 @@ public class FreetypeGlyphVector extends GlyphVector
    */
   public void setGlyphTransform(int glyphIndex, AffineTransform newTX)
   {
-    // FIXME: Scaling, etc.?
     logicalBounds = null;
-    
-    if (newTX == null)
-      newTX = new AffineTransform();
-    
-    Point2D pt = newTX.transform(new Point2D.Double(0, 0), null);
-    glyphPositions[glyphIndex*2] = (float)(pt.getX());
-    glyphPositions[glyphIndex*2 + 1] = (float)(pt.getY());
     glyphTransforms[glyphIndex] = newTX;
   }
 }
