@@ -655,6 +655,7 @@ public abstract class ColorModel implements Transparency
       }
     
     raster.setPixels(0, 0, w, h, pixels);
+    this.isAlphaPremultiplied = isAlphaPremultiplied;
 
     return this;
   }

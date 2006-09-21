@@ -1,5 +1,9 @@
 2006-09-21  Francis Kung  <fkung@redhat.com>
 
+	* java/awt/image/ColorModel.java (coerceData): Set alpha premultiplied flag.
+
+2006-09-21  Francis Kung  <fkung@redhat.com>
+
 	* java/awt/image/ColorModel.java (coerceData): Return proper colour model.
 	* java/awt/image/ComponentColorModel.java (coerceData): Likewise.
 	* java/awt/image/DirectColorModel.java (coerceData): Likewise.
