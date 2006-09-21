@@ -656,8 +656,7 @@ public abstract class ColorModel implements Transparency
     
     raster.setPixels(0, 0, w, h, pixels);
 
-    // FIXME: what can we return?
-    return null;
+    return this;
   }
     
   /**
