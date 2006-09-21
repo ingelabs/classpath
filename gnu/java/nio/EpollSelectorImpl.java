@@ -140,6 +140,10 @@ public class EpollSelectorImpl extends AbstractSelector
             key.valid = false;
             keys.remove(new Integer(key.fd));
           }
+        
+        // Don't bother if we have nothing to select.
+        if (keys.isEmpty())
+          return 0;
 
         ByteBuffer selected =
           ByteBuffer.allocateDirect(keys.size() * sizeof_struct_epoll_event);

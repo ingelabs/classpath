@@ -1,3 +1,11 @@
+2006-09-21  csm  <csm@pollux.local>
+
+	* gnu/java/net/PlainDatagramSocketImpl.java (send): ignore
+	`InterruptedIOException;' try again if it gets thrown.
+	(receive): likewise, but re-throw `SocketTimeoutException.'
+	* gnu/java/nio/EpollSelectorImpl.java (doSelect): just return 0
+	if we have nothing to select.
+
 2006-09-21  Francis Kung  <fkung@redhat.com>
 
 	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java:
