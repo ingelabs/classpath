@@ -1,3 +1,10 @@
+2006-09-21  Tania Bento  <tbento@redhat.com>
+
+	* javax/swing/JTabbedPane.java:
+	(insertTab): Notify ChangeListeners if the tab inserted is selected.
+	(setModel): A ChangeListener should be created only if there does not 
+	currently exist one.
+
 2006-09-21  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicInternalFrameTitlePane.java
@@ -107,6 +114,7 @@
 	call `isConnected.'
 	(isConnected): return false if `connectionPending' is true.
 
+>>>>>>> 1.8585
 2006-09-20  Francis Kung  <fkung@redhat.com>
 
 	PR 29011
