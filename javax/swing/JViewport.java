@@ -157,6 +157,9 @@ public class JViewport extends JComponent implements Accessible
      */
     public void componentResized(ComponentEvent ev)
     {
+      // Fire state change, because resizing the view means changing the
+      // extentSize.
+      fireStateChanged();
       revalidate();
     }
   }
@@ -197,22 +200,6 @@ public class JViewport extends JComponent implements Accessible
   ChangeEvent changeEvent = new ChangeEvent(this);
 
   int scrollMode;
-
-  /** 
-   * The width and height of the Viewport's area in terms of view
-   * coordinates.  Typically this will be the same as the width and height
-   * of the viewport's bounds, unless the viewport transforms units of
-   * width and height, which it may do, for example if it magnifies or
-   * rotates its view.
-   *
-   * @see #toViewCoordinates(Dimension)
-   */
-  Dimension extentSize;
-
-  /**
-   * The width and height of the view in its own coordinate space.
-   */
-  Dimension viewSize;
 
   /**
    * The ViewListener instance.
@@ -290,10 +277,7 @@ public class JViewport extends JComponent implements Accessible
 
   public Dimension getExtentSize()
   {
-    if (extentSize == null)
-      return toViewCoordinates(getSize());
-    else
-      return extentSize;
+    return getSize();
   }
 
   public Dimension toViewCoordinates(Dimension size)
@@ -310,8 +294,12 @@ public class JViewport extends JComponent implements Accessible
 
   public void setExtentSize(Dimension newSize)
   {
-    extentSize = newSize;
-    fireStateChanged();
+    Dimension oldExtent = getExtentSize();
+    if (! newSize.equals(oldExtent))
+      {
+        setSize(newSize);
+        fireStateChanged();
+      }
   }
 
   /**
@@ -321,32 +309,34 @@ public class JViewport extends JComponent implements Accessible
    */
   public Dimension getViewSize()
   {
-    if (isViewSizeSet)
-      return viewSize;
-    else
+    Dimension size; 
+    Component view = getView();
+    if (view != null)
       {
-	Component view = getView();
-	if (view != null)
-	  return view.getPreferredSize();
-	else
-	  return new Dimension();
+        if (isViewSizeSet)
+          size = view.getSize();
+        else
+	  size = view.getPreferredSize();
       }
+    else
+      size = new Dimension(0, 0);
+    return size;
   }
 
 
   public void setViewSize(Dimension newSize)
   {
-    viewSize = newSize;
     Component view = getView();
     if (view != null)
       {
-        if (newSize != view.getSize())
+        if (! newSize.equals(view.getSize()))
           {
-            view.setSize(viewSize);
+            scrollUnderway = false;
+            view.setSize(newSize);
+            isViewSizeSet = true;
             fireStateChanged();
           }
       }
-    isViewSizeSet = true;
   }
 
   /**
@@ -371,23 +361,18 @@ public class JViewport extends JComponent implements Accessible
 
   public void setViewPosition(Point p)
   {
-    if (getViewPosition().equals(p))
-      return;
     Component view = getView();
-    if (view != null)
+    if (view != null && ! p.equals(getViewPosition()))
       {
-        Point q = new Point(-p.x, -p.y);
-        view.setLocation(q);
-        isViewSizeSet = false;
+        scrollUnderway = true;
+        view.setLocation(-p.x, -p.y);
         fireStateChanged();
       }
-    repaint();
   }
 
   public Rectangle getViewRect()
   {
-    return new Rectangle(getViewPosition(), 
-                         getExtentSize());
+    return new Rectangle(getViewPosition(), getExtentSize());
   }
 
   /**
@@ -495,7 +480,6 @@ public class JViewport extends JComponent implements Accessible
     if (view == null)
       return;
 
-    Point pos = getViewPosition();
     Rectangle viewBounds = view.getBounds();
     Rectangle portBounds = getBounds();
 
@@ -940,7 +924,10 @@ public class JViewport extends JComponent implements Accessible
   /**
    * Overridden from JComponent to set the {@link #isPaintRoot} flag.
    *
-   * @param r the rectangle to paint
+   * @param x the rectangle to paint, X coordinate
+   * @param y the rectangle to paint, Y coordinate
+   * @param w the rectangle to paint, width
+   * @param h the rectangle to paint, height
    */
   void paintImmediately2(int x, int y, int w, int h)
   {

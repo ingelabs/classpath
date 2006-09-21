@@ -101,13 +101,8 @@ public class BasicScrollPaneUI extends ScrollPaneUI
       JScrollBar hsb = scrollpane.getHorizontalScrollBar();
       JViewport vp = scrollpane.getViewport();
       Point viewPosition = vp.getViewPosition();
-      int xpos = hsb.getValue();
-
-      if (xpos != viewPosition.x)
-        {
-          viewPosition.x = xpos;
-          vp.setViewPosition(viewPosition);
-        }
+      viewPosition.x = hsb.getValue();
+      vp.setViewPosition(viewPosition);
     }
 
   }
@@ -132,12 +127,8 @@ public class BasicScrollPaneUI extends ScrollPaneUI
       JScrollBar vsb = scrollpane.getVerticalScrollBar();
       JViewport vp = scrollpane.getViewport();
       Point viewPosition = vp.getViewPosition();
-      int ypos = vsb.getValue();
-      if (ypos != viewPosition.y)
-        {
-          viewPosition.y = ypos;
-          vp.setViewPosition(viewPosition);
-        }
+      viewPosition.y = vsb.getValue();
+      vp.setViewPosition(viewPosition);
     }
  
   }
@@ -819,16 +810,17 @@ public class BasicScrollPaneUI extends ScrollPaneUI
     if (vp != null)
       {
         Dimension extentSize = vp.getExtentSize();
-        Rectangle viewBounds = vp.getViewRect();
+        Point viewPos = vp.getViewPosition();
+        Dimension viewSize = vp.getViewSize();
 
         // Update the vertical scrollbar.
         JScrollBar vsb = scrollpane.getVerticalScrollBar();
         if (vsb != null)
           {
             int extent = extentSize.height;
-            int max = viewBounds.height;
-            vsb.setValues(Math.max(0, Math.min(viewBounds.y, max - extent)),
-                          extent, 0, max);
+            int max = viewSize.height;
+            int val = Math.max(0, Math.min(viewPos.y, max - extent));
+            vsb.setValues(val, extent, 0, max);
           }
 
         // Update the horizontal scrollbar.
@@ -836,16 +828,16 @@ public class BasicScrollPaneUI extends ScrollPaneUI
         if (hsb != null)
           {
             int extent = extentSize.width;
-            int max = viewBounds.width;
-            vsb.setValues(Math.max(0, Math.min(viewBounds.x, max - extent)),
-                          extent, 0, max);
+            int max = viewSize.width;
+            int val = Math.max(0, Math.min(viewPos.x, max - extent));
+            hsb.setValues(val, extent, 0, max);
           }
 
         // Update the row header.
         JViewport rowHeader = scrollpane.getRowHeader();
         if (rowHeader != null)
           {
-            Point p = new Point(0, viewBounds.y);
+            Point p = new Point(0, viewPos.y);
             rowHeader.setViewPosition(p);
           }
 
@@ -853,7 +845,7 @@ public class BasicScrollPaneUI extends ScrollPaneUI
         JViewport colHeader = scrollpane.getColumnHeader();
         if (colHeader != null)
           {
-            Point p = new Point(viewBounds.x, 0);
+            Point p = new Point(viewPos.x, 0);
             colHeader.setViewPosition(p);
           }
       }

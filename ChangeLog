@@ -1,3 +1,48 @@
+2006-09-21  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicScrollPaneUI.java
+	(syncScrollPaneWithViewport): Fixed typo (hsb vs. vsb).
+	Use more efficient getViewPosition() and getViewSize() methods
+	to avoid creating a rectangle.
+	(HSBChangeListener.stateChanged): Update the view position
+	unconditionally. Let the Viewport figure out if something
+	changed.
+	(VSBChangeListener.stateChanged): Update the view position
+	unconditionally. Let the Viewport figure out if something
+	changed.
+	* javax/swing/JViewport.java
+	(ViewListener.componentResized): Fire state change, because
+	the extentSize changes.
+	(extentSize): Removed unneeded field.
+	(viewSize): Removed unneeded field.
+	(getExtentSize): Return the viewport's size here.
+	(getViewRect): Reformatted.
+	(getViewSize): Reordered for only one return statement.
+	(paintImmediately2): Fixed up javadoc.
+	(paint): Removed unneeded statement.
+	(setExtentSize): Set viewport size and check for actual change
+	of value.
+	(setViewPosition): Simplified condition. Set scrollUnderway
+	true and don't set isViewSizeSet. Avoid creating one Point
+	object.
+	(setViewSize): Fixed != comparison with equals(). Set scrollUnderway
+	to false.
+	* javax/swing/JScrollBar.java
+	(ScrollBarListener): New class. Forwards change events from
+	the model as adjustment events.
+	(sbChangeListener): New field.
+	(JScrollBar): Install listener on new model.
+	(fireAdjustmentValueChanged(int,int,int)): Delegate to new helper
+	method.
+	(fireAdjustmentValueChanged(int,int,int,boolean)): New helper
+	method to allow custom isAdjusting value.
+	(setMaximum): Only forward to model.
+	(setMinimum): Only forward to model.
+	(setValue): Only forward to model.
+	(setVisibleAmount): Only forward to model.
+	(setValues): Only forward to model.
+	(setModel): Update the change listener.
+
 2006-09-20  Roman Kennke  <kennke@aicas.com>
 
 	PR 29036
