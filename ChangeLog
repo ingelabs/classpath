@@ -114,7 +114,6 @@
 	call `isConnected.'
 	(isConnected): return false if `connectionPending' is true.
 
->>>>>>> 1.8585
 2006-09-20  Francis Kung  <fkung@redhat.com>
 
 	PR 29011
