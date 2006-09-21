@@ -1,3 +1,22 @@
+2006-09-20  Roman Kennke  <kennke@aicas.com>
+
+	PR 29036
+	* javax/swing/plaf/metal/DefaultMetalTheme.java
+	(PLAIN_CONTROL_TEXT_FONT): New constant field.
+	(BOLD_CONTROL_TEXT_FONT): New constant field.
+	(PLAIN_MENU_TEXT_FONT): New constant field.
+	(BOLD_MENU_TEXT_FONT): New constant field.
+	(controlTextFont): Removed.
+	(menuTextFont): Removed.
+	(CONTROL_TEXT_FONT): New constant field.
+	(MENU_TEXT_FONT): New constant field.
+	(getControlTextFont): Use getFont() helper method for fetching
+	the correct font.
+	(getMenuTextFont): Use getFont() helper method for fetching
+	the correct font.
+	(getFont): New helper method.
+	(isBoldMetal): New helper method.
+
 2006-09-20  Casey Marshall  <csm@gnu.org>
 
 	* NEWS: mention epoll selector along with the kqueue one.
