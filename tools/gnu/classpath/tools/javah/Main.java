@@ -38,7 +38,7 @@
 
 package gnu.classpath.tools.javah;
 
-import gnu.classpath.tools.getopt.ClasspathToolParser;
+import gnu.classpath.tools.common.ClasspathToolParser;
 import gnu.classpath.tools.getopt.Option;
 import gnu.classpath.tools.getopt.OptionException;
 import gnu.classpath.tools.getopt.Parser;

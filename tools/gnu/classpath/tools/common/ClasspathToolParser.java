@@ -36,11 +36,14 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package gnu.classpath.tools.getopt;
+package gnu.classpath.tools.common;
 
 import java.text.MessageFormat;
 
 import gnu.classpath.Configuration;
+import gnu.classpath.tools.getopt.Option;
+import gnu.classpath.tools.getopt.OptionException;
+import gnu.classpath.tools.getopt.Parser;
 
 /**
  * This is like the Parser class, but is specialized for use by
@@ -63,11 +66,22 @@ public class ClasspathToolParser
 
   public ClasspathToolParser(String programName)
   {
-    super(programName, getVersionString(programName));
+    this(programName, false);
   }
 
   public ClasspathToolParser(String programName, boolean longOnly)
   {
     super(programName, getVersionString(programName), longOnly);
+    addFinal(new Option('J',
+                        Messages.getString("ClasspathToolParser.JArgument"),//$NON-NLS-1$
+                        Messages.getString("ClasspathToolParser.JName"), //$NON-NLS-1$
+                        true)
+             {
+               public void parsed(String argument) throws OptionException
+               {
+                 // -J should be handled by the wrapper binary.
+                 // We add it here so that it shows up in the --help output.
+               }
+             });
   }
 }

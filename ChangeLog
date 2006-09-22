@@ -1,3 +1,50 @@
+2006-09-21  Tom Tromey  <tromey@redhat.com>
+
+	* tools/gnu/classpath/tools/javah/PathOptionGroup.java
+	(PathOptionGroup): Make -I a joined option.
+	* tools/gnu/classpath/tools/keytool/CACertCmd.java: Updated.
+	* tools/gnu/classpath/tools/keytool/CertReqCmd.java: Updated.
+	* tools/gnu/classpath/tools/keytool/DeleteCmd.java: Updated.
+	* tools/gnu/classpath/tools/keytool/ExportCmd.java: Updated.
+	* tools/gnu/classpath/tools/keytool/GenKeyCmd.java: Updated.
+	* tools/gnu/classpath/tools/keytool/IdentityDBCmd.java: Updated.
+	* tools/gnu/classpath/tools/keytool/ImportCmd.java: Updated.
+	* tools/gnu/classpath/tools/keytool/KeyCloneCmd.java: Updated.
+	* tools/gnu/classpath/tools/keytool/KeyPasswdCmd.java: Updated.
+	* tools/gnu/classpath/tools/keytool/ListCmd.java: Updated.
+	* tools/gnu/classpath/tools/keytool/MainCmd.java: Updated.
+	* tools/gnu/classpath/tools/keytool/PrintCertCmd.java: Updated.
+	* tools/gnu/classpath/tools/keytool/SelfCertCmd.java: Updated.
+	* tools/gnu/classpath/tools/keytool/StorePasswdCmd.java: Updated.
+	* tools/gnu/classpath/tools/appletviewer/Main.java: Updated.
+	* tools/gnu/classpath/tools/jar/Main.java: Updated.
+	* tools/gnu/classpath/tools/jarsigner/Main.java: Updated.
+	* tools/gnu/classpath/tools/javah/Main.java: Updated.
+	* tools/gnu/classpath/tools/native2ascii/Main.java: Updated.
+	* tools/gnu/classpath/tools/serialver/SerialVer.java: Updated.
+	* resource/gnu/classpath/tools/getopt/Messages.properties: Removed
+	unused entries.
+	* resource/gnu/classpath/tools/common/Messages.properties: New file.
+	* tools/gnu/classpath/tools/common/Messages.java: New file.
+	* tools/gnu/classpath/tools/getopt/Messages.java: Now package-private.
+	* tools/gnu/classpath/tools/common/ClasspathToolParser.java: Moved
+	from getopt.
+	(ClasspathToolParser): Add -J option here.
+	(ClasspathToolParser): Call other constructor in this class.
+	* tools/gnu/classpath/tools/getopt/Parser.java (handleLongOption):
+	Handle joined options.
+	(handleShortOptions): Likewise.
+	(handleShortOption): Removed.
+	(finalGroup): New field.
+	(Parser): Initialize new field.  Don't add -J option.
+	(addFinal): New method.
+	* tools/gnu/classpath/tools/getopt/OptionGroup.java (printHelp): Use
+	isJoined.
+	* tools/gnu/classpath/tools/getopt/Option.java (isJoined): New method.
+	(Option): Check short option for validity.
+	(Option): New constructors.
+	(joined): New field.
+
 2006-09-21  csm  <csm@pollux.local>
 
 	* gnu/java/net/PlainDatagramSocketImpl.java (send): ignore
