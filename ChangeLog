@@ -1,3 +1,8 @@
+2006-09-22  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/SizeSequence.java
+	(getSize): Return 0 if index is out of bounds.
+
 2006-09-21  Tom Tromey  <tromey@redhat.com>
 
 	* tools/gnu/classpath/tools/javah/PathOptionGroup.java
