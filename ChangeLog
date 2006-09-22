@@ -1,3 +1,83 @@
+2006-09-22  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* resource/gnu/classpath/tools/orbd: New directory.
+	* resource/gnu/classpath/tools/rmic: Likewise.
+	* resource/gnu/classpath/tools/rmid: Likewise.
+	* resource/gnu/classpath/tools/rmiregistry: Likewise.
+	* resource/gnu/classpath/tools/tnameserv: Likewise.
+	* tools/gnu/classpath/tools/giop: Move contents to...
+	* tools/gnu/classpath/tools/orbd,
+	tools/gnu/classpath/tools/tnameserv: New directories.
+	* tools/gnu/classpath/tools/rmi/rmic: Move contents to...
+	* tools/gnu/classpath/tools/rmic: New directory.
+	* tools/gnu/classpath/tools/rmi/rmid: Move contents to...
+	* tools/gnu/classpath/tools/rmid: New directory.
+	* tools/gnu/classpath/tools/rmi/registry: Move contents to...
+	* tools/gnu/classpath/tools/rmiregistry: New directory.
+	* resource/gnu/classpath/tools/orbd/messages.properties: New file.
+	* resource/gnu/classpath/tools/rmic/messages.properties: Likewise.
+	* resource/gnu/classpath/tools/rmid/messages.properties: Likewise.
+	* resource/gnu/classpath/tools/rmiregistry/messages.properties:
+	Likewise.
+	* resource/gnu/classpath/tools/tnameserv/messages.properties:
+	Likewise.
+	* tools/gnu/classpath/tools/orbd/Main.java,
+	tools/gnu/classpath/tools/orbd/Messages.java,
+	tools/gnu/classpath/tools/orbd/PersistentContext.java,
+	tools/gnu/classpath/tools/orbd/PersistentContextMap.java,
+	tools/gnu/classpath/tools/orbd/PersistentMap.java,
+	tools/gnu/classpath/tools/rmic/AbstractMethodGenerator.java,
+	tools/gnu/classpath/tools/rmic/CompilationError.java,
+	tools/gnu/classpath/tools/rmic/Generator.java,
+	tools/gnu/classpath/tools/rmic/GiopIo.java,
+	tools/gnu/classpath/tools/rmic/HashFinder.java,
+	tools/gnu/classpath/tools/rmic/Main.java,
+	tools/gnu/classpath/tools/rmic/Messages.java,
+	tools/gnu/classpath/tools/rmic/MethodGenerator.java,
+	tools/gnu/classpath/tools/rmic/RMICException.java,
+	tools/gnu/classpath/tools/rmic/RmiMethodGenerator.java,
+	tools/gnu/classpath/tools/rmic/RmicBackend.java,
+	tools/gnu/classpath/tools/rmic/SourceGiopRmicCompiler.java,
+	tools/gnu/classpath/tools/rmic/SourceRmicCompiler.java,
+	tools/gnu/classpath/tools/rmic/Variables.java,
+	tools/gnu/classpath/tools/rmic/WrapUnWrapper.java,
+	tools/gnu/classpath/tools/rmic/templates,
+	tools/gnu/classpath/tools/rmid/ActivationSystemImpl.java,
+	tools/gnu/classpath/tools/rmid/ActivationSystemImpl_Stub.java,
+	tools/gnu/classpath/tools/rmid/Main.java,
+	tools/gnu/classpath/tools/rmid/Messages.java,
+	tools/gnu/classpath/tools/rmid/PersistentBidiHashTable.java,
+	tools/gnu/classpath/tools/rmiregistry/Main.java,
+	tools/gnu/classpath/tools/rmiregistry/Messages.java,
+	tools/gnu/classpath/tools/rmiregistry/PersistentHashTable.java,
+	tools/gnu/classpath/tools/rmiregistry/RegistryImpl.java,
+	tools/gnu/classpath/tools/rmiregistry/RegistryImpl_Skel.java,
+	tools/gnu/classpath/tools/rmiregistry/RegistryImpl_Stub.java,
+	tools/gnu/classpath/tools/tnameserv/Main.java,
+	tools/gnu/classpath/tools/tnameserv/Messages.java: New files.
+	* tools/gnu/classpath/tools/rmic/ClassRmicCompiler.java: Import
+	RMIC.java from cp-tools.
+	* configure.ac (AC_CONFIG_FILES): Add tools/grmiregistry,
+	tools/gtnameserv, tools/gorbd, tools/grmid and tools/grmic.
+	(AC_CONFIG_COMMANDS): Add grmiregistry, gtnameserv, gorbd, grmid
+	and grmic.
+	* examples/Makefile.am (GLIBJ_CLASSPATH): Add tools.zip.
+	* gnu/CORBA/NamingService/NamingServiceTransient.java (main):
+	Rename...
+	(start): New method.
+	* tools/Makefile.am: Add build support for new tool wrappers.
+	* tools/gorbd.in: New file.
+	* tools/grmic.in: Likewise.
+	* tools/grmid.in: Likewise.
+	* tools/grmiregistry.in: Likewise.
+	* tools/gtnameserv.in: Likewise.
+	* tools/gnu/classpath/tools/AbstractMethodGenerator.java: Move to...
+	* tools/gnu/classpath/tools/rmic/AbstractMethodGenerator.java: New
+	file.
+	* tools/gnu/classpath/tools/HelpPrinter.java: Remove file.
+	* tools/gnu/classpath/tools/rmi/Persistent.java: Move to...
+	* tools/gnu/classpath/tools/common/Persistent.java: New file.
+
 2006-09-22  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	Fixes bug #29047
