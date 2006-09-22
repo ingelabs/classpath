@@ -1,3 +1,9 @@
+2006-09-22  Gary Benson  <gbenson@redhat.com>
+
+	* java/net/SocketPermission.java
+	(processHostport): Cope with IPv6 addresses with a
+	one-digit first component.
+
 2006-09-22  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/Component.java
