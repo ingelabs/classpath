@@ -3517,6 +3517,7 @@ public abstract class Component
       }
 
     eventMask |= eventsToEnable;
+    newEventsOnly = true;
 
     // Only heavyweight peers handle this.
     ComponentPeer p = peer;
@@ -5695,7 +5696,6 @@ p   * <li>the set of backward traversal keys
    *
    * @param e the event to dispatch
    */
-
   void dispatchEventImpl(AWTEvent e)
   {
     // Retarget focus events before dispatching it to the KeyboardFocusManager

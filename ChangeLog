@@ -1,3 +1,33 @@
+2006-09-22  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Component.java
+	(enableEvents): Set newEventsOnly flag.
+	* java/awt/Container.java
+	(dispatchEventImpl): Consume event if lightweight dispatcher
+	dispatched the event. Don't call processEvent() here, this
+	is already done in Component.dispatchEventImpl(). For
+	heavyweights or when the lightweight dispatcher could
+	not dispatch, fall back to calling super.
+	(dispatchNoLightweight): New helper method to avoid
+	recursivly calling the lightweight dispatcher.
+	* java/awt/LightweightDispatcher.java
+	(dragButton): Removed field.
+	(dragTarget): Removed field.
+	(mouseEventTarget): New field.
+	(convertPointToChild): Removed method.
+	(dispatchEvent): Don't depend on component beeing
+	a window.
+	(findTarget): Improved algorithm for finding a target.
+	Before we went down to the deepest component and went
+	up again to find a suitable target. Now we go
+	down only once, without going up.
+	(handleMouseEvent): Broke method down into some smaller
+	helper methods.
+	(isDragging): New helper method.
+	(isMouseListening): New helper method.
+	(redispatch): New helper method.
+	(trackEnterExit): New helper method.
+
 2006-09-22  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/SizeSequence.java
