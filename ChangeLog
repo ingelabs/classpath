@@ -1,3 +1,13 @@
+2006-09-22  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	Fixes bug #29047
+	* gnu/java/util/regex/RETokenRepeated.java
+	(findMatch): Rewriten without using recursive calls,
+	(FindMatchControlStack): New class,
+	(FindMatchControl): New class,
+	(TryAnotherResult): New class,
+	(tryAnother): New method.
+
 2006-09-22  Gary Benson  <gbenson@redhat.com>
 
 	* java/net/SocketPermission.java
