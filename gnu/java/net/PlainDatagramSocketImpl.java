@@ -266,6 +266,7 @@ public final class PlainDatagramSocketImpl extends DatagramSocketImpl
             try
               {
                 channel.send(buf, new InetSocketAddress(remote, port));
+                break;
               }
             catch (InterruptedIOException ioe)
               {
