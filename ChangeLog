@@ -1,3 +1,8 @@
+2006-09-23  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/management/ObjectName.java:
+	Implemented.
+	
 2006-09-22  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* resource/gnu/classpath/tools/orbd: New directory.
