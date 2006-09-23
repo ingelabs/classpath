@@ -375,7 +375,8 @@ if test "x${COMPILE_JNI}" = xyes; then
 		  mmap munmap mincore msync madvise getpagesize sysconf \
 		  lstat readlink \
  		  inet_aton inet_addr inet_pton \
-		  getifaddrs kqueue kevent epoll_create])
+		  getifaddrs kqueue kevent epoll_create \
+                  readdir_r ])
 
   LIBMAGIC=
   AC_CHECK_LIB(magic, magic_open, LIBMAGIC=-lmagic)
