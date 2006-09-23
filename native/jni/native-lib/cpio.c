@@ -448,7 +448,7 @@ int cpio_closeDir (void *handle)
 }
 
 
-int cpio_readDir (void *handle, const char *filename)
+int cpio_readDir (void *handle, char *filename)
 {
 #ifdef HAVE_READDIR_R
   struct dirent dent;

@@ -1,5 +1,13 @@
 2006-09-22  Casey Marshall  <csm@gnu.org>
 
+	* native/jni/java-io/java_io_VMFile.c (Java_java_io_VMFile_list):
+	remove `const' from `filename.'
+	* native/jni/native-lib/cpio.c (cpio_readDir): remove `const' from
+	`filename.'
+	* native/jni/native-lib/cpio.h (cpio_readDir): likewise.
+
+2006-09-22  Casey Marshall  <csm@gnu.org>
+
 	* configure.ac (AC_CHECK_FUNCS): check for `readdir_r.'
 	* native/jni/java-io/java_io_VMFile.c (Java_java_io_VMFile_list):
 	allocate `filename,' and handle changes to `cpio_readDir.'

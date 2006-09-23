@@ -593,7 +593,7 @@ Java_java_io_VMFile_list (JNIEnv * env, jobject obj
   int result;
   char **filelist;
   void *handle;
-  const char *filename = (const char *) JCL_malloc (env, FILENAME_MAX);
+  char *filename = (char *) JCL_malloc (env, FILENAME_MAX);
   unsigned long int filelist_count, max_filelist_count;
   char **tmp_filelist;
   jclass str_clazz;
