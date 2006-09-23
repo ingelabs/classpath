@@ -139,6 +139,7 @@ public class EpollSelectorImpl extends AbstractSelector
             epoll_delete(epoll_fd, key.fd);
             key.valid = false;
             keys.remove(new Integer(key.fd));
+            it.remove();
           }
         
         // Don't bother if we have nothing to select.
@@ -177,6 +178,8 @@ public class EpollSelectorImpl extends AbstractSelector
    */
   public Set selectedKeys()
   {
+    if (selectedKeys == null)
+      return Collections.EMPTY_SET;
     return selectedKeys;
   }
 

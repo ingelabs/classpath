@@ -1,5 +1,16 @@
 2006-09-22  Casey Marshall  <csm@gnu.org>
 
+	* gnu/java/nio/EpollSelectorImpl.java (doSelect): remove keys
+	after we delete them.
+	(selectedKeys): return an empty set if nothing's been selected.
+	* native/jni/java-nio/gnu_java_nio_EpollSelectorImpl.c
+	(Java_gnu_java_nio_EpollSelectorImpl_epoll_1delete): don't
+	throw an exception on EBADF.
+	(Java_gnu_java_nio_EpollSelectorImpl_epoll_1wait): don't
+	throw exception on EINTR, just return 0.
+	
+2006-09-22  Casey Marshall  <csm@gnu.org>
+
 	* native/jni/java-io/java_io_VMFile.c (Java_java_io_VMFile_list):
 	remove `const' from `filename.'
 	* native/jni/native-lib/cpio.c (cpio_readDir): remove `const' from

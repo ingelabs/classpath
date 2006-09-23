@@ -150,8 +150,8 @@ Java_gnu_java_nio_EpollSelectorImpl_epoll_1add (JNIEnv *env,
   event.data.fd = fd;
 
 #ifdef TRACE_EPOLL
-  fprintf (stderr, "%s: adding struct epoll_event { events: %o; data.fd: %d }\n",
-           __FUNCTION__, event.events, event.data.fd);
+  fprintf (stderr, "%s: adding struct epoll_event { events: %o; data.fd: %d } to %d\n",
+           __FUNCTION__, event.events, event.data.fd, efd);
 #endif /* TRACE_EPOLL */
 
   if (epoll_ctl (efd, EPOLL_CTL_ADD, fd, &event) == -1)
@@ -197,8 +197,8 @@ Java_gnu_java_nio_EpollSelectorImpl_epoll_1modify (JNIEnv *env,
   event.data.fd = fd;
 
 #ifdef TRACE_EPOLL
-  fprintf (stderr, "%s: modding struct epoll_event { events: %o; data.fd: %d }\n",
-           __FUNCTION__, event.events, event.data.fd);
+  fprintf (stderr, "%s: modding struct epoll_event { events: %o; data.fd: %d } on %d\n",
+           __FUNCTION__, event.events, event.data.fd, efd);
 #endif /* TRACE_EPOLL */
 
   if (epoll_ctl (efd, EPOLL_CTL_MOD, fd, &event) == -1)
@@ -235,7 +235,7 @@ Java_gnu_java_nio_EpollSelectorImpl_epoll_1delete (JNIEnv *env,
   event.data.fd = fd;
 
 #ifdef TRACE_EPOLL
-  fprintf (stderr, "%s: delete events on fd %d\n", __FUNCTION__, fd);
+  fprintf (stderr, "%s: delete events on fd %d for %d\n", __FUNCTION__, fd, efd);
 #endif /* TRACE_EPOLL */
 
   /* Older kernel versions require a non-null `event' parameter,
@@ -246,7 +246,11 @@ Java_gnu_java_nio_EpollSelectorImpl_epoll_1delete (JNIEnv *env,
       if (ENOSYS == errno)
         JCL_ThrowException (env, "java/lang/InternalError",
                             strerror (errno));
-      else if (ENOENT == errno)
+      /* XXX the docs here seem a little strange. If `fd' is closed,
+         epoll_ctl returns EBADF; but the docs say that this happens
+         only when efd is invalid. Go figure.
+       */
+      else if (ENOENT == errno || EBADF == errno)
         return; /* fd is closed; it's already removed. */
       else
         JCL_ThrowException (env, IO_EXCEPTION, strerror (errno));
@@ -282,16 +286,19 @@ Java_gnu_java_nio_EpollSelectorImpl_epoll_1wait (JNIEnv *env,
     }
 
 #ifdef TRACE_EPOLL
-  fprintf (stderr, "%s: events: %p; num_events: %d; timeout: %d\n",
-           __FUNCTION__, p, num_events, timeout);
+  fprintf (stderr, "%s: events: %p; num_events: %d; timeout: %d; efd: %d\n",
+           __FUNCTION__, p, num_events, timeout, efd);
 #endif /* TRACE_EPOLL */
 
   ret = epoll_wait (efd, events, num_events, timeout);
+
   if (ret == -1)
     {
       if (ENOSYS == errno)
         JCL_ThrowException (env, "java/lang/InternalError",
                             strerror (errno));
+      else if (EINTR == errno)
+        ret = 0;
       else
         JCL_ThrowException (env, IO_EXCEPTION, strerror (errno));
     }
