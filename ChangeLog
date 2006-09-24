@@ -1,3 +1,8 @@
+2006-09-24  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/nio/channels/spi/AbstractSelectableChannel.java
+	(implCloseChannel): Cancel all keys after closing the channel.
+
 2006-09-22  Casey Marshall  <csm@gnu.org>
 
 	* gnu/java/nio/EpollSelectorImpl.java (doSelect): remove keys
