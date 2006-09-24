@@ -243,8 +243,8 @@ public abstract class AbstractSelectableChannel extends SelectableChannel
 
 	if (key != null && key.isValid())
 	  {
-	    if (att != null)
-	      key.attach(att);
+            key.interestOps(ops);
+            key.attach(att);
 	  }
 	else
 	  {

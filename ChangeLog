@@ -1,5 +1,11 @@
 2006-09-24  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/nio/channels/spi/AbstractSelectableChannel.java
+	(register): Set interestOps and attachment when the key already
+	exists.
+
+2006-09-24  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/net/ServerSocket.java
 	(bind(SocketAddress,int)): Added support for null address.
 	Throw proper exception if already bound.
