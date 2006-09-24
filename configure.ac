@@ -423,17 +423,17 @@ if test "x${COMPILE_JNI}" = xyes; then
 
   dnl When using gcc we want warnings, lots of warnings :-)
   if test "x${GCC}" = xyes; then
-    dnl We want ISO C90 pedantic ansi, but with longlong (jlong) support
+    dnl We want ISO C90 ansi, but with longlong (jlong) support
     dnl and modern POSIX and BSD C library functions/prototypes.
 
     dnl Warning flags for (almost) everybody.
     dnl Should probably be configurable
-    WARNING_CFLAGS='-pedantic -W -Wall -Wmissing-declarations -Wwrite-strings -Wmissing-prototypes -Wno-long-long'
+    WARNING_CFLAGS='-W -Wall -Wmissing-declarations -Wwrite-strings -Wmissing-prototypes -Wno-long-long'
     AC_SUBST(WARNING_CFLAGS)
 
     dnl Strict warning flags which not every module uses.
     dnl Should probably be configurable.
-    STRICT_WARNING_CFLAGS=-Wstrict-prototypes
+    STRICT_WARNING_CFLAGS='-Wstrict-prototypes -pedantic'
     AC_SUBST(STRICT_WARNING_CFLAGS)
 
     dnl Whether or not to add -Werror, also not used by all modueles.
