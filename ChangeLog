@@ -1,5 +1,10 @@
 2006-09-25  Tom Tromey  <tromey@redhat.com>
 
+	* native/jni/gconf-peer/Makefile.am (libgconfpeer_la_LDFLAGS): New
+	variable.
+
+2006-09-25  Tom Tromey  <tromey@redhat.com>
+
 	* tools/.cvsignore: Updated.
 
 2006-09-25  Tom Tromey  <tromey@redhat.com>
