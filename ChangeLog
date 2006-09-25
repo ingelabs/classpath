@@ -1,3 +1,11 @@
+2006-09-25  Casey Marshall  <csm@gnu.org>
+
+	* gnu/java/nio/FileChannelImpl.java (read): revert back to using
+	`readScattering.'
+	(write): revert back to using `writeGathering.'
+	* vm/reference/gnu/java/nio/VMChannel.java (writeGathering): find
+	the first buffer that has data remaining, and start at that one.
+
 2006-09-25  Tom Tromey  <tromey@redhat.com>
 
 	* native/jni/gconf-peer/Makefile.am (libgconfpeer_la_LDFLAGS): New
