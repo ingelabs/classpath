@@ -1,3 +1,15 @@
+2006-09-25  Francis Kung  <fkung@redhat.com>
+
+	* java/awt/image/ColorModel.java
+	(coerceData): Made abstract.
+	(coerceDataWorker): New protected method.
+	* java/awt/image/ComponentColorModel.java
+	(coerceData): Return new instance of proper ColorModel.
+	* java/awt/image/DirectColorModel.java
+	(coerceData): Return new instance of proper ColorModel.
+	* java/awt/image/IndexColorModel.java
+	(coerceData): New method.
+
 2006-09-24  Casey Marshall  <csm@gnu.org>
 
 	* gnu/java/nio/FileChannelImpl.java
