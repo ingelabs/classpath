@@ -1,3 +1,9 @@
+2006-09-24  Casey Marshall  <csm@gnu.org>
+
+	* gnu/java/nio/FileChannelImpl.java
+	(read): call `read' in a loop, don't use `readScattering.'
+	(write): call `write' in a loop, don't use `writeGathering.'
+
 2006-09-24  Mark Wielaard  <mark@klomp.org>
 
 	* configure.ac: Move -pedantic from WARNING to STRICT flags.

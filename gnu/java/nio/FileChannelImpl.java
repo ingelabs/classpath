@@ -253,7 +253,18 @@ public final class FileChannelImpl extends FileChannel
   public long read (ByteBuffer[] dsts, int offset, int length)
     throws IOException
   {
-    return ch.readScattering(dsts, offset, length);
+    int n = offset + length;
+    long read = 0;
+    if (offset < 0 || length < 0 || n > dsts.length)
+      throw new ArrayIndexOutOfBoundsException();
+    for (int i = offset; i < n; i++)
+      {
+        int ret = read(dsts[i]);
+        if (ret == -1)
+          break;
+        read += ret;
+      }
+    return read;
   }
 
   public int write (ByteBuffer src) throws IOException
@@ -292,7 +303,13 @@ public final class FileChannelImpl extends FileChannel
   public long write(ByteBuffer[] srcs, int offset, int length)
     throws IOException
   {
-    return ch.writeGathering(srcs, offset, length);
+    int n = offset + length;
+    long written = 0;
+    if (offset < 0 || length < 0 || n > srcs.length)
+      throw new ArrayIndexOutOfBoundsException();
+    for (int i = offset; i < n; i++)
+      written += write(srcs[i]);
+    return written;
   }
 
   public MappedByteBuffer map (FileChannel.MapMode mode,
