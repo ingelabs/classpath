@@ -568,6 +568,7 @@ public class MetalIconFactory implements Serializable
      */
     public void paintIcon(Component c, Graphics g, int x, int y) 
     {
+      y = y + getShift();
       g.setColor(MetalLookAndFeel.getBlack());
       g.drawLine(x, y, x + 9, y);            
       g.drawLine(x, y + 1, x, y + 15);            
@@ -599,7 +600,9 @@ public class MetalIconFactory implements Serializable
     }
         
     /**
-     * Returns the shift (???).
+     * Returns the vertical shift, in pixels, applied when painting the icon.  
+     * The default value is zero, but subclasses may override this (for 
+     * example, see {@link TreeLeafIcon}).
      * 
      * @return The shift.
      */
@@ -647,20 +650,21 @@ public class MetalIconFactory implements Serializable
      */
     public void paintIcon(Component c, Graphics g, int x, int y) 
     {
+      y = y + getShift();
       g.setColor(MetalLookAndFeel.getBlack());
-      g.drawLine(x, y + 3, x, y + 12);
-      g.drawLine(x, y + 12, x + 15, y + 12);
-      g.drawLine(x + 15, y + 12, x + 15, y + 2);
-      g.drawLine(x + 14, y + 3, x + 9, y + 3);
-      g.drawLine(x + 8, y + 2, x + 1, y + 2);
+      g.drawLine(x, y + 6, x, y + 15);
+      g.drawLine(x, y + 15, x + 15, y + 15);
+      g.drawLine(x + 15, y + 15, x + 15, y + 5);
+      g.drawLine(x + 14, y + 6, x + 9, y + 6);
+      g.drawLine(x + 8, y + 5, x + 1, y + 5);
       g.setColor(MetalLookAndFeel.getPrimaryControl());
-      g.fillRect(x + 2, y + 4, 7, 8);
-      g.fillRect(x + 9, y + 5, 6, 7);
+      g.fillRect(x + 2, y + 7, 7, 8);
+      g.fillRect(x + 9, y + 8, 6, 7);
       g.setColor(MetalLookAndFeel.getPrimaryControlShadow());
-      g.drawLine(x + 9, y + 2, x + 14, y + 2);
+      g.drawLine(x + 9, y + 5, x + 14, y + 5);
       g.setColor(MetalLookAndFeel.getPrimaryControlDarkShadow());
-      g.drawLine(x + 9, y + 1, x + 15, y + 1);
-      g.drawLine(x + 10, y, x + 15, y);
+      g.drawLine(x + 9, y + 4, x + 15, y + 4);
+      g.drawLine(x + 10, y + 3, x + 15, y + 3);
     }
     
     /**
@@ -676,7 +680,9 @@ public class MetalIconFactory implements Serializable
     }
     
     /**
-     * Returns the shift (???).
+     * Returns the vertical shift, in pixels, applied when painting the icon.  
+     * The default value is zero, but subclasses may override this (for 
+     * example, see {@link TreeFolderIcon}).
      * 
      * @return The shift.
      */
@@ -1880,7 +1886,8 @@ public class MetalIconFactory implements Serializable
     }
     
     /**
-     * Returns the shift (???).
+     * Returns the vertical shift, in pixels, applied when painting the icon.  
+     * This overridden method returns <code>-1</code>.
      * 
      * @return The shift.
      */
@@ -1915,7 +1922,8 @@ public class MetalIconFactory implements Serializable
     }
     
     /**
-     * Returns the shift (???).
+     * Returns the vertical shift, in pixels, applied when painting the icon.  
+     * This overridden method returns <code>2</code>.
      * 
      * @return The shift.
      */

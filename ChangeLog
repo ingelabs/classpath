@@ -1,6 +1,18 @@
 2006-09-26  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalIconFactory.java
+	(FileIcon16.paintIcon): Apply vertical shift by the number of pixels
+	returned by getShift(),
+	(FileIcon16.getShift): Updated API docs,
+	(FolderIcon16.paintIcon): Apply vertical shift by the number of pixels
+	returned by getShift(),
+	(FolderIcon16.getShift): Updated API docs,
+	(TreeFolderIcon.getShift): Likewise,
+	(TreeLeafIcon.getShift): Likewise.
+
+2006-09-26  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalIconFactory.java
 	(FileIcon16.paintIcon): Fetch colors from look and feel,
 	(FolderIcon16.paintIcon): Likewise.
 
