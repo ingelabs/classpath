@@ -272,10 +272,7 @@ public class Main
     if (outputDir == null)
       outputFile = new File(".");
     else
-      {
-        outputFile = new File(outputDir);
-        outputFile.mkdirs();
-      }
+      outputFile = new File(outputDir);
     return outputFile;
   }
 

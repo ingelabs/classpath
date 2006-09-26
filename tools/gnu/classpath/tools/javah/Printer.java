@@ -86,9 +86,7 @@ public abstract class Printer
       throw new IllegalArgumentException("File argument MUST NOT be null");
     outputFileObject = outFile;
     isDirectory = isDir;
-    if (isDirectory)
-      outputFileObject.mkdirs();
-    else
+    if (! isDirectory)
       {
         File parent = outputFileObject.getParentFile();
         if (parent != null)
@@ -114,6 +112,9 @@ public abstract class Printer
         File outFile = new File(outputFileObject, fullName);
         if (outFile.exists() && ! force)
           return null;
+        File parent = outFile.getParentFile();
+        if (parent != null)
+          parent.mkdirs();
         fos = new FileOutputStream(outFile);
         result = getPrintStreamImpl(fos, klass);
         writePreamble(result);
