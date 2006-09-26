@@ -124,6 +124,9 @@ public class Rectangle extends Rectangle2D implements Shape, Serializable
    */
   public Rectangle(Rectangle r)
   {
+    if (r == null)
+      throw new NullPointerException();
+    
     x = r.x;
     y = r.y;
     width = r.width;
@@ -172,6 +175,9 @@ public class Rectangle extends Rectangle2D implements Shape, Serializable
    */
   public Rectangle(Point p, Dimension d)
   {
+    if (p == null || d == null)
+      throw new NullPointerException();
+    
     x = p.x;
     y = p.y;
     width = d.width;
@@ -183,9 +189,13 @@ public class Rectangle extends Rectangle2D implements Shape, Serializable
    * corner at the specified point and a width and height of zero.
    *
    * @param p the upper left corner of the rectangle
+   * @throws NullPointerException if p is null
    */
   public Rectangle(Point p)
   {
+    if (p == null)
+      throw new NullPointerException();
+    
     x = p.x;
     y = p.y;
   }
@@ -196,9 +206,13 @@ public class Rectangle extends Rectangle2D implements Shape, Serializable
    * by the specified dimension.
    *
    * @param d the width and height of the rectangle
+   * @throws NullPointerException if d is null
    */
   public Rectangle(Dimension d)
   {
+    if (d == null)
+      throw new NullPointerException();
+    
     width = d.width;
     height = d.height;
   }

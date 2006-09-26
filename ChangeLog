@@ -1,3 +1,14 @@
+2006-09-26  Tania Bento  <tbento@redhat.com>
+
+	* java/awt/GridLayout.java
+	(toString): There is no common before hgap.
+	* java/awt/Rectangle.java
+	(Rectangle(Rectangle)): Throw NPE if Rectangle is null.
+	(Rectangle(Point, Rectangle)): Throw NPE if either Point or 
+	Rectangle is null.
+	(Rectangle(Point)): Throw NPE if Point is null.
+	(Rectangle(Dimension)): Throw NPE if Dimension is null.
+
 2006-09-26  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalIconFactory.java
