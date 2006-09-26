@@ -54,7 +54,6 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.plaf.IconUIResource;
 import javax.swing.plaf.UIResource;
 
 
@@ -569,8 +568,7 @@ public class MetalIconFactory implements Serializable
      */
     public void paintIcon(Component c, Graphics g, int x, int y) 
     {
-      // TODO: pick up appropriate UI colors
-      g.setColor(Color.black);
+      g.setColor(MetalLookAndFeel.getBlack());
       g.drawLine(x, y, x + 9, y);            
       g.drawLine(x, y + 1, x, y + 15);            
       g.drawLine(x, y + 15, x + 12, y + 15);            
@@ -580,7 +578,7 @@ public class MetalIconFactory implements Serializable
       g.drawLine(x + 7, y + 2, x + 11, y + 6);
       g.drawLine(x + 8, y + 1, x + 9, y + 1);
 
-      g.setColor(new Color(204, 204, 255));
+      g.setColor(MetalLookAndFeel.getPrimaryControl());
       g.drawLine(x + 1, y + 1, x + 7, y + 1);            
       g.drawLine(x + 1, y + 1, x + 1, y + 14);            
       g.drawLine(x + 1, y + 14, x + 11, y + 14);            
@@ -649,19 +647,18 @@ public class MetalIconFactory implements Serializable
      */
     public void paintIcon(Component c, Graphics g, int x, int y) 
     {
-      // TODO: pick up appropriate UI colors
-      g.setColor(Color.black);
+      g.setColor(MetalLookAndFeel.getBlack());
       g.drawLine(x, y + 3, x, y + 12);
       g.drawLine(x, y + 12, x + 15, y + 12);
       g.drawLine(x + 15, y + 12, x + 15, y + 2);
       g.drawLine(x + 14, y + 3, x + 9, y + 3);
       g.drawLine(x + 8, y + 2, x + 1, y + 2);
-      g.setColor(new Color(204, 204, 255));
+      g.setColor(MetalLookAndFeel.getPrimaryControl());
       g.fillRect(x + 2, y + 4, 7, 8);
       g.fillRect(x + 9, y + 5, 6, 7);
-      g.setColor(new Color(102, 102, 153));
+      g.setColor(MetalLookAndFeel.getPrimaryControlShadow());
       g.drawLine(x + 9, y + 2, x + 14, y + 2);
-      g.setColor(new Color(50, 50, 120));
+      g.setColor(MetalLookAndFeel.getPrimaryControlDarkShadow());
       g.drawLine(x + 9, y + 1, x + 15, y + 1);
       g.drawLine(x + 10, y, x + 15, y);
     }

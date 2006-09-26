@@ -1,3 +1,9 @@
+2006-09-26  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalIconFactory.java
+	(FileIcon16.paintIcon): Fetch colors from look and feel,
+	(FolderIcon16.paintIcon): Likewise.
+
 2006-09-25  Casey Marshall  <csm@gnu.org>
 
 	* gnu/java/nio/FileChannelImpl.java (read): revert back to using
