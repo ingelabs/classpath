@@ -38,6 +38,8 @@ cat > $TMPFILE3 << EOF
 -Java_gnu_java_util_prefs_gconf_GConfNativePeer_finalize_1class
 -Java_gnu_java_util_prefs_gconf_GConfNativePeer_init_1id_1cache
 -Java_gnu_java_util_prefs_gconf_GConfNativePeer_init_1class
+-Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1escape_1key
+-Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1unescape_1key
 EOF
 
 # Compare again silently.

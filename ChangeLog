@@ -1,3 +1,52 @@
+2006-09-24  Mario Torre  <neugens@limasoftware.net>
+
+	* scripts/check_jni_methods.sh: added two new methods in the
+	ignore list:
+	Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1escape_1key
+	and
+	Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1unescape_1key
+	* native/jni/gconf-peer/GConfNativePeer.c:
+	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1all_1keys):
+	refacored method name, renamed from
+	Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1gconf_1client_1all_1keys.
+	Added code to unescape escaped GConf key names.
+	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1all_1nodes):
+	refacored method name, renamed from
+	Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1gconf_1client_1all_1nodes.
+	Added code to unescape escaped GConf key names.
+	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1escape_1key):
+	new function.
+	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1unescape_1key):
+	new function.
+	* gnu/java/util/prefs/gconf/GConfNativePeer.java: removed
+	version javadoc tag.
+	(escapeString): new method.
+	(unescapeString): likewise.
+	(gconf_escape_key): new native method.
+	(gconf_unescape_key): likewise.
+	(gconf_client_suggest_sync): update native method signature, now
+	explicity throws BackingStoreException.
+	(gconf_client_all_nodes): update native method signature, now
+	explicity throws BackingStoreException. Refactored method name,
+	renamed from gconf_client_gconf_client_all_nodes.
+	(gconf_client_all_keys): update native method signature, now
+	explicity throws BackingStoreException. Refactored method name,
+	renamed from gconf_client_gconf_client_all_keys.
+	(getKeys): refactored to use the new method name
+	gconf_client_all_keys.
+	(getChildrenNodes): refactored to use the new method name
+	gconf_client_all_nodes.
+	* gnu/java/util/prefs/GConfBasedPreferences.java: removed
+	version javadoc tag.
+	(GConfBasedPreferences): Added code to escape node names from
+	invalid characters so that GConf now accept invalid node names.
+	(GConfBasedPreferences): Moved code to register the current
+	node to the list of nodes watched by GConf outside the constructor.
+	(childSpi): Added code to register the current node to the
+	list of nodes watched by GConf.
+	(getGConfKey): Added code to escape key names from
+	invalid characters so that GConf now accept invalid key names.
+
 2006-09-26  Tom Tromey  <tromey@redhat.com>
 
 	* tools/gnu/classpath/tools/javah/Printer.java (Printer): Don't
