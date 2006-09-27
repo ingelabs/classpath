@@ -108,8 +108,8 @@ static jclass get_jlist_reference (JNIEnv * env, jclass jlist_class);
  * Method:    init_class
  * Signature: ()V
  */
-JNIEXPORT void
-JNICALL Java_gnu_java_util_prefs_gconf_GConfNativePeer_init_1class
+JNIEXPORT void JNICALL
+Java_gnu_java_util_prefs_gconf_GConfNativePeer_init_1class
   (JNIEnv *env, jclass clazz)
 {
   if (reference_count == 0)
@@ -127,8 +127,8 @@ JNICALL Java_gnu_java_util_prefs_gconf_GConfNativePeer_init_1class
  * Method:    init_id_chache
  * Signature: ()V
  */
-JNIEXPORT void
-JNICALL Java_gnu_java_util_prefs_gconf_GConfNativePeer_init_1id_1cache
+JNIEXPORT void JNICALL
+Java_gnu_java_util_prefs_gconf_GConfNativePeer_init_1id_1cache
   (JNIEnv *env, jclass clazz __attribute__ ((unused)))
 {
   reference_count++;
@@ -530,8 +530,8 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1dir_1exists
  * Method:    finalize_class
  * Signature: ()V
  */
-JNIEXPORT void
-JNICALL Java_gnu_java_util_prefs_gconf_GConfNativePeer_finalize_1class
+JNIEXPORT void JNICALL
+Java_gnu_java_util_prefs_gconf_GConfNativePeer_finalize_1class
   (JNIEnv *env, jclass clazz __attribute__ ((unused)))
 {
   if (reference_count == 0)
@@ -558,8 +558,8 @@ JNICALL Java_gnu_java_util_prefs_gconf_GConfNativePeer_finalize_1class
  * Method:    Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1escape_1key
  * Signature: (Ljava/lang/String;)Z
  */
-JNIEXPORT jstring
-JNICALL Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1escape_1key
+JNIEXPORT jstring JNICALL
+Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1escape_1key
   (JNIEnv *env, jclass clazz __attribute__ ((unused)), jstring plain)
 {
   const char *escaped = NULL;
@@ -592,8 +592,8 @@ JNICALL Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1escape_1key
  * Method:    Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1unescape_1key
  * Signature: (Ljava/lang/String;)Z
  */
-JNIEXPORT jstring
-JNICALL Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1unescape_1key
+JNIEXPORT jstring JNICALL
+Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1unescape_1key
   (JNIEnv *env, jclass clazz __attribute__ ((unused)), jstring escaped)
 {
   const char *plain = NULL;
