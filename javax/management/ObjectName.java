@@ -94,7 +94,7 @@ import java.util.TreeMap;
  * @since 1.5
  */
 public class ObjectName
-  implements Serializable
+  implements Serializable, QueryExp
 {
 
   /**
@@ -116,6 +116,11 @@ public class ObjectName
    * True if this object name is a property pattern.
    */
   private boolean propertyPattern;
+
+  /**
+   * The management server associated with this object name.
+   */
+  private MBeanServer server;
 
   /**
    * Constructs an {@link ObjectName} instance from the given string,
@@ -696,6 +701,16 @@ public class ObjectName
       }
     builder.append('"');
     return builder.toString();
+  }
+
+  /**
+   * Changes the {@link MBeanServer} on which this query is performed.
+   *
+   * @param server the new server to use.
+   */
+  public void setMBeanServer(MBeanServer server)
+  {
+    this.server = server;
   }
 
   /**
