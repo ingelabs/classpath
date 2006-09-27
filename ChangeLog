@@ -1,5 +1,9 @@
 2006-09-27  Robert Schuster  <robertschuster@fsfe.org>
 
+	* gnu/java/nio/VMChannelOwner.java: Removed unneeded imports.
+
+2006-09-27  Robert Schuster  <robertschuster@fsfe.org>
+
 	* vm/reference/gnu/java/nio/VMChannel.java: Removed unneeded imports.
 	* vm/reference/gnu/java/nio/VMPipe.java: Removed unneeded imports.
 	* gnu/java/nio/EpollSelectorImpl.java:
