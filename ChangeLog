@@ -1,4 +1,12 @@
-2006-09-27  Mario Torre  <neugens@limasoftware.net>
+22006-09-27  Roman Kennke  <kennke@aicas.com>
+
+	PR 29218
+	* javax/swing/tree/DefaultTreeModel.java
+	(isLeaf): Check if the node allows children when
+	asksAllowsChildren is true, otherwise fall back
+	to return the node's leaf property.
+
+006-09-27  Mario Torre  <neugens@limasoftware.net>
 
 	* scripts/check_jni_methods.sh: removed methods from the
 	ignore list:
@@ -11,14 +19,14 @@
 	to better follow the GNU style.
 	* include/gnu_java_util_prefs_gconf_GConfNativePeer.h.
 	regenerated header file for GConfNativePeer.
-	
+
 2006-09-27  Robert Schuster  <robertschuster@fsfe.org>
 
 	* INSTALL: Added information about grmic being built when ASM
 	is available, added information about gconf dependency, indented
 	Qt4 dependency section.
 	* configure.ac: Added information about grmic being built when ASM
-        is available.
+	is available.
 
 2006-09-27  Ian Rogers  <ian.rogers@manchester.ac.uk>
 
