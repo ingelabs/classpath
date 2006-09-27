@@ -947,7 +947,12 @@ public class Container extends Component
    */
   public synchronized void addContainerListener(ContainerListener listener)
   {
-    containerListener = AWTEventMulticaster.add(containerListener, listener);
+    if (listener != null)
+      {
+        containerListener = AWTEventMulticaster.add(containerListener,
+                                                    listener);
+        newEventsOnly = true;
+      }
   }
 
   /**

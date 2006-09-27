@@ -1,5 +1,11 @@
 2006-09-27  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/Container.java
+	(addContainerListener): Activate newEventsOnly for the component.
+	Ignore null listeners.
+
+2006-09-27  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/EventQueue.java
 	(Queue): New inner class. Implements the actual queue.
 	(LOW_PRIORITY): New constant field.
