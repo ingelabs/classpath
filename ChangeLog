@@ -1,4 +1,4 @@
-22006-09-27  Roman Kennke  <kennke@aicas.com>
+2006-09-27  Roman Kennke  <kennke@aicas.com>
 
 	PR 29218
 	* javax/swing/tree/DefaultTreeModel.java
@@ -6,7 +6,7 @@
 	asksAllowsChildren is true, otherwise fall back
 	to return the node's leaf property.
 
-006-09-27  Mario Torre  <neugens@limasoftware.net>
+2006-09-27  Mario Torre  <neugens@limasoftware.net>
 
 	* scripts/check_jni_methods.sh: removed methods from the
 	ignore list:
