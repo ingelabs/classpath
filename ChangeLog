@@ -1,5 +1,30 @@
 2006-09-27  Roman Kennke  <kennke@aicas.com>
 
+	PR 29036
+	PR 29161
+	* javax/swing/plaf/basic/BasicButtonUI.java
+	(cachedInsets): New field.
+	(installListeners): Fire synthetic property change to initialize
+	TEXT_LAYOUT_CACHE for the button because the font has been
+	installed before.
+	(uninstallUI): Clear the TEXT_LAYOUT_CACHE for the button.
+	(paint): Use cached insets.
+	(paintText): Let new method forward to old one, not vice versa.
+	* javax/swing/plaf/basic/BasicMenuItemUI.java
+	(defaultAcceleratorLabelGap): Removed unused field.
+	(MenuGap): Removed unused field.
+	(propertyChangeListener): Made private.
+	(getAcceleratorRect): Removed unused method.
+	(getAcceleratorText): Removed unused method.
+	(getPath): Removed unnecessary cast.
+	(installListeners): Fire synthetic property change to initialize
+	TEXT_LAYOUT_CACHE for the button because the font has been
+	installed before.
+	(uninstallUI): Clear the TEXT_LAYOUT_CACHE for the button.
+	(layoutMenuItem): Removed unused statements.
+	
+2006-09-27  Roman Kennke  <kennke@aicas.com>
+
 	PR 29218
 	* javax/swing/tree/DefaultTreeModel.java
 	(isLeaf): Check if the node allows children when
