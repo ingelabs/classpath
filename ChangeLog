@@ -1,5 +1,36 @@
 2006-09-27  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/EventQueue.java
+	(Queue): New inner class. Implements the actual queue.
+	(LOW_PRIORITY): New constant field.
+	(NORM_PRIORITY): New constant field.
+	(queueHead): Removed. Moved into Queue.
+	(queueTail): Removed. Moved into Queue.
+	(queues): New field.
+	(EventQueue): Initialize two internal queues, one for
+	normal events, one for low priority events.
+	(getNextEventImpl): New helper method, fetches the next event.
+	(getNextEvent): Use getNextEventImpl() for fetching the event.
+	(peekEvent): Use getNextEventImpl() for fetching the event.
+	(peekEvent(int)): Search for event in all queues.
+	(postEventImpl(AWTEvent)): Moved actual posting into
+	postEventImpl(AWTEvent,int). Prioritize events here.
+	(postEventImpl(AWTEvent,int)): Take priority parameter and insert
+	event into correct queue. Re-enable event coalescing.
+	* gnu/java/awt/LowPriorityEvent.java: New marker interface.
+	* javax/swing/RepaintManager.java
+	(RepaintWorkerEvent): New internal class. This is a low priority
+	event for the repaint worker.
+	(addDirtyRegion): Use new internal invokeLater() for sending
+	a low priority event.
+	(addInvalidComponent): Use new internal invokeLater() for sending
+	a low priority event.
+	(commitBuffer): Added some null checks.
+	(invokeLater): New helper method. Sends a low priority
+	repaint worker event on the event queue.
+
+2006-09-27  Roman Kennke  <kennke@aicas.com>
+
 	PR 29036
 	PR 29161
 	* javax/swing/plaf/basic/BasicButtonUI.java
