@@ -1,3 +1,8 @@
+2006-09-27  Ian Rogers  <ian.rogers@manchester.ac.uk>
+
+	* native/jni/classpath/jcl.c (JNI_OnLoad): Don't call
+	DeleteGlobalRef on a local ref.
+
 2006-09-24  Mario Torre  <neugens@limasoftware.net>
 
 	* scripts/check_jni_methods.sh: added two new methods in the
