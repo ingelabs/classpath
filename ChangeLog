@@ -1,3 +1,11 @@
+2006-09-27  Robert Schuster  <robertschuster@fsfe.org>
+
+	* INSTALL: Added information about grmic being built when ASM
+	is available, added information about gconf dependency, indented
+	Qt4 dependency section.
+	* configure.ac: Added information about grmic being built when ASM
+        is available.
+
 2006-09-27  Ian Rogers  <ian.rogers@manchester.ac.uk>
 
 	* native/jni/classpath/jcl.c (JNI_OnLoad): Don't call

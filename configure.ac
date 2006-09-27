@@ -809,7 +809,7 @@ dnl Build javah using ASM library
 dnl -----------------------------------------------------------
 AC_ARG_WITH([asm],
 	 AS_HELP_STRING([--with-asm=ABS.PATH],
-	                [specify path to ASM jar for javah]))
+	                [specify path to ASM jar to enable gjavah and grmic build]))
 case "$with_asm" in
 "")
         use_asm=false
