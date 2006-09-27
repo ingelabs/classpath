@@ -39,12 +39,7 @@ exception statement from your version. */
 package gnu.java.nio;
 
 import gnu.classpath.Configuration;
-import gnu.classpath.Pointer;
 import gnu.classpath.jdwp.exception.NotImplementedException;
-import gnu.java.net.PlainSocketImpl;
-import gnu.java.nio.PipeImpl.SinkChannelImpl;
-import gnu.java.nio.PipeImpl.SourceChannelImpl;
-import gnu.java.nio.FileChannelImpl;
 
 import java.io.IOException;
 import java.net.Inet4Address;

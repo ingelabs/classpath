@@ -138,7 +138,7 @@ public class EpollSelectorImpl extends AbstractSelector
             EpollSelectionKeyImpl key = (EpollSelectionKeyImpl) it.next();
             epoll_delete(epoll_fd, key.fd);
             key.valid = false;
-            keys.remove(new Integer(key.fd));
+            keys.remove(Integer.valueOf(key.fd));
             it.remove();
           }
         
@@ -161,7 +161,7 @@ public class EpollSelectorImpl extends AbstractSelector
             ByteBuffer b = selected.slice();
             int fd = selected_fd(b);
             EpollSelectionKeyImpl key
-              = (EpollSelectionKeyImpl) keys.get(new Integer(fd));
+              = (EpollSelectionKeyImpl) keys.get(Integer.valueOf(fd));
             if (key == null)
               throw new IOException("fd was selected, but no key found");
             key.selectedOps = selected_ops(b) & key.interestOps;
@@ -228,7 +228,7 @@ public class EpollSelectorImpl extends AbstractSelector
         int native_fd = channel.getState().getNativeFD();
         synchronized (keys)
         {
-          if (keys.containsKey(new Integer(native_fd)))
+          if (keys.containsKey(Integer.valueOf(native_fd)))
             throw new IllegalArgumentException("channel already registered");
           EpollSelectionKeyImpl result =
             new EpollSelectionKeyImpl(this, ch, native_fd);
@@ -240,7 +240,7 @@ public class EpollSelectorImpl extends AbstractSelector
           result.attach(att);
           result.key = System.identityHashCode(result);
           epoll_add(epoll_fd, result.fd, ops);
-          keys.put(new Integer(native_fd), result);
+          keys.put(Integer.valueOf(native_fd), result);
           return result;
         }
       }

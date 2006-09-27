@@ -1,3 +1,11 @@
+2006-09-27  Robert Schuster  <robertschuster@fsfe.org>
+
+	* vm/reference/gnu/java/nio/VMChannel.java: Removed unneeded imports.
+	* vm/reference/gnu/java/nio/VMPipe.java: Removed unneeded imports.
+	* gnu/java/nio/EpollSelectorImpl.java:
+	(doSelect): Use Integer.valueOf() instead of constructor call.
+	(register): Use Integer.valueOf() instead of constructor call.
+
 2006-09-27  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/Container.java
