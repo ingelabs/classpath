@@ -1,3 +1,13 @@
+2006-09-28  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/tree/DefaultTreeCellRenderer.java
+	(DefaultTreeCellRenderer): Fetch drawsFocusBorderAroundIcon
+	property from UIManager.
+	(paint): Rewritten to use super's implementation and only paint
+	background and focus indicator before.
+	(paintFocus): New helper method.
+	(getXOffset): New helper method.
+
 2006-09-28  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 	
 	* javax/management/BadBinaryOpValueExpException.java,
