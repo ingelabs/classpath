@@ -80,6 +80,7 @@ import javax.management.loading.ClassLoaderRepository;
  * @since 1.5
  */
 public interface MBeanServer
+  extends MBeanServerConnection
 {
 
   /**
@@ -1128,7 +1129,7 @@ public interface MBeanServer
    * @see #getAttribute(ObjectName, String)
    * @see DynamicMBean#setAttribute(Attribute)
    */
-  void setAttribute(Attribute attribute)
+  void setAttribute(ObjectName name, Attribute attribute)
     throws InstanceNotFoundException, AttributeNotFoundException,
 	   InvalidAttributeValueException, MBeanException,
 	   ReflectionException;

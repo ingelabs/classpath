@@ -71,7 +71,8 @@ public interface ClassLoaderRepository
    * @throws ClassNotFoundException if all the class loaders fail
    *                                to load the class.
    */
-  Class loadClass(String name);
+  Class loadClass(String name)
+    throws ClassNotFoundException;
 
   /**
    * <p>
@@ -101,7 +102,8 @@ public interface ClassLoaderRepository
    * @throws ClassNotFoundException if all the class loaders fail
    *                                to load the class.
    */
-  Class loadClassBefore(ClassLoader stop, String name);
+  Class loadClassBefore(ClassLoader stop, String name)
+    throws ClassNotFoundException;
 
   /**
    * <p>
@@ -123,14 +125,15 @@ public interface ClassLoaderRepository
    * in preference to this method to avoid this.
    * </p>
    *
-   * @param name the name of the class to load.
    * @param exclude the class loader to exclude, or <code>null</code>
    *             to obtain the same behaviour as {@link #loadClass(String)}.
+   * @param name the name of the class to load.
    * @return the loaded class.
    * @throws ClassNotFoundException if all the class loaders fail
    *                                to load the class.
    */
-  Class loadClassWithout(String name, ClassLoader exclude);
+  Class loadClassWithout(ClassLoader exclude, String name)
+    throws ClassNotFoundException;
 
 }
 

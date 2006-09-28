@@ -72,6 +72,17 @@ public class BadBinaryOpValueExpException
   }
 
   /**
+   * Returns the inappropriate value expression associated
+   * with this exception.
+   *
+   * @return the value expression.
+   */
+  public ValueExp getExp()
+  {
+    return exp;
+  }
+
+  /**
    * Returns a textual representation of this instance.  This
    * is constructed using the class name
    * (<code>javax.management.BadBinaryOpValueExpException</code>)

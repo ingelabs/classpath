@@ -1,4 +1,4 @@
-/* MBeanConnection.java -- Represents a connection to a management server.
+/* MBeanServerConnection.java -- Represents a connection to a management server.
    Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -50,7 +50,7 @@ import java.util.Set;
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.5
  */
-public interface MBeanConnection
+public interface MBeanServerConnection
 {
 
   /**
@@ -708,7 +708,7 @@ public interface MBeanConnection
    * @see #getAttribute(ObjectName, String)
    * @see DynamicMBean#setAttribute(Attribute)
    */
-  void setAttribute(Attribute attribute)
+  void setAttribute(ObjectName name, Attribute attribute)
     throws InstanceNotFoundException, AttributeNotFoundException,
 	   InvalidAttributeValueException, MBeanException,
 	   ReflectionException, IOException;

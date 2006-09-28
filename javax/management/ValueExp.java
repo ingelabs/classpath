@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package javax.management;
 
+import java.io.Serializable;
+
 /**
  * Represents values that may be passed as arguments to
  * {@link QueryExp}s.  Strings, numbers and bean attributes
@@ -48,6 +50,7 @@ package javax.management;
  * @since 1.5
  */
 public interface ValueExp
+  extends Serializable
 {
 
   /**

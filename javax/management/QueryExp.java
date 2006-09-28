@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package javax.management;
 
+import java.io.Serializable;
+
 /**
  * Applies the type of relational constraints seen in the
  * <code>where</code> clauses of databases to an
@@ -52,6 +54,7 @@ package javax.management;
  * @since 1.5
  */
 public interface QueryExp
+  extends Serializable
 {
 
   /**
