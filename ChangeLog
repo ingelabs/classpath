@@ -1,3 +1,19 @@
+2006-08-29  Tania Bento  <tbento@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTableUI.java
+	(getPreferredSize): The number of iterations for the for-loop should be
+	the number of columns in the table's column model, not the number of
+	columns of the table.
+	* javax/swing/JTable.java
+	(JTable(TableModel, TableColumnModel, ListSelectionModel): Removed 4
+	lines that are not needed.
+	(initializeLocalVars): dragEnabled should be set to false, not true.
+	(getCellRenderer): Added a check to prevent an
+	ArrayIndexOutOfBoundsException.
+	(doLayout): The number of iterations for the for-loops should be the
+	number of columns in the table's column model, not the number of columns
+	of the table.
+
 2006-09-29  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/java2d/AbstractGraphics2D.java: Updated
