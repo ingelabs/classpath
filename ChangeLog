@@ -1,3 +1,35 @@
+2006-09-29  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/java2d/AbstractGraphics2D.java: Updated
+	API docs.
+	(isOptimized): Initialize with true.
+	(paintRaster): Removed unneeded field.
+	(shapeCache): New static field. Caches certain shapes for reuse.
+	(computeIntersection): Removed unneeded casts.
+	(drawArc): Use shape cache.
+	(drawImage): Removed unneeded statement.
+	(drawLine): Use shape cache. Pass untranslated coordinates
+	to rawDrawLine().
+	(drawOval): Use shape cache.
+	(drawPolygon): Use shape cache.
+	(drawRect): Overridden to provide accelerated rectangle drawing
+	if possible and to use the shape cache.
+	(drawRoundRect): Use shape cache.
+	(fillArc): Use shape cache.
+	(fillOval): Use shape cache.
+	(fillPolygon): Use shape cache.
+	(fillRect): Pass untranslated coordinates to rawFillRect().
+	Use shape cache.
+	(fillRoundRect): Use shape cache.
+	(fillScanlineAA): Removed unneeded statement.
+	(fillScanline): Updated API docs.
+	(fillShapeAntialias): Removed unnecessary cast.
+	(fillShapeImpl): Update API docs. Removed unnecessary cast.
+	(fillShape): Updated API docs.
+	(getShapeCache): New helper method.
+	* gnu/java/awt/java2d/ShapeCache.java: New class. Caches
+	certain shapes for reuse in AbstractGraphics2D.
+
 2006-09-28  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/management/BadBinaryOpValueExpException.java:
