@@ -252,8 +252,7 @@ public class JViewport extends JComponent implements Accessible
   static
   {
     String scrollModeProp =
-      SystemProperties.getProperty("gnu.javax.swing.JViewport.scrollMode",
-                         "BLIT");
+      SystemProperties.getProperty("gnu.swing.scrollmode", "BACKINGSTORE");
     if (scrollModeProp.equalsIgnoreCase("simple"))
       defaultScrollMode = SIMPLE_SCROLL_MODE;
     else if (scrollModeProp.equalsIgnoreCase("backingstore"))
@@ -627,19 +626,11 @@ public class JViewport extends JComponent implements Accessible
    */
   public void repaint(long tm, int x, int y, int w, int h)
   {
-//    Component parent = getParent();
-//    if (parent != null)
-//      parent.repaint(tm, x + getX(), y + getY(), w, h);
-//    else
-//      super.repaint(tm, x, y, w, h);
-
-    // The specs suggest to implement something like the above. This however
-    // breaks blit painting, because the parent (most likely a JScrollPane)
-    // clears the background of the offscreen area of the JViewport, thus
-    // destroying the pieces that we want to clip. So we simply call super here
-    // instead.
-    super.repaint(tm, x, y, w, h);
-    
+    Component parent = getParent();
+    if (parent != null)
+      parent.repaint(tm, x + getX(), y + getY(), w, h);
+    else
+      super.repaint(tm, x, y, w, h);
   }
 
   protected void addImpl(Component comp, Object constraints, int index)

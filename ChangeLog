@@ -1,3 +1,12 @@
+2006-09-29  Roman Kennke  <kennke@aicas.com>
+
+	PR 28929
+	* javax/swing/JViewport.java
+	(cinit): Renamed system property to gnu.swing.scrollmode
+	to avoid bloat. Default to BACKINGSTORE, this is much
+	more reliable.
+	(repaint): Forward repaint() to parent as is specified.
+
 2006-08-29  Tania Bento  <tbento@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTableUI.java
