@@ -43,11 +43,12 @@ import java.nio.channels.CancelledKeyException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
+import java.nio.channels.spi.AbstractSelectionKey;
 
 /**
  * @author Casey Marshall (csm@gnu.org)
  */
-public class EpollSelectionKeyImpl extends SelectionKey
+public class EpollSelectionKeyImpl extends AbstractSelectionKey
 {
   final int fd;
   private final EpollSelectorImpl selector;
@@ -64,15 +65,6 @@ public class EpollSelectionKeyImpl extends SelectionKey
     this.selector = selector;
     this.channel = channel;
     this.fd = fd;
-  }
-
-  /* (non-Javadoc)
-   * @see java.nio.channels.SelectionKey#cancel()
-   */
-  public void cancel()
-  {
-    cancelled = true;
-    selector.cancel(this);
   }
 
   /* (non-Javadoc)
@@ -110,14 +102,6 @@ public class EpollSelectionKeyImpl extends SelectionKey
         throw new IllegalArgumentException(ioe);
       }
     return this;
-  }
-
-  /* (non-Javadoc)
-   * @see java.nio.channels.SelectionKey#isValid()
-   */
-  public boolean isValid()
-  {
-    return valid;
   }
 
   /* (non-Javadoc)

@@ -42,6 +42,7 @@ import gnu.classpath.Configuration;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.spi.AbstractSelectableChannel;
@@ -75,8 +76,12 @@ public class EpollSelectorImpl extends AbstractSelector
   
   private final HashMap keys;
   private Set selectedKeys;
-  private final Set cancelledKeys;
   private Thread waitingThread;
+  private ByteBuffer events;
+  
+  private static final int INITIAL_CAPACITY;
+  private static final int MAX_DOUBLING_CAPACITY;
+  private static final int CAPACITY_INCREMENT;
 
   static
   {
@@ -87,6 +92,10 @@ public class EpollSelectorImpl extends AbstractSelector
       sizeof_struct_epoll_event = sizeof_struct();
     else
       sizeof_struct_epoll_event = -1;
+    
+    INITIAL_CAPACITY = 64 * sizeof_struct_epoll_event;
+    MAX_DOUBLING_CAPACITY = 1024 * sizeof_struct_epoll_event;
+    CAPACITY_INCREMENT = 128 * sizeof_struct_epoll_event;
   }
   
   public EpollSelectorImpl(SelectorProvider provider)
@@ -96,7 +105,7 @@ public class EpollSelectorImpl extends AbstractSelector
     epoll_fd = epoll_create(DEFAULT_EPOLL_SIZE);
     keys = new HashMap();
     selectedKeys = null;
-    cancelledKeys = new HashSet();
+    events = ByteBuffer.allocateDirect(INITIAL_CAPACITY);
   }
 
   /* (non-Javadoc)
@@ -131,6 +140,7 @@ public class EpollSelectorImpl extends AbstractSelector
   {
     synchronized (keys)
     {
+      Set cancelledKeys = cancelledKeys();
       synchronized (cancelledKeys)
       {
         for (Iterator it = cancelledKeys.iterator(); it.hasNext(); )
@@ -140,25 +150,45 @@ public class EpollSelectorImpl extends AbstractSelector
             key.valid = false;
             keys.remove(Integer.valueOf(key.fd));
             it.remove();
+            deregister(key);
+          }
+        
+        // Clear out closed channels. The fds are removed from the epoll
+        // fd when closed, so there is no need to remove them manually.
+        for (Iterator it = keys.values().iterator(); it.hasNext(); )
+          {
+            EpollSelectionKeyImpl key = (EpollSelectionKeyImpl) it.next();
+            SelectableChannel ch = key.channel();
+            if (ch instanceof VMChannelOwner)
+              {
+                if (!((VMChannelOwner) ch).getVMChannel().getState().isValid())
+                  it.remove();
+              }
           }
         
         // Don't bother if we have nothing to select.
         if (keys.isEmpty())
           return 0;
 
-        ByteBuffer selected =
-          ByteBuffer.allocateDirect(keys.size() * sizeof_struct_epoll_event);
-      
-        waitingThread = Thread.currentThread();
-        int ret = epoll_wait(epoll_fd, selected, keys.size(), timeout);
-        Thread.interrupted();
-        waitingThread = null;
+        int ret;
+        try
+          {
+            begin();
+            waitingThread = Thread.currentThread();
+            ret = epoll_wait(epoll_fd, events, keys.size(), timeout);
+          }
+        finally
+          {
+            Thread.interrupted();
+            waitingThread = null;
+            end();
+          }
       
         HashSet s = new HashSet(ret);
         for (int i = 0; i < ret; i++)
           {
-            selected.position(i * sizeof_struct_epoll_event);
-            ByteBuffer b = selected.slice();
+            events.position(i * sizeof_struct_epoll_event);
+            ByteBuffer b = events.slice();
             int fd = selected_fd(b);
             EpollSelectionKeyImpl key
               = (EpollSelectionKeyImpl) keys.get(Integer.valueOf(fd));
@@ -167,6 +197,9 @@ public class EpollSelectorImpl extends AbstractSelector
             key.selectedOps = selected_ops(b) & key.interestOps;
             s.add(key);
           }
+        
+        reallocateBuffer();
+        
         selectedKeys = s;
         return ret;
       }
@@ -202,6 +235,7 @@ public class EpollSelectorImpl extends AbstractSelector
       }
     catch (NullPointerException npe)
       {
+        // Ignored, thrown if we are not in a blocking op.
       }
     return this;
   }
@@ -241,6 +275,7 @@ public class EpollSelectorImpl extends AbstractSelector
           result.key = System.identityHashCode(result);
           epoll_add(epoll_fd, result.fd, ops);
           keys.put(Integer.valueOf(native_fd), result);
+	  reallocateBuffer();
           return result;
         }
       }
@@ -250,17 +285,32 @@ public class EpollSelectorImpl extends AbstractSelector
       }
   }
   
+  private void reallocateBuffer()
+  {
+    // Ensure we have enough space for all potential events that may be
+    // returned.
+    if (events.capacity() < keys.size() * sizeof_struct_epoll_event)
+      {
+        int cap = events.capacity();
+        if (cap < MAX_DOUBLING_CAPACITY)
+          cap <<= 1;
+        else
+          cap += CAPACITY_INCREMENT;
+        events = ByteBuffer.allocateDirect(cap);
+      }
+    // Ensure that the events buffer is not too large, given the number of
+    // events registered.
+    else if (events.capacity() > keys.size() * sizeof_struct_epoll_event * 2 + 1
+	     && events.capacity() > INITIAL_CAPACITY)
+      {
+        int cap = events.capacity() >>> 1;
+        events = ByteBuffer.allocateDirect(cap);
+      }
+  }
+  
   void epoll_modify(EpollSelectionKeyImpl key, int ops) throws IOException
   {
     epoll_modify(epoll_fd, key.fd, ops);
-  }
-  
-  void cancel(EpollSelectionKeyImpl key)
-  {
-    synchronized (cancelledKeys)
-    {
-      cancelledKeys.add(key);
-    }
   }
   
   /**

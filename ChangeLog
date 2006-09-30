@@ -1,3 +1,22 @@
+2006-09-29  Casey Marshall  <csm@gnu.org>
+
+	PR 29190
+	* gnu/java/nio/EpollSelectionKeyImpl.java: extend
+	`AbstractSelectionKey.'
+	(cancel, isValid): removed.
+	* gnu/java/nio/EpollSelectorImpl.java (cancelledKeys): removed.
+	(events): new field.
+	(INITIAL_CAPACITY, MAX_DOUBLING_CAPACITY, CAPACITY_INCREMENT): new
+	fields.
+	(<clinit>): initialize those constants.
+	(<init>): don't initialize `cancelledKeys;' initialize `events.'
+	(doSelect): deregister cancelled keys; remove keys attached to
+	closed channels; wrap `epoll_wait' in `begin' and `end' calls; use
+	`events' buffer; reallocate `events' buffer if needed.
+	(register): reallocate `events' buffer if needed.
+	(reallocateBuffer): new method.
+	(cancel): removed.
+
 2006-09-29  Roman Kennke  <kennke@aicas.com>
 
 	PR 28929
