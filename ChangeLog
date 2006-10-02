@@ -1,3 +1,14 @@
+2006-10-02  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* gnu/classpath/ListenerData.java:
+	New class for holding listener data.
+	* gnu/java/lang/management/MemoryMXBeanImpl.java:
+	ListenerData class moved to its own file.
+	* javax/management/MBeanServerDelegate.java,
+	* javax/management/MBeanServerDelegateMBean.java,
+	* javax/management/MBeanServerNotification.java:
+	Implemented.
+
 2006-10-02  Tania Bento  <tbento@redhat.com>
 
 	* java/ast/Rectangle.java:
