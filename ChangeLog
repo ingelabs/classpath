@@ -1,3 +1,11 @@
+2006-10-02  Tania Bento  <tbento@redhat.com>
+
+	* java/ast/Rectangle.java:
+	(Rectangle(Rectangle)): Do not throw NPE.
+	(Rectangle(Point, Dimension)): Same.
+	(Rectangle(Point)): Same.
+	(Rectangle(Dimension)): Same.
+
 2006-09-29  Casey Marshall  <csm@gnu.org>
 
 	PR 29190
@@ -26,7 +34,7 @@
 	more reliable.
 	(repaint): Forward repaint() to parent as is specified.
 
-2006-08-29  Tania Bento  <tbento@redhat.com>
+2006-09-29  Tania Bento  <tbento@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTableUI.java
 	(getPreferredSize): The number of iterations for the for-loop should be
