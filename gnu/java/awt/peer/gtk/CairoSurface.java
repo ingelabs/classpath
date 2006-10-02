@@ -38,8 +38,11 @@ exception statement from your version. */
 
 package gnu.java.awt.peer.gtk;
 
+import gnu.java.awt.Buffers;
+
 import java.awt.Point;
 import java.awt.Graphics2D;
+import java.awt.color.ColorSpace;
 import java.awt.image.DataBuffer;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
@@ -69,11 +72,15 @@ public class CairoSurface extends WritableRaster
    */
   long bufferPointer;
 
-  static ColorModel nativeModel = new DirectColorModel(32,
-						       0x00FF0000,
-						       0x0000FF00,
-						       0x000000FF,
-						       0xFF000000);
+  // nativeGetPixels will return [0]=red, [1]=green, [2]=blue, [3]=alpha
+  static ColorModel nativeModel = new DirectColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB),
+                                                       32,
+                                                       0x000000FF,
+                                                       0x0000FF00,
+                                                       0x00FF0000,
+                                                       0xFF000000,
+                                                       true,
+                                                       Buffers.smallestAppropriateTransferType(32));
 
   /**
    * Allocates and clears the buffer and creates the cairo surface.

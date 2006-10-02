@@ -953,6 +953,9 @@ public abstract class CairoGraphics2D extends Graphics2D
   {
     this.comp = comp;
 
+    if (comp == null)
+      comp = AlphaComposite.SrcOver;
+    
     if (comp instanceof AlphaComposite)
       {
 	AlphaComposite a = (AlphaComposite) comp;
@@ -1061,8 +1064,14 @@ public abstract class CairoGraphics2D extends Graphics2D
   {
     if (bg != null)
       cairoSetRGBAColor(nativePointer, bg.getRed() / 255.0,
-                        bg.getGreen() / 255.0, bg.getBlue() / 255.0, 1.0);
+                        bg.getGreen() / 255.0, bg.getBlue() / 255.0,
+                        bg.getAlpha() / 255.0);
+
+    Composite oldcomp = comp;
+    setComposite(AlphaComposite.Src);
     fillRect(x, y, width, height);
+
+    setComposite(oldcomp);
     updateColor();
   }
 
@@ -1109,7 +1118,10 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   public void fillRect(int x, int y, int width, int height)
   {
-    cairoFillRect(nativePointer, x, y, width, height);
+    fill(new Rectangle(x, y, width, height));
+    // TODO: If we want to use the more efficient
+    //cairoFillRect(nativePointer, x, y, width, height);
+    // we need to override this method in subclasses
   }
 
   public void fillPolygon(int[] xPoints, int[] yPoints, int nPoints)
@@ -1309,6 +1321,9 @@ public abstract class CairoGraphics2D extends Graphics2D
     double[] i2u = new double[6];
     int width = b.getWidth();
     int height = b.getHeight();
+    
+    boolean wasPremultplied = b.isAlphaPremultiplied();
+    b.coerceData(true);
 
     // If this BufferedImage has a BufferedImageGraphics object, 
     // use the cached CairoSurface that BIG is drawing onto
@@ -1329,6 +1344,7 @@ public abstract class CairoGraphics2D extends Graphics2D
 	((CairoSurface)raster).drawSurface(nativePointer, i2u, alpha,
                                            getInterpolation());
         updateColor();
+        b.coerceData(wasPremultplied);
 	return true;
       }
 	    
@@ -1352,6 +1368,7 @@ public abstract class CairoGraphics2D extends Graphics2D
 
     // Cairo seems to lose the current color which must be restored.
     updateColor();
+    b.coerceData(wasPremultplied);
     return true;
   }
 
