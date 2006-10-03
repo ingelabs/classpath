@@ -1,3 +1,12 @@
+2006-10-03  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/Locale.java (hashcode): Updated javadoc.
+	(hashcodeCache): Removed.
+	(Locale): Updated.
+	(hashCode): Updated.
+	(writeObject): New method.
+	(readObject): Updated.
+
 2006-10-02  Francis Kung  <fkung@redhat.com>
 
 	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java
