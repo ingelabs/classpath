@@ -40,16 +40,16 @@ package gnu.java.awt.peer.gtk;
 
 import gnu.java.awt.Buffers;
 
-import java.awt.Point;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.color.ColorSpace;
-import java.awt.image.DataBuffer;
-import java.awt.image.Raster;
-import java.awt.image.WritableRaster;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
+import java.awt.image.DataBuffer;
 import java.awt.image.DirectColorModel;
+import java.awt.image.SampleModel;
 import java.awt.image.SinglePixelPackedSampleModel;
+import java.awt.image.WritableRaster;
 import java.nio.ByteOrder;
 import java.util.Hashtable;
 
@@ -73,7 +73,7 @@ public class CairoSurface extends WritableRaster
   long bufferPointer;
 
   // nativeGetPixels will return [0]=red, [1]=green, [2]=blue, [3]=alpha
-  static ColorModel nativeModel = new DirectColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB),
+  static ColorModel nativeColorModel = new DirectColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB),
                                                        32,
                                                        0x000000FF,
                                                        0x0000FF00,
@@ -147,10 +147,8 @@ public class CairoSurface extends WritableRaster
    */
   public CairoSurface(int width, int height)
   {
-    super( new SinglePixelPackedSampleModel
-	   (DataBuffer.TYPE_INT, width, height,
-	    new int[]{ 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000 }),
-	   null, new Point(0, 0) );
+    super(createNativeSampleModel(width, height),
+	      null, new Point(0, 0));
 
     if(width <= 0 || height <= 0)
       throw new IllegalArgumentException("Image must be at least 1x1 pixels.");
@@ -262,7 +260,7 @@ public class CairoSurface extends WritableRaster
    */    
   public static BufferedImage getBufferedImage(CairoSurface surface)
   {
-    return new BufferedImage(nativeModel, surface, true, new Hashtable());
+    return new BufferedImage(nativeColorModel, surface, true, new Hashtable());
   }
 
   private class CairoDataBuffer extends DataBuffer
@@ -323,5 +321,15 @@ public class CairoSurface extends WritableRaster
                              int height, int dx, int dy, int stride)
   {
     copyAreaNative2(bufferPointer, x, y, width, height, dx, dy, stride);
+  }
+  
+  /**
+   * Creates a SampleModel that matches Cairo's native format
+   */
+  protected static SampleModel createNativeSampleModel(int w, int h)
+  {
+    return new SinglePixelPackedSampleModel(DataBuffer.TYPE_INT, w, h,
+                                            new int[]{0x000000FF, 0x0000FF00,
+                                                      0x00FF0000, 0xFF000000});    
   }
 }

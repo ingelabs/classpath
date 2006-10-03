@@ -45,6 +45,7 @@ import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
+import java.awt.CompositeContext;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.GradientPaint;
@@ -163,6 +164,7 @@ public abstract class CairoGraphics2D extends Graphics2D
    * The current compositing context, if any.
    */
   Composite comp;
+  CompositeContext compCtx;
 
   /**
    * Rendering hint map.
@@ -234,6 +236,7 @@ public abstract class CairoGraphics2D extends Graphics2D
     nativePointer = init(cairo_t_pointer);
     paint = g.paint;
     stroke = g.stroke;
+    comp = g.comp;
     setRenderingHints(g.hints);
     
     Color foreground;
@@ -268,6 +271,7 @@ public abstract class CairoGraphics2D extends Graphics2D
     setStroke(stroke);
     setTransformImpl(transform);
     setClip(clip);
+    setComposite(comp);
   }
 
   /**
@@ -288,6 +292,8 @@ public abstract class CairoGraphics2D extends Graphics2D
   {
     disposeNative(nativePointer);
     nativePointer = 0;
+    if (compCtx != null)
+      compCtx.dispose();
   }
 
   /**
@@ -951,7 +957,13 @@ public abstract class CairoGraphics2D extends Graphics2D
    */
   public void setComposite(Composite comp)
   {
+    if (this.comp == comp)
+      return;
+    
     this.comp = comp;
+    if (compCtx != null)
+      compCtx.dispose();
+    compCtx = null;
 
     if (comp == null)
       comp = AlphaComposite.SrcOver;
@@ -961,6 +973,7 @@ public abstract class CairoGraphics2D extends Graphics2D
 	AlphaComposite a = (AlphaComposite) comp;
 	cairoSetOperator(nativePointer, a.getRule());
       }
+      
     else
       {
         // FIXME: this check is only required "if this Graphics2D
@@ -970,8 +983,25 @@ public abstract class CairoGraphics2D extends Graphics2D
           sm.checkPermission(new AWTPermission("readDisplayPixels"));
 
         // FIXME: implement general Composite support
-        throw new java.lang.UnsupportedOperationException();
+        //throw new java.lang.UnsupportedOperationException();
+        // this is in progress!  yay!
+        compCtx = comp.createContext(getNativeCM(), getNativeCM(), hints);
       }
+  }
+  
+  /**
+   * Returns the Colour Model describing the native, raw image data for this
+   * specific peer.
+   *  
+   * @return ColorModel the ColorModel of native data in this peer
+   */
+  /* protected abstract ColorModel getNativeCM(); */
+  protected ColorModel getNativeCM()
+  {
+    // This stub should be removed and the method made abstract once I'm done
+    // implementing custom composites across all the peers... but we need it
+    // for now, so that the build doesn't break.
+    return null;
   }
 
   ///////////////////////// DRAWING PRIMITIVES ///////////////////////////////////
@@ -1237,6 +1267,12 @@ public abstract class CairoGraphics2D extends Graphics2D
     
     shiftDrawCalls = hints.containsValue(RenderingHints.VALUE_STROKE_NORMALIZE)
       || hints.containsValue(RenderingHints.VALUE_STROKE_DEFAULT);
+    
+    if (compCtx != null)
+      {
+        compCtx.dispose();
+        compCtx = comp.createContext(getNativeCM(), getNativeCM(), this.hints);
+      }
   }
 
   public void addRenderingHints(Map hints)

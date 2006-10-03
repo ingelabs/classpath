@@ -1,3 +1,33 @@
+2006-10-03  Francis Kung  <fkung@redhat.com>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(compCtx): New field for composite context.
+	(copy): Copy composite.
+	(dispose): Dispose of composite context.
+	(getNativeCM): New method.
+	(setComposite): Discard old composite context and set up new context.
+	(setRenderingHints): Update composite context.
+	* gnu/java/awt/peer/gtk/CairoSurface.java
+	(nativeColorModel): New field, renamed from nativeModel.
+	(nativeModel): Renamed field to nativeColorModel.
+	(CairoSurface(int, int)): Call new method to create sample model.
+	(createNativeSampleModel): New method.
+	(getBufferedImage): Updated variable name.
+	* gnu/java/awt/peer/gtk/VolatileImageGraphics.java
+	(buffer): New field.
+	(createBuffer): New method.
+	(draw): New method.
+	(drawComposite): New method.
+	(drawGlyphVector): New method.
+	(drawImage(Image, AffineTransform, Color, ImageObserver)): New method.
+	(drawImage(Image, int, int, ImageObserver)): Check composite.
+	(drawImage(Image, int, int, int, int, ImageObserver)): Check composite.
+	(fill): New method.
+	(getNativeCM): New method.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkVolatileImage.c
+	(Java_gnu_java_awt_peer_gtk_GtkVolatileImage_nativeGetPixels): Use 
+	intermediary pixbuf to grab on-screen pixels.
+
 2006-10-03  Tom Tromey  <tromey@redhat.com>
 
 	PR classpath/28987:
