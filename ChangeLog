@@ -1,5 +1,22 @@
 2006-10-03  Tom Tromey  <tromey@redhat.com>
 
+	PR classpath/28987:
+	* java/util/IdentityHashMap.java (tombstone): Removed.
+	(emptyslot): Removed.
+	(nullslot): New field.
+	(IdentityHashMap): Don't fill array.
+	(clear): Fill with null.
+	(hash): Now final.  Use linear probing.
+	(xform): New method.
+	(unxform): Likewise.
+	(removeAtIndex): Likewise.
+	(clone, containsKey, containsValue, entrySet, get, hashCode,
+	keySet, put, remove, values): Updated.
+	(IdentityIterator, IdentityEntry): Likewise.
+	(writeObject): Likewise.
+
+2006-10-03  Tom Tromey  <tromey@redhat.com>
+
 	* java/util/Locale.java (hashcode): Updated javadoc.
 	(hashcodeCache): Removed.
 	(Locale): Updated.
