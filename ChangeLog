@@ -1,3 +1,13 @@
+2006-10-04  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* native/jni/java-nio/javanio.c (cpnio_read, cpnio_readv)
+	(cpnio_write, cpnio_writev, cpnio_socket, cpnio_connect)
+	(cpnio_accept, cpnio_sendto, cpnio_recvfrom, cpnio_fcntl)
+	(cpnio_select): Use CPNIO_EXPORT.
+	* native/jni/java-nio/javanio.h (CPNIO_EXPORT): Define to static
+	inline instead of extern inline, as newer GCCs changed their
+	behavior.
+
 2006-10-04  Gary Benson  <gbenson@redhat.com>
 
 	* java/net/InetAddress.java: Updated javadoc.

@@ -52,7 +52,7 @@ exception statement from your version.  */
  * This macro is used in all function prototypes below; if any additional
  * keywords need to be added to a prototype, declare them in this macro.
  */
-#define CPNIO_EXPORT extern inline
+#define CPNIO_EXPORT static inline
 
 /**
  * Read bytes from the given file descriptor into the given memory address, which

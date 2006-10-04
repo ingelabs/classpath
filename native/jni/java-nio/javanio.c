@@ -47,63 +47,63 @@ exception statement from your version.  */
 #include <sys/uio.h>
 #include <unistd.h>
 
-extern inline ssize_t
+CPNIO_EXPORT ssize_t
 cpnio_read (int fd, void *buf, size_t nbytes)
 {
   return read (fd, buf, nbytes);
 }
 
-extern inline ssize_t
+CPNIO_EXPORT ssize_t
 cpnio_readv (int fd, const struct iovec *iov, int iovcnt)
 {
   return readv (fd, iov, iovcnt);
 }
 
-extern inline ssize_t
+CPNIO_EXPORT ssize_t
 cpnio_write (int fd, const void *buf, size_t nbytes)
 {
   return write (fd, buf, nbytes);
 }
 
-extern inline ssize_t
+CPNIO_EXPORT ssize_t
 cpnio_writev (int fd, const struct iovec *iov, size_t iovcnt)
 {
   return writev (fd, iov, iovcnt);
 }
 
-extern inline int
+CPNIO_EXPORT int
 cpnio_socket (int domain, int type, int protocol)
 {
   return socket (domain, type, protocol);
 }
 
-extern inline int
+CPNIO_EXPORT int
 cpnio_connect (int fd, const struct sockaddr *addr, socklen_t addrlen)
 {
   return connect (fd, addr, addrlen);
 }
 
-extern inline int
+CPNIO_EXPORT int
 cpnio_accept (int fd, struct sockaddr *addr, socklen_t *addrlen)
 {
   return accept (fd, addr, addrlen);
 }
 
-extern inline ssize_t
+CPNIO_EXPORT ssize_t
 cpnio_sendto (int fd, const void *msg, size_t len, int flags,
               const struct sockaddr *to, socklen_t tolen)
 {
   return sendto (fd, msg, len, flags, to, tolen);
 }
 
-extern inline ssize_t
+CPNIO_EXPORT ssize_t
 cpnio_recvfrom (int fd, void *buf, size_t len, int flags,
                 struct sockaddr *from, socklen_t *fromlen)
 {
   return recvfrom (fd, buf, len, flags, from, fromlen);
 }
 
-extern inline int
+CPNIO_EXPORT int
 cpnio_fcntl (int fd, int cmd, long arg)
 {
 #ifdef HAVE_FCNTL
@@ -114,7 +114,7 @@ cpnio_fcntl (int fd, int cmd, long arg)
 #endif /* HAVE_FCNTL */
 }
 
-extern inline int
+CPNIO_EXPORT int
 cpnio_select (int nfds, fd_set *readfds, fd_set *writefds,
               fd_set *excepfds, struct timeval *timeo)
 {
