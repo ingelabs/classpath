@@ -1,3 +1,8 @@
+2006-10-04  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/tree/VariableHeightLayoutCache.java
+	(getBounds): When rect is null, create a new Rectangle.
+
 2006-10-04  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	* native/jni/java-nio/javanio.c (cpnio_read, cpnio_readv)
