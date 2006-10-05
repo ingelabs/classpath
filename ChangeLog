@@ -1,3 +1,8 @@
+2006-10-05  Gary Benson  <gbenson@redhat.com>
+
+	* java/net/Socket.java
+	(Socket): Perform security check on address not hostname.
+
 2006-10-04  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/tree/VariableHeightLayoutCache.java
