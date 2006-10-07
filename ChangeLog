@@ -1,3 +1,8 @@
+2006-10-07  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* tools/gnu/classpath/tools/rmic/RMICException.java:
+	javadoc corrections, reformatted.
+
 2006-10-07  Christian Elias Naur  <elias@oddlabs.com>
 
 	* gnu/java/lang/InstrumentationImpl.java:
