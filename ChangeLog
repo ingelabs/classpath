@@ -1,4 +1,4 @@
-2006-10-07  Chistian Elias Naur  <elias@oddlabs.com>
+2006-10-07  Christian Elias Naur  <elias@oddlabs.com>
 
 	* gnu/java/lang/InstrumentationImpl.java:
 	Made constructor package visible.
