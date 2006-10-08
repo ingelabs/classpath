@@ -2435,7 +2435,7 @@ public class JTree extends JComponent implements Scrollable, Accessible
 
   public boolean isRowSelected(int row)
   {
-    return selectionModel.isPathSelected(getPathForRow(row));
+    return selectionModel.isRowSelected(row);
   }
 
   public boolean isSelectionEmpty()
