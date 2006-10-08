@@ -2433,6 +2433,16 @@ public class JTree extends JComponent implements Scrollable, Accessible
     return selectionModel.isPathSelected(path);
   }
 
+  /**
+   * Returns <code>true</code> when the specified row is selected,
+   * <code>false</code> otherwise. This call is delegated to the
+   * {@link TreeSelectionModel#isRowSelected(int)} method.
+   *
+   * @param row the row to check
+   *
+   * @return <code>true</code> when the specified row is selected,
+   *         <code>false</code> otherwise
+   */
   public boolean isRowSelected(int row)
   {
     return selectionModel.isRowSelected(row);

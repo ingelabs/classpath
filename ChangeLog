@@ -1,6 +1,11 @@
 2006-10-09  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JTree.java
+	(isSelected): Added API docs.
+
+2006-10-09  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JTree.java
 	(isSelected): Delegate to the selection model directly.
 
 2006-10-03  Robert Schuster  <robertschuster@fsfe.org>
