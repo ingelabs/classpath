@@ -1,3 +1,35 @@
+2006-10-09  Roman Kennke  <kennke@aicas.com>
+
+	PR 29325
+	* javax/swing/JSplitPane.java
+	(dividerLocation): New field. Stores the divider location.
+	(JSplitPane): Initialize dividerLocation with -1.
+	(addImpl): Removed unneeded local variables.
+	(getDividerLocation): Manage dividerLocation in the JSplitPane
+	class, not in the UI.
+	(setDividerLocation): Manage dividerLocation in the JSplitPane
+	class, not in the UI. Only call the UI method for notification.
+	* javax/swing/plaf/basic/BasicSplitPaneUI.java
+	(BasicHorizontalLayoutManager.layoutContainer): Fetch divider
+	location from the JSplitPane. Honour the minimumSize, but only
+	if the divider location hasn't been set explicitly.
+	(BasicHorizontalLayoutManager.minimumLayoutSize): Removed unneeded
+	statement.
+	(BasicHorizontalLayoutManager.preferredLayoutSize): Removed unneeded
+	statement.
+	(BasicHorizontalLayoutManager.resetToPreferredSizes): Don't touch
+	the divider location.
+	(dividerLocationSet): New field.
+	(dividerLocation): Removed field.
+	(createActionMap): Fetch and set divider location on the JSplitPane.
+	(getDividerLocation): Return the actual real divider location.
+	(getMaximumSize): Removed unneeded cast.
+	(getPreferredSize): Removed unneeded cast.
+	(getMinimumSize): Removed unneeded cast.
+	(installUI): Initialize dividerLocationSet with false.
+	(uninstallUI): Initialize dividerLocationSet with false.
+	(setDividerLocation): Set dividerLocationSet to true.
+
 2006-10-09  Robert Schuster  <robertschuster@fsfe.org>
 
 	* native/jni/java-net/gnu_java_net/VMPlainSocketImpl.c:
