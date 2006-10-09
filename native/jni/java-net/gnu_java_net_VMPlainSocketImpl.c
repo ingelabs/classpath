@@ -572,10 +572,14 @@ Java_gnu_java_net_VMPlainSocketImpl_joinGroup (JNIEnv *env,
 #ifdef HAVE_SETSOCKOPT
   struct ip_mreq maddr;
   jbyte *addr_elems;
+  const char *str_ifname;
 
   if (ifname != NULL)
     {
-      maddr.imr_interface.s_addr = getif_address (env, ifname);
+      str_ifname = JCL_jstring_to_cstring(env, ifname);
+      maddr.imr_interface.s_addr = getif_address (env, str_ifname);
+      JCL_free_cstring(env, ifname, str_ifname);
+
       if ((*env)->ExceptionCheck (env))
         return;
     }
@@ -593,6 +597,7 @@ Java_gnu_java_net_VMPlainSocketImpl_joinGroup (JNIEnv *env,
   if (-1 == setsockopt (fd, IPPROTO_IP, IP_ADD_MEMBERSHIP,
                         &maddr, sizeof (struct ip_mreq)))
     JCL_ThrowException (env, SOCKET_EXCEPTION, strerror (errno));
+
 #else
   (void) fd;
   (void) addr;
@@ -617,10 +622,14 @@ Java_gnu_java_net_VMPlainSocketImpl_joinGroup6 (JNIEnv *env,
 #ifdef HAVE_INET6
   struct ipv6_mreq maddr;
   jbyte *addr_elems;
+  char *str_ifname;
 
   if (ifname == NULL)
     {
-      maddr.ipv6mr_interface = getif_index (env, ifname);
+      str_ifname = JCL_jstring_to_cstring(env, ifname);
+      maddr.ipv6mr_interface = getif_index (env, str_ifname);
+      JCL_free_cstring(env, ifname, str_ifname);
+
       if ((*env)->ExceptionCheck (env))
         return;
     }
@@ -666,10 +675,14 @@ Java_gnu_java_net_VMPlainSocketImpl_leaveGroup (JNIEnv *env,
 #ifdef HAVE_SETSOCKOPT
   struct ip_mreq maddr;
   jbyte *addr_elems;
+  char *str_ifname;
 
   if (ifname != NULL)
     {
-      maddr.imr_interface.s_addr = getif_address (env, ifname);
+      str_ifname = JCL_jstring_to_cstring(env, ifname);
+      maddr.imr_interface.s_addr = getif_address (env, str_ifname);
+      JCL_free_cstring(env, ifname, str_ifname);
+
       if ((*env)->ExceptionCheck (env))
         return;
     }
@@ -711,10 +724,14 @@ Java_gnu_java_net_VMPlainSocketImpl_leaveGroup6 (JNIEnv *env,
 #ifdef HAVE_INET6
   struct ipv6_mreq maddr;
   jbyte *addr_elems;
+  char *str_ifname;
 
   if (ifname == NULL)
     {
-      maddr.ipv6mr_interface = getif_index (env, ifname);
+      str_ifname = JCL_jstring_to_cstring(env, ifname);
+      maddr.ipv6mr_interface = getif_index (env, str_ifname);
+      JCL_free_cstring(env, ifname, str_ifname);
+
       if ((*env)->ExceptionCheck (env))
         return;
     }
