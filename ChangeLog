@@ -1,3 +1,14 @@
+2006-10-09  Robert Schuster  <robertschuster@fsfe.org>
+
+	* native/jni/java-net/gnu_java_net/VMPlainSocketImpl.c:
+	(Java_gnu_java_net_VMPlainSocketImpl_joinGroup): Properly
+	convert jstring into char *.
+	(Java_gnu_java_net_VMPlainSocketImpl_joinGroup6): Dito.
+	(Java_gnu_java_net_VMPlainSocketImpl_leaveGroup): Dito.
+	(Java_gnu_java_net_VMPlainSocketImpl_leaveGroup6): Dito.
+	(getif_address): Added const modifier to second argument.
+	(getif_index): Dito.
+
 2006-10-09  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JTree.java
