@@ -1,5 +1,12 @@
 2006-10-10  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/Toolkit.java
+	(getDefaultTookit): Make method synchronized to avoid
+	accidentally creating more than one toolkits from different
+	threads.
+
+2006-10-10  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/LightweightDispatcher.java
 	(handleMouseEvent): Redispatch MOUSE_WHEEL events too.
 	(redispatch): Transfer the button to the redispatched event.
