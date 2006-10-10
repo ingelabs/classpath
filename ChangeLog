@@ -1,3 +1,7 @@
+2006-10-10  Francis Kung  <fkung@redhat.com>
+
+	* java/awt/image/ColorModel.java (coerceData): Implemented.
+
 2006-10-09  Christian Elias Naur  <elias@oddlabs.com>
 
 	* vm/reference/java/lang/VMClassLoader.java:
