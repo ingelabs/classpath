@@ -1017,13 +1017,13 @@ public abstract class CairoGraphics2D extends Graphics2D
         return;
       }
 
-    createPath(s);
+    createPath(s, true);
     cairoStroke(nativePointer);
   }
 
   public void fill(Shape s)
   {
-    createPath(s);
+    createPath(s, false);
 
     double alpha = 1.0;
     if (comp instanceof AlphaComposite)
@@ -1031,7 +1031,7 @@ public abstract class CairoGraphics2D extends Graphics2D
     cairoFill(nativePointer, alpha);
   }
 
-  private void createPath(Shape s)
+  private void createPath(Shape s, boolean isDraw)
   {
     cairoNewPath(nativePointer);
 
@@ -1039,8 +1039,8 @@ public abstract class CairoGraphics2D extends Graphics2D
     if (s instanceof Rectangle2D)
       {
         Rectangle2D r = (Rectangle2D) s;
-        cairoRectangle(nativePointer, shifted(r.getX(), shiftDrawCalls),
-                       shifted(r.getY(), shiftDrawCalls), r.getWidth(),
+        cairoRectangle(nativePointer, shifted(r.getX(),shiftDrawCalls && isDraw),
+                       shifted(r.getY(), shiftDrawCalls && isDraw), r.getWidth(),
                        r.getHeight());
       }
 
@@ -1070,9 +1070,9 @@ public abstract class CairoGraphics2D extends Graphics2D
           }
 
         cairoArc(nativePointer,
-                 shifted(e.getCenterX() / xscale, shiftDrawCalls),
-                 shifted(e.getCenterY() / yscale, shiftDrawCalls), radius, 0,
-                 Math.PI * 2);
+                 shifted(e.getCenterX() / xscale, shiftDrawCalls && isDraw),
+                 shifted(e.getCenterY() / yscale, shiftDrawCalls && isDraw),
+                 radius, 0, Math.PI * 2);
 
         if (xscale != 1 || yscale != 1)
           cairoRestore(nativePointer);
@@ -1081,7 +1081,7 @@ public abstract class CairoGraphics2D extends Graphics2D
     // All other shapes are broken down and drawn in steps using the
     // PathIterator
     else
-      walkPath(s.getPathIterator(null), shiftDrawCalls);
+      walkPath(s.getPathIterator(null), shiftDrawCalls && isDraw);
   }
 
   /**

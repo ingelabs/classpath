@@ -1,3 +1,11 @@
+2006-10-10  Francis Kung  <fkung@redhat.com>
+
+	PR 29372
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(createPath): Added isDraw parameter.
+	(draw): Updated createPath call.
+	(fill): Updated createPath call.
+
 2006-10-10  Tom Tromey  <tromey@redhat.com>
 
 	PR classpath/29362:
