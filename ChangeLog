@@ -1,3 +1,8 @@
+2006-10-11  Edwin Steiner  <edwin.steiner@gmx.net>
+
+	* native/jni/java-nio/gnu_java_nio_VMChannel.c
+	(Java_gnu_java_nio_VMChannel_lock): Special case Long.MAX_VALUE.
+
 2006-10-10  Francis Kung  <fkung@redhat.com>
 
 	PR 29372
