@@ -1,3 +1,41 @@
+2006-10-11  Francis Kung  <fkung@redhat.com>
+
+	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java
+	(buffer, locked): New fields.
+	(constructors): Initialize new variables.
+	(createBuffer): New method.
+	(draw): Implement custom composites.
+	(drawComposite): New method.
+	(drawGlyphVector): Implement custom composites.
+	(drawImage): Implement custom composites.
+	(drawRenderedImage): Implement custom composites.
+	(fill): Implement custom composites.
+	(getBufferCM): New method.
+	(getNativeCM): New method.
+	(updateBufferedImage): Fix premultiplication.
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(copy): Copy composite.
+	(drawImage): Set background properly.
+	(getBufferCM): New method.
+	(setComposite): Reset alpha composite when using custom composite.
+	* gnu/java/awt/peer/gtk/CairoSurface.java
+	(cairoColorModel): New field.
+	(nativeColorModel): Renamed.
+	(constructor): Use renamed createCairoSampleModel method.
+	(createCairoSampleModel): New method.
+	(createNativeSampleModel): Renamed.
+	(getBufferedImage): Use renamed cairoColorModel field.
+	* gnu/java/awt/peer/gtk/GtkVolatileImage.java
+	(gdkColorModel): New field.
+	(createGdkSampleModel): New method.
+	(getPixels): Added comments.
+	(getSnapshot): Use GDK colour and sample models.
+	* gnu/java/awt/peer/gtk/VolatileImageGraphics.java
+	(createBuffer): Use GDK colour and sample models.
+	(getNativeCM): Added comments.
+	* java/awt/image/BufferedImage.java
+	(constructor): Set premultiplied flag properly.
+	
 2006-10-11  Edwin Steiner  <edwin.steiner@gmx.net>
 
 	* native/jni/java-nio/gnu_java_nio_VMChannel.c
