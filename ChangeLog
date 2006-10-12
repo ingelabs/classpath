@@ -1,5 +1,19 @@
 2006-10-12  Roman Kennke  <kennke@aicas.com>
 
+	PR 28057
+	* javax/swing/plaf/basic/BasicRadioButtonUI.java
+	(paint): Determine correct icon. Added support for HTML label.
+	Added small optimizations.
+	(getPreferredSize): Only consider the buttons iconTextGap, and
+	only when the text is not null.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Fetch border for RadioButton from
+	BasicButtons.getRadioButtonBorder().
+	* javax/swing/plaf/metal/MetalRadioButtonUI.java
+	(paintFocus): Paint focus rectangle one pixel smaller.
+
+2006-10-12  Roman Kennke  <kennke@aicas.com>
+
 	PR 29418
 	* javax/swing/tree/AbstractLayoutCache.java
 	(getNodeDimensions): Don't throw InternalError, but instead

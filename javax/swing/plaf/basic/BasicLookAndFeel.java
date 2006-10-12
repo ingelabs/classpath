@@ -1062,8 +1062,7 @@ public abstract class BasicLookAndFeel extends LookAndFeel
       "ProgressBar.repaintInterval", new Integer(50),
       "ProgressBar.cycleTime", new Integer(3000),
       "RadioButton.background", new ColorUIResource(light),
-      "RadioButton.border", new BorderUIResource.CompoundBorderUIResource(null,
-                                                                          null),
+      "RadioButton.border", BasicBorders.getRadioButtonBorder(),
       "RadioButton.darkShadow", new ColorUIResource(shadow),
       "RadioButton.focusInputMap", new UIDefaults.LazyInputMap(new Object[] {
         KeyStroke.getKeyStroke("SPACE"),  "pressed",
