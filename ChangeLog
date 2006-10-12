@@ -1,5 +1,39 @@
 2006-10-12  Roman Kennke  <kennke@aicas.com>
 
+	PR 29418
+	* javax/swing/tree/AbstractLayoutCache.java
+	(getNodeDimensions): Don't throw InternalError, but instead
+	return null.
+	(getRowsForPaths): Check for null here.
+	(isFixedRowHeight): Returns true when rowHeight > 0.
+	(setSelectionModel): Set this as the row mapper for the selection
+	model.
+	* javax/swing/tree/VariableHeightLayoutCache.java
+	(NodeRecord.NodeRecord): Initialize bounds field.
+	(getBounds): Simply return the bounds field.
+	(row2Node): Changed to be an ArrayList.
+	(RECT_CACHE): New field. Caches a Rectangle instance.
+	(countRows): Added y parameter and return value. The method
+	now takes the current y position as parameter, and returns
+	the updated y position.
+	(getBounds): Fixed to return the correct bounds.
+	(getPathForRow): Replaced by fixed implementation.
+	(getPreferredHeight): Replaced by more efficient implementation.
+	This simply fetches the last node record and returns its lower
+	bounds.
+	(getPreferredWidth): Added null check.
+	(getVisibleChildCount): Added null check.
+	(getVisiblePathsFrom): Added null check.
+	(setExpandedState): Also expand the ancestors of the node
+	to be expanded.
+	(setModel): Set dirty flag rather than updating for real.
+	(setNodeDimensions): Overridden to set the dirty flag.
+	(setRowHeight): Overridden to set the dirty flag.
+	(update): Don't special case the root here, this is done now
+	in countRows().
+
+2006-10-12  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComponent.java
 	(paintImmediately2): Added support for components which need
 	to force themselves as paint root.
