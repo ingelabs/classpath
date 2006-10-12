@@ -1,3 +1,50 @@
+2006-10-12  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/tree/DefaultTreeSelectionModel.java
+	(PathPlaceHolder): New inner class. Wraps a path and its status
+	wrt to its newness.
+	(selectedPaths): New field. A supporting datastructure.
+	(tmpPaths): New field. A supporting datastructure.
+	(DefaultTreeSelectionModel): Initialize the list selection model,
+	the leadIndex and the supporting datastructures.
+	(addPropertyChangeListener): Create changeSupport object lazily.
+	(addSelectionPaths): Mostly rewritten to handle the different
+	selection modes correctly.
+	(addSelectionPath): Delegate to addSelectionPaths().
+	(arePathsContiguous): Replaced with more efficient implementation
+	using BitSet
+	(canPathBeAdded): Removed unneeded method.
+	(canPathsBeAdded): Replaced with more efficient implementation.
+	(clearSelection): Create correct event. Clear the fields correctly,
+	including the supporting datastructures.
+	(clone): Also clone the supporting datastructures and nullify
+	changeSupport field.
+	(getMaxSelectionRow): Delegate to list selection model.
+	(getMinSelectionRow): Delegate to list selection model.
+	(getPath): Removed unneeded method.
+	(getPropertyChangeListeners): Handle null changeSupport field
+	correctly.
+	(getRow): Handle null rowMapper field correctly.
+	(getSelectionRows): Handle invisible rows correctly.
+	(insureRowContinuity): Replaced by more efficient and correct
+	implementation.
+	(isRowSelected): Delegate to list selection model.
+	(notifyPathChange): Made more efficient by use of PathPlaceHolder
+	class.
+	(removePropertyChangeListener): Handle null changeSupport field.
+	(removeSelectionPaths): Mostly rewritten to handle the different
+	selection modes correctly.
+	(removeSelectionPath): Delegate to removeSelectionPaths().
+	(resetRowSelection): Handle list selection model.
+	(selectOne): Removed unneeded field.
+	(setRowMapper): Reset the row selection.
+	(setSelectionMode): Check for invalid mode and set to
+	DISCONTINUOUS_TREE_SELECTION in this case. Fire property change.
+	(setSelectionPaths): Mostly rewritten to handle the different
+	selection modes correctly.
+	(setSelectionPath): Delegate to setSelectionPaths().
+	(updateLeadIndex): Made more efficient.
+
 2006-10-11  Francis Kung  <fkung@redhat.com>
 
 	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java
