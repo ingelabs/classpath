@@ -2188,6 +2188,10 @@ public abstract class JComponent extends Container implements Serializable
         components.add(c);
         if (! onTop && jc != null  && ! jc.isOptimizedDrawingEnabled())
           {
+            // Indicates whether we reset the paint root to be the current
+            // component.
+            boolean updatePaintRoot = false;
+
             // Check obscured state of the child.
             // Generally, we have 3 cases here:
             // 1. Not obscured. No need to paint from the parent.
@@ -2195,22 +2199,31 @@ public abstract class JComponent extends Container implements Serializable
             // 3. Completely obscured. No need to paint anything.
             if (c != this)
               {
-                int count = c.getComponentCount();
-                int i = 0;
-                for (; i < count && c.getComponent(i) != child; i++);
-
-                if (jc.isCompletelyObscured(i, paintX, paintY, paintW, paintH))
-                  return; // No need to paint anything.
-                else if (jc.isPartiallyObscured(i, paintX, paintY, paintW,
-                                                paintH))
+                if (jc.isPaintRoot())
+                  updatePaintRoot = true;
+                else
                   {
-                    // Paint from parent.
-                    paintRoot = jc;
-                    pIndex = pCount;
-                    offsX = 0;
-                    offsY = 0;
-                    haveBuffer = false;
+                    int count = c.getComponentCount();
+                    int i = 0;
+                    for (; i < count && c.getComponent(i) != child; i++);
+
+                    if (jc.isCompletelyObscured(i, paintX, paintY, paintW,
+                                                paintH))
+                      return; // No need to paint anything.
+                    else if (jc.isPartiallyObscured(i, paintX, paintY, paintW,
+                                                    paintH))
+                      updatePaintRoot = true;
+                      
                   }
+              }
+            if (updatePaintRoot)
+              {
+                // Paint from parent.
+                paintRoot = jc;
+                pIndex = pCount;
+                offsX = 0;
+                offsY = 0;
+                haveBuffer = false;
               }
           }
         pCount++;
@@ -2257,8 +2270,7 @@ public abstract class JComponent extends Container implements Serializable
 
         // Actually trigger painting.
         if (haveBuffer)
-          paintRoot.paintDoubleBuffered(paintX, paintY, paintW,
-                                                paintH);
+          paintRoot.paintDoubleBuffered(paintX, paintY, paintW, paintH);
         else
           {
             Graphics g = paintRoot.getGraphics();
@@ -2298,6 +2310,19 @@ public abstract class JComponent extends Container implements Serializable
    *         on top of others
    */
   boolean onTop()
+  {
+    return false;
+  }
+
+  /**
+   * This returns true when a component needs to force itself as a paint
+   * origin. This is used for example in JViewport to make sure that it
+   * gets to update its backbuffer.
+   *
+   * @return true when a component needs to force itself as a paint
+   *         origin
+   */
+  boolean isPaintRoot()
   {
     return false;
   }

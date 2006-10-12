@@ -1,5 +1,16 @@
 2006-10-12  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JComponent.java
+	(paintImmediately2): Added support for components which need
+	to force themselves as paint root.
+	(isPaintRoot): New method. This should be overridden by components
+	which need to force themselves as paint root.
+	* javax/swing/JViewport.java
+	(isPaintRoot): Overridden to force the viewport as paint root
+	when running in backingstore mode.
+
+2006-10-12  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/tree/DefaultTreeSelectionModel.java
 	(PathPlaceHolder): New inner class. Wraps a path and its status
 	wrt to its newness.
