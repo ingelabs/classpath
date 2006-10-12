@@ -1,5 +1,13 @@
 2006-10-12  Roman Kennke  <kennke@aicas.com>
 
+	PR 2873
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	(TabPaneLayout.normalizeTabRuns): Replaced algorithm with
+	one that avoids faulty state that could cause division by zero
+	error.
+
+2006-10-12  Roman Kennke  <kennke@aicas.com>
+
 	PR 28057
 	* javax/swing/plaf/basic/BasicRadioButtonUI.java
 	(paint): Determine correct icon. Added support for HTML label.
