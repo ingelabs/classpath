@@ -1,6 +1,43 @@
 2006-10-12  Roman Kennke  <kennke@aicas.com>
 
-	PR 2873
+	PR 28696
+	* javax/swing/text/FlowView.java
+	(FlowStrategy.layout): Preserve logical views from getting lost.
+	(FlowStrategy.layoutRow): Fix line breaking.
+	(FlowStrategy.adjustRow): Fix line breaking.
+	(FlowStrategy.changedUpdate): Mark layout invalid, or repaint.
+	(FlowStrategy.insertUpdate): Mark layout invalid, or repaint.
+	(FlowStrategy.removeUpdate): Mark layout invalid, or repaint.
+	(createView): Don't check index.
+	(contains): New helper method.
+	(reparent): New helper method.
+	(layoutDirty): Removed unneeded field.
+	(FlowView): Removed layoutDirty field init.
+	(changedUpdate): Removed layoutDirty handling.
+	(insertUpdate): Removed layoutDirty handling.
+	(removeUpdate): Removed layoutDirty handling.
+	(layout): Use isLayoutValid() rather than the layoutDirty field.
+	* javax/swing/text/GlyphView.java
+	(startOffset): Removed.
+	(endOffset): Removed.
+	(offset): New field.
+	(length): New field.
+	(GlyphView): Initialize new fields. Removed old fields.
+	(createFragment): Create fragment with new relative offsets.
+	(getEndOffset): Work with new relative offsets.
+	(getStartOffset): Work with new relative offsets.
+	* javax/swing/text/ParagraphView.java
+	(Row.getStartOffset): Overidden to determine the minimum start
+	offset from the children.
+	(Row.getEndOffset): Overidden to determine the maximum end
+	offset from the children.
+	* javax/swing/text/html/BRView.java
+	Make subclass of InlineView.
+	(getBreakWeight): Fall back to super for Y_AXIS.
+
+2006-10-12  Roman Kennke  <kennke@aicas.com>
+
+	PR 28733
 	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
 	(TabPaneLayout.normalizeTabRuns): Replaced algorithm with
 	one that avoids faulty state that could cause division by zero
