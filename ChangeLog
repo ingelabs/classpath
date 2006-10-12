@@ -1,5 +1,77 @@
 2006-10-12  Roman Kennke  <kennke@aicas.com>
 
+	PR 27956
+	* javax/swing/JSlider.java
+	(LabelUIResource): New inner class. A JLabel as UIResource.
+	(createStandardLabels): Don't set label bounds here.
+	Create LabelUIResource instances.
+	(setInverted): Repaint.
+	(setLabelTable): Update the label UIs. Revalidate and repaint.
+	(setMajorTickSpacing): Update the label table. Repaint if
+	necessary.
+	(setMinorTickSpacing): Repaint if necessary.
+	(setOrientation): Revalidate.
+	(setPaintLabels): Revalidate and repaint.
+	(setPaintTicks): Revalidate and repaint.
+	(setPaintTrack): Repaint.
+	(updateLabelUIs): Set the label sizes here.
+	(updateUI): Also update the label UIs.
+	* javax/swing/plaf/basic/BasicSliderUI.java
+	(ComponentHandler.componentResized): Don't revalidate.
+	(FocusHandler.focusGained): Don't set field.
+	(FocusHandler.focusLost): Don't set field.
+	(PropertyChangeHandler.propertyChange): Calculate geometry
+	and repaint for a couple more properties.
+	(TrackListener.mouseReleased): Repaint.
+	(hasFocus): Removed unneeded field.
+	(calculateContentRect): No need to check for content size < 0.
+	(calculateFocusRect): Use insets from insetCache.
+	(calculateLabelRect): Fixed calculation of label rectangle.
+	It is relative to the tick rectangle, rather than the content
+	rectangle.
+	(calculateTickRect): Small restructuring to avoid unnecessary
+	comparisons.
+	(calculateTrackRect): Fixed calculation of track rectangle.
+	(getMaximumSize): Fixed. Fetch preferred size and set
+	the height of width to Short.MAX_VALUE.
+	(getMinimumHorizontalSize): Fixed to return UIManager value.
+	(getMinimumVerticalSize): Fixed to return UIManager value.
+	(getPreferredHorizontalSize): Fixed to return UIManager value.
+	(getPreferredVerticalSize): Fixed to return UIManager value.
+	(getMinimumSize): Fixed to return the UIManager value plus
+	insets added.
+	(getPreferredSize): Fixed to return the UIManager value plus
+	insets added.
+	(getWidthOfWidestLabel): Restructured for more cleanness and
+	efficiency.
+	(hitClip): New helper method.
+	(paintHorizontalLabel): Replaced by more efficient and clean
+	implementation.
+	(paintVerticalLabel): Replaced by more efficient and clean
+	implementation.
+	(paintLabels): Replaced by more efficient and clean
+	implementation.
+	(paint): Check if rectangles intersect with clip for maximum
+	efficiency.
+	(recalculateIfInsetsChanged): Fixed. This method should
+	recalculate only when the insets changed.
+	(setThumbLocation): Repaint with a reasonable clip.
+	(xPositionForValue): Made more clean and efficient.
+	(yPositionForValue): Made more clean and efficient.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponenDefaults):	Added Slider.horizontalSize,
+	Slider.verticalSize, Slider.minimumHorizontalSize and
+	Slider.minimumVerticalSize properties.
+	* javax/swing/plaf/metal/MetalSliderUI.java
+	(getTickLength): Add 1 for horizontal sliders and 3 for
+	vertical sliders.
+	(paintMajorTickForHorizSlider): Fix colors. Fix line locations.
+	(paintMinorTickForHorizSlider): Fix colors. Fix line locations.
+	(paintMajorTickForVertSlider): Fix colors. Fix line locations.
+	(paintMinorTickForVertSlider): Fix colors. Fix line locations.
+
+2006-10-12  Roman Kennke  <kennke@aicas.com>
+
 	PR 28696
 	* javax/swing/text/FlowView.java
 	(FlowStrategy.layout): Preserve logical views from getting lost.
