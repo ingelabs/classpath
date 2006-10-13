@@ -1,3 +1,8 @@
+2006-10-13  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* javax/swing/DefaultComboBoxModel.java (setSelectedItem): Simply
+	return if object is not in the list.
+
 2006-10-12  Roman Kennke  <kennke@aicas.com>
 
 	PR 27956
