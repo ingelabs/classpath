@@ -518,11 +518,12 @@ layout()
   * not have layout managers.
   *
   * @param layoutManager Ignored
+  * @throws AWTError Always throws this error when called. 
   */
 public final void
 setLayout(LayoutManager layoutManager)
 {
-  return;
+  throw new AWTError("ScrollPane controls layout");
 }
 
 /*************************************************************************/
