@@ -1,3 +1,8 @@
+2006-10-13  Tom Tromey  <tromey@redhat.com>
+
+	* tools/gnu/classpath/tools/javah/ClassWrapper.java (toString): New
+	method.
+
 2006-10-13  Tania Bento  <tbento@redhat.com>
 
 	* java/awt/ScrollPane.java
