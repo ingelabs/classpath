@@ -1,3 +1,25 @@
+2006-10-13  Roman Kennke  <kennke@aicas.com>
+
+	PR 27780
+	* javax/swing/JMenuItem.java
+	(isDragging): New field. Indicates if we are inside a mouse
+	drag.
+	(createMenuDragMouseEvent): Removed unneeded method.
+	(processMenuDragMouseEvent): Track if we are dragging.
+	(processMouseEvent): Simply forward to processMenuDragMouseEvent().
+	* javax/swing/plaf/basic/BasicMenuItemUI.java
+	(MenuDragMouseHandler.menuDragMouseDragged): Fetch
+	MenuSelectionManager from event.
+	(MenuDragMouseHandler.menuDragMouseEntered): Fetch
+	MenuSelectionManager from event.
+	(MenuDragMouseHandler.menuDragMouseExited): Fetch
+	MenuSelectionManager from event.
+	(MenuDragMouseHandler.menuDragMouseReleased): Click on mouse
+	release inside menu item, otherwise clear selection.
+	(MenuInputHandler.mouseReleased): Avoid multiple calls to getX()
+	and getY(). Call doClick() rather than the doClick() of JMenuItem.
+	(doClick): Perform an immediate click.
+
 2006-10-13  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* javax/swing/DefaultComboBoxModel.java (setSelectedItem): Simply
