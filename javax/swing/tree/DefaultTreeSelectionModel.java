@@ -202,7 +202,7 @@ public class DefaultTreeSelectionModel
     DefaultTreeSelectionModel cloned = 
       (DefaultTreeSelectionModel) super.clone();
     cloned.changeSupport = null;
-    cloned.selection = selection.clone();
+    cloned.selection = (TreePath[]) selection.clone();
     cloned.listenerList = new EventListenerList();
     cloned.listSelectionModel =
       (DefaultListSelectionModel) listSelectionModel.clone();
