@@ -1,3 +1,14 @@
+2006-10-13  Roman Kennke  <kennke@aicas.com>
+
+	PR 29448
+	* java/awt/Component.java
+	(dispatchEventImpl): Special handle ComponentReshapeEvents to
+	update the AWT's knowledge about a component's size.
+	* gnu/java/awt/ComponentReshapeEvent.java: New class.
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java
+	(postConfigureEvent): Directly dispatch a ComponentReshapeEvent
+	to update the AWT's knowledge about the component bounds.
+
 2006-10-13  Tania Bento  <tbento@redhat.com>
 
 	* java/awt/ScrollPaneAdjustable.java
