@@ -1,5 +1,12 @@
 2006-10-13  Tania Bento  <tbento@redhat.com>
 
+	* java/awt/ScrollPaneAdjustable.java
+	(setMaximum): Should throw AWTError whenever called.
+	(setMinimum): Same.
+	(setVisibleAmount): Same.
+
+2006-10-13  Tania Bento  <tbento@redhat.com>
+
 	* java/awt/ScrollPane.java
 	(addImpl): When calling super, index should be value passed, 
 	not -1.
