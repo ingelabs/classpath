@@ -1,3 +1,12 @@
+2006-10-13  Tania Bento  <tbento@redhat.com>
+
+	* java/awt/ScrollPane.java
+	(addImpl): When calling super, index should be value passed, 
+	not -1.
+	(getIsValidString): New helper method for paramString().
+	(getScrollbarDisplayString): New helper method for paramString(). 
+	(paramString): Changed format of outputted string.
+
 2006-10-13  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/tree/DefaultTreeSelectionModel.java
