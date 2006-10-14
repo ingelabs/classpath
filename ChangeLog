@@ -1,4 +1,27 @@
-2006-10-13  Roman Kennke  <kennke@aicas.com>
+2006-10-14  Roman Kennke  <kennke@aicas.com>
+
+	PR 27957
+	* javax/swing/JComponent.java
+	(toolTipText): Removed field.
+	(createToolTip): Don't set tooltip text here. This is done
+	in the ToolTipManager.
+	(setToolTipText): Set tooltip text as client property.
+	(getToolTipText): Get tooltip text from client property.
+	* javax/swing/ToolTipManager.java
+	(currentComponent): Made field non-static and of type JComponent.
+	(currentPoint): Made field non-static.
+	(currentTip): Made field non-static.
+	(popup): Made field non-static.
+	(toolTipText): New field. Stores the current tooltip text.
+	(checkTipUpdate): New helper method. Checks for updates of
+	the tooltip text and triggers the appropriate actions.
+	(getContentPaneDeepestComponent): Removed unneeded casts.
+	(mouseEntered): Removed unneeded cast. Initially fetch tooltip
+	text from component.
+	(mouseMoved): Check for tooltip text updates.
+	(showTip): Set tooltip text from current setting.
+
+2006-10-14  Roman Kennke  <kennke@aicas.com>
 
 	PR 27956
 	* javax/swing/JSlider.java

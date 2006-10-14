@@ -541,14 +541,6 @@ public abstract class JComponent extends Container implements Serializable
    */
   Border border;
 
-  /** 
-   * The text to show in the tooltip associated with this component.
-   * 
-   * @see #setToolTipText
-   * @see #getToolTipText()
-   */
-   String toolTipText;
-
   /**
    * The popup menu for the component.
    * 
@@ -1439,14 +1431,12 @@ public abstract class JComponent extends Container implements Serializable
   {
     JToolTip toolTip = new JToolTip();
     toolTip.setComponent(this);
-    toolTip.setTipText(toolTipText);
-
     return toolTip;
   }
 
   /**
-   * Return the location at which the {@link #toolTipText} property should be
-   * displayed, when triggered by a particular mouse event. 
+   * Return the location at which the <code>toolTipText</code> property should
+   * be displayed, when triggered by a particular mouse event. 
    *
    * @param event The event the tooltip is being presented in response to
    *
@@ -1459,53 +1449,56 @@ public abstract class JComponent extends Container implements Serializable
   }
 
   /**
-   * Set the value of the {@link #toolTipText} property.
+   * Set the tooltip text for this component. If a non-<code>null</code>
+   * value is set, this component is registered in the
+   * <code>ToolTipManager</code> in order to turn on tooltips for this
+   * component. If a <code>null</code> value is set, tooltips are turne off
+   * for this component.
    *
-   * @param text The new property value
+   * @param text the tooltip text for this component
    *
    * @see #getToolTipText()
+   * @see #getToolTipText(MouseEvent)
    */
   public void setToolTipText(String text)
   {
+    String old = getToolTipText();
+    putClientProperty(TOOL_TIP_TEXT_KEY, text);
+    ToolTipManager ttm = ToolTipManager.sharedInstance();
     if (text == null)
-    {
-      ToolTipManager.sharedInstance().unregisterComponent(this);
-      toolTipText = null;
-      return;
-    }
-
-    // XXX: The tip text doesn't get updated unless you set it to null
-    // and then to something not-null. This is consistent with the behaviour
-    // of Sun's ToolTipManager.
-
-    String oldText = toolTipText;
-    toolTipText = text;
-
-    if (oldText == null)
-      ToolTipManager.sharedInstance().registerComponent(this);
+      ttm.unregisterComponent(this);
+    else if (old == null)
+      ttm.registerComponent(this);
   }
 
   /**
-   * Get the value of the {@link #toolTipText} property.
+   * Returns the current tooltip text for this component, or <code>null</code>
+   * if none has been set.
    *
-   * @return The current property value
+   * @return the current tooltip text for this component, or <code>null</code>
+   *         if none has been set
    *
    * @see #setToolTipText
+   * @see #getToolTipText(MouseEvent)
    */
   public String getToolTipText()
   {
-    return toolTipText;
+    return (String) getClientProperty(TOOL_TIP_TEXT_KEY);
   }
 
   /**
-   * Get the value of the {@link #toolTipText} property, in response to a
-   * particular mouse event.
+   * Returns the tooltip text for this component for a particular mouse
+   * event. This can be used to support context sensitive tooltips that can
+   * change with the mouse location. By default this returns the static
+   * tooltip text returned by {@link #getToolTipText()}.
    *
-   * @param event The mouse event which triggered the tooltip
+   * @param event the mouse event which triggered the tooltip
    *
-   * @return The current property value
+   * @return the tooltip text for this component for a particular mouse
+   *         event
    *
    * @see #setToolTipText
+   * @see #getToolTipText()
    */
   public String getToolTipText(MouseEvent event)
   {
