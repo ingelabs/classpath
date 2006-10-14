@@ -1,3 +1,10 @@
+2006-10-13  Roman Kennke  <kennke@aicas.com>
+
+	PR 27956
+	* javax/swing/JSlider.java
+	(setPaintLabels): Call setLabelTable() instead of setting
+	the field directly. This also updates the label's size.
+
 2006-10-13  Tom Tromey  <tromey@redhat.com>
 
 	* tools/gnu/classpath/tools/javah/ClassWrapper.java (toString): New

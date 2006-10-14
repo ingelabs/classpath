@@ -1087,7 +1087,7 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
       {
         paintLabels = paint;
         if (paint && majorTickSpacing > 0 && labelTable == null)
-          labelTable = createStandardLabels(majorTickSpacing);
+          setLabelTable(createStandardLabels(majorTickSpacing));
         firePropertyChange("paintLabels", !paint, paint);
         revalidate();
         repaint();
