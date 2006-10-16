@@ -1,5 +1,15 @@
 2006-10-16  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/TransferHandler.java
+	(propertyName): New field.
+	(TransferHandler(String)): Store property name in field.
+	(canImport): Implemented stub method.
+	(exportDone): This is a no-op. Removed not-implemented mark.
+	(getPropertyDataFlavor): New helper method.
+	(getPropertyDescriptor): New helper method.
+
+2006-10-16  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/AbstractButton.java
 	(AccessibleJButton.getAfterIndex): Implemented.
 	(AccessibleJButton.getAtIndex): Implemented.
