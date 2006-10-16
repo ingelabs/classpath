@@ -1,5 +1,14 @@
 2006-10-16  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/AbstractButton.java
+	(AccessibleJButton.getAfterIndex): Implemented.
+	(AccessibleJButton.getAtIndex): Implemented.
+	(AccessibleJButton.getBeforeIndex): Implemented.
+	(AccessibleJButton.getCharacterAttribute): Completed incomplete
+	method implementation.
+
+2006-10-16  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JLabel.java
 	(AccessibleJLabel.getIndexAtPoint): Implemented.
 	(AccessibleJLabel.getCharacterBounds): Implemented.
