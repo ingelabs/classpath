@@ -1,5 +1,12 @@
 2006-10-16  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JLabel.java
+	(AccessibleJLabel.getIndexAtPoint): Implemented.
+	(AccessibleJLabel.getCharacterBounds): Implemented.
+	(AccessibleJLabel.getTextRectangle): New helper method.
+
+2006-10-16  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/filechooser/FileSystemView.java
 	(getFileSystemView): Mark as implemented.
 
