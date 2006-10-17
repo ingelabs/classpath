@@ -176,7 +176,7 @@ public abstract class CairoGraphics2D extends Graphics2D
    * coords be shifted to land on 0.5-pixel boundaries, in order to land on
    * "middle of pixel" coordinates and light up complete pixels. 
    */
-  private boolean shiftDrawCalls = false;
+  protected boolean shiftDrawCalls = false;
 
   /**
    * Keep track if the first clip to be set, which is restored on setClip(null);

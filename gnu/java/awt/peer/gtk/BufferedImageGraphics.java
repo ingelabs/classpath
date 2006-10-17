@@ -248,7 +248,11 @@ public class BufferedImageGraphics extends CairoGraphics2D
       {
         super.draw(s);
         Rectangle r = s.getBounds();
-        updateBufferedImage(r.x, r.y, r.width, r.height);
+        
+        if (shiftDrawCalls)
+          updateBufferedImage(r.x, r.y, r.width+1, r.height+1);
+        else
+          updateBufferedImage(r.x, r.y, r.width, r.height);
       }
     else
       {

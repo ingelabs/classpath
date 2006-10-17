@@ -1,5 +1,12 @@
 2006-10-17  Francis Kung  <fkung@redhat.com>
 
+	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java (draw): Extend updated
+	region to account for pixel-shifting.
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java (shiftDrawCalls): Made
+	proctected.
+
+2006-10-17  Francis Kung  <fkung@redhat.com>
+
 	PR 29450
 	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java
 	(getLogicalBounds): Translate individual glyphs before appending bounds.
