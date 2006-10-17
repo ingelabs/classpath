@@ -1,3 +1,8 @@
+2006-10-17  Jeroen Frijters  <jeroen@frijters.net>
+
+	* native/jni/classpath/jcl.c
+	(JNI_OnLoad): Corrected calling convention.
+
 2006-10-16  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/TransferHandler.java
