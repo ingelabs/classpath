@@ -1,3 +1,10 @@
+2006-10-17  Francis Kung  <fkung@redhat.com>
+
+	PR 29450
+	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java
+	(getLogicalBounds): Translate individual glyphs before appending bounds.
+	(getOutline): Translate individual glyphs before appending outline.
+
 2006-10-17  Cameron McCormack  <cam@mcc.id.au>
 
 	PR 29014

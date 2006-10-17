@@ -424,10 +424,18 @@ public class FreetypeGlyphVector extends GlyphVector
       return logicalBounds;
 
     Rectangle2D rect = (Rectangle2D)getGlyphLogicalBounds( 0 );
+    AffineTransform tx = new AffineTransform();
     for( int i = 1; i < nGlyphs; i++ )
       {
-	Rectangle2D r2 = (Rectangle2D)getGlyphLogicalBounds( i );
-	rect = rect.createUnion( r2 );
+        Rectangle2D r2 = (Rectangle2D)getGlyphLogicalBounds( i );
+        
+        // Translate to the glyph's position
+        tx.setToTranslation(glyphPositions[i*2], glyphPositions[i*2+1]);
+        Point2D pt = new Point2D.Double(r2.getMinX(), r2.getMinY());
+        tx.transform(pt, pt);
+        r2.setRect(pt.getX(), pt.getY(), r2.getWidth(), r2.getHeight());
+        
+        rect = rect.createUnion( r2 );
       }
 
     logicalBounds = rect;
@@ -448,8 +456,14 @@ public class FreetypeGlyphVector extends GlyphVector
   public Shape getOutline()
   {
     GeneralPath path = new GeneralPath();
+    AffineTransform tx = new AffineTransform();
     for( int i = 0; i < getNumGlyphs(); i++ )
-      path.append( getGlyphOutline( i ), false );
+      {
+        Shape outline = getGlyphOutline(i);
+        tx.setToTranslation(glyphPositions[i*2], glyphPositions[i*2 +1]);
+        outline = tx.createTransformedShape(outline);
+        path.append(outline, false);
+      }
     return path;
   }
 
