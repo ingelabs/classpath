@@ -1,3 +1,10 @@
+2006-10-17  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkMainThread.java: Introduce running flag
+	to track native GTK event loop status.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkToolkit.c: Set and
+	clear running flag when native GTK event loop starts and stops.
+
 2006-10-17  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/TransferHandler.java
