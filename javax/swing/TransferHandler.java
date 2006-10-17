@@ -354,10 +354,47 @@ public class TransferHandler implements Serializable
     // Nothing to do in the default implementation.
   }
 
+  /**
+   * Exports the property of the component <code>c</code> that was
+   * specified for this TransferHandler to the clipboard, performing
+   * the specified action.
+   *
+   * This will check if the action is allowed by calling
+   * {@link #getSourceActions(JComponent)}. If the action is not allowed,
+   * then no export is performed.
+   *
+   * In either case the method {@link #exportDone} will be called with
+   * the action that has been performed, or {@link #NONE} if the action
+   * was not allowed or could otherwise not be completed.
+   * Any IllegalStateException that is thrown by the Clipboard due to
+   * beeing unavailable will be propagated through this method.
+   *
+   * @param c the component from which to export
+   * @param clip the clipboard to which the data will be exported
+   * @param action the action to perform
+   *
+   * @throws IllegalStateException when the clipboard is not available
+   */
   public void exportToClipboard(JComponent c, Clipboard clip, int action) 
-    throws NotImplementedException
+    throws IllegalStateException
   {
-    // TODO: Implement this properly
+    action &= getSourceActions(c);
+    Transferable transferable = createTransferable(c);
+    if (transferable != null && action != NONE)
+      {
+        try
+          {
+            clip.setContents(transferable, null);
+            exportDone(c, transferable, action);
+          }
+        catch (IllegalStateException ex)
+          {
+            exportDone(c, transferable, NONE);
+            throw ex;
+          }
+      }
+    else
+      exportDone(c, null, NONE);
   } 
 
   public int getSourceActions(JComponent c)
