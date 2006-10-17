@@ -1,3 +1,11 @@
+2006-10-17  Cameron McCormack  <cam@mcc.id.au>
+
+	PR 29014
+	* java/awt/font/TextLayout.java
+	(bidi): New field.
+	(constructor): Store bidi in field.
+	(getCharacterLevel): Implemented.
+
 2006-10-17  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/TransferHandler.java
