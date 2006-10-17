@@ -378,6 +378,9 @@ public class BufferedImageGraphics extends CairoGraphics2D
     // Clip source to visible areas that need updating
     Rectangle2D clip = this.getClipBounds();
     Rectangle2D.intersect(bounds, clip, bounds);
+    clip = new Rectangle(buffer.getMinX(), buffer.getMinY(),
+                         buffer.getWidth(), buffer.getHeight());
+    Rectangle2D.intersect(bounds, clip, bounds);
     
     BufferedImage buffer2 = buffer;
     if (!bounds.equals(buffer2.getRaster().getBounds()))

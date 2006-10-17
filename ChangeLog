@@ -1,3 +1,12 @@
+2006-10-17  Francis Kung  <fkung@redhat.com>
+
+	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java (drawComposite): Ensure
+	composite does not extend beyond buffer bounds.
+	* java/awt/image/Raster.java (createChild): Ensure child does not extend
+	beyond parent's bounds.
+	* java/awt/image/WritableRaster.java (createWritableChild): Ensure child
+	does not extend beyond parent's bounds.
+
 2006-10-17  Jeroen Frijters  <jeroen@frijters.net>
 
 	* native/jni/classpath/jcl.c
