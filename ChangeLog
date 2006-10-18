@@ -1,5 +1,30 @@
 2006-10-18  Roman Kennke  <kennke@aicas.com>
 
+	PR 28769
+	* javax/swing/JScrollPane.java
+	(viewportBorder): Made field private.
+	(wheelScrollingEnabled): Made field private.
+	(JScrollPane): Enabled wheel scrolling by default.
+	* javax/swing/JTree.java
+	(TreeSelectionRedirector.valueChanged): Don't repaint anything
+	here.
+	(getScrollableUnitIncrement): Fixed thinko.
+	* javax/swing/plaf/basic/BasicScrollBarUI.java
+	(static scrollByBlock): New static method to avoid code duplication
+	for the BasicScrollPane wheel scrolling.
+	(static scrollByUnits): New static method to avoid code duplication
+	for the BasicScrollPane wheel scrolling.
+	(scrollByBlock): Delegate to static helper method.
+	(scrollByUnit): Delegate to static helper method.
+	* javax/swing/plaf/basic/BasicScrollPaneUI.java
+	(MouseWheelHandler.mouseWheelMoved): Delegate to BasicScrollBarUI
+	static helper methods to avoid code duplication.
+	(MouseWheelHandler.bounds): Removed.
+	(MouseWheelHandler.getValue): Removed.
+	(MouseWheelHandler.scroll): Removed.
+
+2006-10-18  Roman Kennke  <kennke@aicas.com>
+
 	PR 29502
 	* gnu/java/awt/peer/gtk/GtkWindowPeer.java
 	(updateComponent): Don't override this here.
