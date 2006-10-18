@@ -1,5 +1,10 @@
 2006-10-18  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/datatransfer/DataFlavor.java
+	(DataFlavor(String)): Removed check for space in mime string.
+
+2006-10-18  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/Container.java
 	(validateTree): Call ContainerPeer.begin|endLayout() rather than
 	begin|endValidate().

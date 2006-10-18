@@ -338,8 +338,7 @@ public class DataFlavor implements java.io.Externalizable, Cloneable
 
     // Do some simple validity checks
     String type = getPrimaryType() + "/" + getSubType();
-    if (type.indexOf(' ') != -1
-        || type.indexOf('=') != -1
+    if (type.indexOf('=') != -1
         || type.indexOf(';') != -1)
       throw new IllegalArgumentException(mimeType);
 
