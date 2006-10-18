@@ -306,7 +306,7 @@ public class VolatileImageGraphics extends ComponentGraphics
     // the fixme in drawImage) so we use the naive Cairo model instead to trick
     // the compositing context.
     // Because getNativeCM() == getBufferCM() for this peer, it doesn't break.
-    return CairoSurface.cairoColorModel;
+    return CairoSurface.cairoCM_pre;
   }
 }
 

@@ -1,3 +1,22 @@
+2006-10-18  Francis Kung  <fkung@redhat.com>
+
+	* gnu/java/awt/peer/gtk/CairoSurfaceGraphics.java
+	(drawRenderedImage):  New method.
+	(drawImage): New method.
+	(CairoSurfaceGraphics): Set clip.
+	(createBuffer): New method.
+	(getBufferCM): New method.
+	(drawComposite): New method.
+	(fill): New method.
+	(getNativeCM): New method.
+	(drawGlyphVector): New method.
+	(draw): New method.
+	* gnu/java/awt/peer/gtk/VolatileImageGraphics.java
+	(getNativeCM): Reflect renamed field.
+	* gnu/java/awt/peer/gtk/CairoSurface.java
+	(cairoCM_pre): Renamed from cairoColorModel.
+	(cairoColorModel): Set premultiplication to false.
+
 2006-10-18  Roman Kennke  <kennke@aicas.com>
 
 	PR 28769
