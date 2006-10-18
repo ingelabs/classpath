@@ -1,14 +1,42 @@
+2006-10-18  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* resource/gnu/classpath/tools/appletviewer/MessagesBundle.properties:
+	Rename file...
+	* resource/gnu/classpath/tools/appletviewer/messages.properties:
+	New file.
+	* resource/gnu/classpath/tools/appletviewer/MessagesBundle_de.properties:
+	Remove file.
+	* tools/gnu/classpath/tools/appletviewer/AppletWarning.java:
+	Remove file.
+	* tools/gnu/classpath/tools/appletviewer/ConsoleDialog.java:
+	Likewise.
+	* tools/gnu/classpath/tools/appletviewer/Messages.java: New file.
+	* tools/gnu/classpath/tools/appletviewer/CommonAppletStub.java:
+	Retrieve user-visible strings through Messages.getString.
+	* tools/gnu/classpath/tools/appletviewer/Main.java: Likewise.
+	* tools/gnu/classpath/tools/appletviewer/PluginAppletContext.java:
+	Likewise.
+	* tools/gnu/classpath/tools/appletviewer/PluginAppletViewer.java:
+	Likewise.
+	* tools/gnu/classpath/tools/appletviewer/PluginAppletWindow.java:
+	Likewise.
+	* tools/gnu/classpath/tools/appletviewer/StandaloneAppletContext.java:
+	Likewise.
+	* tools/gnu/classpath/tools/appletviewer/StandaloneAppletViewer.java:
+	Likewise.
+	* tools/gnu/classpath/tools/appletviewer/StandaloneAppletWindow.java:
+	Likewise.
+
 2006-10-18  Roman Kennke  <kennke@aicas.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
 	(AWT_WINDOW_OPENED): Remove unnecessary macro.
 	(window_show_cb): Removed unnecessary function.
-	(connect_signals): Don't connect signal for show.
-	* gnu/java/awt/peer/gtk/GtkWindowPeer.java
+	(connect_signals): Don't connect signal for show.  *
+	gnu/java/awt/peer/gtk/GtkWindowPeer.java
 	(hasBeenShown): Removed. This is handled in java.awt.Window.
-	(postWindowEvent): Removed handling of WINDOW_OPENED. This
-	is done in java.awt.Window.
-	* java/awt/Window.java
+	(postWindowEvent): Removed handling of WINDOW_OPENED. This is done
+	in java.awt.Window.  * java/awt/Window.java
 	(dispose): Post WINDOW_CLOSED here, not WINDOW_OPENED.
 
 2006-10-18  Francis Kung  <fkung@redhat.com>
