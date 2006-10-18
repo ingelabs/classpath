@@ -378,13 +378,6 @@ public class GtkWindowPeer extends GtkContainerPeer
     return g;
   }
 
-  protected void updateComponent (PaintEvent event)
-  {
-    // Do not clear anything before painting.  Sun never calls
-    // Window.update, only Window.paint.
-    paintComponent(event);
-  }
-
   protected void postMouseEvent(int id, long when, int mods, int x, int y, 
 				int clickCount, boolean popupTrigger)
   {

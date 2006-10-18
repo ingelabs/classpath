@@ -492,7 +492,11 @@ public class Window extends Container implements Accessible
    */
   public synchronized void addWindowListener(WindowListener listener)
   {
-    windowListener = AWTEventMulticaster.add(windowListener, listener);
+    if (listener != null)
+      {
+        newEventsOnly = true;
+        windowListener = AWTEventMulticaster.add(windowListener, listener);
+      }
   }
 
   /**
@@ -549,7 +553,12 @@ public class Window extends Container implements Accessible
    */
   public void addWindowFocusListener (WindowFocusListener wfl)
   {
-    windowFocusListener = AWTEventMulticaster.add (windowFocusListener, wfl);
+    if (wfl != null)
+      {
+        newEventsOnly = true;
+        windowFocusListener = AWTEventMulticaster.add (windowFocusListener,
+                                                       wfl);
+      }
   }
   
   /**
@@ -559,7 +568,12 @@ public class Window extends Container implements Accessible
    */
   public void addWindowStateListener (WindowStateListener wsl)
   {
-    windowStateListener = AWTEventMulticaster.add (windowStateListener, wsl);  
+    if (wsl != null)
+      {
+        newEventsOnly = true;
+        windowStateListener = AWTEventMulticaster.add (windowStateListener,
+                                                       wsl);  
+      }
   }
   
   /**

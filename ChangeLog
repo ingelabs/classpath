@@ -1,5 +1,17 @@
 2006-10-18  Roman Kennke  <kennke@aicas.com>
 
+	PR 29502
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java
+	(updateComponent): Don't override this here.
+	* java/awt/Window.java
+	(addWindowListener): Ignore null listener. Set newEventsOnly flag.
+	(addWindowFocusListener): Ignore null listener. Set newEventsOnly
+	flag.
+	(addWindowStateListener): Ignore null listener. Set newEventsOnly
+	flag.
+
+2006-10-18  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JEditorPane.java
 	(getStream): Try to detect and set the content type of the
 	connection stream.
