@@ -47,6 +47,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashMap;
 
 import javax.accessibility.AccessibleContext;
@@ -767,7 +768,13 @@ public class JEditorPane extends JTextComponent
   protected InputStream getStream(URL page)
     throws IOException
   {
-    return page.openStream();
+    URLConnection conn = page.openConnection();
+    // Try to detect the content type of the stream data.
+    String type = conn.getContentType();
+    if (type != null)
+      setContentType(type);
+    InputStream stream = conn.getInputStream();
+    return stream;
   }
 
   public String getText()
