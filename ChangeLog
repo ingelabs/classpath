@@ -1,3 +1,10 @@
+2006-10-18  Tania Bento  <tbento@redhat.com>
+
+	* java/awt/CardLayout.java:
+	(maximumLayoutSize): Return a new Dimension with Integer.MAX_VALUE as
+	its height and width if Container passed as argument is null.
+	(gotoComponent): Consider the case where the component is not visible.
+
 2006-10-18  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* resource/gnu/classpath/tools/appletviewer/MessagesBundle.properties:
