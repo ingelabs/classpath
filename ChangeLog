@@ -1,5 +1,13 @@
 2006-10-18  Roman Kennke  <kennke@aicas.com>
 
+	* native/target/.cvsignore
+	* native/target/Linux/.cvsignore
+	* native/target/generic/.cvsignore:
+	Added to let CVS ignore the generated Makefile and Makefile.in
+	files.
+
+2006-10-18  Roman Kennke  <kennke@aicas.com>
+
 	PR 29448
 	* java/awt/Window.java
 	(eventTypeEnabled): Overridden to handle WindowEvents.
