@@ -54,6 +54,10 @@ exception statement from your version. */
 #define AWT_WINDOW_LOST_FOCUS 208
 #define AWT_WINDOW_STATE_CHANGED 209
 
+#define AWT_FRAME_NORMAL 0
+#define AWT_FRAME_ICONIFIED 1
+#define AWT_FRAME_MAXIMIZED_BOTH 6
+
 /* Virtual Keys */
 /* This list should be kept in the same order as the VK_ field
    declarations in KeyEvent.java. */
@@ -1703,41 +1707,24 @@ window_window_state_cb (GtkWidget *widget __attribute__((unused)),
 			GdkEvent *event,
 			jobject peer)
 {
-  jint new_state;
-
-  /* Handle WINDOW_ICONIFIED and WINDOW_DEICONIFIED events. */
-  if (event->window_state.changed_mask & GDK_WINDOW_STATE_ICONIFIED)
-    {
-      /* We've either been iconified or deiconified. */
-      if (event->window_state.new_window_state & GDK_WINDOW_STATE_ICONIFIED)
-	{
-	  /* We've been iconified. */
-	  (*cp_gtk_gdk_env())->CallVoidMethod (cp_gtk_gdk_env(), peer,
-				      postWindowEventID,
-				      (jint) AWT_WINDOW_ICONIFIED,
-				      (jobject) NULL, (jint) 0);
-	}
-      else
-	{
-	  /* We've been deiconified. */
-	  (*cp_gtk_gdk_env())->CallVoidMethod (cp_gtk_gdk_env(), peer,
-				      postWindowEventID,
-				      (jint) AWT_WINDOW_DEICONIFIED,
-				      (jobject) NULL, (jint) 0);
-	}
-    }
-
-  /* Post a WINDOW_STATE_CHANGED event, passing the new frame state to
-     GtkWindowPeer. */
-  new_state = AWT_FRAME_STATE_NORMAL;
-
-  if (event->window_state.new_window_state & GDK_WINDOW_STATE_ICONIFIED)
-    new_state |= AWT_FRAME_STATE_ICONIFIED;
+  jint new_java_state = 0;
+  /* Put together the new state and let the java side figure out what
+   * to post */
+  GdkWindowState new_state = event->window_state.new_window_state;
+  /* The window can be either iconfified, maximized, iconified + maximized
+   * or normal. */
+  if ((new_state & GDK_WINDOW_STATE_ICONIFIED) != 0)
+    new_java_state |= AWT_FRAME_ICONIFIED;
+  if ((new_state & GDK_WINDOW_STATE_MAXIMIZED) != 0)
+    new_java_state |= AWT_FRAME_MAXIMIZED_BOTH;
+  if ((new_state & (GDK_WINDOW_STATE_MAXIMIZED | GDK_WINDOW_STATE_ICONIFIED))
+      == 0)
+    new_java_state = AWT_FRAME_NORMAL;
 
   (*cp_gtk_gdk_env())->CallVoidMethod (cp_gtk_gdk_env(), peer,
 			      postWindowEventID,
 			      (jint) AWT_WINDOW_STATE_CHANGED,
-			      (jobject) NULL, new_state);
+			      (jobject) NULL, new_java_state);
 
   return TRUE;
 }

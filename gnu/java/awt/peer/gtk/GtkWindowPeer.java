@@ -64,7 +64,7 @@ public class GtkWindowPeer extends GtkContainerPeer
   protected static final int GDK_WINDOW_TYPE_HINT_DOCK = 6;
   protected static final int GDK_WINDOW_TYPE_HINT_DESKTOP = 7;
 
-  private int oldState = Frame.NORMAL;
+  protected int windowState = Frame.NORMAL;
 
   // Cached awt window component location, width and height.
   private int x, y, width, height;
@@ -284,11 +284,24 @@ public class GtkWindowPeer extends GtkContainerPeer
   {
     if (id == WindowEvent.WINDOW_STATE_CHANGED)
       {
-	if (oldState != newState)
+	if (windowState != newState)
 	  {
-	    q().postEvent (new WindowEvent ((Window) awtComponent, id, opposite,
-					  oldState, newState));
-	    oldState = newState;
+            // Post old styleWindowEvent with WINDOW_ICONIFIED or
+            // WINDOW_DEICONIFIED if appropriate.
+            if ((windowState & Frame.ICONIFIED) != 0
+                && (newState & Frame.ICONIFIED) == 0)
+              q().postEvent(new WindowEvent((Window) awtComponent,
+                                            WindowEvent.WINDOW_DEICONIFIED,
+                                            opposite, 0, 0));
+            else if ((windowState & Frame.ICONIFIED) == 0
+                && (newState & Frame.ICONIFIED) != 0)
+              q().postEvent(new WindowEvent((Window) awtComponent,
+                                            WindowEvent.WINDOW_ICONIFIED,
+                                            opposite, 0, 0));
+            // Post new-style WindowStateEvent.
+	    q().postEvent (new WindowEvent ((Window) awtComponent, id,
+                                            opposite, windowState, newState));
+	    windowState = newState;
 	  }
       }
     else
