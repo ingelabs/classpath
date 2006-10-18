@@ -44,7 +44,6 @@ exception statement from your version. */
 #include <X11/Xatom.h>
 #include <gdk/gdkkeysyms.h>
 
-#define AWT_WINDOW_OPENED 200
 #define AWT_WINDOW_CLOSING 201
 #define AWT_WINDOW_CLOSED 202
 #define AWT_WINDOW_ICONIFIED 203
@@ -1046,7 +1045,6 @@ static gboolean window_delete_cb (GtkWidget *widget, GdkEvent *event,
 			      jobject peer);
 static void window_destroy_cb (GtkWidget *widget, GdkEvent *event,
 			       jobject peer);
-static void window_show_cb (GtkWidget *widget, jobject peer);
 static void window_focus_state_change_cb (GtkWidget *widget,
                                           GParamSpec *pspec,
                                           jobject peer);
@@ -1321,9 +1319,6 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_connectSignals
 
   g_signal_connect (G_OBJECT (ptr), "destroy-event",
 		    G_CALLBACK (window_destroy_cb), *gref);
-
-  g_signal_connect (G_OBJECT (ptr), "show",
-		    G_CALLBACK (window_show_cb), *gref);
 
   g_signal_connect (G_OBJECT (ptr), "notify::has-toplevel-focus",
   		    G_CALLBACK (window_focus_state_change_cb), *gref);
@@ -1657,16 +1652,6 @@ window_destroy_cb (GtkWidget *widget __attribute__((unused)),
   (*cp_gtk_gdk_env())->CallVoidMethod (cp_gtk_gdk_env(), peer,
 			      postWindowEventID,
 			      (jint) AWT_WINDOW_CLOSED,
-			      (jobject) NULL, (jint) 0);
-}
-
-static void
-window_show_cb (GtkWidget *widget __attribute__((unused)),
-		jobject peer)
-{
-  (*cp_gtk_gdk_env())->CallVoidMethod (cp_gtk_gdk_env(), peer,
-			      postWindowEventID,
-			      (jint) AWT_WINDOW_OPENED,
 			      (jobject) NULL, (jint) 0);
 }
 

@@ -64,7 +64,6 @@ public class GtkWindowPeer extends GtkContainerPeer
   protected static final int GDK_WINDOW_TYPE_HINT_DOCK = 6;
   protected static final int GDK_WINDOW_TYPE_HINT_DESKTOP = 7;
 
-  private boolean hasBeenShown = false;
   private int oldState = Frame.NORMAL;
 
   // Cached awt window component location, width and height.
@@ -283,17 +282,7 @@ public class GtkWindowPeer extends GtkContainerPeer
 
   void postWindowEvent (int id, Window opposite, int newState)
   {
-    if (id == WindowEvent.WINDOW_OPENED)
-      {
-	// Post a WINDOW_OPENED event the first time this window is shown.
-	if (!hasBeenShown)
-	  {
-	    q().postEvent (new WindowEvent ((Window) awtComponent, id,
-					  opposite));
-	    hasBeenShown = true;
-	  }
-      }
-    else if (id == WindowEvent.WINDOW_STATE_CHANGED)
+    if (id == WindowEvent.WINDOW_STATE_CHANGED)
       {
 	if (oldState != newState)
 	  {

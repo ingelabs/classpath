@@ -356,15 +356,15 @@ public class Window extends Container implements Accessible
 	  component[i].removeNotify();
 	this.removeNotify();
 
-    // Post WINDOW_CLOSED from here.
-    if (windowListener != null
-        || (eventMask & AWTEvent.WINDOW_EVENT_MASK) != 0)
-      {
-        WindowEvent ev = new WindowEvent(this,
-                                         WindowEvent.WINDOW_OPENED);
-        Toolkit tk = Toolkit.getDefaultToolkit();
-        tk.getSystemEventQueue().postEvent(ev);
-      }
+	// Post WINDOW_CLOSED from here.
+	if (windowListener != null
+	    || (eventMask & AWTEvent.WINDOW_EVENT_MASK) != 0)
+	  {
+	    WindowEvent ev = new WindowEvent(this,
+	                                     WindowEvent.WINDOW_CLOSED);
+	    Toolkit tk = Toolkit.getDefaultToolkit();
+	    tk.getSystemEventQueue().postEvent(ev);
+	  }
       }
   }
 

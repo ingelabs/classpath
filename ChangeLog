@@ -1,3 +1,16 @@
+2006-10-18  Roman Kennke  <kennke@aicas.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
+	(AWT_WINDOW_OPENED): Remove unnecessary macro.
+	(window_show_cb): Removed unnecessary function.
+	(connect_signals): Don't connect signal for show.
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java
+	(hasBeenShown): Removed. This is handled in java.awt.Window.
+	(postWindowEvent): Removed handling of WINDOW_OPENED. This
+	is done in java.awt.Window.
+	* java/awt/Window.java
+	(dispose): Post WINDOW_CLOSED here, not WINDOW_OPENED.
+
 2006-10-18  Francis Kung  <fkung@redhat.com>
 
 	* gnu/java/awt/peer/gtk/CairoSurfaceGraphics.java
