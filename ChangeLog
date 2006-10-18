@@ -1,5 +1,16 @@
 2006-10-18  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/RepaintManager.java
+	(RepaintWorkerEvent): Pass full set of params to super.
+	(RepaintWorker.dispatch): Overridden to allow apps to call this
+	via reflection.
+	(addDirtyRegion): Synchronize a little more to protect the
+	dirtyComponents field and avoid NPEs.
+	(invokeLater): Pass full set of params to RepaintWorkerEvent
+	constructor.
+
+2006-10-18  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JEditorPane.java
 	(page): Removed field. The page is now stored in the correct
 	document property.
