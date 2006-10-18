@@ -1,5 +1,17 @@
 2006-10-18  Roman Kennke  <kennke@aicas.com>
 
+	PR 29419
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(copyArea): Changed size comparison to return when size == 0
+	too.
+	* javax/swing/JViewport.java
+	(paintBackingStore): Check width and height of blitted area
+	and only do blit if its > 0.
+	(paintBlit): Check width and height of blitted area
+	and only do blit if its > 0.
+
+2006-10-18  Roman Kennke  <kennke@aicas.com>
+
 	PR 27091
 	* gnu/java/awt/peer/gtk/GtkFramePeer.java
 	(maximize): New native method.

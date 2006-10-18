@@ -1222,7 +1222,7 @@ public abstract class CairoGraphics2D extends Graphics2D
 
     Rectangle2D r = getRealBounds();
 
-    if( width < 0 || height < 0 )
+    if( width <= 0 || height <= 0 )
       return;
     // Return if outside the surface
     if( x + dx > r.getWidth() || y + dy > r.getHeight() )
