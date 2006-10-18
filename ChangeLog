@@ -1,5 +1,16 @@
 2006-10-18  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JEditorPane.java
+	(page): Removed field. The page is now stored in the correct
+	document property.
+	(getPage): Fetch page URL from document property.
+	(read): Set the document for this JEditorPane. Use a Reader
+	for reading in the document.
+	(setPage): Call getStream() to get the stream from which we read.
+	Fire property change. Store page in document property.
+
+2006-10-18  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/datatransfer/DataFlavor.java
 	(DataFlavor(String)): Removed check for space in mime string.
 
