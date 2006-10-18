@@ -618,7 +618,28 @@ public class Window extends Container implements Accessible
   protected void processEvent(AWTEvent evt)
   {
     if (evt instanceof WindowEvent)
-      processWindowEvent((WindowEvent) evt);
+      {
+        WindowEvent we = (WindowEvent) evt;
+        switch (evt.getID())
+          {
+          case WindowEvent.WINDOW_OPENED:
+          case WindowEvent.WINDOW_CLOSED:
+          case WindowEvent.WINDOW_CLOSING:
+          case WindowEvent.WINDOW_ICONIFIED:
+          case WindowEvent.WINDOW_DEICONIFIED:
+          case WindowEvent.WINDOW_ACTIVATED:
+          case WindowEvent.WINDOW_DEACTIVATED:
+            processWindowEvent(we);
+            break;
+          case WindowEvent.WINDOW_GAINED_FOCUS:
+          case WindowEvent.WINDOW_LOST_FOCUS:
+            processWindowFocusEvent(we);
+            break;
+          case WindowEvent.WINDOW_STATE_CHANGED:
+            processWindowStateEvent(we);
+            break;
+          }
+      }
     else
       super.processEvent(evt);
   }
@@ -633,54 +654,35 @@ public class Window extends Container implements Accessible
    */
   protected void processWindowEvent(WindowEvent evt)
   {
-    int id = evt.getID();
-
-    if (id == WindowEvent.WINDOW_GAINED_FOCUS
-	|| id == WindowEvent.WINDOW_LOST_FOCUS)
-      processWindowFocusEvent (evt);
-    else if (id == WindowEvent.WINDOW_STATE_CHANGED)
-      processWindowStateEvent (evt);
-    else
+    if (windowListener != null)
       {
-	if (windowListener != null)
-	  {
-	    switch (evt.getID())
-	      {
-	      case WindowEvent.WINDOW_ACTIVATED:
-		windowListener.windowActivated(evt);
-		break;
-
-	      case WindowEvent.WINDOW_CLOSED:
-		windowListener.windowClosed(evt);
-		break;
-
-	      case WindowEvent.WINDOW_CLOSING:
-		windowListener.windowClosing(evt);
-		break;
-
-	      case WindowEvent.WINDOW_DEACTIVATED:
-		windowListener.windowDeactivated(evt);
-		break;
-
-	      case WindowEvent.WINDOW_DEICONIFIED:
-		windowListener.windowDeiconified(evt);
-		break;
-
-	      case WindowEvent.WINDOW_ICONIFIED:
-		windowListener.windowIconified(evt);
-		break;
-
-	      case WindowEvent.WINDOW_OPENED:
-		windowListener.windowOpened(evt);
-		break;
-
-	      default:
-		break;
-	      }
-	  }
+        switch (evt.getID())
+          {
+          case WindowEvent.WINDOW_ACTIVATED:
+            windowListener.windowActivated(evt);
+            break;
+          case WindowEvent.WINDOW_CLOSED:
+            windowListener.windowClosed(evt);
+            break;
+          case WindowEvent.WINDOW_CLOSING:
+            windowListener.windowClosing(evt);
+            break;
+          case WindowEvent.WINDOW_DEACTIVATED:
+            windowListener.windowDeactivated(evt);
+            break;
+          case WindowEvent.WINDOW_DEICONIFIED:
+            windowListener.windowDeiconified(evt);
+            break;
+          case WindowEvent.WINDOW_ICONIFIED:
+            windowListener.windowIconified(evt);
+            break;
+          case WindowEvent.WINDOW_OPENED:
+            windowListener.windowOpened(evt);
+            break;
+          }
       }
   }
-  
+
   /**
    * Identifies if this window is active.  The active window is a Frame or
    * Dialog that has focus or owns the active window.
@@ -1223,6 +1225,42 @@ public class Window extends Container implements Accessible
   String generateName()
   {
     return "win" + getUniqueLong();
+  }
+
+  /**
+   * Overridden to handle WindowEvents.
+   *
+   * @return <code>true</code> when the specified event type is enabled,
+   *         <code>false</code> otherwise
+   */
+  boolean eventTypeEnabled(int type)
+  {
+    boolean enabled = false;
+    switch (type)
+      {
+        case WindowEvent.WINDOW_OPENED:
+        case WindowEvent.WINDOW_CLOSED:
+        case WindowEvent.WINDOW_CLOSING:
+        case WindowEvent.WINDOW_ICONIFIED:
+        case WindowEvent.WINDOW_DEICONIFIED:
+        case WindowEvent.WINDOW_ACTIVATED:
+        case WindowEvent.WINDOW_DEACTIVATED:
+          enabled = ((eventMask & AWTEvent.WINDOW_EVENT_MASK) != 0)
+                    || windowListener != null;
+          break;
+        case WindowEvent.WINDOW_GAINED_FOCUS:
+        case WindowEvent.WINDOW_LOST_FOCUS:
+          enabled = ((eventMask & AWTEvent.WINDOW_FOCUS_EVENT_MASK) != 0)
+                    || windowFocusListener != null;
+          break;
+        case WindowEvent.WINDOW_STATE_CHANGED:
+          enabled = ((eventMask & AWTEvent.WINDOW_STATE_EVENT_MASK) != 0)
+                    || windowStateListener != null;
+          break;
+        default:
+          enabled = super.eventTypeEnabled(type);
+      }
+    return enabled;
   }
 
   private static synchronized long getUniqueLong()

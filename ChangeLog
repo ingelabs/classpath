@@ -1,3 +1,27 @@
+2006-10-18  Roman Kennke  <kennke@aicas.com>
+
+	PR 29448
+	* java/awt/Window.java
+	(eventTypeEnabled): Overridden to handle WindowEvents.
+	(processEvent): Switch between processWindowEvent(),
+	processWindowFocusEvent() and processWindowStateEvent() here,
+	rather than simply calling processWindowEvent().
+	(processWindowEvent): Only dispatch event to listener, do not
+	switch to processWindowFocusEvent() or processWindowStateEvent()
+	here.
+	* javax/swing/JFrame.java
+	(frameInit): Explicitly enable window and key events here.
+	(processWindowEvent): Throw out some unnecessary code.
+	* javax/swing/JWindow.java
+	(windowInit): Explicitly enable key events here.
+	* javax/swing/JDialog.java
+	(close_action): Renamed to closeAction.
+	(dialogInit): Explicitly enable window events here.
+	(getDefaultCloseOperation): Renamed close_action to closeAction.
+	(processWindowEvent): Throw out some unnecessary code.
+	Renamed close_action to closeAction.
+	(setDefaultCloseOperation): Renamed close_action to closeAction.
+
 2006-10-17  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkMainThread.java: Introduce running flag
