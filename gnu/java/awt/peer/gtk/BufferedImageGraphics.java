@@ -103,7 +103,7 @@ public class BufferedImageGraphics extends CairoGraphics2D
   /**
    * Colormodels we recognize for fast copying.
    */  
-  static ColorModel rgb32 = new DirectColorModel(32, 0xFF0000, 0xFF00, 0xFF);
+  static ColorModel rgb32 = new DirectColorModel(24, 0xFF0000, 0xFF00, 0xFF);
   static ColorModel argb32 = new DirectColorModel(32, 0xFF0000, 0xFF00, 0xFF,
 						  0xFF000000);
   private boolean hasFastCM;

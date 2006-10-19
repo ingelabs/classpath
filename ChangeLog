@@ -1,3 +1,11 @@
+2006-10-19  Francis Kung  <fkung@redhat.com>
+
+	PR 29510
+	* java/awt/image/BufferedImage.java
+	(constructor): Updated some properties of default image types.
+	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java
+	(argb32): Updated field to match default in BufferedImage.
+
 2006-10-18  Roman Kennke  <kennke@aicas.com>
 
 	PR 29419
