@@ -1,3 +1,12 @@
+2006-10-20  Tom Tromey  <tromey@redhat.com>
+
+	* tools/gnu/classpath/tools/javah/JniIncludePrinter.java (printClass):
+	Don't use mangled class name for .h file.
+	* tools/gnu/classpath/tools/javah/JniStubPrinter.java (printClass):
+	Don't use mangled class name for .c file.
+	* tools/gnu/classpath/tools/javah/CniPrintStream.java (writeClass):
+	Handle classes from the default package.
+
 2006-10-20  Francis Kung  <fkung@redhat.com>
 
 	* include/gnu_java_awt_peer_gtk_CairoGraphics2D.h: Added missing constants.
