@@ -40,6 +40,8 @@ exception statement from your version. */
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
+#include <config-int.h>
+
 #include <sys/ioctl.h>
 #include <sys/types.h>
 #include <sys/socket.h>

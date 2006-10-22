@@ -40,6 +40,8 @@ exception statement from your version. */
 #include <config.h>
 #endif
 
+#include <config-int.h>
+
 #include <sys/types.h>
 #include <sys/ioctl.h>
 #include <sys/mman.h>

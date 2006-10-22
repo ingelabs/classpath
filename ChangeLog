@@ -1,3 +1,10 @@
+2006-10-22  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* native/jni/java-net/gnu_java_net_VMPlainSocketImpl.c (config-int.h):
+	Added include.
+	* native/jni/java-nio/gnu_java_nio_VMChannel.c (config-int.h):
+	Likewise.
+
 2006-10-23  Marco Trudel <mtrudel@gmx.ch>
 
 	* gnu/javax/crypto/pad/PKCS7.java (unpad): Removed an unnecessary test.
