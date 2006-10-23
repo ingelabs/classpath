@@ -38,13 +38,11 @@ exception statement from your version. */
 
 package gnu.java.awt.peer.gtk;
 
+import gnu.java.awt.peer.NativeEventLoopRunningEvent;
+
 import java.awt.AWTEvent;
 
 /**
- * This class implements the AWT exit conditions listed here:
- *
- * http://java.sun.com/j2se/1.5.0/docs/api/java/awt/doc-files/AWTThreadIssues.html
- *
  * The Java thread representing the native GTK main loop, that is,
  * GtkMainThread.mainThread, terminates when GtkToolkit.gtkMain()
  * returns.  That happens in response to the last window peer being
@@ -73,17 +71,10 @@ import java.awt.AWTEvent;
  * GtkMainThread.mainThread is started when the window count goes from
  * zero to one.
  *
- * The three exit conditions in the above document are satisfied by
- * GtkMainThread alone: 1) no displayable AWT or Swing components: if
- * no window peers exist then no AWT or Swing component is
- * displayable; 2) no native events in the native event queue: when
- * the last window is disposed of, the native GTK main loop is
- * terminated, which means that there is no native event queue let
- * alone native events therein; 3) no AWT events in the AWT event
- * queue: endMainThread posts a dummy event to the AWT event queue,
- * which if the other exit conditions are satisfied, becomes the last
- * event posted to the AWT event queue before the AWT event dispatch
- * thread terminates.
+ * GtkMainThread keeps the AWT event queue informed of its status by
+ * posting NativeEventLoopRunningEvents.  The AWT event queue uses
+ * this status to determine whether or not the AWT exit conditions
+ * have been met (see EventQueue.isShutdown).
  */
 public class GtkMainThread extends Thread
 {
@@ -144,6 +135,8 @@ public class GtkMainThread extends Thread
                                         + " for GTK main loop to start");
                   }
               }
+            GtkGenericPeer.q()
+              .postEvent(new NativeEventLoopRunningEvent(new Boolean(true)));
           }
       }
   }
@@ -169,18 +162,9 @@ public class GtkMainThread extends Thread
                                         + " for GTK main loop to stop");
                   }
               }
-            // Post a dummy event to wake up the AWT event dispatch
-            // thread.  EventQueue.getNextEvent first checks the
-            // shutdown condition, then waits indefinitely for the
-            // next event to be posted.  There is a possibility that
-            // the native GTK main loop will end between the
-            // isShutdown check and the wait call.  Posting a dummy
-            // event here causes the AWT event dispatch thread to wake
-            // up, giving it a chance to check the shutdown condition
-            // again and terminate cleanly.
             GtkGenericPeer.q()
-              .postEvent(new WakeupEventDispatchThreadEvent (mainThread));
-          }
+              .postEvent(new NativeEventLoopRunningEvent(new Boolean(false)));
+            }
       }
   }
 
@@ -202,14 +186,5 @@ public class GtkMainThread extends Thread
 	if (numberOfWindows == 0)
 	  endMainThread();
       }
-  }
-}
-
-class WakeupEventDispatchThreadEvent
-  extends AWTEvent
-{
-  WakeupEventDispatchThreadEvent(Object o)
-  {
-    super (o, 2000);
   }
 }

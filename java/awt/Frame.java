@@ -488,7 +488,10 @@ public class Frame extends Window implements MenuContainer
 
   private static void noteFrame(Frame f)
   {
-    weakFrames.add(new WeakReference(f));
+    synchronized (weakFrames)
+      {
+        weakFrames.add(new WeakReference(f));
+      }
   }
 
   public static Frame[] getFrames()
