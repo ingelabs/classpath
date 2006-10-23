@@ -220,7 +220,7 @@ public abstract class CairoGraphics2D extends Graphics2D
   { 
     nativePointer = init(cairo_t_pointer);
     setRenderingHints(new RenderingHints(getDefaultHints()));
-    font = new Font("SansSerif", Font.PLAIN, 12);
+    setFont(new Font("SansSerif", Font.PLAIN, 12));
     setColor(Color.black);
     setBackground(Color.white);
     setPaint(Color.black);
@@ -262,8 +262,7 @@ public abstract class CairoGraphics2D extends Graphics2D
     else
       transform = new AffineTransform(g.transform);
 
-    font = g.font;
-
+    setFont(g.font);
     setColor(foreground);
     setBackground(bg);
     setPaint(paint);
@@ -385,6 +384,10 @@ public abstract class CairoGraphics2D extends Graphics2D
                                    float x, float y, int n, 
                                    int[] codes, float[] positions);
 
+  /**
+   * Set the font in cairo.
+   */
+  private native void cairoSetFont(long pointer, GdkFontPeer font);
 
   private native void cairoRelCurveTo(long pointer, double dx1, double dy1,
                                       double dx2, double dy2, double dx3,
@@ -1613,6 +1616,8 @@ public abstract class CairoGraphics2D extends Graphics2D
       font = 
         ((ClasspathToolkit)(Toolkit.getDefaultToolkit()))
         .getFont(f.getName(), f.getAttributes());    
+    
+    cairoSetFont(nativePointer, (GdkFontPeer)getFont().getPeer());
   }
 
   public Font getFont()

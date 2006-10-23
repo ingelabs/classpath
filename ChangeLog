@@ -1,3 +1,16 @@
+2006-10-23  Francis Kung  <fkung@redhat.com>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(cairoSetFont): New method.
+	(copy): Set font using setFont method.
+	(setFont): Call cairoSetFont.
+	(setup): Set font using setFont method.
+	* include/gnu_java_awt_peer_gtk_CairoGraphics2D.h: Added method.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoGraphics2D.c
+	(install_font_peer): Removed.
+	(cairoDrawGlyphVector): Removed call to install_font_peer.
+	(cairoSetFont): New method.
+
 2006-10-23  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/peer/NativeEventLoopRunningEvent.java: New file.
