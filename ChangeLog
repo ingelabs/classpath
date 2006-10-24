@@ -1,3 +1,16 @@
+2006-10-24  Tania Bento  <tbento@redhat.com>
+
+	* java/awt/Scrollbar.java:
+	(setLineIncrement): Removed unnecessary if-clause and if 
+	lineIncrement == 0, then it should be set to 1, not 0.
+	(setPageIncrement): Removed unnecessary if-clause and if
+	pageIncrement == 0, then it should be set to 1, not 0.
+	(setValues): If visibleAmount <= 0, it should be set to 1, not 0.
+	If maximum <= minimum, maximum should be set to mininum + 1. The
+	actual value of maximum is maximum - visibleAmount, so I made 
+	this change to the appropriate if-check. Remove the two unneccessary
+	if-clauses.
+
 2006-10-23  Francis Kung  <fkung@redhat.com>
 
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
@@ -53,6 +66,7 @@
 
 	* include/gnu_java_awt_peer_gtk_CairoGraphics2D.h: Added missing constants.
 
+>>>>>>> 1.8716
 2006-10-19  Francis Kung  <fkung@redhat.com>
 
 	PR 29510
