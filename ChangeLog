@@ -66,7 +66,6 @@
 
 	* include/gnu_java_awt_peer_gtk_CairoGraphics2D.h: Added missing constants.
 
->>>>>>> 1.8716
 2006-10-19  Francis Kung  <fkung@redhat.com>
 
 	PR 29510
