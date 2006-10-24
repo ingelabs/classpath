@@ -1,3 +1,9 @@
+2006-10-24  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* tools/Makefile.am: Add ASM_JAR define to each tool's CFLAGS.
+	* tools/toolwrapper.c (main): Set bootclasspath, not classpath.
+	Add ASM_JAR to bootclasspath.
+
 2006-10-24  Tania Bento  <tbento@redhat.com>
 
 	* java/awt/Scrollbar.java:
