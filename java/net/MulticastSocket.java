@@ -230,6 +230,10 @@ public class MulticastSocket extends DatagramSocket
 
     InetAddress address =
       (InetAddress) getImpl().getOption(SocketOptions.IP_MULTICAST_IF);
+    
+    if (address.isAnyLocalAddress())
+      return NetworkInterface.createAnyInterface();
+    
     NetworkInterface netIf = NetworkInterface.getByInetAddress(address);
 
     return netIf;

@@ -1,6 +1,13 @@
 2006-10-25  Robert Schuster  <robertschuster@fsfe.org>
 
 	Fixes PR29576
+	* java/net/MulticastSocket.java:
+	(getNetworkInterface): Return a special NetworkInterface instance
+	if the socket's multicast interface is set to any.
+
+2006-10-25  Robert Schuster  <robertschuster@fsfe.org>
+
+	Fixes PR29576
 	* java/net/NetworkInterface.java:
 	(createAnyInterface): New method.
 	(equals): Added if-statement to handle case where netif.name is null.
