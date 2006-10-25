@@ -22,8 +22,8 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoSetRGBACo
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoSetFillRule (JNIEnv *env, jobject, jlong, jint);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoSetLine (JNIEnv *env, jobject, jlong, jdouble, jint, jint, jdouble);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoSetDash (JNIEnv *env, jobject, jlong, jdoubleArray, jint, jdouble);
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoSetFont (JNIEnv *env, jobject, jlong, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoDrawGlyphVector (JNIEnv *env, jobject, jlong, jobject, jfloat, jfloat, jint, jintArray, jfloatArray);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoSetFont (JNIEnv *env, jobject, jlong, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoRelCurveTo (JNIEnv *env, jobject, jlong, jdouble, jdouble, jdouble, jdouble, jdouble, jdouble);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoRectangle (JNIEnv *env, jobject, jlong, jdouble, jdouble, jdouble, jdouble);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoArc (JNIEnv *env, jobject, jlong, jdouble, jdouble, jdouble, jdouble, jdouble);
