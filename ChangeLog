@@ -1,5 +1,12 @@
 2006-10-25  Robert Schuster  <robertschuster@fsfe.org>
 
+	* native/jni/java-net/javanet.h: Added declaration for
+	_javanet_create_inetaddress.
+	* native/jni/java-net/javanet.c:
+	(_javanet_create_inetaddress): Removed static keyword.
+
+2006-10-25  Robert Schuster  <robertschuster@fsfe.org>
+
         * gnu/java/net/PlainDatagramSocketImpl.java:
         (connect): Use VMChannel instance for connect call.
         (getTimeToLive): Call VMPlainSocketImpl.getTimeToLive.
