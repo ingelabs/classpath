@@ -1,3 +1,19 @@
+2006-10-25  Tania Bento  <tbento@redhat.com>
+
+	* java/awt/Dialog.java: Created new private variable
+	next_dialog_number.
+	(Dialog(Frame, String, boolean, GraphicsConfiguration)):
+	Set cursor to default cursor.
+	(Dialog(Dialog, STring, boolean, GraphicsConfiguration)):
+	Same.
+	(generateName): New method.
+	(getUniqueLong): New private method.
+	* java/awt/FileDialog.java: Created new private variable
+	next_file_dialog_number.
+	(setFile): If file == "", set it to null.
+	(generateName): New method.
+	(getUniqueLong): New private method.
+
 2006-10-25  Robert Schuster  <robertschuster@fsfe.org>
 
 	* java/net/MulticastSocket.java:
@@ -186,7 +202,7 @@
 	(argb32): Updated field to match default in BufferedImage.
 
 2006-10-18  Roman Kennke  <kennke@aicas.com>
-
+\
 	PR 29419
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
 	(copyArea): Changed size comparison to return when size == 0
