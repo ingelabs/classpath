@@ -1,5 +1,76 @@
 2006-10-25  Robert Schuster  <robertschuster@fsfe.org>
 
+        * gnu/java/net/PlainDatagramSocketImpl.java:
+        (connect): Use VMChannel instance for connect call.
+        (getTimeToLive): Call VMPlainSocketImpl.getTimeToLive.
+        (setTimeToLive): Call VMPlainSocketImpl.setTimeToLive.
+	(setOption): Handle multicast options.
+	(getOption): Handle multicast options.
+        * gnu/java/net/PlainSocketImpl.java:
+        (getTimeToLive): Call VMPlainSocketImpl.getTimeToLive.
+        (setTimeToLive): Call VMPlainSocketImpl.setTimeToLive.
+	(setOption): Filter unappropriate options.
+	(getOption): Filter unappropriate options.
+	(connect): Use given SocketAddress.
+	(close): Reset address and port.
+	(getInetAddress): 
+        * include/Makefile.am: Removed all occurences of
+        gnu_java_net_VMPlainDatagramSocketImpl.h.
+        * include/gnu_java_net_VMPlainDatagramSocketImpl.h: Removed.
+        * native/jni/java-net/Makefile.am: Removed
+        gnu_java_net_VMPlainDatagramSocketImpl.c from sources.
+        * native/jni/java-net/gnu_java_net_VMPlainDatagramSocketImpl.c:
+        Removed.
+        as SocketException, declare to throw SocketException.
+        * native/jni/java-nio/gnu_java_nio_VMChannel.c: Added definitions
+        for SocketException and ConnectException.
+        (Java_gnu_java_nio_VMChannel_connect): Throw SocketException instead
+        of IOException.
+        (Java_gnu_java_nio_VMChannel_connect6): Throw SocketException instead
+        of IOException.
+	(Java_gnu_java_nio_VMChannel_accept): Rewritten.
+	(JCL_thread_interrupted): New function.
+	(initIDs): Added initialisation for isThreadInterrupted method id.
+        * native/jni/java-net/gnu_java_net_VMPlainSocketImpl.c: Added
+        CPNET_IP_TTL to java_sockopt enum.
+        (Java_gnu_java_net_VMPlainSocketImpl_setOption): Handle CPNET_IP_TTL
+        case, handle SO_LINGER case properly.
+        (Java_gnu_java_net_VMPlainSocketImpl_getOption): Handle CPNET_IP_TTL
+        case, handle SO_LINGER case properly.
+	(Java_gnu_java_net_VMPlainSocketImpl_getMulticastInterface): New
+	function.
+	(Java_gnu_java_net_VMPlainSocketImpl_setMulticastInterface): New
+	function.
+	(Java_gnu_java_net_VMPlainSocketImpl_setMulticastInterface6): New
+	function.
+	(Java_gnu_java_net_VMPlainSocketImpl_leave6): Fixed constant to be
+	IPV6_LEAVE_GROUP.
+        * vm/reference/gnu/java/net/VMPlainDatagramSocketImpl.java: Removed.
+        * vm/reference/gnu/java/nio/VMChannel.java:
+        (connect(int, byte[], int, int)): Declare to throw SocketException.
+        (connect6): Declare to throw SocketException.
+        (connect(InetSocketAddress, int)): Catch IOException and rethrow
+	(isThreadInterrupted): New method.
+        * vm/reference/gnu/java/net/VMPlainSocketImpl.java: Added CP_IP_TTL
+        field.
+        (setTimeToLive): New method.
+        (getTimeToLive): New method.
+	(setMulticastInterface(int, InetAddress)): New method.
+	(setMulticastInterface(int, int, Inet4Address): New method.
+	(setMulticastInterface6(int, int, Inet6Address): New method.
+	(setOptions): Handle SO_LINGER case.
+	(getOptions): Add missing SO_REUSEADDR case.
+	* java/net/Socket.java:
+	(Socket(InetAddress, int, InetAddress, int, boolean)): Close socket
+	when exception was thrown out of connect().
+	(setSoLinger): Replaced instantiations with valueOf calls, replaced
+        Boolean.FALSE with Integer.valueOf(-1).
+	* native/jni/native-lib/cpio.h: Added cpio_closeOnExec declaration.
+	* native/jni/native-lib/cpio.c: Added cpio_closeOnExec implementation.
+        * NEWS: Documented VM interface changes.
+
+2006-10-25  Robert Schuster  <robertschuster@fsfe.org>
+
 	* java/net/Inet6Address.java:
 	(isMulticastAddress): Fixed check.
 
