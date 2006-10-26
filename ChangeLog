@@ -1,3 +1,11 @@
+2006-10-26  Christian Elias Naur  <elias@oddlabs.com>
+
+	* native/jni/gtk-peer/gtk_jawt.c (classpath_jawt_get_depth): New
+	function.
+	* native/jni/classpath/classpath_jawt.h: Likewise.
+	* native/jawt/jawt.c (_Jv_GetDrawingSurfaceInfo): Added
+	initializer for surface_info_x11->depth.
+
 2006-10-26  Tania Bento  <tbento@redhat.com>
 	
 	* java/awt/FileDialog.java:
