@@ -305,7 +305,7 @@ getFile()
 public synchronized void
 setFile(String file)
 {
-  if (file == "")
+  if ("".equals(file))
     this.file = null;
   else
     this.file = file;
