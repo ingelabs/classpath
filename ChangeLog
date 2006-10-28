@@ -1,3 +1,8 @@
+2006-10-28  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/TransferHandler.java
+	(importData): Implemented stub method. Added API docs.
+
 2006-10-26  Christian Elias Naur  <elias@oddlabs.com>
 
 	* native/jni/gtk-peer/gtk_jawt.c (classpath_jawt_get_depth): New
@@ -226,7 +231,7 @@
 	(argb32): Updated field to match default in BufferedImage.
 
 2006-10-18  Roman Kennke  <kennke@aicas.com>
-\
+
 	PR 29419
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
 	(copyArea): Changed size comparison to return when size == 0

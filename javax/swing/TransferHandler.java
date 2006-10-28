@@ -407,10 +407,51 @@ public class TransferHandler implements Serializable
     return visualRepresentation;
   }
 
+  /**
+   * Imports the transfer data represented by <code>t</code> into the specified
+   * component <code>c</code> by setting the property of this TransferHandler
+   * on that component. If this succeeds, this method returns
+   * <code>true</code>, otherwise <code>false</code>.
+   * 
+   *
+   * @param c the component to import into
+   * @param t the transfer data to import
+   *
+   * @return <code>true</code> if the transfer succeeds, <code>false</code>
+   *         otherwise
+   */
   public boolean importData(JComponent c, Transferable t) 
-    throws NotImplementedException
   {
-    return false;
+    boolean ok = false;
+    PropertyDescriptor prop = getPropertyDescriptor(c);
+    if (prop != null)
+      {
+        Method writer = prop.getWriteMethod();
+        if (writer != null)
+          {
+            Class[] params = writer.getParameterTypes();
+            if (params.length == 1)
+              {
+                DataFlavor flavor = getPropertyDataFlavor(params[0],
+                                                   t.getTransferDataFlavors());
+                if (flavor != null)
+                  {
+                    try
+                      {
+                        Object value = t.getTransferData(flavor);
+                        writer.invoke(c, new Object[]{ value });
+                        ok = true;
+                      }
+                    catch (Exception ex)
+                      {
+                        // If anything goes wrong here, do nothing and return
+                        // false;
+                      }
+                  }
+              }
+          }
+      }
+    return ok;
   }
 
   /**
