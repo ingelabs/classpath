@@ -1,3 +1,35 @@
+2006-10-30  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/datatransfer/DataFlavor.java
+	(javaFileListFlavor): Don't explicitly specify class.
+	(plainTextFlavor): Don't explicitly specify class.
+	(mimeType): Changed to type MimeType. Remove final.
+	(representationClass): Remove final.
+	(DataFlavor): Don't do anything here.
+	(DataFlavor(Class,String,String)): Removed.
+	(DataFlavor(Class,String)): Initialize here.
+	(DataFlavor(String,String,ClassLoader)): Initialize in init().
+	(DataFlavor(String,String)): Initialize in init().
+	(DataFlavor(String)): Initialize in init().
+	(init): New initialization method.
+	(getMimeType): Delegate to MimeType.toString().
+	(getParameter(String,String)): Removed. Is now done in MimeType.
+	(getParameter(String)): Delegate to MimeType.
+	(getPrimaryType): Delegate to MimeType.
+	(getRepresentationClassFromMime): Removed.
+	(getRepresentationClassFromMimeThrows): Removed.
+	(getSubType): Delegate to MimeType.
+	(hashCode): Take MimeType.toString() for the hashCode.
+	(isFlavorRemoveObjectType): Return true only when representation
+	class is remove and serializable and the mime type is remote.
+	(isFlavorSerializedObjectType): Return true only when representation
+	class is serializable and the mime type is serialized.
+	(isMimeTypeEqual): Rewritten to delegate to MimeType.matches().
+	(isMimeTypeSerializedObject): Delegate to isMimeTypeEqual().
+	(readExternal): Implemented stub method.
+	(writeExternal): Implemented stub method.
+	* java/awt/datatransfer/MimeType.java: New helper class.
+
 2006-10-28  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/TransferHandler.java
