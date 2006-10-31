@@ -1,3 +1,9 @@
+2006-10-31  Tania Bento  <tbento@redhat.com>
+
+	* javax/swing/JTextField.java
+	(fireActionPerformed): When creating the new event, if
+	actionCommand == null, then getText() is used.
+
 2006-10-31  Francis Kung  <fkung@redhat.com>
 
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
