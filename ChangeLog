@@ -1,3 +1,8 @@
+2006-10-31  Francis Kung  <fkung@redhat.com>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(fillArc): Corrected arc type to Arc2D.PIE.
+
 2006-10-31  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/html/HTMLDocument.java

@@ -1154,7 +1154,7 @@ public abstract class CairoGraphics2D extends Graphics2D
   {
     fill(new Arc2D.Double((double) x, (double) y, (double) width,
                           (double) height, (double) startAngle,
-                          (double) arcAngle, Arc2D.OPEN));
+                          (double) arcAngle, Arc2D.PIE));
   }
 
   public void fillRect(int x, int y, int width, int height)
