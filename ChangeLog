@@ -1,3 +1,12 @@
+2006-10-31  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/html/HTMLDocument.java
+	(HTMLReader.PreAction.end): Implemented.
+	(HTMLReader.PreAction.start): Implemented.
+	(HTMLReader.inPreTag): New field.
+	(HTMLReader.handleTag): When inside a pre tag, call preContent().
+	(HTMLReader.preContent): Implemented.
+
 2006-10-31  Tania Bento  <tbento@redhat.com>
 
 	* javax/swing/JTextField.java

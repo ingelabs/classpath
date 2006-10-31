@@ -559,7 +559,12 @@ public class HTMLDocument extends DefaultStyledDocument
     
     /** A temporary variable that helps with the printing out of debug information **/
     boolean debug = false;
-    
+
+    /**
+     * This is true when we are inside a pre tag.
+     */
+    boolean inPreTag = false;
+
     void print (String line)
     {
       if (debug)
@@ -725,7 +730,10 @@ public class HTMLDocument extends DefaultStyledDocument
         blockClose(t);
       } 
     }
-    
+
+    /**
+     * This action is performed when a &lt;pre&gt; tag is parsed.
+     */
     public class PreAction extends BlockAction
     {
       /**
@@ -733,11 +741,11 @@ public class HTMLDocument extends DefaultStyledDocument
        * of tags associated with this Action.
        */
       public void start(HTML.Tag t, MutableAttributeSet a)
-        throws NotImplementedException
       {
-        // FIXME: Implement.
-        print ("PreAction.start not implemented");
-        super.start(t, a);
+        inPreTag = true;
+        blockOpen(t, a);
+        a.addAttribute(CSS.Attribute.WHITE_SPACE, "pre");
+        blockOpen(HTML.Tag.IMPLIED, a);
       }
       
       /**
@@ -745,11 +753,10 @@ public class HTMLDocument extends DefaultStyledDocument
        * with this Action.
        */
       public void end(HTML.Tag t)
-        throws NotImplementedException
       {
-        // FIXME: Implement.
-        print ("PreAction.end not implemented");
-        super.end(t);
+        blockClose(HTML.Tag.IMPLIED);
+        inPreTag = false;
+        blockClose(t);
       } 
     }
     
@@ -1182,7 +1189,13 @@ public class HTMLDocument extends DefaultStyledDocument
     public void handleText(char[] data, int pos)
     {
       if (shouldInsert() && data != null && data.length > 0)
-        addContent(data, 0, data.length);
+        {
+          if (inPreTag)
+            preContent(data);
+          else
+            addContent(data, 0, data.length);
+            
+        }
     }
     
     /**
@@ -1313,14 +1326,30 @@ public class HTMLDocument extends DefaultStyledDocument
     
     /**
      * Adds the given text that was encountered in a <PRE> element.
-     * 
+     * This adds synthesized lines to hold the text runs.
+     *
      * @param data the text
      */
     protected void preContent(char[] data)
-      throws NotImplementedException
     {
-      // FIXME: Implement
-      print ("HTMLReader.preContent not implemented yet");
+      int start = 0;
+      for (int i = 0; i < data.length; i++)
+        {
+          if (data[i] == '\n')
+            {
+              addContent(data, start, i - start + 1);
+              blockClose(HTML.Tag.IMPLIED);
+              MutableAttributeSet atts = new SimpleAttributeSet();
+              atts.addAttribute(CSS.Attribute.WHITE_SPACE, "pre");
+              blockOpen(HTML.Tag.IMPLIED, atts);
+              start = i + 1;
+            }
+        }
+      if (start < data.length)
+        {
+          // Add remaining last line.
+          addContent(data, start, data.length - start);
+        }
     }
     
     /**
