@@ -1,3 +1,9 @@
+2006-10-31  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/html/HTMLEditorKit.java
+	(write): Use HTMLWriter or MinimalHTMLWriter for writing
+	HTML or Styled documents.
+
 2006-10-31  David Fu  <fchoong@netbeans.jp>
 
 	* javax/swing/text/html/HTMLWriter.java: New class.

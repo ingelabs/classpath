@@ -66,6 +66,7 @@ import javax.swing.text.EditorKit;
 import javax.swing.text.Element;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import javax.swing.text.StyledEditorKit;
 import javax.swing.text.TextAction;
 import javax.swing.text.View;
@@ -982,8 +983,15 @@ public class HTMLEditorKit
   {
     if (doc instanceof HTMLDocument)
       {
-        // FIXME: Not implemented. Use HTMLWriter.
-        out.write(doc.getText(pos, len));
+        HTMLWriter writer = new HTMLWriter(out, (HTMLDocument) doc, pos, len);
+        writer.write();
+      }
+    else if (doc instanceof StyledDocument)
+      {
+        MinimalHTMLWriter writer = new MinimalHTMLWriter(out,
+                                                         (StyledDocument) doc,
+                                                         pos, len);
+        writer.write();
       }
     else
       super.write(out, doc, pos, len);
