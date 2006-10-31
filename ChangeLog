@@ -1,3 +1,10 @@
+2006-10-31  Tania Bento  <tbento@redhat.com>
+
+	* javax/swing/JTextField.java
+	(fireActionPerformed): When creating the new event, 
+	actionCommand should be used as the command, not
+	getText().
+
 2006-10-31  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/html/HTMLEditorKit.java
