@@ -1,3 +1,9 @@
+2006-10-30  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* native/plugin/gcjwebplugin.cc (GCJ_New): Move GThread
+	initialization to NP_Initialize.
+	(NP_Initialize): Initialize GThread library.
+
 2006-10-31  Tania Bento  <tbento@redhat.com>
 
 	* javax/swing/JTextField.java
