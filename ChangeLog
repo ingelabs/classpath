@@ -1,8 +1,8 @@
 2006-10-30  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
-	* native/plugin/gcjwebplugin.cc (GCJ_New): Move GThread
+	* native/plugin/gcjwebplugin.cc (GCJ_New): Move GLib threading
 	initialization to NP_Initialize.
-	(NP_Initialize): Initialize GThread library.
+	(NP_Initialize): Initialize GLib threading.
 
 2006-10-31  Tania Bento  <tbento@redhat.com>
 
