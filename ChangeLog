@@ -1,3 +1,8 @@
+2006-11-01  Tania Bento  <tbento@redhat.com>
+
+	* java/awt/GridBagLayout.java
+	(toString): Implemented method.
+
 2006-10-30  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* native/plugin/gcjwebplugin.cc (GCJ_New): Move GLib threading
