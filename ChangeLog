@@ -1,5 +1,11 @@
 2006-11-01  Tania Bento  <tbento@redhat.com>
 
+	* java/awt/ScrollPaneAdjustable.java
+	(paramString): Changed format of string representation returned.
+	(paramStringHelper): New private method.
+
+2006-11-01  Tania Bento  <tbento@redhat.com>
+
 	* java/awt/GridBagLayout.java
 	(toString): Implemented method.
 
