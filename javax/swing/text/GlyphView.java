@@ -433,10 +433,15 @@ public class GlyphView extends View implements TabableView, Cloneable
       TabExpander te = v.getTabExpander();
       Segment txt = v.getText(p0, v.getEndOffset());
       Font font = v.getFont();
-      FontMetrics fm = v.getContainer().getFontMetrics(font);
+      Container c = v.getContainer();
+      FontMetrics fm;
+      if (c != null)
+        fm = c.getFontMetrics(font);
+      else
+        fm = Toolkit.getDefaultToolkit().getFontMetrics(font);
       int pos = Utilities.getTabbedTextOffset(txt, fm, (int) x,
                                               (int) (x + len), te, p0, false);
-      return pos;
+      return pos + p0;
     }
 
     /**
@@ -655,9 +660,9 @@ public class GlyphView extends View implements TabableView, Cloneable
    */
   public float getTabbedSpan(float x, TabExpander te)
   {
-    Element el = getElement();
-    return getGlyphPainter().getSpan(this, el.getStartOffset(),
-                                     el.getEndOffset(), te, x);
+    checkPainter();
+    return getGlyphPainter().getSpan(this, getStartOffset(),
+                                     getEndOffset(), te, x);
   }
 
   /**
@@ -905,31 +910,19 @@ public class GlyphView extends View implements TabableView, Cloneable
    */
   public View breakView(int axis, int p0, float pos, float len)
   {
-    if (axis == Y_AXIS)
-      return this;
-
-    checkPainter();
-
-    // Try to find a suitable line break.
-    Segment txt = new Segment();
-    try
+    View brokenView = this;
+    if (axis == X_AXIS)
       {
-        int start = getStartOffset();
-        int length = getEndOffset() - start;
-        getDocument().getText(start, length, txt);
+        checkPainter();
+        int end = glyphPainter.getBoundedPosition(this, p0, pos, len);
+        int breakLoc = getBreakLocation(p0, end);
+        if (breakLoc != -1)
+          end = breakLoc;
+        if (p0 != getStartOffset() || end != getEndOffset())
+          {
+            brokenView = createFragment(p0, end);
+          }
       }
-    catch (BadLocationException ex)
-      {
-        AssertionError err = new AssertionError("BadLocationException must not "
-                                                + "be thrown here.");
-        err.initCause(ex);
-        throw err;
-      }
-    int breakLocation =
-      Utilities.getBreakLocation(txt, getContainer().getFontMetrics(getFont()),
-                                 (int) pos, (int) (pos + len),
-                                 getTabExpander(), p0);
-    View brokenView = createFragment(p0, breakLocation);
     return brokenView;
   }
 
@@ -955,26 +948,34 @@ public class GlyphView extends View implements TabableView, Cloneable
       weight = super.getBreakWeight(axis, pos, len);
     else
       {
-        // FIXME: Commented out because the Utilities.getBreakLocation method
-        // is still buggy. The GoodBreakWeight is a reasonable workaround for
-        // now.
-//        int startOffset = getStartOffset();
-//        int endOffset = getEndOffset() - 1;
-//        Segment s = getText(startOffset, endOffset);
-//        Container c = getContainer();
-//        FontMetrics fm = c.getFontMetrics(c.getFont());
-//        int x0 = (int) pos;
-//        int x = (int) (pos + len);
-//        int breakLoc = Utilities.getBreakLocation(s, fm, x0, x,
-//                                                  getTabExpander(),
-//                                                  startOffset);
-//        if (breakLoc == startOffset || breakLoc == endOffset)
-//          weight = GoodBreakWeight;
-//        else
-//          weight = ExcellentBreakWeight;
-        weight = GoodBreakWeight;
+        checkPainter();
+        int start = getStartOffset();
+        int end = glyphPainter.getBoundedPosition(this, start, pos, len);
+        if (end == 0)
+          weight = BadBreakWeight;
+        else
+          {
+            if (getBreakLocation(start, end) != -1)
+              weight = ExcellentBreakWeight;
+            else
+              weight = GoodBreakWeight;
+          }
       }
     return weight;
+  }
+
+  private int getBreakLocation(int start, int end)
+  {
+    int loc = -1;
+    Segment s = getText(start, end);
+    for (char c = s.last(); c != Segment.DONE && loc == -1; c = s.previous())
+      {
+        if (Character.isWhitespace(c))
+          {
+            loc = s.getIndex() - s.getBeginIndex() + 1 + start;
+          }
+      }
+    return loc;
   }
 
   /**

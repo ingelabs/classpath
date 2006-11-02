@@ -1,6 +1,52 @@
 2006-11-02  Roman Kennke  <kennke@aicas.com>
 
 	PR 29644
+	* javax/swing/text/FlowView.java
+	(FlowStrategy.changedUpdate): Reversed condition. This caused
+	wrong layout and bad performance.
+	(FlowStrategy.insertUpdate): Reversed condition. This caused
+	wrong layout and bad performance.
+	(FlowStrategy.removeUpdate): Reversed condition. This caused
+	wrong layout and bad performance.
+	(LogicalView): Changed to be a subclass of CompositeView.
+	(LogicalView()): Only take one Element argument.
+	(LogicalView.childAllocation): New method for implementing
+	the abstract CompositeView method.
+	(LogicalView.forwardUpdateToView): Overridden for correct
+	reparenting.
+	(getMinimumSpan): Overridden to handle line breaking correctly.
+	(getPreferredSpan): Implemented to handle line breaking correctly.
+	(getViewAtPoint): New method for implementing
+	the abstract CompositeView method.
+	(getViewIndexAtPosition): Overridden to handle leaf elements
+	correctly.
+	(isAfter): New method for implementing
+	the abstract CompositeView method.
+	(isBefore): New method for implementing
+	the abstract CompositeView method.
+	(loadChildren): Overridden to handle leaf elements
+	correctly.
+	(paint): New method for implementing
+	the abstract CompositeView method.
+	(calculateMinorAxisRequirements): Use preferredSpan in calculation.
+	(loadChildren): Initialize flow layout by sending a synthetic
+	insertUpdate() to the layout strategy.
+	* javax/swing/text/GlyphView.java
+	(DefaultGlyphPainter.getBoundedPosition): Fall back to Toolkit's
+	font metrics if component is not available. Add initial offset
+	to result.
+	(breakView): Be more clever when breaking the view.
+	(getBreakLocation): New helper method to determine a good
+	break location.
+	(getBreakWeight): Be more clever when breaking the view.
+	(getTabbedSpan): Make sure we have a painter. Use view's
+	start and end offset rather than the element's.
+	* javax/swing/text/Utilities.java
+	(drawTabbedText): Avoid useless add and sub with the y offset.
+
+2006-11-02  Roman Kennke  <kennke@aicas.com>
+
+	PR 29644
 	* gnu/java/awt/peer/ClasspathFontPeer.java
 	(getStringBounds): Removed abstract method. This is replaced
 	in java.awt.Font to use a TextLayout.
