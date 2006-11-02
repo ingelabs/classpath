@@ -640,7 +640,8 @@ public class HTMLEditorKit
                    || tag.equals(HTML.Tag.HTML) || tag.equals(HTML.Tag.CENTER)
                    || tag.equals(HTML.Tag.DIV)
                    || tag.equals(HTML.Tag.BLOCKQUOTE)
-                   || tag.equals(HTML.Tag.PRE))
+                   || tag.equals(HTML.Tag.PRE)
+                   || tag.equals(HTML.Tag.FORM))
             view = new BlockView(element, View.Y_AXIS);
           else if (tag.equals(HTML.Tag.IMG))
             view = new ImageView(element);
@@ -658,14 +659,14 @@ public class HTMLEditorKit
             view = new HRuleView(element);
           else if (tag.equals(HTML.Tag.BR))
             view = new BRView(element);
+          else if (tag.equals(HTML.Tag.INPUT) || tag.equals(HTML.Tag.SELECT)
+                   || tag.equals(HTML.Tag.TEXTAREA))
+            view = new FormView(element);
 
           /*
           else if (tag.equals(HTML.Tag.MENU) || tag.equals(HTML.Tag.DIR)
                    || tag.equals(HTML.Tag.UL) || tag.equals(HTML.Tag.OL))
             view = new ListView(element);
-          else if (tag.equals(HTML.Tag.INPUT) || tag.equals(HTML.Tag.SELECT)
-                   || tag.equals(HTML.Tag.TEXTAREA))
-            view = new FormView(element);
           else if (tag.equals(HTML.Tag.OBJECT))
             view = new ObjectView(element);
           else if (tag.equals(HTML.Tag.FRAMESET))

@@ -48,7 +48,9 @@ import java.util.HashMap;
 import java.util.Stack;
 import java.util.Vector;
 
+import javax.swing.DefaultButtonModel;
 import javax.swing.JEditorPane;
+import javax.swing.JToggleButton;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -57,6 +59,7 @@ import javax.swing.text.Element;
 import javax.swing.text.ElementIterator;
 import javax.swing.text.GapContent;
 import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.PlainDocument;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.html.HTML.Tag;
@@ -639,7 +642,11 @@ public class HTMLDocument extends DefaultStyledDocument
         popCharacterStyle();
       } 
     }
-    
+
+    /**
+     * Processes elements that make up forms: &lt;input&gt;, &lt;textarea&gt;,
+     * &lt;select&gt; and &lt;option&gt;.
+     */
     public class FormAction extends SpecialAction
     {
       /**
@@ -647,10 +654,21 @@ public class HTMLDocument extends DefaultStyledDocument
        * of tags associated with this Action.
        */
       public void start(HTML.Tag t, MutableAttributeSet a)
-        throws NotImplementedException
       {
-        // FIXME: Implement.
-        print ("FormAction.start not implemented");
+        if (t == HTML.Tag.INPUT)
+          {
+            String type = (String) a.getAttribute(HTML.Attribute.TYPE);
+            if (type == null)
+              {
+                type = "text"; // Default to 'text' when nothing was specified.
+                a.addAttribute(HTML.Attribute.TYPE, type);
+              }
+            setModel(type, a);
+          }
+        // TODO: Handle textarea, select and option tags.
+
+        // Build the element.
+        super.start(t, a);
       }
       
       /**
@@ -658,11 +676,41 @@ public class HTMLDocument extends DefaultStyledDocument
        * with this Action.
        */
       public void end(HTML.Tag t)
-        throws NotImplementedException
       {
-        // FIXME: Implement.
-        print ("FormAction.end not implemented");
-      } 
+        // TODO: Handle textarea, select and option tags.
+
+        // Finish the element.
+        super.end(t);
+      }
+
+      private void setModel(String type, MutableAttributeSet attrs)
+      {
+        if (type.equals("submit") || type.equals("reset")
+            || type.equals("image"))
+          {
+            // Create button.
+            attrs.addAttribute(StyleConstants.ModelAttribute,
+                               new DefaultButtonModel());
+          }
+        else if (type.equals("text") || type.equals("password"))
+          {
+            // TODO: Handle fixed length input fields.
+            attrs.addAttribute(StyleConstants.ModelAttribute,
+                               new PlainDocument());
+          }
+        else if (type.equals("file"))
+          {
+            attrs.addAttribute(StyleConstants.ModelAttribute,
+                               new PlainDocument());
+          }
+        else if (type.equals("checkbox") || type.equals("radio"))
+          {
+            JToggleButton.ToggleButtonModel model =
+              new JToggleButton.ToggleButtonModel();
+            // TODO: Handle radio button via ButtonGroups.
+            attrs.addAttribute(StyleConstants.ModelAttribute, model);
+          }
+      }
     }
     
     /**

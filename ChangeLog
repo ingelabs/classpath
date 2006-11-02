@@ -1,3 +1,23 @@
+2006-11-02  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/html/FormView.java
+	(maxIsPreferred): New field.
+	(createComponent): Initialize components correctly.
+	(getMaximumSpan): Return the preferred span for components
+	that need this. The maxIsPreferred flag is set accordingly
+	in createComponent.
+	* javax/swing/text/html/HTMLDocument.java
+	(HTMLReader.FormAction.start): Implemented to set the
+	correct model as attribute.
+	(HTMLReader.FormAction.setModel): New helper method.
+	(HTMLReader.FormAction.end): Call super to finish the element.
+	Added TODO about things left to do.
+	(HTMLReader.handleComment): Use SimpleAttributeSet rather
+	than htmlAttributeSet.
+	* javax/swing/text/html/HTMLEditorKit.java
+	(HTMLFactory.create): Create BlockView for FORM tags.
+	Create FormView for INPUT, TEXTAREA and SELECT tags.
+
 2006-11-02  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/geom/GeneralPath.java: API doc fixes.
