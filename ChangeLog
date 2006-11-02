@@ -1,5 +1,11 @@
 2006-11-02  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/html/ImageView.java
+	(getImageURL): Fetch attribute from element. Consider the
+	base URL for relative image locations.
+
+2006-11-02  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JEditorPane.java
 	(setContentType): Strip off attributes.
 	* javax/swing/text/html/HTMLEditorKit.java
