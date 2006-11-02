@@ -869,6 +869,13 @@ public class JEditorPane extends JTextComponent
 
   public final void setContentType(String type)
   {
+    // Strip off content type parameters.
+    int paramIndex = type.indexOf(';');
+    if (paramIndex > -1)
+      {
+        // TODO: Handle character encoding.
+        type = type.substring(0, paramIndex).trim();
+      }
     if (editorKit != null
 	&& editorKit.getContentType().equals(type))
       return;

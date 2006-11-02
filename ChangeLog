@@ -1,5 +1,25 @@
 2006-11-02  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JEditorPane.java
+	(setContentType): Strip off attributes.
+	* javax/swing/text/html/HTMLEditorKit.java
+	(LinkController.activateLink(int,JEditorPane,int,int): New
+	method. Implements activation of a hyperlink.
+	(LinkController.activateLinke(int,JEditorPane)): Delegate
+	to the other activateLink() method.
+	(LinkController.createHyperlinkEvent): New helper method.
+	(LinkController.mouseClicked): Implemented to activate the link.
+	(LinkController.mouseDragged): Added comment that this
+	method does nothing.
+	(LinkController.mouseMoved): Update cursor for hyperlinks.
+	(mouseHandler): Renamed field to linkController.
+	(HTMLEditorKit): Create a link controller.
+	(clone): Give the clone a new link controller.
+	(deinstall): De-install link controller as mouseMotionListener too.
+	(install): Install link controller as mouseMotionListener too.
+
+2006-11-02  Roman Kennke  <kennke@aicas.com>
+
 	PR 29644
 	* javax/swing/text/FlowView.java
 	(FlowStrategy.changedUpdate): Reversed condition. This caused
