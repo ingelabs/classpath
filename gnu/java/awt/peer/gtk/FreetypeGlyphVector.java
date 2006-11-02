@@ -92,16 +92,23 @@ public class FreetypeGlyphVector extends GlyphVector
    */
   public FreetypeGlyphVector(Font f, String s, FontRenderContext frc)
   {
-    this(f, s, frc, Font.LAYOUT_LEFT_TO_RIGHT);
+    this(f, s.toCharArray(), 0, s.length(), frc, Font.LAYOUT_LEFT_TO_RIGHT);
   }
 
   /**
    * Create a glyphvector from a given (Freetype) font and a String.
    */
-  public FreetypeGlyphVector(Font f, String s, FontRenderContext frc,
-			     int flags)
+  public FreetypeGlyphVector(Font f, char[] chars, int start, int len,
+                             FontRenderContext frc, int flags)
   {
-    this.s = s;
+    // We need to filter out control characters (and possibly other
+    // non-renderable characters here).
+    StringBuilder b = new StringBuilder(chars.length);
+    for (int i = start; i < start + len; i++)
+      if (!Character.isISOControl(chars[i]))
+        b.append(chars[i]);
+    this.s = b.toString();
+
     this.font = f;
     this.frc = frc;
     if( !(font.getPeer() instanceof GdkFontPeer ) )
@@ -428,12 +435,6 @@ public class FreetypeGlyphVector extends GlyphVector
     for( int i = 1; i < nGlyphs; i++ )
       {
         Rectangle2D r2 = (Rectangle2D)getGlyphLogicalBounds( i );
-        
-        // Translate to the glyph's position
-        tx.setToTranslation(glyphPositions[i*2], glyphPositions[i*2+1]);
-        Point2D pt = new Point2D.Double(r2.getMinX(), r2.getMinY());
-        tx.transform(pt, pt);
-        r2.setRect(pt.getX(), pt.getY(), r2.getWidth(), r2.getHeight());
         
         rect = rect.createUnion( r2 );
       }

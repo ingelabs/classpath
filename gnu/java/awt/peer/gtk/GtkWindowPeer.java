@@ -41,6 +41,7 @@ package gnu.java.awt.peer.gtk;
 import gnu.java.awt.ComponentReshapeEvent;
 
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.KeyboardFocusManager;
@@ -151,6 +152,8 @@ public class GtkWindowPeer extends GtkContainerPeer
   public GtkWindowPeer (Window window)
   {
     super (window);
+    // Set reasonable font for the window.
+    window.setFont(new Font("Dialog", Font.PLAIN, 12));
   }
 
   public native void toBack();

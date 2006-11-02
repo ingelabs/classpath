@@ -1,3 +1,41 @@
+2006-11-02  Roman Kennke  <kennke@aicas.com>
+
+	PR 29644
+	* gnu/java/awt/peer/ClasspathFontPeer.java
+	(getStringBounds): Removed abstract method. This is replaced
+	in java.awt.Font to use a TextLayout.
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java
+	(GtkWindowPeer): Set a font on the window object.
+	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java
+	(FreetypeGlyphVector(Font,String,FontRenderContext,int)):
+	Changed to take char,int,int instead of String. Filter
+	control characters.
+	(FreetypeGlyphVector(Font,String,FontRenderContext)):
+	Create char array out of string.
+	(getLogicalBounds): Don't translate bounds. They already are
+	translated.
+	* gnu/java/awt/peer/gtk/GdkFontMetrics.java
+	(stringWidth): Filter out control characters.
+	* gnu/java/awt/peer/gtk/GdkFontPeer.java
+	(getStringBounds): Removed unneeded method.
+	(layoutGlyphVector): Pass char array directly to FreetypeGlyphVector
+	constructor.
+	* gnu/java/awt/peer/qt/QtFontPeer.java
+	(getStringBounds): Removed unneeded method.
+	* gnu/java/awt/peer/x/XFontPeer.java
+	(getStringBounds): Removed unneeded method.
+	* gnu/java/awt/peer/x/XFontPeer2.java
+	(getStringBounds): Removed unneeded method.
+	* java/awt/Font.java
+	(getStringBounds(char[],int,int,FontRenderContext)):
+	Use TextLayout to determine the bounds.
+	(getStringBounds(CharacterIterator,int,int,FontRenderContext)):
+	Delegate to the char[] version of this method.
+	(getStringBounds(String,FontRenderContext)):
+	Delegate to the char[] version of this method.
+	(getStringBounds(String,int,int,FontRenderContext)):
+	Delegate to the String version of this method.
+
 2006-11-01  Tania Bento  <tbento@redhat.com>
 
 	* java/awt/ScrollPaneAdjustable.java
