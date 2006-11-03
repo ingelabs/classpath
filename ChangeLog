@@ -1,3 +1,17 @@
+2006-11-03  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/html/StyleSheet.java
+	(addRule): Implemented.
+	* javax/swing/text/html/HTMLDocument.java
+	(HTMLReader.inStyleTag): New field.
+	(HTMLReader.styles): New field.
+	(HTMLReader.HeadAction.end): Implemented to read all stylesheets,
+	if any.
+	(HTMLReader.StyleAction.start): Set inStyleTag flag.
+	(HTMLReader.StyleAction.end): Set inStyleTag flag.
+	(HTMLReader.handleText): When inside a style tag, add
+	content to the styles array.
+
 2006-11-02  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/html/FormView.java

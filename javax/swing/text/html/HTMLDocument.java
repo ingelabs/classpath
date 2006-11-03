@@ -44,6 +44,7 @@ import gnu.javax.swing.text.html.parser.htmlAttributeSet;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 import java.util.Vector;
@@ -568,6 +569,21 @@ public class HTMLDocument extends DefaultStyledDocument
      */
     boolean inPreTag = false;
 
+    /**
+     * This is true when we are inside a style tag. This will add text
+     * content inside this style tag beeing parsed as CSS.
+     *
+     * This is package private to avoid accessor methods.
+     */
+    boolean inStyleTag = false;
+
+    /**
+     * This contains all stylesheets that are somehow read, either
+     * via embedded style tags, or via linked stylesheets. The
+     * elements will be String objects containing a stylesheet each.
+     */
+    ArrayList styles;
+
     void print (String line)
     {
       if (debug)
@@ -932,9 +948,17 @@ public class HTMLDocument extends DefaultStyledDocument
       public void end(HTML.Tag t)
         throws NotImplementedException
       {
-        // FIXME: Implement.
-        print ("HeadAction.end not implemented: "+t);
-        super.end(t);
+        // We read in all the stylesheets that are embedded or referenced
+        // inside the header.
+        if (styles != null)
+          {
+            int numStyles = styles.size();
+            for (int i = 0; i < numStyles; i++)
+              {
+                String style = (String) styles.get(i);
+                getStyleSheet().addRule(style);
+              }
+          }
       } 
     }
     
@@ -1012,7 +1036,7 @@ public class HTMLDocument extends DefaultStyledDocument
         print ("MetaAction.end not implemented");
       } 
     }
-    
+
     class StyleAction extends TagAction
     {
       /**
@@ -1020,10 +1044,8 @@ public class HTMLDocument extends DefaultStyledDocument
        * of tags associated with this Action.
        */
       public void start(HTML.Tag t, MutableAttributeSet a)
-        throws NotImplementedException
       {
-        // FIXME: Implement.
-        print ("StyleAction.start not implemented");
+        inStyleTag = true;
       }
       
       /**
@@ -1031,10 +1053,8 @@ public class HTMLDocument extends DefaultStyledDocument
        * with this Action.
        */
       public void end(HTML.Tag t)
-        throws NotImplementedException
       {
-        // FIXME: Implement.
-        print ("StyleAction.end not implemented");
+        inStyleTag = false;
       } 
     }
     
@@ -1240,6 +1260,12 @@ public class HTMLDocument extends DefaultStyledDocument
         {
           if (inPreTag)
             preContent(data);
+          else if (inStyleTag)
+            {
+              if (styles == null)
+                styles = new ArrayList();
+              styles.add(new String(data));
+            }
           else
             addContent(data, 0, data.length);
             
