@@ -759,7 +759,10 @@ public class HTMLDocument extends DefaultStyledDocument
         blockClose(t);
       } 
     }
-    
+
+    /**
+     * Handles &lt;isindex&gt; tags.
+     */
     public class IsindexAction extends TagAction
     {
       /**
@@ -767,10 +770,10 @@ public class HTMLDocument extends DefaultStyledDocument
        * of tags associated with this Action.
        */
       public void start(HTML.Tag t, MutableAttributeSet a)
-        throws NotImplementedException
       {
-        // FIXME: Implement.
-        print ("IsindexAction.start not implemented");
+        blockOpen(HTML.Tag.IMPLIED, new SimpleAttributeSet());
+        addSpecialElement(t, a);
+        blockClose(HTML.Tag.IMPLIED);
       }
     }
     
