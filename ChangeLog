@@ -1,6 +1,22 @@
 2006-11-03  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/html/HTMLDocument.java
+	(HTMLReader.FormAction.start): Added support for textarea.
+	(HTMLReader.FormAction.end): Added support for textarea.
+	(HTMLReader.HeadAction.end): Call super to actually close the
+	block.
+	(HTMLReader.inTextArea): New field.
+	(HTMLReader.textAreaDocument): New field.
+	(HTMLReader.handleText): Call textAreaContent when inside
+	a textarea tag.
+	(HTMLReader.textAreaContent): Implemented to initialize
+	the text area's model.
+	* javax/swing/text/html/FormView.java
+	(createComponent): Added support for textarea tag.
+
+2006-11-03  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/html/HTMLDocument.java
 	(HTMLReader.IsindexAction.start): Implemented.
 
 2006-11-03  Roman Kennke  <kennke@aicas.com>

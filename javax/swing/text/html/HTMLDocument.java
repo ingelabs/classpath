@@ -56,6 +56,7 @@ import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.Document;
 import javax.swing.text.Element;
 import javax.swing.text.ElementIterator;
 import javax.swing.text.GapContent;
@@ -578,11 +579,26 @@ public class HTMLDocument extends DefaultStyledDocument
     boolean inStyleTag = false;
 
     /**
+     * This is true when we are inside a &lt;textarea&gt; tag. Any text
+     * content will then be added to the text area.
+     *
+     * This is package private to avoid accessor methods.
+     */
+    boolean inTextArea = false;
+
+    /**
      * This contains all stylesheets that are somehow read, either
      * via embedded style tags, or via linked stylesheets. The
      * elements will be String objects containing a stylesheet each.
      */
     ArrayList styles;
+
+    /**
+     * The document model for a textarea.
+     *
+     * This is package private to avoid accessor methods.
+     */
+    Document textAreaDocument;
 
     void print (String line)
     {
@@ -681,7 +697,13 @@ public class HTMLDocument extends DefaultStyledDocument
               }
             setModel(type, a);
           }
-        // TODO: Handle textarea, select and option tags.
+        else if (t == HTML.Tag.TEXTAREA)
+          {
+            inTextArea = true;
+            textAreaDocument = new PlainDocument();
+            a.addAttribute(StyleConstants.ModelAttribute, textAreaDocument);
+          }
+        // TODO: Handle select and option tags.
 
         // Build the element.
         super.start(t, a);
@@ -693,7 +715,12 @@ public class HTMLDocument extends DefaultStyledDocument
        */
       public void end(HTML.Tag t)
       {
-        // TODO: Handle textarea, select and option tags.
+        if (t == HTML.Tag.TEXTAREA)
+          {
+            inTextArea = false;
+          }
+
+        // TODO: Handle select and option tags.
 
         // Finish the element.
         super.end(t);
@@ -949,7 +976,6 @@ public class HTMLDocument extends DefaultStyledDocument
        * with this Action.
        */
       public void end(HTML.Tag t)
-        throws NotImplementedException
       {
         // We read in all the stylesheets that are embedded or referenced
         // inside the header.
@@ -962,7 +988,8 @@ public class HTMLDocument extends DefaultStyledDocument
                 getStyleSheet().addRule(style);
               }
           }
-      } 
+        super.end(t);
+      }
     }
     
     class LinkAction extends TagAction
@@ -1261,7 +1288,9 @@ public class HTMLDocument extends DefaultStyledDocument
     {
       if (shouldInsert() && data != null && data.length > 0)
         {
-          if (inPreTag)
+          if (inTextArea)
+            textAreaContent(data);
+          else if (inPreTag)
             preContent(data);
           else if (inStyleTag)
             {
@@ -1395,10 +1424,18 @@ public class HTMLDocument extends DefaultStyledDocument
      * @param data the text to add to the textarea
      */
     protected void textAreaContent(char[] data)
-      throws NotImplementedException
     {
-      // FIXME: Implement.
-      print ("HTMLReader.textAreaContent not implemented yet");
+      try
+        {
+          int offset = textAreaDocument.getLength();
+          textAreaDocument.insertString(offset, new String(data), null);
+        }
+      catch (BadLocationException ex)
+        {
+          // Must not happen as we insert at a model location that we
+          // got from the document itself.
+          assert false;
+        }
     }
     
     /**

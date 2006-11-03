@@ -53,6 +53,8 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.UIManager;
@@ -281,6 +283,18 @@ public class FormView
             comp = tf;
             maxIsPreferred = true;
           }
+      }
+    else if (tag == HTML.Tag.TEXTAREA)
+      {
+        JTextArea textArea = new JTextArea((Document) model);
+        int rows = HTML.getIntegerAttributeValue(atts, HTML.Attribute.ROWS, 1);
+        textArea.setRows(rows);
+        int cols = HTML.getIntegerAttributeValue(atts, HTML.Attribute.COLS, 20);
+        textArea.setColumns(cols);
+        maxIsPreferred = true;
+        comp = new JScrollPane(textArea,
+                               JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                               JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
       }
     // FIXME: Implement the remaining components.
     return comp;
