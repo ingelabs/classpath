@@ -1,3 +1,47 @@
+2006-11-03  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/html/BlockView.java
+	(attributes): New field.
+	(cssHeight): New field.
+	(cssWidth): New field.
+	(painter): New field.
+	(calculateMajorAxisRequirements): Overridden to account for
+	CSS settings.
+	(calculateMinorAxisRequirements): Overridden to account for
+	CSS settings.
+	(layoutMinorAxis): Overridden to account for CSS settings.
+	(changedUpdate): Formatting fixlet.
+	(constrainSize): New helper method.
+	(getAlignment): Fix alignment.
+	(getAttributes): Cache attributes for better performance.
+	(getStyleSheet): Fetch stylesheet from document rather than creating
+	a new one.
+	(paint): Remove comment.
+	(setCSSSpan): New helper method.
+	(setPropertiesFromAttributes): Implemented to fetch the
+	recognized properties.
+	* javax/swing/text/html/CSS.java
+	(getValue): Added mapping for width and height attributes.
+	* javax/swing/text/html/InlineView.java
+	(longestWord): New field.
+	(getLongestWord): New helper method.
+	(calculateLongestWord): New helper method.
+	(getMinimumSpan): Overridden to constrain the minimum span by the
+	longest word.
+	* javax/swing/text/html/ParagraphView.java
+	(cssHeight): New field.
+	(cssWidth): New field.
+	(calculateMinorAxisRequirements): Overridden to account for
+	CSS settings.
+	(setCSSSpan): New helper method.
+	(setPropertiesFromAttributes): Fetch CSS width and height. Added
+	null check.
+	* gnu/javax/swing/text/html/css/Length.java
+	(percentage): New field.
+	(Length): Determine percentage values.
+	(getValue(float)): New method for handling percentage values.
+	(isPercentage): New method.
+
 2006-11-03  Tania Bento  <tbento@redhat.com>
 
 	* java/awt/TextArea.java
