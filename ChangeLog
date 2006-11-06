@@ -1,5 +1,10 @@
 2006-11-06  Tania Bento  <tbento@redhat.com>
 
+	* java/awt/TextComponent.java
+	(setSelectionStart): Added check.
+
+2006-11-06  Tania Bento  <tbento@redhat.com>
+
 	* java/awt/TextField.java
 	(minimumSize(int)): Check if minimum size has been previously
 	set and changed values of Dimension returned if peer == null.
