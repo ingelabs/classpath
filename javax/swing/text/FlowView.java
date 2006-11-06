@@ -189,7 +189,7 @@ public abstract class FlowView extends BoxView
 
       // Then remove all views from the flow view.
       fv.removeAll();
- 
+
       for (int rowIndex = 0; start < end; rowIndex++)
         {
           View row = fv.createRow();
@@ -318,8 +318,8 @@ public abstract class FlowView extends BoxView
                               int rowIndex)
     {
        View logicalView = getLogicalView(fv);
-       // FIXME: Handle the bias thing correctly.
-       int index = logicalView.getViewIndex(startOffset, Position.Bias.Forward);
+       int index = logicalView.getViewIndex(startOffset,
+                                            Position.Bias.Forward);
        View retVal = logicalView.getView(index);
        if (retVal.getStartOffset() != startOffset)
          retVal = retVal.createFragment(startOffset, retVal.getEndOffset());
@@ -603,6 +603,7 @@ public abstract class FlowView extends BoxView
   {
     super(element, axis);
     strategy = sharedStrategy;
+    layoutSpan = Short.MAX_VALUE;
   }
 
   /**
@@ -651,7 +652,7 @@ public abstract class FlowView extends BoxView
    */
   public int getFlowStart(int index)
   {
-    return getLeftInset(); // TODO: Is this correct?
+    return 0;
   }
 
   /**
@@ -678,8 +679,8 @@ public abstract class FlowView extends BoxView
     if (layoutPool == null)
       {
         layoutPool = new LogicalView(getElement());
-        layoutPool.setParent(this);
       }
+    layoutPool.setParent(this);
     // Initialize the flow strategy.
     strategy.insertUpdate(this, null, null);
   }
@@ -696,21 +697,17 @@ public abstract class FlowView extends BoxView
   protected void layout(int width, int height)
   {
     int flowAxis = getFlowAxis();
+    int span; 
     if (flowAxis == X_AXIS)
-      {
-        if (layoutSpan != width)
-          {
-            layoutChanged(Y_AXIS);
-            layoutSpan = width;
-          }
-      }
+      span = (int) width;
     else
+      span = (int) height;
+
+    if (layoutSpan != span)
       {
-        if (layoutSpan != height)
-          {
-            layoutChanged(X_AXIS);
-            layoutSpan = height;
-          }
+        layoutChanged(flowAxis);
+        layoutChanged(getAxis());
+        layoutSpan = span;
       }
 
     if (! isLayoutValid(flowAxis))

@@ -1,3 +1,36 @@
+2006-11-06  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/ComponentView.java
+	(setParent): Lock the document and repaint the hosting
+	container.
+	* javax/swing/text/FlowView.java
+	(FlowStrategy.createView): Removed comment.
+	(FlowView): Initialize span with Short.MAX_VALUE.
+	(getFlowStart): Return 0 unconditionally.
+	(layout): Moved code around to make it more readable.
+	(loadChildren): Always set the parent.
+	* javax/swing/text/GlyphView.java
+	(DefaultGlyphPainter.fontMetrics): New field.
+	(DefaultGlyphPainter.getAscent): Use new helper method to
+	synchronize the font metrics.
+	(DefaultGlyphPainter.getBoundedPosition): Use new helper method
+	to synchronize the font	metrics.
+	(DefaultGlyphPainter.getDescent): Use new helper method to
+	synchronize the font metrics.
+	(DefaultGlyphPainter.getHeight): Use new helper method to
+	synchronize the font metrics.
+	(DefaultGlyphPainter.getSpan): Use new helper method to
+	synchronize the font metrics.
+	(DefaultGlyphPainter.modelToView): Use new helper method to
+	synchronize the font metrics.
+	(DefaultGlyphPainter.updateFontMetrics): New helper method for
+	font metrics caching.
+	(DefaultGlyphPainter.viewToModel): Use new helper method to
+	synchronize the font metrics. Fixed view to model mapping.
+	* javax/swing/text/View.java
+	(removeAll): Pass null to replace().
+	(setParent): Only reparent children that have this view as parent.
+
 2006-11-05  Mark Wielaard  <mark@klomp.org>
 
 	* include/gnu_java_net_VMPlainDatagramSocketImpl.h: Removed.
