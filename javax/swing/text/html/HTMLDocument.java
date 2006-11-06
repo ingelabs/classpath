@@ -39,7 +39,6 @@ exception statement from your version. */
 package javax.swing.text.html;
 
 import gnu.classpath.NotImplementedException;
-import gnu.javax.swing.text.html.parser.htmlAttributeSet;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -1351,8 +1350,7 @@ public class HTMLDocument extends DefaultStyledDocument
           TagAction action = (TagAction) tagToAction.get(HTML.Tag.COMMENT);
           if (action != null)
             {
-              action.start(HTML.Tag.COMMENT, 
-                           htmlAttributeSet.EMPTY_HTML_ATTRIBUTE_SET);
+              action.start(HTML.Tag.COMMENT, new SimpleAttributeSet());
               action.end(HTML.Tag.COMMENT);
             }
         }
@@ -1594,15 +1592,11 @@ public class HTMLDocument extends DefaultStyledDocument
     {
       a.addAttribute(StyleConstants.NameAttribute, t);
       
-      // Migrate from the rather htmlAttributeSet to the faster, lighter and 
-      // unchangeable alternative implementation.
-      AttributeSet copy = a.copyAttributes();
-
       // The two spaces are required because some special elements like HR
       // must be broken. At least two characters are needed to break into the
       // two parts.
       DefaultStyledDocument.ElementSpec spec =
-        new DefaultStyledDocument.ElementSpec(copy,
+        new DefaultStyledDocument.ElementSpec(a.copyAttributes(),
 	  DefaultStyledDocument.ElementSpec.ContentType, 
           new char[] {' ', ' '}, 0, 2 );
       parseBuffer.add(spec);

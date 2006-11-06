@@ -1,3 +1,23 @@
+2006-11-06  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/html/HTMLDocument.java
+	(HTMLReader.addSpecialElement): Removed comment about
+	htmlAttributeSet.
+	(HTMLReader.handleComment): Create SimpleAttributeSet instead
+	of htmlAttributeSet.
+	* javax/swing/text/html/parser/DocumentParser.java
+	(gnuParser.handleStartTag): Use SimpleAttributeSet instead
+	of htmlAttributeSet.
+	* javax/swing/text/html/parser/ParserDelegator.java
+	(gnuParser.handleStartTag): Use SimpleAttributeSet instead
+	of htmlAttributeSet.
+	* gnu/javax/swing/text/html/parser/GnuParserDelegator.java
+	(gnuParser.handleStartTag): Use SimpleAttributeSet instead
+	of htmlAttributeSet.
+	* gnu/javax/swing/text/html/parser/support/Parser.java
+	(getAttributes): Return a SimpleAttributeSet.
+	(restOfTag): Don't set resolving parent here.
+
 2006-11-06  Tania Bento  <tbento@redhat.com>
 
 	* java/awt/TextComponent.java
