@@ -985,10 +985,6 @@ public abstract class CairoGraphics2D extends Graphics2D
             if (sm != null)
               sm.checkPermission(new AWTPermission("readDisplayPixels"));
     
-            // FIXME: implement general Composite support
-            //throw new java.lang.UnsupportedOperationException();
-            // this is in progress!  yay!
-            //compCtx = comp.createContext(getNativeCM(), getNativeCM(), hints);
             compCtx = comp.createContext(getBufferCM(), getNativeCM(), hints);
           }
       }
@@ -1000,18 +996,17 @@ public abstract class CairoGraphics2D extends Graphics2D
    *  
    * @return ColorModel the ColorModel of native data in this peer
    */
-  /* protected abstract ColorModel getNativeCM(); */
-  protected ColorModel getNativeCM()
-  {
-    // This stub should be removed and the method made abstract once I'm done
-    // implementing custom composites across all the peers... but we need it
-    // for now, so that the build doesn't break.
-    return null;
-  }
+  protected abstract ColorModel getNativeCM();
   
-  // This may be overridden by some subclasses
+  /**
+   * Returns the Color Model describing the buffer that this peer uses
+   * for custom composites.
+   * 
+   * @return ColorModel the ColorModel of the composite buffer in this peer.
+   */
   protected ColorModel getBufferCM()
   {
+    // This may be overridden by some subclasses
     return getNativeCM();
   }
 
