@@ -1,5 +1,14 @@
 2006-11-06  Roman Kennke  <kennke@aicas.com>
 
+	* examples/gnu/classpath/examples/swing/HtmlDemo.java:
+	Changed to implement a minimalistic browser.
+	* examples/gnu/classpath/examples/swing/forms.html,
+	* examples/gnu/classpath/examples/swing/textstyles.html,
+	* examples/gnu/classpath/examples/swing/welcome.html:
+	Some example content.
+
+2006-11-06  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/ComponentView.java
 	(setParent): Lock the document and repaint the hosting
 	container.
