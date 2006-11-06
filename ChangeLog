@@ -1,3 +1,14 @@
+2006-11-05  Mark Wielaard  <mark@klomp.org>
+
+	* include/gnu_java_net_VMPlainDatagramSocketImpl.h: Removed.
+	* include/gnu_java_nio_channels_FileChannelImpl.h: Removed.
+	* native/jni/java-net/gnu_java_net_VMPlainDatagramSocketImpl.c:
+	Removed.
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c:
+	Removed.
+	* native/jni/java-nio/Makefile.am (libjavanio_la_SOURCES):
+	Remove gnu_java_nio_channels_FileChannelImpl.c.
+
 2006-11-03  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/html/BlockView.java
