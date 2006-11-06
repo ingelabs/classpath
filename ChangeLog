@@ -1,3 +1,11 @@
+2006-11-06  Tania Bento  <tbento@redhat.com>
+
+	* java/awt/TextField.java
+	(minimumSize(int)): Check if minimum size has been previously
+	set and changed values of Dimension returned if peer == null.
+	(preferredSize(int)): Check if preferred size has been previously
+	set and changed values of Dimension returned if peer == null.
+
 2006-11-06  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JTree.java
