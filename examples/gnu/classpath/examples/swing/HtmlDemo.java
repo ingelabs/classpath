@@ -152,7 +152,7 @@ public class HtmlDemo extends JPanel
     add(scroller, BorderLayout.CENTER);
 
     // Load start page.
-    URL startpage = getClass().getResource("forms.html");
+    URL startpage = getClass().getResource("welcome.html");
     try
       {
         html.setPage(startpage);
@@ -162,6 +162,8 @@ public class HtmlDemo extends JPanel
       {
         System.err.println("couldn't load page: " + startpage);
       }
+
+    setPreferredSize(new Dimension(600, 400));
   }
  
   /**

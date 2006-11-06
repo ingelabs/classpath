@@ -1,5 +1,10 @@
 2006-11-06  Roman Kennke  <kennke@aicas.com>
 
+	* examples/gnu/classpath/examples/swing/HtmlDemo.java:
+	Fixed initial window size and start document.
+
+2006-11-06  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/html/HTMLDocument.java
 	(HTMLReader.addSpecialElement): Removed comment about
 	htmlAttributeSet.
