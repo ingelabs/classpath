@@ -1,3 +1,22 @@
+2006-11-06  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JTree.java
+	(TreeModelHandler.treeNodesRemoved): Implemented.
+	(TreeModelHandler.treeStructureChanged): Implemented.
+	(nodeStates): Made package private.
+
+2006-11-06  Francis Kung  <fkung@redhat.com>
+
+	PR 29420
+	* javax/swing/JTree.java
+	(clearSelectionPathStates): New private method to clean up nodeStates.
+	(removeSelectionPath): Call clearSelectionPathStates().
+	(removeSelectionPaths): Call clearSelectionPathStates().
+	(removeSelectionRow): Call clearSelectionPathStates().
+	(setSelectionPath): Call clearSelectionPathStates().
+	(setSelectionPaths): Call clearSelectionPathStates().
+	(setSelectionRow): Call clearSelectionPathStates().
+
 2006-11-06  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	Fixes bug #29703
