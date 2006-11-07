@@ -1,3 +1,36 @@
+2006-11-07  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/javax/swing/text/html/css/BorderWidth.java:
+	New class. Handles CSS border width values.
+	* gnu/javax/swing/text/html/css/Length.java
+	(floatValue): Made protected so that BorderWidth can access it.
+	* javax/swing/text/html/CSS.java
+	(Attribute.BORDER_BOTTOM_COLOR): New static field.
+	(Attribute.BORDER_BOTTOM_STYLE): New static field.
+	(Attribute.BORDER_LEFT_COLOR): New static field.
+	(Attribute.BORDER_LEFT_STYLE): New static field.
+	(Attribute.BORDER_RIGHT_COLOR): New static field.
+	(Attribute.BORDER_RIGHT_STYLE): New static field.
+	(Attribute.BORDER_TOP_COLOR): New static field.
+	(Attribute.BORDER_TOP_STYLE): New static field.
+	(getValue): Added some mappings for the border color and
+	border width values.
+	* javax/swing/text/html/CSSBorder.java: New class. Implements
+	CSS borders.
+	* javax/swing/text/html/StyleSheet.java
+	(BoxPainter.background): New field.
+	(BoxPainter.border): New field.
+	(BoxPainter.bottomInset): Documented.
+	(BoxPainter.leftInset): Documented.
+	(BoxPainter.rightInset): Documented.
+	(BoxPainter.topInset): Documented.
+	(BoxPainter.BoxPainter): Added support for borders and background.
+	(BoxPainter.getInset): Add border insets.
+	(BoxPainter.paint): Implemented. Paints the background and the
+	CSS border.
+	(addRule): Be less picky about parse and IO exceptions.
+	(getBoxPainter): Adjust to new BoxPainter constructor.
+
 2006-11-07  Andreas  <a.tobler@schweiz.org>
 
 	* examples/Makefile.am: Add rule to install the *.html files we use

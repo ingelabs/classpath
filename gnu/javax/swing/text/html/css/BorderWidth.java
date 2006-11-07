@@ -1,4 +1,4 @@
-/* Length.java -- Converts CSS length values
+/* BorderWidth.java -- A CSS metric for border widths
    Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -39,89 +39,28 @@ exception statement from your version. */
 package gnu.javax.swing.text.html.css;
 
 /**
- * Converts CSS length values to usable length values.
- *
- * @author Roman Kennke (kennke@aicas.com)
+ * A special CSS metric for border widths. It basically understands everything
+ * as Length, and in addition to that provides a mapping for the border-width's
+ * thin, medium and think values.
  */
-public class Length
+public class BorderWidth
+  extends Length
 {
 
   /**
-   * The original value.
-   */
-  private String value;
-
-  /**
-   * The converted value.
-   */
-  protected float floatValue;
-
-  /**
-   * Indicates when the value is a percentage value.
-   */
-  private boolean isPercentage;
-
-  /**
-   * Creates a new length converter instance.
+   * Creates a new BorderWidth instance.
    *
-   * @param val the CSS value
+   * @param val the CSS value to be interpreted
    */
-  public Length(String val)
+  public BorderWidth(String val)
   {
-    value = val;
-    int i = value.indexOf("px");
-    int percent = value.indexOf("%");
-    floatValue = 0.0F;
-    if (i != -1)
-      {
-        String sub = value.substring(0, i);
-        floatValue = Float.parseFloat(sub);
-      }
-    else if (percent != -1)
-      {
-        isPercentage = true;
-        String sub = value.substring(0, percent);
-        floatValue = Float.parseFloat(sub) / 100;
-      }
-    else
-      {
-        // TODO: Implement other length options.
-        floatValue = Float.parseFloat(value);
-      }
+    super(val);
+    if (val.equals("thin"))
+      floatValue = 1.F;
+    else if (val.equals("medium"))
+      floatValue = 2.F;
+    else if (val.equals("thick"))
+      floatValue = 3.F;
   }
 
-  /**
-   * Returns the value converted to pixels.
-   *
-   * @return the value converted to pixels
-   */
-  public float getValue()
-  {
-    return floatValue;
-  }
-
-  /**
-   * Returns the absolute span for the case when this length value is
-   * a relative value.
-   *
-   * @param span the target span
-   *
-   * @return the absolute span
-   */
-  public float getValue(float span)
-  {
-    return span * floatValue;
-  }
-
-  /**
-   * Returns <code>true</code> when the length value is a percentage
-   * value, <code>false</code> otherwise.
-   *
-   * @return <code>true</code> when the length value is a percentage
-   *         value, <code>false</code> otherwise
-   */
-  public boolean isPercentage()
-  {
-    return isPercentage;
-  }
 }

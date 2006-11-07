@@ -37,6 +37,7 @@ exception statement from your version. */
 
 package javax.swing.text.html;
 
+import gnu.javax.swing.text.html.css.BorderWidth;
 import gnu.javax.swing.text.html.css.CSSColor;
 import gnu.javax.swing.text.html.css.FontSize;
 import gnu.javax.swing.text.html.css.FontStyle;
@@ -394,6 +395,24 @@ public class CSS implements Serializable
     public static final Attribute WORD_SPACING =
       new Attribute("word-spacing", true, "normal");
 
+    // Some GNU Classpath specific extensions.
+    static final Attribute BORDER_TOP_STYLE =
+      new Attribute("border-top-style", false, null);
+    static final Attribute BORDER_BOTTOM_STYLE =
+      new Attribute("border-bottom-style", false, null);
+    static final Attribute BORDER_LEFT_STYLE =
+      new Attribute("border-left-style", false, null);
+    static final Attribute BORDER_RIGHT_STYLE =
+      new Attribute("border-right-style", false, null);
+    static final Attribute BORDER_TOP_COLOR =
+      new Attribute("border-top-color", false, null);
+    static final Attribute BORDER_BOTTOM_COLOR =
+      new Attribute("border-bottom-color", false, null);
+    static final Attribute BORDER_LEFT_COLOR =
+      new Attribute("border-left-color", false, null);
+    static final Attribute BORDER_RIGHT_COLOR =
+      new Attribute("border-right-color", false, null);
+
     /**
      * The attribute string.
      */
@@ -484,13 +503,23 @@ public class CSS implements Serializable
       o = new FontWeight(v);
     else if (att == Attribute.FONT_STYLE)
       o = new FontStyle(v);
-    else if (att == Attribute.COLOR || att == Attribute.BACKGROUND_COLOR)
+    else if (att == Attribute.COLOR || att == Attribute.BACKGROUND_COLOR
+             || att == Attribute.BORDER_COLOR
+             || att == Attribute.BORDER_TOP_COLOR
+             || att == Attribute.BORDER_BOTTOM_COLOR
+             || att == Attribute.BORDER_LEFT_COLOR
+             || att == Attribute.BORDER_RIGHT_COLOR)
       o = new CSSColor(v);
     else if (att == Attribute.MARGIN || att == Attribute.MARGIN_BOTTOM
              || att == Attribute.MARGIN_LEFT || att == Attribute.MARGIN_RIGHT
              || att == Attribute.MARGIN_TOP || att == Attribute.WIDTH
              || att == Attribute.HEIGHT)
       o = new Length(v);
+    else if (att == Attribute.BORDER_WIDTH || att == Attribute.BORDER_TOP_WIDTH
+             || att == Attribute.BORDER_LEFT_WIDTH
+             || att == Attribute.BORDER_RIGHT_WIDTH
+             || att == Attribute.BORDER_BOTTOM_WIDTH)
+      o = new BorderWidth(v);
     else
       o = v;
     return o;

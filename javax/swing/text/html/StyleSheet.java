@@ -60,6 +60,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.Element;
@@ -419,7 +422,7 @@ public class StyleSheet extends StyleContext
     catch (IOException ex)
       {
         // Shouldn't happen. And if, then we
-        assert false;
+        System.err.println("IOException while parsing stylesheet: " + ex.getMessage());
       }
   }
   
@@ -802,7 +805,7 @@ public class StyleSheet extends StyleContext
    */
   public BoxPainter getBoxPainter(AttributeSet a)
   {
-    return new BoxPainter(a);     
+    return new BoxPainter(a, this);     
   }
   
   /**
@@ -920,17 +923,42 @@ public class StyleSheet extends StyleContext
   public static class BoxPainter extends Object implements Serializable
   {
 
+    /**
+     * The left inset.
+     */
     private float leftInset;
+
+    /**
+     * The right inset.
+     */
     private float rightInset;
+
+    /**
+     * The top inset.
+     */
     private float topInset;
+
+    /**
+     * The bottom inset.
+     */
     private float bottomInset;
+
+    /**
+     * The border of the box.
+     */
+    private Border border;
+
+    /**
+     * The background color.
+     */
+    private Color background;
 
     /**
      * Package-private constructor.
      * 
      * @param as - AttributeSet for painter
      */
-    BoxPainter(AttributeSet as)
+    BoxPainter(AttributeSet as, StyleSheet ss)
     {
       Length l = (Length) as.getAttribute(CSS.Attribute.MARGIN_LEFT);
       if (l != null)
@@ -944,6 +972,13 @@ public class StyleSheet extends StyleContext
       l = (Length) as.getAttribute(CSS.Attribute.MARGIN_BOTTOM);
       if (l != null)
         bottomInset = l.getValue();
+
+      // Determine border.
+      border = new CSSBorder(as);
+
+      // Determine background.
+      background = ss.getBackground(as);
+
     }
     
     
@@ -965,15 +1000,23 @@ public class StyleSheet extends StyleContext
         {
         case View.TOP:
           inset = topInset;
+          if (border != null)
+            inset += border.getBorderInsets(null).top;
           break;
         case View.BOTTOM:
           inset = bottomInset;
+          if (border != null)
+            inset += border.getBorderInsets(null).bottom;
           break;
         case View.LEFT:
           inset = leftInset;
+          if (border != null)
+            inset += border.getBorderInsets(null).left;
           break;
         case View.RIGHT:
           inset = rightInset;
+          if (border != null)
+            inset += border.getBorderInsets(null).right;
           break;
         default:
           inset = 0.0F;
@@ -994,7 +1037,16 @@ public class StyleSheet extends StyleContext
      */
     public void paint(Graphics g, float x, float y, float w, float h, View v)
     {
-      // FIXME: Not implemented.
+      
+      if (background != null)
+        {
+          g.setColor(background);
+          g.fillRect((int) x, (int) y, (int) w, (int) h);
+        }
+      if (border != null)
+        {
+          border.paintBorder(null, g, (int) x, (int) y, (int) w, (int) h);
+        }
     }
   }
   
@@ -1005,9 +1057,9 @@ public class StyleSheet extends StyleContext
    * 
    * @author Lillian Angel (langel@redhat.com)
    */
-  public static class ListPainter extends Object implements Serializable
+  public static class ListPainter implements Serializable
   {
-    
+
     /**
      * Attribute set for painter
      */
