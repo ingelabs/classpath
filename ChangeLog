@@ -1,3 +1,9 @@
+2006-11-07  Tania Bento  <tbento@redhat.com>
+
+	* java/awt/FlowLayout.java
+	(getSize): If parent does not have a component, then a 
+	different formula is used to calcuate the width.
+
 2006-11-07  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/html/HTMLEditorKit.java
