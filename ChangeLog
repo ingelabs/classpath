@@ -1,3 +1,9 @@
+2006-11-07  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/net/protocol/jar/Handler.java (parseURL): Flatten jar
+	path.
+	(flat): New method.
+
 2006-11-07  Tania Bento  <tbento@redhat.com>
 
 	* java/awt/FlowLayout.java
