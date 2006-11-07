@@ -1,5 +1,25 @@
 2006-11-07  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/html/HTMLEditorKit.java
+	(HTMLFactory.create): Include ListView.
+	* javax/swing/text/html/ListView.java
+	(paint): Removed comment.
+	* javax/swing/text/html/StyleSheet.java
+	(CSSStyle.priority): New field.
+	(CSSStyle.CSSStyle(int)): New constructor with priority.
+	(CSSStyle.compareTo): New method. Used for sorting the styles.
+	(CSSStyleSheetParserCallback.declaration): Store the style
+	with the complete selector.
+	(ListPainter.attributes): Renamed as field.
+	(ListPainter.styleSheet): New field.
+	(ListPainter.type): New field.
+	(ListPainter.ListPainter): Pass StyleSheet to constructor.
+	(ListPainter.paint): Provide simplistic implementation.
+	(getListPainter): Pass StyleSheet to constructor.
+	(resolveStyle): Fixed CSS style resolving.
+
+2006-11-07  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/javax/swing/text/html/css/BorderWidth.java:
 	New class. Handles CSS border width values.
 	* gnu/javax/swing/text/html/css/Length.java

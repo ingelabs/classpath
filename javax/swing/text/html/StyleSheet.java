@@ -55,9 +55,12 @@ import java.io.Serializable;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.swing.border.BevelBorder;
@@ -89,7 +92,7 @@ import javax.swing.text.View;
  *  
  *  The rules are stored as named styles, and other information is stored to 
  *  translate the context of an element to a rule.
- * 
+ *
  * @author Lillian Angel (langel@redhat.com)
  */
 public class StyleSheet extends StyleContext
@@ -137,21 +140,16 @@ public class StyleSheet extends StyleContext
      */
     public void declaration(String property, String value)
     {
-      for (int i = 0; i < selector.length; i++)
+      CSSStyle style = (CSSStyle) css.get(selector);
+      if (style == null)
         {
-          CSSStyle style = (CSSStyle) css.get(selector[i]);
-          if (style == null)
-            {
-              style = new CSSStyle();
-              css.put(selector[i], style);
-            }
-          CSS.Attribute cssAtt = CSS.getAttribute(property);
-          Object val = CSS.getValue(cssAtt, value);
-          if (cssAtt != null)
-            style.addAttribute(cssAtt, val);
-          // else  // For debugging only.
-          //   System.err.println("no mapping for: " + property);
+          style = new CSSStyle(selector.length);
+          css.put(selector, style);
         }
+      CSS.Attribute cssAtt = CSS.getAttribute(property);
+      Object val = CSS.getValue(cssAtt, value);
+      if (cssAtt != null)
+        style.addAttribute(cssAtt, val);
     }
     
   }
@@ -161,8 +159,18 @@ public class StyleSheet extends StyleContext
    */
   private class CSSStyle
     extends SimpleAttributeSet
-    implements Style
+    implements Style, Comparable
   {
+
+    /**
+     * The priority of this style when matching CSS selectors.
+     */
+    int priority;
+
+    CSSStyle(int prio)
+    {
+      priority = prio;
+    }
 
     public String getName()
     {
@@ -178,6 +186,12 @@ public class StyleSheet extends StyleContext
     public void removeChangeListener(ChangeListener listener)
     {
       // TODO: Implement this for correctness.
+    }
+
+    public int compareTo(Object o)
+    {
+      CSSStyle other = (CSSStyle) o;
+      return other.priority - priority;
     }
     
   }
@@ -374,14 +388,28 @@ public class StyleSheet extends StyleContext
     // the default.css.
     int count = tags.length;
     ArrayList styles = new ArrayList();
-    for (int i = 0; i < count; i++)
+    Set selectors = css.keySet();
+    for (Iterator i = selectors.iterator(); i.hasNext();)
       {
-        Style style = (Style) css.get(tags[i]);
-        if (style != null)
-          styles.add(style);
-        // FIXME: Handle ID and CLASS attributes.
+        String[] sel = (String[]) i.next();
+        // All parts of the selector must match.
+        if (sel.length <= tags.length)
+          {
+            boolean match = true;
+            for (int j = sel.length - 1; j >= 0 && match; j--)
+              {
+                if (! tags[sel.length - 1 - j].equals(sel[j]))
+                  match = false;
+              }
+            if (match)
+              styles.add(css.get(sel));
+          }
       }
+
+    // Sort selectors.
+    Collections.sort(styles);
     Style[] styleArray = new Style[styles.size()];
+    styleArray = (Style[]) styles.toArray(styleArray);
     Style resolved = new MultiStyle(selector,
                                     (Style[]) styles.toArray(styleArray));
     resolvedStyles.put(selector, resolved);
@@ -816,7 +844,7 @@ public class StyleSheet extends StyleContext
    */
   public ListPainter getListPainter(AttributeSet a)
   {
-    return new ListPainter(a);         
+    return new ListPainter(a, this);         
   }
   
   /**
@@ -1063,18 +1091,30 @@ public class StyleSheet extends StyleContext
     /**
      * Attribute set for painter
      */
-    AttributeSet as;
-    
+    private AttributeSet attributes;
+
+    /**
+     * The associated style sheet.
+     */
+    private StyleSheet styleSheet;
+
+    /**
+     * The bullet type.
+     */
+    private String type;
+
     /**
      * Package-private constructor.
      * 
      * @param as - AttributeSet for painter
      */
-    ListPainter(AttributeSet as)
+    ListPainter(AttributeSet as, StyleSheet ss)
     {
-      this.as = as;
+      attributes = as;
+      styleSheet = ss;
+      type = (String) as.getAttribute(CSS.Attribute.LIST_STYLE_TYPE);
     }
-    
+
     /**
      * Paints the CSS list decoration according to the attributes given.
      * 
@@ -1089,7 +1129,19 @@ public class StyleSheet extends StyleContext
     public void paint(Graphics g, float x, float y, float w, float h, View v,
                       int item)
     {
-      // FIXME: Not implemented.
+      // FIXME: This is a very simplistic list rendering. We still need
+      // to implement different bullet types (see type field) and custom
+      // bullets via images.
+      View itemView = v.getView(item);
+      AttributeSet viewAtts = itemView.getAttributes();
+      Object tag = viewAtts.getAttribute(StyleConstants.NameAttribute);
+      // Only paint something here when the child view is an LI tag
+      // and the calling view is some of the list tags then).
+      if (tag != null && tag == HTML.Tag.LI)
+        {
+          g.setColor(Color.BLACK);
+          g.fillOval((int) x - 15, (int) (h / 2 - 3 + y), 6, 6);
+        }
     }
   }
 
