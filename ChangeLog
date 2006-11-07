@@ -1,3 +1,9 @@
+2006-11-07  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/javax/swing/text/html/parser/support/Parser.java
+	(_handleText): Check if text content is actually allowed before
+	passing empty text fragments on to the parser callbacks.
+
 2006-11-07  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/net/protocol/jar/Handler.java (parseURL): Flatten jar

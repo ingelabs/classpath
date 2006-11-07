@@ -662,12 +662,16 @@ public class Parser
     if (text != null && text.length > 0)
       {
         TagElement pcdata = new TagElement(dtd.getElement("#pcdata"));
-        attributes = htmlAttributeSet.EMPTY_HTML_ATTRIBUTE_SET;
-        _handleEmptyTag(pcdata);
+        if ((text.length > 1 && text[0] != ' ')
+            || validator.tagIsValidForContext(pcdata) == Boolean.TRUE)
+          {
+            attributes = htmlAttributeSet.EMPTY_HTML_ATTRIBUTE_SET;
+            _handleEmptyTag(pcdata);
 
-        handleText(text);
-        if (titleOpen)
-          title.append(text);
+            handleText(text);
+            if (titleOpen)
+              title.append(text);
+          }
       }
   }
 
