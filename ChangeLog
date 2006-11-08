@@ -1,3 +1,11 @@
+2006-11-08  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/html/HTMLEditorKit.java
+	(HTMLFactory.create): Removed mapping for TD tag. This
+	is done in TableView.
+	* javax/swing/text/html/TableView.java:
+	Implemented from scratch.
+
 2006-11-07  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/javax/swing/text/html/parser/support/Parser.java

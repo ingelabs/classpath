@@ -652,8 +652,6 @@ public class HTMLEditorKit
             view = new NullView(element);
           else if (tag.equals(HTML.Tag.TABLE))
             view = new javax.swing.text.html.TableView(element);
-          else if (tag.equals(HTML.Tag.TD))
-            view = new ParagraphView(element);
           else if (tag.equals(HTML.Tag.HR))
             view = new HRuleView(element);
           else if (tag.equals(HTML.Tag.BR))

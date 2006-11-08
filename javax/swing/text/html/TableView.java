@@ -38,48 +38,151 @@ exception statement from your version. */
 
 package javax.swing.text.html;
 
-import javax.swing.text.Document;
+import gnu.javax.swing.text.html.css.Length;
+
+import javax.swing.SizeRequirements;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BoxView;
 import javax.swing.text.Element;
+import javax.swing.text.StyleConstants;
 import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 
 /**
- * A conrete implementation of TableView that renders HTML tables.
- * 
- * @author Roman Kennke (kennke@aicas.com)
+ * A view implementation that renders HTML tables.
+ *
+ * This is basically a vertical BoxView that contains the rows of the table
+ * and the rows are horizontal BoxViews that contain the actual columns.
  */
 class TableView
-    extends javax.swing.text.TableView
+  extends BoxView
+  implements ViewFactory
 {
+
   /**
    * Represents a single table row.
    */
-  public class RowView extends TableRow
+  class RowView
+    extends BoxView
   {
-    /**
-     * Creates a new instance of the <code>RowView</code>.
-     *
-     * @param el the element for which to create a row view
-     */
-    public RowView(Element el)
+    RowView(Element el)
     {
-      super(el);
+      super(el, X_AXIS);
     }
-    
-  /**
-   * Get the associated style sheet from the document.
-   * 
-   * @return the associated style sheet.
-   */
-    protected StyleSheet getStyleSheet()
+
+    /**
+     * Calculates the overall size requirements for the row along the
+     * major axis. This will be the sum of the column requirements.
+     */
+    protected SizeRequirements calculateMajorAxisRequirements(int axis,
+                                                            SizeRequirements r)
     {
-      Document d = getElement().getDocument();
-      if (d instanceof HTMLDocument)
-        return ((HTMLDocument) d).getStyleSheet();
-      else
-        return null;
-    }    
+      if (r == null)
+        r = new SizeRequirements();
+      r.minimum = totalColumnRequirements.minimum;
+      r.preferred = totalColumnRequirements.preferred;
+      r.maximum = totalColumnRequirements.maximum;
+      r.alignment = 0.0F;
+      return r;
+    }
+
+    /**
+     * Lays out the columns in this row.
+     */
+    protected void layoutMajorAxis(int targetSpan, int axis, int[] offsets,
+                                   int spans[])
+    {
+      int numCols = offsets.length;
+      int realColumn = 0;
+      for (int i = 0; i < numCols; i++)
+        {
+          View v = getView(i);
+          if (v instanceof CellView)
+            {
+              CellView cv = (CellView) v;
+              for (int j = 0; j < cv.colSpan; j++, realColumn++)
+                {
+                  offsets[i] = columnOffsets[realColumn];
+                  spans[i] = columnSpans[realColumn];
+                }
+            }
+        }
+    }
   }
+
+  /**
+   * A view that renders HTML table cells (TD and TH tags).
+   */
+  class CellView
+    extends BoxView
+  {
+
+    /**
+     * The number of columns that this view spans.
+     */
+    int colSpan;
+
+    /**
+     * Creates a new CellView for the specified element.
+     *
+     * @param el the element for which to create the colspan
+     */
+    CellView(Element el)
+    {
+      super(el, Y_AXIS);
+      colSpan = 1;
+      AttributeSet atts = getAttributes();
+      Object o = atts.getAttribute(HTML.Attribute.COLSPAN);
+      if (o != null)
+        {
+          try
+            {
+              colSpan = Integer.parseInt(o.toString());
+            }
+          catch (NumberFormatException ex)
+            {
+              // Couldn't parse the colspan, assume 1.
+              colSpan = 1;
+            }
+        }
+    }
+  }
+
+  /**
+   * The attributes of this view.
+   */
+  private AttributeSet attributes;
+
+  /**
+   * The column requirements.
+   */
+  private SizeRequirements[] columnRequirements;
+
+  /**
+   * The overall requirements across all columns.
+   *
+   * Package private to avoid accessor methods.
+   */
+  SizeRequirements totalColumnRequirements;
+
+  /**
+   * The column layout, offsets.
+   *
+   * Package private to avoid accessor methods.
+   */
+  int[] columnOffsets;
+
+  /**
+   * The column layout, spans.
+   *
+   * Package private to avoid accessor methods.
+   */
+  int[] columnSpans;
+
+  /**
+   * Indicates if the grid setup is ok.
+   */
+  private boolean gridValid;
 
   /**
    * Creates a new HTML table view for the specified element.
@@ -88,50 +191,246 @@ class TableView
    */
   public TableView(Element el)
   {
-    super(el);
+    super(el, Y_AXIS);
+    totalColumnRequirements = new SizeRequirements();
   }
-  
+
   /**
-   * Get the associated style sheet from the document.
-   * 
-   * @return the associated style sheet.
+   * Implementation of the ViewFactory interface for creating the
+   * child views correctly.
    */
-  protected StyleSheet getStyleSheet()
+  public View create(Element elem)
   {
-    Document d = getElement().getDocument();
-    if (d instanceof HTMLDocument)
-      return ((HTMLDocument) d).getStyleSheet();
-    else
-      return null;
-  }  
-  
-  /**
-   * Creates a view for a table row.
-   * 
-   * @param el the element that represents the table row
-   * @return a view for rendering the table row 
-   * (and instance of {@link RowView}).
-   */
-  protected TableRow createTableRow(Element el) 
-  {
-    return new RowView(el);
-  }  
-  
-  /**
-   * Loads the children of the Table. This completely bypasses the ViewFactory
-   * and creates instances of TableRow instead.
-   *
-   * @param vf ignored
-   */
-  protected void loadChildren(ViewFactory vf)
-  {
-    Element el = getElement();
-    int numChildren = el.getElementCount();
-    View[] rows = new View[numChildren];
-    for (int i = 0; i < numChildren; ++i)
+    View view = null;
+    AttributeSet atts = elem.getAttributes();
+    Object name = atts.getAttribute(StyleConstants.NameAttribute);
+    if (name instanceof HTML.Tag)
       {
-        rows[i] = createTableRow(el.getElement(i));
+        HTML.Tag tag = (HTML.Tag) name;
+        if (tag == HTML.Tag.TR)
+          view = new RowView(elem);
+        else if (tag == HTML.Tag.TD || tag == HTML.Tag.TH)
+          view = new CellView(elem);
+        else if (tag == HTML.Tag.CAPTION)
+          view = new ParagraphView(elem);
       }
-    replace(0, getViewCount(), rows);
+
+    // If we haven't mapped the element, then fall back to the standard
+    // view factory.
+    if (view == null)
+      {
+        View parent = getParent();
+        if (parent != null)
+          {
+            ViewFactory vf = parent.getViewFactory();
+            if (vf != null)
+              view = vf.create(elem);
+          }
+      }
+    return view;
+  }
+
+  /**
+   * Returns this object as view factory so that we get our TR, TD, TH
+   * and CAPTION subelements created correctly.
+   */
+  public ViewFactory getViewFactory()
+  {
+    return this;
+  }
+
+  /**
+   * Returns the attributes of this view. This is overridden to provide
+   * the attributes merged with the CSS stuff.
+   */
+  public AttributeSet getAttributes()
+  {
+    if (attributes == null)
+      attributes = getStyleSheet().getViewAttributes(this);
+    return attributes;
+  }
+
+  /**
+   * Returns the stylesheet associated with this view.
+   *
+   * @return the stylesheet associated with this view
+   */
+  private StyleSheet getStyleSheet()
+  {
+    HTMLDocument doc = (HTMLDocument) getDocument();
+    return doc.getStyleSheet();
+  }
+
+  /**
+   * Overridden to calculate the size requirements according to the
+   * columns distribution.
+   */
+  protected SizeRequirements calculateMinorAxisRequirements(int axis,
+                                                            SizeRequirements r)
+  {
+    updateGrid();
+    calculateColumnRequirements();
+    if (r == null)
+      r = new SizeRequirements();
+    // The overall minor axis requirements is the sum of all the columns.
+    int numCols = columnRequirements.length;
+    long min = 0;
+    long pref = 0;
+    for (int i = 0; i < numCols; i++)
+      {
+        SizeRequirements col = columnRequirements[i];
+        min += col.minimum;
+        pref += col.preferred;
+      }
+
+    r.minimum = (int) min;
+    r.preferred = (int) pref;
+    r.maximum = r.preferred;
+
+    // Try to set the CSS width if it fits.
+    AttributeSet atts = getAttributes();
+    Length l = (Length) atts.getAttribute(CSS.Attribute.WIDTH);
+    if (l != null)
+      {
+        int width = (int) l.getValue();
+        if (r.minimum < width)
+          r.minimum = width;
+      }
+
+    // Apply the alignment.
+    Object o = atts.getAttribute(CSS.Attribute.TEXT_ALIGN);
+    r.alignment = 0.0F;
+    if (o != null)
+      {
+        String al = o.toString();
+        if (al.equals("left"))
+          r.alignment = 0.0F;
+        else if (al.equals("center"))
+          r.alignment = 0.5F;
+        else if (al.equals("right"))
+          r.alignment = 1.0F;
+      }
+
+    totalColumnRequirements.minimum = r.minimum;
+    totalColumnRequirements.preferred = r.preferred;
+    totalColumnRequirements.maximum = r.maximum;
+
+    return r;
+  }
+
+  protected void layoutMinorAxis(int targetSpan, int axis, int[] offsets, 
+                                 int[] spans)
+  {
+    updateGrid();
+
+    // Mark all the rows invalid.
+    int count = getViewCount();
+    for (int i = 0; i < count; i++)
+      ((RowView) getView(i)).layoutChanged(axis);
+    // Layout columns.
+    layoutColumns(targetSpan);
+ 
+    super.layoutMinorAxis(targetSpan, axis, offsets, spans);
+  }
+
+  private void calculateColumnRequirements()
+  {
+    int numRows = getViewCount();
+    for (int r = 0; r < numRows; r++)
+      {
+        RowView rowView = (RowView) getView(r);
+        int numCols = rowView.getViewCount();
+        for (int c = 0; c < numCols; )
+          {
+            // TODO: Handle column span > 0.
+            View v = rowView.getView(c);
+            if (v instanceof CellView)
+              {
+                CellView cellView = (CellView) v;
+                int colSpan = cellView.colSpan;
+                if (colSpan > 1)
+                  {
+                    int cellMin = (int) cellView.getMinimumSpan(X_AXIS);
+                    int cellPref = (int) cellView.getPreferredSpan(X_AXIS);
+                    int cellMax = (int) cellView.getMaximumSpan(X_AXIS);
+                    int currentMin = 0;
+                    int currentPref = 0;
+                    long currentMax = 0;
+                    for (int i = 0; i < colSpan; i++)
+                      {
+                        SizeRequirements req = columnRequirements[c + i];
+                        currentMin += req.minimum;
+                        currentPref += req.preferred;
+                        currentMax += req.maximum;
+                      }
+                    int deltaMin = cellMin - currentMin;
+                    int deltaPref = cellPref - currentPref;
+                    int deltaMax = (int) (cellMax - currentMax);
+                    // Distribute delta.
+                    for (int i = 0; i < colSpan; i++)
+                      {
+                        SizeRequirements req = columnRequirements[c + i];
+                        if (deltaMin > 0)
+                          req.minimum += deltaMin / colSpan;
+                        if (deltaPref > 0)
+                          req.preferred += deltaPref / colSpan;
+                        if (deltaMax > 0)
+                          req.maximum += deltaMax / colSpan;
+                      }
+                  }
+                else
+                  {
+                    // Shortcut for colSpan == 1.
+                    SizeRequirements req = columnRequirements[c];
+                    req.minimum = Math.max(req.minimum,
+                                        (int) cellView.getMinimumSpan(X_AXIS));
+                    req.preferred = Math.max(req.preferred,
+                                      (int) cellView.getPreferredSpan(X_AXIS));
+                    req.maximum = Math.max(req.maximum,
+                                        (int) cellView.getMaximumSpan(X_AXIS));
+                  }
+                c += colSpan;
+              }
+          }
+      }
+  }
+
+  private void layoutColumns(int targetSpan)
+  {
+    // TODO: Could be done better I suppose.
+    SizeRequirements.calculateTiledPositions(targetSpan,
+                                             totalColumnRequirements,
+                                             columnRequirements, columnOffsets,
+                                             columnSpans);
+  }
+
+  private void updateGrid()
+  {
+    if (! gridValid)
+      {
+        int maxColumns = 0;
+        int numRows = getViewCount();
+        for (int r = 0; r < numRows; r++)
+          {
+            RowView rowView = (RowView) getView(r);
+            int numCols = rowView.getViewCount();
+            maxColumns = Math.max(numCols, maxColumns);
+          }
+        columnRequirements = new SizeRequirements[maxColumns];
+        for (int i = 0; i < maxColumns; i++)
+          columnRequirements[i] = new SizeRequirements();
+        columnOffsets = new int[maxColumns];
+        columnSpans = new int[maxColumns];
+
+        gridValid = true;
+      }
+  }
+
+  protected SizeRequirements calculateMajorAxisRequirements(int axis,
+                                                            SizeRequirements r)
+  {
+    r = super.calculateMajorAxisRequirements(axis, r);
+    r.maximum = r.preferred;
+    return r;
   }
 }
