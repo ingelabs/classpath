@@ -1,6 +1,21 @@
 2006-11-08  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/html/HTMLEditorKit.java
+	(getParser): Use plain HTML_401F DTD.
+	* javax/swing/text/html/HTMLDocument.java
+	(HTMLReader.print): Removed method and all calls to it.
+	(HTMLReader.printBuffer): Removed method and all calls to it.
+	(HTMLReader.inImpliedParagraph): New field.
+	(HTMLReader.inParagraph): New field.
+	(HTMLReader.addContent): Create implied p-tag if necessary.
+	(HTMLReader.addSpecialElement): Create implied p-tag if necessary.
+	(HTMLReader.blockClose): Close implied p-tag if necessary.
+	(HTMLReader.blockOpen): Close implied p-tag if necessary.
+	* gnu/javax/swing/text/html/parser/HTML_401Swing.java: Removed.
+
+2006-11-08  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/html/HTMLEditorKit.java
 	(HTMLFactory.create): Removed mapping for TD tag. This
 	is done in TableView.
 	* javax/swing/text/html/TableView.java:

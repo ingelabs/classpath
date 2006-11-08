@@ -570,6 +570,16 @@ public class HTMLDocument extends DefaultStyledDocument
     boolean inPreTag = false;
 
     /**
+     * True when we are inside a paragraph (P, H1-H6, P-IMPLIED).
+     */
+    boolean inParagraph = false;
+
+    /**
+     * True when we are currently inside an implied paragraph.
+     */
+    boolean inImpliedParagraph = false;
+
+    /**
      * This is true when we are inside a style tag. This will add text
      * content inside this style tag beeing parsed as CSS.
      *
@@ -599,12 +609,6 @@ public class HTMLDocument extends DefaultStyledDocument
      */
     Document textAreaDocument;
 
-    void print (String line)
-    {
-      if (debug)
-        System.out.println (line);
-    }
-    
     public class TagAction
     {
       /**
@@ -812,6 +816,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void start(HTML.Tag t, MutableAttributeSet a)
       {
         blockOpen(t, a);
+        inParagraph = true;
       }
       
       /**
@@ -821,6 +826,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void end(HTML.Tag t)
       {
         blockClose(t);
+        inParagraph = false;
       } 
     }
 
@@ -881,7 +887,6 @@ public class HTMLDocument extends DefaultStyledDocument
         throws NotImplementedException
       {
         // FIXME: Implement.
-        print ("AreaAction.start not implemented");
       }
       
       /**
@@ -892,7 +897,6 @@ public class HTMLDocument extends DefaultStyledDocument
         throws NotImplementedException
       {
         // FIXME: Implement.
-        print ("AreaAction.end not implemented");
       } 
     }
 
@@ -941,7 +945,6 @@ public class HTMLDocument extends DefaultStyledDocument
         throws NotImplementedException
       {
         // FIXME: Implement.
-        print ("BaseAction.start not implemented");
       }
       
       /**
@@ -952,7 +955,6 @@ public class HTMLDocument extends DefaultStyledDocument
         throws NotImplementedException
       {
         // FIXME: Implement.
-        print ("BaseAction.end not implemented");
       } 
     }
     
@@ -966,7 +968,6 @@ public class HTMLDocument extends DefaultStyledDocument
         throws NotImplementedException
       {
         // FIXME: Implement.
-        print ("HeadAction.start not implemented: "+t);
         super.start(t, a);
       }
       
@@ -1001,7 +1002,6 @@ public class HTMLDocument extends DefaultStyledDocument
         throws NotImplementedException
       {
         // FIXME: Implement.
-        print ("LinkAction.start not implemented");
       }
       
       /**
@@ -1012,7 +1012,6 @@ public class HTMLDocument extends DefaultStyledDocument
         throws NotImplementedException
       {
         // FIXME: Implement.
-        print ("LinkAction.end not implemented");
       } 
     }
     
@@ -1026,7 +1025,6 @@ public class HTMLDocument extends DefaultStyledDocument
         throws NotImplementedException
       {
         // FIXME: Implement.
-        print ("MapAction.start not implemented");
       }
       
       /**
@@ -1037,7 +1035,6 @@ public class HTMLDocument extends DefaultStyledDocument
         throws NotImplementedException
       {
         // FIXME: Implement.
-        print ("MapAction.end not implemented");
       } 
     }
     
@@ -1051,7 +1048,6 @@ public class HTMLDocument extends DefaultStyledDocument
         throws NotImplementedException
       {
         // FIXME: Implement.
-        print ("MetaAction.start not implemented");
       }
       
       /**
@@ -1062,7 +1058,6 @@ public class HTMLDocument extends DefaultStyledDocument
         throws NotImplementedException
       {
         // FIXME: Implement.
-        print ("MetaAction.end not implemented");
       } 
     }
 
@@ -1097,7 +1092,6 @@ public class HTMLDocument extends DefaultStyledDocument
         throws NotImplementedException
       {
         // FIXME: Implement.
-        print ("TitleAction.start not implemented");
       }
       
       /**
@@ -1108,7 +1102,6 @@ public class HTMLDocument extends DefaultStyledDocument
         throws NotImplementedException
       {
         // FIXME: Implement.
-        print ("TitleAction.end not implemented");
       } 
     }    
     
@@ -1120,9 +1113,6 @@ public class HTMLDocument extends DefaultStyledDocument
     public HTMLReader(int offset, int popDepth, int pushDepth,
                       HTML.Tag insertTag)
     {
-      print ("HTMLReader created with pop: "+popDepth
-                          + " push: "+pushDepth + " offset: "+offset
-                          + " tag: "+insertTag);
       this.insertTag = insertTag;
       this.offset = offset;
       this.popDepth = popDepth;
@@ -1412,7 +1402,6 @@ public class HTMLDocument extends DefaultStyledDocument
     public void handleEndOfLineString(String eol)
     {
       // FIXME: Implement.
-      print ("HTMLReader.handleEndOfLineString not implemented yet");
     }
     
     /**
@@ -1473,7 +1462,9 @@ public class HTMLDocument extends DefaultStyledDocument
      */
     protected void blockOpen(HTML.Tag t, MutableAttributeSet attr)
     {
-      printBuffer();
+      if (inImpliedParagraph)
+        blockClose(HTML.Tag.IMPLIED);
+
       DefaultStyledDocument.ElementSpec element;
 
       parseStack.push(t);
@@ -1483,7 +1474,6 @@ public class HTMLDocument extends DefaultStyledDocument
       element = new DefaultStyledDocument.ElementSpec(copy,
                                DefaultStyledDocument.ElementSpec.StartTagType);
       parseBuffer.addElement(element);
-      printBuffer();
     }
 
     /**
@@ -1494,8 +1484,15 @@ public class HTMLDocument extends DefaultStyledDocument
      */
     protected void blockClose(HTML.Tag t)
     {
-      printBuffer();
       DefaultStyledDocument.ElementSpec element;
+
+      if (inImpliedParagraph)
+        {
+          inImpliedParagraph = false;
+          inParagraph = false;
+          if (t != HTML.Tag.IMPLIED)
+            blockClose(HTML.Tag.IMPLIED);
+        }
 
       // If the previous tag is a start tag then we insert a synthetic
       // content tag.
@@ -1517,7 +1514,6 @@ public class HTMLDocument extends DefaultStyledDocument
       element = new DefaultStyledDocument.ElementSpec(null,
 				DefaultStyledDocument.ElementSpec.EndTagType);
       parseBuffer.addElement(element);
-      printBuffer();
       if (parseStack.size() > 0)
         parseStack.pop();
     }
@@ -1548,6 +1544,13 @@ public class HTMLDocument extends DefaultStyledDocument
     protected void addContent(char[] data, int offs, int length,
                               boolean generateImpliedPIfNecessary)
     {
+      if (generateImpliedPIfNecessary && (! inParagraph) && (! inPreTag))
+        {
+          blockOpen(HTML.Tag.IMPLIED, new SimpleAttributeSet());
+          inParagraph = true;
+          inImpliedParagraph = true;
+        }
+
       AbstractDocument.AttributeContext ctx = getAttributeContext();
       DefaultStyledDocument.ElementSpec element;
       AttributeSet attributes = null;
@@ -1564,10 +1567,8 @@ public class HTMLDocument extends DefaultStyledDocument
                                 DefaultStyledDocument.ElementSpec.ContentType,
                                 data, offs, length);
       
-      printBuffer();
       // Add the element to the buffer
       parseBuffer.addElement(element);
-      printBuffer();
 
       if (parseBuffer.size() > HTMLDocument.this.getTokenThreshold())
         {
@@ -1590,6 +1591,13 @@ public class HTMLDocument extends DefaultStyledDocument
      */
     protected void addSpecialElement(HTML.Tag t, MutableAttributeSet a)
     {
+      if (t != HTML.Tag.FRAME && ! inParagraph && ! inImpliedParagraph)
+        {
+          blockOpen(HTML.Tag.IMPLIED, new SimpleAttributeSet());
+          inParagraph = true;
+          inImpliedParagraph = true;
+        }
+
       a.addAttribute(StyleConstants.NameAttribute, t);
       
       // The two spaces are required because some special elements like HR
@@ -1602,13 +1610,6 @@ public class HTMLDocument extends DefaultStyledDocument
       parseBuffer.add(spec);
     }
     
-    void printBuffer()
-    {      
-      print ("\n*********BUFFER**********");
-      for (int i = 0; i < parseBuffer.size(); i ++)
-        print ("  "+parseBuffer.get(i));
-      print ("***************************");
-    }
   }
   
   /**

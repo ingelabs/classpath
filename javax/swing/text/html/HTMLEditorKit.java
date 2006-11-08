@@ -82,7 +82,7 @@ import javax.swing.text.html.parser.ParserDelegator;
 /* Move these imports here after javax.swing.text.html to make it compile
    with jikes.  */
 import gnu.javax.swing.text.html.parser.GnuParserDelegator;
-import gnu.javax.swing.text.html.parser.HTML_401Swing;
+import gnu.javax.swing.text.html.parser.HTML_401F;
 
 /**
  * @author Lillian Angel (langel at redhat dot com)
@@ -971,7 +971,7 @@ public class HTMLEditorKit
   {
     if (parser == null)
       {
-        parser = new GnuParserDelegator(HTML_401Swing.getInstance());
+        parser = new GnuParserDelegator(HTML_401F.getInstance());
       }
     return parser;
   }
