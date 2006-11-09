@@ -1,5 +1,12 @@
 2006-11-09  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/html/InlineView.java
+	(nowrap): New field.
+	(getBreakWeight): Add support for nowrap.
+	(setPropertiesFromAttributes): Fetch the nowrap setting.
+
+2006-11-09  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/javax/swing/text/html/css/CSSParser.java
 	(parseRuleset): Use new Selector class.
 	(parseValue): Parse multiple anys, not only one.
