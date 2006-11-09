@@ -1,3 +1,9 @@
+2006-11-09  David Gilbert  <david.gilbert@object-refinery.com>
+
+	Fixes bug #29770
+	* java/beans/SimpleBeanInfo.java
+	(loadImage): Check for nulls.
+
 2006-11-09  Robert Schuster  <robertschuster@fsfe.org>
 
 	* native/jni/java-nio/gnu_java_nio_VMChannel.c:
