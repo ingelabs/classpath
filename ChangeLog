@@ -1,6 +1,11 @@
 2006-11-09  Robert Schuster  <robertschuster@fsfe.org>
 
 	* native/jni/java-nio/gnu_java_nio_VMChannel.c:
+	(getpeername): Added 16 byte offset to memcpy operation.
+
+2006-11-09  Robert Schuster  <robertschuster@fsfe.org>
+
+	* native/jni/java-nio/gnu_java_nio_VMChannel.c:
 	(getsockname): Added 16 byte offset to memcpy operation.
 
 2006-11-08  Mark Wielaard  <mark@klomp.org>
