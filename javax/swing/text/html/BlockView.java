@@ -69,14 +69,11 @@ public class BlockView extends BoxView
   private StyleSheet.BoxPainter painter;
 
   /**
-   * The width as specified in the stylesheet, null if not specified.
+   * The width and height as specified in the stylesheet, null if not
+   * specified. The first value is the X_AXIS, the second the Y_AXIS. You
+   * can index this directly by the X_AXIS and Y_AXIS constants.
    */
-  private Length cssWidth;
-
-  /**
-   * The height as specified in the stylesheet, null if not specified.
-   */
-  private Length cssHeight;
+  private Length[] cssSpans;
 
   /**
    * Creates a new view that represents an html box. 
@@ -88,6 +85,7 @@ public class BlockView extends BoxView
   public BlockView(Element elem, int axis)
   {
     super(elem, axis);
+    cssSpans = new Length[2];
   }
 
   /**
@@ -141,7 +139,7 @@ public class BlockView extends BoxView
       r = super.calculateMajorAxisRequirements(axis, r);
     return r;
   }
-  
+
   /**
    * Calculates the requirements along the minor axis.
    * This is implemented to call the superclass and then
@@ -189,25 +187,16 @@ public class BlockView extends BoxView
   private boolean setCSSSpan(SizeRequirements r, int axis)
   {
     boolean ret = false;
-    if (axis == X_AXIS)
+    Length span = cssSpans[axis];
+    // We can't set relative CSS spans here because we don't know
+    // yet about the allocated span. Instead we use the view's
+    // normal requirements.
+    if (span != null && ! span.isPercentage())
       {
-        if (cssWidth != null && ! cssWidth.isPercentage())
-          {
-            r.minimum = (int) cssWidth.getValue();
-            r.preferred = (int) cssWidth.getValue();
-            r.maximum = (int) cssWidth.getValue();
-            ret = true;
-          }
-      }
-    else
-      {
-        if (cssHeight != null && ! cssWidth.isPercentage())
-          {
-            r.minimum = (int) cssHeight.getValue();
-            r.preferred = (int) cssHeight.getValue();
-            r.maximum = (int) cssHeight.getValue();
-            ret = true;
-          }
+        r.minimum = (int) span.getValue();
+        r.preferred = (int) span.getValue();
+        r.maximum = (int) span.getValue();
+        ret = true;
       }
     return ret;
   }
@@ -250,14 +239,17 @@ public class BlockView extends BoxView
                                  int[] offsets, int[] spans)
   {
     int viewCount = getViewCount();
-    Length length = axis == X_AXIS ? cssWidth : cssHeight;
+    CSS.Attribute spanAtt = axis == X_AXIS ? CSS.Attribute.WIDTH
+                                           : CSS.Attribute.HEIGHT;
     for (int i = 0; i < viewCount; i++)
       {
         View view = getView(i);
         int min = (int) view.getMinimumSpan(axis);
         int max;
-        // Handle percentage span value.
-        if (length != null && length.isPercentage())
+        // Handle CSS span value of child.
+        AttributeSet atts = view.getAttributes();
+        Length length = (Length) atts.getAttribute(spanAtt);
+        if (length != null)
           {
             min = Math.max((int) length.getValue(targetSpan), min);
             max = min;
@@ -279,7 +271,7 @@ public class BlockView extends BoxView
           }
       }
   }
-  
+
   /**
    * Paints using the given graphics configuration and shape.
    * This delegates to the css box painter to paint the
@@ -438,10 +430,10 @@ public class BlockView extends BoxView
       }
 
     // Fetch width and height.
-    cssWidth = (Length) attributes.getAttribute(CSS.Attribute.WIDTH);
-    cssHeight = (Length) attributes.getAttribute(CSS.Attribute.HEIGHT);
+    cssSpans[X_AXIS] = (Length) attributes.getAttribute(CSS.Attribute.WIDTH);
+    cssSpans[Y_AXIS] = (Length) attributes.getAttribute(CSS.Attribute.HEIGHT);
   }
-  
+
   /**
    * Gets the default style sheet.
    * 
