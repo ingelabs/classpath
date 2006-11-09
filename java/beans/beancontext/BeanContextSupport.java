@@ -447,10 +447,16 @@ public class BeanContextSupport extends BeanContextChildSupport
       }
   }
 
-  public BeanContext getBeanContextPeer ()
-    throws NotImplementedException
+  /**
+   * Returns the bean context peer.
+   * 
+   * @return The bean context peer.
+   * 
+   * @see BeanContextChildSupport#beanContextChildPeer
+   */
+  public BeanContext getBeanContextPeer()
   {
-    throw new Error ("Not implemented");
+    return (BeanContext) beanContextChildPeer;
   }
 
   protected static final BeanContextChild getChildBeanContextChild (Object child)
