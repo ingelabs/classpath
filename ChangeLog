@@ -1,3 +1,14 @@
+2006-11-09  Tania Bento  <tbento@redhat.com>
+
+	* javax/swing/JLabel.java
+	(JLabel(Icon)): Changed documentation; Changed text to null.
+	(JLabel(Icon,int)): Likewise.
+	(JLabel(text)): Changed documenation.
+	(JLabel(text,int)): Likewise.
+	(JLabel(text,Icon,int)): Changed documentation; Throw 
+	IllegalArgumentException if int is not one of LEFT, RIGHT,
+	CENTER, LEADING or TRAILING.
+
 2006-11-09  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/beans/beancontext/BeanContextSupport.java
