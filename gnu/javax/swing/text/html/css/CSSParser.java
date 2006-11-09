@@ -39,6 +39,8 @@ exception statement from your version. */
 package gnu.javax.swing.text.html.css;
 
 import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -156,7 +158,7 @@ public class CSSParser
   {
     StringBuilder selector = new StringBuilder();
     parseSelector(selector);
-    callback.startStatement(selector.toString());
+    callback.startStatement(new Selector(selector.toString()));
     // Read any number of whitespace.
     int token;
     do
@@ -296,7 +298,9 @@ public class CSSParser
     throws IOException
   {
     // FIXME: Handle block and ATKEYWORD.
-    return parseAny(s);
+    boolean success = parseAny(s);
+    while (parseAny(s));
+    return success;
   }
 
   /**
@@ -439,13 +443,22 @@ public class CSSParser
   {
     try
       {
-        String name = "/javax/swing/text/html/default.css";
-        InputStream in = CSSScanner.class.getResourceAsStream(name);
+        InputStream in;
+        if (args.length > 0)
+          {
+            File file = new File(args[0]);
+            in = new FileInputStream(file);
+          }
+        else
+          {
+            String name = "/javax/swing/text/html/default.css";
+            in = CSSScanner.class.getResourceAsStream(name);
+          }
         BufferedInputStream bin = new BufferedInputStream(in);
         InputStreamReader r = new InputStreamReader(bin);
         CSSParserCallback cb = new CSSParserCallback()
         {
-          public void startStatement(String selector)
+          public void startStatement(Selector selector)
           {
             System.out.println("startStatement: " + selector);
           }

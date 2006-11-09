@@ -108,9 +108,12 @@ public class Length
    *
    * @return the absolute span
    */
-  public float getValue(float span)
+  public float getValue(float available)
   {
-    return span * floatValue;
+    float span = floatValue;
+    if (isPercentage)
+      span *= available;
+    return span;
   }
 
   /**

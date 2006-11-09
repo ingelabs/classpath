@@ -1,3 +1,52 @@
+2006-11-09  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/javax/swing/text/html/css/CSSParser.java
+	(parseRuleset): Use new Selector class.
+	(parseValue): Parse multiple anys, not only one.
+	(main): Allow stylesheet be specified on the command line.
+	Use new Selector class.
+	* gnu/javax/swing/text/html/css/CSSParserCallback.java
+	(startStatement): Use Selector class.
+	* gnu/javax/swing/text/html/css/CSSScanner.java
+	(readName): Actually read a character in the loop to avoid
+	endless loop.
+	* gnu/javax/swing/text/html/css/Length.java
+	(getValue): Only multiply when we have a percentage value.
+	* gnu/javax/swing/text/html/css/Selector.java:
+	New class. Provides handling of CSS selectors.
+	* javax/swing/text/html/StyleSheet.java
+	(CSSStyle.PREC_AUTHOR_IMPORTANT): New constant field.
+	(CSSStyle.PREC_AUTHOR_NORMAL): New constant field.
+	(CSSStyle.PREC_NORM): New constant field.
+	(CSSStyle.PREC_UA): New constant field.
+	(CSSStyle.PREC_USER_IMPORTANT): New constant field.
+	(CSSStyle.precedence): New field.
+	(CSSStyle.priority): Removed.
+	(CSSStyle.selector): New field.
+	(CSSStyle.CSSStyle(int,Selector)): Initialize with Selector
+	and precendence.
+	(CSSStyle.compareTo): Adjusted to use the precedence and
+	specificity of the selector.
+	(CSSStyleSheetParserCallback.precedence): New field.
+	(CSSStyleSheetParserCallback.selector): Removed.
+	(CSSStyleSheetParserCallback.style): New field.
+	(CSSStyleSheetParserCallback.CSSStyleSheetParserCallback):
+	Initialize with precedence.
+	(CSSStyleSheetParserCallback.declaration): Don't look up
+	existing rule, simply create new one.
+	(CSSStyleSheetParserCallback.endStatement): Append style
+	to stylesheet.
+	(CSSStyleSheetParserCallback.startStatement): Use new Selector
+	class.
+	(css): Changed to be ArrayList.
+	(addRule): Create parser with author-normal precendence.
+	(getRule): Fixed implementation.
+	(loadRules): Create parser with UA precendence.
+	(resolveStyle): Use Selector class for resolving and matching
+	stylesheet rules.
+	(translateHTMLToCSS): Added mappings for a couple of HTML
+	attributes.
+
 2006-11-09  David Gilbert  <david.gilbert@object-refinery.com>
 
 	Fixes bug #29770
