@@ -1,3 +1,12 @@
+2006-11-09  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/headless/HeadlessGraphicsEnvironment,
+	* gnu/java/awt/peer/headless/HeadlessToolkit: New classes.
+	Implement basic headless toolkit.
+	* java/awt/Toolkit.java
+	(getDefaultToolkit): Check headless property and create
+	headless toolkit when true.
+
 2006-11-09  Ingo Proetel  <proetel@aicas.com>
 2006-11-09  Roman Kennke  <kennke@aicas.com>
 
