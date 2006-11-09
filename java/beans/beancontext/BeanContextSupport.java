@@ -144,42 +144,61 @@ public class BeanContextSupport extends BeanContextChildSupport
    */
   public BeanContextSupport ()
   {
-    this (null, null, true, true);
+    this (null, null, false, true);
   }
 
   /**
    * Construct a BeanContextSupport instance.
+   * 
+   * @param peer  the bean context peer (<code>null</code> permitted).
    */
-  public BeanContextSupport (BeanContext peer)
+  public BeanContextSupport(BeanContext peer)
   {
-    this (peer, null, true, true);
+    this (peer, null, false, true);
   }
 
   /**
    * Construct a BeanContextSupport instance.
+   * 
+   * @param peer  the bean context peer (<code>null</code> permitted).
+   * @param locale  the locale (<code>null</code> permitted, equivalent to 
+   *     the default locale).
    */
-  public BeanContextSupport (BeanContext peer, Locale lcle)
+  public BeanContextSupport (BeanContext peer, Locale locale)
   {
-    this (peer, lcle, true, true);
+    this (peer, locale, false, true);
   }
 
   /**
    * Construct a BeanContextSupport instance.
+   * 
+   * @param peer  the bean context peer (<code>null</code> permitted).
+   * @param locale  the locale (<code>null</code> permitted, equivalent to 
+   *     the default locale).
+   * @param dtime  a flag indicating whether or not the bean context is in
+   *     design time mode.
    */
-  public BeanContextSupport (BeanContext peer, Locale lcle, boolean dtime)
+  public BeanContextSupport (BeanContext peer, Locale locale, boolean dtime)
   {
-    this (peer, lcle, dtime, true);
+    this (peer, locale, dtime, true);
   }
 
   /**
    * Construct a BeanContextSupport instance.
+   * 
+   * @param peer  the bean context peer (<code>null</code> permitted).
+   * @param locale  the locale (<code>null</code> permitted, equivalent to 
+   *     the default locale).
+   * @param dtime  a flag indicating whether or not the bean context is in
+   *     design time mode.
+   * @param visible  initial value of the <code>okToUseGui</code> flag.
    */
-  public BeanContextSupport (BeanContext peer, Locale lcle, boolean dtime,
+  public BeanContextSupport (BeanContext peer, Locale locale, boolean dtime,
                              boolean visible)
   {
     super(peer);
 
-    locale = lcle == null ? Locale.getDefault() : lcle;
+    this.locale = locale == null ? Locale.getDefault() : locale;
     designTime = dtime;
     okToUseGui = visible;
 

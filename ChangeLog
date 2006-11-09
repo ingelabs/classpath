@@ -1,6 +1,16 @@
 2006-11-09  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/beans/beancontext/BeanContextSupport.java
+	(BeanContextSupport): Use correct dtime default,
+	(BeanContextSupport(BeanContext)): Likewise,
+	(BeanContextSupport(BeanContext, Locale)): Likewise, plus renamed
+	locale argument,
+	(BeanContextSupport(BeanContext, Locale, boolean)): Likewise,
+	(BeanContextSupport(BeanContext, Locale, boolean, boolean)): Likewise.
+
+2006-11-09  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/beans/beancontext/BeanContextSupport.java
 	(getBeanContextPeer): Implemented.
 
 2006-11-09  Roman Kennke  <kennke@aicas.com>
