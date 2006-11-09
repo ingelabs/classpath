@@ -1,3 +1,77 @@
+2006-11-09  Ingo Proetel  <proetel@aicas.com>
+2006-11-09  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/swing/SwingButtonPeer.java
+	(SwingButton.button): New field.
+	(SwingButton.SwingButton): Added constructor.
+	(SwingButton.isShowing): Access button field instead of
+	the surrounding class.
+	(SwingButton.getParent): Access button field instead of
+	the surrounding class.
+	(SwingButtonPeer): Call new SwingButton constructor.
+	* gnu/java/awt/peer/swing/SwingComponent.java:
+	Several documentation updates.
+	* gnu/java/awt/peer/swing/SwingComponentPeer.java
+	(currentPaintEvents): New field.
+	(peerFont): New field.
+	(SwingComponentPeer): Initialize currentPaintEvents fields.
+	(coalescePaintEvents): Implemented.
+	(dispose): Unregister peer from heavyweight list of its container.
+	(getGraphics): Fetch graphics from parent component.
+	(handleEvent): Discard paint event if its coalesced.
+	(init): Register component with its container for proper painting.
+	(paint): Call peerPaint().
+	(peerPaint): Added argument that indicates if we should update.
+	Call paint or update on the actual AWT component.
+	(peerPaintComponent): New method. Paints the peer (Swing) component.
+	(setFont): Set peerFont field.
+	* gnu/java/awt/peer/swing/SwingContainerPeer.java
+	(backbuffer): New field.
+	(focusOwner): New field.
+	(heavyweightDescendents): New field.
+	(SwingContainerPeer): Take Container as argument. Don't call init
+	yet.
+	(addHeavyweightDescendent): New method.
+	(getFocusOwner): New helper method.
+	(getInsets): Delegate to insets().
+	(handleKeyEvent): Dispatch event to focus owner.
+	(handleMouseEvent): Dispatch to child component.
+	(isDoubleBuffering): New helper method.
+	(peerPaint): Overridden to implement container painting with
+	double buffering.
+	(peerPaintChildren): New method. Paints the descendents of this
+	container.
+	(removeHeavyweightDescendent): New helper method.	
+	* gnu/java/awt/peer/swing/SwingFramePeer.java
+	(peerPaint): Removed.
+	(peerPaintComponent): Overridden to paint the menu bar.
+	* gnu/java/awt/peer/swing/SwingLabelPeer.java
+	(SwingLabel.label): New field.
+	(SwingLabel.SwingLabel): Added constructor with Label argument.
+	(SwingLabel.getGraphics): Implemented to fetch the graphics from
+	the actual AWT component.
+	(SwingLabel.getParent): Implemented to fetch the parent from
+	the AWT component.
+	(SwingLabel.isShowing): Access the label field.
+	(SwingLabelPeer): Set alignment from label.
+	* gnu/java/awt/peer/swing/SwingListPeer.java: New class.
+	* gnu/java/awt/peer/swing/SwingMenuBarPeer.java: Documentation
+	fixlet.
+	* gnu/java/awt/peer/swing/SwingPanelPeer.java:
+	Don't be a lighweight peer.
+	(SwingPanelPeer): Call init.
+	* gnu/java/awt/peer/swing/SwingTextAreaPeer.java: New class.
+	* gnu/java/awt/peer/swing/SwingTextFieldPeer.java
+	(SwingTextField.textField): New field.
+	(SwingTextField.SwingTextField): New constructor.
+	(SwingTextField.isShowing): Access field not enclosing class.
+	(SwingTextField.getGraphics): New method.
+	(SwingTextField.getParent): New method.
+	(SwingTextFieldPeer): Call new constructor.
+	(select): Renamed arguments.
+	* gnu/java/awt/peer/swing/SwingWindowPeer.java
+	(SwingWindowPeer): Call init.
+
 2006-11-09  Tania Bento  <tbento@redhat.com>
 
 	* javax/swing/JLabel.java
@@ -23,6 +97,17 @@
 
 	* java/beans/beancontext/BeanContextSupport.java
 	(getBeanContextPeer): Implemented.
+
+2006-11-09  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/html/BlockView.java
+	(cssHeight): Removed.
+	(cssWidth): Removed.
+	(cssSpans): New field. Replaces the two fields above.
+	(BlockView): Allocate cssSpans array.
+	(layoutMinorAxis): Fetch and use child span, not this view's span.
+	(setCSSSpan): Adjusted to use cssSpans array.
+	(setPropertiesFromAttributes): Adjusted to use cssSpans array.
 
 2006-11-09  Roman Kennke  <kennke@aicas.com>
 
