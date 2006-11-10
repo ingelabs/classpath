@@ -63,11 +63,29 @@ class TableView
    * Represents a single table row.
    */
   class RowView
-    extends BoxView
+    extends BlockView
   {
+    /**
+     * Creates a new RowView.
+     *
+     * @param el the element for the row view
+     */
     RowView(Element el)
     {
       super(el, X_AXIS);
+    }
+
+    /**
+     * Overridden to make rows not resizable along the Y axis.
+     */
+    public float getMaximumSpan(int axis)
+    {
+      float span;
+      if (axis == Y_AXIS)
+        span = super.getPreferredSpan(axis);
+      else
+        span = super.getMaximumSpan(axis);
+      return span;
     }
 
     /**
@@ -100,10 +118,11 @@ class TableView
           if (v instanceof CellView)
             {
               CellView cv = (CellView) v;
+              offsets[i] = columnOffsets[realColumn];
+              spans[i] = 0;
               for (int j = 0; j < cv.colSpan; j++, realColumn++)
                 {
-                  offsets[i] = columnOffsets[realColumn];
-                  spans[i] = columnSpans[realColumn];
+                  spans[i] += columnSpans[realColumn];
                 }
             }
         }
@@ -114,7 +133,7 @@ class TableView
    * A view that renders HTML table cells (TD and TH tags).
    */
   class CellView
-    extends BoxView
+    extends BlockView
   {
 
     /**
@@ -130,6 +149,14 @@ class TableView
     CellView(Element el)
     {
       super(el, Y_AXIS);
+    }
+
+    /**
+     * Overridden to fetch the columnSpan attibute.
+     */
+    protected void setPropertiesFromAttributes()
+    {
+      super.setPropertiesFromAttributes();
       colSpan = 1;
       AttributeSet atts = getAttributes();
       Object o = atts.getAttribute(HTML.Attribute.COLSPAN);
@@ -147,6 +174,7 @@ class TableView
         }
     }
   }
+
 
   /**
    * The attributes of this view.
@@ -178,6 +206,11 @@ class TableView
    * Package private to avoid accessor methods.
    */
   int[] columnSpans;
+
+  /**
+   * The widths of the columns that have been explicitly specified.
+   */
+  Length[] columnWidths;
 
   /**
    * Indicates if the grid setup is ok.
@@ -270,22 +303,10 @@ class TableView
   {
     updateGrid();
     calculateColumnRequirements();
-    if (r == null)
-      r = new SizeRequirements();
-    // The overall minor axis requirements is the sum of all the columns.
-    int numCols = columnRequirements.length;
-    long min = 0;
-    long pref = 0;
-    for (int i = 0; i < numCols; i++)
-      {
-        SizeRequirements col = columnRequirements[i];
-        min += col.minimum;
-        pref += col.preferred;
-      }
 
-    r.minimum = (int) min;
-    r.preferred = (int) pref;
-    r.maximum = r.preferred;
+    // Calculate the horizontal requirements according to the superclass.
+    // This will return the maximum of the row's widths.
+    r = super.calculateMinorAxisRequirements(axis, r);
 
     // Try to set the CSS width if it fits.
     AttributeSet atts = getAttributes();
@@ -311,38 +332,47 @@ class TableView
           r.alignment = 1.0F;
       }
 
-    totalColumnRequirements.minimum = r.minimum;
-    totalColumnRequirements.preferred = r.preferred;
-    totalColumnRequirements.maximum = r.maximum;
-
     return r;
   }
 
+  /**
+   * Overridden to perform the table layout before calling the super
+   * implementation.
+   */
   protected void layoutMinorAxis(int targetSpan, int axis, int[] offsets, 
                                  int[] spans)
   {
     updateGrid();
-
-    // Mark all the rows invalid.
-    int count = getViewCount();
-    for (int i = 0; i < count; i++)
-      ((RowView) getView(i)).layoutChanged(axis);
-    // Layout columns.
     layoutColumns(targetSpan);
- 
     super.layoutMinorAxis(targetSpan, axis, offsets, spans);
   }
 
+  /**
+   * Calculates the size requirements for the columns.
+   */
   private void calculateColumnRequirements()
   {
     int numRows = getViewCount();
+    totalColumnRequirements.minimum = 0;
+    totalColumnRequirements.preferred = 0;
+    totalColumnRequirements.maximum = 0;
+
+    // In this first pass we find out a suitable total width to fit in
+    // all columns of all rows.
     for (int r = 0; r < numRows; r++)
       {
         RowView rowView = (RowView) getView(r);
         int numCols = rowView.getViewCount();
+
+        // We collect the normal (non-relative) column requirements in the
+        // total variable and the relative requirements in the relTotal
+        // variable. In the end we create the maximum of both to get the
+        // real requirements.
+        SizeRequirements total = new SizeRequirements();
+        SizeRequirements relTotal = new SizeRequirements();
+        float totalPercent = 0.F;
         for (int c = 0; c < numCols; )
           {
-            // TODO: Handle column span > 0.
             View v = rowView.getView(c);
             if (v instanceof CellView)
               {
@@ -376,6 +406,29 @@ class TableView
                           req.preferred += deltaPref / colSpan;
                         if (deltaMax > 0)
                           req.maximum += deltaMax / colSpan;
+                        if (columnWidths[c + i] == null
+                            || ! columnWidths[c + i].isPercentage())
+                          {
+                            total.minimum += req.minimum;
+                            total.preferred += req.preferred;
+                            total.maximum += req.maximum;
+                          }
+                        else
+                          {
+                            relTotal.minimum =
+                              Math.max(relTotal.minimum,
+                                     (int) (req.minimum
+                                            * columnWidths[c + i].getValue()));
+                            relTotal.preferred =
+                              Math.max(relTotal.preferred,
+                                     (int) (req.preferred
+                                            * columnWidths[c + i].getValue()));
+                            relTotal.maximum =
+                              Math.max(relTotal.maximum,
+                                     (int) (req.maximum
+                                            * columnWidths[c + i].getValue()));
+                            totalPercent += columnWidths[c + i].getValue();
+                          }
                       }
                   }
                 else
@@ -383,27 +436,157 @@ class TableView
                     // Shortcut for colSpan == 1.
                     SizeRequirements req = columnRequirements[c];
                     req.minimum = Math.max(req.minimum,
-                                        (int) cellView.getMinimumSpan(X_AXIS));
+                                           (int) cellView.getMinimumSpan(X_AXIS));
                     req.preferred = Math.max(req.preferred,
-                                      (int) cellView.getPreferredSpan(X_AXIS));
+                                             (int) cellView.getPreferredSpan(X_AXIS));
                     req.maximum = Math.max(req.maximum,
-                                        (int) cellView.getMaximumSpan(X_AXIS));
+                                           (int) cellView.getMaximumSpan(X_AXIS));
+                    if (columnWidths[c] == null
+                        || ! columnWidths[c].isPercentage())
+                      {
+                        total.minimum += columnRequirements[c].minimum;
+                        total.preferred += columnRequirements[c].preferred;
+                        total.maximum += columnRequirements[c].maximum;
+                      }
+                    else
+                      {
+                        relTotal.minimum =
+                          Math.max(relTotal.minimum,
+                                 (int) (req.minimum
+                                        / columnWidths[c].getValue()));
+                        relTotal.preferred =
+                          Math.max(relTotal.preferred,
+                                 (int) (req.preferred
+                                        / columnWidths[c].getValue()));
+                        relTotal.maximum =
+                          Math.max(relTotal.maximum,
+                                 (int) (req.maximum
+                                        / columnWidths[c].getValue()));
+                        totalPercent += columnWidths[c].getValue();
+                      }
                   }
                 c += colSpan;
               }
           }
+
+        // Update the total requirements as follows:
+        // 1. Multiply the absolute requirements with 1 - totalPercent. This
+        //    gives the total requirements based on the wishes of the absolute
+        //    cells.
+        // 2. Take the maximum of this value and the total relative
+        //    requirements. Now we should have enough space for whatever cell
+        //    in this column.
+        // 3. Take the maximum of this value and the previous maximum value.
+        total.minimum *= 1.F / (1.F - totalPercent);
+        total.preferred *= 1.F / (1.F - totalPercent);
+        total.maximum *= 1.F / (1.F - totalPercent);
+
+        int rowTotalMin = Math.max(total.minimum, relTotal.minimum);
+        int rowTotalPref = Math.max(total.preferred, relTotal.preferred);
+        int rowTotalMax = Math.max(total.maximum, relTotal.maximum);
+        totalColumnRequirements.minimum =
+          Math.max(totalColumnRequirements.minimum, rowTotalMin);
+        totalColumnRequirements.preferred =
+          Math.max(totalColumnRequirements.preferred, rowTotalPref);
+        totalColumnRequirements.maximum =
+          Math.max(totalColumnRequirements.maximum, rowTotalMax);
+      }
+
+    // Now we know what we want and can fix up the actual relative
+    // column requirements.
+    int numCols = columnRequirements.length;
+    for (int i = 0; i < numCols; i++)
+      {
+        if (columnWidths[i] != null)
+          {
+            columnRequirements[i].minimum = (int)
+              columnWidths[i].getValue(totalColumnRequirements.minimum);
+            columnRequirements[i].preferred = (int)
+              columnWidths[i].getValue(totalColumnRequirements.preferred);
+            columnRequirements[i].maximum = (int)
+              columnWidths[i].getValue(totalColumnRequirements.maximum);
+          }
       }
   }
 
+  /**
+   * Lays out the columns.
+   *
+   * @param targetSpan the target span into which the table is laid out
+   */
   private void layoutColumns(int targetSpan)
   {
-    // TODO: Could be done better I suppose.
-    SizeRequirements.calculateTiledPositions(targetSpan,
-                                             totalColumnRequirements,
-                                             columnRequirements, columnOffsets,
-                                             columnSpans);
+    // Set the spans to the preferred sizes. Determine the space
+    // that we have to adjust the sizes afterwards.
+    long sumPref = 0;
+    int n = columnRequirements.length;
+    for (int i = 0; i < n; i++)
+      {
+        SizeRequirements col = columnRequirements[i];
+        if (columnWidths[i] != null)
+          columnSpans[i] = (int) columnWidths[i].getValue(targetSpan);
+        else
+          columnSpans[i] = col.preferred;
+        sumPref += columnSpans[i];
+      }
+
+    // Try to adjust the spans so that we fill the targetSpan.
+    long diff = targetSpan - sumPref;
+    float factor = 0.0F;
+    int[] diffs = null;
+    if (diff != 0)
+      {
+        long total = 0;
+        diffs = new int[n];
+        for (int i = 0; i < n; i++)
+          {
+            // Only adjust the width if we haven't set a column width here.
+            if (columnWidths[i] == null)
+              {
+                SizeRequirements col = columnRequirements[i];
+                int span;
+                if (diff < 0)
+                  {
+                    span = col.minimum;
+                    diffs[i] = columnSpans[i] - span;
+                  }
+                else
+                  {
+                    span = col.maximum;
+                    diffs[i] = span - columnSpans[i];
+                  }
+                total += span;
+              }
+            else
+              total += columnSpans[i];
+          }
+
+        float maxAdjust = Math.abs(total - sumPref);
+        factor = diff / maxAdjust;
+        factor = Math.min(factor, 1.0F);
+        factor = Math.max(factor, -1.0F);
+      }
+
+    // Actually perform adjustments.
+    int totalOffs = 0;
+    for (int i = 0; i < n; i++)
+      {
+        columnOffsets[i] = totalOffs;
+        if (diff != 0)
+          {
+            float adjust = factor * diffs[i];
+            columnSpans[i] += Math.round(adjust);
+          }
+        // Avoid overflow here.
+        totalOffs = (int) Math.min((long) totalOffs + (long) columnSpans[i],
+                                    Integer.MAX_VALUE);
+      }
   }
 
+  /**
+   * Updates the arrays that contain the row and column data in response
+   * to a change to the table structure.
+   */
   private void updateGrid()
   {
     if (! gridValid)
@@ -416,6 +599,27 @@ class TableView
             int numCols = rowView.getViewCount();
             maxColumns = Math.max(numCols, maxColumns);
           }
+        columnWidths = new Length[maxColumns];
+        for (int r = 0; r < numRows; r++)
+          {
+            RowView rowView = (RowView) getView(r);
+            int numCols = rowView.getViewCount();
+            int colIndex = 0;
+            for (int c = 0; c < numCols; c++)
+              {
+                View v = rowView.getView(c);
+                if (v instanceof CellView)
+                  {
+                    CellView cv = (CellView) v;
+                    Object o =
+                      cv.getAttributes().getAttribute(CSS.Attribute.WIDTH);
+                    if (o != null && columnWidths[colIndex] == null
+                        && o instanceof Length)
+                      columnWidths[colIndex]= (Length) o;
+                    colIndex += cv.colSpan;
+                  }
+              }
+          }
         columnRequirements = new SizeRequirements[maxColumns];
         for (int i = 0; i < maxColumns; i++)
           columnRequirements[i] = new SizeRequirements();
@@ -426,11 +630,16 @@ class TableView
       }
   }
 
-  protected SizeRequirements calculateMajorAxisRequirements(int axis,
-                                                            SizeRequirements r)
+  /**
+   * Overridden to restrict the table width to the preferred size.
+   */
+  public float getMaximumSpan(int axis)
   {
-    r = super.calculateMajorAxisRequirements(axis, r);
-    r.maximum = r.preferred;
-    return r;
+    float span;
+    if (axis == X_AXIS)
+      span = super.getPreferredSpan(axis);
+    else
+      span = super.getMaximumSpan(axis);
+    return span;
   }
 }

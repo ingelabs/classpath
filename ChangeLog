@@ -1,3 +1,26 @@
+2006-11-10  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/ParagraphView.java
+	(Row.getMaximumSize): Removed. This method is not necessary.
+	* javax/swing/text/html/TableView.java
+	(CellView): Moved attribute init to setPropertiesFromAttributes().
+	(setPropertiesFromAttributes): Fetch attributes here.
+	(RowView.RowView): Documented.
+	(RowView.getMaximumSpan): Overridden to restrict the max span
+	in the Y direction.
+	(RowView.layoutMajorAxis): Correctly layout the spans.
+	(columnWidths): New field. Stores the width attributes of
+	the columns.
+	(calculateColumnRequirements): Added support for relative
+	 (== percent) width attributes.
+	(calculateMajorAxisRequirements): Removed.
+	(calculateMinorAxisRequirements): Removed unnecessary code.
+	(getMaximumSpan): Overridden to restrict the table's width.
+	(layoutColumns): Documented. Implement more clever table layout,
+	i.e. for relative columns etc.
+	(layoutMinorAxis): Don't mark rows invalid.
+	(updateGrid): Added docs. Initialize column widths.
+
 2006-11-09  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/peer/headless/HeadlessGraphicsEnvironment,
