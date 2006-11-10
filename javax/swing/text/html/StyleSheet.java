@@ -45,6 +45,7 @@ import gnu.javax.swing.text.html.css.FontSize;
 import gnu.javax.swing.text.html.css.FontStyle;
 import gnu.javax.swing.text.html.css.FontWeight;
 import gnu.javax.swing.text.html.css.Length;
+import gnu.javax.swing.text.html.css.Selector;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -60,12 +61,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-import java.util.StringTokenizer;
 
-import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.Element;
@@ -107,21 +104,35 @@ public class StyleSheet extends StyleContext
     implements CSSParserCallback
   {
     /**
-     * The selector for which the rules are currently parsed.
+     * The current style.
      */
-    private String[] selector;
+    private CSSStyle style;
+
+    /**
+     * The precedence of the stylesheet to be parsed.
+     */
+    private int precedence;
+
+    /**
+     * Creates a new CSS parser. This parser parses a CSS stylesheet with
+     * the specified precedence.
+     *
+     * @param prec the precedence, according to the constants defined in
+     *        CSSStyle
+     */
+    CSSStyleSheetParserCallback(int prec)
+    {
+      precedence = prec;
+    }
 
     /**
      * Called at the beginning of a statement.
      *
      * @param sel the selector
      */
-    public void startStatement(String sel)
+    public void startStatement(Selector sel)
     {
-      StringTokenizer tokens = new StringTokenizer(sel);
-      selector = new String[tokens.countTokens()];
-      for (int index = 0; tokens.hasMoreTokens(); index++)
-        selector[index] = tokens.nextToken();
+      style = new CSSStyle(precedence, sel);
     }
 
     /**
@@ -129,7 +140,8 @@ public class StyleSheet extends StyleContext
      */
     public void endStatement()
     {
-      selector = null;
+      css.add(style);
+      style = null;
     }
 
     /**
@@ -140,18 +152,12 @@ public class StyleSheet extends StyleContext
      */
     public void declaration(String property, String value)
     {
-      CSSStyle style = (CSSStyle) css.get(selector);
-      if (style == null)
-        {
-          style = new CSSStyle(selector.length);
-          css.put(selector, style);
-        }
       CSS.Attribute cssAtt = CSS.getAttribute(property);
       Object val = CSS.getValue(cssAtt, value);
       if (cssAtt != null)
         style.addAttribute(cssAtt, val);
     }
-    
+
   }
 
   /**
@@ -162,14 +168,28 @@ public class StyleSheet extends StyleContext
     implements Style, Comparable
   {
 
+    static final int PREC_UA = 400000;
+    static final int PREC_NORM = 300000;
+    static final int PREC_AUTHOR_NORMAL = 200000;
+    static final int PREC_AUTHOR_IMPORTANT = 100000;
+    static final int PREC_USER_IMPORTANT = 0;
+
     /**
      * The priority of this style when matching CSS selectors.
      */
-    int priority;
+    private int precedence;
 
-    CSSStyle(int prio)
+    /**
+     * The selector for this rule.
+     *
+     * This is package private to avoid accessor methods.
+     */
+    Selector selector;
+
+    CSSStyle(int prec, Selector sel)
     {
-      priority = prio;
+      precedence = prec;
+      selector = sel;
     }
 
     public String getName()
@@ -188,10 +208,15 @@ public class StyleSheet extends StyleContext
       // TODO: Implement this for correctness.
     }
 
+    /**
+     * Sorts the rule according to the style's precedence and the
+     * selectors specificity.
+     */
     public int compareTo(Object o)
     {
       CSSStyle other = (CSSStyle) o;
-      return other.priority - priority;
+      return other.precedence + other.selector.getSpecificity()
+             - precedence - selector.getSpecificity();
     }
     
   }
@@ -209,7 +234,7 @@ public class StyleSheet extends StyleContext
    * Maps element names (selectors) to AttributSet (the corresponding style
    * information).
    */
-  HashMap css = new HashMap();
+  ArrayList css = new ArrayList();
 
   /**
    * Maps selectors to their resolved styles.
@@ -388,22 +413,11 @@ public class StyleSheet extends StyleContext
     // the default.css.
     int count = tags.length;
     ArrayList styles = new ArrayList();
-    Set selectors = css.keySet();
-    for (Iterator i = selectors.iterator(); i.hasNext();)
+    for (Iterator i = css.iterator(); i.hasNext();)
       {
-        String[] sel = (String[]) i.next();
-        // All parts of the selector must match.
-        if (sel.length <= tags.length)
-          {
-            boolean match = true;
-            for (int j = sel.length - 1; j >= 0 && match; j--)
-              {
-                if (! tags[sel.length - 1 - j].equals(sel[j]))
-                  match = false;
-              }
-            if (match)
-              styles.add(css.get(sel));
-          }
+        CSSStyle style = (CSSStyle) i.next();
+        if (style.selector.matches(tags, classes, ids))
+          styles.add(style);
       }
 
     // Sort selectors.
@@ -426,9 +440,15 @@ public class StyleSheet extends StyleContext
    */
   public Style getRule(String selector)
   {
-    // FIXME: This is a very rudimentary implementation. Should
-    // be extended to conform to the CSS spec.
-    return (Style) css.get(selector);
+    Selector sel = new Selector(selector);
+    CSSStyle best = null;
+    for (Iterator i = css.iterator(); i.hasNext();)
+      {
+        CSSStyle style = (CSSStyle) i.next();
+        if (style.compareTo(best) < 0)
+          best = style;
+      }
+    return best;
   }
   
   /**
@@ -439,7 +459,8 @@ public class StyleSheet extends StyleContext
    */
   public void addRule(String rule)
   {
-    CSSStyleSheetParserCallback cb = new CSSStyleSheetParserCallback();
+    CSSStyleSheetParserCallback cb =
+      new CSSStyleSheetParserCallback(CSSStyle.PREC_AUTHOR_NORMAL);
     // FIXME: Handle ref.
     StringReader in = new StringReader(rule);
     CSSParser parser = new CSSParser(in, cb);
@@ -482,7 +503,8 @@ public class StyleSheet extends StyleContext
   public void loadRules(Reader in, URL ref)
     throws IOException
   {
-    CSSStyleSheetParserCallback cb = new CSSStyleSheetParserCallback();
+    CSSStyleSheetParserCallback cb =
+      new CSSStyleSheetParserCallback(CSSStyle.PREC_UA);
     // FIXME: Handle ref.
     CSSParser parser = new CSSParser(in, cb);
     parser.parse();
@@ -646,11 +668,31 @@ public class StyleSheet extends StyleContext
    */
   public AttributeSet translateHTMLToCSS(AttributeSet htmlAttrSet)
   {
-    // FIXME: Really convert HTML to CSS here.
     AttributeSet cssAttr = htmlAttrSet.copyAttributes();
-    MutableAttributeSet cssStyle = addStyle(null, null);
-    cssStyle.addAttributes(cssAttr);
-    return cssStyle;
+
+    // The HTML align attribute maps directly to the CSS text-align attribute.
+    Object o = htmlAttrSet.getAttribute(HTML.Attribute.ALIGN);
+    if (o != null)
+      cssAttr = addAttribute(cssAttr, CSS.Attribute.TEXT_ALIGN, o);
+
+    // The HTML width attribute maps directly to CSS width.
+    o = htmlAttrSet.getAttribute(HTML.Attribute.WIDTH);
+    if (o != null)
+      cssAttr = addAttribute(cssAttr, CSS.Attribute.WIDTH,
+                             CSS.getValue(CSS.Attribute.WIDTH, o.toString()));
+
+    // The HTML height attribute maps directly to CSS height.
+    o = htmlAttrSet.getAttribute(HTML.Attribute.HEIGHT);
+    if (o != null)
+      cssAttr = addAttribute(cssAttr, CSS.Attribute.HEIGHT,
+                             CSS.getValue(CSS.Attribute.HEIGHT, o.toString()));
+
+    o = htmlAttrSet.getAttribute(HTML.Attribute.NOWRAP);
+    if (o != null)
+      cssAttr = addAttribute(cssAttr, CSS.Attribute.WHITE_SPACE, "nowrap");
+
+    // TODO: Add more mappings.
+    return cssAttr;
   }
 
   /**
