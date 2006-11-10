@@ -1,3 +1,9 @@
+2006-11-10  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/util/Collections.java
+	(sort(List)): Minor API doc addition,
+	(sort(List, Comparator)): Likewise.
+
 2006-11-10  David Fu  <fchoong@netbeans.jp>
 
 	* javax/swing/text/html/HTMLWriter.java
