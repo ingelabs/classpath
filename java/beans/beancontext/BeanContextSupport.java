@@ -478,10 +478,28 @@ public class BeanContextSupport extends BeanContextChildSupport
     return (BeanContext) beanContextChildPeer;
   }
 
-  protected static final BeanContextChild getChildBeanContextChild (Object child)
-    throws NotImplementedException
+  /**
+   * Returns the {@link BeanContextChild} implementation for the given child.
+   * 
+   * @param child  the child (<code>null</code> permitted).
+   * 
+   * @return The bean context child.
+   * 
+   * @throws IllegalArgumentException if <code>child</code> implements both
+   *     the {@link BeanContextChild} and {@link BeanContextProxy} interfaces.
+   */
+  protected static final BeanContextChild getChildBeanContextChild(Object child)
   {
-    throw new Error ("Not implemented");
+    if (child == null)
+      return null;
+    if (child instanceof BeanContextChild && child instanceof BeanContextProxy)
+      throw new IllegalArgumentException("Child cannot implement " 
+          + "BeanContextChild and BeanContextProxy simultaneously.");
+    if (child instanceof BeanContextChild)
+      return (BeanContextChild) child;
+    if (child instanceof BeanContextProxy)
+      return ((BeanContextProxy) child).getBeanContextProxy();
+    return null;
   }
 
   protected static final BeanContextMembershipListener getChildBeanContextMembershipListener (Object child)

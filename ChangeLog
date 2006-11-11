@@ -1,3 +1,8 @@
+2006-11-11  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/beans/beancontext/BeanContextSupport.java
+	(getChildBeanContextChild): Implemented.
+
 2006-11-10  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/View.java
