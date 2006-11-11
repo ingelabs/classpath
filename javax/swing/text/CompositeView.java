@@ -134,7 +134,7 @@ public abstract class CompositeView
   public void setParent(View parent)
   {
     super.setParent(parent);
-    if (parent != null && ((children == null) || children.length == 0))
+    if (parent != null && numChildren == 0)
       loadChildren(getViewFactory());
   }
 

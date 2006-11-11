@@ -46,6 +46,9 @@ import gnu.javax.swing.text.html.css.Length;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.StringTokenizer;
+
+import javax.swing.text.MutableAttributeSet;
 
 /**
  * Provides CSS attributes to be used by the HTML view classes. The constants
@@ -523,5 +526,24 @@ public class CSS implements Serializable
     else
       o = v;
     return o;
+  }
+
+  static void addInternal(MutableAttributeSet atts, Attribute a, String v)
+  {
+    if (a == Attribute.BACKGROUND)
+      parseBackgroundShorthand(atts, v);
+  }
+
+  private static void parseBackgroundShorthand(MutableAttributeSet atts,
+                                               String v)
+  {
+    StringTokenizer tokens = new StringTokenizer(v, " ");
+    while (tokens.hasMoreElements())
+      {
+        String token = tokens.nextToken();
+        if (CSSColor.isValidColor(token))
+          atts.addAttribute(Attribute.BACKGROUND_COLOR,
+                            getValue(Attribute.BACKGROUND_COLOR, token));
+      }
   }
 }

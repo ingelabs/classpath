@@ -42,6 +42,7 @@ import gnu.classpath.NotImplementedException;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -992,27 +993,71 @@ public class HTMLDocument extends DefaultStyledDocument
       }
     }
     
-    class LinkAction extends TagAction
+    class LinkAction extends HiddenAction
     {
       /**
        * This method is called when a start tag is seen for one of the types
        * of tags associated with this Action.
        */
       public void start(HTML.Tag t, MutableAttributeSet a)
-        throws NotImplementedException
       {
-        // FIXME: Implement.
+        super.start(t, a);
+        String type = (String) a.getAttribute(HTML.Attribute.TYPE);
+        if (type == null)
+          type = "text/css";
+        if (type.equals("text/css"))
+          {
+            String rel = (String) a.getAttribute(HTML.Attribute.REL);
+            String media = (String) a.getAttribute(HTML.Attribute.MEDIA);
+            String title = (String) a.getAttribute(HTML.Attribute.TITLE);
+            if (media == null)
+              media = "all";
+            else
+              media = media.toLowerCase();
+            if (rel != null)
+              {
+                rel = rel.toLowerCase();
+                if ((media.indexOf("all") != -1
+                     || media.indexOf("screen") != -1)
+                    && (rel.equals("stylesheet")))
+                  {
+                    String href = (String) a.getAttribute(HTML.Attribute.HREF);
+                    URL url = null;
+                    try
+                      {
+                        url = new URL(baseURL, href);
+                      }
+                    catch (MalformedURLException ex)
+                      {
+                        try
+                          {
+                            url = new URL(href);
+                          }
+                        catch (MalformedURLException ex2)
+                          {
+                            url = null;
+                          }
+                      }
+                    if (url != null)
+                      {
+                        try
+                          {
+                            getStyleSheet().importStyleSheet(url);
+                          }
+                        catch (Exception ex)
+                          {
+                            // Don't let exceptions and runtime exceptions
+                            // in CSS parsing disprupt the HTML parsing
+                            // process. But inform the user/developer
+                            // on the console about it.
+                            ex.printStackTrace();
+                          }
+                      }
+                  }                  
+              }
+          }
       }
       
-      /**
-       * Called when an end tag is seen for one of the types of tags associated
-       * with this Action.
-       */
-      public void end(HTML.Tag t)
-        throws NotImplementedException
-      {
-        // FIXME: Implement.
-      } 
     }
     
     class MapAction extends TagAction

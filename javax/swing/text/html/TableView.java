@@ -467,6 +467,8 @@ class TableView
                   }
                 c += colSpan;
               }
+            else
+              c++;
           }
 
         // Update the total requirements as follows:

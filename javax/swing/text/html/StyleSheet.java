@@ -50,7 +50,10 @@ import gnu.javax.swing.text.html.css.Selector;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Serializable;
 import java.io.StringReader;
@@ -154,6 +157,7 @@ public class StyleSheet extends StyleContext
     {
       CSS.Attribute cssAtt = CSS.getAttribute(property);
       Object val = CSS.getValue(cssAtt, value);
+      CSS.addInternal(style, cssAtt, value);
       if (cssAtt != null)
         style.addAttribute(cssAtt, val);
     }
@@ -596,13 +600,26 @@ public class StyleSheet extends StyleContext
   
   /**
    * Imports a style sheet from the url. The rules are directly added to the
-   * receiver.
+   * receiver. This is usually called when a <link> tag is resolved in an
+   * HTML document.
    * 
-   * @param url - the URL to import the StyleSheet from.
+   * @param url the URL to import the StyleSheet from
    */
   public void importStyleSheet(URL url)
   {
-    // FIXME: Not implemented
+    try
+      {
+        InputStream in = url.openStream();
+        Reader r = new BufferedReader(new InputStreamReader(in));
+        CSSStyleSheetParserCallback cb =
+          new CSSStyleSheetParserCallback(CSSStyle.PREC_AUTHOR_NORMAL);
+        CSSParser parser = new CSSParser(r, cb);
+        parser.parse();
+      }
+    catch (IOException ex)
+      {
+        // We can't do anything about it I guess.
+      }
   }
   
   /**
@@ -638,6 +655,7 @@ public class StyleSheet extends StyleContext
                               String value)
   {
     Object val = CSS.getValue(key, value);
+    CSS.addInternal(attr, key, value);
     attr.addAttribute(key, val);
   }
   

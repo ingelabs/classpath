@@ -1,3 +1,33 @@
+2006-11-11  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/javax/swing/text/html/css/CSSColor.java
+	(isValidColor): New helper method. Checks strings if they
+	form a valid color value.
+	* gnu/javax/swing/text/html/css/Length.java
+	(Length): Catch number format exceptions.
+	* javax/swing/text/html/CSS.java
+	(addInternal): New method. Checks for shorthand CSS attributes
+	and parses them.
+	(parseBackgroundShorthand): New method. Parses the background
+	shorthand attribute.
+	* javax/swing/text/html/HTMLDocument.java
+	(HTMLReader.LinkAction): Made class a subclass of HiddenAction.
+	(HTMLReader.LinkAction.start): Implemented to load the linked
+	stylesheet.
+	(HTMLReader.LinkAction.end): Removed. This is not needed.
+	* javax/swing/text/html/StyleSheet.java
+	(CSSStyleSheetParserCallback.declaration): Push declaration
+	through CSS.addInternal() to parse shorthand attributes.
+	(addCSSAttribute): Push declaration through CSS.addInternal()
+	to parse shorthand attributes.
+	(importStyleSheet): Implemented. This adds a stylesheet from
+	an URL.
+	* javax/swing/text/html/TableView.java
+	(calculateColumnRequirements): Increase column index for
+	non CellView children to avoid endless loop.
+	* javax/swing/text/CompositeView.java
+	(setParent): Comparen with numChildren not with real arraylength.
+
 2006-11-11  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/beans/beancontext/BeanContextSupport.java
