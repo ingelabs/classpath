@@ -1,3 +1,9 @@
+2006-11-13  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* AUTHORS: Add Tania Bento, Thomas Fitzsimmons, Francis Kung and
+	Dalibor Topic.  Re-order 'K' section.  Remove trailing space from
+	Roman Kennke's entry.
+
 2006-11-13  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/image/IndexColorModel.java
