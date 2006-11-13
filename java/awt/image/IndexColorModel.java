@@ -710,5 +710,25 @@ public class IndexColorModel extends ColorModel
                                         transferType);
     cm.isAlphaPremultiplied = !(cm.isAlphaPremultiplied);
     return cm;
-  } 
+  }
+
+  /**
+   * Creates a {@link SampleModel} that is compatible to this color model.
+   * This will be a {@link MultiPixelPackedSampleModel} for bits/pixel of
+   * 1, 2 or 4, or a {@link ComponentColorModel} for the other cases.
+   *
+   * @param w the width of the sample model to create
+   * @param h the height of the sample model to create
+   *
+   * @return a compatible sample model
+   */
+  public SampleModel createCompatibleSampleModel(int w, int h)
+  {
+    SampleModel sm;
+    if (pixel_bits == 1 || pixel_bits == 2 || pixel_bits == 4)
+      sm = new MultiPixelPackedSampleModel(transferType, w, h, pixel_bits);
+    else
+      sm = new ComponentSampleModel(transferType, w, h, 1, w, new int[]{0});
+    return sm;
+  }
 }

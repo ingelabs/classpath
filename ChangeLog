@@ -1,3 +1,8 @@
+2006-11-13  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/image/IndexColorModel.java
+	(createCompatibleSampleModel): Implemented missing method.
+
 2006-11-11  Andreas Tobler  <a.tobler@schweiz.org>
 
 	* gnu/java/awt/peer/gtk/GtkImageConsumer.java (setPixels): Handle data
