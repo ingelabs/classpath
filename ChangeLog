@@ -1,5 +1,29 @@
 2006-11-14  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/RepaintManager.java
+	(RepaintManager): Fetch the default state for the double buffering
+	from a system property gnu.swing.doublebuffering.
+
+2006-11-14  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicLabelUI.java
+	(cachedInsets): New field.
+	(getFontMetrics): New helper method. Fetches the font metrics
+	from the component or the toolkit.
+	(getPreferredSize): Use getFontMetrics() helper method for
+	fetching the font metrics.
+	(paint): Use getFontMetrics() helper method for
+	fetching the font metrics. Only paint if icon or text
+	are != null. Use cached insets.
+	(paintDisabledText): Don't store/restore color object. The
+	JComponent painting mechanism takes care of this by calling
+	create().
+	(paintEnabledText): Don't store/restore color object. The
+	JComponent painting mechanism takes care of this by calling
+	create().
+
+2006-11-14  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/java/awt/peer/GLightweightPeer.java
 	(handleEvent): Try to do something reasonable and trigger painting
 	for the lightweight component.
