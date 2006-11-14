@@ -1,5 +1,33 @@
 2006-11-14  Roman Kennke  <kennke@aicas.com>
 
+	* gnu/java/awt/font/autofit/AxisHints.java,
+	* gnu/java/awt/font/autofit/Constants.java,
+	* gnu/java/awt/font/autofit/GlyphHints.java,
+	* nu/java/awt/font/autofit/Latin.java,
+	* nu/java/awt/font/autofit/LatinAxis.java,
+	* gnu/java/awt/font/autofit/LatinMetrics.java,
+	* gnu/java/awt/font/autofit/Scaler.java,
+	* gnu/java/awt/font/autofit/Script.java,
+	* gnu/java/awt/font/autofit/ScriptMetrics.java,
+	* gnu/java/awt/font/autofit/Segment.java,
+	* gnu/java/awt/font/autofit/Width.java:
+	New classes. This is some skeleton stuff for the FreeType-alike
+	auto-gridfitter.
+	* gnu/java/awt/font/opentype/CharGlyphMap.java: Made class public.
+	* gnu/java/awt/font/opentype/OpenTypeFont.java
+	(unitsPerEm): Made field public.
+	(getRawGlyphOutline): New method. Fetches the raw outline.
+	* gnu/java/awt/font/opentype/Scaler.java
+	(getRawGlyphOutline): New method. Fetches the raw outline.
+	* gnu/java/awt/font/opentype/truetype/GlyphLoader.java
+	(loadGlyph): New method. This is used to load raw outlines.
+	* gnu/java/awt/font/opentype/truetype/TrueTypeScaler.java
+	(getRawOutline): New method. Fetches the raw outline.
+	* gnu/java/awt/font/opentype/truetype/Zone.java:
+	Made class public.
+
+2006-11-14  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/RepaintManager.java
 	(RepaintManager): Fetch the default state for the double buffering
 	from a system property gnu.swing.doublebuffering.
