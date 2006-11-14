@@ -2,6 +2,7 @@ package javax.swing.text.html;
 
 import gnu.javax.swing.text.html.CombinedAttributes;
 import gnu.javax.swing.text.html.ImageViewIconFactory;
+import gnu.javax.swing.text.html.css.Length;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -245,9 +246,9 @@ public class ImageView extends View
 
     if (axis == View.X_AXIS)
       {
-        Object w = attrs.getAttribute(Attribute.WIDTH);
-        if (w != null)
-          return Integer.parseInt(w.toString());
+        Object w = attrs.getAttribute(CSS.Attribute.WIDTH);
+        if (w instanceof Length)
+          return ((Length) w).getValue();
         else if (image != null)
           return image.getWidth(getContainer());
         else
@@ -255,9 +256,9 @@ public class ImageView extends View
       }
     else if (axis == View.Y_AXIS)
       {
-        Object w = attrs.getAttribute(Attribute.HEIGHT);
-        if (w != null)
-          return Integer.parseInt(w.toString());
+        Object w = attrs.getAttribute(CSS.Attribute.HEIGHT);
+        if (w instanceof Length)
+          return ((Length) w).getValue();
         else if (image != null)
           return image.getHeight(getContainer());
         else
@@ -439,6 +440,5 @@ public class ImageView extends View
     if (imageIcon == null)
       reloadImage(false);
   }  
-  
 
 }

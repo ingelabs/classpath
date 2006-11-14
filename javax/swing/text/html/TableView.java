@@ -84,7 +84,27 @@ class TableView
       if (axis == Y_AXIS)
         span = super.getPreferredSpan(axis);
       else
-        span = super.getMaximumSpan(axis);
+        span = Integer.MAX_VALUE;
+      return span;
+    }
+
+    public float getMinimumSpan(int axis)
+    {
+      float span;
+      if (axis == X_AXIS)
+        span = totalColumnRequirements.minimum;
+      else
+        span = super.getMinimumSpan(axis);
+      return span;
+    }
+
+    public float getPreferredSpan(int axis)
+    {
+      float span;
+      if (axis == X_AXIS)
+        span = totalColumnRequirements.preferred;
+      else
+        span = super.getPreferredSpan(axis);
       return span;
     }
 
@@ -149,6 +169,14 @@ class TableView
     CellView(Element el)
     {
       super(el, Y_AXIS);
+    }
+
+    protected SizeRequirements calculateMajorAxisRequirements(int axis,
+                                                            SizeRequirements r)
+    {
+      r = super.calculateMajorAxisRequirements(axis, r);
+      r.maximum = Integer.MAX_VALUE;
+      return r;
     }
 
     /**

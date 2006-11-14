@@ -1,5 +1,23 @@
 2006-11-14  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/html/ImageView.java
+	(getPreferredSpan): Use CSS length values.
+	* javax/swing/text/html/TableView.java
+	(CellView.calculateMajorAxisRequirements): Overridden to
+	set the maximum reqs to maximum.
+	(RowView.getMaximumSize): For the X_AXIS, set the maximum
+	span to maximum.
+	(RowView.getMinimumSpan): Overridden. For the X_AXIS, return
+	the total column reqs.
+	(RowView.getPreferredSpan): Overridden. For the X_AXIS, return
+	the total column reqs.
+	* gnu/javax/swing/text/html/css/CSSColor.java
+	(convertValue): Catch NumberFormatExceptions for more robustness.
+	* gnu/javax/swing/text/html/css/FontSize.java
+	(mapPixels): Actually map px values. Catch NFE for more robustness.
+
+2006-11-14  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/java/awt/font/autofit/AxisHints.java,
 	* gnu/java/awt/font/autofit/Constants.java,
 	* gnu/java/awt/font/autofit/GlyphHints.java,

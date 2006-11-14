@@ -111,10 +111,19 @@ public class FontSize
    */
   private int mapPixels()
   {
-    int end = value.indexOf("pt");
+    int end = value.indexOf("px");
+    if (end == -1)
+      end = value.length();
     String number = value.substring(0, end);
-    int intVal = Integer.parseInt(number);
-    return intVal;
+    try
+      {
+        int intVal = Integer.parseInt(number);
+        return intVal;
+      }
+    catch (NumberFormatException ex)
+      {
+        return DEFAULT_FONT_SIZE;
+      }
   }
 
   /**

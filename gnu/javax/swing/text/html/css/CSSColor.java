@@ -110,9 +110,16 @@ public class CSSColor
       val1 = (String) COLOR_MAP.get(val1);
     if (val1 != null)
       {
-        String hexVal = val1.substring(1);
-        int rgb = Integer.parseInt(hexVal, 16);
-        color = new Color(rgb);
+        String hexVal = val1.substring(1).trim();
+        try
+          {
+            int rgb = Integer.parseInt(hexVal, 16);
+            color = new Color(rgb);
+          }
+        catch (NumberFormatException ex)
+          {
+            color = Color.BLACK;
+          }
       }
     else
       color = null;
