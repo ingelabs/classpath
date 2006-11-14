@@ -1,3 +1,11 @@
+2006-11-14  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/GLightweightPeer.java
+	(handleEvent): Try to do something reasonable and trigger painting
+	for the lightweight component.
+	(getFontMetrics): Fetch and return a font metrics object from
+	the Toolkit.
+
 2006-11-13  Andreas Tobler  <a.tobler@schweiz.org>
 
 	* AUTHORS: Add myself.
