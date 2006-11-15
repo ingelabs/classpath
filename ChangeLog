@@ -1,5 +1,32 @@
 2006-11-15  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/html/ImageView.java
+	(Observer): New class. Observes image loading.
+	(haveHeight): New field.
+	(haveWidth): New field.
+	(height): New field.
+	(width): New field.
+	(image): New field.
+	(imageIcon): New field.
+	(loading): New field.
+	(observer): New field.
+	(reloadImage): New field.
+	(reloadProperties): New field.
+	(ImageView): Initialize observer and some flags.
+	(getImage): Update the image state and return the image.
+	(loadImage): New helper method. Actually starts loading.
+	(paint): Rewritten to paint the image directly, not via Icon.
+	(reloadImage): Rewritten. Loads the image and its properties.
+	(renderIcon): Removed. No more necessary.
+	(setPropertiesFromAttributes): Don't nullify image here.
+	Added comment about missing impl.
+	(setSize): Added comment about missing impl.
+	(updateSize): New helper method. Updates the size attributes.
+	(updateState): New helper method. Makes sure the image
+	and its properties are valid.
+
+2006-11-15  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/javax/swing/text/html/parser/support/Parser.java
 	(_handleEndTag_remaining): Consume whitespace after a closing
 	block like tag.
