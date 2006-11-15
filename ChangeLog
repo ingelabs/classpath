@@ -1,5 +1,11 @@
 2006-11-15  Roman Kennke  <kennke@aicas.com>
 
+	* gnu/javax/swing/text/html/parser/support/Parser.java
+	(_handleEndTag_remaining): Consume whitespace after a closing
+	block like tag.
+
+2006-11-15  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/html/HTMLDocument.java
 	(HTMLReader.ParagraphAction.end): Call super instead of blockClose()
 	directly.

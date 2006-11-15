@@ -1221,6 +1221,11 @@ public class Parser
     if (preformatted < 0)
       preformatted = 0;
 
+    // When a block tag is closed, consume whitespace that follows after
+    // it.
+    if (h.isBlock())
+      optional(WS);
+
     if (h == HTML.Tag.TITLE)
       {
         titleOpen = false;
