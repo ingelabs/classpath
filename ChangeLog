@@ -1,5 +1,25 @@
 2006-11-15  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/html/HTMLDocument.java
+	(HTMLReader.ParagraphAction.end): Call super instead of blockClose()
+	directly.
+	(HTMLReader.ParagraphAction.start): Call super instead of blockOpen()
+	directly.
+	(HTMLReader.parseStack): Removed.
+	(HTMLReader.blockClose): Simply call addContent() with ' '
+	instead of doing more complicated stuff. Removed parseStack
+	handling.
+	(HTMLReader.blockOpen): Removed parseStack handling.
+	(getInsertingReader): Removed parseStack init.
+	* gnu/javax/swing/text/html/parser/htmlValidator.java
+	(closeTag): Return true only when the tag actually should be
+	closed.
+	* gnu/javax/swing/text/html/parser/support/Parser.java
+	(_handleEndTag): Only actually close the tag when the validator
+	allows it.
+
+2006-11-15  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/html/CSS.java
 	(Attribute.BORDER_SPACING): New field for the CSS border-spacing
 	attribute.

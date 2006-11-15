@@ -523,12 +523,6 @@ public class HTMLDocument extends DefaultStyledDocument
      * A stack for character attribute sets *
      */
     Stack charAttrStack = new Stack();
-
-    /**
-     * The parse stack. This stack holds HTML.Tag objects that reflect the
-     * current position in the parsing process.
-     */
-    Stack parseStack = new Stack();
    
     /** A mapping between HTML.Tag objects and the actions that handle them **/
     HashMap tagToAction;
@@ -816,7 +810,7 @@ public class HTMLDocument extends DefaultStyledDocument
        */
       public void start(HTML.Tag t, MutableAttributeSet a)
       {
-        blockOpen(t, a);
+        super.start(t, a);
         inParagraph = true;
       }
       
@@ -826,7 +820,7 @@ public class HTMLDocument extends DefaultStyledDocument
        */
       public void end(HTML.Tag t)
       {
-        blockClose(t);
+        super.end(t);
         inParagraph = false;
       } 
     }
@@ -1512,7 +1506,6 @@ public class HTMLDocument extends DefaultStyledDocument
 
       DefaultStyledDocument.ElementSpec element;
 
-      parseStack.push(t);
       AbstractDocument.AttributeContext ctx = getAttributeContext();
       AttributeSet copy = attr.copyAttributes();
       copy = ctx.addAttribute(copy, StyleConstants.NameAttribute, t);
@@ -1546,21 +1539,12 @@ public class HTMLDocument extends DefaultStyledDocument
 	      parseBuffer.get(parseBuffer.size() - 1);
       if (prev.getType() == DefaultStyledDocument.ElementSpec.StartTagType)
         {
-          AbstractDocument.AttributeContext ctx = getAttributeContext();
-          AttributeSet attributes = ctx.getEmptySet();
-          attributes = ctx.addAttribute(attributes, StyleConstants.NameAttribute,
-                                        HTML.Tag.CONTENT);
-          element = new DefaultStyledDocument.ElementSpec(attributes,
-			  DefaultStyledDocument.ElementSpec.ContentType,
-                                    new char[0], 0, 0);
-          parseBuffer.add(element);
+          addContent(new char[]{' '}, 0, 1);
         }
 
       element = new DefaultStyledDocument.ElementSpec(null,
 				DefaultStyledDocument.ElementSpec.EndTagType);
       parseBuffer.addElement(element);
-      if (parseStack.size() > 0)
-        parseStack.pop();
     }
     
     /**
@@ -1734,10 +1718,6 @@ public class HTMLDocument extends DefaultStyledDocument
       }
     };
       
-    // Set the parent HTML tag.
-    reader.parseStack.push(parent.getAttributes().getAttribute(
-      StyleConstants.NameAttribute));
-
     return reader;
   }   
   

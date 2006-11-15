@@ -1200,8 +1200,8 @@ public class Parser
    */
   private void _handleEndTag(TagElement tag)
   {
-    validator.closeTag(tag);
-    _handleEndTag_remaining(tag);
+    if (validator.closeTag(tag))
+       _handleEndTag_remaining(tag);
   }
 
   /**
