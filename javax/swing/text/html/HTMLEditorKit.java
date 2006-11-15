@@ -39,8 +39,6 @@ exception statement from your version. */
 package javax.swing.text.html;
 
 
-import gnu.classpath.NotImplementedException;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -290,7 +288,7 @@ public class HTMLEditorKit
        * Tag to check for in the document.
        */
       protected HTML.Tag parentTag;
-      
+
       /**
        * Initializes all fields.
        * 
@@ -394,20 +392,9 @@ public class HTMLEditorKit
                                       Element insertElement,
                                       String html, HTML.Tag parentTag,
                                       HTML.Tag addTag)
-        throws NotImplementedException
       {
-        /*
-        As its name implies, this protected method is used when HTML is inserted at a
-        boundary. (A boundary in this case is an offset in doc that exactly matches the
-        beginning offset of the parentTag.) It performs the extra work required to keep
-        the tag stack in shape and then calls insertHTML(). The editor and doc argu-
-        ments are the editor pane and document where the HTML should go. The offset
-        argument represents the cursor location or selection start in doc. The insert-
-        Element and parentTag arguments are used to calculate the proper number of
-        tag pops and pushes before inserting the HTML (via html and addTag, which are
-        passed directly to insertHTML()).
-        */
-        // FIXME: not implemented
+        insertAtBoundry(editor, doc, offset, insertElement,
+                        html, parentTag, addTag);
       }
       
       /**
@@ -433,8 +420,50 @@ public class HTMLEditorKit
                                      String html, HTML.Tag parentTag,
                                      HTML.Tag addTag)
       {
-        insertAtBoundary(editor, doc, offset, insertElement,
-                         html, parentTag, addTag);
+        Element parent = insertElement;
+        Element el;
+        // Find common parent element.
+        if (offset > 0 || insertElement == null)
+          {
+            el = doc.getDefaultRootElement();
+            while (el != null && el.getStartOffset() != offset
+                   && ! el.isLeaf())
+              el = el.getElement(el.getElementIndex(offset));
+            parent = el != null ? el.getParentElement() : null;
+          }
+        if (parent != null)
+          {
+            int pops = 0;
+            int pushes = 0;
+            if (offset == 0 && insertElement != null)
+              {
+                el = parent;
+                while (el != null && ! el.isLeaf())
+                  {
+                    el = el.getElement(el.getElementIndex(offset));
+                    pops++;
+                  }
+              }
+            else
+              {
+                el = parent;
+                offset--;
+                while (el != null && ! el.isLeaf())
+                  {
+                    el = el.getElement(el.getElementIndex(offset));
+                    pops++;
+                  }
+                el = parent;
+                offset++;
+                while (el != null && el != insertElement)
+                  {
+                    el = el.getElement(el.getElementIndex(offset));
+                    pushes++;
+                  }
+              }
+            pops = Math.max(0, pops - 1);
+            insertHTML(editor, doc, offset, html, pops, pushes, addTag);
+          }
       }
       
       /**
@@ -444,16 +473,97 @@ public class HTMLEditorKit
        */
       public void actionPerformed(ActionEvent ae)
       {
-        Object source = ae.getSource();
-        if (source instanceof JEditorPane)
+        JEditorPane source = getEditor(ae);
+        if (source != null)
           {
-            JEditorPane pane = ((JEditorPane) source);
-            Document d = pane.getDocument();
-            if (d instanceof HTMLDocument)
-              insertHTML(pane, (HTMLDocument) d, 0, html, 0, 0, addTag);
-            // FIXME: is this correct parameters?
+            HTMLDocument d = getHTMLDocument(source);
+            int offset = source.getSelectionStart();
+            int length = d.getLength();
+            boolean inserted = true;
+            if (! tryInsert(source, d, offset, parentTag, addTag))
+              {
+                inserted = tryInsert(source, d, offset, alternateParentTag,
+                                     alternateAddTag);
+              }
+            if (inserted)
+              adjustSelection(source, d, offset, length);
           }
-        // FIXME: else not implemented
+      }
+
+      /**
+       * Tries to insert the html chunk to the specified <code>addTag</code>.
+       *
+       * @param pane the editor
+       * @param doc the document
+       * @param offset the offset at which to insert
+       * @param tag the tag at which to insert
+       * @param addTag the add tag
+       *
+       * @return <code>true</code> when the html has been inserted successfully,
+       *         <code>false</code> otherwise
+       */
+      private boolean tryInsert(JEditorPane pane, HTMLDocument doc, int offset,
+                                HTML.Tag tag, HTML.Tag addTag)
+      {
+        boolean inserted = false;
+        Element el = findElementMatchingTag(doc, offset, tag);
+        if (el != null && el.getStartOffset() == offset)
+          {
+            insertAtBoundary(pane, doc, offset, el, html, tag, addTag);
+            inserted = true;
+          }
+        else if (offset > 0)
+          {
+            int depth = elementCountToTag(doc, offset - 1, tag);
+            if (depth != -1)
+              {
+                insertHTML(pane, doc, offset, html, depth, 0, addTag);
+                inserted = true;
+              }
+          }
+        return inserted;
+      }
+
+      /**
+       * Adjusts the selection after an insertion has been performed.
+       *
+       * @param pane the editor pane
+       * @param doc the document
+       * @param offset the insert offset
+       * @param oldLen the old document length
+       */
+      private void adjustSelection(JEditorPane pane, HTMLDocument doc,
+                                   int offset, int oldLen)
+      {
+        int newLen = doc.getLength();
+        if (newLen != oldLen && offset < newLen)
+          {
+            if (offset > 0)
+              {
+                String text;
+                try
+                  {
+                    text = doc.getText(offset - 1, 1);
+                  }
+                catch (BadLocationException ex)
+                  {
+                    text = null;
+                  }
+                if (text != null && text.length() > 0
+                    && text.charAt(0) == '\n')
+                  {
+                    pane.select(offset, offset);
+                  }
+                else
+                  {
+                    pane.select(offset + 1, offset + 1);
+                  }
+              }
+            else
+              {
+                pane.select(1, 1);
+              }
+          }
       }
   }
   
@@ -885,8 +995,36 @@ public class HTMLEditorKit
   /**
    * Actions for HTML 
    */
-  private static final Action[] defaultActions = {
-    // FIXME: Add default actions for html
+  private static final Action[] defaultActions =
+  {
+    new InsertHTMLTextAction("InsertTable",
+                             "<table border=1><tr><td></td></tr></table>",
+                             HTML.Tag.BODY, HTML.Tag.TABLE),
+    new InsertHTMLTextAction("InsertTableRow",
+                             "<table border=1><tr><td></td></tr></table>",
+                             HTML.Tag.TABLE, HTML.Tag.TR,
+                             HTML.Tag.BODY, HTML.Tag.TABLE),
+    new InsertHTMLTextAction("InsertTableCell",
+                             "<table border=1><tr><td></td></tr></table>",
+                             HTML.Tag.TR, HTML.Tag.TD,
+                             HTML.Tag.BODY, HTML.Tag.TABLE),
+    new InsertHTMLTextAction("InsertUnorderedList",
+                             "<ul><li></li></ul>",
+                             HTML.Tag.BODY, HTML.Tag.UL),
+    new InsertHTMLTextAction("InsertUnorderedListItem",
+                             "<ul><li></li></ul>",
+                             HTML.Tag.UL, HTML.Tag.LI,
+                             HTML.Tag.BODY, HTML.Tag.UL),
+    new InsertHTMLTextAction("InsertOrderedList",
+                             "<ol><li></li></ol>",
+                             HTML.Tag.BODY, HTML.Tag.OL),
+    new InsertHTMLTextAction("InsertOrderedListItem",
+                             "<ol><li></li></ol>",
+                             HTML.Tag.OL, HTML.Tag.LI,
+                             HTML.Tag.BODY, HTML.Tag.OL),
+    new InsertHTMLTextAction("InsertPre",
+                             "<pre></pre>", HTML.Tag.BODY, HTML.Tag.PRE)
+    // TODO: The reference impl has an InsertHRAction too.
   };
   
   /**

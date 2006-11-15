@@ -1,5 +1,18 @@
 2006-11-15  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/html/HTMLEditorKit.java
+	(InsertHTMLTextAction.actionPerformed): Also try inserting
+	the alternate tag. Adjust the selection accordingly.
+	(InsertHTMLTextAction.adjustSelection): New helper method.
+	Adjusts the selection after an insertion.
+	(insertAtBoundary): Delegate to deprecated method.
+	(insertAtBoundry): Implemented missing method.
+	(tryInsert): New helper method.
+	(defaultActions): Implemented to fill the array with
+	a couple of InsertHTMLTextActions.
+
+2006-11-15  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/html/ImageView.java
 	(Observer): New class. Observes image loading.
 	(haveHeight): New field.
