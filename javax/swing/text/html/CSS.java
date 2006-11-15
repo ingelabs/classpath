@@ -415,6 +415,8 @@ public class CSS implements Serializable
       new Attribute("border-left-color", false, null);
     static final Attribute BORDER_RIGHT_COLOR =
       new Attribute("border-right-color", false, null);
+    static final Attribute BORDER_SPACING =
+      new Attribute("border-spacing", false, null);
 
     /**
      * The attribute string.
@@ -516,7 +518,10 @@ public class CSS implements Serializable
     else if (att == Attribute.MARGIN || att == Attribute.MARGIN_BOTTOM
              || att == Attribute.MARGIN_LEFT || att == Attribute.MARGIN_RIGHT
              || att == Attribute.MARGIN_TOP || att == Attribute.WIDTH
-             || att == Attribute.HEIGHT)
+             || att == Attribute.HEIGHT
+             || att == Attribute.PADDING || att == Attribute.PADDING_BOTTOM
+             || att == Attribute.PADDING_LEFT || att == Attribute.PADDING_RIGHT
+             || att == Attribute.PADDING_TOP)
       o = new Length(v);
     else if (att == Attribute.BORDER_WIDTH || att == Attribute.BORDER_TOP_WIDTH
              || att == Attribute.BORDER_LEFT_WIDTH

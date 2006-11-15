@@ -709,6 +709,27 @@ public class StyleSheet extends StyleContext
     if (o != null)
       cssAttr = addAttribute(cssAttr, CSS.Attribute.WHITE_SPACE, "nowrap");
 
+    // Map cellspacing attr of tables to CSS border-spacing.
+    o = htmlAttrSet.getAttribute(HTML.Attribute.CELLSPACING);
+    if (o != null)
+      cssAttr = addAttribute(cssAttr, CSS.Attribute.BORDER_SPACING,
+                             new Length(o.toString()));
+
+    // For table cells and headers, fetch the cellpadding value from the
+    // parent table and set it as CSS padding attribute.
+    HTML.Tag tag = (HTML.Tag)
+                   htmlAttrSet.getAttribute(StyleConstants.NameAttribute);
+    if ((tag == HTML.Tag.TD || tag == HTML.Tag.TH)
+        && htmlAttrSet instanceof Element)
+      {
+        Element el = (Element) htmlAttrSet;
+        AttributeSet tableAttrs = el.getParentElement().getParentElement()
+                                  .getAttributes();
+        o = tableAttrs.getAttribute(HTML.Attribute.CELLPADDING);
+        if (o != null)
+          cssAttr = addAttribute(cssAttr, CSS.Attribute.PADDING,
+                                 new Length(o.toString()));
+      }
     // TODO: Add more mappings.
     return cssAttr;
   }
@@ -1036,6 +1057,11 @@ public class StyleSheet extends StyleContext
      */
     private Border border;
 
+    private float leftPadding;
+    private float rightPadding;
+    private float topPadding;
+    private float bottomPadding;
+
     /**
      * The background color.
      */
@@ -1048,7 +1074,13 @@ public class StyleSheet extends StyleContext
      */
     BoxPainter(AttributeSet as, StyleSheet ss)
     {
-      Length l = (Length) as.getAttribute(CSS.Attribute.MARGIN_LEFT);
+      // Fetch margins.
+      Length l = (Length) as.getAttribute(CSS.Attribute.MARGIN);
+      if (l != null)
+        {
+          topInset = bottomInset = leftInset = rightInset = l.getValue();
+        }
+      l = (Length) as.getAttribute(CSS.Attribute.MARGIN_LEFT);
       if (l != null)
         leftInset = l.getValue();
       l = (Length) as.getAttribute(CSS.Attribute.MARGIN_RIGHT);
@@ -1060,6 +1092,26 @@ public class StyleSheet extends StyleContext
       l = (Length) as.getAttribute(CSS.Attribute.MARGIN_BOTTOM);
       if (l != null)
         bottomInset = l.getValue();
+
+      // Fetch padding.
+      l = (Length) as.getAttribute(CSS.Attribute.PADDING);
+      if (l != null)
+        {
+          leftPadding = rightPadding = topPadding = bottomPadding =
+            l.getValue();
+        }
+      l = (Length) as.getAttribute(CSS.Attribute.PADDING_LEFT);
+      if (l != null)
+        leftPadding = l.getValue();
+      l = (Length) as.getAttribute(CSS.Attribute.PADDING_RIGHT);
+      if (l != null)
+        rightPadding = l.getValue();
+      l = (Length) as.getAttribute(CSS.Attribute.PADDING_TOP);
+      if (l != null)
+        topPadding = l.getValue();
+      l = (Length) as.getAttribute(CSS.Attribute.PADDING_BOTTOM);
+      if (l != null)
+        bottomPadding = l.getValue();
 
       // Determine border.
       border = new CSSBorder(as);
@@ -1090,21 +1142,25 @@ public class StyleSheet extends StyleContext
           inset = topInset;
           if (border != null)
             inset += border.getBorderInsets(null).top;
+          inset += topPadding;
           break;
         case View.BOTTOM:
           inset = bottomInset;
           if (border != null)
             inset += border.getBorderInsets(null).bottom;
+          inset += bottomPadding;
           break;
         case View.LEFT:
           inset = leftInset;
           if (border != null)
             inset += border.getBorderInsets(null).left;
+          inset += leftPadding;
           break;
         case View.RIGHT:
           inset = rightInset;
           if (border != null)
             inset += border.getBorderInsets(null).right;
+          inset += rightPadding;
           break;
         default:
           inset = 0.0F;

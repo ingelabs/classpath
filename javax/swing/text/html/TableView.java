@@ -117,9 +117,10 @@ class TableView
     {
       if (r == null)
         r = new SizeRequirements();
-      r.minimum = totalColumnRequirements.minimum;
-      r.preferred = totalColumnRequirements.preferred;
-      r.maximum = totalColumnRequirements.maximum;
+      int adjust = (columnRequirements.length + 1) * cellSpacing;
+      r.minimum = totalColumnRequirements.minimum + adjust;
+      r.preferred = totalColumnRequirements.preferred + adjust;
+      r.maximum = totalColumnRequirements.maximum + adjust;
       r.alignment = 0.0F;
       return r;
     }
@@ -143,6 +144,8 @@ class TableView
               for (int j = 0; j < cv.colSpan; j++, realColumn++)
                 {
                   spans[i] += columnSpans[realColumn];
+                  if (j < cv.colSpan - 1)
+                    spans[i] += cellSpacing;
                 }
             }
         }
@@ -211,8 +214,10 @@ class TableView
 
   /**
    * The column requirements.
+   *
+   * Package private to avoid accessor methods.
    */
-  private SizeRequirements[] columnRequirements;
+  SizeRequirements[] columnRequirements;
 
   /**
    * The overall requirements across all columns.
@@ -244,6 +249,13 @@ class TableView
    * Indicates if the grid setup is ok.
    */
   private boolean gridValid;
+
+  /**
+   * Additional space that is added _between_ table cells.
+   *
+   * This is package private to avoid accessor methods.
+   */
+  int cellSpacing;
 
   /**
    * Creates a new HTML table view for the specified element.
@@ -346,6 +358,11 @@ class TableView
           r.minimum = width;
       }
 
+    // Adjust requirements when we have cell spacing.
+    int adjust = (columnRequirements.length + 1) * cellSpacing;
+    r.minimum += adjust;
+    r.preferred += adjust;
+
     // Apply the alignment.
     Object o = atts.getAttribute(CSS.Attribute.TEXT_ALIGN);
     r.alignment = 0.0F;
@@ -360,6 +377,8 @@ class TableView
           r.alignment = 1.0F;
       }
 
+    // Make it not resize in the horizontal direction.
+    r.maximum = r.preferred;
     return r;
   }
 
@@ -561,7 +580,9 @@ class TableView
       }
 
     // Try to adjust the spans so that we fill the targetSpan.
-    long diff = targetSpan - sumPref;
+    // For adjustments we have to use the targetSpan minus the cumulated
+    // cell spacings.
+    long diff = targetSpan - (n + 1) * cellSpacing - sumPref;
     float factor = 0.0F;
     int[] diffs = null;
     if (diff != 0)
@@ -598,7 +619,7 @@ class TableView
       }
 
     // Actually perform adjustments.
-    int totalOffs = 0;
+    int totalOffs = cellSpacing;
     for (int i = 0; i < n; i++)
       {
         columnOffsets[i] = totalOffs;
@@ -608,8 +629,8 @@ class TableView
             columnSpans[i] += Math.round(adjust);
           }
         // Avoid overflow here.
-        totalOffs = (int) Math.min((long) totalOffs + (long) columnSpans[i],
-                                    Integer.MAX_VALUE);
+        totalOffs = (int) Math.min((long) totalOffs + (long) columnSpans[i]
+                                   + (long) cellSpacing, Integer.MAX_VALUE);
       }
   }
 
@@ -671,5 +692,57 @@ class TableView
     else
       span = super.getMaximumSpan(axis);
     return span;
+  }
+
+  /**
+   * Overridden to fetch the CSS attributes when view gets connected.
+   */
+  public void setParent(View parent)
+  {
+    super.setParent(parent);
+    if (parent != null)
+      setPropertiesFromAttributes();
+  }
+
+  /**
+   * Fetches CSS and HTML layout attributes.
+   */
+  private void setPropertiesFromAttributes()
+  {
+    // Fetch and parse cell spacing.
+    Object o = getAttributes().getAttribute(CSS.Attribute.BORDER_SPACING);
+    if (o != null && o instanceof Length)
+      {
+        Length l = (Length) o;
+        cellSpacing = (int) l.getValue();
+      }
+  }
+
+  /**
+   * Overridden to adjust for cellSpacing.
+   */
+  protected SizeRequirements calculateMajorAxisRequirements(int axis,
+                                                            SizeRequirements r)
+  {
+    r = super.calculateMajorAxisRequirements(axis, r);
+    int adjust = (getViewCount() + 1) * cellSpacing;
+    r.minimum += adjust;
+    r.preferred += adjust;
+    r.maximum += adjust;
+    return r;
+  }
+
+  /**
+   * Overridden to adjust for cellSpacing.
+   */
+  protected void layoutMajorAxis(int targetSpan, int axis, int[] offsets,
+                                 int spans[])
+  {
+    int adjust = (getViewCount() + 1) * cellSpacing;
+    super.layoutMajorAxis(targetSpan - adjust, axis, offsets, spans);
+    for (int i = 0; i < offsets.length; i++)
+      {
+        offsets[i] += (i + 1) * cellSpacing;
+      }
   }
 }
