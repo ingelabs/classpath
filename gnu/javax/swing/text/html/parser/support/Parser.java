@@ -659,7 +659,10 @@ public class Parser
     else
       text = textProcessor.preprocess(buffer);
 
-    if (text != null && text.length > 0)
+    if (text != null && text.length > 0
+        // According to the specs we need to discard whitespace immediately
+        // before a closing tag.
+        && (text.length > 1 || (text[0] == ' ' && ! TAG_CLOSE.matches(this))))
       {
         TagElement pcdata = new TagElement(dtd.getElement("#pcdata"));
         if ((text.length > 1 && text[0] != ' ')
@@ -1460,7 +1463,12 @@ public class Parser
         if (te.getElement().type == DTDConstants.EMPTY)
           _handleEmptyTag(te);
         else
-          _handleStartTag(te);
+          {
+            // According to the specs we need to consume whitespace following
+            // immediately after a opening tag.
+            optional(WS);
+            _handleStartTag(te);
+          }
       }
   }
 

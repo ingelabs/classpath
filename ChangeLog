@@ -1,3 +1,15 @@
+2006-11-15  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/javax/swing/text/html/parser/support/Parser.java
+	(_handleText): Consume whitespace directly before a closing tag.
+	(restOfTag): Consume whitespace directly after opening.
+	* gnu/javax/swing/text/html/parser/support/textPreProcessor.java
+	(preprocess): Don't perform array boundary checking by
+	catch AIOOBE, instead check the boundary in loop condition.
+	* gnu/javax/swing/text/html/parser/support/low/Constants.java
+	(TAG_CLOSE): New constants. Describes the token pattern for
+	a closing tag.
+
 2006-11-14  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/html/ImageView.java
