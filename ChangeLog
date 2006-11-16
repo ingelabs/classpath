@@ -1,3 +1,9 @@
+2006-11-16  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/beans/DesignMode.java: Reformatted and removed a FIXME,
+	* java/beans/Statement.java
+	(toString): Updated to match reference implementation.
+
 2006-11-15  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/html/HTMLEditorKit.java
