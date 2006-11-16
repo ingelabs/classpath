@@ -1,5 +1,11 @@
 2006-11-16  Roman Kennke  <kennke@aicas.com>
 
+	* gnu/javax/swing/text/html/parser/support/Parser.java
+	(_handleText): Fixed condition for consuming whitespace.
+	Removed validator check, this is superfluous now.
+
+2006-11-16  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/javax/swing/text/html/css/CSSParser.java
 	(parseRuleset): Support 'combined' selectors.
 	(main): Adapt callback for combined selectors support.

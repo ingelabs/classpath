@@ -662,19 +662,15 @@ public class Parser
     if (text != null && text.length > 0
         // According to the specs we need to discard whitespace immediately
         // before a closing tag.
-        && (text.length > 1 || (text[0] == ' ' && ! TAG_CLOSE.matches(this))))
+        && (text.length > 1 || text[0] != ' ' || ! TAG_CLOSE.matches(this)))
       {
         TagElement pcdata = new TagElement(dtd.getElement("#pcdata"));
-        if ((text.length > 1 && text[0] != ' ')
-            || validator.tagIsValidForContext(pcdata) == Boolean.TRUE)
-          {
-            attributes = htmlAttributeSet.EMPTY_HTML_ATTRIBUTE_SET;
-            _handleEmptyTag(pcdata);
+        attributes = htmlAttributeSet.EMPTY_HTML_ATTRIBUTE_SET;
+        _handleEmptyTag(pcdata);
 
-            handleText(text);
-            if (titleOpen)
-              title.append(text);
-          }
+        handleText(text);
+        if (titleOpen)
+          title.append(text);
       }
   }
 
