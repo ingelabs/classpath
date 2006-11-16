@@ -45,6 +45,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.StringTokenizer;
 
 /**
  * A parser for CSS stylesheets.
@@ -158,7 +159,15 @@ public class CSSParser
   {
     StringBuilder selector = new StringBuilder();
     parseSelector(selector);
-    callback.startStatement(new Selector(selector.toString()));
+    StringTokenizer selSplitter =
+      new StringTokenizer(selector.toString(), ",");
+    Selector[] sels = new Selector[selSplitter.countTokens()];
+    for (int i = 0; selSplitter.hasMoreTokens(); i++)
+      {
+        String sel = selSplitter.nextToken().trim();
+        sels[i] = new Selector(sel);
+      }
+    callback.startStatement(sels);
     // Read any number of whitespace.
     int token;
     do
@@ -458,9 +467,17 @@ public class CSSParser
         InputStreamReader r = new InputStreamReader(bin);
         CSSParserCallback cb = new CSSParserCallback()
         {
-          public void startStatement(Selector selector)
+          public void startStatement(Selector[] selector)
           {
-            System.out.println("startStatement: " + selector);
+            System.out.print("startStatement: ");
+            for (int i = 0; i < selector.length; i++)
+              {
+                System.out.print(selector[i]);
+                if (i < selector.length - 1)
+                  System.out.print(',');
+                else
+                  System.out.println();
+              }
           }
           public void endStatement()
           {

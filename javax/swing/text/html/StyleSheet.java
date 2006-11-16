@@ -107,9 +107,9 @@ public class StyleSheet extends StyleContext
     implements CSSParserCallback
   {
     /**
-     * The current style.
+     * The current styles.
      */
-    private CSSStyle style;
+    private CSSStyle[] styles;
 
     /**
      * The precedence of the stylesheet to be parsed.
@@ -133,9 +133,11 @@ public class StyleSheet extends StyleContext
      *
      * @param sel the selector
      */
-    public void startStatement(Selector sel)
+    public void startStatement(Selector[] sel)
     {
-      style = new CSSStyle(precedence, sel);
+      styles = new CSSStyle[sel.length];
+      for (int i = 0; i < sel.length; i++)
+        styles[i] = new CSSStyle(precedence, sel[i]);
     }
 
     /**
@@ -143,8 +145,9 @@ public class StyleSheet extends StyleContext
      */
     public void endStatement()
     {
-      css.add(style);
-      style = null;
+      for (int i = 0; i < styles.length; i++)
+        css.add(styles[i]);
+      styles = null;
     }
 
     /**
@@ -157,9 +160,13 @@ public class StyleSheet extends StyleContext
     {
       CSS.Attribute cssAtt = CSS.getAttribute(property);
       Object val = CSS.getValue(cssAtt, value);
-      CSS.addInternal(style, cssAtt, value);
-      if (cssAtt != null)
-        style.addAttribute(cssAtt, val);
+      for (int i = 0; i < styles.length; i++)
+        {
+          CSSStyle style = styles[i];
+          CSS.addInternal(style, cssAtt, value);
+          if (cssAtt != null)
+            style.addAttribute(cssAtt, val);
+        }
     }
 
   }
@@ -172,11 +179,11 @@ public class StyleSheet extends StyleContext
     implements Style, Comparable
   {
 
-    static final int PREC_UA = 400000;
-    static final int PREC_NORM = 300000;
+    static final int PREC_UA = 0;
+    static final int PREC_NORM = 100000;
     static final int PREC_AUTHOR_NORMAL = 200000;
-    static final int PREC_AUTHOR_IMPORTANT = 100000;
-    static final int PREC_USER_IMPORTANT = 0;
+    static final int PREC_AUTHOR_IMPORTANT = 300000;
+    static final int PREC_USER_IMPORTANT = 400000;
 
     /**
      * The priority of this style when matching CSS selectors.

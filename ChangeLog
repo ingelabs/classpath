@@ -1,5 +1,24 @@
 2006-11-16  Roman Kennke  <kennke@aicas.com>
 
+	* gnu/javax/swing/text/html/css/CSSParser.java
+	(parseRuleset): Support 'combined' selectors.
+	(main): Adapt callback for combined selectors support.
+	* gnu/javax/swing/text/html/css/CSSParserCallback.java
+	(startStatement): Take selector array as argument, to
+	support combined selectors.
+	* javax/swing/text/html/BlockView.java
+	(calculateMinorAxisRequirements): Fetch and apply alignment.
+	* javax/swing/text/html/StyleSheet.java
+	(CSSStyle): Inverted the constants for correct precedence.
+	(CSSStyleSheetParserCallback.styles): New field. Stores the current
+	styles.
+	(CSSStyleSheetParserCallback.style): Removed.
+	(CSSStyleSheetParserCallback.declaration): Update multiple styles.
+	(CSSStyleSheetParserCallback.end): Push multiple styles.
+	(CSSStyleSheetParserCallback.start): Initialize multiple styles.
+
+2006-11-16  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/FlowView.java
 	(LogicalView.getPreferredSpan): Calculate maximum correctly.
 	* javax/swing/text/GlyphView.java

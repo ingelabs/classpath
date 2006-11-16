@@ -171,6 +171,22 @@ public class BlockView extends BoxView
       }
     else
       r = super.calculateMinorAxisRequirements(axis, r);
+
+    // Apply text alignment if appropriate.
+    if (axis == X_AXIS)
+      {
+        Object o = getAttributes().getAttribute(CSS.Attribute.TEXT_ALIGN);
+        if (o != null)
+          {
+            String al = o.toString().trim();
+            if (al.equals("center"))
+              r.alignment = 0.5f;
+            else if (al.equals("right"))
+              r.alignment = 1.0f;
+            else
+              r.alignment = 0.0f;
+          }
+      }
     return r;
   }
 
