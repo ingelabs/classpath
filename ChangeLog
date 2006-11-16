@@ -1,3 +1,24 @@
+2006-11-16  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/FlowView.java
+	(LogicalView.getPreferredSpan): Calculate maximum correctly.
+	* javax/swing/text/GlyphView.java
+	(tabExpander): New field.
+	(tabX): New field.
+	(breakView): Set tabX on broken view.
+	(getPartialSpan): Let the painter fetch the span.
+	(getTabbedSpan): Update the tab expander field. Maybe trigger
+	relayout.
+	(getTabExpander): Simply return the stored expander.
+	* javax/swing/text/Utilities.java
+	(getTabbedTextOffset): Made algoritm a little smarter and more
+	efficient.
+	(getTabbedTextWidth): Don't add single char widths, instead add
+	chunks of characters.
+	* javax/swing/text/html/ParagraphView.java
+	(calculateMinorAxisRequirements): Adjust margin only when the
+	CSS span is not fixed.
+
 2006-11-16  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/beans/beancontext/BeanContextSupport.java

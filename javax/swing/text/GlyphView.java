@@ -497,6 +497,16 @@ public class GlyphView extends View implements TabableView, Cloneable
   private int length;
 
   /**
+   * The x location against which the tab expansion is done.
+   */
+  private float tabX;
+
+  /**
+   * The tab expander that is used in this view.
+   */
+  private TabExpander tabExpander;
+
+  /**
    * Creates a new <code>GlyphView</code> for the given <code>Element</code>.
    *
    * @param element the element that is rendered by this GlyphView
@@ -658,13 +668,7 @@ public class GlyphView extends View implements TabableView, Cloneable
    */
   public TabExpander getTabExpander()
   {
-    TabExpander te = null;
-    View parent = getParent();
-
-    if (parent instanceof TabExpander)
-      te = (TabExpander) parent;
-    
-    return te;
+    return tabExpander;
   }
 
   /**
@@ -678,8 +682,16 @@ public class GlyphView extends View implements TabableView, Cloneable
   public float getTabbedSpan(float x, TabExpander te)
   {
     checkPainter();
+    TabExpander old = tabExpander;
+    tabExpander = te;
+    if (tabExpander != old)
+      {
+        // Changing the tab expander will lead to a relayout in the X_AXIS.
+        preferenceChanged(null, true, false);
+      }
+    tabX = x;
     return getGlyphPainter().getSpan(this, getStartOffset(),
-                                     getEndOffset(), te, x);
+                                     getEndOffset(), tabExpander, x);
   }
 
   /**
@@ -693,23 +705,8 @@ public class GlyphView extends View implements TabableView, Cloneable
    */
   public float getPartialSpan(int p0, int p1)
   {
-    Element el = getElement();
-    Document doc = el.getDocument();
-    Segment seg = new Segment();
-    try
-      {
-        doc.getText(p0, p1 - p0, seg);
-      }
-    catch (BadLocationException ex)
-      {
-	AssertionError ae;
-        ae = new AssertionError("BadLocationException must not be thrown "
-				+ "here");
-	ae.initCause(ex);
-	throw ae;
-      }
-    FontMetrics fm = null; // Fetch font metrics somewhere.
-    return Utilities.getTabbedTextWidth(seg, fm, 0, null, p0);
+    checkPainter();
+    return glyphPainter.getSpan(this, p0, p1, tabExpander, tabX);
   }
 
   /**
@@ -938,6 +935,8 @@ public class GlyphView extends View implements TabableView, Cloneable
         if (p0 != getStartOffset() || end != getEndOffset())
           {
             brokenView = createFragment(p0, end);
+            if (brokenView instanceof GlyphView)
+              ((GlyphView) brokenView).tabX = pos;
           }
       }
     return brokenView;
