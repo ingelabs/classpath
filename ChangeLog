@@ -1,5 +1,15 @@
 2006-11-16  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* java/beans/beancontext/BeanContextSupport.java
+	(getChildBeanContextMembershipListener): Implemented,
+	(getChildPropertyChangeListener): Implemented,
+	(getChildSerializable): Implemented,
+	(getChildVetoableChangeListener): Implemented,
+	(getChildVisibility): Implemented,
+	(setDesignTime): Use same property name as Sun's implementation.
+
+2006-11-16  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* java/beans/DesignMode.java: Reformatted and removed a FIXME,
 	* java/beans/Statement.java
 	(toString): Updated to match reference implementation.

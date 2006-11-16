@@ -502,34 +502,91 @@ public class BeanContextSupport extends BeanContextChildSupport
     return null;
   }
 
-  protected static final BeanContextMembershipListener getChildBeanContextMembershipListener (Object child)
-    throws NotImplementedException
+  /**
+   * Returns <code>child</code> as an instance of 
+   * {@link BeanContextMembershipListener}, or <code>null</code> if 
+   * <code>child</code> does not implement that interface.
+   * 
+   * @param child  the child (<code>null</code> permitted).
+   * 
+   * @return The child cast to {@link BeanContextMembershipListener}.
+   */
+  protected static final BeanContextMembershipListener 
+      getChildBeanContextMembershipListener(Object child)
   {
-    throw new Error ("Not implemented");
+    if (child instanceof BeanContextMembershipListener) 
+      return (BeanContextMembershipListener) child;
+    else 
+      return null;
   }
 
-  protected static final PropertyChangeListener getChildPropertyChangeListener (Object child)
-    throws NotImplementedException
+  /**
+   * Returns <code>child</code> as an instance of 
+   * {@link PropertyChangeListener}, or <code>null</code> if <code>child</code>
+   * does not implement that interface.
+   * 
+   * @param child  the child (<code>null</code> permitted).
+   * 
+   * @return The child cast to {@link PropertyChangeListener}.
+   */
+  protected static final PropertyChangeListener getChildPropertyChangeListener(
+      Object child)
   {
-    throw new Error ("Not implemented");
+    if (child instanceof PropertyChangeListener) 
+      return (PropertyChangeListener) child;
+    else 
+      return null;
   }
 
-  protected static final Serializable getChildSerializable (Object child)
-    throws NotImplementedException
+  /**
+   * Returns <code>child</code> as an instance of {@link Serializable}, or 
+   * <code>null</code> if <code>child</code> does not implement that 
+   * interface.
+   * 
+   * @param child  the child (<code>null</code> permitted).
+   * 
+   * @return The child cast to {@link Serializable}.
+   */
+  protected static final Serializable getChildSerializable(Object child)
   {
-    throw new Error ("Not implemented");
+    if (child instanceof Serializable) 
+      return (Serializable) child;
+    else 
+      return null;
   }
 
-  protected static final VetoableChangeListener getChildVetoableChangeListener (Object child)
-    throws NotImplementedException
+  /**
+   * Returns <code>child</code> as an instance of 
+   * {@link VetoableChangeListener}, or <code>null</code> if <code>child</code>
+   * does not implement that interface.
+   * 
+   * @param child  the child (<code>null</code> permitted).
+   * 
+   * @return The child cast to {@link VetoableChangeListener}.
+   */
+  protected static final VetoableChangeListener getChildVetoableChangeListener(
+      Object child)
   {
-    throw new Error ("Not implemented");
+    if (child instanceof VetoableChangeListener) 
+      return (VetoableChangeListener) child;
+    else 
+      return null;
   }
 
-  protected static final Visibility getChildVisibility (Object child)
-    throws NotImplementedException
+  /**
+   * Returns <code>child</code> as an instance of {@link Visibility}, or
+   * <code>null</code> if <code>child</code> does not implement that interface.
+   * 
+   * @param child  the child (<code>null</code> permitted).
+   * 
+   * @return The child cast to {@link Visibility}.
+   */
+  protected static final Visibility getChildVisibility(Object child)
   {
-    throw new Error ("Not implemented");
+    if (child instanceof Visibility) 
+      return (Visibility) child;
+    else 
+      return null;
   }
 
   public Locale getLocale ()
@@ -577,7 +634,15 @@ public class BeanContextSupport extends BeanContextChildSupport
     return Beans.instantiate(getClass().getClassLoader(), beanName, this);
   }
 
-  public boolean isDesignTime ()
+  /**
+   * Returns <code>true</code> if the <code>BeanContext</code> is in 
+   * design time mode, and <code>false</code> if it is in runtime mode.
+   * 
+   * @return A boolean.
+   * 
+   * @see #setDesignTime(boolean)
+   */
+  public boolean isDesignTime()
   {
     return designTime;
   }
@@ -771,11 +836,25 @@ public class BeanContextSupport extends BeanContextChildSupport
     throw new Error ("Not implemented");
   }
 
-  public void setDesignTime (boolean dtime)
+  /**
+   * Sets the flag that indicates whether or not the 
+   * <code>BeanContext</code> is in design mode.  If the flag changes
+   * value, a {@link PropertyChangeEvent} (with the property name 'designMode')
+   * is sent to registered listeners.  Note that the property name used here
+   * does NOT match the specification in the {@link DesignMode} interface, we
+   * match the reference implementation instead - see bug parade entry 4295174.
+   * 
+   * @param dtime  the new value for the flag.
+   * 
+   * @see #isDesignTime()
+   */
+  public void setDesignTime(boolean dtime)
   {
     boolean save = designTime;
     designTime = dtime;
-    firePropertyChange(DesignMode.PROPERTYNAME, Boolean.valueOf(save),
+    // note that we use the same property name as Sun's implementation,
+    // even though this is a known bug: see bug parade entry 4295174
+    firePropertyChange("designMode", Boolean.valueOf(save),
                        Boolean.valueOf(dtime));
   }
 
