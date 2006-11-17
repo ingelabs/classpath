@@ -1,3 +1,8 @@
+2006-11-17  Gary Benson  <gbenson@redhat.com>
+
+	* java/net/DatagramSocket.java (getLocalAddress, connect,
+	receive): Perform security check on address not hostname.
+
 2006-11-16  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/javax/swing/text/html/parser/support/Parser.java
