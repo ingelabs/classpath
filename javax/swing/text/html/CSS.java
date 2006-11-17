@@ -548,7 +548,7 @@ public class CSS implements Serializable
         String token = tokens.nextToken();
         if (CSSColor.isValidColor(token))
           atts.addAttribute(Attribute.BACKGROUND_COLOR,
-                            getValue(Attribute.BACKGROUND_COLOR, token));
+                            new CSSColor(token));
       }
   }
 }

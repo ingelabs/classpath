@@ -484,6 +484,9 @@ public class StyleSheet extends StyleContext
         // Shouldn't happen. And if, then we
         System.err.println("IOException while parsing stylesheet: " + ex.getMessage());
       }
+    // Clean up resolved styles cache so that the new styles are recognized
+    // on next stylesheet request.
+    resolvedStyles.clear();
   }
   
   /**
@@ -704,13 +707,13 @@ public class StyleSheet extends StyleContext
     o = htmlAttrSet.getAttribute(HTML.Attribute.WIDTH);
     if (o != null)
       cssAttr = addAttribute(cssAttr, CSS.Attribute.WIDTH,
-                             CSS.getValue(CSS.Attribute.WIDTH, o.toString()));
+                             new Length(o.toString()));
 
     // The HTML height attribute maps directly to CSS height.
     o = htmlAttrSet.getAttribute(HTML.Attribute.HEIGHT);
     if (o != null)
       cssAttr = addAttribute(cssAttr, CSS.Attribute.HEIGHT,
-                             CSS.getValue(CSS.Attribute.HEIGHT, o.toString()));
+                             new Length(o.toString()));
 
     o = htmlAttrSet.getAttribute(HTML.Attribute.NOWRAP);
     if (o != null)
@@ -852,10 +855,7 @@ public class StyleSheet extends StyleContext
    */
   public Font getFont(AttributeSet a)
   {
-    FontSize size = (FontSize) a.getAttribute(CSS.Attribute.FONT_SIZE);
-    int realSize = 12;
-    if (size != null)
-      realSize = size.getValue();
+    int realSize = getFontSize(a);
 
     // Decrement size for subscript and superscript.
     Object valign = a.getAttribute(CSS.Attribute.VERTICAL_ALIGN);
@@ -879,6 +879,41 @@ public class StyleSheet extends StyleContext
     return new Font(family, style, realSize);
   }
   
+  /**
+   * Resolves the fontsize for a given set of attributes.
+   *
+   * @param atts the attributes
+   *
+   * @return the resolved font size
+   */
+  private int getFontSize(AttributeSet atts)
+  {
+    int size = 12;
+    if (atts.isDefined(CSS.Attribute.FONT_SIZE))
+      {
+        FontSize fs = (FontSize) atts.getAttribute(CSS.Attribute.FONT_SIZE);
+        if (fs.isRelative())
+          {
+            int parSize = 12;
+            AttributeSet resolver = atts.getResolveParent();
+            if (resolver != null) {
+              parSize = getFontSize(resolver);System.err.println("parent size: " + parSize);    }
+            size = fs.getValue(parSize); 
+          }
+        else
+          {
+            size = fs.getValue();
+          }
+      }
+    else
+      {
+        AttributeSet resolver = atts.getResolveParent();
+        if (resolver != null)
+          size = getFontSize(resolver);
+      }
+    return size;
+  }
+
   /**
    * Takes a set of attributes and turns it into a foreground
    * color specification. This is used to specify things like, brigher, more hue

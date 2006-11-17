@@ -269,7 +269,7 @@ public class CSSParser
             StringBuilder value = new StringBuilder();
             if (parseValue(value))
               {
-                callback.declaration(property, value.toString());
+                callback.declaration(property, value.toString().trim());
               }
             else
               {
