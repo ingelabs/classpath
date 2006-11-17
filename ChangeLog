@@ -1,3 +1,7 @@
+2006-11-17  Mark Wielaard  <mark@klomp.org>
+
+	* docs/www.gnu.org/newsitems.txt: Add Sun GPL news announcement.
+
 2006-11-17  Gary Benson  <gbenson@redhat.com>
 
 	* java/net/DatagramSocket.java (getLocalAddress, connect,

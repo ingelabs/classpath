@@ -1,3 +1,10 @@
+<newsitem date="15 Nov 2006">
+<createlink name="FSF welcomes Sun's GPL release of Java"
+            url="http://www.fsf.org/news/fsf-welcomes-gpl-java.html"><br>
+<createlink name="Planet Classpath" url="http://planet.classpath.org/">
+carries the reactions of many individual GNU Classpath developers.
+</newsitem>
+
 <newsitem date="09 Aug 2006">
 <createlink name="GNU Classpath 0.92"
             url="announce/20060809.html">
