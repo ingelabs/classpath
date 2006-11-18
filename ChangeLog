@@ -1,3 +1,12 @@
+2006-11-18  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* gnu/javax/management/Server.java:
+	Initial implementation of a GNU management server.
+	* javax/management/MBeanPermission.java,
+	* javax/management/MBeanRegistration.java,
+	* javax/management/MBeanTrustPermission.java:
+	Implemented.
+	
 2006-11-17  Mark Wielaard  <mark@klomp.org>
 
 	* docs/www.gnu.org/newsitems.txt: Add Sun GPL news announcement.
