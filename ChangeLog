@@ -1,3 +1,8 @@
+2006-11-13  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* gnu/java/util/regex/RETokenNamedProperty.java:
+	(getHandler(String)): Add support for 'all'.
+
 2006-11-18  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* gnu/javax/management/Server.java:
