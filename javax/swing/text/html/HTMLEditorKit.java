@@ -1094,8 +1094,15 @@ public class HTMLEditorKit
    */
   public Document createDefaultDocument()
   {
-    HTMLDocument document = new HTMLDocument(getStyleSheet());
+    // Protect the shared stylesheet.
+    StyleSheet styleSheet = getStyleSheet();
+    StyleSheet ss = new StyleSheet();
+    ss.addStyleSheet(styleSheet);
+
+    HTMLDocument document = new HTMLDocument(ss);
     document.setParser(getParser());
+    document.setAsynchronousLoadPriority(4);
+    document.setTokenThreshold(100);
     return document;
   }
 

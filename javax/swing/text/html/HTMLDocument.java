@@ -1293,18 +1293,28 @@ public class HTMLDocument extends DefaultStyledDocument
      */
     public void flush() throws BadLocationException
     {
-      DefaultStyledDocument.ElementSpec[] elements;
-      elements = new DefaultStyledDocument.ElementSpec[parseBuffer.size()];
-      parseBuffer.copyInto(elements);
-      parseBuffer.removeAllElements();
-      if (offset == 0)
-        create(elements);
-      else
-        insert(offset, elements);
-
-      offset += HTMLDocument.this.getLength() - offset;
+      flushImpl();
     }
-    
+
+    /**
+     * Flushes the buffer and handle partial inserts.
+     *
+     */
+    private void flushImpl()
+      throws BadLocationException
+    {
+      int oldLen = getLength();
+      int size = parseBuffer.size();
+      ElementSpec[] elems = new ElementSpec[size];
+      parseBuffer.copyInto(elems);
+      if (oldLen == 0)
+        create(elems);
+      else
+        insert(offset, elems);
+      parseBuffer.removeAllElements();
+      offset += getLength() - oldLen;
+    }
+
     /**
      * This method is called by the parser to indicate a block of 
      * text was encountered.  Should insert the text appropriately.
@@ -1535,9 +1545,10 @@ public class HTMLDocument extends DefaultStyledDocument
       // If the previous tag is a start tag then we insert a synthetic
       // content tag.
       DefaultStyledDocument.ElementSpec prev;
-      prev = (DefaultStyledDocument.ElementSpec)
-	      parseBuffer.get(parseBuffer.size() - 1);
-      if (prev.getType() == DefaultStyledDocument.ElementSpec.StartTagType)
+      prev = parseBuffer.size() > 0 ? (DefaultStyledDocument.ElementSpec)
+                                parseBuffer.get(parseBuffer.size() - 1) : null;
+      if (prev != null &&
+          prev.getType() == DefaultStyledDocument.ElementSpec.StartTagType)
         {
           addContent(new char[]{' '}, 0, 1);
         }
@@ -1603,7 +1614,7 @@ public class HTMLDocument extends DefaultStyledDocument
         {
           try
             {
-              flush();
+              flushImpl();
             }
           catch (BadLocationException ble)
             {

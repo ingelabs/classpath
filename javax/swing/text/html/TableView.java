@@ -38,9 +38,12 @@ exception statement from your version. */
 
 package javax.swing.text.html;
 
+import java.awt.Shape;
+
 import gnu.javax.swing.text.html.css.Length;
 
 import javax.swing.SizeRequirements;
+import javax.swing.event.DocumentEvent;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BoxView;
 import javax.swing.text.Element;
@@ -744,5 +747,29 @@ class TableView
       {
         offsets[i] += (i + 1) * cellSpacing;
       }
+  }
+
+  /**
+   * Overridden to replace view factory with this one.
+   */
+  public void insertUpdate(DocumentEvent e, Shape a, ViewFactory f)
+  {
+    super.insertUpdate(e, a, this);
+  }
+
+  /**
+   * Overridden to replace view factory with this one.
+   */
+  public void removeUpdate(DocumentEvent e, Shape a, ViewFactory f)
+  {
+    super.removeUpdate(e, a, this);
+  }
+
+  /**
+   * Overridden to replace view factory with this one.
+   */
+  public void changedUpdate(DocumentEvent e, Shape a, ViewFactory f)
+  {
+    super.changedUpdate(e, a, this);
   }
 }

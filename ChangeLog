@@ -1,5 +1,28 @@
 2006-11-19  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JEditorPane.java
+	(PageStream): New inner class.
+	(PageLoader): New inner class.
+	(loading): New field.
+	(setPage): Implemented asynchronous loading.
+	* javax/swing/text/DefaultStyledDocument.java
+	(ElementBuffer.create): New helper method.
+	(create): Use new ElementBuffer method instead of hack.
+	* javax/swing/text/html/HTMLDocument.java
+	(HTMLReader.flushImpl): New helper method.
+	(HTMLReader.addContent): Use flushImpl().
+	(HTMLReader.blockClose): Added null check.
+	(HTMLReader.flush): Use flushImpl().
+	* javax/swing/text/html/HTMLEditorKit.java
+	(createDefaultDocument): Set load priority to 4 and token threshold
+	to 100.
+	* javax/swing/text/html/TableView.java
+	(insertUpdate): Overridden to provide correct view factory.
+	(removeUpdate): Overridden to provide correct view factory.
+	(changedUpdate): Overridden to provide correct view factory.
+
+2006-11-19  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/BoxView.java
 	(clipRect): New field.
 	(tmpRect): New field.
