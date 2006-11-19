@@ -50,6 +50,8 @@ import gnu.javax.swing.text.html.css.Selector;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -896,8 +898,8 @@ public class StyleSheet extends StyleContext
           {
             int parSize = 12;
             AttributeSet resolver = atts.getResolveParent();
-            if (resolver != null) {
-              parSize = getFontSize(resolver);System.err.println("parent size: " + parSize);    }
+            if (resolver != null)
+              parSize = getFontSize(resolver);
             size = fs.getValue(parSize); 
           }
         else
@@ -1274,6 +1276,11 @@ public class StyleSheet extends StyleContext
     }
 
     /**
+     * Cached rectangle re-used in the paint method below.
+     */
+    private final Rectangle tmpRect = new Rectangle();
+
+    /**
      * Paints the CSS list decoration according to the attributes given.
      * 
      * @param g - the graphics configuration
@@ -1298,7 +1305,32 @@ public class StyleSheet extends StyleContext
       if (tag != null && tag == HTML.Tag.LI)
         {
           g.setColor(Color.BLACK);
-          g.fillOval((int) x - 15, (int) (h / 2 - 3 + y), 6, 6);
+          int centerX = (int) (x - 12);
+          int centerY = -1;
+          // For paragraphs (almost all cases) center bullet vertically
+          // in the middle of the first line.
+          tmpRect.setBounds((int) x, (int) y, (int) w, (int) h);
+          if (itemView.getViewCount() > 0)
+            {
+              View v1 = itemView.getView(0);
+              if (v1 instanceof ParagraphView && v1.getViewCount() > 0)
+                {             
+                  Shape a1 = itemView.getChildAllocation(0, tmpRect);
+                  Rectangle r1 = a1 instanceof Rectangle ? (Rectangle) a1
+                                                         : a1.getBounds();
+                  ParagraphView par = (ParagraphView) v1;
+                  Shape a = par.getChildAllocation(0, r1);
+                  Rectangle r = a instanceof Rectangle ? (Rectangle) a
+                                                       : a.getBounds();
+                  centerY = (int) (r.height / 2 + r.y);
+                }
+            }
+          if (centerY == -1)
+            {
+              System.err.println("WARNING LI child is not a paragraph view " + itemView.getView(0) + ", " + itemView.getViewCount());
+              centerY =(int) (h / 2 + y);
+            }
+          g.fillOval(centerX - 3, centerY - 3, 6, 6);
         }
     }
   }
