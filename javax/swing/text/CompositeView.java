@@ -68,7 +68,7 @@ public abstract class CompositeView
    * initialized in {@link #getInsideAllocation} and reused and modified in
    * {@link #childAllocation(int, Rectangle)}.
    */
-  Rectangle insideAllocation;
+  private final Rectangle insideAllocation = new Rectangle();
 
   /**
    * The insets of this <code>CompositeView</code>. This is initialized
@@ -527,20 +527,13 @@ public abstract class CompositeView
     if (a == null)
       return null;
 
-    Rectangle alloc = a.getBounds();
+    // Try to avoid allocation of Rectangle here.
+    Rectangle alloc = a instanceof Rectangle ? (Rectangle) a : a.getBounds();
+
     // Initialize the inside allocation rectangle. This is done inside
     // a synchronized block in order to avoid multiple threads creating
     // this instance simultanously.
-    Rectangle inside;
-    synchronized(this)
-      {
-        inside = insideAllocation;
-        if (inside == null)
-          {
-            inside = new Rectangle();
-            insideAllocation = inside;
-          }
-      }
+    Rectangle inside = insideAllocation;
     inside.x = alloc.x + left;
     inside.y = alloc.y + top;
     inside.width = alloc.width - left - right;

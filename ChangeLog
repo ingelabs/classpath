@@ -1,5 +1,27 @@
 2006-11-19  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/BoxView.java
+	(clipRect): New field.
+	(tmpRect): New field.
+	(layout): Reorganized code. Now uses layoutAxis() helper method.
+	(layoutAxis): New helper method.
+	(paint): Optimized by using cached Rectangle objects and
+	a binary search for child views inside the clip.
+	* javax/swing/text/CompositeView.java
+	(insideAllocation): Made private and initialized in constructor.
+	(getInsideAllocation): Removed initialization block for
+	insideAllocation field. Avoid unnecessary allocations.
+	* javax/swing/text/GlyphView.java
+	(DefaultGlyphPainter.paint): Only paint the actual glyphs here
+	The remaining stuff (background, underline and striking) is
+	done in the GlpyhView itself. Avoid unnecessary allocations.
+	(cached): A cached Segment instance.
+	(getText): Return cached segment.
+	(paint): Paint underline, strike and background here. Avoid
+	unecessary allocs.
+
+2006-11-19  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/html/StyleSheet.java
 	(getFontSize): Removed debug output.
 	(ListPainter.tmpRect): New field.
