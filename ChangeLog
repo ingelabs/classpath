@@ -1,3 +1,13 @@
+2006-11-20  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/util/regex/RE.java (messages): Don't initialize.
+	(bundle): New static final String field.
+	(getLocalizedMessage): Initialize messages when still null.
+	* gnu/java/util/regex/RESyntax.java (SYNTAX_IS_FINAL): Removed.
+	(set): Use RE.getLocalizedMessage().
+	(clear): Likewise.
+	(setLineSeparator): Likewise.
+
 2006-11-20  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/html/StyleSheet.java
