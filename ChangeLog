@@ -1,5 +1,16 @@
 2006-11-20  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/StyleContext.java
+	(attributeSetPool): Synchronize this map.
+	(addAttribute): Synchronize this method.
+	(addAttributes: Synchronize this method.
+	(readObject): Install synchronized map on target object.
+	(removeAttribute): Synchronize this method.
+	(removeAttributes): Synchronize this method.
+	(removeAttributes): Synchronize this method.	
+	
+2006-11-20  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/GapContent.java
 	(GapContentPosition.GapContentPosition): Removed constructor.
 	(Mark): Made subclass of WeakReference to refer directly to
