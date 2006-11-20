@@ -1,3 +1,41 @@
+2006-11-20  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/GapContent.java
+	(GapContentPosition.GapContentPosition): Removed constructor.
+	(Mark): Made subclass of WeakReference to refer directly to
+	the associated position.
+	(Mark.refCount): Removed.
+	(Mark.Mark(int,GapContentPosition,ReferenceQueue):
+	New constructor. Used to reference a position and register the
+	reference queue.
+	(Mark.Mark(index)): Call super and don't adjust mark offset.
+	(Mark.compareTo): Removed.
+	(Mark.equals): Removed.
+	(Mark.getOffset): Return at least null. Removed assert.
+	(Mark.getPosition): New helper method.
+	(garbageMarks): New field.
+	(positions): Removed.
+	(searchMark): New field.
+	(GapContent): Removed init of positions map.
+	(addImpl): New helper method.
+	(adjustPositionsInRange): Removed.
+	(compare): New helper method.
+	(createPosition): Rewritten for new datastructures. This now
+	performs a much more efficient binary search for finding
+	a position at the requested offste.
+	(garbageCollect): Rewritten to collect unused marks.
+	(getPositionsInRange): Adjusted for new data structures.
+	(removeImpl): New helper method.
+	(replace): Use new addImpl() and removeImpl() helper method for
+	correctly adjusting the positions and gap.
+	(search): Rewritten. Implements a more suitable binary search.
+	(searchFirst): New helper method.
+	(setPositionsInRange): Removed.
+	(shiftEnd): Update the marks here.
+	(shiftGap): Update the marks here.
+	(shiftGapEndUp): Update the marks here.
+	(shiftGapStartDown): Update the marks here.
+
 2006-11-20  Marco Trudel <mtrudel@gmx.ch>
 
 	* java/util/jar/JarFile.java (digestAlgorithms): New field used to cache
