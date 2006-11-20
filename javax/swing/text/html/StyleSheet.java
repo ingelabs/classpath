@@ -240,8 +240,10 @@ public class StyleSheet extends StyleContext
   /** Base font size (int) */
   int baseFontSize;
   
-  /** The style sheets stored. */
-  StyleSheet[] styleSheet;
+  /**
+   * The linked style sheets stored.
+   */
+  private ArrayList linked;
 
   /**
    * Maps element names (selectors) to AttributSet (the corresponding style
@@ -433,6 +435,21 @@ public class StyleSheet extends StyleContext
           styles.add(style);
       }
 
+    // Add styles from linked stylesheets.
+    if (linked != null)
+      {
+        for (int i = linked.size() - 1; i >= 0; i--)
+          {
+            StyleSheet ss = (StyleSheet) linked.get(i);
+            for (int j = ss.css.size() - 1; j >= 0; j--)
+              {
+                CSSStyle style = (CSSStyle) ss.css.get(j);
+                if (style.selector.matches(tags, classes, ids))
+                  styles.add(style);
+              }
+          }
+      }
+
     // Sort selectors.
     Collections.sort(styles);
     Style[] styleArray = new Style[styles.size()];
@@ -453,7 +470,6 @@ public class StyleSheet extends StyleContext
    */
   public Style getRule(String selector)
   {
-    Selector sel = new Selector(selector);
     CSSStyle best = null;
     for (Iterator i = css.iterator(); i.hasNext();)
       {
@@ -558,11 +574,9 @@ public class StyleSheet extends StyleContext
    */
   public void addStyleSheet(StyleSheet ss)
   {
-    if (styleSheet == null)
-      styleSheet = new StyleSheet[] {ss};
-    else
-      System.arraycopy(new StyleSheet[] {ss}, 0, styleSheet, 
-                       styleSheet.length, 1);
+    if (linked == null)
+      linked = new ArrayList();
+    linked.add(ss);
   }
   
   /**
@@ -572,31 +586,9 @@ public class StyleSheet extends StyleContext
    */
   public void removeStyleSheet(StyleSheet ss)
   {
-    if (styleSheet.length == 1 && styleSheet[0].equals(ss))
-      styleSheet = null;
-    else
+    if (linked != null)
       {
-        for (int i = 0; i < styleSheet.length; i++)
-          {
-            StyleSheet curr = styleSheet[i];
-            if (curr.equals(ss))
-              {
-                StyleSheet[] tmp = new StyleSheet[styleSheet.length - 1];
-                if (i != 0 && i != (styleSheet.length - 1))
-                  {
-                    System.arraycopy(styleSheet, 0, tmp, 0, i);
-                    System.arraycopy(styleSheet, i + 1, tmp, i,
-                                     styleSheet.length - i - 1);
-                  }
-                else if (i == 0)
-                  System.arraycopy(styleSheet, 1, tmp, 0, styleSheet.length - 1);
-                else
-                  System.arraycopy(styleSheet, 0, tmp, 0, styleSheet.length - 1);
-                
-                styleSheet = tmp;
-                break;
-              }
-          }
+        linked.remove(ss);
       }
   }
   
@@ -607,7 +599,17 @@ public class StyleSheet extends StyleContext
    */
   public StyleSheet[] getStyleSheets()
   {
-    return styleSheet;
+    StyleSheet[] linkedSS;
+    if (linked != null)
+      {
+        linkedSS = new StyleSheet[linked.size()];
+        linkedSS = (StyleSheet[]) linked.toArray(linkedSS);
+      }
+    else
+      {
+        linkedSS = null;
+      }
+    return linkedSS;
   }
   
   /**
@@ -1127,6 +1129,8 @@ public class StyleSheet extends StyleContext
       l = (Length) as.getAttribute(CSS.Attribute.MARGIN_LEFT);
       if (l != null)
         leftInset = l.getValue();
+      else if (as.getAttribute(StyleConstants.NameAttribute) == HTML.Tag.UL)
+        System.err.println("UL margin left value: " + l + " atts: " + as);
       l = (Length) as.getAttribute(CSS.Attribute.MARGIN_RIGHT);
       if (l != null)
         rightInset = l.getValue();

@@ -1,5 +1,16 @@
 2006-11-20  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/html/StyleSheet.java
+	(linked): New field.
+	(styleSheet): Replaced by linked.
+	(addStyleSheet): Use an arraylist for simplicity.
+	(getRule): Removed useless instantiation.
+	(getStyleSheets): Convert array list to array.
+	(removeStyleSheet): Use an arraylist for simplicity.
+	(resolveStyle): Include styles from linked lists.
+
+2006-11-20  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/BoxView.java
 	(BoxView): Initialize with invalid req's.
 	(forwardUpdate): Trigger repaint when children changed the
