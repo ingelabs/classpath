@@ -1,5 +1,17 @@
 2006-11-20  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(RootView.paint): Avoid allocation.
+	(cachedInsets): New field. Caches an Insets instance.
+	(getNextVisualPositionFrom): Read-lock the document to avoid
+	thread nastiness. Push allocation.
+	(getPreferredSize): Push fake allocation when not yet laid out.
+	(getVisibleEditorRect): Use cached insets.
+	(viewToModel): Read-lock the document to avoid
+	thread nastiness. Push allocation.
+
+2006-11-20  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/StyleContext.java
 	(attributeSetPool): Synchronize this map.
 	(addAttribute): Synchronize this method.
