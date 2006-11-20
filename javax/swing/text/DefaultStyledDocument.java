@@ -1039,6 +1039,8 @@ public class DefaultStyledDocument extends AbstractDocument implements
           ElementEdit ee = new ElementEdit(parent, index, removed, added);
           ev.addEdit(ee);
 	}
+      edits.clear();
+      elementStack.clear();
     }
 
     /**
@@ -1086,7 +1088,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
           createFracture(data);
           i = 0;
         }
-      
+
       // Handle each ElementSpec individually.
       for (; i < data.length; i++)
         {
@@ -1121,14 +1123,13 @@ public class DefaultStyledDocument extends AbstractDocument implements
       if (offset == 0 && fracturedParent != null
           && data[0].getType() == ElementSpec.EndTagType)
         {
-          for (int p = 0;
+          int p;
+          for (p = 0;
                p < data.length && data[p].getType() == ElementSpec.EndTagType;
-               p++)
-            {
-              Edit edit = insertPath[insertPath.length - p - 1];
-              edit.index--;
-              edit.removed.add(0, edit.e.getElement(edit.index));
-            }
+               p++);
+          Edit edit = insertPath[insertPath.length - p - 1];
+          edit.index--;
+          edit.removed.add(0, edit.e.getElement(edit.index));
         }
     }
 

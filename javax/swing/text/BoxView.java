@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package javax.swing.text;
 
+import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.Shape;
@@ -105,6 +106,8 @@ public class BoxView
     myAxis = axis;
     layoutValid[0] = false;
     layoutValid[1] = false;
+    requirementsValid[X_AXIS] = false;
+    requirementsValid[Y_AXIS] = false;
     span[0] = 0;
     span[1] = 0;
     requirements[0] = new SizeRequirements();
@@ -141,7 +144,10 @@ public class BoxView
    */
   public void setAxis(int axis)
   {
+    boolean changed = axis != myAxis;
     myAxis = axis;
+    if (changed)
+      preferenceChanged(null, true, true);
   }
 
   /**
@@ -222,35 +228,20 @@ public class BoxView
    */
   public void replace(int offset, int length, View[] views)
   {
-    int oldNumChildren = getViewCount();
-
     // Actually perform the replace.
     super.replace(offset, length, views);
 
     // Resize and copy data for cache arrays.
     int newItems = views != null ? views.length : 0;
-    int delta = newItems - length;
-    int src = offset + length;
-    int numMove = oldNumChildren - src;
-    int dst = src + delta;
-    offsets[X_AXIS] = replaceLayoutArray(offsets[X_AXIS], offset,
-                                         oldNumChildren, delta, src, dst,
-                                         numMove);
-    spans[X_AXIS] = replaceLayoutArray(spans[X_AXIS], offset,
-                                       oldNumChildren, delta, src, dst,
-                                       numMove);
-    offsets[Y_AXIS] = replaceLayoutArray(offsets[Y_AXIS], offset,
-                                         oldNumChildren, delta, src, dst,
-                                         numMove);
-    spans[Y_AXIS] = replaceLayoutArray(spans[Y_AXIS], offset,
-                                       oldNumChildren, delta, src, dst,
-                                       numMove);
-
-    // Invalidate layout information.
-    layoutValid[X_AXIS] = false;
-    requirementsValid[X_AXIS] = false;
-    layoutValid[Y_AXIS] = false;
-    requirementsValid[Y_AXIS] = false;
+    int minor = 1 - myAxis;
+    offsets[myAxis] = replaceLayoutArray(offsets[myAxis], offset, newItems);
+    spans[myAxis] = replaceLayoutArray(spans[myAxis], offset, newItems);
+    layoutValid[myAxis] = false;
+    requirementsValid[myAxis] = false;
+    offsets[minor] = replaceLayoutArray(offsets[minor], offset, newItems);
+    spans[minor] = replaceLayoutArray(spans[minor], offset, newItems);
+    layoutValid[minor] = false;
+    requirementsValid[minor] = false;
   }
 
   /**
@@ -261,23 +252,14 @@ public class BoxView
    *
    * @return the replaced array
    */
-  private int[] replaceLayoutArray(int[] oldArray, int offset, int numChildren,
-                                   int delta, int src, int dst, int numMove)
+  private int[] replaceLayoutArray(int[] oldArray, int offset, int newItems)
 
   {
-    int[] newArray;
-    if (numChildren + delta > oldArray.length)
-      {
-        int newLength = Math.max(2 * oldArray.length, numChildren + delta);
-        newArray = new int[newLength];
-        System.arraycopy(oldArray, 0, newArray, 0, offset);
-        System.arraycopy(oldArray, src, newArray, dst, numMove);
-      }
-    else
-      {
-        newArray = oldArray;
-        System.arraycopy(newArray, src, newArray, dst, numMove);
-      }
+    int num = getViewCount();
+    int[] newArray = new int[num];
+    System.arraycopy(oldArray, 0, newArray, 0, offset);
+    System.arraycopy(oldArray, offset, newArray, offset + newItems,
+                     num - newItems - offset);
     return newArray;
   }
 
@@ -341,12 +323,14 @@ public class BoxView
             newMid = (up - low) / 2 + low;
             mid = (newMid == mid) ? newMid - 1 : newMid;
           }
-        else
+        else if (isAfter(cX, cY, tmpRect))
           {
             low = mid;
             newMid = (up - low) / 2 + low;
             mid = (newMid == mid) ? newMid + 1 : newMid;
           }
+        else
+          break;
         if (mid >= 0 && mid < viewCount)
           {
             start = getView(mid);
@@ -864,7 +848,7 @@ public class BoxView
       {
         View child = getView(i);
         spans[i] = (int) child.getPreferredSpan(axis);
-        sumPref = spans[i];
+        sumPref += spans[i];
       }
 
     // Try to adjust the spans so that we fill the targetSpan.
@@ -1105,9 +1089,11 @@ public class BoxView
   {
     if (axis != X_AXIS && axis != Y_AXIS)
       throw new IllegalArgumentException("Illegal axis argument");
-    int weight = 1;
-    if (axis == myAxis)
-      weight = 0;
+    updateRequirements(axis);
+    int weight = 0;
+    if ((requirements[axis].preferred != requirements[axis].minimum)
+        || (requirements[axis].preferred != requirements[axis].maximum))
+      weight = 1;
     return weight;
   }
 
@@ -1134,8 +1120,30 @@ public class BoxView
   protected void forwardUpdate(DocumentEvent.ElementChange ec, DocumentEvent e,
                                Shape a, ViewFactory vf)
   {
-    // FIXME: What to do here?
+    boolean wasValid = isLayoutValid(myAxis);
     super.forwardUpdate(ec, e, a, vf);
+    // Trigger repaint when one of the children changed the major axis.
+    if (wasValid && ! isLayoutValid(myAxis))
+      {
+        Container c = getContainer();
+        if (a != null && c != null)
+          {
+            int pos = e.getOffset();
+            int index = getViewIndexAtPosition(pos);
+            Rectangle r = getInsideAllocation(a);
+            if (myAxis == X_AXIS)
+              {
+                r.x += offsets[myAxis][index];
+                r.width -= offsets[myAxis][index];
+              }
+            else
+              {
+                r.y += offsets[myAxis][index];
+                r.height -= offsets[myAxis][index];
+              }
+            c.repaint(r.x, r.y, r.width, r.height);
+          }
+      }
   }
 
   public int viewToModel(float x, float y, Shape a, Position.Bias[] bias)

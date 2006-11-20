@@ -89,12 +89,12 @@ public class Utilities
 
     // The font metrics of the current selected font.
     FontMetrics metrics = g.getFontMetrics();
+
     int ascent = metrics.getAscent();
 
     // The current x and y pixel coordinates.
     int pixelX = x;
 
-    int pixelWidth = 0;
     int pos = s.offset;
     int len = 0;
     
@@ -103,39 +103,43 @@ public class Utilities
     for (int offset = s.offset; offset < end; ++offset)
       {
         char c = buffer[offset];
-        if (c == '\t')
+        switch (c)
           {
+          case '\t':
             if (len > 0) {
               g.drawChars(buffer, pos, len, pixelX, y);
-              pixelX += pixelWidth;
-              pixelWidth = 0;
+              pixelX += metrics.charsWidth(buffer, pos, len);
+              len = 0;
             }
             pos = offset+1;
-            len = 0;
+            if (e != null)
+              pixelX = (int) e.nextTabStop((float) pixelX, startOffset + offset
+                                           - s.offset);
+            else
+              pixelX += metrics.charWidth(' ');
+            x = pixelX;
+            break;
+          case '\n':
+          case '\r':
+            if (len > 0) {
+              g.drawChars(buffer, pos, len, pixelX, y);
+              pixelX += metrics.charsWidth(buffer, pos, len);
+              len = 0;
+            }
+            x = pixelX;
+            break;
+          default:
+            len += 1;
           }
-        
-	switch (c)
-	  {
-	  case '\t':
-	    // In case we have a tab, we just 'jump' over the tab.
-	    // When we have no tab expander we just use the width of ' '.
-	    if (e != null)
-	      pixelX = (int) e.nextTabStop(pixelX,
-                                           startOffset + offset - s.offset);
-	    else
-	      pixelX += metrics.charWidth(' ');
-	    break;
-	  default:
-            ++len;
-	    pixelWidth += metrics.charWidth(buffer[offset]);
-	    break;
-	  }
       }
 
     if (len > 0)
-      g.drawChars(buffer, pos, len, pixelX, y);
+      {
+        g.drawChars(buffer, pos, len, pixelX, y);
+        pixelX += metrics.charsWidth(buffer, pos, len);
+      }
     
-    return pixelX + pixelWidth;
+    return pixelX;
   }
 
   /**

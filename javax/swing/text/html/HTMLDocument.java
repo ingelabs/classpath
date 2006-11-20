@@ -184,8 +184,6 @@ public class HTMLDocument extends DefaultStyledDocument
   protected Element createLeafElement(Element parent, AttributeSet a, int p0,
                                       int p1)
   {
-    RunElement el = new RunElement(parent, a, p0, p1);
-    el.addAttribute(StyleConstants.NameAttribute, HTML.Tag.CONTENT);
     return new RunElement(parent, a, p0, p1);
   }
 
@@ -454,6 +452,8 @@ public class HTMLDocument extends DefaultStyledDocument
       String name = null;
       if (tag != null)
         name = tag.toString();
+      if (name == null)
+        name = super.getName();
       return name;
     }
   }
@@ -490,6 +490,8 @@ public class HTMLDocument extends DefaultStyledDocument
       String name = null;
       if (tag != null)
         name = tag.toString();
+      if (name == null)
+        name = super.getName();
       return name;
     }
     
@@ -511,7 +513,17 @@ public class HTMLDocument extends DefaultStyledDocument
    * @author Anthony Balkissoon abalkiss at redhat dot com
    */
   public class HTMLReader extends HTMLEditorKit.ParserCallback
-  {    
+  {
+    /**
+     * The maximum token threshold. We don't grow it larger than this.
+     */
+    private static final int MAX_THRESHOLD = 10000;
+
+    /**
+     * The threshold growth factor.
+     */
+    private static final int GROW_THRESHOLD = 5;
+
     /**
      * Holds the current character attribute set *
      */
@@ -603,6 +615,11 @@ public class HTMLDocument extends DefaultStyledDocument
      * This is package private to avoid accessor methods.
      */
     Document textAreaDocument;
+
+    /**
+     * The token threshold. This gets increased while loading.
+     */
+    private int threshold;
 
     public class TagAction
     {
@@ -1156,6 +1173,7 @@ public class HTMLDocument extends DefaultStyledDocument
       this.offset = offset;
       this.popDepth = popDepth;
       this.pushDepth = pushDepth;
+      threshold = getTokenThreshold();
       initTags();
     }
     
@@ -1610,8 +1628,10 @@ public class HTMLDocument extends DefaultStyledDocument
       // Add the element to the buffer
       parseBuffer.addElement(element);
 
-      if (parseBuffer.size() > HTMLDocument.this.getTokenThreshold())
+      if (parseBuffer.size() > threshold)
         {
+          if (threshold <= MAX_THRESHOLD)
+            threshold *= GROW_THRESHOLD;
           try
             {
               flushImpl();

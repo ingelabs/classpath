@@ -1046,7 +1046,7 @@ public class GlyphView extends View implements TabableView, Cloneable
    */
   public void changedUpdate(DocumentEvent e, Shape a, ViewFactory vf)
   {
-    preferenceChanged(this, true, true);
+    preferenceChanged(null, true, true);
   }
 
   /**
@@ -1061,7 +1061,7 @@ public class GlyphView extends View implements TabableView, Cloneable
    */
   public void insertUpdate(DocumentEvent e, Shape a, ViewFactory vf)
   {
-    preferenceChanged(this, true, false);
+    preferenceChanged(null, true, false);
   }
 
   /**
@@ -1076,7 +1076,7 @@ public class GlyphView extends View implements TabableView, Cloneable
    */
   public void removeUpdate(DocumentEvent e, Shape a, ViewFactory vf)
   {
-    preferenceChanged(this, true, false);
+    preferenceChanged(null, true, false);
   }
 
   /**

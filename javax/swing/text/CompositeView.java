@@ -534,10 +534,10 @@ public abstract class CompositeView
     // a synchronized block in order to avoid multiple threads creating
     // this instance simultanously.
     Rectangle inside = insideAllocation;
-    inside.x = alloc.x + left;
-    inside.y = alloc.y + top;
-    inside.width = alloc.width - left - right;
-    inside.height = alloc.height - top - bottom;
+    inside.x = alloc.x + getLeftInset();
+    inside.y = alloc.y + getTopInset();
+    inside.width = alloc.width - getLeftInset() - getRightInset();
+    inside.height = alloc.height - getTopInset() - getBottomInset();
     return inside;
   }
 

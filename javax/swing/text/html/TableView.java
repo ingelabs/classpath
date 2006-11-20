@@ -78,6 +78,12 @@ class TableView
       super(el, X_AXIS);
     }
 
+    public void replace(int offset, int len, View[] views)
+    {
+      super.replace(offset, len, views);
+      gridValid = false;
+    }
+
     /**
      * Overridden to make rows not resizable along the Y axis.
      */
@@ -251,7 +257,7 @@ class TableView
   /**
    * Indicates if the grid setup is ok.
    */
-  private boolean gridValid;
+  boolean gridValid;
 
   /**
    * Additional space that is added _between_ table cells.
@@ -393,6 +399,16 @@ class TableView
                                  int[] spans)
   {
     updateGrid();
+
+    // Mark all rows as invalid.
+    int n = getViewCount();
+    for (int i = 0; i < n; i++)
+      {
+        View row = getView(i);
+        if (row instanceof RowView)
+          ((RowView) row).layoutChanged(axis);
+      }
+
     layoutColumns(targetSpan);
     super.layoutMinorAxis(targetSpan, axis, offsets, spans);
   }
@@ -771,5 +787,11 @@ class TableView
   public void changedUpdate(DocumentEvent e, Shape a, ViewFactory f)
   {
     super.changedUpdate(e, a, this);
+  }
+
+  public void replace(int offset, int len, View[] views)
+  {
+    super.replace(offset, len, views);
+    gridValid = false;
   }
 }

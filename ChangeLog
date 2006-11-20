@@ -1,5 +1,48 @@
 2006-11-20  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/BoxView.java
+	(BoxView): Initialize with invalid req's.
+	(forwardUpdate): Trigger repaint when children changed the
+	major axis.
+	(getResizeWeight): Return resizable when the pref differs from
+	the min or the pref differs from the max size.
+	(layoutMajorAxis): Actually sum up the preferred sizes.
+	(paint): Made binary search more robust.
+	(replace): Let arrays shrink when needed.
+	(replaceLayoutArray): Let arrays shrink when needed.
+	(setAxis): Trigger preferenceChanged.
+	* javax/swing/text/CompositeView.java
+	(getInsideAllocation): Call insets method to take account
+	of overriding subclasses.
+	* javax/swing/text/DefaultStyledDocument.java
+	(ElementBuffer.finishEdit): Clear the stack and edits buffer.
+	(ElementBuffer.insertUpdate): Only remove the found element, not
+	all.
+	* javax/swing/text/GlyphView.java
+	(insertUpdate): Pass null in preferenceChanged.
+	(removeUpdate): Pass null in preferenceChanged.
+	(changedUpdate): Pass null in preferenceChanged.
+	* javax/swing/text/Utilities.java
+	(drawTabbedText): Avoid single calls to charWidth() and instead
+	call charsWidth() on whole chunks.
+	* javax/swing/text/html/HTMLDocument.java
+	(BlockElement.getName): Fall back to super when necessary.
+	(RunElement.getName): Fall back to super when necessary.
+	(HTMLReader.MAX_THRESHOLD): New constant field.
+	(HTMLReader.GROW_THRESHOLD): New constant field.
+	(HTMLReader.theshold): New field.
+	(HTMLReader.HTMLReader): Fetch threshold from document.
+	(HTMLReader.addContent): Sucessivly grow the threshold.
+	(createLeafElement): Don't create two elemens and don't set
+	attribute.
+	* javax/swing/text/html/TableView.java
+	(RowView.replace): Invalidate grid.
+	(gridValid): Made package private.
+	(layoutMinorAxis): Mark all rows as invalid.
+	(replace): Invalidate grid.
+
+2006-11-20  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/AbstractDocument.java
 	(DefaultDocumentEvent.changes): Changed to be a HashMap.
 	(DefaultDocumentEvent.modified): Made private.
