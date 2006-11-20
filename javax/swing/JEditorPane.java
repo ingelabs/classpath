@@ -1101,6 +1101,7 @@ public class JEditorPane extends JTextComponent
                 PageLoader loader = new PageLoader(doc, loading, prio, old,
                                                    page);
                 Thread loadThread = new Thread(loader);
+                loadThread.setPriority(prio);
                 loadThread.start();
               }
             else

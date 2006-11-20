@@ -1,5 +1,10 @@
 2006-11-20  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JEditorPane.java
+	(setPage): Set priority on loading thread.
+
+2006-11-20  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicTextUI.java
 	(RootView.paint): Avoid allocation.
 	(cachedInsets): New field. Caches an Insets instance.
