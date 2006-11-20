@@ -1,5 +1,11 @@
 2006-11-20  Tania Bento  <tbento@redhat.com>
 
+	* javax/swing/ButtonGroup.java:
+	(setSelected): Select the ButtonModel if all conditions
+	are met.
+
+2006-11-20  Tania Bento  <tbento@redhat.com>
+
 	* javax/swing/JSlider.java:
 	(updateLabelUIs): Removed casting.
 
