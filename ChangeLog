@@ -1,5 +1,28 @@
 2006-11-20  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/AbstractDocument.java
+	(DefaultDocumentEvent.changes): Changed to be a HashMap.
+	(DefaultDocumentEvent.modified): Made private.
+	(DefaultDocumentEvent.THRESHOLD): New constant field.
+	(DefaultDocumentEvent.DefaultDocumentEvent): Don't initialize
+	changes table.
+	(DefaultDocumentEvent.addEdit): Switch to hashmap only when
+	exceeding threshold.
+	(DefaultDocumentEvent.getChange): Use iterative approach
+	when we have no hashmap yet.
+	(documentCV): Removed.
+	(numWriters): Renamed from numWritersWaiting.
+	(createPosition): Reformat.
+	(getCurrentWriter): Synchronized.
+	(readLock): Implement more straightforward.
+	(readUnlock): Implement more straightforward.
+	(writeLock): Implement more straightforward.
+	(writeUnlock): Implement more straightforward.
+	(remove): Write-lock here.
+	(removeImpl): Don't write-lock here.
+
+2006-11-20  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JEditorPane.java
 	(setPage): Set priority on loading thread.
 
