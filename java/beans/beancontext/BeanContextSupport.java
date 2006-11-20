@@ -754,7 +754,7 @@ public class BeanContextSupport extends BeanContextChildSupport
    * This method is synchronized over the global hierarchy lock.
    * </p>
    *
-   * @param targetChild the child to add.
+   * @param targetChild the child to remove.
    * @param callChildSetBC true if the <code>setBeanContext()</code>
    *                       method of the child should be called.
    * @return false if the child doesn't exist.
