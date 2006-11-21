@@ -1,3 +1,27 @@
+2006-11-21  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/text/TextLayout.java
+	(Run.isLeftToRight): New helper method.
+	(logicalToVisual): New field. Maps logical indices to visual
+	indices.
+	(visualToLogical): New field. Maps visual indices to logical
+	indices.
+	(TextLayout): Setup mappings.
+	(setupMappings): New method for setting up the mappings.
+	(getCharacterLevel): Reorganized code.
+	(getNextLeftHit(int)): Implemented.
+	(getNextLeftHit(int,CaretPolicy)): New method.
+	(getNextLeftHit(TextHitInfo)): Implemented.
+	(getNextRightHit(int)): Implemented.
+	(getNextRightHit(int,CaretPolicy)): New method.
+	(getNextRightHit(TextHitInfo)): New method.
+	(getVisualOtherHit): Implemented.
+	(checkHitInfo): New helper methods for checking parameters.
+	(hitToCaret): New helper method. Maps hit infos to caret locations.
+	(caretToHit): New helper method. Maps caret locations to hit infos.
+	(isCharacterLTR): New helper method.
+	(CaretPolicy.getStrongCaret): Implemented.
+
 2006-11-21  Francis Kung  <fkung@redhat.com>
 
 	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java

@@ -91,6 +91,18 @@ public final class TextLayout implements Cloneable
       runStart = start;
       runEnd = end;
     }
+
+    /**
+     * Returns <code>true</code> when this run is left to right,
+     * <code>false</code> otherwise.
+     *
+     * @return <code>true</code> when this run is left to right,
+     *         <code>false</code> otherwise
+     */
+    boolean isLeftToRight()
+    {
+      return (glyphVector.getLayoutFlags() & GlyphVector.FLAG_RUN_RTL) == 0;
+    }
   }
 
   /**
@@ -140,9 +152,22 @@ public final class TextLayout implements Cloneable
   private Bidi bidi;
 
   /**
+   * Mpas the logical position of each individual character in the original
+   * string to its visual position.
+   */
+  private int[] logicalToVisual;
+
+  /**
+   * Maps visual positions of a character to its logical position
+   * in the original string.
+   */
+  private int[] visualToLogical;
+
+  /**
    * The default caret policy.
    */
-  public static final TextLayout.CaretPolicy DEFAULT_CARET_POLICY = new CaretPolicy();
+  public static final TextLayout.CaretPolicy DEFAULT_CARET_POLICY =
+    new CaretPolicy();
 
   /**
    * Constructs a TextLayout.
@@ -202,6 +227,7 @@ public final class TextLayout implements Cloneable
 	runs = new Run[]{ run };
       }
     setCharIndices();
+    setupMappings();
   }
 
   public TextLayout (String string, Map attributes, FontRenderContext frc)  
@@ -255,6 +281,7 @@ public final class TextLayout implements Cloneable
     runs[nRuns - 1].runEnd = endIndex - 1;
 
     setCharIndices();
+    setupMappings();
     determineWhiteSpace();
   }
 
@@ -276,6 +303,41 @@ public final class TextLayout implements Cloneable
                 charIndices[ i ][1] = gi;
                 currentChar = gv.getGlyphCharIndex( gi );
                 i++;
+              }
+          }
+      }
+  }
+
+  /**
+   * Initializes the logicalToVisual and visualToLogial maps.
+   */
+  private void setupMappings()
+  {
+    int numChars = getCharacterCount();
+    logicalToVisual = new int[numChars];
+    visualToLogical = new int[numChars];
+    int lIndex = 0;
+    int vIndex = 0;
+    // We scan the runs in visual order and set the mappings accordingly.
+    for (int i = 0; i < runs.length; i++)
+      {
+        Run run = runs[i];
+        if (run.isLeftToRight())
+          {
+            for (lIndex = run.runStart; lIndex < run.runEnd; lIndex++)
+              {
+                logicalToVisual[lIndex] = vIndex;
+                visualToLogical[vIndex] = lIndex;
+                vIndex++;
+              }
+          }
+        else
+          {
+            for (lIndex = run.runEnd - 1; lIndex >= run.runStart; lIndex--)
+              {
+                logicalToVisual[lIndex] = vIndex;
+                visualToLogical[vIndex] = lIndex;
+                vIndex++;
               }
           }
       }
@@ -511,9 +573,12 @@ public final class TextLayout implements Cloneable
 
   public byte getCharacterLevel (int index)
   {
+    byte level;
     if( bidi == null )
-      return (byte)( leftToRight ? 0 : 1 );
-    return (byte)bidi.getLevelAt( index );
+      level = 0;
+    else
+      level = (byte) bidi.getLevelAt(index);
+    return level;
   }
 
   public float getDescent ()
@@ -594,28 +659,81 @@ public final class TextLayout implements Cloneable
     throw new Error ("not implemented");
   }
 
-  public TextHitInfo getNextLeftHit (int offset)
-    throws NotImplementedException
+  public TextHitInfo getNextLeftHit(int offset)
   {
-    throw new Error ("not implemented");
+    return getNextLeftHit(offset, DEFAULT_CARET_POLICY);
+  }
+
+  public TextHitInfo getNextLeftHit(int offset, CaretPolicy policy)
+  {
+    if (policy == null)
+      throw new IllegalArgumentException("Null policy not allowed");
+    if (offset < 0 || offset > length)
+      throw new IllegalArgumentException("Offset out of bounds");
+
+    TextHitInfo hit1 = TextHitInfo.afterOffset(offset);
+    TextHitInfo hit2 = hit1.getOtherHit();
+
+    TextHitInfo strong = policy.getStrongCaret(hit1, hit2, this);
+    TextHitInfo next = getNextLeftHit(strong);
+    TextHitInfo ret = null;
+    if (next != null)
+      {
+        TextHitInfo next2 = getVisualOtherHit(next);
+        ret = policy.getStrongCaret(next2, next, this);
+      }
+    return ret;
   }
 
   public TextHitInfo getNextLeftHit (TextHitInfo hit)
-    throws NotImplementedException
   {
-    throw new Error ("not implemented");
+    checkHitInfo(hit);
+    int index = hitToCaret(hit);
+    TextHitInfo next = null;
+    if (index != 0)
+      {
+        index--;
+        next = caretToHit(index);
+      }
+    return next;
   }
 
-  public TextHitInfo getNextRightHit (int offset)
-    throws NotImplementedException
+  public TextHitInfo getNextRightHit(int offset)
   {
-    throw new Error ("not implemented");
+    return getNextRightHit(offset, DEFAULT_CARET_POLICY);
   }
 
-  public TextHitInfo getNextRightHit (TextHitInfo hit)
-    throws NotImplementedException
+  public TextHitInfo getNextRightHit(int offset, CaretPolicy policy)
   {
-    throw new Error ("not implemented");
+    if (policy == null)
+      throw new IllegalArgumentException("Null policy not allowed");
+    if (offset < 0 || offset > length)
+      throw new IllegalArgumentException("Offset out of bounds");
+
+    TextHitInfo hit1 = TextHitInfo.afterOffset(offset);
+    TextHitInfo hit2 = hit1.getOtherHit();
+
+    TextHitInfo next = getNextRightHit(policy.getStrongCaret(hit1, hit2, this));
+    TextHitInfo ret = null;
+    if (next != null)
+      {
+        TextHitInfo next2 = getVisualOtherHit(next);
+        ret = policy.getStrongCaret(next2, next, this);
+      }
+    return ret;
+  }
+
+  public TextHitInfo getNextRightHit(TextHitInfo hit)
+  {
+    checkHitInfo(hit);
+    int index = hitToCaret(hit);
+    TextHitInfo next = null;
+    if (index < length)
+      {
+        index++;
+        next = caretToHit(index);
+      }
+    return next;
   }
 
   public Shape getOutline (AffineTransform tx)
@@ -686,9 +804,53 @@ public final class TextLayout implements Cloneable
   }
 
   public TextHitInfo getVisualOtherHit (TextHitInfo hit)
-    throws NotImplementedException
   {
-    throw new Error ("not implemented");
+    checkHitInfo(hit);
+    int hitIndex = hit.getCharIndex();
+
+    int index;
+    boolean leading;
+    if (hitIndex == -1 || hitIndex == length)
+      {
+        // Boundary case.
+        int visual;
+        if (isLeftToRight() == (hitIndex == -1))
+          visual = 0;
+        else
+          visual = length - 1;
+        index = visualToLogical[visual];
+        if (isLeftToRight() == (hitIndex == -1))
+          leading = isCharacterLTR(index); // LTR.
+        else
+          leading = ! isCharacterLTR(index); // RTL.
+      }
+    else
+      {
+        // Normal case.
+        int visual = logicalToVisual[hitIndex];
+        boolean b;
+        if (isCharacterLTR(hitIndex) == hit.isLeadingEdge())
+          {
+            visual--;
+            b = false;
+          }
+        else
+          {
+            visual++;
+            b = true;
+          }
+        if (visual >= 0 && visual < length)
+          {
+            index = visualToLogical[visual];
+            leading = b == isLeftToRight();
+          }
+        else
+          {
+            index = b == isLeftToRight() ? length : -1;
+            leading = index == length;
+          }
+      }
+    return leading ? TextHitInfo.leading(index) : TextHitInfo.trailing(index);
   }
 
   /**
@@ -904,6 +1066,58 @@ public final class TextLayout implements Cloneable
     return naturalBounds;
   }
 
+  private void checkHitInfo(TextHitInfo hit)
+  {
+    if (hit == null)
+      throw new IllegalArgumentException("Null hit info not allowed");
+    int index = hit.getInsertionIndex();
+    if (index < 0 || index > length)
+      throw new IllegalArgumentException("Hit index out of range");
+  }
+
+  private int hitToCaret(TextHitInfo hit)
+  {
+    int index = hit.getCharIndex();
+    int ret;
+    if (index < 0)
+      ret = isLeftToRight() ? 0 : length;
+    else if (index >= length)
+      ret = isLeftToRight() ? length : 0;
+    else
+      {
+        ret = logicalToVisual[index];
+        if (hit.isLeadingEdge() != isCharacterLTR(index))
+          ret++;
+      }
+    return ret;
+  }
+
+  private TextHitInfo caretToHit(int index)
+  {
+    TextHitInfo hit;
+    if (index == 0 || index == length)
+      {
+        if ((index == length) == isLeftToRight())
+          hit = TextHitInfo.leading(length);
+        else
+          hit = TextHitInfo.trailing(-1);
+      }
+    else
+      {
+        int logical = visualToLogical[index];
+        boolean leading = isCharacterLTR(logical); // LTR.
+        hit = leading ? TextHitInfo.leading(logical)
+                      : TextHitInfo.trailing(logical);
+      }
+    return hit;
+  }
+
+  private boolean isCharacterLTR(int index)
+  {
+    byte level = getCharacterLevel(index);
+    return (level & 1) == 0;
+  }
+
   /**
    * Inner class describing a caret policy
    */
@@ -916,9 +1130,25 @@ public final class TextLayout implements Cloneable
     public TextHitInfo getStrongCaret(TextHitInfo hit1,
 				      TextHitInfo hit2,
 				      TextLayout layout)
-      throws NotImplementedException
     {
-      throw new Error ("not implemented");
+      byte l1 = layout.getCharacterLevel(hit1.getCharIndex());
+      byte l2 = layout.getCharacterLevel(hit2.getCharIndex());
+      TextHitInfo strong;
+      if (l1 == l2)
+        {
+          if (hit2.isLeadingEdge() && ! hit1.isLeadingEdge())
+            strong = hit2;
+          else
+            strong = hit1;
+        }
+      else
+        {
+          if (l1 < l2)
+            strong = hit1;
+          else
+            strong = hit2;
+        }
+      return strong;
     }
   }
 }
