@@ -71,6 +71,7 @@ import java.awt.geom.Arc2D;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Line2D;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
@@ -764,8 +765,8 @@ public abstract class CairoGraphics2D extends Graphics2D
                                           null);
     int deviceX = (int)origin.getX();
     int deviceY = (int)origin.getY();
-    int deviceWidth = (int)extreme.getX() - deviceX;
-    int deviceHeight = (int)extreme.getY() - deviceY;
+    int deviceWidth = (int)Math.ceil(extreme.getX() - origin.getX());
+    int deviceHeight = (int)Math.ceil(extreme.getY() - origin.getY());
 
     // Get raster of the paint background
     PaintContext pc = paint.createContext(CairoSurface.cairoColorModel,
@@ -862,6 +863,33 @@ public abstract class CairoGraphics2D extends Graphics2D
 	else
 	  cairoSetDash(nativePointer, new double[0], 0, 0.0);
       }
+  }
+
+  /**
+   * Utility method to find the bounds of a shape, including the stroke width.
+   * 
+   * @param s the shape
+   * @return the bounds of the shape, including stroke width
+   */
+  protected Rectangle findStrokedBounds(Shape s)
+  {
+    Rectangle r = s.getBounds();
+    
+    if (stroke instanceof BasicStroke)
+      {
+        int strokeWidth = (int)Math.ceil(((BasicStroke)stroke).getLineWidth());
+        r.x -= strokeWidth / 2;
+        r.y -= strokeWidth / 2;
+        r.height += strokeWidth;
+        r.width += strokeWidth;
+      }
+    else
+      {
+        Shape s2 = stroke.createStrokedShape(s);
+        r = s2.getBounds();
+      }
+    
+    return r;
   }
 
   public void setPaintMode()
@@ -1089,7 +1117,10 @@ public abstract class CairoGraphics2D extends Graphics2D
       }
 
     if (customPaint)
-      setCustomPaint(s.getBounds());
+      {
+        Rectangle r = findStrokedBounds(s);
+        setCustomPaint(r);
+      }
     
     createPath(s, true);
     cairoStroke(nativePointer);
@@ -1119,6 +1150,16 @@ public abstract class CairoGraphics2D extends Graphics2D
         cairoRectangle(nativePointer, shifted(r.getX(),shiftDrawCalls && isDraw),
                        shifted(r.getY(), shiftDrawCalls && isDraw), r.getWidth(),
                        r.getHeight());
+      }
+    
+    // Lines are easy too
+    else if (s instanceof Line2D)
+      {
+        Line2D l = (Line2D) s;
+        cairoMoveTo(nativePointer, shifted(l.getX1(), shiftDrawCalls && isDraw),
+                  shifted(l.getY1(), shiftDrawCalls && isDraw));
+        cairoLineTo(nativePointer, shifted(l.getX2(), shiftDrawCalls && isDraw),
+                  shifted(l.getY2(), shiftDrawCalls && isDraw));
       }
 
     // We can optimize ellipses too; however we don't bother optimizing arcs:
@@ -1203,22 +1244,15 @@ public abstract class CairoGraphics2D extends Graphics2D
     // The coordinates being pairwise identical means one wants
     // to draw a single pixel. This is emulated by drawing
     // a one pixel sized rectangle.
-    if (customPaint)
-      setCustomPaint(new Rectangle(x1, y1, x2 - x1, y2 - y1));
-    
     if (x1 == x2 && y1 == y2)
-      cairoFillRect(nativePointer, x1, y1, 1, 1);
+      fill(new Rectangle(x1, y1, 1, 1));
     else
-      cairoDrawLine(nativePointer, x1 + 0.5, y1 + 0.5, x2 + 0.5, y2 + 0.5);
+      draw(new Line2D.Double(x1 + 0.5, y1 + 0.5, x2 + 0.5, y2 + 0.5));
   }
 
   public void drawRect(int x, int y, int width, int height)
   {
-    if (customPaint)
-      setCustomPaint(new Rectangle(x, y, width, height));
-    
-    cairoDrawRect(nativePointer, shifted(x, shiftDrawCalls),
-                  shifted(y, shiftDrawCalls), width, height);
+    draw(new Rectangle(x, y, width, height));
   }
 
   public void fillArc(int x, int y, int width, int height, int startAngle,
@@ -1231,10 +1265,7 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   public void fillRect(int x, int y, int width, int height)
   {
-    fill(new Rectangle(x, y, width, height));
-    // TODO: If we want to use the more efficient
-    //cairoFillRect(nativePointer, x, y, width, height);
-    // we need to override this method in subclasses
+    fill (new Rectangle(x, y, width, height));
   }
 
   public void fillPolygon(int[] xPoints, int[] yPoints, int nPoints)

@@ -188,16 +188,32 @@ public class BufferedImageGraphics extends CairoGraphics2D
     transform.transform(points, 0, points, 0, 2);
     x = (int)points[0];
     y = (int)points[1];
-    width = (int)(points[2] - x);
-    height = (int)(points[3] - y);
+    width = (int)Math.ceil(points[2] - points[0]);
+    height = (int)Math.ceil(points[3] - points[1]);
 
     int[] pixels = surface.getPixels(imageWidth * imageHeight);
 
     if( x > imageWidth || y > imageHeight )
       return;
+    
+    // Deal with negative width/height.
+    if (height < 0)
+      {
+        y += height;
+        height = -height;
+      }
+    if (width < 0)
+      {
+        x += width;
+        width = -width;
+      }
+    
     // Clip edges.
-    if( x < 0 ){ width = width + x; x = 0; }
-    if( y < 0 ){ height = height + y; y = 0; }
+    if( x < 0 )
+      x = 0;
+    if( y < 0 )
+      y = 0;
+    
     if( x + width > imageWidth ) 
       width = imageWidth - x;
     if( y + height > imageHeight ) 
@@ -247,15 +263,19 @@ public class BufferedImageGraphics extends CairoGraphics2D
    */
   public void draw(Shape s)
   {
+    // Find total bounds of shape
+    Rectangle r = findStrokedBounds(s);
+    if (shiftDrawCalls)
+      {
+        r.width++;
+        r.height++;
+      }
+    
+    // Do the drawing
     if (comp == null || comp instanceof AlphaComposite)
       {
         super.draw(s);
-        Rectangle r = s.getBounds();
-        
-        if (shiftDrawCalls)
-          updateBufferedImage(r.x, r.y, r.width+1, r.height+1);
-        else
-          updateBufferedImage(r.x, r.y, r.width, r.height);
+        updateBufferedImage(r.x, r.y, r.width, r.height);
       }
     else
       {
@@ -266,7 +286,7 @@ public class BufferedImageGraphics extends CairoGraphics2D
         g2d.setColor(this.getColor());
         g2d.draw(s);
         
-        drawComposite(s.getBounds2D(), null);
+        drawComposite(r.getBounds2D(), null);
       }
   }
 

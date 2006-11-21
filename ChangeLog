@@ -1,5 +1,24 @@
 2006-11-21  Francis Kung  <fkung@redhat.com>
 
+	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java
+	(draw): Include stroke width when calculating bounds.
+	(updateBufferedImage): Round bounds more generously, handle negative
+	height/width values, and clip more intelligently.
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(createPath): Add shortcut optimization for lines.
+	(draw): Include stroke width when calculating bounds.
+	(drawLine): Delegate to main draw() method.
+	(drawRect): Likewise.
+	(fillRect): Delegate to main fill() method.
+	(findStrokedBounds): New method.
+	(setCustomPaint): Round bounds more generously.
+	* gnu/java/awt/peer/gtk/ComponentGraphics.java
+	(drawLine): Removed.
+	(drawRect): Removed.
+	(fillRect): Removed.
+
+2006-11-21  Francis Kung  <fkung@redhat.com>
+
 	* gnu/java/awt/java2d/TexturePaintContext.java
 	(getRaster): Handle negative coordinate values.
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
