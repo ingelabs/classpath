@@ -1,3 +1,33 @@
+2006-11-21  Francis Kung  <fkung@redhat.com>
+
+	* gnu/java/awt/java2d/TexturePaintContext.java
+	(getRaster): Handle negative coordinate values.
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(setPaint): Moved custom paint processing to a new method.
+	(setPaintPixels): Added x, y parameters.
+	(getRealBounds): Added documentation.
+	(copy): Copy clipping information.
+	(drawLine): Process custom paints.
+	(setCustomPaint): New method.
+	(fill): Process custom paints.
+	(drawGlyphVector): Process custom paints.
+	(drawRect): Process custom paints.
+	(draw): Process custom paints.
+	* gnu/java/awt/peer/gtk/CairoSurface.java
+	(cairoCM_opaque): New constant.
+	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java
+	(argb32): Removed constant.
+	(rgb32): Removed constant.
+	(BufferedImageGraphics(BufferedImage)): Updated constant names.
+	(BufferedImageGraphics(BufferedImageGraphics)): Copy color model flags.
+	(updateBufferedImage): Transform to device-space before updating.
+	* include/gnu_java_awt_peer_gtk_CairoGraphics2D.h
+	(Java_gnu_java_awt_peer_gtk_CairoGraphics2D_setPaintPixels): Added x, y
+	parameters.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoGraphics2D.c
+	(Java_gnu_java_awt_peer_gtk_CairoGraphics2D_setPaintPixels): Set pattern
+	source at designated x, y origin.
+
 2006-11-21  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/text/TextLayout.java

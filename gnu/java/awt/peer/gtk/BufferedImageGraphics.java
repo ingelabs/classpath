@@ -54,7 +54,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBufferInt;
-import java.awt.image.DirectColorModel;
 import java.awt.image.ImageObserver;
 import java.awt.image.ImageProducer;
 import java.awt.image.Raster;
@@ -100,12 +99,6 @@ public class BufferedImageGraphics extends CairoGraphics2D
    */
   private long cairo_t;
 
-  /**
-   * Colormodels we recognize for fast copying.
-   */  
-  static ColorModel rgb32 = new DirectColorModel(24, 0xFF0000, 0xFF00, 0xFF);
-  static ColorModel argb32 = new DirectColorModel(32, 0xFF0000, 0xFF00, 0xFF,
-						  0xFF000000);
   private boolean hasFastCM;
   private boolean hasAlpha;
 
@@ -117,12 +110,12 @@ public class BufferedImageGraphics extends CairoGraphics2D
     imageHeight = bi.getHeight();
     locked = false;
     
-    if(bi.getColorModel().equals(rgb32))
+    if(bi.getColorModel().equals(CairoSurface.cairoCM_opaque))
       {
 	hasFastCM = true;
 	hasAlpha = false;
       }
-    else if(bi.getColorModel().equals(argb32))
+    else if(bi.getColorModel().equals(CairoSurface.cairoColorModel))
       {
 	hasFastCM = true;
 	hasAlpha = true;
@@ -176,8 +169,11 @@ public class BufferedImageGraphics extends CairoGraphics2D
     imageWidth = copyFrom.imageWidth;
     imageHeight = copyFrom.imageHeight;
     locked = false;
+    
+    hasFastCM = copyFrom.hasFastCM;
+    hasAlpha = copyFrom.hasAlpha;
+
     copy( copyFrom, cairo_t );
-    setClip(0, 0, surface.width, surface.height);
   }
 
   /**
@@ -188,6 +184,13 @@ public class BufferedImageGraphics extends CairoGraphics2D
     if (locked)
       return;
     
+    double[] points = new double[]{x, y, width+x, height+y};
+    transform.transform(points, 0, points, 0, 2);
+    x = (int)points[0];
+    y = (int)points[1];
+    width = (int)(points[2] - x);
+    height = (int)(points[3] - y);
+
     int[] pixels = surface.getPixels(imageWidth * imageHeight);
 
     if( x > imageWidth || y > imageHeight )

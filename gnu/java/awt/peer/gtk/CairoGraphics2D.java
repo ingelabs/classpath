@@ -134,6 +134,7 @@ public abstract class CairoGraphics2D extends Graphics2D
    * The current paint
    */
   Paint paint;
+  boolean customPaint;
 
   /**
    * The current stroke
@@ -255,6 +256,8 @@ public abstract class CairoGraphics2D extends Graphics2D
           bg = new Color(g.bg.getRGB());
       }
 
+    firstClip = g.firstClip;
+    originalClip = g.originalClip;
     clip = g.getClip();
 
     if (g.transform == null)
@@ -311,6 +314,11 @@ public abstract class CairoGraphics2D extends Graphics2D
 				       int width, int height, int dx, int dy);
 
 
+  /**
+   * Find the bounds of this graphics context, in device space.
+   * 
+   * @return the bounds in device-space
+   */
   protected abstract Rectangle2D getRealBounds();
 
   ////// Native Methods ////////////////////////////////////////////////////
@@ -336,7 +344,8 @@ public abstract class CairoGraphics2D extends Graphics2D
                                   int g2, int b2, int a2, boolean cyclic);
   
   private native void setPaintPixels(long pointer, int[] pixels, int w,
-                                       int h, int stride, boolean repeat);
+                                       int h, int stride, boolean repeat,
+                                       int x, int y);
 
   /**
    * Set the current transform matrix
@@ -691,6 +700,7 @@ public abstract class CairoGraphics2D extends Graphics2D
     if (paint instanceof Color)
       {
         setColor((Color) paint);
+        customPaint = false;
       }
     else if (paint instanceof TexturePaint)
       {
@@ -708,7 +718,8 @@ public abstract class CairoGraphics2D extends Graphics2D
 	AffineTransformOp op = new AffineTransformOp(at, getRenderingHints());
 	BufferedImage texture = op.filter(img, null);
 	int[] pixels = texture.getRGB(0, 0, width, height, null, 0, width);
-	setPaintPixels(nativePointer, pixels, width, height, width, true);
+	setPaintPixels(nativePointer, pixels, width, height, width, true, 0, 0);
+        customPaint = false;
       }
     else if (paint instanceof GradientPaint)
       {
@@ -721,36 +732,90 @@ public abstract class CairoGraphics2D extends Graphics2D
                     c1.getRed(), c1.getGreen(), c1.getBlue(), c1.getAlpha(),
                     c2.getRed(), c2.getGreen(), c2.getBlue(), c2.getAlpha(),
                     gp.isCyclic());
+        customPaint = false;
       }
     else
       {
-        // Get bounds in device space
-        int minX = 0;
-        int minY = 0;
-        int width = (int)getRealBounds().getWidth();
-        int height = (int)getRealBounds().getHeight();
-        
-        Point2D origin = transform.transform(new Point2D.Double(minX, minY),
-                                             null);
-        Point2D extreme = transform.transform(new Point2D.Double(width + minX,
-                                                                 height + minY),
-                                              null);
-        minX = (int)origin.getX();
-        minY = (int)origin.getY();
-        width = (int)extreme.getX() - minX;
-        height = (int)extreme.getY() - minY;
+        customPaint = true;
+      }        
+  }
+  
+  /**
+   * Sets a custom paint
+   * 
+   * @param bounds the bounding box, in user space
+   */
+  protected void setCustomPaint(Rectangle bounds)
+  {
+    if (paint instanceof Color || paint instanceof TexturePaint
+        || paint instanceof GradientPaint)
+      return;
+    
+    int userX = bounds.x;
+    int userY = bounds.y;
+    int userWidth = bounds.width;
+    int userHeight = bounds.height;
+    
+    // Find bounds in device space
+    Point2D origin = transform.transform(new Point2D.Double(userX, userY),
+                                         null);
+    Point2D extreme = transform.transform(new Point2D.Double(userWidth + userX,
+                                                             userHeight + userY),
+                                          null);
+    int deviceX = (int)origin.getX();
+    int deviceY = (int)origin.getY();
+    int deviceWidth = (int)extreme.getX() - deviceX;
+    int deviceHeight = (int)extreme.getY() - deviceY;
 
-        // Get raster of the paint background
-        PaintContext pc = paint.createContext(ColorModel.getRGBdefault(),
-                                              new Rectangle(minX, minY,
-                                                            width, height),
-                                              getRealBounds(),
-                                              transform, hints);
+    // Get raster of the paint background
+    PaintContext pc = paint.createContext(CairoSurface.cairoColorModel,
+                                          new Rectangle(deviceX, deviceY,
+                                                        deviceWidth,
+                                                        deviceHeight),
+                                          bounds,
+                                          transform, hints);
+    
+    Raster raster = pc.getRaster(deviceX, deviceY, deviceWidth,
+                                 deviceHeight);
+    
+    // Clear the transform matrix in Cairo, since the raster returned by the
+    // PaintContext is already in device-space
+    AffineTransform oldTx = new AffineTransform(transform);
+    setTransformImpl(new AffineTransform());    
+
+    // Set pixels in cairo, aligning the top-left of the background image
+    // to the top-left corner in device space
+    if (pc.getColorModel().equals(CairoSurface.cairoColorModel)
+        && raster.getSampleModel().getTransferType() == DataBuffer.TYPE_INT)
+      {
+        // Use a fast copy if the paint context can uses a Cairo-compatible
+        // color model
+        setPaintPixels(nativePointer,
+                       (int[])raster.getDataElements(0, 0, deviceWidth,
+                                                     deviceHeight, null),
+                       deviceWidth, deviceHeight, deviceWidth, false,
+                       deviceX, deviceY);
+      }
+    
+    else if (pc.getColorModel().equals(CairoSurface.cairoCM_opaque)
+            && raster.getSampleModel().getTransferType() == DataBuffer.TYPE_INT)
+      {
+        // We can also optimize if the context uses a similar color model
+        // but without an alpha channel; we just add the alpha
+        int[] pixels = (int[])raster.getDataElements(0, 0, deviceWidth,
+                                                     deviceHeight, null);
         
-        Raster raster = pc.getRaster(minX, minY, width, height);
+        for (int i = 0; i < pixels.length; i++)
+          pixels[i] = 0xff000000 | (pixels[i] & 0x00ffffff);
         
-        // Work around colorspace issues, and force use of the
-        // BufferedImage.getRGB method... this can be improved upon.
+        setPaintPixels(nativePointer, pixels, deviceWidth, deviceHeight,
+                       deviceWidth, false, deviceX, deviceY);
+      }
+    
+    else
+      {
+        // Fall back on wrapping the raster in a BufferedImage, and 
+        // use BufferedImage.getRGB() to do color-model conversion 
         WritableRaster wr = Raster.createWritableRaster(raster.getSampleModel(),
                                                         new Point(raster.getMinX(),
                                                                   raster.getMinY()));
@@ -760,15 +825,15 @@ public abstract class CairoGraphics2D extends Graphics2D
                                                pc.getColorModel().isAlphaPremultiplied(),
                                                null);
         
-        // Set pixels in cairo
         setPaintPixels(nativePointer,
-                       img2.getRGB(0, 0, width, height, null, 0, width),
-                       width, height, width, false);
-        //  setPaintPixels(nativePointer,
-        //                 raster.getPixels(0, 0, width, height, (int[])null),
-        //                 width, height, width, false);
-        // doesn't work... but would be much more efficient!
+                       img2.getRGB(0, 0, deviceWidth, deviceHeight, null, 0,
+                                   deviceWidth),
+                       deviceWidth, deviceHeight, deviceWidth, false,
+                       deviceX, deviceY);
       }
+    
+    // Restore transform
+    setTransformImpl(oldTx);    
   }
 
   public Stroke getStroke()
@@ -1023,6 +1088,9 @@ public abstract class CairoGraphics2D extends Graphics2D
         return;
       }
 
+    if (customPaint)
+      setCustomPaint(s.getBounds());
+    
     createPath(s, true);
     cairoStroke(nativePointer);
   }
@@ -1031,6 +1099,9 @@ public abstract class CairoGraphics2D extends Graphics2D
   {
     createPath(s, false);
 
+    if (customPaint)
+      setCustomPaint(s.getBounds());
+    
     double alpha = 1.0;
     if (comp instanceof AlphaComposite)
       alpha = ((AlphaComposite) comp).getAlpha();
@@ -1132,6 +1203,9 @@ public abstract class CairoGraphics2D extends Graphics2D
     // The coordinates being pairwise identical means one wants
     // to draw a single pixel. This is emulated by drawing
     // a one pixel sized rectangle.
+    if (customPaint)
+      setCustomPaint(new Rectangle(x1, y1, x2 - x1, y2 - y1));
+    
     if (x1 == x2 && y1 == y2)
       cairoFillRect(nativePointer, x1, y1, 1, 1);
     else
@@ -1140,6 +1214,9 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   public void drawRect(int x, int y, int width, int height)
   {
+    if (customPaint)
+      setCustomPaint(new Rectangle(x, y, width, height));
+    
     cairoDrawRect(nativePointer, shifted(x, shiftDrawCalls),
                   shifted(y, shiftDrawCalls), width, height);
   }
@@ -1550,6 +1627,9 @@ public abstract class CairoGraphics2D extends Graphics2D
     if( gv.getNumGlyphs() <= 0 )
       return;
 
+    if (customPaint)
+      setCustomPaint(gv.getOutline().getBounds());
+    
     if (comp instanceof AlphaComposite)
       alpha = ((AlphaComposite) comp).getAlpha();
     if (gv instanceof FreetypeGlyphVector && alpha == 1.0)
