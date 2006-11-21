@@ -1,5 +1,42 @@
 2006-11-21  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/text/TextLayout.java
+	(Run): New inner helper class.
+	(length): New field.
+	(naturalBounds): New field.
+	(offset): New field.
+	(runIndices): Removed. This is now encapsulate in a Run object.
+	(runs): Changed to Run[].
+	(string): Changed to char[].
+	(totalAdvance): New field. Caches advance value.
+	(TextLayout(String,Font,FontRenderContext)): Change to store
+	string as char[] and run layout as Run[]. Clean out empty
+	run items.
+	(TextLayout(TextLayout,int,int)): Change to store
+	string as char[] and run layout as Run[].
+	(clone): Call private constructor for maximum efficiency.
+	(determineWhitespace): Adapted to use char[] data.
+	(draw): Adapted to use Run objects.
+	(getAdvance): Cache computed total advance.
+	(getBlackBoxBounds): Adapted to use Run objects.
+	(getCaretInfo): Use natural layout bounds.
+	(getCharacterCount): Return length field.
+	(getLogicalHighlightShape): Adapted to use Run objects.
+	(getNaturalBounds): New helper method. Calculates and returns the
+	natural bounds of this text layout.
+	(getOutline): Adapted to use Run objects.
+	(getStringProperties): Adapted to use char[] data.
+	(getVisibleAdvance): Adapted to use char[] and Run data.
+	(handleJustify): Adapted to use char[] and Run data.
+	(hitTestChar(float,float,Rectangle2D)): Implemented.
+	(hitTestChar(float,float)): Use natural bounds.
+	(setCharIndices): Adapted to use char[] and Run data.
+	(toString): Adapted to use char[] and Run data.
+	* java/text/Bidi.java
+	(requiresBidi): Exclude paragraph separators from bidi-triggers.
+
+2006-11-21  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/java/awt/peer/gtk/GdkFontMetrics.java:
 	Removed. This is now an inner class in GdkFontPeer.
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
