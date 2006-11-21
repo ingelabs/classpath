@@ -115,7 +115,6 @@ import java.awt.peer.WindowPeer;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -295,7 +294,7 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
 			   "SansSerif" });
   }
 
-  private class LRUCache extends LinkedHashMap
+  static class LRUCache extends LinkedHashMap
   {    
     int max_entries;
     public LRUCache(int max)
@@ -310,23 +309,11 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
   }
 
   private LRUCache fontCache = new LRUCache(50);
-  private LRUCache metricsCache = new LRUCache(50);
   private LRUCache imageCache = new LRUCache(50);
 
   public FontMetrics getFontMetrics (Font font) 
   {
-    synchronized (metricsCache)
-      {
-        if (metricsCache.containsKey(font))
-          return (FontMetrics) metricsCache.get(font);
-      }
-
-    FontMetrics m = new GdkFontMetrics (font);
-    synchronized (metricsCache)
-      {
-        metricsCache.put(font, m);
-      }
-    return m;
+    return ((GdkFontPeer) font.getPeer()).getFontMetrics(font);
   }
 
   public Image getImage (String filename) 

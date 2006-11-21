@@ -1,3 +1,69 @@
+2006-11-21  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/gtk/GdkFontMetrics.java:
+	Removed. This is now an inner class in GdkFontPeer.
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(drawString(float,float)): Use text layout cache from
+	GdkFontPeer.
+	(getFontMetrics): Delegate to GdkFontPeer.
+	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java
+	(getGlyphCodes): Also check array size.
+	(getGlyphPositions): Also check array size.
+	* gnu/java/awt/peer/gtk/GdkFontPeer.java
+	(GdkFontLineMetrics.fm): Removed.
+	(GdkFontLineMetrics.strikeThroughOffset): Removed.
+	(GdkFontLineMetrics.strikeThroughThickness): Removed.
+	(GdkFontLineMetrics.underlineOffset): Removed.
+	(GdkFontLineMetrics.underlineThickness): Removed.
+	(GdkFontLineMetrics.GdkFontLineMetrics): Don't take
+	FontMetrics argument. Don't init removed fields.
+	(GdkFontLineMetrics.getAscent): Return font peer's field.
+	(GdkFontLineMetrics.getDescent): Return font peer's field.
+	(GdkFontLineMetrics.getHeight): Return font peer's field.
+	(GdkFontLineMetrics.getLeading): Return font peer's field.
+	(GdkFontLineMetrics.getNumChars): Reformat.
+	(GdkFontLineMetrics.getStrikeThroughOffset): Return half ascent.
+	(GdkFontLineMetrics.getStrikeThroughThickness): Return 1.
+	(GdkFontLineMetrics.getUnderlineOffset): Return font peer's field.
+	(GdkFontLineMetrics.getUnderlineThickness): Return font peer's field.
+	(GdkFontMetrics): Moved class in here as inner class. 
+	Make it use the font peer's fields and for the char(s) width
+	and string width method, use TextLayout to measure the actual widths.
+	(ascent): New field.
+	(bundle): Removed.
+	(DEFAULT_CTX): New constant field.
+	(descent): New field.
+	(FONT_METRICS_ASCENT): New constant.
+	(FONT_METRICS_DESCENT): New constant.
+	(FONT_METRICS_HEIGHT): New constant.
+	(FONT_METRICS_MAX_ADVANCE): New constant.
+	(FONT_METRICS_MAX_ASCENT): New constant.
+	(FONT_METRICS_MAX_DESCENT): New constant.
+	(FONT_METRICS_UNDERLINE_OFFSET): New constant.
+	(FONT_METRICS_UNDERLINE_THICKNESS): New constant.
+	(height): New field.
+	(maxAdvance): New field.
+	(maxAscent): New field.
+	(maxDescent): New field.
+	(metrics): New field. Stores a FontMetrics for this font.
+	(textLayoutCache): New field. Caches TextLayout instances.
+	(underlineOffset): New field.
+	(underlineThickness): New field.
+	(cinit): Don't initialize resource bundle.
+	(GdkFontPeer): Setup the metrics.
+	(getFontMetrics): Return stored metrics if possible.
+	(getLineMetrics): Adapt to new constructor.
+	(initFont): New helper method.
+	(setupMetrics): New helper method.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java
+	(LRUCache): Made class a static class.
+	(getFontMetrics): Delegate to GdkFontPeer.
+	* native/jni/gtk-peer/gdkfont.h
+	Added new constant defines.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c
+	(getFontMetrics): Rewritten to fetch the font metrics from
+	FreeType.
+
 2006-11-20  Tania Bento  <tbento@redhat.com>
 
 	* javax/swing/ButtonGroup.java:

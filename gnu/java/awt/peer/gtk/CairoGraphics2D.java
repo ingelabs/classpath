@@ -1523,8 +1523,14 @@ public abstract class CairoGraphics2D extends Graphics2D
   {
     if (str == null || str.length() == 0)
       return;
-    (new TextLayout( str, getFont(), getFontRenderContext() )).
-      draw(this, x, y);
+    GdkFontPeer fontPeer = (GdkFontPeer) font.getPeer();
+    TextLayout tl = (TextLayout) fontPeer.textLayoutCache.get(str);
+    if (tl == null)
+      {
+        tl = new TextLayout( str, getFont(), getFontRenderContext() );
+        fontPeer.textLayoutCache.put(str, tl);
+      }
+    tl.draw(this, x, y);
   }
 
   public void drawString(String str, int x, int y)
@@ -1593,9 +1599,7 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   public FontMetrics getFontMetrics(Font f)
   {
-    // the reason we go via the toolkit here is to try to get
-    // a cached object. the toolkit keeps such a cache.
-    return Toolkit.getDefaultToolkit().getFontMetrics(f);
+    return ((GdkFontPeer) f.getPeer()).getFontMetrics(f);
   }
 
   public void setFont(Font f)
