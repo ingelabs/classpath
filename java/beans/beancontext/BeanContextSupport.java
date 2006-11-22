@@ -328,7 +328,6 @@ public class BeanContextSupport extends BeanContextChildSupport
    *              told not to use it.
    */
   public boolean avoidingGui()
-    throws NotImplementedException
   {
     return needsGui() && (!okToUseGui);
   }
