@@ -876,7 +876,12 @@ public class BeanContextSupport extends BeanContextChildSupport
       }
   }
 
-  public Object[] toArray ()
+  /**
+   * Returns an array containing the children of this <code>BeanContext</code>.
+   * 
+   * @return An array containing the children.
+   */
+  public Object[] toArray()
   {
     synchronized (children)
       {
@@ -884,10 +889,16 @@ public class BeanContextSupport extends BeanContextChildSupport
       }
   }
 
+  /**
+   * Populates, then returns, the supplied array with the children of this 
+   * <code>BeanContext</code>.  If the array is too short to hold the 
+   * children, a new array is allocated and returned.  If the array is too 
+   * long, it is padded with <code>null</code> items at the end.
+   * 
+   * @param array  an array to populate (<code>null</code> not permitted).
+   */
   public Object[] toArray(Object[] array)
-    throws NotImplementedException
   {
-    // This implementation is incorrect, I think.
     synchronized (children)
       {
         return children.keySet().toArray(array);

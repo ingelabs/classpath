@@ -1,3 +1,9 @@
+2006-11-22  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/beans/beancontext/BeanContextSupport.java
+	(toArray): Added API docs,
+	(toArray(Object[])): Added API docs, removed NotImplementedException.
+
 2006-11-22  Tania Bento  <tbento@redhat.com>
 
 	* javax/swing/JRootPane.java
