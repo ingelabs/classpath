@@ -1,5 +1,53 @@
 2006-11-22  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/image/ImageFilter.java
+	Reformat whole class.
+	(getFilterInstance): Don't touch the consumer field. Don't check
+	consumer.
+	(imageComplete): Don't check consumer.
+	(setColorModel): Don't check consumer.
+	(setDimensions): Don't check consumer.
+	(setHints): Don't check consumer.
+	(setPixels): Don't check consumer.
+	(setProperties): Pass the original property too.
+	* java/awt/image/IndexColorModel.java
+	(IndexColorModel(int,int,byte[],byte[],byte[],int)): Set the
+	transparent pixel by calling the new helper method.
+	(IndexColorModel(int,int,byte[],int,boolean,int)): Set the
+	transparent pixel by calling the new helper method.
+	(IndexColorModel(int,int,int[],int,boolean,int,int)): Set the
+	transparent pixel by calling the new helper method.
+	(coerceData): Removed. This is not needed.
+	(getAlpha): Simply return value from color map. The transparent
+	pixel has to be there.
+	(setTransparentPixel): New helper method. Inserts the transparent
+	pixel.
+	* java/awt/image/RGBImageFilter.java
+	Reformat whole class.
+	(convertColorModelToDefault): Removed. No longer needed.
+	(filterIndexColorModel): Don't handle transparent pixels
+	separately.
+	(filterRGBPixels): Set pixels on consumer already.
+	(makeColor): Removed. No longer needed.
+	* java/awt/image/ReplicateScaleFilter.java
+	(replicatePixels): Removed.
+	(setDimension): Correctly compute destination size, avoid double
+	calculations.
+	(setPixels): Avoid double calculations. Fixed some boundary cases.
+	(setupSources): New helper method.
+	* java/awt/image/SampleModel.java
+	(setDataElements): Also handle TYPE_SHORT, TYPE_FLOAT
+	and TYPE_DOUBLE.
+	* java/awt/image/SinglePixelPackedSampleModel.java
+	(setDataElements(int,int,int,int,Object,DataBuffer)): Removed.
+	This is not needed as the superclass already copies line
+	by line.
+	(setDataElements(int,int,Object,DataBuffer)): Simplified code,
+	removed some checks that the RI also doesn't perform. Call
+	DataBuffer.setElem().
+
+2006-11-22  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/text/TextLayout.java
 	(getLogicalRangesForVisualSelection): Implemented.
 
