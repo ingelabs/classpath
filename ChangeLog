@@ -1,3 +1,15 @@
+2006-11-22  Francis Kung  <fkung@redhat.com>
+
+	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java
+	(drawGlyphVector): Clip updated area to glyph bounds.
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(createPath): Eliminate distortion when pixel-shifting rectangles; separate
+	x-coordinate and y-coordinate pixel shifting.
+	(shifted): Removed method.
+	(shiftX): New method, recognising scaling transforms.
+	(shiftY): New method, recognising scaling transforms.
+	(walkPath): Separate x-coordinate and y-coordinate pixel shifting.
+
 2006-11-22  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/font/TextLayout.java

@@ -379,10 +379,17 @@ public class BufferedImageGraphics extends CairoGraphics2D
 
   public void drawGlyphVector(GlyphVector gv, float x, float y)
   {
+    // Find absolute bounds, in user-space, of this glyph vector 
+    Rectangle2D bounds = gv.getLogicalBounds();
+    bounds = new Rectangle2D.Double(x + bounds.getX(), y + bounds.getY(),
+                                    bounds.getWidth(), bounds.getHeight());
+    
+    // Perform draw operation
     if (comp == null || comp instanceof AlphaComposite)
       {
         super.drawGlyphVector(gv, x, y);
-        updateBufferedImage(0, 0, imageWidth, imageHeight);
+        updateBufferedImage((int)bounds.getX(), (int)bounds.getY(),
+                            (int)bounds.getWidth(), (int)bounds.getHeight());
       }
     else
       {
@@ -393,9 +400,6 @@ public class BufferedImageGraphics extends CairoGraphics2D
         g2d.setStroke(this.getStroke());
         g2d.drawGlyphVector(gv, x, y);
         
-        Rectangle2D bounds = gv.getLogicalBounds();
-        bounds = new Rectangle2D.Double(x + bounds.getX(), y + bounds.getY(),
-                                        bounds.getWidth(), bounds.getHeight());
         drawComposite(bounds, null);
       }
   }

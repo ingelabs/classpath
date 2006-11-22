@@ -1147,19 +1147,25 @@ public abstract class CairoGraphics2D extends Graphics2D
     if (s instanceof Rectangle2D)
       {
         Rectangle2D r = (Rectangle2D) s;
-        cairoRectangle(nativePointer, shifted(r.getX(),shiftDrawCalls && isDraw),
-                       shifted(r.getY(), shiftDrawCalls && isDraw), r.getWidth(),
-                       r.getHeight());
+        
+        // Pixels need to be shifted in draw operations to ensure that they
+        // light up entire pixels, but we also need to make sure the rectangle
+        // does not get distorted by this shifting operation
+        double x = shiftX(r.getX(),shiftDrawCalls && isDraw);
+        double y = shiftY(r.getY(), shiftDrawCalls && isDraw);
+        double w = shiftX(r.getWidth() + r.getX(), shiftDrawCalls && isDraw) - x;
+        double h = shiftY(r.getHeight() + r.getY(), shiftDrawCalls && isDraw) - y;
+        cairoRectangle(nativePointer, x, y, w, h);
       }
     
     // Lines are easy too
     else if (s instanceof Line2D)
       {
         Line2D l = (Line2D) s;
-        cairoMoveTo(nativePointer, shifted(l.getX1(), shiftDrawCalls && isDraw),
-                  shifted(l.getY1(), shiftDrawCalls && isDraw));
-        cairoLineTo(nativePointer, shifted(l.getX2(), shiftDrawCalls && isDraw),
-                  shifted(l.getY2(), shiftDrawCalls && isDraw));
+        cairoMoveTo(nativePointer, shiftX(l.getX1(), shiftDrawCalls && isDraw),
+                  shiftY(l.getY1(), shiftDrawCalls && isDraw));
+        cairoLineTo(nativePointer, shiftX(l.getX2(), shiftDrawCalls && isDraw),
+                  shiftY(l.getY2(), shiftDrawCalls && isDraw));
       }
 
     // We can optimize ellipses too; however we don't bother optimizing arcs:
@@ -1188,8 +1194,8 @@ public abstract class CairoGraphics2D extends Graphics2D
           }
 
         cairoArc(nativePointer,
-                 shifted(e.getCenterX() / xscale, shiftDrawCalls && isDraw),
-                 shifted(e.getCenterY() / yscale, shiftDrawCalls && isDraw),
+                 shiftX(e.getCenterX() / xscale, shiftDrawCalls && isDraw),
+                 shiftY(e.getCenterY() / yscale, shiftDrawCalls && isDraw),
                  radius, 0, Math.PI * 2);
 
         if (xscale != 1 || yscale != 1)
@@ -1847,12 +1853,33 @@ public abstract class CairoGraphics2D extends Graphics2D
   }
 
   /**
-   * Shifts coordinates by 0.5.
+   * Shifts an x-coordinate by 0.5 in device space.
    */
-  private double shifted(double coord, boolean doShift)
+  private double shiftX(double coord, boolean doShift)
   {
     if (doShift)
-      return Math.floor(coord) + 0.5;
+      {
+        double shift = 0.5;
+        if (!transform.isIdentity())
+          shift /= transform.getScaleX();
+        return Math.round(coord) + shift;
+      }
+    else
+      return coord;
+  }
+
+  /**
+   * Shifts a y-coordinate by 0.5 in device space.
+   */
+  private double shiftY(double coord, boolean doShift)
+  {
+    if (doShift)
+      {
+        double shift = 0.5;
+        if (!transform.isIdentity())
+          shift /= transform.getScaleY();
+        return Math.round(coord) + shift;
+      }
     else
       return coord;
   }
@@ -1873,35 +1900,35 @@ public abstract class CairoGraphics2D extends Graphics2D
 	switch (seg)
 	  {
 	  case PathIterator.SEG_MOVETO:
-	    x = shifted(coords[0], doShift);
-	    y = shifted(coords[1], doShift);
+	    x = shiftX(coords[0], doShift);
+	    y = shiftY(coords[1], doShift);
 	    cairoMoveTo(nativePointer, x, y);
 	    break;
 	  case PathIterator.SEG_LINETO:
-	    x = shifted(coords[0], doShift);
-	    y = shifted(coords[1], doShift);
+	    x = shiftX(coords[0], doShift);
+	    y = shiftY(coords[1], doShift);
 	    cairoLineTo(nativePointer, x, y);
 	    break;
 	  case PathIterator.SEG_QUADTO:
 	    // splitting a quadratic bezier into a cubic:
 	    // see: http://pfaedit.sourceforge.net/bezier.html
-	    double x1 = x + (2.0 / 3.0) * (shifted(coords[0], doShift) - x);
-	    double y1 = y + (2.0 / 3.0) * (shifted(coords[1], doShift) - y);
+	    double x1 = x + (2.0 / 3.0) * (shiftX(coords[0], doShift) - x);
+	    double y1 = y + (2.0 / 3.0) * (shiftY(coords[1], doShift) - y);
 
-	    double x2 = x1 + (1.0 / 3.0) * (shifted(coords[2], doShift) - x);
-	    double y2 = y1 + (1.0 / 3.0) * (shifted(coords[3], doShift) - y);
+	    double x2 = x1 + (1.0 / 3.0) * (shiftX(coords[2], doShift) - x);
+	    double y2 = y1 + (1.0 / 3.0) * (shiftY(coords[3], doShift) - y);
 
-	    x = shifted(coords[2], doShift);
-	    y = shifted(coords[3], doShift);
+	    x = shiftX(coords[2], doShift);
+	    y = shiftY(coords[3], doShift);
 	    cairoCurveTo(nativePointer, x1, y1, x2, y2, x, y);
 	    break;
 	  case PathIterator.SEG_CUBICTO:
-	    x = shifted(coords[4], doShift);
-	    y = shifted(coords[5], doShift);
-	    cairoCurveTo(nativePointer, shifted(coords[0], doShift),
-	                 shifted(coords[1], doShift),
-	                 shifted(coords[2], doShift),
-	                 shifted(coords[3], doShift), x, y);
+	    x = shiftX(coords[4], doShift);
+	    y = shiftY(coords[5], doShift);
+	    cairoCurveTo(nativePointer, shiftX(coords[0], doShift),
+	                 shiftY(coords[1], doShift),
+	                 shiftX(coords[2], doShift),
+	                 shiftY(coords[3], doShift), x, y);
 	    break;
 	  case PathIterator.SEG_CLOSE:
 	    cairoClosePath(nativePointer);
