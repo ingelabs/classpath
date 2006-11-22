@@ -654,9 +654,60 @@ public final class TextLayout implements Cloneable
 
   public int[] getLogicalRangesForVisualSelection (TextHitInfo firstEndpoint,
                                                    TextHitInfo secondEndpoint)
-    throws NotImplementedException
   {
-    throw new Error ("not implemented");
+    // Check parameters.
+    checkHitInfo(firstEndpoint);
+    checkHitInfo(secondEndpoint);
+
+    // Convert to visual and order correctly.
+    int start = hitToCaret(firstEndpoint);
+    int end = hitToCaret(secondEndpoint);
+    if (start > end)
+      {
+        // Swap start and end so that end >= start.
+        int temp = start;
+        start = end;
+        end = temp;
+      }
+
+    // Now walk through the visual indices and mark the included pieces.
+    boolean[] include = new boolean[length];
+    for (int i = start; i < end; i++)
+      {
+        include[visualToLogical[i]] = true;
+      }
+
+    // Count included runs.
+    int numRuns = 0;
+    boolean in = false;
+    for (int i = 0; i < length; i++)
+      {
+        if (include[i] != in) // At each run in/out point we toggle the in var.
+          {
+            in = ! in;
+            if (in) // At each run start we count up.
+              numRuns++;
+          }
+      }
+
+    // Put together the ranges array.
+    int[] ranges = new int[numRuns * 2];
+    int index = 0;
+    in = false;
+    for (int i = 0; i < length; i++)
+      {
+        if (include[i] != in)
+          {
+            ranges[index] = i;
+            index++;
+            in = ! in;
+          }
+      }
+    // If the last run ends at the very end, include that last bit too.
+    if (in)
+      ranges[index] = length;
+
+    return ranges;
   }
 
   public TextHitInfo getNextLeftHit(int offset)
