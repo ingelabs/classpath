@@ -1,3 +1,9 @@
+2006-11-22  Tania Bento  <tbento@redhat.com>
+
+	* javax/swing/JRootPane.java
+	(setLayeredPane): Added documentation; throw 
+	IllegalComponentStateException if layered pane parameter is null.
+
 2006-11-22  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/beans/beancontext/BeanContextSupport.java
