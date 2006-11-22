@@ -164,6 +164,11 @@ public final class TextLayout implements Cloneable
   private int[] visualToLogical;
 
   /**
+   * The cached hashCode.
+   */
+  private int hash;
+
+  /**
    * The default caret policy.
    */
   public static final TextLayout.CaretPolicy DEFAULT_CARET_POLICY =
@@ -1091,9 +1096,15 @@ public final class TextLayout implements Cloneable
   }
 
   public int hashCode ()
-    throws NotImplementedException
   {
-    throw new Error ("not implemented");
+    // This is implemented in sync to equals().
+    if (hash == 0 && runs.length > 0)
+      {
+        hash = runs.length;
+        for (int i = 0; i < runs.length; i++)
+          hash ^= runs[i].glyphVector.hashCode();
+      }
+    return hash;
   }
 
   public String toString ()

@@ -1,5 +1,11 @@
 2006-11-22  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/font/TextLayout.java
+	(hash): New field. Caches the hash code.
+	(hashCode): Implemented.
+
+2006-11-22  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/image/ImageFilter.java
 	Reformat whole class.
 	(getFilterInstance): Don't touch the consumer field. Don't check
