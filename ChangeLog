@@ -1,3 +1,39 @@
+2006-11-23  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/headless/HeadlessGraphicsEnvironment.java
+	(createGraphics): Use constructor to create new instance of
+	BufferedImageGraphics.
+	* java/awt/Toolkit.java
+	(getDefaultToolkit): Really try to get a real toolkit. Only
+	use HeadlessToolkit if no other is available.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java
+	(checkHeadless): New helper method. Checks for headless environment
+	and throws HeadlessException if appropriate.
+	(createButton): Check for headless.
+	(createCanvas): Check for headless.
+	(createCheckbox): Check for headless.
+	(createCheckboxMenuItem): Check for headless.
+	(createChoice): Check for headless.
+	(createDialog): Check for headless.
+	(createDragGestureRecognizer): Check for headless.
+	(createDragSourceContextPeer): Check for headless.
+	(createEmbeddedWindow): Check for headless.
+	(createFileDialog): Check for headless.
+	(createFrame): Check for headless.
+	(createCheckbox): Check for headless.
+	(createLabel): Check for headless.
+	(createList): Check for headless.
+	(createMenu): Check for headless.
+	(createMenuBar): Check for headless.
+	(createMenuItem): Check for headless.
+	(createPanel): Check for headless.
+	(createPopupMenu): Check for headless.
+	(createScrollbar): Check for headless.
+	(createScrollPane): Check for headless.
+	(createTextArea): Check for headless.
+	(createTextField): Check for headless.
+	(createWindow): Check for headless.
+
 2006-11-23  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/beans/beancontext/BeanContextSupport.java

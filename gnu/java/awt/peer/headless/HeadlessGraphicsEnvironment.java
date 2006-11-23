@@ -62,7 +62,8 @@ public class HeadlessGraphicsEnvironment
       {
         // Try to get a CairoGraphics (accellerated) when available. Do this
         // via reflection to avoid having a hard compile time dependency.
-        Class cairoSurfaceCl = Class.forName("gnu.java.awt.peer.gtk.CairoSurface");
+        Class cairoSurfaceCl =
+          Class.forName("gnu.java.awt.peer.gtk.CairoSurface");
         Raster raster = image.getRaster();
         if (cairoSurfaceCl.isInstance(raster))
           {
@@ -76,7 +77,7 @@ public class HeadlessGraphicsEnvironment
               Class.forName("gnu.java.awt.peer.gtk.BufferedImageGraphics");
             Constructor bigC =
               bigCl.getConstructor(new Class[]{BufferedImage.class });
-            g2d = (Graphics2D) bigCl.newInstance();
+            g2d = (Graphics2D) bigC.newInstance(new Object[]{ image});
           }
       }
     catch (Exception ex)
