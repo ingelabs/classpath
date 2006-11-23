@@ -1,3 +1,9 @@
+2006-11-23  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/beans/beancontext/BeanContextSupport.java
+	(deserialize): Implemented,
+	(serialize): Implemented.
+
 2006-11-23  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/peer/headless/HeadlessGraphicsEnvironment.java

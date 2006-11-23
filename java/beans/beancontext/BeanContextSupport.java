@@ -422,10 +422,25 @@ public class BeanContextSupport extends BeanContextChildSupport
     return new BCSChild(targetChild, peer);
   }
 
+  /**
+   * Deserializes objects (written by {@link #serialize(ObjectOutputStream, 
+   * Collection)}) and adds them to the specified collection.
+   * 
+   * @param ois  the input stream (<code>null</code> not permitted).
+   * @param coll  the collection to add the objects to (<code>null</code> not
+   *     permitted).
+   *     
+   * @throws ClassNotFoundException
+   * @throws IOException
+   * 
+   * @see #serialize(ObjectOutputStream, Collection)
+   */
   protected final void deserialize (ObjectInputStream ois, Collection coll)
-    throws ClassNotFoundException, IOException, NotImplementedException
+    throws ClassNotFoundException, IOException
   {
-    throw new Error ("Not implemented");
+    int itemCount = ois.readInt();
+    for (int i = 0; i < itemCount; i++)
+      coll.add(ois.readObject());
   }
 
   /**
@@ -829,10 +844,34 @@ public class BeanContextSupport extends BeanContextChildSupport
     throw new UnsupportedOperationException();
   }
 
-  protected final void serialize (ObjectOutputStream oos, Collection coll)
-    throws IOException, NotImplementedException
+  /**
+   * Writes the items in the collection to the specified output stream.  Items
+   * in the collection that are not instances of {@link Serializable} 
+   * (this includes <code>null</code>) are simply ignored.
+   * 
+   * @param oos  the output stream (<code>null</code> not permitted).
+   * @param coll  the collection (<code>null</code> not permitted).
+   * 
+   * @throws IOException
+   * 
+   * @see #deserialize(ObjectInputStream, Collection)
+   */
+  protected final void serialize(ObjectOutputStream oos, Collection coll)
+    throws IOException
   {
-    throw new Error ("Not implemented");
+    Object[] items = coll.toArray();
+    int itemCount = 0;
+    for (int i = 0; i < items.length; i++)
+      {
+        if (items[i] instanceof Serializable)
+          itemCount++;
+      }
+    oos.writeInt(itemCount);
+    for (int i = 0; i < items.length; i++)
+      {
+        if (items[i] instanceof Serializable)
+          oos.writeObject(items[i]);
+      }
   }
 
   /**
