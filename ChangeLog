@@ -1,3 +1,8 @@
+2006-11-23  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/headless/HeadlessGraphicsEnvironment.java
+	(createGraphics): Try to use Cairo graphics if available.
+
 2006-11-22  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/beans/beancontext/BeanContextSupport.java

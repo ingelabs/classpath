@@ -46,6 +46,9 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.Locale;
 
 public class HeadlessGraphicsEnvironment
@@ -54,7 +57,33 @@ public class HeadlessGraphicsEnvironment
 
   public Graphics2D createGraphics(BufferedImage image)
   {
-    return new RasterGraphics(image.getRaster(), image.getColorModel());
+    Graphics2D g2d;
+    try
+      {
+        // Try to get a CairoGraphics (accellerated) when available. Do this
+        // via reflection to avoid having a hard compile time dependency.
+        Class cairoSurfaceCl = Class.forName("gnu.java.awt.peer.gtk.CairoSurface");
+        Raster raster = image.getRaster();
+        if (cairoSurfaceCl.isInstance(raster))
+          {
+            Method getGraphicsM = cairoSurfaceCl.getMethod("getGraphics",
+                                                           new Class[0]);
+            g2d = (Graphics2D) getGraphicsM.invoke(raster, new Object[0]);
+          }
+        else
+          {
+            Class bigCl =
+              Class.forName("gnu.java.awt.peer.gtk.BufferedImageGraphics");
+            Constructor bigC =
+              bigCl.getConstructor(new Class[]{BufferedImage.class });
+            g2d = (Graphics2D) bigCl.newInstance();
+          }
+      }
+    catch (Exception ex)
+      {
+        g2d = new RasterGraphics(image.getRaster(), image.getColorModel());
+      }
+    return g2d;
   }
 
   public Font[] getAllFonts()
