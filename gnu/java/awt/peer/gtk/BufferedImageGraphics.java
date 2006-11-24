@@ -58,6 +58,7 @@ import java.awt.image.ImageObserver;
 import java.awt.image.ImageProducer;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
+import java.awt.image.SinglePixelPackedSampleModel;
 import java.util.WeakHashMap;
 
 /**
@@ -110,7 +111,9 @@ public class BufferedImageGraphics extends CairoGraphics2D
     imageHeight = bi.getHeight();
     locked = false;
     
-    if(bi.getColorModel().equals(CairoSurface.cairoCM_opaque))
+    if (!(image.getSampleModel() instanceof SinglePixelPackedSampleModel))
+      hasFastCM = false;
+    else if(bi.getColorModel().equals(CairoSurface.cairoCM_opaque))
       {
 	hasFastCM = true;
 	hasAlpha = false;
@@ -219,18 +222,44 @@ public class BufferedImageGraphics extends CairoGraphics2D
     if( y + height > imageHeight ) 
       height = imageHeight - y;
     
-    // The setRGB method assumes (or should assume) that pixels are NOT
-    // alpha-premultiplied, but Cairo stores data with premultiplication
-    // (thus the pixels returned in getPixels are premultiplied).
-    // This is ignored for consistency, however, since in
-    // CairoGrahpics2D.drawImage we also use non-premultiplied data
     if(!hasFastCM)
-      image.setRGB(x, y, width, height, pixels, 
-		   x + y * imageWidth, imageWidth);
+      {
+        image.setRGB(x, y, width, height, pixels, 
+                     x + y * imageWidth, imageWidth);
+        // The setRGB method assumes (or should assume) that pixels are NOT
+        // alpha-premultiplied, but Cairo stores data with premultiplication
+        // (thus the pixels returned in getPixels are premultiplied).
+        // This is ignored for consistency, however, since in
+        // CairoGrahpics2D.drawImage we also use non-premultiplied data
+      
+      }
     else
-      System.arraycopy(pixels, y * imageWidth, 
-		       ((DataBufferInt)image.getRaster().getDataBuffer()).
-		       getData(), y * imageWidth, height * imageWidth);
+      {
+        int[] db = ((DataBufferInt)image.getRaster().getDataBuffer()).
+                  getData();
+        
+        // This should not fail, as we check the image sample model when we
+        // set the hasFastCM flag
+        SinglePixelPackedSampleModel sm = (SinglePixelPackedSampleModel)image.getSampleModel() ;
+        
+        int minX = image.getRaster().getSampleModelTranslateX();
+        int minY = image.getRaster().getSampleModelTranslateY();
+        
+        if (sm.getScanlineStride() == imageWidth && minX == 0) 
+          {
+            System.arraycopy(pixels, y * imageWidth, 
+                             db, y * imageWidth - minY,
+                             height * imageWidth);
+          }
+        else
+          {
+            int scanline = sm.getScanlineStride();
+            for (int i = y; i < height; i++)
+              System.arraycopy(pixels, i * imageWidth + x, db,
+                               (i - minY) * scanline + x - minX, width);
+              
+          }
+      }
   }
 
   /**

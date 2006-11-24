@@ -1,5 +1,12 @@
 2006-11-24  Francis Kung  <fkung@redhat.com>
 
+	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java
+	(constructor): Check sample model when setting fastCM flag.
+	(updateBufferedImage): Check scanline and sample model offsets before
+	copying data directly into the image data buffer.
+
+2006-11-24  Francis Kung  <fkung@redhat.com>
+
 	* gnu/java/awt/java2d/QuadSegment.java
 	(offsetSubdivided): Handle special straight-line cases.
 
