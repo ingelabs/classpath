@@ -1,3 +1,9 @@
+2006-11-24  Tania Bento  <tbento@redhat.com>
+
+	* java/awt/font/TextHitInfo.java
+	(equals(TextHitInfo)): If TextHitInfo parameter is null, return false.
+	(beforeOffset): Decreased first parameter by 1.
+
 2006-11-24  Francis Kung  <fkung@redhat.com>
 
 	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java
