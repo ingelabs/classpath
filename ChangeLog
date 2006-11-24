@@ -1,3 +1,33 @@
+2006-11-24  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/dnd/DropTarget.java
+	(DropTargetAutoScroller.HYSTERESIS): New constant.
+	(DropTargetAutoScroller.DELAY): New constant.
+	(DropTargetAutoScroller.inner): New field. A cached
+	Rectangle instance.
+	(DropTargetAutoScroller.outer): New field. A cached
+	Rectangle instance.
+	(DropTargetAutoScroller.timer): New field. The actual timer.
+	(DropTargetAutoScroller.DropTargetAutoScroller):
+	Initialize timer.
+	(DropTargetAutoScroller.actionPerformed): Implemented.
+	(DropTargetAutoScroller.stop): Implemented.
+	(DropTargetAutoScroller.updateLocation): Implemented.
+	(clearAutoscroll): Stop the autoscroller before nullifying it.
+	(createDropTargetAutoScroller): Don't set the field here,
+	only return a new instance.
+	(dragEnter): Only do something when active. Initialize
+	auto scrolling.
+	(dragExit): Only do something when active. Stop auto scrolling.
+	(dragOver): Only do something when active. Update auto scrolling.
+	(drop): Only do something when active. Update auto scrolling.
+	(dropActionChanged): Only do something when active. Update
+	auto scrolling.
+	(initializeAutoScrolling): Check if component is an instance
+	of Autoscroll, otherwise do nothing.
+	(setActive): Disable autoscrolling when deactivating.
+	(setComponent): When component is set to null, disable autoscrolling.
+
 2006-11-24  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/beans/beancontext/BeanContextServicesSupport.java
