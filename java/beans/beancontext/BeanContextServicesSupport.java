@@ -609,11 +609,22 @@ public class BeanContextServicesSupport
     return (BeanContextServices) beanContextChildPeer;
   }
 
+  /**
+   * Returns <code>child</code> as an instance of 
+   * {@link BeanContextServicesListener}, or <code>null</code> if 
+   * <code>child</code> does not implement that interface.
+   * 
+   * @param child  the child (<code>null</code> permitted).
+   * 
+   * @return The child cast to {@link BeanContextServicesListener}.
+   */
   protected static final BeanContextServicesListener
-  getChildBeanContextServicesListener (Object child)
-    throws NotImplementedException
+      getChildBeanContextServicesListener(Object child)
   {
-    throw new Error ("Not implemented");
+    if (child instanceof BeanContextServicesListener) 
+      return (BeanContextServicesListener) child;
+    else 
+      return null;
   }
 
   /**
