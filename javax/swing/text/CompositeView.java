@@ -282,12 +282,12 @@ public abstract class CompositeView
                   }
               }
           }
-        else
-          {
-            throw new BadLocationException("Position " + pos
-                                           + " is not represented by view.", pos);
-          }    
       }
+
+    if (ret == null)
+      throw new BadLocationException("Position " + pos
+                                     + " is not represented by view.", pos);
+
     return ret;
   }
 
