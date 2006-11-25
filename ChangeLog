@@ -1,3 +1,10 @@
+2006-11-25  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/GapContent.java
+	(getPositionsInRange): Rewritten to use the more efficient
+	binary search searchFirst() and avoid an NPE that was caused
+	by GC'ed positions.
+
 2006-11-25  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/text/CompositeView.java (modelToView): Never return

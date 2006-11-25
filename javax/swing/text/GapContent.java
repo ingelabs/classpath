@@ -888,22 +888,32 @@ public class GapContent
    */
   protected Vector getPositionsInRange(Vector v, int offset, int length)
   {
-    Vector res = v;
-    if (res == null)
-      res = new Vector();
-
-    int endOffs = offset + length;
-
-    for (Iterator i = marks.iterator(); i.hasNext();)
+    int end = offset + length;
+    int startIndex;
+    int endIndex;
+    if (offset < gapStart)
       {
-        Mark m = (Mark) i.next();
-        GapContentPosition p = m.getPosition();
-        int offs = p.getOffset();
-        if (offs >= offset && offs <= endOffs)
-          res.add(new UndoPosRef(p.mark));
+        if (offset == 0)
+          startIndex = 0;
+        else
+          startIndex = searchFirst(offset);
+        if (end >= gapStart)
+          endIndex = searchFirst(end + (gapEnd - gapStart) + 1);
+        else
+          endIndex = searchFirst(end + 1);
       }
-
-    return res;
+    else
+      {
+        startIndex = searchFirst(offset + (gapEnd - gapStart));
+        endIndex = searchFirst(end + (gapEnd - gapStart) + 1);
+      }
+    if (v == null)
+      v = new Vector();
+    for (int i = startIndex; i < endIndex; i++)
+      {
+        v.add(new UndoPosRef((Mark) marks.get(i)));
+      }
+    return v;
   }
   
   /**
@@ -993,7 +1003,6 @@ public class GapContent
    * list. The meaning of the return value is the same as in
    * <code>Collections.binarySearch()</code>.
    *
-   * @param l the list to search through
    * @param o the object to be searched
    *
    * @return the index of the first occurance of o in l, or -i + 1 if not found
