@@ -1324,9 +1324,12 @@ public class StyleSheet extends StyleContext
                                                          : a1.getBounds();
                   ParagraphView par = (ParagraphView) v1;
                   Shape a = par.getChildAllocation(0, r1);
-                  Rectangle r = a instanceof Rectangle ? (Rectangle) a
-                                                       : a.getBounds();
-                  centerY = (int) (r.height / 2 + r.y);
+                  if (a != null)
+                    {
+                      Rectangle r = a instanceof Rectangle ? (Rectangle) a
+                                                           : a.getBounds();
+                      centerY = (int) (r.height / 2 + r.y);
+                    }
                 }
             }
           if (centerY == -1)

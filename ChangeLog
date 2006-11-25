@@ -12,6 +12,11 @@
 
 2006-11-25  Mark Wielaard  <mark@klomp.org>
 
+	* javax/swing/text/html/StyleSheet.java (paint): Guard against
+	getChildAllocation() returning null.
+
+2006-11-25  Mark Wielaard  <mark@klomp.org>
+
 	* gnu/javax/swing/text/html/css/Selector.java (calculateSpecificity):
 	Use clazzIndex for id substring.
 
