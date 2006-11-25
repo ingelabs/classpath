@@ -1,3 +1,15 @@
+2006-11-25  Mario Torre  <neugens@nirvana.limasoftware.net>
+
+	PR28462
+	* java/text/DecimalFormat.java: Almost new rewrite, and update to 1.5.
+	* java/text/NumberFormat.java (format): all format methods, fixed
+ 	FieldPosition argument should never be null.
+ 	(format(Object, StringBuffer, FieldPosition)): fixed signature,
+ 	method is not final.
+	* java/text/DecimalFormatSymbols.java (clone): fixed to also clone
+	locale.
+	* AUTHORS: added my name to the file.
+
 2006-11-25  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/javax/swing/text/html/css/Selector.java (calculateSpecificity):
