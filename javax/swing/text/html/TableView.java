@@ -427,8 +427,12 @@ class TableView
     // all columns of all rows.
     for (int r = 0; r < numRows; r++)
       {
-        RowView rowView = (RowView) getView(r);
-        int numCols = rowView.getViewCount();
+        View rowView = getView(r);
+        int numCols;
+        if (rowView instanceof RowView)
+          numCols = ((RowView) rowView).getViewCount();
+        else
+          numCols = 0;
 
         // We collect the normal (non-relative) column requirements in the
         // total variable and the relative requirements in the relTotal
@@ -665,15 +669,23 @@ class TableView
         int numRows = getViewCount();
         for (int r = 0; r < numRows; r++)
           {
-            RowView rowView = (RowView) getView(r);
-            int numCols = rowView.getViewCount();
+            View rowView = getView(r);
+            int numCols;
+            if (rowView instanceof RowView)
+              numCols = ((RowView) rowView).getViewCount();
+            else
+              numCols = 0;
             maxColumns = Math.max(numCols, maxColumns);
           }
         columnWidths = new Length[maxColumns];
         for (int r = 0; r < numRows; r++)
           {
-            RowView rowView = (RowView) getView(r);
-            int numCols = rowView.getViewCount();
+            View rowView = getView(r);
+            int numCols;
+            if (rowView instanceof RowView)
+              numCols = ((RowView) rowView).getViewCount();
+            else
+              numCols = 0;
             int colIndex = 0;
             for (int c = 0; c < numCols; c++)
               {
