@@ -1,3 +1,9 @@
+2006-11-25  Mark Wielaard  <mark@klomp.org>
+
+	Fixes bug #28822
+	* doc/api/Makefile.am (create_html): Guard GJDOC invocation with
+	CREATE_API_DOCS
+
 2006-11-24  Tania Bento  <tbento@redhat.com>
 
 	* java/awt/font/TextHitInfo.java
