@@ -1,5 +1,9 @@
 2006-11-25  Mark Wielaard  <mark@klomp.org>
 
+	* java/io/File.java (list): Return empty list for unreadable dirs.
+
+2006-11-25  Mark Wielaard  <mark@klomp.org>
+
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java (drawGlyphVector):
 	Synchronize on font peer.
 	(setFont): Likewise.
