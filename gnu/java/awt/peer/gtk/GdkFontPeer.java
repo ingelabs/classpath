@@ -176,8 +176,8 @@ public class GdkFontPeer extends ClasspathFontPeer
   private native void dispose ();
   private native void setFont (String family, int style, int size);
 
-  native void getFontMetrics(double [] metrics);
-  native void getTextMetrics(String str, double [] metrics);
+  native synchronized void getFontMetrics(double [] metrics);
+  native synchronized void getTextMetrics(String str, double [] metrics);
 
   native void releasePeerGraphicsResource();
 

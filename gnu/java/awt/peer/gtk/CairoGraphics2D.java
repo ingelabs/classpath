@@ -1676,9 +1676,10 @@ public abstract class CairoGraphics2D extends Graphics2D
         float[] positions = gv.getGlyphPositions (0, n, null);
 
         setFont (gv.getFont ());
-	synchronized( this.font ) 
+        GdkFontPeer fontPeer = (GdkFontPeer) font.getPeer();
+	synchronized (fontPeer) 
 	  { 
-	    cairoDrawGlyphVector(nativePointer, (GdkFontPeer)getFont().getPeer(),
+	    cairoDrawGlyphVector(nativePointer, fontPeer,
 				 x, y, n, codes, positions);
 	  }
       }
@@ -1733,7 +1734,11 @@ public abstract class CairoGraphics2D extends Graphics2D
         ((ClasspathToolkit)(Toolkit.getDefaultToolkit()))
         .getFont(f.getName(), f.getAttributes());    
     
-    cairoSetFont(nativePointer, (GdkFontPeer)getFont().getPeer());
+    GdkFontPeer fontpeer = (GdkFontPeer) getFont().getPeer();
+    synchronized (fontpeer)
+      {
+        cairoSetFont(nativePointer, fontpeer);
+      }
   }
 
   public Font getFont()
