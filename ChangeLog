@@ -1,5 +1,10 @@
 2006-11-25  Mark Wielaard  <mark@klomp.org>
 
+	* gnu/javax/swing/text/html/css/Selector.java (calculateSpecificity):
+	Use clazzIndex for id substring.
+
+2006-11-25  Mark Wielaard  <mark@klomp.org>
+
 	* java/awt/EventQueue.java (pop): Only terminate dispatchThread when
 	it is still running.
 

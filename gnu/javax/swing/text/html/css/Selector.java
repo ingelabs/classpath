@@ -214,7 +214,7 @@ public class Selector
           {
             b++;
             id = sel.substring(idIndex + 1,
-                               clazzIndex > 0 ? Math.min(idIndex, sel.length())
+                               clazzIndex > 0 ? Math.min(clazzIndex, sel.length())
                                               : sel.length());
           }
         String tag = sel.substring(0,
