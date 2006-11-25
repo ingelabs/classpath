@@ -1,5 +1,10 @@
 2006-11-25  Mark Wielaard  <mark@klomp.org>
 
+	* java/awt/EventQueue.java (pop): Only terminate dispatchThread when
+	it is still running.
+
+2006-11-25  Mark Wielaard  <mark@klomp.org>
+
 	Fixes bug #28822
 	* doc/api/Makefile.am (create_html): Guard GJDOC invocation with
 	CREATE_API_DOCS
