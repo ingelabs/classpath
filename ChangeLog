@@ -1,3 +1,12 @@
+2006-11-26  Roger Sayle  <roger <at> eyesopen.com>
+	    Ian Lance Taylor  <ian <at> airs.com>
+	    Paolo Bonzini <bonzini <at> gnu.org>
+
+	Fixes bug #25557.
+
+	* lib/gen-classlist.sh.in:  Avoid using test's -ef operator for
+	increased portability.  Likewise, use -f instead of -e.
+
 2006-11-26  Mark Wielaard  <mark@klomp.org>
 
 	* lib/Makefile.am (propertydirs): Removed.
