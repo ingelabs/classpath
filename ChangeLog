@@ -1,5 +1,16 @@
 2006-11-26  Dalibor Topic  <robilad@kaffe.org>
 
+	Fixes bug #29133.
+
+	* libraries/clib/nio/gnu_java_nio_VMSelector.c
+	(Java_gnu_java_nio_VMSelector_select):
+	Use strerror if strerror_r is not available.
+
+	Reported by:  Michael Franz <mvfranz <at> gmail.com>,
+                      Riccardo Mottola <zuse <at> libero.it>
+
+2006-11-26  Dalibor Topic  <robilad@kaffe.org>
+
 	Fixes bug #26756.
 	
 	* native/jni/midi-dssi/Makefile.am (AM_CFLAGS): Removed 
