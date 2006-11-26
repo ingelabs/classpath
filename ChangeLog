@@ -1,3 +1,15 @@
+2006-11-26  Tom Tromey  <tromey@redhat.com>
+
+	* native/jni/java-net/java_net_VMNetworkInterface.c: Conditionally
+	include ifaddrs.h.
+	(Java_java_net_VMNetworkInterface_getVMInterfaces): Updated
+	conditional.
+	* native/jni/java-net/gnu_java_net_VMPlainSocketImpl.c:
+	Conditionally include ifaddrs.h.
+	(getif_address): Updated conditional.
+	(getif_index): Likewise.
+	* configure.ac: Check for ifaddrs.h.
+
 2006-11-25  Mark Wielaard  <mark@klomp.org>
 
 	* java/io/File.java (list): Return empty list for unreadable dirs.
