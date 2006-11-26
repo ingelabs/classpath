@@ -1,5 +1,14 @@
 2006-11-26  Dalibor Topic  <robilad@kaffe.org>
 
+	* native/target/.cvsignore,
+	native/target/generic/.cvsignore,
+	native/target/Linux/.cvsignore:
+	Removed no longer used files.
+
+	* native/target: Removed no longer used directory.
+
+2006-11-26  Dalibor Topic  <robilad@kaffe.org>
+
 	Fixes bug #29133.
 
 	* libraries/clib/nio/gnu_java_nio_VMSelector.c
