@@ -1,3 +1,7 @@
+2006-11-26  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/net/PlainSocketImpl.java (accept): Reset timeout on Socket.
+
 2006-11-26  Dalibor Topic  <robilad@kaffe.org>
 
 	* native/target/.cvsignore,
@@ -15,8 +19,8 @@
 	(Java_gnu_java_nio_VMSelector_select):
 	Use strerror if strerror_r is not available.
 
-	Reported by:  Michael Franz <mvfranz <at> gmail.com>,
-                      Riccardo Mottola <zuse <at> libero.it>
+	Reported by:  Michael Franz <mvfranz@gmail.com>,
+		      Riccardo Mottola <zuse@libero.it>
 
 2006-11-26  Dalibor Topic  <robilad@kaffe.org>
 
