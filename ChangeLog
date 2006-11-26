@@ -1,5 +1,10 @@
 2006-11-26  Mark Wielaard  <mark@klomp.org>
 
+	* lib/Makefile.am (propertydirs): Removed.
+	(resources): Explicitly create all dirs.
+
+2006-11-26  Mark Wielaard  <mark@klomp.org>
+
 	* gnu/java/net/PlainSocketImpl.java (accept): Reset timeout on Socket.
 
 2006-11-26  Dalibor Topic  <robilad@kaffe.org>
