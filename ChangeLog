@@ -1,3 +1,7 @@
+2006-11-26  Ian Rogers  <ian.rogers@manchester.ac.uk>
+
+	* doc/vmintegration.texinfo: Update VM Threading Model section.
+
 2006-11-26  Tom Tromey  <tromey@redhat.com>
 
 	* native/jni/java-net/java_net_VMNetworkInterface.c: Conditionally
