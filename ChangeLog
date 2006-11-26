@@ -1,3 +1,11 @@
+2006-11-26  Dalibor Topic  <robilad@kaffe.org>
+
+	Fixes bug #26756.
+	
+	* native/jni/midi-dssi/Makefile.am (AM_CFLAGS): Removed 
+	STRICT_WARNING_CFLAGS since it caused the build to fail 
+	on GNU/Linux.
+
 2006-11-26  Ian Rogers  <ian.rogers@manchester.ac.uk>
 
 	* doc/vmintegration.texinfo: Update VM Threading Model section.
