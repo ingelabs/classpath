@@ -38,12 +38,11 @@ exception statement from your version. */
 
 package java.awt.font;
 
-import gnu.classpath.NotImplementedException;
-
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
@@ -298,6 +297,7 @@ public final class TextLayout implements Cloneable
     setCharIndices();
     setupMappings();
     determineWhiteSpace();
+    layoutRuns();
   }
 
   private void setCharIndices()
@@ -952,9 +952,81 @@ public final class TextLayout implements Cloneable
   public Shape getVisualHighlightShape (TextHitInfo firstEndpoint,
                                         TextHitInfo secondEndpoint,
                                         Rectangle2D bounds)
-    throws NotImplementedException
   {
-    throw new Error ("not implemented");
+    GeneralPath path = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
+    Shape caret1 = getCaretShape(firstEndpoint, bounds);
+    path.append(caret1, false);
+    Shape caret2 = getCaretShape(secondEndpoint, bounds);
+    path.append(caret2, false);
+    // Append left (top) bounds to selection if necessary.
+    int c1 = hitToCaret(firstEndpoint);
+    int c2 = hitToCaret(secondEndpoint);
+    if (c1 == 0 || c2 == 0)
+      {
+        path.append(left(bounds), false);
+      }
+    // Append right (bottom) bounds if necessary.
+    if (c1 == length || c2 == length)
+      {
+        path.append(right(bounds), false);
+      }
+    System.err.println("visual hl bounds: " + path.getBounds2D());
+    System.err.println("bb bounds:" + getBlackBoxBounds(3, 7).getBounds2D());
+    return path.getBounds2D();
+  }
+
+  /**
+   * Returns the shape that makes up the left (top) edge of this text layout.
+   *
+   * @param b the bounds
+   *
+   * @return the shape that makes up the left (top) edge of this text layout
+   */
+  private Shape left(Rectangle2D b)
+  {
+    GeneralPath left = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
+    left.append(getCaretShape(TextHitInfo.beforeOffset(0)), false);
+    if (isVertical())
+      {
+        float y = (float) b.getMinY();
+        left.append(new Line2D.Float((float) b.getMinX(), y,
+                                     (float) b.getMaxX(), y), false);
+      }
+    else
+      {
+        float x = (float) b.getMinX();
+        left.append(new Line2D.Float(x, (float) b.getMinY(),
+                                     x, (float) b.getMaxY()), false);
+      }
+    return left.getBounds2D();
+  }
+
+  /**
+   * Returns the shape that makes up the right (bottom) edge of this text
+   * layout.
+   *
+   * @param b the bounds
+   *
+   * @return the shape that makes up the right (bottom) edge of this text
+   *         layout
+   */
+  private Shape right(Rectangle2D b)
+  {
+    GeneralPath right = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
+    right.append(getCaretShape(TextHitInfo.afterOffset(length)), false);
+    if (isVertical())
+      {
+        float y = (float) b.getMaxY();
+        right.append(new Line2D.Float((float) b.getMinX(), y,
+                                      (float) b.getMaxX(), y), false);
+      }
+    else
+      {
+        float x = (float) b.getMaxX();
+        right.append(new Line2D.Float(x, (float) b.getMinY(),
+                                      x, (float) b.getMaxY()), false);
+      }
+    return right.getBounds2D();
   }
 
   public TextHitInfo getVisualOtherHit (TextHitInfo hit)
@@ -1306,7 +1378,7 @@ public final class TextLayout implements Cloneable
   {
     float loc = 0.0F;
     float lastWidth = 0.0F;
-    for (int i = 0; i < runs.length - 1; i++)
+    for (int i = 0; i < runs.length; i++)
       {
         runs[i].location = loc;
         Rectangle2D bounds = runs[i].glyphVector.getLogicalBounds();

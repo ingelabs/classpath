@@ -1,6 +1,15 @@
 2006-11-27  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/font/TextLayout.java
+	(TextLayout(TextLayout,int,int)): Also layout the new runs.
+	(getVisualHighlightShape): Implemented.
+	(layoutRuns): Fixed boundary so that the last run is also laid out.
+	(left): New helper method.
+	(right): New helper method.
+
+2006-11-27  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/font/TextLayout.java
 	(getCaretShape(TextHitInfo,Rectangle2D)): Implemented.
 	(getCaretShape(TextHitInfo)): Use natural bounds.
 	(getCaretShapes(int,Rectangle2D,CaretPolicy)): New API method.
