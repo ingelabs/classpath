@@ -38,8 +38,6 @@ exception statement from your version. */
 
 package java.beans.beancontext;
 
-import gnu.classpath.NotImplementedException;
-
 import java.beans.Beans;
 import java.beans.DesignMode;
 import java.beans.PropertyChangeEvent;
@@ -57,6 +55,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -74,20 +73,52 @@ public class BeanContextSupport extends BeanContextChildSupport
 {
   private static final long serialVersionUID = -4879613978649577204L;
 
-  // This won't show up in japi, but we mark it as a stub anyway,
-  // so that searches for NotImplementedException will find it.
+  /**
+   * Deserializes a stored bean context.  Hook methods are provided to allow
+   * subclasses to perform their own deserialization after the default
+   * deserialization but prior to the deserialization of the children.  Note that
+   * {@link #readChildren(ObjectInputStream)} is only called if there
+   * is no distinct peer.  If there is, the peer is expected to call
+   * the method instead.
+   *
+   * @param s the stream to deserialize.
+   * @throws ClassNotFoundException if the class of an object being deserialized
+   *                                could not be found.
+   * @throws IOException if an I/O error occurs.
+   */
   private void readObject (ObjectInputStream s)
-    throws ClassNotFoundException, IOException, NotImplementedException
+    throws ClassNotFoundException, IOException
   {
-    throw new Error ("Not implemented");
+    s.defaultReadObject();
+    bcsPreDeserializationHook(s);
+    BeanContext peer = getBeanContextPeer();
+    if (peer == null || peer == this)
+      readChildren(s);
   }
 
-  // This won't show up in japi, but we mark it as a stub anyway,
-  // so that searches for NotImplementedException will find it.
+  /**
+   * Serializes a bean context.  Hook methods are provided to allow
+   * subclasses to perform their own serialization after the default
+   * serialization but prior to serialization of the children.  Note that
+   * {@link #writeChildren(ObjectOutputStream)} is only called if there
+   * is no distinct peer.  If there is, the peer is expected to call
+   * the method instead.
+   *
+   * @param s the stream to serialize.
+   * @throws ClassNotFoundException if the class of an object being deserialized
+   *                                could not be found.
+   * @throws IOException if an I/O error occurs.
+   */
   private void writeObject (ObjectOutputStream s)
-    throws ClassNotFoundException, IOException, NotImplementedException
+    throws ClassNotFoundException, IOException
   {
-    throw new Error ("Not implemented");
+    serializing = true;
+    s.defaultWriteObject();
+    bcsPreSerializationHook(s);
+    BeanContext peer = getBeanContextPeer();
+    if (peer == null || peer == this)
+      writeChildren(s);
+    serializing = false;
   }
 
   protected class BCSChild implements Serializable
@@ -102,6 +133,12 @@ public class BeanContextSupport extends BeanContextChildSupport
       this.targetChild = targetChild;
       this.peer = peer;
     }
+
+    private Object getTargetChild()
+    {
+      return targetChild;
+    }
+
   }
 
   protected static final class BCSIterator implements Iterator
@@ -138,6 +175,8 @@ public class BeanContextSupport extends BeanContextChildSupport
   protected transient Locale locale;
 
   protected transient boolean okToUseGui;
+
+  private transient boolean serializing;
 
   /**
    * Construct a BeanContextSupport instance.
@@ -340,22 +379,49 @@ public class BeanContextSupport extends BeanContextChildSupport
       }
   }
 
+  /**
+   * Subclasses may use this method to perform their own deserialization
+   * after the default deserialization process has taken place, but
+   * prior to the deserialization of the children.  It should not
+   * be used to replace the implementation of <code>readObject</code>
+   * in the subclass.
+   *
+   * @param ois the input stream.
+   * @throws ClassNotFoundException if the class of an object being deserialized
+   *                                could not be found.
+   * @throws IOException if an I/O error occurs.
+   */
   protected void bcsPreDeserializationHook (ObjectInputStream ois)
-    throws ClassNotFoundException, IOException, NotImplementedException
+    throws ClassNotFoundException, IOException
   {
-    throw new Error ("Not implemented");
+    /* Purposefully left empty */
   }
 
+  /**
+   * Subclasses may use this method to perform their own serialization
+   * after the default serialization process has taken place, but
+   * prior to the serialization of the children.  It should not
+   * be used to replace the implementation of <code>writeObject</code>
+   * in the subclass.
+   *
+   * @param oos the output stream.
+   * @throws IOException if an I/O error occurs.
+   */
   protected void bcsPreSerializationHook (ObjectOutputStream oos)
-    throws IOException, NotImplementedException
+    throws IOException
   {
-    throw new Error ("Not implemented");
+    /* Purposefully left empty */
   }
 
+  /**
+   * Called when a child is deserialized.
+   * 
+   * @param child the deserialized child.
+   * @param bcsc the deserialized context wrapper for the child.
+   */
   protected void childDeserializedHook (Object child, BeanContextSupport.BCSChild bcsc)
-    throws NotImplementedException
   {
-    throw new Error ("Not implemented");
+    // Do nothing in the base class.
   }
 
   protected void childJustAddedHook (Object child, BeanContextSupport.BCSChild bcsc)
@@ -674,10 +740,15 @@ public class BeanContextSupport extends BeanContextChildSupport
       }
   }
 
-  public boolean isSerializing ()
-    throws NotImplementedException
+  /**
+   * Returns true if the bean context is in the process
+   * of being serialized.
+   *
+   * @return true if the context is being serialized.
+   */
+  public boolean isSerializing()
   {
-    throw new Error ("Not implemented");
+    return serializing;
   }
 
   public Iterator iterator ()
@@ -722,10 +793,33 @@ public class BeanContextSupport extends BeanContextChildSupport
       remove(pce.getSource(), false);
   }
 
+  /**
+   * Deerializes the children using the
+   * {@link #deserialize(ObjectInputStream, Collection} method
+   * and then calls {@link childDeserializedHook(Object, BCSChild)}
+   * for each child deserialized.
+   *
+   * @param oos the output stream.
+   * @throws IOException if an I/O error occurs.
+   */
   public final void readChildren (ObjectInputStream ois)
-    throws IOException, ClassNotFoundException, NotImplementedException
+    throws IOException, ClassNotFoundException
   {
-    throw new Error ("Not implemented");
+    List temp = new ArrayList();
+    deserialize(ois, temp);
+    Iterator i = temp.iterator();
+    synchronized (globalHierarchyLock)
+      {
+	synchronized (children)
+	  {
+	    while (i.hasNext())
+	      {
+		BCSChild bcs = (BCSChild) i.next();
+		childDeserializedHook(bcs.getTargetChild(), bcs);
+		children.put(bcs.getTargetChild(), bcs);
+	      }
+	  }
+      }
   }
 
   /**
@@ -966,9 +1060,20 @@ public class BeanContextSupport extends BeanContextChildSupport
     /* Purposefully left empty */
   }
 
+  /**
+   * Serializes the children using the
+   * {@link #serialize(ObjectOutputStream, Collection} method.
+   *
+   * @param oos the output stream.
+   * @throws IOException if an I/O error occurs.
+   */
   public final void writeChildren (ObjectOutputStream oos)
-    throws IOException, NotImplementedException
+    throws IOException
   {
-    throw new Error ("Not implemented");
+    synchronized (children)
+      {
+	serialize(oos, children.values());
+      }
   }
+
 }
