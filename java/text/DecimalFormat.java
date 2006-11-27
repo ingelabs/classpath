@@ -1650,7 +1650,7 @@ public class DecimalFormat extends NumberFormat
             currencySymbol = CURRENCY_SYMBOL;
 
             // if \u00A4 is doubled, we use the international currency symbol
-            if (i < len && pattern.charAt(i + 1) == '\u00A4')
+            if ((i + 1) < len && pattern.charAt(i + 1) == '\u00A4')
               {
                 currencySymbol = symbols.getInternationalCurrencySymbol();
                 i = i + 2;
@@ -1728,6 +1728,15 @@ public class DecimalFormat extends NumberFormat
   private void formatInternal(BigDecimal number, boolean isLong,
                               StringBuffer dest, FieldPosition fieldPos)
   {
+    // The specs says that fieldPos should not be null, and that we
+    // should throw a NPE, but it seems that in few classes that
+    // reference this one, fieldPos is set to null.
+    // This is even defined in the javadoc, see for example MessageFormat.
+    // I think the best here is to check for fieldPos and build one if it is
+    // null. If it cause harms or regressions, just remove this line and
+    // fix the classes in the point of call, insted.
+    if (fieldPos == null) fieldPos = new FieldPosition(0); 
+    
     int _multiplier = this.multiplier;
     
     // used to track attribute starting position for each attribute
@@ -1853,7 +1862,7 @@ public class DecimalFormat extends NumberFormat
         // the sum of the minimum integer and maximum fraction
         // digits, and does not take into account the maximun integer
         // digits to display.
-        // This methods takes care of the integer portion of the mantissa.
+        
         if (attributeStart < 0)
           attributeStart = Math.max(dest.length() - 1, 0);
         appendDigit(intPart, dest, this.groupingUsed);
@@ -1916,10 +1925,33 @@ public class DecimalFormat extends NumberFormat
           }
         
         fractPart = adjustTrailingZeros(fractPart, digits);
-        appendDigit(fractPart, dest, false);
         
-        endIndexFract = dest.length();
-        addAttribute(Field.FRACTION, attributeStart, endIndexFract);
+        // FIXME: this code must be improved
+        // now check if the factional part is just 0, in this case
+        // we need to remove the '.' unless requested
+        boolean allZeros = true;
+        char fracts[] = fractPart.toCharArray();
+        for (int i = 0; i < fracts.length; i++)
+          {
+            if (fracts[i] != '0')
+              allZeros = false;
+          }
+        
+        if (!allZeros || minimumFractionDigits > 0)
+          {
+            appendDigit(fractPart, dest, false);
+            endIndexFract = dest.length();
+            addAttribute(Field.FRACTION, attributeStart, endIndexFract);
+          }
+        else if (!this.decimalSeparatorAlwaysShown)
+          {
+            dest.deleteCharAt(dest.length() - 1);
+          }
+        else
+          {
+            endIndexFract = dest.length();
+            addAttribute(Field.FRACTION, attributeStart, endIndexFract);
+          }
       }
     
     // and the exponent
