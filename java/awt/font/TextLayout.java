@@ -69,6 +69,11 @@ public final class TextLayout implements Cloneable
     GlyphVector glyphVector;
 
     /**
+     * The font for this text run.
+     */
+    Font font;
+
+    /**
      * The start of the run.
      */
     int runStart;
@@ -79,15 +84,21 @@ public final class TextLayout implements Cloneable
     int runEnd;
 
     /**
+     * The layout location of the beginning of the run.
+     */
+    float location;
+
+    /**
      * Initializes the Run instance.
      *
      * @param gv the glyph vector
      * @param start the start index of the run
      * @param end the end index of the run
      */
-    Run(GlyphVector gv, int start, int end)
+    Run(GlyphVector gv, Font f, int start, int end)
     {
       glyphVector = gv;
+      font = f;
       runStart = start;
       runEnd = end;
     }
@@ -110,7 +121,6 @@ public final class TextLayout implements Cloneable
    */
   private Run[] runs;
 
-  private Font font;
   private FontRenderContext frc;
   private char[] string;
   private int offset;
@@ -179,7 +189,6 @@ public final class TextLayout implements Cloneable
    */
   public TextLayout (String str, Font font, FontRenderContext frc) 
   {
-    this.font = font;
     this.frc = frc;
     string = str.toCharArray();
     offset = 0;
@@ -209,7 +218,7 @@ public final class TextLayout implements Cloneable
                                                         string, start, end,
                            ((table[i] & 1) == 0) ? Font.LAYOUT_LEFT_TO_RIGHT
                                                  : Font.LAYOUT_RIGHT_TO_LEFT );
-                runs[i] = new Run(gv, start, end);
+                runs[i] = new Run(gv, font, start, end);
               }
 	  }
 	Bidi.reorderVisually( table, 0, runs, 0, runs.length );
@@ -228,11 +237,12 @@ public final class TextLayout implements Cloneable
         GlyphVector gv = font.layoutGlyphVector( frc, string, offset, length,
                                      leftToRight ? Font.LAYOUT_LEFT_TO_RIGHT
                                                  : Font.LAYOUT_RIGHT_TO_LEFT );
-        Run run = new Run(gv, 0, length);
+        Run run = new Run(gv, font, 0, length);
 	runs = new Run[]{ run };
       }
     setCharIndices();
     setupMappings();
+    layoutRuns();
   }
 
   public TextLayout (String string, Map attributes, FontRenderContext frc)  
@@ -253,7 +263,6 @@ public final class TextLayout implements Cloneable
    */
   TextLayout(TextLayout t, int startIndex, int endIndex)
   {
-    font = t.font;
     frc = t.frc;
     boundsCache = null;
     lm = t.lm;
@@ -273,6 +282,7 @@ public final class TextLayout implements Cloneable
       {
         Run run = t.runs[i + startingRun];
 	GlyphVector gv = run.glyphVector;
+        Font font = run.font;
 	// Copy only the relevant parts of the first and last runs.
 	int beginGlyphIndex = (i > 0) ? 0 : t.charIndices[startIndex][1];
 	int numEntries = ( i < nRuns - 1) ? gv.getNumGlyphs() : 
@@ -280,8 +290,8 @@ public final class TextLayout implements Cloneable
 	
 	int[] codes = gv.getGlyphCodes(beginGlyphIndex, numEntries, null);
         gv = font.createGlyphVector(frc, codes);
-        runs[i] = new Run(gv, run.runStart - startIndex,
-                         run.runEnd - startIndex);
+        runs[i] = new Run(gv, font, run.runStart - startIndex,
+                          run.runEnd - startIndex);
       }
     runs[nRuns - 1].runEnd = endIndex - 1;
 
@@ -544,9 +554,50 @@ public final class TextLayout implements Cloneable
   }
 
   public float[] getCaretInfo (TextHitInfo hit, Rectangle2D bounds)
-    throws NotImplementedException
   {
-    throw new Error ("not implemented");
+    float[] info = new float[2];
+    int index = hit.getCharIndex();
+    boolean leading = hit.isLeadingEdge();
+    // For the boundary cases we return the boundary runs.
+    Run run;
+    
+    if (index >= length)
+      {
+        info[0] = getAdvance();
+        info[1] = 0;
+      }
+    else
+      {
+        if (index < 0)
+          {
+            run = runs[0];
+            index = 0;
+            leading = true;
+          }
+        else
+          run = findRunAtIndex(index);
+
+        int glyphIndex = index - run.runStart;
+        Shape glyphBounds = run.glyphVector.getGlyphLogicalBounds(glyphIndex);
+        Rectangle2D glyphRect = glyphBounds.getBounds2D();
+        if (isVertical())
+          {
+            if (leading)
+              info[0] = (float) glyphRect.getMinY();
+            else
+              info[0] = (float) glyphRect.getMaxY();
+          }
+        else
+          {
+            if (leading)
+              info[0] = (float) glyphRect.getMinX();
+            else
+              info[0] = (float) glyphRect.getMaxX();
+          }
+        info[0] += run.location;
+        info[1] = run.font.getItalicAngle();
+      }
+    return info;
   }
 
   public Shape getCaretShape (TextHitInfo hit)
@@ -1110,7 +1161,7 @@ public final class TextLayout implements Cloneable
   public String toString ()
   {
     return "TextLayout [string:"+ new String(string, offset, length)
-    +", Font:"+font+" Rendercontext:"+
+    +" Rendercontext:"+
       frc+"]";
   }
 
@@ -1178,6 +1229,42 @@ public final class TextLayout implements Cloneable
   {
     byte level = getCharacterLevel(index);
     return (level & 1) == 0;
+  }
+
+  /**
+   * Finds the run that holds the specified (logical) character index. This
+   * returns <code>null</code> when the index is not inside the range.
+   *
+   * @param index the index of the character to find
+   *
+   * @return the run that holds the specified character
+   */
+  private Run findRunAtIndex(int index)
+  {
+    Run found = null;
+    // TODO: Can we do better than linear searching here?
+    for (int i = 0; i < runs.length && found == null; i++)
+      {
+        Run run = runs[i];
+        if (run.runStart <= index && run.runEnd > index)
+          found = run;
+      }
+    return found;
+  }
+
+  /**
+   * Computes the layout locations for each run.
+   */
+  private void layoutRuns()
+  {
+    float loc = 0.0F;
+    float lastWidth = 0.0F;
+    for (int i = 0; i < runs.length - 1; i++)
+      {
+        runs[i].location = loc;
+        Rectangle2D bounds = runs[i].glyphVector.getLogicalBounds();
+        loc += isVertical() ? bounds.getHeight() : bounds.getWidth();
+      }
   }
 
   /**

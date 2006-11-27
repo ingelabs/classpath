@@ -1,3 +1,19 @@
+2006-11-27  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/font/TextLayout.java
+	(Run.font): New field.
+	(Run.location): New field.
+	(Run.Run): Initialize font.
+	(font): Removed field. This is moved into Run as the actual font
+	is something run-specific.
+	(TextLayout(String,Font,FontRenderContext)): Set font on the
+	single runs. Layout the runs here.
+	(TextLayout(TextLayout,int,int)): Copy over the run fonts.
+	(findRunAtIndex): New helper method.
+	(getCaretInfo): Implemented.
+	(layoutRuns): New helper method.
+	(toString): Don't put font in output string.
+
 2006-11-27  Raif S. Naffah  <classpath@naffah-raif.name>
 
 	* AUTHORS: Added Jeroen Fritjers.
