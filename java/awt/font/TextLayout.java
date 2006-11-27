@@ -600,26 +600,73 @@ public final class TextLayout implements Cloneable
     return info;
   }
 
-  public Shape getCaretShape (TextHitInfo hit)
+  public Shape getCaretShape(TextHitInfo hit)
   {
-    return getCaretShape( hit, getBounds() );
+    return getCaretShape(hit, getBounds());
   }
 
-  public Shape getCaretShape (TextHitInfo hit, Rectangle2D bounds)
-    throws NotImplementedException
+  public Shape getCaretShape(TextHitInfo hit, Rectangle2D bounds)
   {
-    throw new Error ("not implemented");
+    // TODO: Handle vertical shapes somehow.
+    float[] info = getCaretInfo(hit);
+    float x1 = info[0];
+    float y1 = (float) bounds.getMinY();
+    float x2 = info[0];
+    float y2 = (float) bounds.getMaxY();
+    if (info[1] != 0)
+      {
+        // Shift x1 and x2 according to the slope.
+        x1 -= y1 * info[1];
+        x2 -= y2 * info[1];
+      }
+    GeneralPath path = new GeneralPath(GeneralPath.WIND_EVEN_ODD, 2);
+    path.moveTo(x1, y1);
+    path.lineTo(x2, y2);
+    return path;
   }
 
-  public Shape[] getCaretShapes (int offset)
+  public Shape[] getCaretShapes(int offset)
   {
-    return getCaretShapes( offset, getBounds() );
+    return getCaretShapes(offset, getNaturalBounds());
   }
 
-  public Shape[] getCaretShapes (int offset, Rectangle2D bounds)
-    throws NotImplementedException
+  public Shape[] getCaretShapes(int offset, Rectangle2D bounds)
   {
-    throw new Error ("not implemented");
+    return getCaretShapes(offset, bounds, DEFAULT_CARET_POLICY);
+  }
+
+  public Shape[] getCaretShapes(int offset, Rectangle2D bounds,
+                                CaretPolicy policy)
+  {
+    // The RI returns a 2-size array even when there's only one
+    // shape in it.
+    Shape[] carets = new Shape[2];
+    TextHitInfo hit1 = TextHitInfo.afterOffset(offset);
+    int caretHit1 = hitToCaret(hit1);
+    TextHitInfo hit2 = hit1.getOtherHit();
+    int caretHit2 = hitToCaret(hit2);
+    if (caretHit1 == caretHit2)
+      {
+        carets[0] = getCaretShape(hit1);
+        carets[1] = null; // The RI returns null in this seldom case.
+      }
+    else
+      {
+        Shape caret1 = getCaretShape(hit1);
+        Shape caret2 = getCaretShape(hit2);
+        TextHitInfo strong = policy.getStrongCaret(hit1, hit2, this);
+        if (strong == hit1)
+          {
+            carets[0] = caret1;
+            carets[1] = caret2;
+          }
+        else
+          {
+            carets[0] = caret2;
+            carets[1] = caret1;
+          }
+      }
+    return carets;
   }
 
   public int getCharacterCount ()

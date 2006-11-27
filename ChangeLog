@@ -1,6 +1,16 @@
 2006-11-27  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/font/TextLayout.java
+	(getCaretShape(TextHitInfo,Rectangle2D)): Implemented.
+	(getCaretShape(TextHitInfo)): Use natural bounds.
+	(getCaretShapes(int,Rectangle2D,CaretPolicy)): New API method.
+	(getCaretShapes(int,Rectangle2D)): Delegate to new method
+	above with DEFAULT_CARET_POLICY.
+	(getCaretShapes(int)): Use natural bounds.
+
+2006-11-27  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/font/TextLayout.java
 	(Run.font): New field.
 	(Run.location): New field.
 	(Run.Run): Initialize font.
