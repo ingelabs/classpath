@@ -1,3 +1,7 @@
+2006-11-27  Raif S. Naffah  <classpath@naffah-raif.name>
+
+	* AUTHORS: Added Jeroen Fritjers.
+
 2006-11-27  neugens  <neugens@nirvana.limasoftware.net>
 
 	* java/text/DecimalFormat.java (formatInternal): Add an explicit test
