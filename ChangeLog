@@ -1,3 +1,15 @@
+2006-11-28  Dalibor Topic  <robilad@kaffe.org>
+
+        * native/jni/java-lang/java_lang_VMDouble.c:
+        (parseDoubleFromChars) New function. Factored out from ...
+        (Java_java_lang_VMDouble_parseDouble): Factored out the parsing.
+        (dtoa_toString): New function. Factored out from ...
+        (Java_java_lang_VMDouble_toString) : Factored out the conversion.
+        Changed conversion mode to 2, as modes 0 and 1 don't round
+        as the API spec demands. Invoke conversion function as often
+        as necessary with growing precision until a reversible
+        representation of the double in form of a string is reached.
+
 2006-11-28  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JComponent.java
