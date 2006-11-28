@@ -1,3 +1,12 @@
+2006-11-27  Casey Marshall  <csm@gnu.org>
+
+	* java/util/jar/JarEntry.java (certs): removed.
+	(jarfile): new field.
+	(getCertificates): read the certificates from the containing JarFile.
+	* java/util/jar/JarFile.java (JarEnumeration.nextElement): don't
+	fill in 'certs,' fill in 'jarfile' for the entry.
+	(getEntry): likewise.
+	
 2006-11-27  Francis Kung  <fkung@redhat.com>
 
 	* java/awt/image/WritableRaster.java

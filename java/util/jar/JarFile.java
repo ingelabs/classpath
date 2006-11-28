@@ -382,19 +382,8 @@ public class JarFile extends ZipFile
 		  }
 		jarfile.signaturesRead = true; // fudge it.
 	      }
-
-	  // Include the certificates only if we have asserted that the
-	  // signatures are valid. This means the certificates will not be
-	  // available if the entry hasn't been read yet.
-	  if (jarfile.entryCerts != null
-	      && jarfile.verified.get(zip.getName()) == Boolean.TRUE)
-	    {
-	      Set certs = (Set) jarfile.entryCerts.get(jar.getName());
-	      if (certs != null)
-		jar.certs = (Certificate[])
-		  certs.toArray(new Certificate[certs.size()]);
-	    }
 	}
+      jar.jarfile = jarfile;
       return jar;
     }
   }
@@ -439,18 +428,7 @@ public class JarFile extends ZipFile
 		}
 	      signaturesRead = true;
 	    }
-	// See the comments in the JarEnumeration for why we do this
-	// check.
-	if (DEBUG)
-	  debug("entryCerts=" + entryCerts + " verified " + name
-		+ " ? " + verified.get(name));
-	if (entryCerts != null && verified.get(name) == Boolean.TRUE)
-	  {
-	    Set certs = (Set) entryCerts.get(name);
-	    if (certs != null)
-	      jarEntry.certs = (Certificate[])
-		certs.toArray(new Certificate[certs.size()]);
-	  }
+        jarEntry.jarfile = this;
 	return jarEntry;
       }
     return null;
