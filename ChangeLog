@@ -1,3 +1,9 @@
+2006-11-28  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JComponent.java
+	(putClientProperty): Do not fire event when both old and new
+	value are == null.
+
 2006-11-27  Casey Marshall  <csm@gnu.org>
 
 	* java/util/jar/JarEntry.java (certs): removed.
