@@ -1253,7 +1253,7 @@ public abstract class CairoGraphics2D extends Graphics2D
     if (x1 == x2 && y1 == y2)
       fill(new Rectangle(x1, y1, 1, 1));
     else
-      draw(new Line2D.Double(x1 + 0.5, y1 + 0.5, x2 + 0.5, y2 + 0.5));
+      draw(new Line2D.Double(x1, y1, x2, y2));
   }
 
   public void drawRect(int x, int y, int width, int height)

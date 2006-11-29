@@ -1,3 +1,8 @@
+2006-11-29  Francis Kung  <fkung@redhat.com>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(drawLine): Remove hard-coded pixel shifting.
+
 2006-11-29  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/Component.java
