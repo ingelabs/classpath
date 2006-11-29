@@ -970,8 +970,6 @@ public final class TextLayout implements Cloneable
       {
         path.append(right(bounds), false);
       }
-    System.err.println("visual hl bounds: " + path.getBounds2D());
-    System.err.println("bb bounds:" + getBlackBoxBounds(3, 7).getBounds2D());
     return path.getBounds2D();
   }
 
