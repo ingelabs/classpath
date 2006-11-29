@@ -1,3 +1,9 @@
+2006-11-29  Tania Bento  <tbento@redhat.com>
+
+	* tools/gnu/classpath/tools/appletviewer/TagParser.java:
+	(parseParams): Unescape 'val' before putting it into the Map.
+	(unescapeString): New private method.
+
 2006-11-29  Tom Tromey  <tromey@redhat.com>
 
 	* tools/gnu/classpath/tools/getopt/package.html: New file.
