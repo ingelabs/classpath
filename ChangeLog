@@ -1,3 +1,9 @@
+2006-11-29  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalIconFactory.java
+	(HorizontalSliderThumbIcon.paintIcon()): Commented out gradient paint,
+	(VerticalSliderThumbIcon.paintIcon()): Likewise.
+
 2006-11-29  Mario Torre  <neugens@limasoftware.net>
 
 	* java/text/NumberFormat.java (getCurrencyInstance): Replaced dollar sign
