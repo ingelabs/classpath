@@ -228,7 +228,7 @@ public class DecimalFormat extends NumberFormat
   }
 
   /**
-   * Apply the given localized patern to the current DecimalFormat object.
+   * Apply the given localized pattern to the current DecimalFormat object.
    * 
    * @param pattern The localized pattern to apply.
    * @throws IllegalArgumentException if the given pattern is invalid.
@@ -1209,25 +1209,25 @@ public class DecimalFormat extends NumberFormat
    * @param pattern The pattern string to parse.
    * @return The position in the pattern string where parsing ended.
    */
-  private int scanFix(String pattern, DecimalFormatSymbols symbols,
+  private int scanFix(String pattern, DecimalFormatSymbols sourceSymbols,
                       int start, boolean prefix)
   {
     StringBuffer buffer = new StringBuffer();
     
     // the number portion is always delimited by one of those
     // characters
-    char decimalSeparator = symbols.getDecimalSeparator();
-    char patternSeparator = symbols.getPatternSeparator();
-    char groupingSeparator = symbols.getGroupingSeparator();
-    char digit = symbols.getDigit();
-    char zero = symbols.getZeroDigit();
-    char minus = symbols.getMinusSign();
+    char decimalSeparator = sourceSymbols.getDecimalSeparator();
+    char patternSeparator = sourceSymbols.getPatternSeparator();
+    char groupingSeparator = sourceSymbols.getGroupingSeparator();
+    char digit = sourceSymbols.getDigit();
+    char zero = sourceSymbols.getZeroDigit();
+    char minus = sourceSymbols.getMinusSign();
     
     // other special characters, cached here to avoid method calls later
-    char percent = symbols.getPercent();
-    char permille = symbols.getPerMill();
+    char percent = sourceSymbols.getPercent();
+    char permille = sourceSymbols.getPerMill();
     
-    String currencySymbol = symbols.getCurrencySymbol();
+    String currencySymbol = this.symbols.getCurrencySymbol();
     
     boolean quote = false;
     
@@ -1280,12 +1280,12 @@ public class DecimalFormat extends NumberFormat
         if (ch == '\u00A4')
           {
             // CURRENCY
-            currencySymbol = symbols.getCurrencySymbol();
+            currencySymbol = this.symbols.getCurrencySymbol();
 
             // if \u00A4 is doubled, we use the international currency symbol
             if (i < len && pattern.charAt(i + 1) == '\u00A4')
               {
-                currencySymbol = symbols.getInternationalCurrencySymbol();
+                currencySymbol = this.symbols.getInternationalCurrencySymbol();
                 i++;
               }
 
@@ -1296,13 +1296,13 @@ public class DecimalFormat extends NumberFormat
           {
             // PERCENT
             this.multiplier = 100;
-            buffer.append(ch);
+            buffer.append(this.symbols.getPercent());
           }
         else if (ch == permille)
           {
             // PERMILLE
             this.multiplier = 1000;
-            buffer.append(ch);
+            buffer.append(this.symbols.getPerMill());
           }
         else if (ch == '\'')
           {
@@ -1582,25 +1582,26 @@ public class DecimalFormat extends NumberFormat
    * @param pattern The pattern string to parse.
    * @param start The starting parse position in the string.
    */
-  private void scanNegativePattern(String pattern, DecimalFormatSymbols symbols,
+  private void scanNegativePattern(String pattern,
+                                   DecimalFormatSymbols sourceSymbols,
                                    int start)
   {
     StringBuffer buffer = new StringBuffer();
     
     // the number portion is always delimited by one of those
     // characters
-    char decimalSeparator = symbols.getDecimalSeparator();
-    char patternSeparator = symbols.getPatternSeparator();
-    char groupingSeparator = symbols.getGroupingSeparator();
-    char digit = symbols.getDigit();
-    char zero = symbols.getZeroDigit();
-    char minus = symbols.getMinusSign();
+    char decimalSeparator = sourceSymbols.getDecimalSeparator();
+    char patternSeparator = sourceSymbols.getPatternSeparator();
+    char groupingSeparator = sourceSymbols.getGroupingSeparator();
+    char digit = sourceSymbols.getDigit();
+    char zero = sourceSymbols.getZeroDigit();
+    char minus = sourceSymbols.getMinusSign();
     
     // other special charcaters, cached here to avoid method calls later
-    char percent = symbols.getPercent();
-    char permille = symbols.getPerMill();
+    char percent = sourceSymbols.getPercent();
+    char permille = sourceSymbols.getPerMill();
     
-    String CURRENCY_SYMBOL = symbols.getCurrencySymbol();
+    String CURRENCY_SYMBOL = this.symbols.getCurrencySymbol();
     String currencySymbol = CURRENCY_SYMBOL;
     
     boolean quote = false;
@@ -1638,7 +1639,7 @@ public class DecimalFormat extends NumberFormat
           }
         else if (ch == minus)
           {
-            buffer.append(ch);
+            buffer.append(this.symbols.getMinusSign());
           }
         else if (quote && ch != '\'')
           {
@@ -1652,7 +1653,7 @@ public class DecimalFormat extends NumberFormat
             // if \u00A4 is doubled, we use the international currency symbol
             if ((i + 1) < len && pattern.charAt(i + 1) == '\u00A4')
               {
-                currencySymbol = symbols.getInternationalCurrencySymbol();
+                currencySymbol = this.symbols.getInternationalCurrencySymbol();
                 i = i + 2;
               }
 
@@ -1667,13 +1668,13 @@ public class DecimalFormat extends NumberFormat
           {
             // PERCENT
             this.negativePatternMultiplier = 100;
-            buffer.append(ch);
+            buffer.append(this.symbols.getPercent());
           }
         else if (ch == permille)
           {
             // PERMILLE
             this.negativePatternMultiplier = 1000;
-            buffer.append(ch);
+            buffer.append(this.symbols.getPerMill());
           }
         else if (ch == '\'')
           {
@@ -1727,7 +1728,7 @@ public class DecimalFormat extends NumberFormat
    */
   private void formatInternal(BigDecimal number, boolean isLong,
                               StringBuffer dest, FieldPosition fieldPos)
-  {
+  {  
     // The specs says that fieldPos should not be null, and that we
     // should throw a NPE, but it seems that in few classes that
     // reference this one, fieldPos is set to null.
@@ -1735,7 +1736,7 @@ public class DecimalFormat extends NumberFormat
     // I think the best here is to check for fieldPos and build one if it is
     // null. If it cause harms or regressions, just remove this line and
     // fix the classes in the point of call, insted.
-    if (fieldPos == null) fieldPos = new FieldPosition(0); 
+    if (fieldPos == null) fieldPos = new FieldPosition(0);
     
     int _multiplier = this.multiplier;
     
@@ -1895,7 +1896,8 @@ public class DecimalFormat extends NumberFormat
     if (this.decimalSeparatorAlwaysShown ||
         ((!isLong || this.useExponentialNotation)
          && this.showDecimalSeparator &&
-         this.maximumFractionDigits > 0))
+         this.maximumFractionDigits > 0) ||
+         this.minimumFractionDigits > 0)
       {
         attributeStart = dest.length();
         
@@ -1910,7 +1912,8 @@ public class DecimalFormat extends NumberFormat
     
     // now handle the fraction portion of the number
     if ((!isLong || this.useExponentialNotation)
-        && this.maximumFractionDigits > 0)
+        && this.maximumFractionDigits > 0
+        || this.minimumFractionDigits > 0)
       {
         attributeStart = dest.length();
         beginIndexFract = attributeStart;
@@ -1936,8 +1939,8 @@ public class DecimalFormat extends NumberFormat
             if (fracts[i] != '0')
               allZeros = false;
           }
-        
-        if (!allZeros || minimumFractionDigits > 0)
+             
+        if (!allZeros || (minimumFractionDigits > 0))
           {
             appendDigit(fractPart, dest, false);
             endIndexFract = dest.length();
@@ -1949,6 +1952,7 @@ public class DecimalFormat extends NumberFormat
           }
         else
           {
+            System.out.println("ayeeeee!");
             endIndexFract = dest.length();
             addAttribute(Field.FRACTION, attributeStart, endIndexFract);
           }
@@ -2009,7 +2013,7 @@ public class DecimalFormat extends NumberFormat
       {
         fieldPos.setBeginIndex(beginIndexFract);
         fieldPos.setEndIndex(endIndexFract);
-      }   
+      }
   }
 
   /**

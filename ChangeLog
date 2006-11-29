@@ -1,3 +1,15 @@
+2006-11-29  Mario Torre  <neugens@limasoftware.net>
+
+	* java/text/NumberFormat.java (getCurrencyInstance): Replaced dollar sign
+	with the default international currency sign \u00A4.
+	* java/text/DecimalFormat.java (scanFix): Fix to use the localized symbol
+	table for string formatting.
+	(formatInternal): likewise.
+	(scanNegativePattern): likewise.
+	(applyPattern): likewise.
+	* java/text/DecimalFormatSymbols.java (clone): Revert to old version as
+	Locale is immutable and does not need clone.
+
 2006-11-29  Francis Kung  <fkung@redhat.com>
 
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java

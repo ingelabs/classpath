@@ -351,7 +351,7 @@ public abstract class NumberFormat extends Format implements Cloneable
   {
     NumberFormat format;
     
-    format = computeInstance (loc, "currencyFormat", "$#,##0.00;($#,##0.00)");
+    format = computeInstance (loc, "currencyFormat", "\u00A4#,##0.00;(\u00A4#,##0.00)");
     format.setMaximumFractionDigits(format.getCurrency().getDefaultFractionDigits());  
     return format;
   }
