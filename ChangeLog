@@ -1,3 +1,7 @@
+2006-11-29  Tom Tromey  <tromey@redhat.com>
+
+	* tools/gnu/classpath/tools/getopt/package.html: New file.
+
 2006-11-29  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalIconFactory.java
