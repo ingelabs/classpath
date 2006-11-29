@@ -64,9 +64,6 @@ import java.awt.image.VolatileImage;
 import java.awt.peer.ComponentPeer;
 import java.awt.peer.ContainerPeer;
 import java.awt.peer.LightweightPeer;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.RepaintManager;
@@ -83,7 +80,7 @@ import javax.swing.RepaintManager;
  * This class also provides the necesary hooks into the Swing painting and
  * event handling system. In order to achieve this, it traps paint, mouse and
  * key events in {@link #handleEvent(AWTEvent)} and calls some special methods
- * ({@link #peerPaint(Graphics,boolean)}, {@link #handleKeyEvent(KeyEvent)},
+ * ({@link #peerPaint(Graphics)}, {@link #handleKeyEvent(KeyEvent)},
  * {@link #handleMouseEvent(MouseEvent)} and
  * {@link #handleMouseMotionEvent(MouseEvent)}) that call the corresponding
  * Swing methods.
@@ -110,25 +107,18 @@ public class SwingComponentPeer
   protected Font peerFont;
 
   /**
-   * The repaint requests that will be handled next. The events queued
-   * up here are in the exact same order as they appear in
-   * {@link #coalescePaintEvent(PaintEvent)}, that is in event queue order.
-   * This is used for coalescing paint events.
-   *
-   * @see #coalescePaintEvent(PaintEvent)
+   * The current repaint area.
    */
-  protected List currentPaintEvents;
+  protected Rectangle paintArea;
 
  /**
    * Creates a SwingComponentPeer instance. Subclasses are expected to call
-   * this constructor and thereafter call {@link #init(Component,
-   * SwingComponent)}in order to setup the AWT and Swing components properly.
+   * this constructor and thereafter call {@link #init(Component, JComponent)}
+   * in order to setup the AWT and Swing components properly.
    */
   protected SwingComponentPeer()
   {
-    // Initialize paint event queue.
-    currentPaintEvents = new LinkedList();
-
+    // Nothing to do here.
   }
 
   /**
@@ -412,24 +402,22 @@ public class SwingComponentPeer
         // paint event list.
         // We must synchronize on the tree lock first to avoid deadlock,
         // because Container.paint() will grab it anyway.
-        synchronized (awtComponent.getTreeLock())
+        synchronized (this)
           {
-            synchronized (currentPaintEvents)
+            assert paintArea != null;
+            if (awtComponent.isShowing())
               {
-                if (currentPaintEvents.contains(e))
+                Graphics g = awtComponent.getGraphics();
+                try
                   {
-                    Graphics g = awtComponent.getGraphics();
-                    try
-                    {
-                      Rectangle clip = ((PaintEvent) e).getUpdateRect();
-                      g.clipRect(clip.x, clip.y, clip.width, clip.height);
-                      peerPaint(g, e.getID() == PaintEvent.UPDATE);
-                    }
-                    finally
-                    {
-                      g.dispose();
-                    }
-                    currentPaintEvents.remove(e);
+                    Rectangle clip = paintArea;
+                    g.clipRect(clip.x, clip.y, clip.width, clip.height);
+                    peerPaint(g, e.getID() == PaintEvent.UPDATE);
+                  }
+                finally
+                  {
+                    g.dispose();
+                    paintArea = null;
                   }
               }
           }
@@ -832,35 +820,13 @@ public class SwingComponentPeer
    */
   public void coalescePaintEvent(PaintEvent e)
   {
-    synchronized (currentPaintEvents)
+    synchronized (this)
       {
         Rectangle newRect = e.getUpdateRect();
-        boolean coalesced = false;
-        for (Iterator i = currentPaintEvents.iterator(); i.hasNext() && ! coalesced;)
-          {
-            PaintEvent e2 = (PaintEvent) i.next();
-            if (e.getID() == e2.getID())
-              {
-                Rectangle oldRect = e2.getUpdateRect();
-                if (oldRect.contains(newRect))
-                  {
-                    // Merge newRect into oldRect. We have to discard the old request
-                    // so that the events are still in the correct order.
-                    i.remove();
-                    newRect.setBounds(oldRect);
-                    coalesced = true;
-                  }
-                else if (newRect.contains(oldRect))
-                  {
-                    // Merge oldRect into newRect. We have to discard the old request
-                    // so that the events are still in the correct order.
-                    i.remove();
-                    coalesced = true;
-                  }
-              }
-            // TODO: Maybe do something more clever here.
-          }
-        currentPaintEvents.add(e);
+        if (paintArea == null)
+          paintArea = newRect;
+        else
+          Rectangle.union(paintArea, newRect, paintArea);
       }
   }
 

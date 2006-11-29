@@ -1,5 +1,26 @@
 2006-11-29  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/Component.java
+	(isShowing): Simplified condition code and avoid unnecessary
+	if-codepaths.
+	(coalesceEvents): Always coalesce paint events and let the peer
+	figure out the expanding of the repaint area.
+	* gnu/java/awt/peer/swing/SwingComponentPeer.java
+	(currentPaintEvents): Removed. Replaced by paintArea.
+	(paintArea): New field. Tracks the dirty area.
+	(SwingComponentPeer): Removed init of currentPaintEvents.
+	(coalescePaintEvent): Simplified to only union the dirty regions.
+	(handleEvent): Paint dirty region that was tracked in paintArea.
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
+	(paintArea): New field. Tracks the dirty region.
+	(coalescePaintEvent): Implemented to track the dirty region.
+	(paintComponent): Use the dirty region in paintArea. Protect
+	state by putting the paint and dispose code in a try-finally.
+	(updateComponent): Use the dirty region in paintArea. Protect
+	state by putting the paint and dispose code in a try-finally.
+
+2006-11-29  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/font/TextLayout.java
 	(getVisualHighlightShape): Removed debug output.
 
