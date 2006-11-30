@@ -1,3 +1,7 @@
+2006-11-30  Gary Benson  <gbenson@redhat.com>
+
+	* java/lang/Thread.java: Javadoc fixes.
+
 2006-11-29  Tania Bento  <tbento@redhat.com>
 
 	* tools/gnu/classpath/tools/appletviewer/TagParser.java:
