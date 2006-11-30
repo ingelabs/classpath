@@ -773,14 +773,14 @@ public class HTMLEditorKit
           else if (tag.equals(HTML.Tag.MENU) || tag.equals(HTML.Tag.DIR)
                    || tag.equals(HTML.Tag.UL) || tag.equals(HTML.Tag.OL))
             view = new ListView(element);
-          // FIXME: Uncomment when the views have been implemented
-          /*
-          else if (tag.equals(HTML.Tag.OBJECT))
-            view = new ObjectView(element);
           else if (tag.equals(HTML.Tag.FRAMESET))
             view = new FrameSetView(element);
           else if (tag.equals(HTML.Tag.FRAME))
-            view = new FrameView(element); */
+            view = new FrameView(element);
+          // FIXME: Uncomment when the views have been implemented
+          /*
+          else if (tag.equals(HTML.Tag.OBJECT))
+            view = new ObjectView(element); */
         }
       if (view == null)
         {

@@ -255,13 +255,13 @@ public class FontSize
 
   private int mapRelative(int par)
   {
-    if (value.contains("%"))
+    if (value.indexOf('%') != -1)
       size = mapPercent(par);
-    else if (value.contains("em"))
+    else if (value.indexOf("em") != -1)
       size = mapEM(par);
-    else if (value.contains("larger"))
+    else if (value.indexOf("larger") != -1)
       size = mapLarger(par);
-    else if (value.contains("smaller"))
+    else if (value.indexOf("smaller") != -1)
       size = mapSmaller(par);
     return size;
   }

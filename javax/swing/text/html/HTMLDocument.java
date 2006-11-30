@@ -1666,7 +1666,7 @@ public class HTMLDocument extends DefaultStyledDocument
       DefaultStyledDocument.ElementSpec spec =
         new DefaultStyledDocument.ElementSpec(a.copyAttributes(),
 	  DefaultStyledDocument.ElementSpec.ContentType, 
-          new char[] {' ', ' '}, 0, 2 );
+          new char[] {' '}, 0, 1 );
       parseBuffer.add(spec);
     }
     

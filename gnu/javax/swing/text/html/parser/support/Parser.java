@@ -1181,6 +1181,13 @@ public class Parser
       {
         validator.validateTag(tag, attributes);
         handleEmptyTag(tag);
+        HTML.Tag h = tag.getHTMLTag();
+        // When a block tag is closed, consume whitespace that follows after
+        // it.
+        // For some unknown reason a FRAME tag is not treated as block element.
+        // However in this case it should be treated as such.
+        if (h.isBlock() || h == HTML.Tag.FRAME)
+          optional(WS);
       }
     catch (ChangedCharSetException ex)
       {

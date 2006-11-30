@@ -1,3 +1,16 @@
+2006-11-30  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/html/FrameSetView.java: New class. Implements
+	HTML framesets.
+	* javax/swing/text/html/FrameView.java: New class. Implements
+	HTML frames.
+	* javax/swing/text/html/HTMLDocument.java:
+	(HTMLReader.addSpecialElement): Only add one artificial space.
+	* javax/swing/text/html/HTMLEditorKit.java
+	(HTMLFactory.create): Uncomment code for FrameSetView and FrameView.
+	* gnu/javax/swing/text/html/parser/support/Parser.java
+	(_handleEmptyTag): Also consume whitespace after frame tags.
+
 2006-11-30  Gary Benson  <gbenson@redhat.com>
 
 	* java/lang/Thread.java: Javadoc fixes.
