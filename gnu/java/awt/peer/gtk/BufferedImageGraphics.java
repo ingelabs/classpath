@@ -248,13 +248,13 @@ public class BufferedImageGraphics extends CairoGraphics2D
         if (sm.getScanlineStride() == imageWidth && minX == 0) 
           {
             System.arraycopy(pixels, y * imageWidth, 
-                             db, y * imageWidth - minY,
+                             db, (y - minY) * imageWidth,
                              height * imageWidth);
           }
         else
           {
             int scanline = sm.getScanlineStride();
-            for (int i = y; i < height; i++)
+            for (int i = y; i < (height + y); i++)
               System.arraycopy(pixels, i * imageWidth + x, db,
                                (i - minY) * scanline + x - minX, width);
               
@@ -313,6 +313,7 @@ public class BufferedImageGraphics extends CairoGraphics2D
         Graphics2D g2d = (Graphics2D)buffer.getGraphics();
         g2d.setStroke(this.getStroke());
         g2d.setColor(this.getColor());
+        g2d.setTransform(transform);
         g2d.draw(s);
         
         drawComposite(r.getBounds2D(), null);
@@ -334,6 +335,7 @@ public class BufferedImageGraphics extends CairoGraphics2D
         Graphics2D g2d = (Graphics2D)buffer.getGraphics();
         g2d.setPaint(this.getPaint());
         g2d.setColor(this.getColor());
+        g2d.setTransform(transform);
         g2d.fill(s);
         
         drawComposite(s.getBounds2D(), null);
@@ -353,6 +355,7 @@ public class BufferedImageGraphics extends CairoGraphics2D
 
         Graphics2D g2d = (Graphics2D)buffer.getGraphics();
         g2d.setRenderingHints(this.getRenderingHints());
+        g2d.setTransform(transform);
         g2d.drawRenderedImage(image, xform);
         
         drawComposite(buffer.getRaster().getBounds(), null);
@@ -427,43 +430,64 @@ public class BufferedImageGraphics extends CairoGraphics2D
         Graphics2D g2d = (Graphics2D)buffer.getGraphics();
         g2d.setPaint(this.getPaint());
         g2d.setStroke(this.getStroke());
+        g2d.setTransform(transform);
         g2d.drawGlyphVector(gv, x, y);
         
         drawComposite(bounds, null);
       }
   }
   
+  /**
+   * Perform composite drawing from the buffer onto the main image.
+   * 
+   * The image to be composited should already be drawn into the buffer, in the
+   * proper place, after all necessary transforms have been applied.
+   * 
+   * @param bounds The bounds to draw, in user-space.
+   * @param observer The image observer, if any (may be null).
+   * @return True on success, false on failure.
+   */
   private boolean drawComposite(Rectangle2D bounds, ImageObserver observer)
   {
-    // Clip source to visible areas that need updating
-    Rectangle2D clip = this.getClipBounds();
-    Rectangle2D.intersect(bounds, clip, bounds);
-    clip = new Rectangle(buffer.getMinX(), buffer.getMinY(),
-                         buffer.getWidth(), buffer.getHeight());
-    Rectangle2D.intersect(bounds, clip, bounds);
+    // Find bounds in device space
+    double[] points = new double[] {bounds.getX(), bounds.getY(),
+                                    bounds.getMaxX(), bounds.getMaxY()};
+    transform.transform(points, 0, points, 0, 2);
+    bounds = new Rectangle2D.Double(points[0], points[1],
+                                    (points[2] - points[0]),
+                                    (points[3] - points[1]));
+
+    // Clip bounds by the stored clip, and by the internal buffer
+    Rectangle2D devClip = this.getClipInDevSpace();
+    Rectangle2D.intersect(bounds, devClip, bounds);
+    devClip = new Rectangle(buffer.getMinX(), buffer.getMinY(),
+                            buffer.getWidth(), buffer.getHeight());
+    Rectangle2D.intersect(bounds, devClip, bounds);
     
+    // Round bounds as needed, but be conservative in our rounding
+    // (otherwise it may leave unpainted stripes)
+    double x = bounds.getX();
+    double y = bounds.getY();
+    double w = bounds.getWidth();
+    double h = bounds.getHeight();
+    if (Math.floor(x) != x)
+      w--;
+    if (Math.floor(y) != y)
+      h--;
+    bounds.setRect(Math.ceil(x), Math.ceil(y), Math.floor(w), Math.floor(h));
+    
+    // Find subimage of internal buffer for updating
     BufferedImage buffer2 = buffer;
     if (!bounds.equals(buffer2.getRaster().getBounds()))
       buffer2 = buffer2.getSubimage((int)bounds.getX(), (int)bounds.getY(),
                                     (int)bounds.getWidth(),
                                     (int)bounds.getHeight());
-    
-    // Get destination clip to bounds
-    double[] points = new double[] {bounds.getX(), bounds.getY(),
-                                    bounds.getMaxX(), bounds.getMaxY()};
-    transform.transform(points, 0, points, 0, 2);
-    
-    Rectangle2D deviceBounds = new Rectangle2D.Double(points[0], points[1],
-                                                       points[2] - points[0],
-                                                       points[3] - points[1]);
-    
-    Rectangle2D.intersect(deviceBounds, this.getClipInDevSpace(), deviceBounds);
-    
+
+    // Find subimage of main image for updating
     BufferedImage current = image;
-    current = current.getSubimage((int)deviceBounds.getX(),
-                                  (int)deviceBounds.getY(),
-                                  (int)deviceBounds.getWidth(),
-                                  (int)deviceBounds.getHeight());
+    current = current.getSubimage((int)bounds.getX(), (int)bounds.getY(),
+                                  (int)bounds.getWidth(),
+                                  (int)bounds.getHeight());
 
     // Perform actual composite operation
     compCtx.compose(buffer2.getRaster(), current.getRaster(),

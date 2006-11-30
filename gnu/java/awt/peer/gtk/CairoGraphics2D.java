@@ -1153,8 +1153,8 @@ public abstract class CairoGraphics2D extends Graphics2D
         // does not get distorted by this shifting operation
         double x = shiftX(r.getX(),shiftDrawCalls && isDraw);
         double y = shiftY(r.getY(), shiftDrawCalls && isDraw);
-        double w = shiftX(r.getWidth() + r.getX(), shiftDrawCalls && isDraw) - x;
-        double h = shiftY(r.getHeight() + r.getY(), shiftDrawCalls && isDraw) - y;
+        double w = Math.round(r.getWidth());
+        double h = Math.round(r.getHeight());
         cairoRectangle(nativePointer, x, y, w, h);
       }
     
@@ -1506,8 +1506,11 @@ public abstract class CairoGraphics2D extends Graphics2D
         setBackground(bgcolor);
         
         double[] origin = new double[] {0,0};
+        double[] dimensions = new double[] {width, height};
         xform.transform(origin, 0, origin, 0, 1);
-        clearRect((int)origin[0], (int)origin[1], width, height);
+        xform.deltaTransform(dimensions, 0, dimensions, 0, 1);
+        clearRect((int)origin[0], (int)origin[1],
+                  (int)dimensions[0], (int)dimensions[1]);
         
         setBackground(oldColor);
       }
