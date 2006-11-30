@@ -243,10 +243,25 @@ public class HTMLEditorKit
           {
             url = null;
           }
-        // TODO: Handle frame documents and target here.
-        HyperlinkEvent ev =
-          new HyperlinkEvent(editor, HyperlinkEvent.EventType.ACTIVATED, url,
-                             href, el);
+        HyperlinkEvent ev;
+        if (doc.isFrameDocument())
+          {
+            String target = null;
+            if (anchor != null)
+              target = (String) anchor.getAttribute(HTML.Attribute.TARGET);
+            if (target == null || target.equals(""))
+              target = doc.getBaseTarget();
+            if (target == null || target.equals(""))
+              target = "_self";
+            ev = new HTMLFrameHyperlinkEvent(editor,
+                                            HyperlinkEvent.EventType.ACTIVATED,
+                                            url, href, el, target);
+          }
+        else
+          {
+            ev = new HyperlinkEvent(editor, HyperlinkEvent.EventType.ACTIVATED,
+                                    url, href, el);
+          }
         return ev;
       }
     }
@@ -1065,13 +1080,22 @@ public class HTMLEditorKit
   
   /** The editor pane used. */
   JEditorPane editorPane;
-    
+
+  /**
+   * Whether or not the editor kit handles form submissions.
+   *
+   * @see #isAutoFormSubmission()
+   * @see #setAutoFormSubmission(boolean)
+   */
+  private boolean autoFormSubmission;
+
   /**
    * Constructs an HTMLEditorKit, creates a StyleContext, and loads the style sheet.
    */
   public HTMLEditorKit()
   {
     linkController = new LinkController();
+    autoFormSubmission = true;
   }
   
   /**
@@ -1414,5 +1438,41 @@ public class HTMLEditorKit
   public void setStyleSheet(StyleSheet s)
   {
     styleSheet = s;
+  }
+
+  /**
+   * Returns <code>true</code> when forms should be automatically submitted
+   * by the editor kit. Set this to <code>false</code> when you want to
+   * intercept form submission. In this case you'd want to listen for
+   * hyperlink events on the document and handle FormSubmitEvents specially.
+   *
+   * The default is <code>true</code>.
+   *
+   * @return <code>true</code> when forms should be automatically submitted
+   *         by the editor kit, <code>false</code> otherwise
+   *
+   * @since 1.5
+   *
+   * @see #setAutoFormSubmission(boolean)
+   * @see FormSubmitEvent
+   */
+  public boolean isAutoFormSubmission()
+  {
+    return autoFormSubmission;
+  }
+
+  /**
+   * Sets whether or not the editor kit should automatically submit forms.
+   *  
+   * @param auto <code>true</code> when the editor kit should handle form
+   *        submission, <code>false</code> otherwise
+   *
+   * @since 1.5
+   *
+   * @see #isAutoFormSubmission()
+   */
+  public void setAutoFormSubmission(boolean auto)
+  {
+    autoFormSubmission = auto;
   }
 }

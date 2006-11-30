@@ -1,5 +1,41 @@
 2006-11-30  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/html/FormSubmitEvent.java: New class.
+	* javax/swing/text/html/FormView.java
+	(SubmitThread): New class for submitting data in a separate thread.
+	(actionPerformed): Fetch the actual for data.
+	(addData): New helper method.
+	(getElementFormData): New helper method.
+	(getFormData): New helper method.
+	(getInputFormData): New helper method.
+	(submitData): Implemented.
+	* javax/swing/text/html/FrameView.java
+	(createComponent): Add this as hyperlink listener.
+	Set the target document as frame document.
+	(getTopEditorPane): New helper method.
+	(hyperlinkUpdate): Implementation of the HyperlinkListener interface.
+	(handleHyperlinkEvent): New helper method.
+	(handleFormSubmitEvent): New helper method.
+	* javax/swing/text/html/HTMLDocument.java
+	(HTMLReader.BaseAction.start): Track the base target.
+	(HTMLReader.BaseAction.end): Removed.
+	(baseTarget): New field.
+	(frameDocument): New field.
+	(getBaseTarget): New property accessor.
+	(isFrameDocument): New property accessor.
+	(processHTMLFrameHyperlinkEvent): Implemented.
+	(setFrameDocument): New property accessor.
+	(updateFrame): New helper method.
+	(updateFrameSet): New helper method.
+	* javax/swing/text/html/HTMLEditorKit.java
+	(LinkController.createHyperlinkEvent): Handle frame documents.
+	(autoFormSubmission): New field.
+	(HTMLEditorKit): Set autoFormSubmission to true.
+	(isAutoFormSubmission): New property accessor.
+	(setAutoFormSubmission): New property accessor.
+
+2006-11-30  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/ElementIterator.java
 	(ElementRef): New inner class.
 	(currentDepth): Removed.

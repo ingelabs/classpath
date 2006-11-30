@@ -44,9 +44,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.swing.JEditorPane;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.ComponentView;
 import javax.swing.text.Element;
+import javax.swing.text.View;
 
 /**
  * A view that is responsible for rendering HTML frame tags.
@@ -55,6 +58,7 @@ import javax.swing.text.Element;
  */
 class FrameView
   extends ComponentView
+  implements HyperlinkListener
 {
 
   /**
@@ -78,6 +82,7 @@ class FrameView
     Element el = getElement();
     AttributeSet atts = el.getAttributes();
     JEditorPane html = new JEditorPane();
+    html.addHyperlinkListener(this);
     URL base = ((HTMLDocument) el.getDocument()).getBase();
     String srcAtt = (String) atts.getAttribute(HTML.Attribute.SRC);
     if (srcAtt != null && ! srcAtt.equals(""))
@@ -86,7 +91,7 @@ class FrameView
           {
             URL page = new URL(base, srcAtt);
             html.setPage(page);
-            System.err.println("loading: " + page);
+            ((HTMLDocument) html.getDocument()).setFrameDocument(true);
           }
         catch (MalformedURLException ex)
           {
@@ -98,5 +103,131 @@ class FrameView
           }
       }
     return html;
+  }
+
+  /**
+   * Catches hyperlink events on that frame's editor and forwards it to
+   * the outermost editorpane.
+   */
+  public void hyperlinkUpdate(HyperlinkEvent event)
+  {
+    JEditorPane outer = getTopEditorPane();
+    if (outer != null)
+      {
+        if (event instanceof HTMLFrameHyperlinkEvent)
+          {
+            HTMLFrameHyperlinkEvent hfhe = (HTMLFrameHyperlinkEvent) event;
+            if (hfhe.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
+              {
+                String target = hfhe.getTarget();
+                if (event instanceof FormSubmitEvent)
+                  {
+                    handleFormSubmitEvent(hfhe, outer, target);
+                  }
+                else // No FormSubmitEvent.
+                  {
+                    handleHyperlinkEvent(hfhe, outer, target);
+                  }
+              }
+          }
+        else
+          {
+            // Simply forward this event.
+            outer.fireHyperlinkUpdate(event);
+          }
+      }
+  }
+
+  /**
+   * Handles normal hyperlink events.
+   *
+   * @param event the event
+   * @param outer the top editor
+   * @param target the target
+   */
+  private void handleHyperlinkEvent(HyperlinkEvent event,
+                                    JEditorPane outer, String target)
+  {
+    if (target.equals("_top"))
+      {
+        try
+          {
+            outer.setPage(event.getURL());
+          }
+        catch (IOException ex)
+          {
+            // Well...
+            ex.printStackTrace();
+          }
+      }
+    if (! outer.isEditable())
+      {
+        outer.fireHyperlinkUpdate
+          (new HTMLFrameHyperlinkEvent(outer,
+                                       event.getEventType(),
+                                       event.getURL(),
+                                       event.getDescription(),
+                                       getElement(),
+                                       target));
+      }
+  }
+
+  /**
+   * Handles form submit events.
+   *
+   * @param event the event
+   * @param outer the top editor
+   * @param target the target
+   */
+  private void handleFormSubmitEvent(HTMLFrameHyperlinkEvent event,
+                                     JEditorPane outer,
+                                     String target)
+  {
+    HTMLEditorKit kit = (HTMLEditorKit) outer.getEditorKit();
+    if (kit != null && kit.isAutoFormSubmission())
+      {
+        if (target.equals("_top"))
+          {
+            try
+              {
+                outer.setPage(event.getURL());
+              }
+            catch (IOException ex)
+              {
+                // Well...
+                ex.printStackTrace();
+              }
+          }
+        else
+          {
+            HTMLDocument doc =
+              (HTMLDocument) outer.getDocument();
+            doc.processHTMLFrameHyperlinkEvent(event);
+          }
+      }
+    else
+      {
+        outer.fireHyperlinkUpdate(event);
+      }
+  }
+
+  /**
+   * Determines the topmost editor in a nested frameset.
+   *
+   * @return the topmost editor in a nested frameset
+   */
+  private JEditorPane getTopEditorPane()
+  {
+    View parent = getParent();
+    View top = null;
+    while (parent != null)
+      {
+        if (parent instanceof FrameSetView)
+          top = parent;
+      }
+    JEditorPane editor = null;
+    if (top != null)
+      editor = (JEditorPane) top.getContainer();
+    return editor;
   }
 }

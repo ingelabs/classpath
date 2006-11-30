@@ -52,6 +52,8 @@ import java.util.Vector;
 import javax.swing.DefaultButtonModel;
 import javax.swing.JEditorPane;
 import javax.swing.JToggleButton;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.UndoableEditEvent;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -89,7 +91,17 @@ public class HTMLDocument extends DefaultStyledDocument
   boolean preservesUnknownTags = true;
   int tokenThreshold = Integer.MAX_VALUE;
   HTMLEditorKit.Parser parser;
-  
+
+  /**
+   * Indicates whether this document is inside a frame or not.
+   */
+  private boolean frameDocument;
+
+  /**
+   * Package private to avoid accessor methods.
+   */
+  String baseTarget;
+
   /**
    * Constructs an HTML document using the default buffer size and a default
    * StyleSheet.
@@ -365,11 +377,119 @@ public class HTMLDocument extends DefaultStyledDocument
   }
 
   public void processHTMLFrameHyperlinkEvent(HTMLFrameHyperlinkEvent event)
-  throws NotImplementedException
   {
-    // TODO: Implement this properly.
+    String target = event.getTarget();
+    Element el = event.getSourceElement();
+    URL url = event.getURL();
+    if (target.equals("_self"))
+      {
+        updateFrame(el, url);
+      }
+    else if (target.equals("_parent"))
+      {
+        updateFrameSet(el.getParentElement(), url);
+      }
+    else
+      {
+        Element targetFrame = findFrame(target);
+        if (targetFrame != null)
+          updateFrame(targetFrame, url);
+      }
   }
-  
+
+  /**
+   * Finds the named frame inside this document.
+   *
+   * @param target the name to look for
+   *
+   * @return the frame if there is a matching frame, <code>null</code>
+   *         otherwise
+   */
+  private Element findFrame(String target)
+  {
+    ElementIterator i = new ElementIterator(this);
+    Element next = null;
+    while ((next = i.next()) != null)
+      {
+        AttributeSet atts = next.getAttributes();
+        if (atts.getAttribute(StyleConstants.NameAttribute) == HTML.Tag.FRAME)
+          {
+            String name = (String) atts.getAttribute(HTML.Attribute.NAME);
+            if (name != null && name.equals(target))
+              break;
+          }
+      }
+    return next;
+  }
+
+  /**
+   * Updates the frame that is represented by the specified element to
+   * refer to the specified URL.
+   *
+   * @param el the element
+   * @param url the new url
+   */
+  private void updateFrame(Element el, URL url)
+  {
+    try
+      {
+        writeLock();
+        DefaultDocumentEvent ev =
+          new DefaultDocumentEvent(el.getStartOffset(), 1,
+                                   DocumentEvent.EventType.CHANGE);
+        AttributeSet elAtts = el.getAttributes();
+        AttributeSet copy = elAtts.copyAttributes();
+        MutableAttributeSet matts = (MutableAttributeSet) elAtts;
+        ev.addEdit(new AttributeUndoableEdit(el, copy, false));
+        matts.removeAttribute(HTML.Attribute.SRC);
+        matts.addAttribute(HTML.Attribute.SRC, url.toString());
+        ev.end();
+        fireChangedUpdate(ev);
+        fireUndoableEditUpdate(new UndoableEditEvent(this, ev));
+      }
+    finally
+      {
+        writeUnlock();
+      }
+  }
+
+  /**
+   * Updates the frameset that is represented by the specified element
+   * to create a frame that refers to the specified URL.
+   *
+   * @param el the element
+   * @param url the url
+   */
+  private void updateFrameSet(Element el, URL url)
+  {
+    int start = el.getStartOffset();
+    int end = el.getEndOffset();
+    
+    StringBuilder html = new StringBuilder();
+    html.append("<frame");
+    if (url != null)
+      {
+        html.append(" src=\"");
+        html.append(url.toString());
+        html.append("\"");
+      }
+    html.append('>');
+    if (getParser() == null)
+      setParser(new HTMLEditorKit().getParser());
+    try
+      {
+        setOuterHTML(el, html.toString());
+      }
+    catch (BadLocationException ex)
+      {
+        ex.printStackTrace();
+      }
+    catch (IOException ex)
+      {
+        ex.printStackTrace();
+      }
+  }
+
   /**
    * Gets an iterator for the given HTML.Tag.
    * @param t the requested HTML.Tag
@@ -954,20 +1074,9 @@ public class HTMLDocument extends DefaultStyledDocument
        * of tags associated with this Action.
        */
       public void start(HTML.Tag t, MutableAttributeSet a)
-        throws NotImplementedException
       {
-        // FIXME: Implement.
+        baseTarget = (String) a.getAttribute(HTML.Attribute.TARGET);
       }
-      
-      /**
-       * Called when an end tag is seen for one of the types of tags associated
-       * with this Action.
-       */
-      public void end(HTML.Tag t)
-        throws NotImplementedException
-      {
-        // FIXME: Implement.
-      } 
     }
     
     class HeadAction extends BlockAction
@@ -1954,5 +2063,39 @@ public void setOuterHTML(Element elem, String htmlText)
         att = sas;
       }
     super.insertUpdate(evt, att);
+  }
+
+  /**
+   * Returns <code>true</code> when this document is inside a frame,
+   * <code>false</code> otherwise.
+   *
+   * @return <code>true</code> when this document is inside a frame,
+   *         <code>false</code> otherwise
+   */
+  boolean isFrameDocument()
+  {
+    return frameDocument;
+  }
+
+  /**
+   * Set <code>true</code> when this document is inside a frame,
+   * <code>false</code> otherwise.
+   *
+   * @param frameDoc <code>true</code> when this document is inside a frame,
+   *                 <code>false</code> otherwise
+   */
+  void setFrameDocument(boolean frameDoc)
+  {
+    frameDocument = frameDoc;
+  }
+
+  /**
+   * Returns the target that is specified in the base tag, if this is the case.
+   *
+   * @return the target that is specified in the base tag, if this is the case
+   */
+  String getBaseTarget()
+  {
+    return baseTarget;
   }
 }
