@@ -1,5 +1,10 @@
 2006-11-30  Francis Kung  <fkung@redhat.com>
 
+	* .settings/org.eclipse.jdt.core.prefs: Set compilar compliance to 1.4.
+	* .externalToolBuilders/ClasspathJar.launch: Include sun.* classses.
+
+2006-11-30  Francis Kung  <fkung@redhat.com>
+
 	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java
 	(draw): Set transform in buffered composite.
 	(drawComposite): Do not transform bounds; round bounds.
