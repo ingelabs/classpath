@@ -1,3 +1,21 @@
+2006-11-30  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/ElementIterator.java
+	(ElementRef): New inner class.
+	(currentDepth): Removed.
+	(currentElement): Removed.
+	(previousItem): Removed.
+	(stack): New field. Holds the iteration stack.
+	(state): Removed.
+	(ElementIterator(Document)): Removed init of removed fields.
+	(ElementIterator(Element)): Removed init of removed fields.
+	(current): Changed to stack based algorithm.
+	(deepestLeaf): New helper method.
+	(depth): Changed to stack based algorithm.
+	(first): Changed to stack based algorithm.
+	(next): Changed to stack based algorithm.
+	(previous): Changed to stack based algorithm.
+
 2006-11-30  Francis Kung  <fkung@redhat.com>
 
 	* .settings/org.eclipse.jdt.core.prefs: Set compilar compliance to 1.4.
