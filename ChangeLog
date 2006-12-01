@@ -1,5 +1,67 @@
 2006-11-30  Roman Kennke  <kennke@aicas.com>
 
+	* gnu/javax/swing/text/html/css/Length.java
+	(emBase): New field.
+	(exBase): New field.
+	(isFontEMRelative): New field.
+	(isFontEXRelative): New field.
+	(Length): Recognize and setup EM and EX relative values.
+	(getValue): Handle EM and EX relative values.
+	(isEMRelative): New method.
+	(isEXRelative): New method.
+	(setEMBase): New method.
+	(setEXBase): New method.
+	(setFontBases): New method.
+	* gnu/javax/swing/text/html/parser/support/Parser.java
+	(_handleEmptyTag): Use new isBlock() helper method.
+	(_handleEndTag_remaining): Use new isBlock() helper method.
+	(_handleStartTag): Consume whitespace after block start tag.
+	(Comment): Consume whitespace after a comment.
+	(isBlock): New helper method.
+	(readAttributes): Consider all characters in unquoted attribute
+	values.
+	* javax/swing/text/html/BlockView.java
+	(layoutMinorAxis): Use cached span value.
+	(paint): Added debug code (commented out).
+	(setPropertiesFromAttributes): Set the EM and EX base on lengths.
+	* javax/swing/text/html/CSSBorder.java
+	(CSSBorder): Take StyleSheet as argument. Call getBorderWidth()
+	with stylesheet.
+	(getBorderWidth): Set the EM and EX base on the length values.
+	* javax/swing/text/html/HTMLDocument.java
+	(HTMLReader.ParagraphAction.end): Do not set the inParagraph field.
+	(HTMLReader.ParagraphAction.start): Do not set the inParagraph field.
+	(HTMLReader.inImpliedParagraph): Removed.
+	(HTMLReader.inParagraph): Removed.
+	(HTMLReader.parseStack): New field.
+	(HTMLReader.addContent): Use new paragraph handling.
+	(HTMLReader.addSpecialElement): Use new paragraph handling.
+	(HTMLReader.blockClose): Use new paragraph handling.
+	(HTMLReader.blockOpen): Use new paragraph handling.
+	(HTMLReader.inImpliedParagraph): New helper method.
+	(HTMLReader.inParagraph): New helper method.
+	* javax/swing/text/html/ImageView.java
+	(attributes): New field. Caches view attributes.
+	(spans): New field. Caches CSS spans.
+	(getAttributes): Correctly setup CSS view attributes.
+	(getPreferredSpan): Use caches spans.
+	(getStyleSheet): Use the view's getDocument() method.
+	(setPropertiesFromAttributes): Cache spans and setup EM and EX.
+	(updateSize): Use cached spans.
+	* javax/swing/text/html/ParagraphView.java
+	(setPropertiesFromAttributes): Setup EM and EX.
+	* javax/swing/text/html/StyleSheet.java
+	(BoxPainter.BoxPainter): Setup EM and EX correctly.
+	(getEMBase): New helper method.
+	(getEXBase): New helper method.
+	* javax/swing/text/html/TableView.java
+	(width): New field. Caches the table width.
+	(calculateMinorAxisRequirements): Use caches span.
+	(setPropertiesFromAttributes): Cache span and setup EM/EX.
+	(updateGrid): Correctly setup EM/EX.
+
+2006-11-30  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/html/FormSubmitEvent.java: New class.
 	* javax/swing/text/html/FormView.java
 	(SubmitThread): New class for submitting data in a separate thread.

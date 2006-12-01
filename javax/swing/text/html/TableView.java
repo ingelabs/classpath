@@ -255,6 +255,11 @@ class TableView
   Length[] columnWidths;
 
   /**
+   * The table width.
+   */
+  private Length width;
+
+  /**
    * Indicates if the grid setup is ok.
    */
   boolean gridValid;
@@ -358,13 +363,11 @@ class TableView
     r = super.calculateMinorAxisRequirements(axis, r);
 
     // Try to set the CSS width if it fits.
-    AttributeSet atts = getAttributes();
-    Length l = (Length) atts.getAttribute(CSS.Attribute.WIDTH);
-    if (l != null)
+    if (width != null)
       {
-        int width = (int) l.getValue();
-        if (r.minimum < width)
-          r.minimum = width;
+        int w = (int) width.getValue();
+        if (r.minimum < w)
+          r.minimum = w;
       }
 
     // Adjust requirements when we have cell spacing.
@@ -373,6 +376,7 @@ class TableView
     r.preferred += adjust;
 
     // Apply the alignment.
+    AttributeSet atts = getAttributes();
     Object o = atts.getAttribute(CSS.Attribute.TEXT_ALIGN);
     r.alignment = 0.0F;
     if (o != null)
@@ -665,6 +669,10 @@ class TableView
   {
     if (! gridValid)
       {
+        AttributeSet atts = getAttributes();
+        StyleSheet ss = getStyleSheet();
+        float emBase = ss.getEMBase(atts);
+        float exBase = ss.getEXBase(atts);
         int maxColumns = 0;
         int numRows = getViewCount();
         for (int r = 0; r < numRows; r++)
@@ -697,7 +705,10 @@ class TableView
                       cv.getAttributes().getAttribute(CSS.Attribute.WIDTH);
                     if (o != null && columnWidths[colIndex] == null
                         && o instanceof Length)
-                      columnWidths[colIndex]= (Length) o;
+                      {
+                        columnWidths[colIndex]= (Length) o;
+                        columnWidths[colIndex].setFontBases(emBase, exBase);
+                      }
                     colIndex += cv.colSpan;
                   }
               }
@@ -741,11 +752,22 @@ class TableView
   private void setPropertiesFromAttributes()
   {
     // Fetch and parse cell spacing.
-    Object o = getAttributes().getAttribute(CSS.Attribute.BORDER_SPACING);
+    AttributeSet atts = getAttributes();
+    StyleSheet ss = getStyleSheet();
+    float emBase = ss.getEMBase(atts);
+    float exBase = ss.getEXBase(atts);
+    Object o = atts.getAttribute(CSS.Attribute.BORDER_SPACING);
     if (o != null && o instanceof Length)
       {
         Length l = (Length) o;
+        l.setFontBases(emBase, exBase);
         cellSpacing = (int) l.getValue();
+      }
+    o = atts.getAttribute(CSS.Attribute.WIDTH);
+    if (o != null && o instanceof Length)
+      {
+        width = (Length) o;
+        width.setFontBases(emBase, exBase);
       }
   }
 

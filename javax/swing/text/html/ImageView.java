@@ -111,6 +111,16 @@ public class ImageView extends View
   private ImageObserver observer;
 
   /**
+   * The CSS width and height.
+   */
+  private Length[] spans;
+
+  /**
+   * The cached attributes.
+   */
+  private AttributeSet attributes;
+
+  /**
    * Creates the image view that represents the given element.
    * 
    * @param element the element, represented by this image view.
@@ -221,12 +231,9 @@ public class ImageView extends View
    */
   public AttributeSet getAttributes()
   {
-    StyleSheet styles = getStyleSheet();
-    if (styles == null)
-      return super.getAttributes();
-    else
-      return CombinedAttributes.combine(super.getAttributes(),
-                                        styles.getViewAttributes(this));
+    if (attributes == null)
+      attributes = getStyleSheet().getViewAttributes(this);
+    return attributes;
   }
   
   /**
@@ -318,9 +325,8 @@ public class ImageView extends View
 
     if (axis == View.X_AXIS)
       {
-        Object w = attrs.getAttribute(CSS.Attribute.WIDTH);
-        if (w instanceof Length)
-          return ((Length) w).getValue();
+        if (spans[axis] != null)
+          return spans[axis].getValue();
         else if (image != null)
           return image.getWidth(getContainer());
         else
@@ -328,9 +334,8 @@ public class ImageView extends View
       }
     else if (axis == View.Y_AXIS)
       {
-        Object w = attrs.getAttribute(CSS.Attribute.HEIGHT);
-        if (w instanceof Length)
-          return ((Length) w).getValue();
+        if (spans[axis] != null)
+          return spans[axis].getValue();
         else if (image != null)
           return image.getHeight(getContainer());
         else
@@ -347,11 +352,8 @@ public class ImageView extends View
    */
   protected StyleSheet getStyleSheet()
   {
-    Document d = getElement().getDocument();
-    if (d instanceof HTMLDocument)
-      return ((HTMLDocument) d).getStyleSheet();
-    else
-      return null;
+    HTMLDocument doc = (HTMLDocument) getDocument();
+    return doc.getStyleSheet();
   }
 
   /**
@@ -410,7 +412,21 @@ public class ImageView extends View
    */
   protected void setPropertiesFromAttributes()
   {
-    // FIXME: Implement this properly.
+    AttributeSet atts = getAttributes();
+    StyleSheet ss = getStyleSheet();
+    float emBase = ss.getEMBase(atts);
+    float exBase = ss.getEXBase(atts);
+    spans = new Length[2];
+    spans[X_AXIS] = (Length) atts.getAttribute(CSS.Attribute.WIDTH);
+    if (spans[X_AXIS] != null)
+      {
+        spans[X_AXIS].setFontBases(emBase, exBase);
+      }
+    spans[Y_AXIS] = (Length) atts.getAttribute(CSS.Attribute.HEIGHT);
+    if (spans[Y_AXIS] != null)
+      {
+        spans[Y_AXIS].setFontBases(emBase, exBase);
+      }
   }
   
   /**
@@ -503,7 +519,7 @@ public class ImageView extends View
       {
         AttributeSet atts = getAttributes();
         // Fetch width.
-        Length l = (Length) atts.getAttribute(CSS.Attribute.WIDTH);
+        Length l = spans[X_AXIS];
         if (l != null)
           {
             newW = (int) l.getValue();
@@ -514,7 +530,7 @@ public class ImageView extends View
             newW = newIm.getWidth(observer);
           }
         // Fetch height.
-        l = (Length) atts.getAttribute(CSS.Attribute.HEIGHT);
+        l = spans[Y_AXIS];
         if (l != null)
           {
             newH = (int) l.getValue();

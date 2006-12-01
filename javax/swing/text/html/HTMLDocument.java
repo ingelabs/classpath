@@ -650,7 +650,12 @@ public class HTMLDocument extends DefaultStyledDocument
     protected MutableAttributeSet charAttr = new SimpleAttributeSet();
     
     protected Vector parseBuffer = new Vector();
-    
+
+    /**
+     * The parse stack. It holds the current element tree path.
+     */
+    private Stack parseStack = new Stack();
+
     /** 
      * A stack for character attribute sets *
      */
@@ -695,16 +700,6 @@ public class HTMLDocument extends DefaultStyledDocument
      * This is true when we are inside a pre tag.
      */
     boolean inPreTag = false;
-
-    /**
-     * True when we are inside a paragraph (P, H1-H6, P-IMPLIED).
-     */
-    boolean inParagraph = false;
-
-    /**
-     * True when we are currently inside an implied paragraph.
-     */
-    boolean inImpliedParagraph = false;
 
     /**
      * This is true when we are inside a style tag. This will add text
@@ -948,7 +943,6 @@ public class HTMLDocument extends DefaultStyledDocument
       public void start(HTML.Tag t, MutableAttributeSet a)
       {
         super.start(t, a);
-        inParagraph = true;
       }
       
       /**
@@ -958,7 +952,6 @@ public class HTMLDocument extends DefaultStyledDocument
       public void end(HTML.Tag t)
       {
         super.end(t);
-        inParagraph = false;
       } 
     }
 
@@ -1638,8 +1631,11 @@ public class HTMLDocument extends DefaultStyledDocument
      */
     protected void blockOpen(HTML.Tag t, MutableAttributeSet attr)
     {
-      if (inImpliedParagraph)
+      if (inImpliedParagraph())
         blockClose(HTML.Tag.IMPLIED);
+
+      // Push the new tag on top of the stack.
+      parseStack.push(t);
 
       DefaultStyledDocument.ElementSpec element;
 
@@ -1652,6 +1648,34 @@ public class HTMLDocument extends DefaultStyledDocument
     }
 
     /**
+     * Returns true when we are currently inside a paragraph, either
+     * a real one or an implied, false otherwise.
+     *
+     * @return
+     */
+    private boolean inParagraph()
+    {
+      boolean inParagraph = false;
+      if (! parseStack.isEmpty())
+        {
+          HTML.Tag top = (HTML.Tag) parseStack.peek();
+          inParagraph = top == HTML.Tag.P || top == HTML.Tag.IMPLIED;
+        }
+      return inParagraph;
+    }
+
+    private boolean inImpliedParagraph()
+    {
+      boolean inParagraph = false;
+      if (! parseStack.isEmpty())
+        {
+          HTML.Tag top = (HTML.Tag) parseStack.peek();
+          inParagraph = top == HTML.Tag.IMPLIED;
+        }
+      return inParagraph;
+    }
+
+    /**
      * Instructs the parse buffer to close the block element associated with 
      * the given HTML.Tag
      * 
@@ -1661,13 +1685,12 @@ public class HTMLDocument extends DefaultStyledDocument
     {
       DefaultStyledDocument.ElementSpec element;
 
-      if (inImpliedParagraph)
-        {
-          inImpliedParagraph = false;
-          inParagraph = false;
-          if (t != HTML.Tag.IMPLIED)
-            blockClose(HTML.Tag.IMPLIED);
-        }
+      if (inImpliedParagraph() && t != HTML.Tag.IMPLIED)
+        blockClose(HTML.Tag.IMPLIED);
+
+      // Pull the token from the stack.
+      if (! parseStack.isEmpty()) // Just to be sure.
+        parseStack.pop();
 
       // If the previous tag is a start tag then we insert a synthetic
       // content tag.
@@ -1711,11 +1734,9 @@ public class HTMLDocument extends DefaultStyledDocument
     protected void addContent(char[] data, int offs, int length,
                               boolean generateImpliedPIfNecessary)
     {
-      if (generateImpliedPIfNecessary && (! inParagraph) && (! inPreTag))
+      if (generateImpliedPIfNecessary && ! inParagraph())
         {
           blockOpen(HTML.Tag.IMPLIED, new SimpleAttributeSet());
-          inParagraph = true;
-          inImpliedParagraph = true;
         }
 
       AbstractDocument.AttributeContext ctx = getAttributeContext();
@@ -1760,11 +1781,9 @@ public class HTMLDocument extends DefaultStyledDocument
      */
     protected void addSpecialElement(HTML.Tag t, MutableAttributeSet a)
     {
-      if (t != HTML.Tag.FRAME && ! inParagraph && ! inImpliedParagraph)
+      if (t != HTML.Tag.FRAME && ! inParagraph())
         {
           blockOpen(HTML.Tag.IMPLIED, new SimpleAttributeSet());
-          inParagraph = true;
-          inImpliedParagraph = true;
         }
 
       a.addAttribute(StyleConstants.NameAttribute, t);

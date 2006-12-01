@@ -498,6 +498,9 @@ public class Parser
         mustBe(t.kind);
       }
     hTag = new Token(start, last);
+
+    // Consume any whitespace immediately following a comment.
+    optional(WS);
     handleComment();
   }
 
@@ -983,13 +986,15 @@ public class Parser
                           + next.getImage() + "'");
                     attrValue = value.getImage();
                   }
-                else if (next.kind == SLASH)
-                // The slash in this context is treated as the ordinary
-                // character, not as a token. The slash may be part of
+                else if (next.kind == SLASH || next.kind == OTHER)
+                // The slash and other characters (like %) in this context is
+                // treated as the ordinary
+                // character, not as a token. The character may be part of
                 // the unquoted URL.
                   {
                     StringBuffer image = new StringBuffer(value.getImage());
-                    while (next.kind == NUMTOKEN || next.kind == SLASH)
+                    while (next.kind == NUMTOKEN || next.kind == SLASH
+                           || next.kind == OTHER)
                       {
                         image.append(getNextToken().getImage());
                         next = getTokenAhead();
@@ -1186,7 +1191,7 @@ public class Parser
         // it.
         // For some unknown reason a FRAME tag is not treated as block element.
         // However in this case it should be treated as such.
-        if (h.isBlock() || h == HTML.Tag.FRAME)
+        if (isBlock(h))
           optional(WS);
       }
     catch (ChangedCharSetException ex)
@@ -1226,7 +1231,7 @@ public class Parser
 
     // When a block tag is closed, consume whitespace that follows after
     // it.
-    if (h.isBlock())
+    if (isBlock(h))
       optional(WS);
 
     if (h == HTML.Tag.TITLE)
@@ -1254,6 +1259,9 @@ public class Parser
     handleStartTag(tag);
 
     HTML.Tag h = tag.getHTMLTag();
+
+    if (isBlock(h))
+      optional(WS);
 
     if (h.isPreformatted())
       preformatted++;
@@ -1501,5 +1509,20 @@ public class Parser
   private void ws_error()
   {
     error("Whitespace here is not permitted");
+  }
+
+  /**
+   * Returns true when the specified tag should be considered a block tag
+   * wrt whitespace handling. We need this special handling, since there
+   * are a couple of tags that we must treat as block tags but which aren't
+   * officially block tags.
+   *
+   * @param tag the tag to check
+   * @return true when the specified tag should be considered a block tag
+   *         wrt whitespace handling
+   */
+  private boolean isBlock(HTML.Tag tag)
+  {
+    return tag.isBlock() || tag == HTML.Tag.STYLE || tag == HTML.Tag.FRAME;
   }
 }

@@ -52,6 +52,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.Rectangle2D;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -882,7 +884,37 @@ public class StyleSheet extends StyleContext
       style |= fStyle.getValue();
     return new Font(family, style, realSize);
   }
-  
+
+  /**
+   * Determines the EM base value based on the specified attributes.
+   *
+   * @param atts the attibutes
+   *
+   * @return the EM base value
+   */
+  float getEMBase(AttributeSet atts)
+  {
+    Font font = getFont(atts);
+    FontRenderContext ctx = new FontRenderContext(null, false, false);
+    Rectangle2D bounds = font.getStringBounds("M", ctx);
+    return (float) bounds.getWidth();
+  }
+
+  /**
+   * Determines the EX base value based on the specified attributes.
+   *
+   * @param atts the attibutes
+   *
+   * @return the EX base value
+   */
+  float getEXBase(AttributeSet atts)
+  {
+    Font font = getFont(atts);
+    FontRenderContext ctx = new FontRenderContext(null, false, false);
+    Rectangle2D bounds = font.getStringBounds("x", ctx);
+    return (float) bounds.getHeight();
+  }
+
   /**
    * Resolves the fontsize for a given set of attributes.
    *
@@ -1120,49 +1152,75 @@ public class StyleSheet extends StyleContext
      */
     BoxPainter(AttributeSet as, StyleSheet ss)
     {
+      float emBase = ss.getEMBase(as);
+      float exBase = ss.getEXBase(as);
       // Fetch margins.
       Length l = (Length) as.getAttribute(CSS.Attribute.MARGIN);
       if (l != null)
         {
+          l.setFontBases(emBase, exBase);
           topInset = bottomInset = leftInset = rightInset = l.getValue();
         }
       l = (Length) as.getAttribute(CSS.Attribute.MARGIN_LEFT);
       if (l != null)
-        leftInset = l.getValue();
-      else if (as.getAttribute(StyleConstants.NameAttribute) == HTML.Tag.UL)
-        System.err.println("UL margin left value: " + l + " atts: " + as);
+        {
+          l.setFontBases(emBase, exBase);
+          leftInset = l.getValue();
+        }
       l = (Length) as.getAttribute(CSS.Attribute.MARGIN_RIGHT);
       if (l != null)
-        rightInset = l.getValue();
+        {
+          l.setFontBases(emBase, exBase);
+          rightInset = l.getValue();
+        }
       l = (Length) as.getAttribute(CSS.Attribute.MARGIN_TOP);
       if (l != null)
-        topInset = l.getValue();
+        {
+          l.setFontBases(emBase, exBase);
+          topInset = l.getValue();
+        }
       l = (Length) as.getAttribute(CSS.Attribute.MARGIN_BOTTOM);
       if (l != null)
-        bottomInset = l.getValue();
+        {
+          l.setFontBases(emBase, exBase);
+          bottomInset = l.getValue();
+        }
 
       // Fetch padding.
       l = (Length) as.getAttribute(CSS.Attribute.PADDING);
       if (l != null)
         {
+          l.setFontBases(emBase, exBase);
           leftPadding = rightPadding = topPadding = bottomPadding =
             l.getValue();
         }
       l = (Length) as.getAttribute(CSS.Attribute.PADDING_LEFT);
       if (l != null)
-        leftPadding = l.getValue();
+        {
+          l.setFontBases(emBase, exBase);
+          leftPadding = l.getValue();
+        }
       l = (Length) as.getAttribute(CSS.Attribute.PADDING_RIGHT);
       if (l != null)
-        rightPadding = l.getValue();
+        {
+          l.setFontBases(emBase, exBase);
+          rightPadding = l.getValue();
+        }
       l = (Length) as.getAttribute(CSS.Attribute.PADDING_TOP);
       if (l != null)
-        topPadding = l.getValue();
+        {
+          l.setFontBases(emBase, exBase);
+          topPadding = l.getValue();
+        }
       l = (Length) as.getAttribute(CSS.Attribute.PADDING_BOTTOM);
       if (l != null)
-        bottomPadding = l.getValue();
+        {
+          l.setFontBases(emBase, exBase);
+          bottomPadding = l.getValue();
+        }
 
       // Determine border.
-      border = new CSSBorder(as);
+      border = new CSSBorder(as, ss);
 
       // Determine background.
       background = ss.getBackground(as);

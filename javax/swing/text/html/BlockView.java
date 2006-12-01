@@ -40,6 +40,7 @@ package javax.swing.text.html;
 
 import gnu.javax.swing.text.html.css.Length;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.Shape;
@@ -255,16 +256,13 @@ public class BlockView extends BoxView
                                  int[] offsets, int[] spans)
   {
     int viewCount = getViewCount();
-    CSS.Attribute spanAtt = axis == X_AXIS ? CSS.Attribute.WIDTH
-                                           : CSS.Attribute.HEIGHT;
     for (int i = 0; i < viewCount; i++)
       {
         View view = getView(i);
         int min = (int) view.getMinimumSpan(axis);
         int max;
         // Handle CSS span value of child.
-        AttributeSet atts = view.getAttributes();
-        Length length = (Length) atts.getAttribute(spanAtt);
+        Length length = cssSpans[axis];
         if (length != null)
           {
             min = Math.max((int) length.getValue(targetSpan), min);
@@ -299,6 +297,11 @@ public class BlockView extends BoxView
   public void paint(Graphics g, Shape a)
   {
     Rectangle rect = a instanceof Rectangle ? (Rectangle) a : a.getBounds();
+
+    // Debug output. Shows blocks in green rectangles.
+    // g.setColor(Color.GREEN);
+    // g.drawRect(rect.x, rect.y, rect.width, rect.height);
+
     painter.paint(g, rect.x, rect.y, rect.width, rect.height, this);
     super.paint(g, a);
   }
@@ -446,8 +449,14 @@ public class BlockView extends BoxView
       }
 
     // Fetch width and height.
+    float emBase = ss.getEMBase(attributes);
+    float exBase = ss.getEXBase(attributes);
     cssSpans[X_AXIS] = (Length) attributes.getAttribute(CSS.Attribute.WIDTH);
+    if (cssSpans[X_AXIS] != null)
+      cssSpans[X_AXIS].setFontBases(emBase, exBase);
     cssSpans[Y_AXIS] = (Length) attributes.getAttribute(CSS.Attribute.HEIGHT);
+    if (cssSpans[Y_AXIS] != null)
+      cssSpans[Y_AXIS].setFontBases(emBase, exBase);
   }
 
   /**
