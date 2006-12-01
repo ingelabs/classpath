@@ -98,7 +98,12 @@ public class HTMLEditorKit
     extends MouseAdapter
     implements MouseMotionListener, Serializable
     {
-      
+
+      /**
+       * The element of the last anchor tag.
+       */
+      private Element lastAnchorElement;
+
       /**
        * Constructor
        */
@@ -162,10 +167,41 @@ public class HTMLEditorKit
                     AttributeSet aAtts = (AttributeSet)
                                    el.getAttributes().getAttribute(HTML.Tag.A);
                     if (aAtts != null)
-                      newCursor = kit.getLinkCursor();
+                      {
+                        if (el != lastAnchorElement)
+                          {
+                            if (lastAnchorElement != null)
+                              htmlDoc.updateSpecialClass(lastAnchorElement,
+                                                  HTML.Attribute.DYNAMIC_CLASS,
+                                                  null);
+                            lastAnchorElement = el;
+                            htmlDoc.updateSpecialClass(el,
+                                                  HTML.Attribute.DYNAMIC_CLASS,
+                                                  "hover");
+                          }
+                        newCursor = kit.getLinkCursor();
+                      }
+                    else
+                      {
+                        if (lastAnchorElement != null)
+                          htmlDoc.updateSpecialClass(lastAnchorElement,
+                                              HTML.Attribute.DYNAMIC_CLASS,
+                                              null);
+                        lastAnchorElement = null;
+                      }
+                  }
+                else
+                  {
+                    if (lastAnchorElement != null)
+                      htmlDoc.updateSpecialClass(lastAnchorElement,
+                                          HTML.Attribute.DYNAMIC_CLASS,
+                                          null);
+                    lastAnchorElement = null;
                   }
                 if (editor.getCursor() != newCursor)
-                  editor.setCursor(newCursor);
+                  {
+                    editor.setCursor(newCursor);
+                  }
               }
           }
       }
@@ -198,6 +234,8 @@ public class HTMLEditorKit
             if (anchorAtts != null)
               {
                 href = (String) anchorAtts.getAttribute(HTML.Attribute.HREF);
+                htmlDoc.updateSpecialClass(el, HTML.Attribute.PSEUDO_CLASS,
+                                           "visited");
               }
             else
               {

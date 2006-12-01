@@ -791,6 +791,10 @@ public class HTMLDocument extends DefaultStyledDocument
         // Put the old attribute set on the stack.
         pushCharacterStyle();
 
+        // Initialize with link pseudo class.
+        if (t == HTML.Tag.A)
+          a.addAttribute(HTML.Attribute.PSEUDO_CLASS, "link");
+
         // Just add the attributes in <code>a</code>.
         charAttr.addAttribute(t, a.copyAttributes());
       }
@@ -2117,4 +2121,49 @@ public void setOuterHTML(Element elem, String htmlText)
   {
     return baseTarget;
   }
+
+  /**
+   * Updates the A tag's pseudo class value in response to a hyperlink
+   * action.
+   *
+   * @param el the corresponding element
+   * @param value the new value
+   */
+  void updateSpecialClass(Element el, HTML.Attribute cl, String value)
+  {
+    try
+    {
+      writeLock();
+      DefaultDocumentEvent ev =
+        new DefaultDocumentEvent(el.getStartOffset(), 1,
+                                 DocumentEvent.EventType.CHANGE);
+      AttributeSet elAtts = el.getAttributes();
+      AttributeSet anchorAtts = (AttributeSet) elAtts.getAttribute(HTML.Tag.A);
+      if (anchorAtts != null)
+        {
+          AttributeSet copy = elAtts.copyAttributes();
+          StyleSheet ss = getStyleSheet();
+          if (value != null)
+            {
+              anchorAtts = ss.addAttribute(anchorAtts, cl, value);
+            }
+          else
+            {
+              anchorAtts = ss.removeAttribute(anchorAtts, cl);
+            }
+          MutableAttributeSet matts = (MutableAttributeSet) elAtts;
+          ev.addEdit(new AttributeUndoableEdit(el, copy, false));
+          matts.removeAttribute(HTML.Tag.A);
+          matts.addAttribute(HTML.Tag.A, anchorAtts);
+          ev.end();
+          fireChangedUpdate(ev);
+          fireUndoableEditUpdate(new UndoableEditEvent(this, ev));
+        }
+    }
+  finally
+    {
+      writeUnlock();
+    }
+  }
+
 }

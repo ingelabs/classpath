@@ -139,6 +139,7 @@ public class InlineView
     StyleSheet ss = getStyleSheet();
     attributes = ss.getViewAttributes(this);
     preferenceChanged(null, true, true);
+    setPropertiesFromAttributes();
   }
 
   /**
@@ -303,4 +304,5 @@ public class InlineView
       }
     return span;
   }
+
 }

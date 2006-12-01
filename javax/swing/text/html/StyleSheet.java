@@ -68,6 +68,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.border.Border;
 import javax.swing.event.ChangeListener;
@@ -302,10 +303,20 @@ public class StyleSheet extends StyleContext
             selector.append('#');
             selector.append(atts.getAttribute(HTML.Attribute.ID));
           }
-        else if (atts.isDefined(HTML.Attribute.CLASS))
+        if (atts.isDefined(HTML.Attribute.CLASS))
           {
             selector.append('.');
             selector.append(atts.getAttribute(HTML.Attribute.CLASS));
+          }
+        if (atts.isDefined(HTML.Attribute.DYNAMIC_CLASS))
+          {
+            selector.append(':');
+            selector.append(atts.getAttribute(HTML.Attribute.DYNAMIC_CLASS));
+          }
+        if (atts.isDefined(HTML.Attribute.PSEUDO_CLASS))
+          {
+            selector.append(':');
+            selector.append(atts.getAttribute(HTML.Attribute.PSEUDO_CLASS));
           }
         selector.append(' ');
       }
@@ -328,10 +339,20 @@ public class StyleSheet extends StyleContext
             selector.append('#');
             selector.append(atts.getAttribute(HTML.Attribute.ID));
           }
-        else if (atts.isDefined(HTML.Attribute.CLASS))
+        if (atts.isDefined(HTML.Attribute.CLASS))
           {
             selector.append('.');
             selector.append(atts.getAttribute(HTML.Attribute.CLASS));
+          }
+        if (atts.isDefined(HTML.Attribute.DYNAMIC_CLASS))
+          {
+            selector.append(':');
+            selector.append(atts.getAttribute(HTML.Attribute.DYNAMIC_CLASS));
+          }
+        if (atts.isDefined(HTML.Attribute.PSEUDO_CLASS))
+          {
+            selector.append(':');
+            selector.append(atts.getAttribute(HTML.Attribute.PSEUDO_CLASS));
           }
       }
     return getResolvedStyle(selector.toString(), path, t);
@@ -359,7 +380,7 @@ public class StyleSheet extends StyleContext
   /**
    * Resolves a style. This creates arrays that hold the tag names,
    * class and id attributes and delegates the work to
-   * {@link #resolveStyle(String, String[], String[], String[])}.
+   * {@link #resolveStyle(String, String[], Map[])}.
    *
    * @param selector the selector
    * @param path the Element path
@@ -371,8 +392,7 @@ public class StyleSheet extends StyleContext
   {
     int count = path.size();
     String[] tags = new String[count];
-    String[] ids = new String[count];
-    String[] classes = new String[count];
+    Map[] attributes = new Map[count];
     for (int i = 0; i < count; i++)
       {
         Element el = (Element) path.get(i);
@@ -393,24 +413,16 @@ public class StyleSheet extends StyleContext
               tags[i] = t.toString();
             else
               tags[i] = null;
-            if (atts.isDefined(HTML.Attribute.CLASS))
-              classes[i] = atts.getAttribute(HTML.Attribute.CLASS).toString();
-            else
-              classes[i] = null;
-            if (atts.isDefined(HTML.Attribute.ID))
-              ids[i] = atts.getAttribute(HTML.Attribute.ID).toString();
-            else
-              ids[i] = null;
+            attributes[i] = attributeSetToMap(atts);
           }
         else
           {
             tags[i] = null;
-            classes[i] = null;
-            ids[i] = null;
+            attributes[i] = null;
           }
       }
     tags[0] = tag.toString();
-    return resolveStyle(selector, tags, ids, classes);
+    return resolveStyle(selector, tags, attributes);
   }
 
   /**
@@ -418,13 +430,11 @@ public class StyleSheet extends StyleContext
    *
    * @param selector the selector
    * @param tags the tags
-   * @param ids the corresponding ID attributes
-   * @param classes the corresponding CLASS attributes
+   * @param attributes the attributes of the tags
    *
    * @return the resolved style
    */
-  private Style resolveStyle(String selector, String[] tags, String[] ids,
-                             String[] classes)
+  private Style resolveStyle(String selector, String[] tags, Map[] attributes)
   {
     // FIXME: This style resolver is not correct. But it works good enough for
     // the default.css.
@@ -433,7 +443,7 @@ public class StyleSheet extends StyleContext
     for (Iterator i = css.iterator(); i.hasNext();)
       {
         CSSStyle style = (CSSStyle) i.next();
-        if (style.selector.matches(tags, classes, ids))
+        if (style.selector.matches(tags, attributes))
           styles.add(style);
       }
 
@@ -446,7 +456,7 @@ public class StyleSheet extends StyleContext
             for (int j = ss.css.size() - 1; j >= 0; j--)
               {
                 CSSStyle style = (CSSStyle) ss.css.get(j);
-                if (style.selector.matches(tags, classes, ids))
+                if (style.selector.matches(tags, attributes))
                   styles.add(style);
               }
           }
@@ -1395,4 +1405,23 @@ public class StyleSheet extends StyleContext
     }
   }
 
+  /**
+   * Converts an AttributeSet to a Map. This is used for CSS resolving.
+   *
+   * @param atts the attributes to convert
+   *
+   * @return the converted map
+   */
+  private Map attributeSetToMap(AttributeSet atts)
+  {
+    HashMap map = new HashMap();
+    Enumeration keys = atts.getAttributeNames();
+    while (keys.hasMoreElements())
+      {
+        Object key = keys.nextElement();
+        Object value = atts.getAttribute(key);
+        map.put(key.toString(), value.toString());
+      }
+    return map;
+  }
 }

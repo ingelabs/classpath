@@ -1,3 +1,33 @@
+2006-12-01  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/html/HTML.java
+	(Attribute.DYNAMIC_CLASS): New field.
+	(Attribute.PSEUDO_CLASS): New field.
+	* javax/swing/text/html/HTMLDocument.java
+	(HTMLReader.CharacterAction.start): Initialize anchor with link
+	pseudo attribute.
+	(updateSpecialClass): New helper method. Updates the dynamic
+	or pseudo class for anchor tags.
+	* javax/swing/text/html/HTMLEditorKit.java
+	(LinkController.lastAnchorElement): New field. For tracking
+	enter/exit of anchors.
+	(LinkController.activateLink): Set pseudo class to 'visited'.
+	(LinkController.mouseMoved): Added support for tracking
+	the 'hover' dynamic class.
+	* javax/swing/text/html/InlineView.java
+	(changedUpdate): Fetch new properties.
+	* javax/swing/text/html/StyleSheet.java
+	(attributeSetToMap): New helper method.
+	(getRule): Also append dynamic and pseudo class to key.
+	(resolveStyle): Resolve style based generally on all attributes.
+	* javax/swing/text/html/TableView.java
+	(RowView.layoutMajorAxis): Make sure the grid is valid.
+	(updateGrid): Made package private.
+	* gnu/javax/swing/text/html/css/Selector.java
+	(calculateSpecificity): Added support for dynamic and pseudo classes.
+	(matches): Changed to operate on general attributes.
+	Added support for dynamic and pseudo classes.
+
 2006-12-01  Mario Torre  <neugens@limasoftware.net>
 
 	* java/text/DecimalFormat.java (formatInternal): move the formatting of

@@ -140,6 +140,7 @@ class TableView
     protected void layoutMajorAxis(int targetSpan, int axis, int[] offsets,
                                    int spans[])
     {
+      updateGrid();
       int numCols = offsets.length;
       int realColumn = 0;
       for (int i = 0; i < numCols; i++)
@@ -664,8 +665,10 @@ class TableView
   /**
    * Updates the arrays that contain the row and column data in response
    * to a change to the table structure.
+   *
+   * Package private to avoid accessor methods.
    */
-  private void updateGrid()
+  void updateGrid()
   {
     if (! gridValid)
       {
