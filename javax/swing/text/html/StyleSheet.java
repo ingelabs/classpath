@@ -743,8 +743,13 @@ public class StyleSheet extends StyleContext
                                   .getAttributes();
         o = tableAttrs.getAttribute(HTML.Attribute.CELLPADDING);
         if (o != null)
-          cssAttr = addAttribute(cssAttr, CSS.Attribute.PADDING,
-                                 new Length(o.toString()));
+          {
+            Length l = new Length(o.toString());
+            cssAttr = addAttribute(cssAttr, CSS.Attribute.PADDING_BOTTOM, l);
+            cssAttr = addAttribute(cssAttr, CSS.Attribute.PADDING_LEFT, l);
+            cssAttr = addAttribute(cssAttr, CSS.Attribute.PADDING_RIGHT, l);
+            cssAttr = addAttribute(cssAttr, CSS.Attribute.PADDING_TOP, l);
+          }
       }
     // TODO: Add more mappings.
     return cssAttr;
@@ -1155,13 +1160,7 @@ public class StyleSheet extends StyleContext
       float emBase = ss.getEMBase(as);
       float exBase = ss.getEXBase(as);
       // Fetch margins.
-      Length l = (Length) as.getAttribute(CSS.Attribute.MARGIN);
-      if (l != null)
-        {
-          l.setFontBases(emBase, exBase);
-          topInset = bottomInset = leftInset = rightInset = l.getValue();
-        }
-      l = (Length) as.getAttribute(CSS.Attribute.MARGIN_LEFT);
+      Length l = (Length) as.getAttribute(CSS.Attribute.MARGIN_LEFT);
       if (l != null)
         {
           l.setFontBases(emBase, exBase);
@@ -1187,13 +1186,6 @@ public class StyleSheet extends StyleContext
         }
 
       // Fetch padding.
-      l = (Length) as.getAttribute(CSS.Attribute.PADDING);
-      if (l != null)
-        {
-          l.setFontBases(emBase, exBase);
-          leftPadding = rightPadding = topPadding = bottomPadding =
-            l.getValue();
-        }
       l = (Length) as.getAttribute(CSS.Attribute.PADDING_LEFT);
       if (l != null)
         {
@@ -1287,15 +1279,18 @@ public class StyleSheet extends StyleContext
      */
     public void paint(Graphics g, float x, float y, float w, float h, View v)
     {
-      
+      int inX = (int) (x + leftInset);
+      int inY = (int) (y + topInset);
+      int inW = (int) (w - leftInset - rightInset);
+      int inH = (int) (h - topInset - bottomInset);
       if (background != null)
         {
           g.setColor(background);
-          g.fillRect((int) x, (int) y, (int) w, (int) h);
+          g.fillRect(inX, inY, inW, inH);
         }
       if (border != null)
         {
-          border.paintBorder(null, g, (int) x, (int) y, (int) w, (int) h);
+          border.paintBorder(null, g, inX, inY, inW, inH);
         }
     }
   }

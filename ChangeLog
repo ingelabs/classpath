@@ -1,4 +1,28 @@
-2006-11-30  Roman Kennke  <kennke@aicas.com>
+2006-12-01  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/javax/swing/text/html/css/BorderStyle.java: New class for
+	handling border styles.
+	* gnu/javax/swing/text/html/css/BorderWidth.java
+	(isValid): New method.
+	* gnu/javax/swing/text/html/css/Length.java
+	(isValid): New method.
+	* javax/swing/text/html/CSS.java
+	(addInternal): Added shorthand parsing for border, padding and
+	margin.
+	(parseBackgroundShorthand): Added API docs.
+	(parsePaddingShorthand): New method. Handles padding shorthand
+	values.
+	(parseMarginShorthand): New method. Handles margin shorthand
+	values.
+	(parseBorderShorthand): New method. Handles border shorthand
+	values.
+	* javax/swing/text/html/StyleSheet.java
+	(translateHTMLToCSS): Set specific padding attributes.
+	(BoxPainter.BoxPainter): Don't handle PADDING and MARGIN here.
+	These shorthands are now handled in CSS.
+	(BoxPainter.paint): Exclude the outer margin.
+
+2006-12-01  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/javax/swing/text/html/css/Length.java
 	(emBase): New field.

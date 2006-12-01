@@ -231,4 +231,53 @@ public class Length
   {
     return isPercentage;
   }
+
+  /**
+   * Checks if the specified value makes up a valid length value.
+   *
+   * @param value the value to check
+   *
+   * @return <code>true</code> if the value is a valid length
+   */
+  public static boolean isValid(String value)
+  {
+    boolean isValid = true;
+    int px = value.indexOf("px");
+    int em = value.indexOf("em");
+    int ex = value.indexOf("ex");
+    int pc = value.indexOf('%');
+    try
+      {
+        if (px != -1)
+          {
+            Integer.parseInt(value.substring(0, px));
+          }
+        else if (em != -1)
+          {
+            Integer.parseInt(value.substring(0, em));
+          }
+        else if (ex != -1)
+          {
+            Integer.parseInt(value.substring(0, ex));
+          }
+        else if (pc != -1)
+          {
+            Integer.parseInt(value.substring(0, ex));
+          }
+        else
+          {
+            Integer.parseInt(value);
+          }
+      }
+    catch (NumberFormatException nfe)
+      {
+        isValid = false;
+      }
+    return isValid;
+  }
+
+  public String toString()
+  {
+    return value;
+  }
 }
