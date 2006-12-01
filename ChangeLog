@@ -1,3 +1,7 @@
+2006-12-01  Mark Wielaard  <mark@klomp.org>
+
+	* include/gnu_java_awt_peer_gtk_GdkFontPeer.h: Regenerated.
+
 2006-12-01  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/javax/swing/text/html/css/BorderStyle.java: New class for
