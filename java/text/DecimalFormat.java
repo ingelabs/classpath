@@ -660,11 +660,11 @@ public class DecimalFormat extends NumberFormat
     int len = str.length();
     if (len < stop) stop = len;
     
-    char ch;
-    int i = 0;
-    for (i = start; i < stop; i++)
+    int i = start;
+    while (i < stop)
       {
-        ch = str.charAt(i);
+        char ch = str.charAt(i);
+        i++;
        
         if (ch >= zero && ch <= (zero + 9))
           {
@@ -749,7 +749,7 @@ public class DecimalFormat extends NumberFormat
     
     if (isNegative) number.insert(0, '-');
    
-    pos.setIndex(i);
+    pos.setIndex(i - 1);
     
     // now we handle the return type
     BigDecimal bigDecimal = new BigDecimal(number.toString());

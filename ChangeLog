@@ -1,3 +1,8 @@
+2006-12-01  Mark Wielaard  <mark@klomp.org>
+
+	* java/text/DecimalFormat.java (parse): Always increment parsing
+	index and adjust pos result.
+
 2006-12-01  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/html/HTML.java
