@@ -583,6 +583,8 @@ public class Parser
                  );
           }
       }
+    // Consume any whitespace that follows the Sgml insertion.
+    optional(WS);
   }
 
   /**
@@ -896,6 +898,8 @@ public class Parser
   protected void parseDocument()
                         throws ParseException
   {
+    // Read up any initial whitespace.
+    optional(WS);
     while (getTokenAhead().kind != EOF)
       {
         advanced = false;
