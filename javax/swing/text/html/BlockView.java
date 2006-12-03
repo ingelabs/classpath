@@ -44,6 +44,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.util.HashMap;
 
 import javax.swing.SizeRequirements;
 import javax.swing.event.DocumentEvent;
@@ -58,6 +59,81 @@ import javax.swing.text.ViewFactory;
  */
 public class BlockView extends BoxView
 {
+
+  /**
+   * Stores information about child positioning according to the
+   * CSS attributes position, left, right, top and bottom.
+   */
+  private static class PositionInfo
+  {
+    // TODO: Use enums when available.
+
+    /**
+     * Static positioning. This is the default and is thus rarely really
+     * used.
+     */
+    static final int STATIC = 0;
+
+    /**
+     * Relative positioning. The box is teaked relative to its static
+     * computed bounds.
+     */
+    static final int RELATIVE = 1;
+
+    /**
+     * Absolute positioning. The box is moved relative to the parent's box.
+     */
+    static final int ABSOLUTE = 2;
+
+    /**
+     * Like ABSOLUTE, with some fixation against the viewport (not yet
+     * implemented).
+     */
+    static final int FIXED = 3;
+
+    /**
+     * The type according to the constants of this class.
+     */
+    int type;
+
+    /**
+     * The left constraint, null if not set.
+     */
+    Length left;
+
+    /**
+     * The right constraint, null if not set.
+     */
+    Length right;
+
+    /**
+     * The top constraint, null if not set.
+     */
+    Length top;
+
+    /**
+     * The bottom constraint, null if not set.
+     */
+    Length bottom;
+
+    /**
+     * Creates a new PositionInfo object.
+     *
+     * @param typ the type to set
+     * @param l the left constraint
+     * @param r the right constraint
+     * @param t the top constraint
+     * @param b the bottom constraint
+     */
+    PositionInfo(int typ, Length l, Length r, Length t, Length b)
+    {
+      type = typ;
+      left = l;
+      right = r;
+      top = t;
+      bottom = b;
+    }
+  }
 
   /**
    * The attributes for this view.
@@ -77,6 +153,11 @@ public class BlockView extends BoxView
   private Length[] cssSpans;
 
   /**
+   * Stores additional CSS layout information.
+   */
+  private HashMap positionInfo;
+
+  /**
    * Creates a new view that represents an html box. 
    * This can be used for a number of elements.
    * 
@@ -87,6 +168,7 @@ public class BlockView extends BoxView
   {
     super(elem, axis);
     cssSpans = new Length[2];
+    positionInfo = new HashMap();
   }
 
   /**
@@ -283,6 +365,102 @@ public class BlockView extends BoxView
             offsets[i] = 0;
             spans[i] = Math.max(min, targetSpan);
           }
+
+        // Adjust according to CSS position info.
+        positionView(targetSpan, axis, i, offsets, spans);
+      }
+  }
+
+  /**
+   * Overridden to perform additional CSS layout (absolute/relative
+   * positioning).
+   */
+  protected void layoutMajorAxis(int targetSpan, int axis,
+                                 int[] offsets, int[] spans)
+  {
+    super.layoutMajorAxis(targetSpan, axis, offsets, spans);
+
+    // Adjust according to CSS position info.
+    int viewCount = getViewCount();
+    for (int i = 0; i < viewCount; i++)
+      {
+        positionView(targetSpan, axis, i, offsets, spans);
+      }
+  }
+
+  /**
+   * Positions a view according to any additional CSS constraints.
+   *
+   * @param targetSpan the target span
+   * @param axis the axis
+   * @param i the index of the view
+   * @param offsets the offsets get placed here
+   * @param spans the spans get placed here
+   */
+  private void positionView(int targetSpan, int axis, int i, int[] offsets,
+                            int[] spans)
+  {
+    View view = getView(i);
+    PositionInfo pos = (PositionInfo) positionInfo.get(view);
+    if (pos != null)
+      {
+        int p0 = -1;
+        int p1 = -1;
+        if (axis == X_AXIS)
+          {
+            Length l = pos.left;
+            if (l != null)
+              p0 = (int) l.getValue(targetSpan);
+            l = pos.right;
+            if (l != null)
+              p1 = (int) l.getValue(targetSpan);
+          }
+        else
+          {
+            Length l = pos.top;
+            if (l != null)
+              p0 = (int) l.getValue(targetSpan);
+            l = pos.bottom;
+            if (l != null)
+              p1 = (int) l.getValue(targetSpan);
+          }
+        if (pos.type == PositionInfo.ABSOLUTE
+            || pos.type == PositionInfo.FIXED)
+          {
+            if (p0 != -1)
+              {
+                offsets[i] = p0;
+                if (p1 != -1)
+                  {
+                    // Overrides computed width. (Possibly overconstrained
+                    // when the width attribute was set too.)
+                    spans[i] = targetSpan - p1 - offsets[i];
+                  }
+              }
+            else if (p1 != -1)
+              {
+                // Preserve any computed width.
+                offsets[i] = targetSpan - p1 - spans[i];
+              }
+          }
+        else if (pos.type == PositionInfo.RELATIVE)
+          {
+            if (p0 != -1)
+              {
+                offsets[i] += p0;
+                if (p1 != -1)
+                  {
+                    // Overrides computed width. (Possibly overconstrained
+                    // when the width attribute was set too.)
+                    spans[i] = spans[i] - p0 - p1 - offsets[i];
+                  }
+              }
+            else if (p1 != -1)
+              {
+                // Preserve any computed width.
+                offsets[i] -= p1;
+              }
+          }
       }
   }
 
@@ -305,7 +483,7 @@ public class BlockView extends BoxView
     painter.paint(g, rect.x, rect.y, rect.width, rect.height, this);
     super.paint(g, a);
   }
-  
+
   /**
    * Fetches the attributes to use when painting.
    * 
@@ -468,5 +646,75 @@ public class BlockView extends BoxView
   {
     HTMLDocument doc = (HTMLDocument) getDocument();
     return doc.getStyleSheet();
+  }
+
+  /**
+   * Overridden to fetch additional CSS layout information.
+   */
+  public void replace(int offset, int length, View[] views)
+  {
+    // First remove unneeded stuff.
+    for (int i = 0; i < length; i++)
+      {
+        View child = getView(i + offset);
+        positionInfo.remove(child);
+      }
+
+    // Call super to actually replace the views.
+    super.replace(offset, length, views);
+
+    // Now fetch the position infos for the new views.
+    for (int i = 0; i < views.length; i++)
+      {
+        fetchLayoutInfo(views[i]);
+      }
+  }
+
+  /**
+   * Fetches and stores the layout info for the specified view.
+   *
+   * @param view the view for which the layout info is stored
+   */
+  private void fetchLayoutInfo(View view)
+  {
+    AttributeSet atts = view.getAttributes();
+    Object o = atts.getAttribute(CSS.Attribute.POSITION);
+    if (o != null && o instanceof String && ! o.equals("static"))
+      {
+        int type;
+        if (o.equals("relative"))
+          type = PositionInfo.RELATIVE;
+        else if (o.equals("absolute"))
+          type = PositionInfo.ABSOLUTE;
+        else if (o.equals("fixed"))
+          type = PositionInfo.FIXED;
+        else
+          type = PositionInfo.STATIC;
+
+        if (type != PositionInfo.STATIC)
+          {
+            StyleSheet ss = getStyleSheet();
+            float emBase = ss.getEMBase(atts);
+            float exBase = ss.getEXBase(atts);
+            Length left = (Length) atts.getAttribute(CSS.Attribute.LEFT);
+            if (left != null)
+              left.setFontBases(emBase, exBase);
+            Length right = (Length) atts.getAttribute(CSS.Attribute.RIGHT);
+            if (right != null)
+              right.setFontBases(emBase, exBase);
+            Length top = (Length) atts.getAttribute(CSS.Attribute.TOP);
+            if (top != null)
+              top.setFontBases(emBase, exBase);
+            Length bottom = (Length) atts.getAttribute(CSS.Attribute.BOTTOM);
+            if (bottom != null)
+              bottom.setFontBases(emBase, exBase);
+            if (left != null || right != null || top != null || bottom != null)
+              {
+                PositionInfo pos = new PositionInfo(type, left, right, top,
+                                                    bottom);
+                positionInfo.put(view, pos);
+              }
+          }
+      }
   }
 }

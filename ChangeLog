@@ -1,5 +1,30 @@
 2006-12-04  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/BoxView.java
+	(paint): Replaced painting algorithm with more simple and more
+	reliable painting of the box.
+	* javax/swing/text/html/BlockView.java
+	(PositionInfo): New inner class. Stores additional CSS positioning
+	information.
+	(positionInfo): New field.
+	(BlockView): Initialize positionInfo field.
+	(fetchLayoutInfo): New helper method. Fetches additional
+	CSS positioning information.
+	(layoutMajorAxis): Perform additional CSS layout.
+	(layoutMinorAxis): Perform additional CSS layout.
+	(positionView): New helper method.
+	(replace): Overridden to fetch additional layout information.
+	* javax/swing/text/html/CSS.java
+	(Attribute.POSITION): New field.
+	(Attribute.LEFT): New field.
+	(Attribute.RIGHT): New field.
+	(Attribute.TOP): New field.
+	(Attribute.BOTTOM): New field.
+	(getValue): Create Length for left, right, top and bottom
+	attributes.
+
+2006-12-04  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/javax/swing/text/html/parser/support/Parser.java
 	(Sgml): Consume any whitespace that immediately follows
 	and sgml insertion.
