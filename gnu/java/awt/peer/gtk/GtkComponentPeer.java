@@ -91,9 +91,9 @@ public class GtkComponentPeer extends GtkGenericPeer
   Insets insets;
 
   /**
-   * The current repaint area.
+   * The current repaint area. Use should be guarded by synchronizing on this.
    */
-  protected Rectangle paintArea;
+  private Rectangle currentPaintArea;
 
   /* this isEnabled differs from Component.isEnabled, in that it
      knows if a parent is disabled.  In that case Component.isEnabled 
@@ -313,7 +313,14 @@ public class GtkComponentPeer extends GtkGenericPeer
     // seems expensive.  However, the graphics state does not carry
     // over between calls to paint, and resetting the graphics object
     // may even be more costly than simply creating a new one.
-    synchronized (paintArea)
+    Rectangle paintArea;
+    synchronized (this)
+      {
+        paintArea = currentPaintArea;
+        currentPaintArea = null;
+      }
+
+    if (paintArea != null)
       {
         Graphics g = getGraphics();
         try
@@ -324,7 +331,6 @@ public class GtkComponentPeer extends GtkGenericPeer
         finally
           {
             g.dispose();
-            paintArea = null;
           }
       }
   }
@@ -339,7 +345,14 @@ public class GtkComponentPeer extends GtkGenericPeer
         || (awtComponent.getWidth() < 1 || awtComponent.getHeight() < 1))
       return;
 
-    synchronized (paintArea)
+    Rectangle paintArea;
+    synchronized (this)
+      {
+        paintArea = currentPaintArea;
+        currentPaintArea = null;
+      }
+
+    if (paintArea != null)
     {
       Graphics g = getGraphics();
       try
@@ -350,7 +363,6 @@ public class GtkComponentPeer extends GtkGenericPeer
       finally
         {
           g.dispose();
-          paintArea = null;
         }
     }
   }
@@ -776,10 +788,10 @@ public class GtkComponentPeer extends GtkGenericPeer
     synchronized (this)
     {
       Rectangle newRect = e.getUpdateRect();
-      if (paintArea == null)
-        paintArea = newRect;
+      if (currentPaintArea == null)
+        currentPaintArea = newRect;
       else
-        Rectangle.union(paintArea, newRect, paintArea);
+        Rectangle.union(currentPaintArea, newRect, currentPaintArea);
     }
   }
 
