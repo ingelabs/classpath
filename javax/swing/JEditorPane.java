@@ -582,13 +582,13 @@ public class JEditorPane extends JTextComponent
     implements Runnable
   {
     private Document doc;
-    private InputStream in;
+    private PageStream in;
     private URL old;
-    private URL page;
-    PageLoader(Document doc, InputStream in, int prio, URL old, URL page)
+    URL page;
+    PageLoader(Document doc, InputStream in, URL old, URL page)
     {
       this.doc = doc;
-      this.in = in;
+      this.in = new PageStream(in);
       this.old = old;
       this.page = page;
     }
@@ -598,10 +598,6 @@ public class JEditorPane extends JTextComponent
       try
         {
           read(in, doc);
-          synchronized (JEditorPane.this)
-          {
-            loading = null;
-          }
         }
       catch (IOException ex)
         {
@@ -621,7 +617,12 @@ public class JEditorPane extends JTextComponent
                 }
               });
             }
-      }
+         }
+     }
+
+     void cancel()
+     {
+       in.cancel();
      }
   }
 
@@ -640,7 +641,7 @@ public class JEditorPane extends JTextComponent
   /**
    * The currently loading stream, if any.
    */
-  private PageStream loading;
+  private PageLoader loader;
 
   public JEditorPane()
   {
@@ -885,7 +886,7 @@ public class JEditorPane extends JTextComponent
 
   public URL getPage()
   {
-    return (URL) getDocument().getProperty(Document.StreamDescriptionProperty);
+    return loader != null ? loader.page : null;
   }
 
   protected InputStream getStream(URL page)
@@ -1075,15 +1076,10 @@ public class JEditorPane extends JTextComponent
             Document doc = editorKit.createDefaultDocument();
             doc.putProperty(Document.StreamDescriptionProperty, page);
 
-            // Cancel loading stream, if there is any.
-            synchronized (this)
-              {
-                if (loading != null)
-                  {
-                    loading.cancel();
-                    loading = null;
-                  }
-              }
+            if (loader != null)
+              loader.cancel();
+            loader = new PageLoader(doc, in, old, page);
+
             int prio = -1;
             if (doc instanceof AbstractDocument)
               {
@@ -1094,20 +1090,15 @@ public class JEditorPane extends JTextComponent
               {
                 // Load asynchronously.
                 setDocument(doc);
-                synchronized (this)
-                  {
-                    loading = new PageStream(in);
-                  }
-                PageLoader loader = new PageLoader(doc, loading, prio, old,
-                                                   page);
-                Thread loadThread = new Thread(loader);
+                Thread loadThread = new Thread(loader,
+                                               "JEditorPane.PageLoader");
+                loadThread.setDaemon(true);
                 loadThread.setPriority(prio);
                 loadThread.start();
               }
             else
               {
                 // Load synchronously.
-                PageLoader loader = new PageLoader(doc, in, prio, old, page);
                 loader.run();
                 setDocument(doc);
               }
