@@ -1,5 +1,10 @@
 2006-12-03  Mark Wielaard  <mark@klomp.org>
 
+	* java/util/logging/LogManager.java (getLevelProperty): Check
+	whether value is null before passing to Level.parse().
+
+2006-12-03  Mark Wielaard  <mark@klomp.org>
+
 	* javax/swing/JEditorPane.java (PageLoader.in): Made a PageStream.
 	(PageLoader.page): Made package local.
 	(PageLoader.run): Don't reset loader.
