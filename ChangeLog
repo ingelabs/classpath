@@ -1,5 +1,10 @@
 2006-12-04  Roman Kennke  <kennke@aicas.com>
 
+	* native/jni/java-nio/gnu_java_nio_VMChannel.c
+	(Java_gnu_java_nio_VMChannel_connect): Retry on EINTR.
+
+2006-12-04  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/font/TextLayout.java
 	(hitTestChar): Fixed conditions for inclusion of range.
 	Use layout information in the run for more efficiency.

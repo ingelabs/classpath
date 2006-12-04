@@ -1036,6 +1036,7 @@ Java_gnu_java_nio_VMChannel_connect (JNIEnv *env, jclass clazz __attribute__((un
   int origflags = 0, flags;
   jbyte *addr_elems;
   int ret;
+  int tmpErrno;
 
   if ((*env)->GetArrayLength (env, addr) != 4)
     {
@@ -1074,8 +1075,14 @@ Java_gnu_java_nio_VMChannel_connect (JNIEnv *env, jclass clazz __attribute__((un
   sockaddr.sin_addr.s_addr = *((uint32_t *) addr_elems);
 
 
-  ret = cpnio_connect (fd, (struct sockaddr *) &sockaddr,
-                       sizeof (struct sockaddr_in));
+  do
+    {
+      ret = cpnio_connect (fd, (struct sockaddr *) &sockaddr,
+                           sizeof (struct sockaddr_in));
+      tmpErrno = errno;
+    }
+  while (ret == -1 && errno == EINTR && ! JCL_thread_interrupted(env));
+  errno = tmpErrno;
 
   (*env)->ReleaseByteArrayElements (env, addr, addr_elems, JNI_ABORT);
 
