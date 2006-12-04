@@ -258,8 +258,8 @@ JCL_cleanup_buffers(JNIEnv *env,
 int
 JCL_thread_interrupted(JNIEnv *env)
 {
-  return (int) (*env)->CallBooleanMethod(env, vm_channel_class,
-					 thread_interrupted_mid);
+  return (int) (*env)->CallStaticBooleanMethod(env, vm_channel_class,
+					       thread_interrupted_mid);
 }
 
 

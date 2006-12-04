@@ -11,6 +11,11 @@
 	
 2006-12-04  Mark Wielaard  <mark@klomp.org>
 
+	* native/jni/java-nio/gnu_java_nio_VMChannel.c
+	(JCL_thread_interrupted): Use CallStaticBooleanMethod.
+
+2006-12-04  Mark Wielaard  <mark@klomp.org>
+
 	* vm/reference/gnu/java/nio/VMChannel.java (isThreadInterrupted):
 	Make static.
 	* native/jni/java-nio/gnu_java_nio_VMChannel.c
