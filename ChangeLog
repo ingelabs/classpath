@@ -1,3 +1,11 @@
+2006-12-04  Robert Lougher  <rob.lougher@gmail.com>
+
+	* java/lang/management/ThreadInfo.java (ThreadInfo): Check
+	whether given a null lock and lockOwner.
+	(getLockName): Switch condition.
+	(getLockOwnerId): Likewise.
+	(getLockOwnerName): Likewise.
+
 2006-12-04  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/text/html/CSS.java (parseMarginShorthand):
