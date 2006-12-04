@@ -1,5 +1,12 @@
 2006-12-04  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/GlyphView.java
+	(J2DGlyphPainter): New inner class.
+	(checkPainter): For Java2D capable environments create
+	a J2DGlyphPainter.
+
+2006-12-04  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java
 	(FreeTypeGlyphVector): Don't filter control chars here.
 	(getGlyphs): Filter control chars and replace them by
