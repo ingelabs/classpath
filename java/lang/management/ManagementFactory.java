@@ -53,6 +53,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import java.util.logging.LogManager;
+
 import javax.management.InstanceAlreadyExistsException;
 import javax.management.MBeanRegistrationException;
 import javax.management.MBeanServer;
@@ -513,6 +515,8 @@ public class ManagementFactory
 							    ",name=" +
 							    bean.getName()));
 	      }
+	    platformServer.registerMBean(LogManager.getLoggingMXBean(),
+					 new ObjectName(LogManager.LOGGING_MXBEAN_NAME));
 	  }
 	catch (InstanceAlreadyExistsException e)
 	  {

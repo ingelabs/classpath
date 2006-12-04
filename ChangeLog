@@ -1,3 +1,14 @@
+2006-12-04  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* gnu/java/lang/management/BeanImpl.java:
+	(translate(String)): Don't assume the list uses "E",
+	just use the first and only type variable.
+	* java/lang/management/ManagementFactory.java:
+	(getPlatformMBeanServer()): Register logging bean.
+	* javax/management/openmbean/OpenType.java:
+	(OpenType(String,String,String)): Actually use
+	the string created to handle arrays.
+	
 2006-12-04  Mark Wielaard  <mark@klomp.org>
 
 	* vm/reference/gnu/java/nio/VMChannel.java (isThreadInterrupted):
