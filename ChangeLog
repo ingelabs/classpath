@@ -1,3 +1,9 @@
+2006-12-05  Francis Kung  <fkung@redhat.com>
+
+	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java
+	(constructor): Handle translated subimages properly, ie, if the image's
+	0,0 position is not the data buffer's first element.
+
 2006-12-05  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/html/ImageView.java
