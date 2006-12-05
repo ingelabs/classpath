@@ -1,5 +1,31 @@
 2006-12-05  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/html/BlockView.java
+	(painter): Made package visible.
+	* javax/swing/text/html/StyleSheet.java
+	(translateBorder): New helper method.
+	(translateHTMLToCSS): Add mappings for border attributes.
+	* javax/swing/text/html/TableView.java
+	Made class subclass of BlockView to get CSS goodness.
+	(CellView.rowSpan): New field.
+	(CellView.setPropertiesFromAttributes): Fetch rowspan.
+	(RowView.overlap): New field.
+	(RowView.rowIndex): New field.
+	(RowView.layoutMajorAxis): Skip overlapping cells.
+	(RowView.layoutMinorAxis): Layout cells that span more than 1 row.
+	(numColumns): New field.
+	(tmpRect): New field.
+	(TableView): Initialize tmpRect.
+	(calculateColumnRequirements): Adjusted and fixed for multirows.
+	(getAlignment): Overridden to center tables.
+	(paint): Overridden to fix clipping.
+	(getStyleSheet): Made protected.
+	(layoutMajorAxis): Invalidate rows.
+	(setPropertiesFromAttributes): Made protected and call super.
+	(updateGrid): Update the overlapping information for multirows.
+
+2006-12-05  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/java/awt/peer/gtk/AsyncImage.java
 	(addObserver): Check for null and ignore null observers.
 	(getWidth): Check for null and ignore null observers.
