@@ -1,5 +1,19 @@
 2006-12-05  Roman Kennke  <kennke@aicas.com>
 
+	* gnu/java/awt/peer/gtk/AsyncImage.java: New class. Supports
+	asynchronous loading of images.
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(drawImage): Fetch real image from possibly AsyncImage.
+	* gnu/java/awt/peer/gtk/ComponentGraphics.java
+	(drawImage): Fetch real image from possibly AsyncImage.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java
+	(createImage(URL)): Create async image.
+	(imageOrError): Made method static for easy access from AsyncImage.
+	(prepareImage): For async images, register the observer to the
+	image.
+
+2006-12-05  Roman Kennke  <kennke@aicas.com>
+
 	(paintComponent): Include paint area from event.
 	(updateComponent): Include paint area from event.
 
@@ -21,17 +35,6 @@
 	* javax/swing/text/html/CSS.java (parseMarginShorthand):
 	Remove debug output.
 
-2006-12-04  Roman Kennke  <kennke@aicas.com>
-
-	* gnu/java/awt/peer/gtk/AsyncImage.java: New class. Supports
-	asynchronous loading of images.
-	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
-	* gnu/java/awt/peer/gtk/CairoSurface.java
-	* gnu/java/awt/peer/gtk/ComponentGraphics.java
-	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
-	* gnu/java/awt/peer/gtk/GtkImage.java
-	* gnu/java/awt/peer/gtk/GtkToolkit.java
-	
 2006-12-04  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/GlyphView.java
