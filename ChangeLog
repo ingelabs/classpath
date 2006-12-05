@@ -1,3 +1,11 @@
+2006-12-05  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/gtk/AsyncImage.java
+	(addObserver): Check for null and ignore null observers.
+	(getWidth): Check for null and ignore null observers.
+	(getHeight): Check for null and ignore null observers.
+	(getProperty): Check for null and ignore null observers.
+
 2006-12-05  Francis Kung  <fkung@redhat.com>
 
 	* java/awt/BasicStroke.java

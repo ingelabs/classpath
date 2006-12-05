@@ -165,9 +165,12 @@ public class AsyncImage
 
   public int getHeight(ImageObserver observer)
   {
-    synchronized (observers)
+    if (observer != null)
       {
-        observers.add(observer);
+        synchronized (observers)
+          {
+            observers.add(observer);
+          }
       }
     int height = 0;
     Image r = realImage;
@@ -178,9 +181,12 @@ public class AsyncImage
 
   public Object getProperty(String name, ImageObserver observer)
   {
-    synchronized (observers)
+    if (observer != null)
       {
-        observers.add(observer);
+        synchronized (observers)
+          {
+            observers.add(observer);
+          }
       }
     Image r = realImage;
     Object prop = null;
@@ -202,9 +208,12 @@ public class AsyncImage
 
   public int getWidth(ImageObserver observer)
   {
-    synchronized (observers)
+    if (observer != null)
       {
-        observers.add(observer);
+        synchronized (observers)
+          {
+            observers.add(observer);
+          }
       }
     int width = 0;
     Image r = realImage;
@@ -215,16 +224,19 @@ public class AsyncImage
 
   void addObserver(ImageObserver obs)
   {
-    if (realImage != null && ! observers.contains(obs))
+    if (obs != null)
       {
-        obs.imageUpdate(this, ImageObserver.WIDTH | ImageObserver.HEIGHT
-                        |ImageObserver.ALLBITS | ImageObserver.PROPERTIES,
-                        0, 0, realImage.getWidth(null),
-                        realImage.getHeight(null));
-      }
-    synchronized (observers)
-      {
-        observers.add(obs);
+        if (realImage != null && ! observers.contains(obs))
+          {
+            obs.imageUpdate(this, ImageObserver.WIDTH | ImageObserver.HEIGHT
+                            |ImageObserver.ALLBITS | ImageObserver.PROPERTIES,
+                            0, 0, realImage.getWidth(null),
+                            realImage.getHeight(null));
+          }
+        synchronized (observers)
+        {
+          observers.add(obs);
+        }
       }
   }
 
