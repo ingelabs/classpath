@@ -313,6 +313,10 @@ public class GtkComponentPeer extends GtkGenericPeer
     // seems expensive.  However, the graphics state does not carry
     // over between calls to paint, and resetting the graphics object
     // may even be more costly than simply creating a new one.
+
+    // Make sure that the paintArea includes the area from the event
+    // in the case when an application sends PaintEvents directly.
+    coalescePaintEvent(event);
     Rectangle paintArea;
     synchronized (this)
       {
@@ -345,6 +349,9 @@ public class GtkComponentPeer extends GtkGenericPeer
         || (awtComponent.getWidth() < 1 || awtComponent.getHeight() < 1))
       return;
 
+    // Make sure that the paintArea includes the area from the event
+    // in the case when an application sends PaintEvents directly.
+    coalescePaintEvent(event);
     Rectangle paintArea;
     synchronized (this)
       {
