@@ -1,5 +1,9 @@
 2006-12-05  Roman Kennke  <kennke@aicas.com>
 
+	* NEWS: Add entry about improved HTML support.
+
+2006-12-05  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/html/ImageView.java
 	(imageUpdate): Use spans field to determine if the CSS width/height
 	are set. Call safePreferenceChanged to protect view structure
