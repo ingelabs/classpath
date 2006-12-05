@@ -837,7 +837,6 @@ public class HTMLEditorKit
         }
       if (view == null)
         {
-          System.err.println("missing tag->view mapping for: " + element);
           view = new NullView(element);
         }
       return view;

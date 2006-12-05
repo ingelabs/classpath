@@ -512,8 +512,7 @@ public class StyleSheet extends StyleContext
       }
     catch (IOException ex)
       {
-        // Shouldn't happen. And if, then we
-        System.err.println("IOException while parsing stylesheet: " + ex.getMessage());
+        // Shouldn't happen. And if, then don't let it bork the outside code.
       }
     // Clean up resolved styles cache so that the new styles are recognized
     // on next stylesheet request.
@@ -1431,7 +1430,6 @@ public class StyleSheet extends StyleContext
             }
           if (centerY == -1)
             {
-              System.err.println("WARNING LI child is not a paragraph view " + itemView.getView(0) + ", " + itemView.getViewCount());
               centerY =(int) (h / 2 + y);
             }
           g.fillOval(centerX - 3, centerY - 3, 6, 6);
