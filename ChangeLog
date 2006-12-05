@@ -1,5 +1,13 @@
 2006-12-05  Francis Kung  <fkung@redhat.com>
 
+	* java/awt/BasicStroke.java
+	(capEnd): Prevent division by zero.
+	* java/awt/geom/Arc2D.java
+	(ArcIterator.ArcIterator): Do not shift the arc to make the extent positive.
+	(ArcIterator.currentSegment): Handle a negative extent.
+
+2006-12-05  Francis Kung  <fkung@redhat.com>
+
 	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java
 	(constructor): Handle translated subimages properly, ie, if the image's
 	0,0 position is not the data buffer's first element.
