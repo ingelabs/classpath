@@ -130,6 +130,7 @@ public class ImageView extends View
   public ImageView(Element element)
   {
     super(element);
+    spans = new Length[2];
     observer = new Observer();
     reloadProperties = true;
     reloadImage = true;
@@ -419,7 +420,6 @@ public class ImageView extends View
     StyleSheet ss = getStyleSheet();
     float emBase = ss.getEMBase(atts);
     float exBase = ss.getEXBase(atts);
-    spans = new Length[2];
     spans[X_AXIS] = (Length) atts.getAttribute(CSS.Attribute.WIDTH);
     if (spans[X_AXIS] != null)
       {
