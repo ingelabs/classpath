@@ -1,5 +1,21 @@
 2006-12-05  Roman Kennke  <kennke@aicas.com>
 
+	* gnu/java/awt/peer/gtk/AsyncImage.java
+	(Loader.run): Nullify observers after loading.
+	(observers): Made package private.
+	(addObserver): Check for null observers field. Create local
+	variable for thread safety.
+	(getHeight): Use addObserver() for checking state of field
+	and notifying observer when necessary.
+	(getWidth): Use addObserver() for checking state of field
+	and notifying observer when necessary.
+	(getProperty): Use addObserver() for checking state of field
+	and notifying observer when necessary.
+	(notifyObservers): Check for null observers field. Create local
+	variable for thread safety.
+
+2006-12-05  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/html/HTMLEditorKit.java
 	(HTMLFactory.create): Removed debug output.
 	* javax/swing/text/html/InlineView.java
