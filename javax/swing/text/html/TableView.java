@@ -183,9 +183,10 @@ class TableView
       updateGrid();
       int numCols = offsets.length;
       int realColumn = 0;
+      int colCount = getViewCount();
       for (int i = 0; i < numColumns;)
         {
-          if (! overlap[i])
+          if (! overlap[i] && realColumn < colCount)
             {
               View v = getView(realColumn);
               if (v instanceof CellView)
@@ -785,6 +786,7 @@ class TableView
                 rowView.rowIndex = r;
                 rowView.overlap = new boolean[maxColumns];
                 int colIndex = 0;
+                int colCount = rowView.getViewCount();
                 for (int c = 0; c < maxColumns;)
                   {
                     if (rowSpans[c] > 0)
@@ -793,7 +795,7 @@ class TableView
                         rowView.overlap[c] = true;
                         c++;
                       }
-                    else
+                    else if (colIndex < colCount)
                       {
                         View v = rowView.getView(colIndex);
                         colIndex++;
@@ -815,6 +817,10 @@ class TableView
                                 c++;
                               }
                           }
+                      }
+                    else
+                      {
+                        c++;
                       }
                   }
               }

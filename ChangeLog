@@ -1,5 +1,11 @@
 2006-12-06  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/html/TableView.java
+	(RowView.layoutMajorAxis): Check column index for invalid value.
+	(updateGrid): Check column index for invalid value.
+
+2006-12-06  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/html/BlockView.java
 	(getAlignment): Align blocks horizontally by the superclass.
 	* javax/swing/text/html/HTMLEditorKit.java
