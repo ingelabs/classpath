@@ -1,5 +1,11 @@
 2006-12-06  Chris Burdess  <dog@gnu.org>
 
+	Fixes PR 29272.
+	* javax/xml/parsers/DocumentBuilderFactory.java: Fix broken Javadoc.
+	* gnu/xml/stream/SAXParser.java: Fix file descriptor leak.
+
+2006-12-06  Chris Burdess  <dog@gnu.org>
+
 	Fixes PR 29264.
 	* gnu/xml/stream/XMLStreamWriterImpl.java: Allow arbitrary text in
 	  writeDTD method.
