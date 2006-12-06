@@ -1,3 +1,10 @@
+2006-12-06  Ben Konrath  <bkonrath@redhat.com>
+
+	Fixes PR 29853.
+	* gnu/xml/dom/DomAttr.java: Don't report mutation if oldValue and
+	newValue are the same.
+	* gnu/xml/dom/DomNode.java: Set parent if null during mutation.
+
 2006-12-06  Tania Bento  <tbento@redhat.com>
 
 	* javax/swing/border/CompoundBorder.java:
