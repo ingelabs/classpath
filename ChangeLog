@@ -1,5 +1,18 @@
 2006-12-06  Roman Kennke  <kennke@aicas.com>
 
+	* gnu/java/awt/peer/gtk/AsyncImage.java
+	(Loader.run): Synchronize on the AsyncImage to avoid threading
+	issues.
+	(addObservers): Check for obs==null outside and synchronize on
+	this inside to avoid locking issues.
+	(checkImage): New helper method.
+	(notifyObservers): Check that the correct lock is held and
+	remove actual locking.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java
+	(checkImage): Added special handling for AsyncImages.
+	
+2006-12-06  Roman Kennke  <kennke@aicas.com>
+
 	* examples/gnu/classpath/examples/swing/Demo.java
 	(getIcon): Made package private.
 	* examples/gnu/classpath/examples/swing/HtmlDemo.java

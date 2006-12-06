@@ -176,6 +176,9 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
     if (image instanceof GtkImage)
 	return ((GtkImage) image).checkImage (observer);
 
+    if (image instanceof AsyncImage)
+      return ((AsyncImage) image).checkImage(observer);
+
     if (observer != null)
       observer.imageUpdate (image, status,
                             -1, -1,

@@ -126,9 +126,12 @@ public class AsyncImage
           image = null;
         }
       realImage = GtkToolkit.imageOrError(image);
-      notifyObservers(ImageObserver.ALLBITS | ImageObserver.HEIGHT
-                      | ImageObserver.WIDTH | ImageObserver.PROPERTIES);
-      observers = null; // Not needed anymore.
+      synchronized (AsyncImage.this)
+        {
+          notifyObservers(ImageObserver.ALLBITS | ImageObserver.HEIGHT
+                          | ImageObserver.WIDTH | ImageObserver.PROPERTIES);
+          observers = null; // Not needed anymore.
+        }
     }
   }
 
@@ -212,27 +215,29 @@ public class AsyncImage
 
   void addObserver(ImageObserver obs)
   {
-    // This field gets null when image loading is complete and we don't
-    // need to store any more observers.
-    HashSet observs = observers;
-    if (observs != null)
+    if (obs != null)
       {
-        if (obs != null)
+        synchronized (this)
           {
-            synchronized (observs)
+            // This field gets null when image loading is complete and we don't
+            // need to store any more observers.
+            HashSet observs = observers;
+            if (observs != null)
               {
                 observs.add(obs);
               }
+            else
+              {
+                // When the image is complete, notify the observer. Dunno if
+                // that's really needed, but to be sure.
+                obs.imageUpdate(this, ImageObserver.WIDTH
+                                | ImageObserver.HEIGHT
+                                |ImageObserver.ALLBITS
+                                | ImageObserver.PROPERTIES, 0, 0,
+                                realImage.getWidth(null),
+                                realImage.getHeight(null));
+              }
           }
-      }
-    else if (obs != null)
-      {
-        // When the image is complete, notify the observer. Dunno if that's
-        // really needed, but to be sure.
-        obs.imageUpdate(this, ImageObserver.WIDTH | ImageObserver.HEIGHT
-                        |ImageObserver.ALLBITS | ImageObserver.PROPERTIES,
-                        0, 0, realImage.getWidth(null),
-                        realImage.getHeight(null));
       }
   }
 
@@ -250,21 +255,29 @@ public class AsyncImage
 
   void notifyObservers(int status)
   {
+    assert Thread.holdsLock(this);
     // This field gets null when image loading is complete.
     HashSet observs = observers;
     if (observs != null)
       {
-        synchronized (observs)
+        Image r = realImage;
+        Iterator i = observs.iterator();
+        while (i.hasNext())
           {
-            Image r = realImage;
-            Iterator i = observs.iterator();
-            while (i.hasNext())
-              {
-                ImageObserver obs = (ImageObserver) i.next();
-                obs.imageUpdate(this, status, 0, 0, r.getWidth(null),
-                                r.getHeight(null));
-              }
+            ImageObserver obs = (ImageObserver) i.next();
+            obs.imageUpdate(this, status, 0, 0, r.getWidth(null),
+                            r.getHeight(null));
           }
       }
+  }
+
+  int checkImage(ImageObserver obs)
+  {
+    addObserver(obs);
+    int flags = 0;
+    if (realImage != null)
+      flags = ImageObserver.ALLBITS | ImageObserver.WIDTH
+              | ImageObserver.HEIGHT | ImageObserver.PROPERTIES;
+    return flags;
   }
 }
