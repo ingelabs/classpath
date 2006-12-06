@@ -225,7 +225,7 @@ public class AsyncImage
               }
           }
       }
-    else
+    else if (obs != null)
       {
         // When the image is complete, notify the observer. Dunno if that's
         // really needed, but to be sure.
