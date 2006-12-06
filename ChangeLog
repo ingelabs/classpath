@@ -1,3 +1,18 @@
+2006-12-06  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/html/BlockView.java
+	(getAlignment): Align blocks horizontally by the superclass.
+	* javax/swing/text/html/HTMLEditorKit.java
+	(HTMLFactory.create): Replace equals comparison by == for efficiency.
+	Add mapping for misplaced tr, td and th tags. Include object mapping.
+	* javax/swing/text/html/TableView.java
+	(RowView.replace): Invalidate grid early.
+	(gridValid): Initialize with false.
+	(create): Only create RowView and CellView for correctly placed
+	tags. Avoid unnecessary casts.
+	(getAlignment): Removed.
+	(replace): Invalidate grid early.
+
 2006-12-06  Francis Kung  <fkung@redhat.com>
 
 	* java/awt/geom/RectangularShape.java

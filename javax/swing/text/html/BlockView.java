@@ -523,7 +523,7 @@ public class BlockView extends BoxView
   public float getAlignment(int axis)
   {
     if (axis == X_AXIS)
-      return 0.0F;
+      return super.getAlignment(axis);
     if (axis == Y_AXIS)
       {
         if (getViewCount() == 0)

@@ -92,8 +92,8 @@ class TableView
 
     public void replace(int offset, int len, View[] views)
     {
-      super.replace(offset, len, views);
       gridValid = false;
+      super.replace(offset, len, views);
     }
 
     /**
@@ -335,7 +335,7 @@ class TableView
   /**
    * Indicates if the grid setup is ok.
    */
-  boolean gridValid;
+  boolean gridValid = false;
 
   /**
    * Additional space that is added _between_ table cells.
@@ -370,21 +370,20 @@ class TableView
     View view = null;
     AttributeSet atts = elem.getAttributes();
     Object name = atts.getAttribute(StyleConstants.NameAttribute);
-    if (name instanceof HTML.Tag)
-      {
-        HTML.Tag tag = (HTML.Tag) name;
-        if (tag == HTML.Tag.TR)
-          view = new RowView(elem);
-        else if (tag == HTML.Tag.TD || tag == HTML.Tag.TH)
-          view = new CellView(elem);
-        else if (tag == HTML.Tag.CAPTION)
-          view = new ParagraphView(elem);
-      }
+    AttributeSet pAtts = elem.getParentElement().getAttributes();
+    Object pName = pAtts.getAttribute(StyleConstants.NameAttribute);
 
-    // If we haven't mapped the element, then fall back to the standard
-    // view factory.
-    if (view == null)
+    if (name == HTML.Tag.TR && pName == HTML.Tag.TABLE)
+      view = new RowView(elem);
+    else if ((name == HTML.Tag.TD || name == HTML.Tag.TH)
+             && pName == HTML.Tag.TR)
+      view = new CellView(elem);
+    else if (name == HTML.Tag.CAPTION)
+      view = new ParagraphView(elem);
+    else
       {
+        // If we haven't mapped the element, then fall back to the standard
+        // view factory.
         View parent = getParent();
         if (parent != null)
           {
@@ -944,8 +943,8 @@ class TableView
 
   public void replace(int offset, int len, View[] views)
   {
-    super.replace(offset, len, views);
     gridValid = false;
+    super.replace(offset, len, views);
   }
 
   /**
@@ -967,14 +966,4 @@ class TableView
       }
   }
 
-  /**
-   * Overridden to place a table centered in the horizontal direction.
-   */
-  public float getAlignment(int axis)
-  {
-    if (axis == X_AXIS)
-      return 0.5F;
-    else
-      return super.getAlignment(axis);
-  }
 }
