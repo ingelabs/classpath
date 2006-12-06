@@ -1021,7 +1021,7 @@ public class SAXParser
         SAXParser parser = new SAXParser(validating, namespaceAware,
                                          xIncludeAware);
         InputSource input = new InputSource(args[pos]);
-        FileReader fr = new java.io.FileReader(args[pos]);
+        java.io.FileReader fr = new java.io.FileReader(args[pos]);
         input.setCharacterStream(fr);
         try
           {
