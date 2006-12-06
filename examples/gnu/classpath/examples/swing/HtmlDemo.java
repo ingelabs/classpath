@@ -134,11 +134,10 @@ public class HtmlDemo extends JPanel
         URL u = event.getURL();
         if (u != null)
           {
-            url.setText(u.toString());
             try
               {
-                html.setPage(u);
                 url.setText(u.toString());
+                html.setPage(u.toString());
                 history.addLast(u);
               }
             catch (IOException ex)
