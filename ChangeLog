@@ -1,5 +1,26 @@
 2006-12-06  Roman Kennke  <kennke@aicas.com>
 
+	* examples/gnu/classpath/examples/icons/back.png,
+	* examples/gnu/classpath/examples/icons/reload.png:
+	New icons for the HTML browser.
+	* examples/gnu/classpath/examples/swing/HtmlDemo.java
+	(history): New field. Manages the browsing history.
+	(HtmlDemo): Initialize history.
+	(createContent): Set location and add history. Add toolbar.
+	(createToolBar): New helper method.
+	(main): Make default size bigger.
+	* examples/gnu/classpath/examples/swing/frame1.html,
+	* examples/gnu/classpath/examples/swing/frame2.html,
+	* examples/gnu/classpath/examples/swing/frame3.html,
+	* examples/gnu/classpath/examples/swing/frame4.html,
+	* examples/gnu/classpath/examples/swing/frames.html,
+	* examples/gnu/classpath/examples/swing/tables.html:
+	New example pages.
+	* examples/gnu/classpath/examples/swing/welcome.html
+	Add a couple of links and new test pages.
+
+2006-12-06  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JEditorPane.java
 	(getStream): Buffer the stream for efficiency.
 	(setPage): Don't scroll the view at this point.
