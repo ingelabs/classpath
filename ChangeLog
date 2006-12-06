@@ -1,3 +1,9 @@
+2006-12-056  Chris Burdess  <dog@gnu.org>
+
+	Fixes PR 28816.
+	* javax/xml/validation/SchemaFactory.java: Use correct algorithm to
+	  discover schema factory implementation class.
+
 2006-12-05  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/peer/gtk/AsyncImage.java
