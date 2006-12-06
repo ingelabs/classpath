@@ -1,3 +1,21 @@
+2006-12-06  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JEditorPane.java
+	(getStream): Buffer the stream for efficiency.
+	(setPage): Don't scroll the view at this point.
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(RootView.paint): Call RootView's setSize to get synchronization.
+	(RootView.setSize): Synchronize to prevent race in layout code.
+	* javax/swing/text/AbstractDocument.java
+	(notifyListeners): New field.
+	(fireChangedUpdate): Track notifyListener field.
+	(fireRemoveUpdate): Track notifyListener field.
+	(fireIndertUpdate): Track notifyListener field.
+	(writeLock): Check notifyListener and throw IllegalStateException.
+	* javax/swing/text/View.java
+	(preferenceChanged): Create local var for better thread safety and
+	more efficiency.
+
 2006-12-06  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* java/awt/ScrollPane.java (addNotify): Add a parent panel for any
