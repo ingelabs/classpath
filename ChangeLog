@@ -1,3 +1,32 @@
+2006-12-07  Tom Tromey  <tromey@redhat.com>
+
+	* NEWS: Mention ASM.
+	* INSTALL: Don't mention --with-asm.
+	* tools/external/README: New file.
+	* tools/toolwrapper.c (main): Don't use ASM_JAR.
+	* tools/gjavah.in: Don't use PATH_TO_ASM.
+	* tools/grmic.in: Likewise.
+	* tools/Makefile.am (GLIBJ_CLASSPATH): Removed PATH_TO_ASM, added
+	'asm'.
+	(javah, rmic): Removed variables.
+	(bin_PROGRAMS): Updated.
+	(gappletviewer_CFLAGS): Don't define ASM_JAR.
+	(gjarsigner_CFLAGS): Likewise.
+	(gkeytool_CFLAGS): Likewise.
+	(gjar_CFLAGS): Likewise.
+	(gnative2ascii_CFLAGS): Likewise.
+	(gserialver_CFLAGS): Likewise.
+	(grmiregistry_CFLAGS): Likewise.
+	(gtnameserv_CFLAGS): Likewise.
+	(gorbd_CFLAGS): Likewise.
+	(grmid_CFLAGS): Likewise.
+	(gjavah_CFLAGS): Likewise.
+	(grmic_CFLAGS): Likewise.
+	(bin_SCRIPTS): Updated.
+	(TOOLS_JAVA_FILES): Updated.
+	($(TOOLS_ZIP)): Compile ASM sources.  Copy resource files.
+	* configure.ac: Removed --with-asm.  Always build gjavah.
+
 2006-12-06  Roman Kennke  <kennke@aicas.com>
 
 	* examples/gnu/classpath/examples/swing/BrowserEditorKit.java:

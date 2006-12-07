@@ -85,13 +85,6 @@ Suggested Software
 	  http://www.xmlsoft.org/XSLT/
 	  Minimum version of libxslt required: 1.1.11
 
-	For building the gjavah and grmic tool, you will need the ASM library.
-	Current version 2.2.1 is needed (other 2.2.x versions should
-	be ok; 3.x is not ok).  You can get ASM from
-	http://asm.objectweb.org/
-	You will need to pass the --with-asm option to configure
-	and point it at your ASM jar file.
-
 	For building the documentation you will need
 
 	- texinfo 4.2 or higher.
@@ -137,8 +130,6 @@ gives a complete list.
   --enable-xmlj           compile native libxml/xslt library default=no
   --enable-load-library   enable to use JNI native methods default=yes
   --enable-local-sockets  enable build of local Unix sockets
-  --with-asm=/path/to/asm.jar
-                          the ASM jar to use for javah
   --with-jikes            to compile the class library using jikes
                           the default is to use gcj
   --with-glibj            define what to install (zip|flat|both|none)
