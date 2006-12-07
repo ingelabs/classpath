@@ -1,5 +1,5 @@
-<!-- welcome.html -- Some HTML stuff to show Swing HTML
-    Copyright (C) 2006 Free Software Foundation, Inc.
+/* BrowserEditorKit.java -- A tweaked editor kit for the browser
+   Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -33,66 +33,25 @@ module.  An independent module is a module which is not derived from
 or based on this library.  If you modify this library, you may extend
 this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version. -->
+exception statement from your version. */
 
-<html>
 
-  <head>
-    <title>HTML text styles</title>
-  </head>
-  <body>
-  <form>
-  <a href="welcome.html">Back to start page</a>
-  <h1>Some form elements</h1>
-  <h2>Textarea</h2>
-  <textarea cols="30" rows="5">
-  Hello GNU Classpath world. This text should show up in a text area
-  that has a size of 30 columns and 5 rows
-  </textarea>
+package gnu.classpath.examples.swing;
 
-  <h2>Input fields</h2>
-  <p>
-  <input type="text" value="This is a normal textfield">
-  <input type="password" value="secret password">
-  </p>
+import javax.swing.text.html.HTMLEditorKit;
 
-  <h2>Buttons</h2>
-  <p>
-  <input type="submit"></input>
-  <input type="reset"></input>
-  <input type="button" value="Some button"></input>
-  </p>
+/**
+ * A tweaked editor kit for out browser.
+ */
+public class BrowserEditorKit
+  extends HTMLEditorKit
+{
+  public BrowserEditorKit()
+  {
+    super();
+    // Turn off automatic form submission so that we can receive notification
+    // instead and can update out location field.
+    setAutoFormSubmission(false);
+  }
+}
 
-  <h2>Checkboxes and Radiobuttons</h2>
-  <p>
-  <input type="checkbox" name="2">Check this!</input>
-  <input type="checkbox" name="2">Or this</input>
-  </p>
-  <p>
-  <input type="radio" name="1">A radio button</input>
-  <input type="radio" name="1">Another radio</input>
-  </p>
-  <h2>Select lists and combo boxes</h2>
-  <p>
-  <select>
-    <option>Value1</option>
-    <option>Value2</option>
-    <option>Value3</option>
-    <option label="Labeled value 4">Value4</option>
-    <option>Value5</option>
-    <option>Value6</option>
-  </select>
-  </p>
-  <p>
-  <select size="3">
-    <option>Value1</option>
-    <option>Value2</option>
-    <option>Value3</option>
-    <option label="Labeled value 4">Value4</option>
-    <option>Value5</option>
-    <option>Value6</option>
-  </select>
-  </p>
-  </form>
-  </body>
-</html>
