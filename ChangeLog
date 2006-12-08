@@ -1,3 +1,22 @@
+2006-12-07  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JEditorPane.java
+	(EditorKitMapping): New inner helper class.
+	(editorKits): New static field for caching editor kit instances.
+	(static_initiazer): Initialize static mappings here.
+	(createEditorKitForContentType): Try to use cached instance.
+	Use correct classloader for loading.
+	(getEditorKitClassNameForContentType): Make use of EditorKitMapping
+	class.
+	(getEditorKitForContentType): Store the fetched editor kit.
+	Fallback to createDefaultEditorKit().
+	(init): Don't clean the static registry here.
+	(registerEditorKitForContentType(String,String,ClassLoader)):
+	Implemented.
+	(registerEditorKitForContentType(String,String)): Delegate to
+	the other version of this method with the thread's context
+	classloader.
+
 2006-12-07  Mark Wielaard  <mark@klomp.org>
 
 	* examples/gnu/classpath/examples/swing/HtmlDemo.java

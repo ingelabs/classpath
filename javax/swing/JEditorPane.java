@@ -487,6 +487,34 @@ public class JEditorPane extends JTextComponent
   }
 
   /**
+   * Used to store a mapping for content-type to editor kit class.
+   */
+  private static class EditorKitMapping
+  {
+    /**
+     * The classname of the editor kit.
+     */
+    String className;
+
+    /**
+     * The classloader with which the kit is to be loaded.
+     */
+    ClassLoader classLoader;
+
+    /**
+     * Creates a new EditorKitMapping object.
+     * 
+     * @param cn the classname
+     * @param cl the classloader
+     */
+    EditorKitMapping(String cn, ClassLoader cl)
+    {
+      className = cn;
+      classLoader = cl;
+    }
+  }
+
+  /**
    * An EditorKit used for plain text. This is the default editor kit for
    * JEditorPanes.
    *
@@ -632,9 +660,29 @@ public class JEditorPane extends JTextComponent
   
   boolean focus_root;
   
+  /**
+   * Maps content-types to editor kit instances.
+   */
+  static HashMap editorKits;
+
   // A mapping between content types and registered EditorKit types
   static HashMap registerMap;
-  
+
+  static
+  {
+    registerMap = new HashMap();
+    editorKits = new HashMap();
+    registerEditorKitForContentType("application/rtf",
+                                    "javax.swing.text.rtf.RTFEditorKit");
+    registerEditorKitForContentType("text/plain",
+                                    "javax.swing.JEditorPane$PlainEditorKit");
+    registerEditorKitForContentType("text/html",
+                                    "javax.swing.text.html.HTMLEditorKit");
+    registerEditorKitForContentType("text/rtf",
+                                    "javax.swing.text.rtf.RTFEditorKit");
+
+  }
+
   // A mapping between content types and used EditorKits
   HashMap editorMap;  
 
@@ -675,15 +723,6 @@ public class JEditorPane extends JTextComponent
   void init()
   {
     editorMap = new HashMap();
-    registerMap = new HashMap();
-    registerEditorKitForContentType("application/rtf",
-                                    "javax.swing.text.rtf.RTFEditorKit");
-    registerEditorKitForContentType("text/plain",
-                                    "javax.swing.JEditorPane$PlainEditorKit");
-    registerEditorKitForContentType("text/html",
-                                    "javax.swing.text.html.HTMLEditorKit");
-    registerEditorKitForContentType("text/rtf",
-                                    "javax.swing.text.rtf.RTFEditorKit");
   }
 
   protected EditorKit createDefaultEditorKit()
@@ -703,23 +742,28 @@ public class JEditorPane extends JTextComponent
    */
   public static EditorKit createEditorKitForContentType(String type)
   {
-    // TODO: Have to handle the case where a ClassLoader was specified
-    // when the EditorKit was registered
-    EditorKit e = null;
-    String className = (String) registerMap.get(type);
-    if (className != null)
+    // Try cached instance.
+    EditorKit e = (EditorKit) editorKits.get(type);
+    if (e == null)
       {
-        try
-        {
-          // XXX - This should actually depend on the classloader
-          // registered with the type. See registerEditorKitForContentType.
-          ClassLoader ldr = ClassLoader.getSystemClassLoader();
-          e = (EditorKit) Class.forName(className, true, ldr).newInstance();
-        }
-        catch (Exception e2)
-        {    
-          // TODO: Not sure what to do here.
-        }
+        EditorKitMapping m = (EditorKitMapping) registerMap.get(type);
+        if (m != null)
+          {
+            String className = m.className;
+            ClassLoader loader = m.classLoader;
+            try
+              {
+                e = (EditorKit) loader.loadClass(className).newInstance();
+              }
+            catch (Exception e2)
+              {    
+                // The reference implementation returns null when class is not
+                // loadable or instantiatable.
+              }
+          }
+        // Cache this for later retrieval.
+        if (e != null)
+          editorKits.put(type, e);
       }
     return e;
   }
@@ -780,7 +824,9 @@ public class JEditorPane extends JTextComponent
    */
   public static String getEditorKitClassNameForContentType(String type)
   {
-    return (String) registerMap.get(type);
+    EditorKitMapping m = (EditorKitMapping) registerMap.get(type);
+    String kitName = m != null ? m.className : null;
+    return kitName;
   }
 
   /**
@@ -797,16 +843,20 @@ public class JEditorPane extends JTextComponent
    * @param type the content type
    * @return an appropriate EditorKit for the given content type
    */
-  public EditorKit getEditorKitForContentType(String type)
+  public EditorKit 	(String type)
   {
     // First check if an EditorKit has been explicitly set.
     EditorKit e = (EditorKit) editorMap.get(type);
     // Then check to see if we can create one.
     if (e == null)
-      e = createEditorKitForContentType(type);
+      {
+        e = createEditorKitForContentType(type);
+        if (e != null)
+          setEditorKitForContentType(type, e);
+      }
     // Otherwise default to PlainEditorKit.
     if (e == null)
-      e = new PlainEditorKit();
+      e = createDefaultEditorKit();
     return e;
   }
 
@@ -962,7 +1012,8 @@ public class JEditorPane extends JTextComponent
   public static void registerEditorKitForContentType(String type,
                                                      String classname)
   {
-    registerMap.put(type, classname);
+    registerEditorKitForContentType(type, classname,
+                               Thread.currentThread().getContextClassLoader());
   }
 
   /**
@@ -972,7 +1023,7 @@ public class JEditorPane extends JTextComponent
                                                      String classname,
                                                      ClassLoader loader)
   {
-    // TODO: Implement this properly.
+    registerMap.put(type, new EditorKitMapping(classname, loader));
   }
 
   /**
