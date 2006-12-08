@@ -174,9 +174,14 @@ public abstract class URLConnection
   private static boolean dateformats_initialized;
   
   /**
-   * The timeout period.
+   * The connection timeout period.
    */
-  private int timeout;
+  private int connectTimeout;
+
+  /**
+   * The read timeout period.
+   */
+  private int readTimeout;
 
   /* Cached ParsePosition, used when parsing dates. */
   private ParsePosition position;
@@ -216,8 +221,8 @@ public abstract class URLConnection
   }
 
   /**
-   * Returns the connection timeout speed, in milliseconds, or zero if the timeout
-   * is infinite or not set.
+   * Returns the connection timeout speed, in milliseconds, or zero if
+   * the timeout is infinite or not set.
    *
    * @return The timeout.
    *
@@ -225,7 +230,7 @@ public abstract class URLConnection
    */
   public int getConnectTimeout()
   {
-    return timeout;
+    return connectTimeout;
   }
 
   /**
@@ -235,7 +240,7 @@ public abstract class URLConnection
    *
    * Throws an <code>IllegalArgumentException</code> if timeout < 0.
    *
-   * @param timeout - The timeout, in milliseconds.
+   * @param timeout the timeout, in milliseconds.
    *
    * @since 1.5
    */
@@ -244,7 +249,45 @@ public abstract class URLConnection
   {
     if( timeout < 0 )
       throw new IllegalArgumentException("Timeout must be 0 or positive.");
-    this.timeout = timeout;
+    connectTimeout = timeout;
+  }
+
+  /**
+   * Returns the read timeout, in milliseconds, or zero if the timeout
+   * is infinite or not set.
+   *
+   * @return The timeout.
+   *
+   * @see #setReadTimeout
+   *
+   * @since 1.5
+   */
+  public int getReadTimeout()
+  {
+    return readTimeout;
+  }
+
+  /**
+   * Set the read timeout, in milliseconds, or zero if the timeout
+   * is to be considered infinite. Note that in certain socket 
+   * implementations/platforms this method may not have any effect.
+   *
+   * Throws an <code>IllegalArgumentException</code> if timeout < 0.
+   *
+   * @param timeout - The timeout, in milliseconds.
+   *
+   * @throws IllegalArgumentException if timeout is negative.
+   *
+   * @see #getReadTimeout
+   *
+   * @since 1.5
+   */
+  public void setReadTimeout(int timeout)
+    throws IllegalArgumentException
+  {
+    if( timeout < 0 )
+      throw new IllegalArgumentException("Timeout must be 0 or positive.");
+    readTimeout = timeout;
   }
 
   /**
