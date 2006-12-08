@@ -2,6 +2,9 @@ New in release 0.94 (UNRELEASED)
 
 * The ASM library is now included.  A separate copy is no longer needed.
 
+* The setReadTimeout and getReadTimeout methods have been added to
+  java.net.URLConnection.  They are now fully implemented for http URLs.  
+
 New in release 0.93 (Dec 8, 2006)
 
 * CORBA objects that exist on the same virtual machine and only are connected

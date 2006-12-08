@@ -1,5 +1,9 @@
 2006-12-08  David Daney  <ddaney@avtrex.com>
 
+	* NEWS: Mention URLConnection.[get|set]ReadTimeout.
+
+2006-12-08  David Daney  <ddaney@avtrex.com>
+
 	* gnu/java/net/protocol/http/HTTPConnection.java (imports): Add
 	SocketException.
 	(HTTPConnection): Handle NumberFormatException in properties parsing.
