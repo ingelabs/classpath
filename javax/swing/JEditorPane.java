@@ -843,7 +843,7 @@ public class JEditorPane extends JTextComponent
    * @param type the content type
    * @return an appropriate EditorKit for the given content type
    */
-  public EditorKit 	(String type)
+  public EditorKit getEditorKitForContentType(String type)
   {
     // First check if an EditorKit has been explicitly set.
     EditorKit e = (EditorKit) editorMap.get(type);
