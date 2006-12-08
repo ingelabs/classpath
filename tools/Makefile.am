@@ -183,7 +183,7 @@ $(TOOLS_ZIP): $(TOOLS_JAVA_FILES)
 
 # Zip file be gone! (and make sure the classes are gone too)
 clean-local:
-	rm -rf $(TOOLS_ZIP) classes
+	rm -rf $(TOOLS_ZIP) classes asm asm.lst
 
 # FIXME: remove this when GNU Classpath includes a bootstrap VM.
 installcheck-binSCRIPTS:
