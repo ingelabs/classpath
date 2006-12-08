@@ -525,6 +525,8 @@ layout()
         p.y = dim.height;
 
       setScrollPosition (p);
+      
+      list[0].setLocation(new Point());
     }
 }
 

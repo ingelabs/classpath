@@ -1,3 +1,9 @@
+2006-12-08  Tania Bento  <tbento@redhat.com>
+
+	* java/awt/ScrollPane.java
+	(doLayout): Change the location of the scrollpane's child
+	to (0, 0).
+
 2006-12-08  David Daney  <ddaney@avtrex.com>
 
 	* native/jni/java-nio/gnu_java_nio_VMChannel.c (is_non_blocking_fd):
