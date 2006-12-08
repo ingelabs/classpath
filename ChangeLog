@@ -1,3 +1,14 @@
+2006-12-08  David Daney  <ddaney@avtrex.com>
+
+	* native/jni/java-nio/gnu_java_nio_VMChannel.c (is_non_blocking_fd):
+	New method.
+	(Java_gnu_java_nio_VMChannel_read__ILjava_nio_ByteBuffer_2): Throw
+	SocketTimeoutException if a blocking socket timesout.
+	(Java_gnu_java_nio_VMChannel_readScattering): Same.
+	(Java_gnu_java_nio_VMChannel_read__I): Same.
+	(Java_gnu_java_nio_VMChannel_connect): Initialize the fd set.
+	(Java_gnu_java_nio_VMChannel_connect6): Same.
+
 2006-12-08  Mark Wielaard  <mark@klomp.org>
 
 	* configure.ac (VERSION): Set to 0.94-pre.

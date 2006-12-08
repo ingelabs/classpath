@@ -372,6 +372,20 @@ Java_gnu_java_nio_VMChannel_setBlocking (JNIEnv *env,
     }  
 }
 
+  /*
+   */
+static jboolean
+is_non_blocking_fd(jint fd)
+{
+  int opts;
+  opts = fcntl(fd, F_GETFL);
+  if (opts == -1)
+    {
+      /* Assume blocking on error. */
+      return 0;
+    }
+  return (opts & O_NONBLOCK) != 0;
+}
 
 JNIEXPORT jint JNICALL 
 Java_gnu_java_nio_VMChannel_read__ILjava_nio_ByteBuffer_2 (JNIEnv *env,
@@ -418,8 +432,21 @@ Java_gnu_java_nio_VMChannel_read__ILjava_nio_ByteBuffer_2 (JNIEnv *env,
   else if (result == -1)
     {
       buf.count = 0;
-      if (errno == EAGAIN) /* Non-blocking */
-        result = 0;
+      if (errno == EAGAIN)
+        {
+          if (is_non_blocking_fd(fd))
+            {
+              /* Non-blocking */
+              result = 0;
+            }
+          else
+            {
+              /* Read timeout on a socket with SO_RCVTIMEO != 0. */
+              JCL_release_buffer(env, &buf, bbuf, JNI_ABORT);
+              JCL_ThrowException(env, SOCKET_TIMEOUT_EXCEPTION, "read timed out");
+              return -1;
+            }
+        }
       else if (errno == EBADF) /* Bad fd */
         {
           JCL_release_buffer(env, &buf, bbuf, JNI_ABORT);
@@ -580,8 +607,21 @@ Java_gnu_java_nio_VMChannel_readScattering (JNIEnv *env,
   /* Handle the response */
   if (result < 0)
     {
-      if (errno == EAGAIN) /* Non blocking */
-        result = 0;
+      if (errno == EAGAIN)
+        {
+          if (is_non_blocking_fd(fd))
+            {
+              /* Non-blocking */
+              result = 0;
+            }
+          else
+            {
+              /* Read timeout on a socket with SO_RCVTIMEO != 0. */
+              JCL_cleanup_buffers(env, bi_list, vec_len, bbufs, offset, bytes_read);
+              JCL_ThrowException(env, SOCKET_TIMEOUT_EXCEPTION, "read timed out");
+              return -1;
+            }
+        }
       else if (errno == EBADF) /* Bad fd */
         {
           JCL_cleanup_buffers(env, bi_list, vec_len, bbufs, offset, bytes_read);
@@ -943,7 +983,17 @@ Java_gnu_java_nio_VMChannel_read__I (JNIEnv *env,
   errno = tmp_errno;
 
   if (-1 == ret)
-    JCL_ThrowException (env, IO_EXCEPTION, strerror (errno));
+    {
+      if (errno == EAGAIN && !is_non_blocking_fd(fd))
+        {
+          /* Read timeout on a socket with SO_RCVTIMEO != 0. */
+          JCL_ThrowException(env, SOCKET_TIMEOUT_EXCEPTION, "read timed out");
+        }
+      else
+        JCL_ThrowException (env, IO_EXCEPTION, strerror (errno));
+      return -1;
+    }
+  
   if (0 == ret)
     return -1;
 
@@ -1103,6 +1153,7 @@ Java_gnu_java_nio_VMChannel_connect (JNIEnv *env, jclass clazz __attribute__((un
       if (EINPROGRESS == errno)
         {
           fd_set wrfds;
+          FD_ZERO(&wrfds);
           FD_SET(fd, &wrfds);
           ret = cpnio_select (fd + 1, NULL, &wrfds, NULL, &timeo);
           if (ret == -1)
@@ -1227,6 +1278,7 @@ Java_gnu_java_nio_VMChannel_connect6 (JNIEnv *env, jclass clazz __attribute__((u
       if (EINPROGRESS == errno)
         {
           fd_set wrfds;
+          FD_ZERO(&wrfds);
           FD_SET(fd, &wrfds);
           ret = cpnio_select (fd + 1, NULL, &wrfds, NULL, &timeo);
           if (ret == -1)
