@@ -284,7 +284,7 @@ public class HtmlDemo extends JPanel
     try
       {
         url.setText(u.toString());
-        html.setPage(u.toString());
+        html.setPage(u);
         history.addLast(u);
       }
     catch (IOException ex)
