@@ -338,10 +338,15 @@ getVScrollbarWidth()
   * Returns the current scroll position of the viewport.
   *
   * @return The current scroll position of the viewport.
+  * 
+  * @throws NullPointerException if the scrollpane does have a child.
   */
 public Point
 getScrollPosition()
 {
+  if (getComponentCount() == 0)
+    throw new NullPointerException();
+  
   int x = 0;
   int y = 0;
 
@@ -380,20 +385,35 @@ setScrollPosition(Point scrollPosition) throws IllegalArgumentException
   * @param x The new X coordinate of the scroll position.
   * @param y The new Y coordinate of the scroll position.
   *
+  * @throws NullPointerException if scrollpane does not have a child.
+  * 
   * @exception IllegalArgumentException If the specified value is outside
   * the legal scrolling range.
   */
 public void
 setScrollPosition(int x, int y)
 {
+  if (getComponentCount() == 0)
+    throw new NullPointerException("child is null");
+
+  if (x > (int) (getComponent(0).getWidth() - getViewportSize().getWidth()))
+    x = (int) (getComponent(0).getWidth() - getViewportSize().getWidth());
+  if (y > (int) (getComponent(0).getHeight() - getViewportSize().getHeight()))
+    y = (int) (getComponent(0).getHeight() - getViewportSize().getHeight());
+
+  if (x < 0)
+    x = 0;
+  if (y < 0)
+    y = 0;
+    
   Adjustable h = getHAdjustable();
   Adjustable v = getVAdjustable();
-
+  
   if (h != null)
     h.setValue(x);
   if (v != null)
     v.setValue(y);
-  
+   
   ScrollPanePeer spp = (ScrollPanePeer)getPeer();
   if (spp != null)
     spp.setScrollPosition(x, y);
