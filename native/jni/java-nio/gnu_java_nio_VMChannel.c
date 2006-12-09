@@ -372,8 +372,7 @@ Java_gnu_java_nio_VMChannel_setBlocking (JNIEnv *env,
     }  
 }
 
-  /*
-   */
+/* Return true if fd is in non-blocking mode. */
 static jboolean
 is_non_blocking_fd(jint fd)
 {
