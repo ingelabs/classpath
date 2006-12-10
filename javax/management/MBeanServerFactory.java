@@ -154,7 +154,9 @@ public class MBeanServerFactory
    */
   public static MBeanServer createMBeanServer(String domain)
   {
-    /* FIXME: Check for permission "createMBeanServer" */
+    SecurityManager sm = System.getSecurityManager();
+    if (sm != null)
+      sm.checkPermission(new MBeanServerPermission("createMBeanServer"));
     MBeanServer server = createServer(domain);
     if (servers == null)
       servers = new HashMap();
@@ -208,7 +210,9 @@ public class MBeanServerFactory
    */
   public static ArrayList findMBeanServer(String id)
   {
-    /* FIXME: Check for permission "findMBeanServer" */
+    SecurityManager sm = System.getSecurityManager();
+    if (sm != null)
+      sm.checkPermission(new MBeanServerPermission("findMBeanServer"));
     if (id == null)
       return new ArrayList(servers.values());
     ArrayList list = new ArrayList();
@@ -297,7 +301,9 @@ public class MBeanServerFactory
    */
   public static MBeanServer newMBeanServer(String domain)
   {
-    /* FIXME: Check for permission "newMBeanServer" */
+    SecurityManager sm = System.getSecurityManager();
+    if (sm != null)
+      sm.checkPermission(new MBeanServerPermission("newMBeanServer"));
     return createServer(domain);
   }
 
@@ -387,7 +393,9 @@ public class MBeanServerFactory
    */
   public static void releaseMBeanServer(MBeanServer server)
   {
-    /* FIXME: Check for permission "releaseMBeanServer" */
+    SecurityManager sm = System.getSecurityManager();
+    if (sm != null)
+      sm.checkPermission(new MBeanServerPermission("releaseMBeanServer"));
     Iterator i = servers.values().iterator();
     while (i.hasNext())
       {
