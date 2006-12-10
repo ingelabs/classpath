@@ -2377,7 +2377,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
    * 
    * @return an enumeration of all style names
    */
-  public Enumeration getStyleNames()
+  public Enumeration<?> getStyleNames()
   {
     StyleContext context = (StyleContext) getAttributeContext();
     return context.getStyleNames();

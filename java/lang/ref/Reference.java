@@ -1,5 +1,5 @@
 /* java.lang.ref.Reference
-   Copyright (C) 1999, 2002, 2003, 2006 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2002, 2003, 2004, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -70,19 +70,19 @@ package java.lang.ref;
  * @author Jochen Hoenicke
  * @see java.util.WeakHashMap
  */
-public abstract class Reference
+public abstract class Reference<T>
 {
   /**
    * The underlying object.  This field is handled in a special way by
    * the garbage collector.
    */
-  Object referent;
+  T referent;
 
   /**
    * The queue this reference is registered on. This is null, if this
    * wasn't registered to any queue or reference was already enqueued.
    */
-  volatile ReferenceQueue queue;
+  volatile ReferenceQueue<? super T> queue;
 
   /**
    * Link to the next entry on the queue.  If this is null, this
@@ -106,7 +106,7 @@ public abstract class Reference
    * class in a different package.  
    * @param ref the object we refer to.
    */
-  Reference(Object ref)
+  Reference(T ref)
   {
     referent = ref;
   }
@@ -119,7 +119,7 @@ public abstract class Reference
    * @param q the reference queue to register on.
    * @exception NullPointerException if q is null.
    */
-  Reference(Object ref, ReferenceQueue q)
+  Reference(T ref, ReferenceQueue<? super T> q)
   {
     if (q == null)
       throw new NullPointerException();
@@ -132,7 +132,7 @@ public abstract class Reference
    * @return the object, this reference refers to, or null if the 
    * reference was cleared.
    */
-  public Object get()
+  public T get()
   {
     synchronized (lock)
       {

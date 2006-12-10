@@ -57,7 +57,7 @@ import java.util.Random;
  * @date December 20, 1999.
  * @status believed complete and correct.
  */
-public class BigInteger extends Number implements Comparable
+public class BigInteger extends Number implements Comparable<BigInteger>
 {
   /** All integers are stored in 2's-complement form.
    * If words == null, the ival is the value of this BigInteger.
@@ -83,7 +83,8 @@ public class BigInteger extends Number implements Comparable
   private static final int numFixNum = maxFixNum-minFixNum+1;
   private static final BigInteger[] smallFixNums = new BigInteger[numFixNum];
 
-  static {
+  static
+  {
     for (int i = numFixNum;  --i >= 0; )
       smallFixNums[i] = new BigInteger(i + minFixNum);
   }
@@ -92,14 +93,14 @@ public class BigInteger extends Number implements Comparable
    * The constant zero as a BigInteger.
    * @since 1.2
    */
-  public static final BigInteger ZERO = smallFixNums[-minFixNum];
+  public static final BigInteger ZERO = smallFixNums[0 - minFixNum];
 
   /**
    * The constant one as a BigInteger.
    * @since 1.2
    */
   public static final BigInteger ONE = smallFixNums[1 - minFixNum];
-  
+
   /**
    * The constant ten as a BigInteger.
    * @since 1.5
@@ -394,14 +395,7 @@ public class BigInteger extends Number implements Comparable
     return MPN.cmp(x.words, y.words, x_len);
   }
 
-  // JDK1.2
-  public int compareTo(Object obj)
-  {
-    if (obj instanceof BigInteger)
-      return compareTo(this, (BigInteger) obj);
-    throw new ClassCastException();
-  }
-
+  /** @since 1.2 */
   public int compareTo(BigInteger val)
   {
     return compareTo(this, val);

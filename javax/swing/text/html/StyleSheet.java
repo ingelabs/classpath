@@ -870,10 +870,10 @@ public class StyleSheet extends StyleContext
    * @param names - the attribute names
    * @return the update attribute set
    */
-  public AttributeSet removeAttributes(AttributeSet old, Enumeration names)
+  public AttributeSet removeAttributes(AttributeSet old, Enumeration<?> names)
   {
     // FIXME: Not implemented.
-    return super.removeAttributes(old, names);        
+    return super.removeAttributes(old, names);
   }
   
   /**

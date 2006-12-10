@@ -1,6 +1,6 @@
 /* ObjectStreamClass.java -- Class used to write class information
    about serialized objects.
-   Copyright (C) 1998, 1999, 2000, 2001, 2003  Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001, 2003, 2005  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -60,6 +60,13 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Hashtable;
 
+/**
+ * @author Tom Tromey (tromey@redhat.com)
+ * @author Jeroen Frijters (jeroen@frijters.net)
+ * @author Guilhem Lavaux (guilhem@kaffe.org)
+ * @author Michael Koch (konqueror@gmx.de)
+ * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
+ */
 public class ObjectStreamClass implements Serializable
 {
   static final ObjectStreamField[] INVALID_FIELDS = new ObjectStreamField[0];
@@ -79,7 +86,7 @@ public class ObjectStreamClass implements Serializable
    *
    * @see java.io.Serializable
    */
-  public static ObjectStreamClass lookup(Class cl)
+  public static ObjectStreamClass lookup(Class<?> cl)
   {
     if (cl == null)
       return null;
@@ -131,7 +138,7 @@ public class ObjectStreamClass implements Serializable
    *
    * @see java.io.ObjectInputStream
    */
-  public Class forClass()
+  public Class<?> forClass()
   {
     return clazz;
   }
@@ -234,7 +241,6 @@ public class ObjectStreamClass implements Serializable
     return superClass;
   }
 
-
   /**
    * returns an array of ObjectStreamClasses that represent the super
    * classes of the class represented by this and the class
@@ -252,19 +258,19 @@ public class ObjectStreamClass implements Serializable
   {
     ObjectStreamClass[] result = hierarchy; 
     if (result == null)
-      {
+        {
         int d = 0; 
-
+  
         for(ObjectStreamClass osc = this; osc != null; osc = osc.getSuper())
           d++;
-
+  
         result = new ObjectStreamClass[d];
-
+  
         for (ObjectStreamClass osc = this; osc != null; osc = osc.getSuper())
           {
             result[--d] = osc;
           }
-
+  
         hierarchy = result; 
       }
     return result; 
@@ -1054,7 +1060,8 @@ outer:
 
   public static final ObjectStreamField[] NO_FIELDS = {};
 
-  private static Hashtable classLookupTable = new Hashtable();
+  private static Hashtable<Class,ObjectStreamClass> classLookupTable
+    = new Hashtable<Class,ObjectStreamClass>();
   private static final NullOutputStream nullOutputStream = new NullOutputStream();
   private static final Comparator interfaceComparator = new InterfaceComparator();
   private static final Comparator memberComparator = new MemberComparator();
@@ -1062,7 +1069,7 @@ outer:
     Class[] writeMethodArgTypes = { java.io.ObjectOutputStream.class };
 
   private ObjectStreamClass superClass;
-  private Class clazz;
+  private Class<?> clazz;
   private String name;
   private long uid;
   private byte flags;

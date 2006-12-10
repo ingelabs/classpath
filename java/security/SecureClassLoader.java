@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package java.security;
 
+import java.util.WeakHashMap;
+
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 
@@ -51,7 +53,8 @@ import java.util.HashMap;
  */
 public class SecureClassLoader extends ClassLoader
 {
-  private final HashMap protectionDomainCache = new HashMap();
+  private final HashMap<CodeSource,ProtectionDomain> protectionDomainCache
+    = new HashMap<CodeSource, ProtectionDomain>();
 
   protected SecureClassLoader(ClassLoader parent)
   {
@@ -76,7 +79,7 @@ public class SecureClassLoader extends ClassLoader
    *
    * @exception ClassFormatError if the byte array is not in proper classfile format.
    */
-  protected final Class defineClass(String name, byte[] b, int off, int len,
+  protected final Class<?> defineClass(String name, byte[] b, int off, int len,
 				    CodeSource cs)
   {
     return super.defineClass(name, b, off, len, getProtectionDomain(cs));

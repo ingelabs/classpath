@@ -130,7 +130,7 @@ public class ImageFilter implements ImageConsumer, Cloneable
    *
    * @param props the list of properties associated with this image 
    */
-  public void setProperties(Hashtable props)
+  public void setProperties(Hashtable<?,?> props)
   {
     Hashtable copy = (Hashtable) props.clone();
     Object o = copy.get("filters");
@@ -224,4 +224,3 @@ public class ImageFilter implements ImageConsumer, Cloneable
     consumer.imageComplete(status);
   }
 }
-

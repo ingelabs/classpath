@@ -843,6 +843,7 @@ external/Makefile
 external/sax/Makefile
 external/w3c_dom/Makefile
 external/relaxngDatatype/Makefile
+external/jsr166/Makefile
 gnu/classpath/Configuration.java
 gnu/java/security/Configuration.java
 include/Makefile

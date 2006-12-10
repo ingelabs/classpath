@@ -298,7 +298,7 @@ public class BufferedImage extends Image
   public BufferedImage(ColorModel colormodel, 
 		       WritableRaster writableraster,
 		       boolean premultiplied,
-		       Hashtable properties)
+		       Hashtable<?,?> properties)
   {
     init(colormodel, writableraster, premultiplied, properties,
 	 TYPE_CUSTOM);
@@ -628,7 +628,7 @@ public class BufferedImage extends Image
       };
   }
   
-  public Vector getSources()
+  public Vector<RenderedImage> getSources()
   {
     return null;
   }

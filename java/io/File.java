@@ -60,7 +60,7 @@ import java.net.URL;
  * @author Aaron M. Renn (arenn@urbanophile.com)
  * @author Tom Tromey (tromey@cygnus.com)
  */
-public class File implements Serializable, Comparable
+public class File implements Serializable, Comparable<File>
 {
   private static final long serialVersionUID = 301077366599181567L;
 
@@ -1250,32 +1250,6 @@ public class File implements Serializable, Comparable
       return path.compareTo (other.path);
     else
       return path.compareToIgnoreCase (other.path);
-  }
-
-  /**
-   * This method compares the specified <code>Object</code> to this one
-   * to test for equality.  It does this by comparing the canonical path names
-   * of the files.  This method is identical to <code>compareTo(File)</code>
-   * except that if the <code>Object</code> passed to it is not a 
-   * <code>File</code>, it throws a <code>ClassCastException</code>
-   * <p>
-   * The canonical paths of the files are determined by calling the
-   * <code>getCanonicalPath</code> method on each object.
-   * <p>
-   * This method returns a 0 if the specified <code>Object</code> is equal
-   * to this one, a negative value if it is less than this one 
-   * a positive value if it is greater than this one.
-   *
-   * @return An integer as described above
-   *
-   * @exception ClassCastException If the passed <code>Object</code> is 
-   * not a <code>File</code>
-   *
-   * @since 1.2
-   */
-  public int compareTo(Object obj)
-  {
-    return compareTo((File) obj);
   }
 
   /**

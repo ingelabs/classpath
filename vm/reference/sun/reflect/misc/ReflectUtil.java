@@ -51,9 +51,29 @@ public class ReflectUtil
   {
   }
 
+  /**
+   * Check if the current thread is allowed to access the package of
+   * the declaringClass. 
+   *
+   * @param declaringClass class name to check access to
+   * @throws SecurityException if permission is denied
+   * @throws NullPointerException if declaringClass is null
+   */
   public static void checkPackageAccess(Class declaringClass)
   {
-    // FIXME: not sure what to check here.
+    SecurityManager sm;
+    if ((sm = System.getSecurityManager()) != null)
+      {
+	while (declaringClass.isArray())
+	  declaringClass = declaringClass.getComponentType();
+	String name = declaringClass.getName();
+	int i = name.lastIndexOf('.');
+	if (i != -1) // if declaringClass is a member of a package
+	  {
+	    name = name.substring(0, i);
+	    sm.checkPackageAccess(name);
+	  }
+      }
   }
 
   /**
@@ -64,6 +84,7 @@ public class ReflectUtil
    * @param declarer the declaring class of the member
    * @param ignored unknown parameter; always null
    * @param modifiers the modifiers on the member
+   * @return true if access is granted, false otherwise
    */
   public static void ensureMemberAccess(Class caller,
                                         Class declarer,

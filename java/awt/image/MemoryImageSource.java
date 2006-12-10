@@ -88,7 +88,7 @@ public class MemoryImageSource implements ImageProducer
    * @param props  image properties (<code>null</code> permitted). 
    */
   public MemoryImageSource(int w, int h, ColorModel cm, byte[] pix, int off,
-                           int scan, Hashtable props)
+                           int scan, Hashtable<?,?> props)
   {
     width = w;
     height = h;
@@ -130,7 +130,7 @@ public class MemoryImageSource implements ImageProducer
    * @param props  image properties (<code>null</code> permitted). 
    */
   public MemoryImageSource(int w, int h, ColorModel cm, int[] pix, int off,
-                           int scan, Hashtable props)
+                           int scan, Hashtable<?,?> props)
   {
     width = w;
     height = h;
@@ -155,7 +155,7 @@ public class MemoryImageSource implements ImageProducer
 
    */
   public MemoryImageSource(int w, int h, int[] pix, int off, int scan,
-                           Hashtable props)
+                           Hashtable<?,?> props)
   {
     this(w, h, ColorModel.getRGBdefault(), pix, off, scan, props);
   }

@@ -3422,29 +3422,29 @@ public abstract class Component
    * @see #getPropertyChangeListeners()
    * @since 1.3
    */
-  public EventListener[] getListeners(Class listenerType)
+  public <T extends EventListener> T[] getListeners(Class<T> listenerType)
   {
     if (listenerType == ComponentListener.class)
-      return getComponentListeners();
+      return (T[]) getComponentListeners();
     if (listenerType == FocusListener.class)
-      return getFocusListeners();
+      return (T[]) getFocusListeners();
     if (listenerType == HierarchyListener.class)
-      return getHierarchyListeners();
+      return (T[]) getHierarchyListeners();
     if (listenerType == HierarchyBoundsListener.class)
-      return getHierarchyBoundsListeners();
+      return (T[]) getHierarchyBoundsListeners();
     if (listenerType == KeyListener.class)
-      return getKeyListeners();
+      return (T[]) getKeyListeners();
     if (listenerType == MouseListener.class)
-      return getMouseListeners();
+      return (T[]) getMouseListeners();
     if (listenerType == MouseMotionListener.class)
-      return getMouseMotionListeners();
+      return (T[]) getMouseMotionListeners();
     if (listenerType == MouseWheelListener.class)
-      return getMouseWheelListeners();
+      return (T[]) getMouseWheelListeners();
     if (listenerType == InputMethodListener.class)
-      return getInputMethodListeners();
+      return (T[]) getInputMethodListeners();
     if (listenerType == PropertyChangeListener.class)
-      return getPropertyChangeListeners();
-    return (EventListener[]) Array.newInstance(listenerType, 0);
+      return (T[]) getPropertyChangeListeners();
+    return (T[]) Array.newInstance(listenerType, 0);
   }
 
   /**
@@ -4336,7 +4336,8 @@ public abstract class Component
    * @see KeyboardFocusManager#UP_CYCLE_TRAVERSAL_KEYS
    * @since 1.4
    */
-  public void setFocusTraversalKeys(int id, Set keystrokes)
+  public void setFocusTraversalKeys(int id,
+				    Set<? extends AWTKeyStroke> keystrokes)
   {
     if (keystrokes == null)
       {
@@ -4428,14 +4429,14 @@ public abstract class Component
    * 
    * @since 1.4
    */
-  public Set getFocusTraversalKeys (int id)
+  public Set<AWTKeyStroke> getFocusTraversalKeys (int id)
   {
     if (id != KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS &&
         id != KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS &&
         id != KeyboardFocusManager.UP_CYCLE_TRAVERSAL_KEYS)
       throw new IllegalArgumentException();
 
-    Set s = null;
+    Set<AWTKeyStroke> s = null;
 
     if (focusTraversalKeys != null)
       s = focusTraversalKeys[id];

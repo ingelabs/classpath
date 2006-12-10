@@ -41,6 +41,7 @@ package java.security;
 import gnu.java.security.Engine;
 
 import java.lang.reflect.InvocationTargetException;
+import java.nio.ByteBuffer;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.security.spec.AlgorithmParameterSpec;
@@ -473,6 +474,22 @@ public abstract class Signature extends SignatureSpi
       engineUpdate(data, off, len);
     else
       throw new SignatureException();
+  }
+  
+  /**
+   * Update this signature with the {@link java.nio.Buffer#remaining()}
+   * bytes of the input buffer.
+   * 
+   * @param input The input buffer.
+   * @throws SignatureException If this instance was not properly
+   *  initialized.
+   */
+  public final void update(ByteBuffer input) throws SignatureException
+  {
+    if (state != UNINITIALIZED)
+      engineUpdate(input);
+    else
+      throw new SignatureException("not initialized");
   }
 
   /**

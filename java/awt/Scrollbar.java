@@ -617,7 +617,7 @@ public class Scrollbar extends Component implements Accessible, Adjustable
    * @exception ClassCastException If listenerType doesn't specify a class or
    * interface that implements java.util.EventListener.
    */
-  public EventListener[] getListeners(Class listenerType)
+  public <T extends EventListener> T[] getListeners(Class<T> listenerType)
   {
     if (listenerType == AdjustmentListener.class)
       return AWTEventMulticaster.getListeners(adjustment_listeners,

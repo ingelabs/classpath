@@ -83,10 +83,11 @@ New in release 0.92 (Aug 9, 2006)
   * jarsigner
   A new configure option --enable-tool-wrappers causes wrapper
   binaries to be built for VMs that support the JNI Invocation API.
+* We've imported the JSR 166 (concurrency) reference implementation.
 * javax.sound.midi providers have been added to read and
   write standard MIDI files.
 * A javax.sound.sampled .au and .wav file readers have been added.
-* New Java Virtual Machine Tool Interface header, jvmti.h.
+* New Java Virtual Machine Tool Interface header, jvmti.h. 
 * AWT peers for X Windows based on Escher (a pure java X protocol
   implementation) have been added. So far it supports AWT 1.1 style
   Graphics, image loading via ImageIO (PNG, GIF and BMP images in this

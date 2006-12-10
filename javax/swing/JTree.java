@@ -1534,7 +1534,7 @@ public class JTree extends JComponent implements Scrollable, Accessible
    * 
    * @param value the initial nodes in the tree
    */
-  public JTree(Hashtable value)
+  public JTree(Hashtable<?, ?> value)
   {
     this(createTreeModel(value));
   }
@@ -1601,7 +1601,7 @@ public class JTree extends JComponent implements Scrollable, Accessible
    * 
    * @param value the initial nodes in the tree
    */
-  public JTree(Vector value)
+  public JTree(Vector<?> value)
   {
     this(createTreeModel(value));
   }
@@ -2824,7 +2824,7 @@ public class JTree extends JComponent implements Scrollable, Accessible
     nodeStates.clear();
   }
 
-  protected Enumeration getDescendantToggledPaths(TreePath parent)
+  protected Enumeration<TreePath> getDescendantToggledPaths(TreePath parent)
   {
     if (parent == null)
       return null;
@@ -2973,7 +2973,7 @@ public class JTree extends JComponent implements Scrollable, Accessible
    *
    * @return An Enumeration containing TreePath objects
    */
-  public Enumeration getExpandedDescendants(TreePath path)
+  public Enumeration<TreePath> getExpandedDescendants(TreePath path)
   {
     Enumeration paths = nodeStates.keys();
     Vector relevantPaths = new Vector();
@@ -3101,7 +3101,7 @@ public class JTree extends JComponent implements Scrollable, Accessible
    * @param toRemove - Enumeration of TreePaths that need to be removed from
    * cache of toggled tree paths.
    */
-  protected void removeDescendantToggledPaths(Enumeration toRemove)
+  protected void removeDescendantToggledPaths(Enumeration<TreePath> toRemove)
   {
     while (toRemove.hasMoreElements())
       {

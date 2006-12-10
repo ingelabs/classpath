@@ -183,7 +183,7 @@ public class BasicFileChooserUI extends FileChooserUI
   protected class BasicFileView extends FileView
   {
     /** Storage for cached icons. */
-    protected Hashtable iconCache = new Hashtable();
+    protected Hashtable<File, Icon> iconCache = new Hashtable<File, Icon>();
 
     /**
      * Creates a new instance.

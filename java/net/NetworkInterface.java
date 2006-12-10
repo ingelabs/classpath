@@ -61,11 +61,11 @@ import java.util.Vector;
 public final class NetworkInterface
 {
   private final VMNetworkInterface netif;
-
+  
   private NetworkInterface(VMNetworkInterface netif)
-  {
+    {
     this.netif = netif;
-  }
+    }
   
   /** Creates an NetworkInterface instance which
    * represents any interface in the system. Its only
@@ -97,7 +97,7 @@ public final class NetworkInterface
    *
    * @return An enumeration of all addresses.
    */
-  public Enumeration getInetAddresses()
+  public Enumeration<InetAddress> getInetAddresses()
   {
     SecurityManager s = System.getSecurityManager();
     Vector inetAddresses = new Vector(netif.addresses);
@@ -105,12 +105,12 @@ public final class NetworkInterface
     if (s == null)
       return inetAddresses.elements();
 
-    Vector tmpInetAddresses = new Vector(1, 1);
+    Vector<InetAddress> tmpInetAddresses = new Vector<InetAddress>(1, 1);
 
-    for (Enumeration addresses = inetAddresses.elements();
+    for (Enumeration<InetAddress> addresses = inetAddresses.elements();
          addresses.hasMoreElements();)
       {
-	InetAddress addr = (InetAddress) addresses.nextElement();
+	InetAddress addr = addresses.nextElement();
 	try
 	  {
 	    s.checkConnect(addr.getHostAddress(), -1);
@@ -191,10 +191,12 @@ public final class NetworkInterface
    * 
    * @exception SocketException If an error occurs
    */
-  public static Enumeration getNetworkInterfaces() throws SocketException
+  public static Enumeration<NetworkInterface> getNetworkInterfaces()
+    throws SocketException
   {
     VMNetworkInterface[] netifs = VMNetworkInterface.getVMInterfaces();
-    Vector networkInterfaces = new Vector(netifs.length);
+    Vector<NetworkInterface> networkInterfaces = 
+      new Vector<NetworkInterface>(netifs.length);
     for (int i = 0; i < netifs.length; i++)
       {
         if (!netifs[i].addresses.isEmpty())

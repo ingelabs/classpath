@@ -388,7 +388,7 @@ public class KeyStore
 
      @return an Enumeration of the aliases
    */
-  public final Enumeration aliases() throws KeyStoreException
+  public final Enumeration<String> aliases() throws KeyStoreException
   {
     return keyStoreSpi.engineAliases();
   }

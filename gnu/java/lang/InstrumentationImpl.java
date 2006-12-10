@@ -63,8 +63,8 @@ public final class InstrumentationImpl implements Instrumentation
 {
 
   /* List of transformers */
-  /* FIXME[GENERICS]: Should be ClassFileTransformer list */
-  private ArrayList transformers = new ArrayList();
+  private ArrayList<ClassFileTransformer> transformers =
+    new ArrayList<ClassFileTransformer>();
 
   
   InstrumentationImpl()
@@ -210,9 +210,8 @@ public final class InstrumentationImpl implements Instrumentation
    * 
    * @return the new class file
    */
-  /* FIXME[GENERICS]: Should be Class<?> */
   public byte[] callTransformers(ClassLoader loader, String className,
-				 Class classBeingRedefined, ProtectionDomain protectionDomain, 
+				 Class<?> classBeingRedefined, ProtectionDomain protectionDomain, 
 				 byte[] classfileBuffer)
   {
     byte[] newBuffer = null;
@@ -220,11 +219,10 @@ public final class InstrumentationImpl implements Instrumentation
     ClassFileTransformer current;
     synchronized (transformers)
       {
-        Iterator i = transformers.iterator();
+        Iterator<ClassFileTransformer> i = transformers.iterator();
         while (i.hasNext())
           {
-	    /* FIXME[GENERICS]: Remove cast */
-            current = (ClassFileTransformer) i.next();
+            current = i.next();
             try
               {
                 newBuffer = current.transform(loader, className,

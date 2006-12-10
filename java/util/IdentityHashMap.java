@@ -90,8 +90,8 @@ import java.io.Serializable;
  * @since 1.4
  * @status updated to 1.4
  */
-public class IdentityHashMap extends AbstractMap
-  implements Map, Serializable, Cloneable
+public class IdentityHashMap<K,V> extends AbstractMap<K,V>
+  implements Map<K,V>, Serializable, Cloneable
 {
   /** The default capacity. */
   private static final int DEFAULT_CAPACITY = 21;
@@ -131,7 +131,7 @@ public class IdentityHashMap extends AbstractMap
   /**
    * The cache for {@link #entrySet()}.
    */
-  private transient Set entries;
+  private transient Set<Map.Entry<K,V>> entries;
 
   /**
    * The threshold for rehashing, which is 75% of (table.length / 2).
@@ -173,7 +173,7 @@ public class IdentityHashMap extends AbstractMap
    * @param m The map whose elements are to be put in this map
    * @throws NullPointerException if m is null
    */
-  public IdentityHashMap(Map m)
+  public IdentityHashMap(Map<? extends K, ? extends V> m)
   {
     this(Math.max(m.size() << 1, DEFAULT_CAPACITY));
     putAll(m);
@@ -272,19 +272,19 @@ public class IdentityHashMap extends AbstractMap
    * @see #values()
    * @see Map.Entry
    */
-  public Set entrySet()
+  public Set<Map.Entry<K,V>> entrySet()
   {
     if (entries == null)
-      entries = new AbstractSet()
+      entries = new AbstractSet<Map.Entry<K,V>>()
       {
         public int size()
         {
           return size;
         }
 
-        public Iterator iterator()
+        public Iterator<Map.Entry<K,V>> iterator()
         {
-          return new IdentityIterator(ENTRIES);
+          return new IdentityIterator<Map.Entry<K,V>>(ENTRIES);
         }
 
         public void clear()
@@ -357,11 +357,11 @@ public class IdentityHashMap extends AbstractMap
    * @see #put(Object, Object)
    * @see #containsKey(Object)
    */
-  public Object get(Object key)
+  public V get(Object key)
   {
     key = xform(key);
     int h = hash(key);
-    return table[h] == key ? unxform(table[h + 1]) : null;
+    return (V) (table[h] == key ? unxform(table[h + 1]) : null);
   }
 
   /**
@@ -415,19 +415,19 @@ public class IdentityHashMap extends AbstractMap
    * @see #values()
    * @see #entrySet()
    */
-  public Set keySet()
+  public Set<K> keySet()
   {
     if (keys == null)
-      keys = new AbstractSet()
+      keys = new AbstractSet<K>()
       {
         public int size()
         {
           return size;
         }
 
-        public Iterator iterator()
+        public Iterator<K> iterator()
         {
-          return new IdentityIterator(KEYS);
+          return new IdentityIterator<K>(KEYS);
         }
 
         public void clear()
@@ -484,16 +484,16 @@ public class IdentityHashMap extends AbstractMap
    * @return the prior mapping of the key, or null if there was none
    * @see #get(Object)
    */
-  public Object put(Object key, Object value)
+  public V put(K key, V value)
   {
-    key = xform(key);
-    value = xform(value);
+    key = (K) xform(key);
+    value = (V) xform(value);
 
     // We don't want to rehash if we're overwriting an existing slot.
     int h = hash(key);
     if (table[h] == key)
       {
-        Object r = unxform(table[h + 1]);
+        V r = (V) unxform(table[h + 1]);
         table[h + 1] = value;
         return r;
       }
@@ -510,7 +510,7 @@ public class IdentityHashMap extends AbstractMap
 
         for (int i = old.length - 2; i >= 0; i -= 2)
           {
-            Object oldkey = old[i];
+            K oldkey = (K) old[i];
             if (oldkey != null)
               {
                 h = hash(oldkey);
@@ -541,7 +541,7 @@ public class IdentityHashMap extends AbstractMap
    * @param m the map to copy
    * @throws NullPointerException if m is null
    */
-  public void putAll(Map m)
+  public void putAll(Map<? extends K, ? extends V> m)
   {
     // Why did Sun specify this one? The superclass does the right thing.
     super.putAll(m);
@@ -595,7 +595,7 @@ public class IdentityHashMap extends AbstractMap
    * @param key the key used to locate the value to remove
    * @return whatever the key mapped to, if present
    */
-  public Object remove(Object key)
+  public V remove(Object key)
   {
     key = xform(key);
     int h = hash(key);
@@ -605,7 +605,7 @@ public class IdentityHashMap extends AbstractMap
         size--;
         Object r = unxform(table[h + 1]);
         removeAtIndex(h);
-        return r;
+        return (V) r;
       }
     return null;
   }
@@ -637,19 +637,19 @@ public class IdentityHashMap extends AbstractMap
    * @see #keySet()
    * @see #entrySet()
    */
-  public Collection values()
+  public Collection<V> values()
   {
     if (values == null)
-      values = new AbstractCollection()
+      values = new AbstractCollection<V>()
       {
         public int size()
         {
           return size;
         }
 
-        public Iterator iterator()
+        public Iterator<V> iterator()
         {
-          return new IdentityIterator(VALUES);
+          return new IdentityIterator<V>(VALUES);
         }
 
         public void clear()
@@ -736,7 +736,7 @@ public class IdentityHashMap extends AbstractMap
    * @author Tom Tromey (tromey@redhat.com)
    * @author Eric Blake (ebb9@email.byu.edu)
    */
-  private class IdentityIterator implements Iterator
+  private class IdentityIterator<I> implements Iterator<I>
   {
     /**
      * The type of this Iterator: {@link #KEYS}, {@link #VALUES},
@@ -774,7 +774,7 @@ public class IdentityHashMap extends AbstractMap
      * @throws ConcurrentModificationException if the Map was modified
      * @throws NoSuchElementException if there is none
      */
-    public Object next()
+    public I next()
     {
       if (knownMod != modCount)
         throw new ConcurrentModificationException();
@@ -789,10 +789,10 @@ public class IdentityHashMap extends AbstractMap
           key = table[loc];
         }
       while (key == null);
-
-      return type == KEYS ? unxform(key) 
-                          : (type == VALUES ? unxform(table[loc + 1])
-                                            : new IdentityEntry(loc));
+  
+      return (I) (type == KEYS ? unxform(key) 
+		  : (type == VALUES ? unxform(table[loc + 1])
+		     : new IdentityEntry(loc)));
     }
 
     /**
@@ -825,7 +825,7 @@ public class IdentityHashMap extends AbstractMap
    *
    * @author Eric Blake (ebb9@email.byu.edu)
    */
-  private final class IdentityEntry implements Map.Entry
+  private final class IdentityEntry<EK,EV> implements Map.Entry<EK,EV>
   {
     /** The location of this entry. */
     final int loc;
@@ -870,11 +870,11 @@ public class IdentityHashMap extends AbstractMap
      * @throws ConcurrentModificationException if the entry was invalidated
      *         by modifying the Map or calling Iterator.remove()
      */
-    public Object getKey()
+    public EK getKey()
     {
       if (knownMod != modCount)
         throw new ConcurrentModificationException();
-      return unxform(table[loc]);
+      return (EK) unxform(table[loc]);
     }
 
     /**
@@ -884,11 +884,11 @@ public class IdentityHashMap extends AbstractMap
      * @throws ConcurrentModificationException if the entry was invalidated
      *         by modifying the Map or calling Iterator.remove()
      */
-    public Object getValue()
+    public EV getValue()
     {
       if (knownMod != modCount)
         throw new ConcurrentModificationException();
-      return unxform(table[loc + 1]);
+      return (EV) unxform(table[loc + 1]);
     }
 
     /**
@@ -916,11 +916,11 @@ public class IdentityHashMap extends AbstractMap
      * @throws ConcurrentModificationException if the entry was invalidated
      *         by modifying the Map or calling Iterator.remove()
      */
-    public Object setValue(Object value)
+    public EV setValue(EV value)
     {
       if (knownMod != modCount)
         throw new ConcurrentModificationException();
-      Object r = unxform(table[loc + 1]);
+      EV r = (EV) unxform(table[loc + 1]);
       table[loc + 1] = xform(value);
       return r;
     }
@@ -960,7 +960,7 @@ public class IdentityHashMap extends AbstractMap
     table = new Object[Math.max(num << 1, DEFAULT_CAPACITY) << 1];
     // Read key/value pairs.
     while (--num >= 0)
-      put(s.readObject(), s.readObject());
+      put((K) s.readObject(), (V) s.readObject());
   }
 
   /**

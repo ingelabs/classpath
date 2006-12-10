@@ -568,7 +568,7 @@ public class RepaintManager
    */
   public void paintDirtyRegions()
   {
-    // Short cicuit if there is nothing to paint.
+    // Short circuit if there is nothing to paint.
     if (dirtyComponents.size() == 0)
       return;
 

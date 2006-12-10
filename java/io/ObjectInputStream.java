@@ -55,6 +55,13 @@ import java.util.Iterator;
 import java.util.TreeSet;
 import java.util.Vector;
 
+/**
+ * @author Tom Tromey (tromey@redhat.com)
+ * @author Jeroen Frijters (jeroen@frijters.net)
+ * @author Guilhem Lavaux (guilhem@kaffe.org)
+ * @author Michael Koch (konqueror@gmx.de)
+ * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
+ */
 public class ObjectInputStream extends InputStream
   implements ObjectInput, ObjectStreamConstants
 {
@@ -97,8 +104,8 @@ public class ObjectInputStream extends InputStream
     this.blockDataInput = new DataInputStream(this);
     this.realInputStream = new DataInputStream(in);
     this.nextOID = baseWireHandle;
-    this.objectLookupTable = new Vector();
-    this.classLookupTable = new Hashtable();
+    this.objectLookupTable = new Vector<Object>();
+    this.classLookupTable = new Hashtable<Class,ObjectStreamClass>();
     setBlockDataMode(true);
     readStreamHeader();
   }
@@ -347,7 +354,8 @@ public class ObjectInputStream extends InputStream
  	  int handle = assignNewHandle(obj);
  	  Object prevObject = this.currentObject;
  	  ObjectStreamClass prevObjectStreamClass = this.currentObjectStreamClass;
-	  TreeSet prevObjectValidators = this.currentObjectValidators;
+	  TreeSet<ValidatorAndPriority> prevObjectValidators =
+	    this.currentObjectValidators;
  	  
  	  this.currentObject = obj;
 	  this.currentObjectValidators = null;
@@ -754,7 +762,7 @@ public class ObjectInputStream extends InputStream
 				       + "ObjectInputValidation object");
 
     if (currentObjectValidators == null)
-      currentObjectValidators = new TreeSet();
+      currentObjectValidators = new TreeSet<ValidatorAndPriority>();
     
     currentObjectValidators.add(new ValidatorAndPriority(validator, priority));
   }
@@ -776,7 +784,7 @@ public class ObjectInputStream extends InputStream
    *
    * @see java.io.ObjectOutputStream#annotateClass (java.lang.Class)
    */
-  protected Class resolveClass(ObjectStreamClass osc)
+  protected Class<?> resolveClass(ObjectStreamClass osc)
     throws ClassNotFoundException, IOException
   {
     String name = osc.getName();
@@ -878,12 +886,12 @@ public class ObjectInputStream extends InputStream
   }
 
 
-  protected Class resolveProxyClass(String[] intfs)
+  protected Class<?> resolveProxyClass(String[] intfs)
     throws IOException, ClassNotFoundException
   {
     ClassLoader cl = currentLoader();
     
-    Class[] clss = new Class[intfs.length];
+    Class<?>[] clss = new Class<?>[intfs.length];
     if(cl == null)
       {
 	for (int i = 0; i < intfs.length; i++)
@@ -1891,10 +1899,10 @@ public class ObjectInputStream extends InputStream
   {
     try
       {
-	Iterator it = currentObjectValidators.iterator();
+	Iterator<ValidatorAndPriority> it = currentObjectValidators.iterator();
 	while(it.hasNext())
 	  {
-	    ValidatorAndPriority vap = (ValidatorAndPriority) it.next();
+	    ValidatorAndPriority vap = it.next();
 	    ObjectInputValidation validator = vap.validator;
 	    validator.validateObject();
 	  }
@@ -1947,13 +1955,13 @@ public class ObjectInputStream extends InputStream
   private boolean useSubclassMethod;
   private int nextOID;
   private boolean resolveEnabled;
-  private Vector objectLookupTable;
+  private Vector<Object> objectLookupTable;
   private Object currentObject;
   private ObjectStreamClass currentObjectStreamClass;
-  private TreeSet currentObjectValidators;
+  private TreeSet<ValidatorAndPriority> currentObjectValidators;
   private boolean readDataFromBlock;
   private boolean fieldsAlreadyRead;
-  private Hashtable classLookupTable;
+  private Hashtable<Class,ObjectStreamClass> classLookupTable;
   private GetField prereadFields;
 
   private static boolean dump;

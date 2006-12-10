@@ -38,6 +38,7 @@ exception statement from your version. */
 package java.security;
 
 import gnu.java.security.Engine;
+import java.nio.ByteBuffer;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -228,6 +229,17 @@ public abstract class MessageDigest extends MessageDigestSpi
     engineUpdate(input, 0, input.length);
   }
 
+  /**
+   * Updates the digest with the remaining bytes of a buffer.
+   * 
+   * @param input The input byte buffer.
+   * @since 1.5
+   */
+  public void update (ByteBuffer input)
+  {
+    engineUpdate (input);
+  }
+  
   /**
    * Computes the final digest of the stored data.
    * 

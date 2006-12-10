@@ -991,11 +991,11 @@ public class List extends Component
    * 
    * @since 1.3
    */
-  public EventListener[] getListeners (Class listenerType)
+  public <T extends EventListener> T[] getListeners (Class<T> listenerType)
   {
     if (listenerType == ActionListener.class)
       return AWTEventMulticaster.getListeners (action_listeners, listenerType);
-    
+
     if (listenerType == ItemListener.class)
       return AWTEventMulticaster.getListeners (item_listeners, listenerType);
 

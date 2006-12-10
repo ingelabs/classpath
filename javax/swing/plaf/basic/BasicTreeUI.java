@@ -195,7 +195,7 @@ public class BasicTreeUI
   protected AbstractLayoutCache treeState;
 
   /** Used for minimizing the drawing of vertical lines. */
-  protected Hashtable drawingCache;
+  protected Hashtable<TreePath, Boolean> drawingCache;
 
   /**
    * True if doing optimizations for a largeModel. Subclasses that don't support

@@ -244,7 +244,9 @@ public final class TextLayout implements Cloneable
     layoutRuns();
   }
 
-  public TextLayout (String string, Map attributes, FontRenderContext frc)  
+  public TextLayout (String string,
+		     Map<? extends AttributedCharacterIterator.Attribute, ?> attributes,
+		     FontRenderContext frc)  
   {
     this( string, new Font( attributes ), frc );
   }

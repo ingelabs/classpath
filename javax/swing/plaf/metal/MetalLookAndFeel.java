@@ -1203,7 +1203,7 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       "TabbedPane.tabAreaBackground", getControl(), // overridden in OceanTheme
       "TabbedPane.tabAreaInsets", new InsetsUIResource(4, 2, 0, 6), // dito
       "TabbedPane.tabInsets", new InsetsUIResource(0, 9, 1, 9),
-      
+
       // new properties in OceanTheme:
       // TabbedPane.contentAreaColor
       // TabbedPane.unselectedBackground

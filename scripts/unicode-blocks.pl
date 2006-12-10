@@ -144,10 +144,8 @@ print <<'EOF';
     /** The canonical name of the block according to the Unicode standard. */
     private final String canonicalName;
 
-    /** Constants for the <code>forName()</code> method */
-    private static final int CANONICAL_NAME = 0;
-    private static final int NO_SPACES_NAME = 1;
-    private static final int CONSTANT_NAME = 2;
+    /** Enumeration for the <code>forName()</code> method */
+    private enum NameType { CANONICAL, NO_SPACES, CONSTANT; };
 
     /**
      * Constructor for strictly defined blocks.
@@ -248,59 +246,51 @@ print <<'EOF';
      */
     public static final UnicodeBlock forName(String blockName)
     {
-      int type;
+      NameType type;
       if (blockName.indexOf(' ') != -1)
-        type = CANONICAL_NAME;
+        type = NameType.CANONICAL;
       else if (blockName.indexOf('_') != -1)
-        type = CONSTANT_NAME;
+        type = NameType.CONSTANT;
       else
-        type = NO_SPACES_NAME;
+        type = NameType.NO_SPACES;
       Collator usCollator = Collator.getInstance(Locale.US);
       usCollator.setStrength(Collator.PRIMARY);
       /* Special case for deprecated blocks not in sets */
       switch (type)
       {
-        case CANONICAL_NAME:
+        case CANONICAL:
           if (usCollator.compare(blockName, "Surrogates Area") == 0)
             return SURROGATES_AREA;
           break;
-        case NO_SPACES_NAME:
+        case NO_SPACES:
           if (usCollator.compare(blockName, "SurrogatesArea") == 0)
             return SURROGATES_AREA;
           break;
-        case CONSTANT_NAME:
+        case CONSTANT:
           if (usCollator.compare(blockName, "SURROGATES_AREA") == 0) 
             return SURROGATES_AREA;
           break;
       }
       /* Other cases */
-      int setLength = sets.length;
       switch (type)
       {
-        case CANONICAL_NAME:
-          for (int i = 0; i < setLength; i++)
-            {
-              UnicodeBlock block = sets[i];
-              if (usCollator.compare(blockName, block.canonicalName) == 0)
-                return block;
-            }
+        case CANONICAL:
+          for (UnicodeBlock block : sets)
+            if (usCollator.compare(blockName, block.canonicalName) == 0)
+              return block;
           break;
-        case NO_SPACES_NAME:
-          for (int i = 0; i < setLength; i++)
-            {
-              UnicodeBlock block = sets[i];
+        case NO_SPACES:
+          for (UnicodeBlock block : sets)
+	    {
 	      String nsName = block.canonicalName.replaceAll(" ","");
 	      if (usCollator.compare(blockName, nsName) == 0)
 		return block;
 	    }
 	  break;
-        case CONSTANT_NAME:
-          for (int i = 0; i < setLength; i++)
-            {
-              UnicodeBlock block = sets[i];
-              if (usCollator.compare(blockName, block.toString()) == 0)
-                return block;
-	    }
+        case CONSTANT:
+          for (UnicodeBlock block : sets)
+            if (usCollator.compare(blockName, block.toString()) == 0)
+              return block;
           break;
       }
       throw new IllegalArgumentException("No Unicode block found for " +

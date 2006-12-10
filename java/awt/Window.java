@@ -1,5 +1,5 @@
 /* Window.java --
-   Copyright (C) 1999, 2000, 2002, 2003, 2004, 2006  Free Software Foundation
+   Copyright (C) 1999, 2000, 2002, 2003, 2004, 2005  Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -250,7 +250,9 @@ public class Window extends Container implements Accessible
   /**
    * Shows on-screen this window and any of its owned windows for whom
    * isVisible returns true.
+   * @specnote: Deprecated starting in 1.5.
    */
+  @Deprecated
   public void show()
   {
     synchronized (getTreeLock())
@@ -310,6 +312,10 @@ public class Window extends Container implements Accessible
       }
   }
 
+  /**
+   * @specnote: Deprecated starting in 1.5.
+   */
+  @Deprecated
   public void hide()
   {
     // Hide visible owned windows.
@@ -604,10 +610,10 @@ public class Window extends Container implements Accessible
    *
    * @since 1.3
    */
-  public EventListener[] getListeners(Class listenerType)
+  public <T extends EventListener> T[] getListeners(Class<T> listenerType)
   {
     if (listenerType == WindowListener.class)
-      return getWindowListeners();
+      return (T[]) getWindowListeners();
     return super.getListeners(listenerType);
   }
 

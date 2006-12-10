@@ -58,7 +58,7 @@ import java.nio.channels.FileChannel;
  * @author Aaron M. Renn (arenn@urbanophile.com)
  * @author Tom Tromey (tromey@cygnus.com)
  */
-public class RandomAccessFile implements DataOutput, DataInput
+public class RandomAccessFile implements DataOutput, DataInput, Closeable
 {
 
   // The underlying file.

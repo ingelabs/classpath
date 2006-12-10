@@ -927,12 +927,12 @@ public abstract class JComponent extends Container implements Serializable
    * 
    * @since 1.3
    */
-  public EventListener[] getListeners(Class listenerType)
+  public <T extends EventListener> T[] getListeners(Class<T> listenerType)
   {
     if (listenerType == PropertyChangeListener.class)
-      return getPropertyChangeListeners();
+      return (T[]) getPropertyChangeListeners();
     else if (listenerType == VetoableChangeListener.class)
-      return getVetoableChangeListeners();
+      return (T[]) getVetoableChangeListeners();
     else
       return listenerList.getListeners(listenerType);
   }

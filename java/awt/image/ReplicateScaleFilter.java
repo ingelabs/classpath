@@ -134,11 +134,12 @@ public class ReplicateScaleFilter extends ImageFilter
      *
      * @param props the list of properties associated with this image 
      */
-    public void setProperties(Hashtable props)
+    public void setProperties(Hashtable<?, ?> props)
     {
-	props.put("filters", "ReplicateScaleFilter");
-	if (consumer != null)
-	  consumer.setProperties(props);
+      Hashtable<Object, Object> prop2 = (Hashtable<Object, Object>) props;
+      prop2.put("filters", "ReplicateScaleFilter");
+      if (consumer != null)
+        consumer.setProperties(prop2);
     }
 
     /**

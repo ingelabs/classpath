@@ -321,7 +321,7 @@ public class JarFile extends ZipFile
    *
    * @exception IllegalStateException when the JarFile is already closed
    */
-  public Enumeration entries() throws IllegalStateException
+  public Enumeration<JarEntry> entries() throws IllegalStateException
   {
     return new JarEnumeration(super.entries(), this);
   }
@@ -330,13 +330,13 @@ public class JarFile extends ZipFile
    * Wraps a given Zip Entries Enumeration. For every zip entry a
    * JarEntry is created and the corresponding Attributes are looked up.
    */
-  private static class JarEnumeration implements Enumeration
+  private static class JarEnumeration implements Enumeration<JarEntry>
   {
 
-    private final Enumeration entries;
+    private final Enumeration<? extends ZipEntry> entries;
     private final JarFile jarfile;
 
-    JarEnumeration(Enumeration e, JarFile f)
+    JarEnumeration(Enumeration<? extends ZipEntry> e, JarFile f)
     {
       entries = e;
       jarfile = f;
@@ -347,7 +347,7 @@ public class JarFile extends ZipFile
       return entries.hasMoreElements();
     }
 
-    public Object nextElement()
+    public JarEntry nextElement()
     {
       ZipEntry zip = (ZipEntry) entries.nextElement();
       JarEntry jar = new JarEntry(zip);

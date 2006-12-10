@@ -104,7 +104,7 @@ public class DefaultComboBoxModel extends AbstractListModel
    * 
    * @throws NullPointerException if <code>vector</code> is <code>null</code>.
    */
-  public DefaultComboBoxModel(Vector vector)
+  public DefaultComboBoxModel(Vector<?> vector)
   {
     this.list = vector;
     if (getSize() > 0)

@@ -1,5 +1,5 @@
 /* java.lang.ref.ReferenceQueue
-   Copyright (C) 1999, 2006 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2004, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -50,7 +50,7 @@ package java.lang.ref;
  * @author Jochen Hoenicke
  * @see Reference#enqueue()
  */
-public class ReferenceQueue
+public class ReferenceQueue<T>
 {
   /**
    * This is a linked list of references.  If this is null, the list is
@@ -60,7 +60,7 @@ public class ReferenceQueue
    * itself (not to null, since <code>nextOnQueue</code> is used to 
    * determine if a reference is enqueued).
    */
-  private Reference first;
+  private Reference<? extends T> first;
 
   /**
    * This is the lock that protects our linked list and is used to signal
@@ -82,7 +82,7 @@ public class ReferenceQueue
    * @return a reference on the queue, if there is one,
    * <code>null</code> otherwise.  
    */
-  public Reference poll()
+  public Reference<? extends T> poll()
   { 
     return dequeue();
   }
@@ -92,8 +92,8 @@ public class ReferenceQueue
    * @param ref the reference that should be enqueued.
    * @return true if successful, false if not.
    */
-  final boolean enqueue(Reference ref)
-  {
+  final boolean enqueue(Reference<? extends T> ref)
+    {
     synchronized (lock)
       {
         if (ref.queue != this)
@@ -113,14 +113,14 @@ public class ReferenceQueue
    * Remove a reference from the queue, if there is one.
    * @return the first element of the queue, or null if there isn't any.
    */
-  private Reference dequeue()
+  private Reference<? extends T> dequeue()
   {
     synchronized (lock)
       {
         if (first == null)
           return null;
-
-        Reference result = first;
+  
+        Reference<? extends T> result = first;
         first = (first == first.nextOnQueue) ? null : first.nextOnQueue;
         result.nextOnQueue = null;
         return result;
@@ -136,7 +136,7 @@ public class ReferenceQueue
    * <code>null</code> if timeout period expired.  
    * @exception InterruptedException if the wait was interrupted.
    */
-  public Reference remove(long timeout)
+  public Reference<? extends T> remove(long timeout)
     throws InterruptedException
   {
     synchronized (lock)
@@ -156,7 +156,7 @@ public class ReferenceQueue
    * @return the reference removed from the queue.  
    * @exception InterruptedException if the wait was interrupted.
    */
-  public Reference remove()
+  public Reference<? extends T> remove()
     throws InterruptedException
   {
     return remove(0L);

@@ -999,7 +999,8 @@ public abstract class AbstractGraphics2D
         else
           copy.clip = new GeneralPath(clip);
 
-        copy.renderingHints = new RenderingHints(renderingHints);
+	copy.renderingHints = new RenderingHints(null);
+	copy.renderingHints.putAll(renderingHints);
         copy.transform = new AffineTransform(transform);
         // The remaining state is inmmutable and doesn't need to be copied.
         return copy;

@@ -268,7 +268,8 @@ public class AlgorithmParameters
    * @throws InvalidParameterSpecException
    *           if <code>paramSpec</code> is invalid.
    */
-  public final AlgorithmParameterSpec getParameterSpec(Class paramSpec)
+  public final <T extends AlgorithmParameterSpec>
+  T getParameterSpec(Class<T> paramSpec)
     throws InvalidParameterSpecException
   {
     return paramSpi.engineGetParameterSpec(paramSpec);

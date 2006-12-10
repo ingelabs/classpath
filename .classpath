@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry excluding=".externalToolBuilders/|.settings/|ChangeLog*|Makefile*|autom4te.cache/|compat/|config*|doc/|examples/|external/|external/relaxngDatatype/|include/|install/|lib/|m4/|native/|resource/|scripts/|test/|testsuite/|tools/|vm/reference/|gnu/java/awt/peer/x/" kind="src" path=""/>
 	<classpathentry excluding=".cvsignore|Makefile|Makefile.am|Makefile.in|README.txt" kind="src" path="external/relaxngDatatype"/>
+	<classpathentry kind="src" path="external/jsr166"/>
 	<classpathentry excluding=".cvsignore|Makefile|Makefile.am|Makefile.in|README|gnu/classpath/tools/javah/" kind="src" path="tools"/>
 	<classpathentry excluding=".cvsignore|Makefile|Makefile.am|Makefile.in" kind="src" path="resource"/>
 	<classpathentry excluding=".cvsignore|Makefile.am" kind="src" path="vm/reference"/>

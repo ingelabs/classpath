@@ -102,7 +102,7 @@ public class ThreadInfo
   /**
    * The state of the thread which this instance concerns.
    */
-  private String threadState;
+  private Thread.State threadState;
 
   /**
    * The number of times the thread has been blocked.
@@ -242,7 +242,7 @@ public class ThreadInfo
    * @param trace the stack trace of the thread to a pre-determined
    *              depth (see VMThreadMXBeanImpl)
    */
-  private ThreadInfo(long threadId, String threadName, String threadState,
+  private ThreadInfo(long threadId, String threadName, Thread.State threadState,
 		     long blockedCount, long blockedTime, String lockName, 
 		     long lockOwnerId, String lockOwnerName, long waitedCount,
 		     long waitedTime, boolean isInNative, boolean isSuspended,
@@ -389,7 +389,7 @@ public class ThreadInfo
 			       dTraces[a].get("lineNumber")).intValue());
     return new ThreadInfo(((Long) data.get("threadId")).longValue(),
 			  (String) data.get("threadName"),
-			  (String) data.get("threadState"),
+			  Thread.State.valueOf((String) data.get("threadState")),
 			  ((Long) data.get("blockedCount")).longValue(),
 			  ((Long) data.get("blockedTime")).longValue(),
 			  (String) data.get("lockName"),
@@ -486,7 +486,7 @@ public class ThreadInfo
    */
   public String getLockName()
   {
-    if (!threadState.equals("BLOCKED"))
+    if (threadState != Thread.State.BLOCKED)
       return null;
     return lockName;
   }
@@ -504,7 +504,7 @@ public class ThreadInfo
    */
   public long getLockOwnerId()
   {
-    if (!threadState.equals("BLOCKED"))
+    if (threadState != Thread.State.BLOCKED)
       return -1;
     return lockOwnerId;
   }
@@ -522,7 +522,7 @@ public class ThreadInfo
    */
   public String getLockOwnerName()
   {
-    if (!threadState.equals("BLOCKED"))
+    if (threadState != Thread.State.BLOCKED)
       return null;
     return lockOwnerName;
   }
@@ -579,7 +579,7 @@ public class ThreadInfo
    *
    * @return the thread's state.
    */
-  public String getThreadState()
+  public Thread.State getThreadState()
   {
     return threadState;
   }
@@ -697,7 +697,7 @@ public class ThreadInfo
       ", waitedCount=" + waitedCount +
       ", isInNative=" + isInNative + 
       ", isSuspended=" + isSuspended +
-      (threadState.equals("BLOCKED") ? 
+      (threadState == Thread.State.BLOCKED ? 
        ", lockOwnerId=" + lockOwnerId +
        ", lockOwnerName=" + lockOwnerName : "") +
       "]";

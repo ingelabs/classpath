@@ -25,15 +25,22 @@ echo "Adding java source files from srcdir '@top_srcdir@'."
  done) > ${top_builddir}/lib/classes.1
 
 # The same, but for the external code.
-# Right now all external code is in org/.
-for dir in @top_srcdir@/external/w3c_dom \
-   @top_srcdir@/external/sax @top_srcdir@/external/relaxngDatatype; do
-  (cd $dir
-  @FIND@ org -follow -name '*.java' -print |
-  sort -r | sed -e 's,/\([^/]*\)$, \1,' |
-  while read pkg file; do
-     echo $pkg $dir $pkg/$file
-  done)
+for dir in \
+   @top_srcdir@/external/w3c_dom \
+   @top_srcdir@/external/sax \
+   @top_srcdir@/external/relaxngDatatype \
+   @top_srcdir@/external/jsr166 \
+   ; do
+   (cd $dir
+   for subdir in java javax gnu org sun; do
+      if test -d $subdir; then
+	 @FIND@ $subdir -follow -name '*.java' -print |
+	 sort -r | sed -e 's,/\([^/]*\)$, \1,' |
+	 while read pkg file; do
+	    echo $pkg $dir $pkg/$file
+	 done
+      fi
+   done)
 done >> ${top_builddir}/lib/classes.1
 
 # Generate files for the VM classes.

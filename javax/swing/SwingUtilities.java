@@ -325,7 +325,7 @@ public class SwingUtilities
    * @see #getAncestorOfClass
    * @see #windowForComponent
    */
-  public static Container getAncestorOfClass(Class c, Component comp)
+  public static Container getAncestorOfClass(Class<?> c, Component comp)
   {
     while (comp != null && (! c.isInstance(comp)))
       comp = comp.getParent();

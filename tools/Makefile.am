@@ -4,21 +4,13 @@ GLIBJ_BOOTCLASSPATH='$(top_builddir)/lib':'$(top_builddir)/lib/glibj.zip'
 GLIBJ_CLASSPATH=asm
 
 # Setup the compiler to use the GNU Classpath library we just build
-if FOUND_GCJ
-JCOMPILER = $(GCJ) -encoding UTF-8 --bootclasspath $(GLIBJ_BOOTCLASSPATH) --classpath $(GLIBJ_CLASSPATH):. -C
-else
-if FOUND_JIKES
-JCOMPILER = $(JIKES) $(JIKESENCODING) -bootclasspath '$(GLIBJ_BOOTCLASSPATH)' -extdirs '' -sourcepath '' --classpath $(GLIBJ_CLASSPATH):.
-else
 if FOUND_GCJX
 JCOMPILER = $(GCJX) -encoding UTF-8 -bootclasspath $(GLIBJ_BOOTCLASSPATH) -sourcepath '' -classpath $(GLIBJ_CLASSPATH):.
 else
 if FOUND_ECJ
-JCOMPILER = $(ECJ) -source 1.4 -encoding UTF-8 -bootclasspath $(GLIBJ_BOOTCLASSPATH) -classpath .:$(GLIBJ_CLASSPATH)
+JCOMPILER = $(ECJ) -1.5 -encoding UTF-8 -bootclasspath $(GLIBJ_BOOTCLASSPATH) -classpath .:$(GLIBJ_CLASSPATH)
 else
 error dunno how to setup the JCOMPILER and compile
-endif
-endif
 endif
 endif
 
@@ -27,6 +19,7 @@ bin_SCRIPTS =
 bin_PROGRAMS = gappletviewer gjarsigner gkeytool \
 	gjar gnative2ascii gserialver gjavah grmiregistry \
 	gtnameserv gorbd grmid grmic
+
 
 AM_CPPFLAGS = -Wall \
 	-I$(top_srcdir)/include \

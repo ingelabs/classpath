@@ -1,5 +1,5 @@
 /* DragGestureRecognizer.java --
-   Copyright (C) 2002,2006 Free Software Foundation, Inc.
+   Copyright (C) 2002, 2005, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -50,6 +50,8 @@ import java.util.TooManyListenersException;
 
 /**
  * STUBBED
+ * @author Michael Koch (konqueror@gmx.de)
+ * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.2
  */
 public abstract class DragGestureRecognizer implements Serializable
@@ -63,7 +65,7 @@ public abstract class DragGestureRecognizer implements Serializable
   protected Component component;
   protected transient DragGestureListener dragGestureListener;
   protected int sourceActions;
-  protected ArrayList events = new ArrayList();
+  protected ArrayList<InputEvent> events = new ArrayList<InputEvent>();
 
   protected DragGestureRecognizer(DragSource ds, Component c, int sa,
                                   DragGestureListener dgl)

@@ -84,7 +84,7 @@ public abstract class AbstractSpinnerModel implements SpinnerModel
    * @param c the type of listener
    * @return the listeners that are of the specific type
    */
-  public EventListener[] getListeners(Class c)
+  public <T extends EventListener> T[] getListeners(Class<T> c)
   {
     return listenerList.getListeners(c);
   }

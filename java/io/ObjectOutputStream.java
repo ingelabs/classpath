@@ -48,6 +48,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+
 /**
  * An <code>ObjectOutputStream</code> can be used to write objects
  * as well as primitive data in a platform-independent manner to an
@@ -113,6 +114,11 @@ import java.lang.reflect.Method;
  * @see java.io.Externalizable
  * @see java.io.ObjectInputStream
  * @see java.io.Serializable
+ * @author Tom Tromey (tromey@redhat.com)
+ * @author Jeroen Frijters (jeroen@frijters.net)
+ * @author Guilhem Lavaux (guilhem@kaffe.org)
+ * @author Michael Koch (konqueror@gmx.de)
+ * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  */
 public class ObjectOutputStream extends OutputStream
   implements ObjectOutput, ObjectStreamConstants
@@ -601,11 +607,11 @@ public class ObjectOutputStream extends OutputStream
    *
    * @see ObjectInputStream#resolveClass(java.io.ObjectStreamClass)
    */
-  protected void annotateClass(Class cl) throws IOException
+  protected void annotateClass(Class<?> cl) throws IOException
   {
   }
 
-  protected void annotateProxyClass(Class cl) throws IOException
+  protected void annotateProxyClass(Class<?> cl) throws IOException
   {
   }
 

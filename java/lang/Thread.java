@@ -143,6 +143,9 @@ public class Thread implements Runnable
 
   /** This thread's ID.  */
   private final long threadId;
+  
+  /** The park blocker.  See LockSupport.  */
+  Object parkBlocker;
 
   /** The next thread number to use. */
   private static int numAnonymousThreadsCreated;
@@ -352,9 +355,9 @@ public class Thread implements Runnable
     if (group == null)
       {
 	if (sm != null)
-	    group = sm.getThreadGroup();
+	  group = sm.getThreadGroup();
 	if (group == null)
-	    group = current.group;
+	  group = current.group;
       }
     if (sm != null)
       sm.checkAccess(group);
@@ -398,7 +401,7 @@ public class Thread implements Runnable
     this.vmThread = vmThread;
     this.runnable = null;
     if (name == null)
-	name = createAnonymousThreadName();
+      name = createAnonymousThreadName();
     this.name = name;
     this.priority = priority;
     this.daemon = daemon;
@@ -413,11 +416,11 @@ public class Thread implements Runnable
     // (and, as above, the constructiong sequence calls Thread.currenThread()).
     contextClassLoaderIsSystemClassLoader = true;
     synchronized (Thread.class)
-      {
-	this.threadId = ++totalThreadsCreated;
-      }
+    {
+      this.threadId = totalThreadsCreated++;
+    }
   }
-
+  
   /**
    * Generate a name for an anonymous thread.
    */
@@ -466,7 +469,7 @@ public class Thread implements Runnable
   {
     VMThread t = vmThread;
     if (t == null || group == null)
-	throw new IllegalThreadStateException();
+      throw new IllegalThreadStateException();
 
     return t.countStackFrames();
   }
@@ -610,7 +613,7 @@ public class Thread implements Runnable
     checkAccess();
     VMThread t = vmThread;
     if (t != null)
-	t.interrupt();
+      t.interrupt();
   }
 
   /**
@@ -701,12 +704,12 @@ public class Thread implements Runnable
    */
   public final void join(long ms, int ns) throws InterruptedException
   {
-    if(ms < 0 || ns < 0 || ns > 999999)
-	throw new IllegalArgumentException();
+    if (ms < 0 || ns < 0 || ns > 999999)
+      throw new IllegalArgumentException();
 
     VMThread t = vmThread;
-    if(t != null)
-        t.join(ms, ns);
+    if (t != null)
+      t.join(ms, ns);
   }
 
   /**
@@ -724,7 +727,7 @@ public class Thread implements Runnable
     checkAccess();
     VMThread t = vmThread;
     if (t != null)
-	t.resume();
+      t.resume();
   }
   
   /**
@@ -828,9 +831,9 @@ public class Thread implements Runnable
       throw new NullPointerException();
     VMThread t = vmThread;
     if (t != null)
-	t.setName(name);
+      t.setName(name);
     else
-	this.name = name;
+      this.name = name;
   }
 
   /**
@@ -888,7 +891,6 @@ public class Thread implements Runnable
    */
   public static void sleep(long ms, int ns) throws InterruptedException
   {
-
     // Check parameters
     if (ms < 0 )
       throw new IllegalArgumentException("Negative milliseconds: " + ms);
@@ -913,7 +915,7 @@ public class Thread implements Runnable
   public synchronized void start()
   {
     if (vmThread != null || group == null)
-	throw new IllegalThreadStateException();
+      throw new IllegalThreadStateException();
 
     VMThread.create(this, stacksize);
   }
@@ -1010,7 +1012,7 @@ public class Thread implements Runnable
     checkAccess();
     VMThread t = vmThread;
     if (t != null)
-	t.suspend();
+      t.suspend();
   }
 
   /**
@@ -1037,9 +1039,9 @@ public class Thread implements Runnable
     priority = Math.min(priority, group.getMaxPriority());
     VMThread t = vmThread;
     if (t != null)
-	t.setPriority(priority);
+      t.setPriority(priority);
     else
-	this.priority = priority;
+      this.priority = priority;
   }
 
   /**
@@ -1233,6 +1235,37 @@ public class Thread implements Runnable
     void uncaughtException(Thread thr, Throwable exc);
   }
 
+  /** 
+   * <p>
+   * Represents the current state of a thread, according to the VM rather
+   * than the operating system.  It can be one of the following:
+   * </p>
+   * <ul>
+   * <li>NEW -- The thread has just been created but is not yet running.</li>
+   * <li>RUNNABLE -- The thread is currently running or can be scheduled
+   * to run.</li>
+   * <li>BLOCKED -- The thread is blocked waiting on an I/O operation
+   * or to obtain a lock.</li>
+   * <li>WAITING -- The thread is waiting indefinitely for another thread
+   * to do something.</li>
+   * <li>TIMED_WAITING -- The thread is waiting for a specific amount of time
+   * for another thread to do something.</li>
+   * <li>TERMINATED -- The thread has exited.</li>
+   * </ul>
+   *
+   * @since 1.5 
+   */
+  public enum State
+  {
+    BLOCKED, NEW, RUNNABLE, TERMINATED, TIMED_WAITING, WAITING;
+
+    /**
+     * For compatability with Sun's JDK
+     */
+    private static final long serialVersionUID = 605505746047245783L;
+  }
+
+
   /**
    * Returns the current state of the thread.  This
    * is designed for monitoring thread behaviour, rather
@@ -1240,14 +1273,14 @@ public class Thread implements Runnable
    *
    * @return the current thread state.
    */
-  public String getState()
+  public State getState()
   {
     VMThread t = vmThread;
     if (t != null)
-      return t.getState();
+      return State.valueOf(t.getState());
     if (group == null)
-      return "TERMINATED";
-    return "NEW";
+      return State.TERMINATED;
+    return State.NEW;
   }
 
   /**
@@ -1283,7 +1316,7 @@ public class Thread implements Runnable
    * @since 1.5
    * @see #getStackTrace()
    */
-  public static Map getAllStackTraces()
+  public static Map<Thread, StackTraceElement[]> getAllStackTraces()
   {
     ThreadGroup group = currentThread().group;
     while (group.getParent() != null)
