@@ -417,7 +417,7 @@ public class Thread implements Runnable
     contextClassLoaderIsSystemClassLoader = true;
     synchronized (Thread.class)
     {
-      this.threadId = totalThreadsCreated++;
+      this.threadId = ++totalThreadsCreated;
     }
   }
   

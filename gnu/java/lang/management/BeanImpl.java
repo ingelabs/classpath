@@ -478,6 +478,7 @@ public class BeanImpl
       {
 	OpenType k = SimpleType.VOID;
 	OpenType v = SimpleType.VOID;
+	/*
 	TypeVariable[] vars = c.getTypeParameters();
 	for (int a = 0; a < vars.length; ++a)
 	  {
@@ -486,6 +487,7 @@ public class BeanImpl
 	    if (vars[a].getName().equals("V"))
 	      v = getTypeFromClass((Class) vars[a].getGenericDeclaration());
 	  }
+	*/
 	CompositeType ctype = new CompositeType(Map.class.getName(), Map.class.getName(),
 						new String[] { "key", "value" },
 						new String[] { "Map key", "Map value"},
@@ -499,9 +501,11 @@ public class BeanImpl
     if (List.class.isAssignableFrom(c))
       {
 	OpenType e = SimpleType.VOID;
-	TypeVariable[] vars = c.getTypeParameters();
-	if (vars.length > 0)
+	/*
+	  TypeVariable[] vars = c.getTypeParameters();
+	  if (vars.length > 0)
 	  e = getTypeFromClass((Class) vars[0].getGenericDeclaration());
+	*/
 	return new OpenMBeanParameterInfoSupport("TransParam",
 						 "Translated parameter",
 						 new ArrayType(1, e)
