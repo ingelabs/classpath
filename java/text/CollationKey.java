@@ -65,7 +65,7 @@ import java.util.Arrays;
  * @author Tom Tromey (tromey@cygnus.com)
  * @date March 25, 1999
  */
-public final class CollationKey implements Comparable<CollationKey>
+public class CollationKey implements Comparable<CollationKey>
 {
   /**
    * This is the <code>Collator</code> this object was created from.
