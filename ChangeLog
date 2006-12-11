@@ -1,3 +1,15 @@
+2006-12-11  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/datatransfer/SystemFlavorMap.java
+	(flavorToNativeMap): Make typesafe.
+	(nativeToFlavorMap): Make typesafe.
+	(SystemFlavorMap): Read in mapping by reading the flavormap.properties.
+	(addFlavorForUnencodedNative): Access maps in a typesafe way.
+	(addUnencodedNativeForFlavor): Access maps in a typesafe way.
+	(getFlavorsForNative): Implemented.
+	(getNativesForFlavor): Implemented.
+	(setupMapping): New helper method.
+
 2006-12-11  Jeroen Frijters  <jeroen@frijters.net>
 
 	* javax/net/ssl/SSLSocketFactory.java (getDefault):
