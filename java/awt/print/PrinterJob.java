@@ -264,7 +264,8 @@ public abstract class PrinterJob
    * @return Array of stream print services, could be empty.
    * @since 1.4
    */
-  public static StreamPrintServiceFactory[] lookupStreamPrintServices(String mimeType)
+  public static StreamPrintServiceFactory[]
+    lookupStreamPrintServices(String mimeType)
   {
     return StreamPrintServiceFactory.lookupStreamPrintServiceFactories(
       DocFlavor.SERVICE_FORMATTED.PAGEABLE, mimeType);
