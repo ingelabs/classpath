@@ -430,9 +430,9 @@ public class BeanImpl
 	int lparam = type.indexOf("<");
 	int comma = type.indexOf(",", lparam);
 	int rparam = type.indexOf(">", comma);
-	String key = type.substring(lparam + 1, comma);
+	String key = type.substring(lparam + 1, comma).trim();
 	OpenType k = translate(key).getOpenType();
-	OpenType v = translate(type.substring(comma + 1, rparam)).getOpenType(); 
+	OpenType v = translate(type.substring(comma + 1, rparam).trim()).getOpenType(); 
  	CompositeType ctype = new CompositeType(Map.class.getName(), Map.class.getName(),
 						new String[] { "key", "value" },
 						new String[] { "Map key", "Map value"},
@@ -447,7 +447,7 @@ public class BeanImpl
       {
 	int lparam = type.indexOf("<");
 	int rparam = type.indexOf(">");
-       	OpenType e = translate(type.substring(lparam + 1, rparam)).getOpenType();
+       	OpenType e = translate(type.substring(lparam + 1, rparam).trim()).getOpenType();
 	return new OpenMBeanParameterInfoSupport("TransParam",
 						 "Translated parameter",
 						 new ArrayType(1, e)

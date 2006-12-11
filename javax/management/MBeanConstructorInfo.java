@@ -81,9 +81,15 @@ public class MBeanConstructorInfo
     Type[] paramTypes = cons.getGenericParameterTypes();
     signature = new MBeanParameterInfo[paramTypes.length];
     for (int a = 0; a < paramTypes.length; ++a)
-      signature[a] = new MBeanParameterInfo(null,
-					    paramTypes[a].toString(),
-					    null);
+      {
+	Type t = paramTypes[a];
+	if (t instanceof Class)
+	  signature[a] = new MBeanParameterInfo(null,
+						((Class) t).getName(),
+						null);
+	else
+	  signature[a] = new MBeanParameterInfo(null, t.toString(), null);
+      }
   }
 
   /**

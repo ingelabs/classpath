@@ -117,10 +117,20 @@ public class MBeanOperationInfo
     Type[] paramTypes = method.getGenericParameterTypes();
     signature = new MBeanParameterInfo[paramTypes.length];
     for (int a = 0; a < paramTypes.length; ++a)
-      signature[a] = new MBeanParameterInfo(null,
-					    paramTypes[a].toString(),
-					    null);
-    type = method.getGenericReturnType().toString();
+      {
+	Type t = paramTypes[a];
+	if (t instanceof Class)
+	  signature[a] = new MBeanParameterInfo(null,
+						((Class) t).getName(),
+						 null);
+	else
+	  signature[a] = new MBeanParameterInfo(null, t.toString(), null);
+      }
+    Type retType = method.getGenericReturnType();
+    if (retType instanceof Class)
+      type = ((Class) retType).getName();
+    else
+      type = retType.toString();
     if (method.getReturnType() == Void.TYPE)
       {
 	if (paramTypes.length == 0)
