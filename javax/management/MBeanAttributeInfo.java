@@ -109,13 +109,13 @@ public class MBeanAttributeInfo
 				       "not be null.");
     if (getter == null)
       {
-	attributeType = setter.getParameterTypes()[0].getName();
+	attributeType = setter.getGenericParameterTypes()[0].toString();
 	isRead = false;
 	is = false;
       }
     else
       {
-	attributeType = getter.getReturnType().getName();
+	attributeType = getter.getGenericReturnType().toString();
 	isRead = true;
 	is = getter.getName().startsWith("is");
       }
