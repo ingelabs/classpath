@@ -1,3 +1,22 @@
+2006-12-12  Roman Kennke  <kennke@aicas.com>
+
+	* javax/imageio/FileCacheImageOutputStream.java
+	(cache): New field. The actual cache as RandomAccessFile.
+	(cacheDir): Removed. Not needed at all.
+	(cacheFile): New field. The cache file.
+	(maxPos): New field. Stores the maximum position.
+	(FileCacheImageOutputStream): Initialize cache file.
+	(checkStreamClosed): Removed. This should be done by the super
+	method checkClosed().
+	(close): Properly close the stream and delete the cache.
+	(flushBefore): Implemented to also flush the cache.
+	(length): Implemented to return the length of the cache.
+	(read()): Implemented to read from the cache.
+	(read(byte[],int,int)): Likewise.
+	(seek): Implemented to seek the cache too.
+	(write(int)): Write to cache.
+	(write(byte[],int,int))
+
 2006-12-12  Francis Kung  <fkung@redhat.com>
 
 	PR 30155
