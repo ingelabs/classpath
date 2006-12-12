@@ -336,7 +336,8 @@ public class MBeanServerFactory
 	    builder.getClass() != MBeanServerBuilder.class)
 	  builder = new MBeanServerBuilder();
       }
-    else if (!(builderClass.equals(builder.getClass().getName())))
+    else if (!(builder != null &&
+	       builderClass.equals(builder.getClass().getName())))
       {
 	ClassLoader cl = Thread.currentThread().getContextClassLoader();
 	if (cl == null)

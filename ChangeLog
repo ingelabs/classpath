@@ -1,3 +1,10 @@
+2006-11-12  Andrew John Hughes  <tromey@redhat.com>
+
+	PR classpath/30154:
+	* javax/management/MBeanServer.java:
+	(createMBeanServer(String)): Check for a null
+	builder.
+
 2006-12-11  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/print/PrinterJob.java
