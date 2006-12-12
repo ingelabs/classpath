@@ -1,4 +1,4 @@
-2006-11-12  Andrew John Hughes  <tromey@redhat.com>
+2006-11-12  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/30154:
 	* javax/management/MBeanServer.java:
