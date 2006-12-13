@@ -27,10 +27,6 @@ JAVAC = $(ECJ) -1.5 -warn:-deprecation,serial,typeHiding,unchecked,unused,vararg
 #if FOUND_KJC
 ### FIXME: from what I can tell, kjc does not support a -encoding option.
 #JAVAC = $(KJC) -classpath .:$(USER_CLASSLIB) -d . @classes
-else
-if FOUND_GCJX
-JAVAC = $(GCJX) -g -encoding UTF-8 -classpath .:$(USER_CLASSLIB) -d . @classes
-endif # FOUND_GCJX
 #endif # FOUND_KJC
 #endif # FOUND_GCJ
 #endif # FOUND_JIKES

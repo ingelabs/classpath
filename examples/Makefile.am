@@ -8,14 +8,10 @@ GLIBJ_CLASSPATH='$(top_builddir)/lib':'$(top_builddir)/lib/glibj.zip':'$(top_bui
 #if FOUND_JIKES
 #JCOMPILER = $(JIKES) -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(top_builddir)/lib:.
 #else
-if FOUND_GCJX
-JCOMPILER = $(GCJX) -encoding UTF-8 -bootclasspath '' -sourcepath '' -classpath $(GLIBJ_CLASSPATH):.
-else
 if FOUND_ECJ
 JCOMPILER = $(ECJ) -1.5 -encoding UTF-8 -bootclasspath $(GLIBJ_CLASSPATH) -classpath .
 else
 error dunno how to setup the JCOMPILER and compile
-endif
 #endif
 #endif
 endif

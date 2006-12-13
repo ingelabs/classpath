@@ -1,5 +1,14 @@
 2006-12-13  Tom Tromey  <tromey@redhat.com>
 
+	* examples/Makefile.am: Removed gcjx code.
+	* lib/Makefile.am: Removed gcjx code.
+	* tools/Makefile.am: Removed gcjx code.
+	* m4/acinclude.m4 (CLASSPATH_FIND_JAVAC): Removed gcjx code.
+	(CLASSPATH_WITH_GCJX): Removed.
+	(CLASSPATH_CHECK_GCJX): Likewise.
+
+2006-12-13  Tom Tromey  <tromey@redhat.com>
+
 	* tools/toolwrapper.c (MAINCLASS): New define.
 	(main): Use it.
 	* tools/Makefile.am (gnative2ascii_CFLAGS): Added -D for

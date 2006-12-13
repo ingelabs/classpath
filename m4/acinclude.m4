@@ -8,7 +8,6 @@ AC_DEFUN([CLASSPATH_FIND_JAVAC],
 dnl  CLASSPATH_WITH_GCJ
 dnl  CLASSPATH_WITH_JIKES
 dnl  CLASSPATH_WITH_KJC
-  CLASSPATH_WITH_GCJX
   CLASSPATH_WITH_ECJ
 
   if test "x${user_specified_javac}" = x; then
@@ -21,11 +20,10 @@ dnl    AM_CONDITIONAL(FOUND_JIKES, test "x${user_specified_javac}" = xjikes)
     AM_CONDITIONAL(FOUND_ECJ, test "x${user_specified_javac}" = xecj)
   fi
 dnl  AM_CONDITIONAL(FOUND_KJC, test "x${user_specified_javac}" = xkjc)
-  AM_CONDITIONAL(FOUND_GCJX, test "x${user_specified_javac}" = xgcjx)
 
-dnl  if test "x${GCJ}" = x && test "x${JIKES}" = x && test "x${user_specified_javac}" != xkjc && test "x${user_specified_javac}" != xgcjx; then
-  if test "x${ECJ}" = x && test "x${user_specified_javac}" != xecj && test "x${user_specified_javac}" != xgcjx; then
-      AC_MSG_ERROR([cannot find javac, try --with-ecj or --with-gcjx])
+dnl  if test "x${GCJ}" = x && test "x${JIKES}" = x && test "x${user_specified_javac}" != xkjc; then
+  if test "x${ECJ}" = x && test "x${user_specified_javac}" != xecj; then
+      AC_MSG_ERROR([cannot find javac, try --with-ecj])
   fi
 ])
 
@@ -181,41 +179,6 @@ AC_DEFUN([CLASSPATH_CHECK_KJC],
     fi
   else
     AC_PATH_PROG(KJC, "kJC")
-  fi
-])
-
-dnl -----------------------------------------------------------
-AC_DEFUN([CLASSPATH_WITH_GCJX],
-[
-  AC_ARG_WITH([gcjx], 
-  	      [AS_HELP_STRING(--with-gcjx,bytecode compilation with gcjx)],
-  [
-    if test "x${withval}" != x && test "x${withval}" != xyes && test "x${withval}" != xno; then
-      CLASSPATH_CHECK_GCJX(${withval})
-    else
-      if test "x${withval}" != xno; then
-        CLASSPATH_CHECK_GCJX
-      fi
-    fi
-    user_specified_javac=gcjx
-  ],
-  [ 
-    CLASSPATH_CHECK_GCJX
-  ])
-  AC_SUBST(GCJX)
-])
-
-dnl -----------------------------------------------------------
-AC_DEFUN([CLASSPATH_CHECK_GCJX],
-[
-  if test "x$1" != x; then
-    if test -f "$1"; then
-      GCJX="$1"
-    else
-      AC_PATH_PROG(GCJX, "$1")
-    fi
-  else
-    AC_PATH_PROG(GCJX, "gcjx")
   fi
 ])
 
