@@ -1,5 +1,33 @@
 2006-12-13  Tom Tromey  <tromey@redhat.com>
 
+	* java/security/BasicPermission.java: Remove gcj workaround.
+	* java/security/cert/X509Certificate.java: Remove gcj workaround.
+	* java/net/ServerSocket.java (ServerSocket): Remove gcj
+	workaround.
+	(getImpl): Likewise.
+	* java/util/TreeMap.java (TreeIterator): Remove gcj workaround.
+	* java/text/AttributedStringIterator.java (getRunLimit): Remove
+	qualifications.
+	(getRunStart): Likewise.
+	* java/awt/AWTKeyStroke.java (removeEldestEntry): Remove gcj
+	workaround.
+	* java/awt/AlphaComposite.java (removeEldestEntry): Remove gcj
+	workaround.
+	* java/awt/geom/GeneralPath.java (WIND_EVEN_ODD, WIND_NON_ZERO,
+	BIG_VALUE): Don't fully qualify.
+	* gnu/javax/sound/midi/alsa/AlsaMidiSequencerDevice.java: Removed
+	imports.
+	* gnu/javax/sound/midi/alsa/AlsaPortDevice.java: Removed import.
+	* gnu/javax/sound/midi/dssi/DSSISynthesizer.java: Removed import.
+	* javax/swing/JComponent.java (firePropertyChange): Removed.
+	* javax/swing/text/InternationalFormatter.java (clone):
+	Uncomment.
+	* javax/swing/text/AbstractDocument.java (addEdit): Remove gcj
+	workaround.
+	(getChange): Likewise.
+
+2006-12-13  Tom Tromey  <tromey@redhat.com>
+
 	* examples/Makefile.am: Removed gcjx code.
 	* lib/Makefile.am: Removed gcjx code.
 	* tools/Makefile.am: Removed gcjx code.
