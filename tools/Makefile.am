@@ -49,12 +49,14 @@ gjar_CFLAGS = \
 gnative2ascii_SOURCES = toolwrapper.c
 gnative2ascii_CFLAGS = \
 	-DTOOLPACKAGE="\"native2ascii\"" \
-	-DTOOLNAME="\"gnative2ascii\""
+	-DTOOLNAME="\"gnative2ascii\"" \
+	-DMAINCLASS="\"Native2ASCII\""
 
 gserialver_SOURCES = toolwrapper.c
 gserialver_CFLAGS = \
 	-DTOOLPACKAGE="\"serialver\"" \
-	-DTOOLNAME="\"gserialver\""
+	-DTOOLNAME="\"gserialver\"" \
+	-DMAINCLASS="\"SerialVer\""
 
 grmiregistry_SOURCES = toolwrapper.c
 grmiregistry_CFLAGS = \

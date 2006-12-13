@@ -1,3 +1,13 @@
+2006-12-13  Tom Tromey  <tromey@redhat.com>
+
+	* tools/toolwrapper.c (MAINCLASS): New define.
+	(main): Use it.
+	* tools/Makefile.am (gnative2ascii_CFLAGS): Added -D for
+	MAINCLASS.
+	(gserialver_CFLAGS): Likewise.
+	* tools/gnative2ascii.in: Main class is named Native2ASCII.
+	* tools/gserialver.in: Main class is named SerialVer.
+
 2006-12-12  Roman Kennke  <kennke@aicas.com>
 
 	* javax/imageio/FileCacheImageOutputStream.java
