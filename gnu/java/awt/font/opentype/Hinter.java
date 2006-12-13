@@ -1,4 +1,4 @@
-/* Width.java -- FIXME: briefly describe file purpose
+/* Hinter.java -- The interface to a hinting implementation
    Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -36,15 +36,17 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package gnu.java.awt.font.autofit;
+package gnu.java.awt.font.opentype;
 
-public class Width
+/**
+ * The interface to a hinting implementation.
+ */
+public interface Hinter
 {
-  int org;
-  int cur;
-  int fit;
-  Width(int dist)
-  {
-    org = dist;
-  }
+  /**
+   * Initializes the hinter.
+   *
+   * @param face the font for which the hinter should be used
+   */
+  void init(OpenTypeFont face);
 }

@@ -48,7 +48,7 @@ package gnu.java.awt.font.opentype.truetype;
  *
  * @author Sascha Brawer (brawer@dandelis.ch)
  */
-final class Fixed
+public final class Fixed
 {
   public static final int ONE = 1<<6;
 

@@ -1,3 +1,76 @@
+2006-12-13  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/font/autofit/AutoHinter.java: New class. The entry
+	point into the autohinter.
+	* gnu/java/awt/font/autofit/AxisHints.java
+	(majorDir): New field.
+	(numEdges): New field.
+	(numSegments): New field.
+	(AxisHints): New constructor.
+	(newSegment): New method. Records a new segment.
+	* gnu/java/awt/font/autofit/Constants.java
+	(DIR_DOWN): New constant.
+	(DIR_LEFT): New constant.
+	(DIR_RIGHT): New constant.
+	(DIR_TOP): New constant.
+	(DIR_NONE): New constant.
+	* gnu/java/awt/font/autofit/GlyphHints.java
+	(contours): New field.
+	(numContours): New field.
+	(maxPoints): New field.
+	(metrics): New field.
+	(numPoints): New field.
+	(points): New field.
+	(GlyphHints): New constructor.
+	(computeInflectionPoints): New helper method.
+	(computeSegments): Moved to Latin.
+	(linkSegments): Moved to Lating.
+	(reload): Implemented.
+	(rescale): Copy the metrics.
+	(setWeakPoint): New helper method.
+	* gnu/java/awt/font/autofit/Latin.java
+	(MAX_WIDTH): Make package private.
+	(computeSegments): New method. Computes the segments to a glyph.
+	(initWidths): Implemented. Determines the standard widths of stems
+	for the font.
+	(linkSegments): New method. Links stem segments and determines
+	serif segments.
+	* gnu/java/awt/font/autofit/LatinMetrics.java
+	(LatinMetrics()): New constructor.
+	(LatinMetrics(OpenTypeFont)): New constructor.
+	* gnu/java/awt/font/autofit/ScriptMetrics.java
+	(ScriptMetrics): New constructor.
+	* gnu/java/awt/font/autofit/Segment.java
+	(FLAG_EDGE_NORMAL): New constant.
+	(FLAG_EDGE_ROUND): New constant.
+	(contour): New field.
+	(dir): New field.
+	(first): New field.
+	(flags): New field.
+	(index): Removed.
+	(last): New field.
+	(len): New field.
+	(maxPos): New field.
+	(minPos): New field.
+	(numLinked): New field.
+	(score): New field.
+	(serif): New field.
+	(toString): New method. For debug output.
+	* gnu/java/awt/font/autofit/Utils.java: New utility class.
+	* gnu/java/awt/font/opentype/Hinter.java: New interface for
+	hinter implementations.
+	* gnu/java/awt/font/opentype/OpenTypeFont.java
+	(hinter): New field. Stores the hinter for that font.
+	(checkHinter): Checks if a hinter is installed and installs one
+	if necessary.
+	(createGlyphVector): Check installed hinter.
+	* gnu/java/awt/font/opentype/truetype/Fixed.java: Make class public
+	for access in the autohinting package.
+	* gnu/java/awt/font/opentype/truetype/Point.java: New class. Stores
+	coordinates and additional info that describe the outline of a glyph.
+	* gnu/java/awt/font/opentype/truetype/Zone.java: Use Point class
+	for storing the points.
+
 2006-12-13  Tom Tromey  <tromey@redhat.com>
 
 	* java/security/BasicPermission.java: Remove gcj workaround.

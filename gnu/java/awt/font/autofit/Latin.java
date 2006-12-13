@@ -39,8 +39,10 @@ exception statement from your version. */
 package gnu.java.awt.font.autofit;
 
 import java.awt.geom.AffineTransform;
+import java.util.HashSet;
 
 import gnu.java.awt.font.opentype.OpenTypeFont;
+import gnu.java.awt.font.opentype.truetype.Point;
 import gnu.java.awt.font.opentype.truetype.Zone;
 
 /**
@@ -50,7 +52,7 @@ class Latin
   implements Script, Constants
 {
 
-  private static final int MAX_WIDTHS = 16;
+  static final int MAX_WIDTHS = 16;
 
   public void applyHints(GlyphHints hints, ScriptMetrics metrics)
   {
@@ -135,19 +137,21 @@ class Latin
         LatinAxis axis = metrics.axis[dim];
         AxisHints axHints = hints.axis[dim];
         int numWidths = 0;
-        hints.computeSegments(dim);
-        hints.linkSegments(dim);
+        computeSegments(hints, dim);
+        linkSegments(hints, dim);
         Segment[] segs = axHints.segments;
+        HashSet<Segment> touched = new HashSet<Segment>();
         for (int i = 0; i < segs.length; i++)
           {
             Segment seg = segs[i];
             Segment link = seg.link;
-            if (link != null && link.link == seg && link.index > i)
+            if (link != null && link.link == seg && ! touched.contains(link))
               {
                 int dist = Math.abs(seg.pos - link.pos);
                 if (numWidths < MAX_WIDTHS)
-                  axis.widths[numWidths++].org = dist;
+                  axis.widths[numWidths++] = new Width(dist);
               }
+            touched.add(seg);
           }
       }
     for (int dim = 0; dim < DIMENSION_MAX; dim++)
@@ -156,6 +160,78 @@ class Latin
         int stdw = axis.widthCount > 0 ? axis.widths[0].org
                                        : constant(metrics, 50);
         axis.edgeDistanceTreshold= stdw / 5;
+      }
+  }
+
+  void linkSegments(GlyphHints hints, int dim)
+  {
+    AxisHints axis = hints.axis[dim];
+    Segment[] segments = axis.segments;
+    int numSegs = axis.numSegments;
+    int majorDir = axis.majorDir;
+    int lenThreshold = constant((LatinMetrics) hints.metrics, 8);
+    lenThreshold = Math.min(1, lenThreshold);
+    int lenScore = constant((LatinMetrics) hints.metrics, 3000);
+    for (int i1 = 0; i1 < numSegs; i1++)
+      {
+        Segment seg1 = segments[i1];
+        // The fake segments are introduced to hint the metrics.
+        // Never link them to anything.
+        if (seg1.first == seg1.last || seg1.dir != majorDir)
+          continue;
+        for (int i2 = 0; i2 < numSegs; i2++)
+          {
+            Segment seg2 = segments[i2];
+            if (seg2 != seg1 && seg1.dir + seg2.dir == 0)
+              {
+                int pos1 = seg1.pos;
+                int pos2 = seg2.pos;
+                // The vertical coords are swapped compared to how FT handles
+                // this.
+                int dist = dim == DIMENSION_VERT ? pos1 - pos2 : pos2 - pos1;
+                if (dist >= 0)
+                  {
+                    int min = seg1.minPos;
+                    int max = seg1.maxPos;
+                    int len, score;
+                    if (min < seg2.minPos)
+                      min = seg2.minPos;
+                    if (max > seg2.maxPos)
+                      max = seg2.maxPos;
+                    len = max - min;
+                    if (len > lenThreshold)
+                      {
+                        score = dist + lenScore / len;
+                        if (score < seg1.score)
+                          {
+                            seg1.score = score;
+                            seg1.link = seg2;
+                          }
+                        if (score < seg2.score)
+                          {
+                            seg2.score = score;
+                            seg2.link = seg1;
+                          }
+                      }
+                  }
+              }
+          }
+      }
+    for (int i1 = 0; i1 < numSegs; i1++)
+      {
+        Segment seg1 = segments[i1];
+        Segment seg2 = seg1.link;
+        if (seg2 != null)
+          {
+            seg2.numLinked++;
+            if (seg2.link != seg1)
+              {
+                seg1.link = null;
+                seg1.serif = seg2.link;
+              }
+          }
+        // Uncomment to show all segments.
+        // System.err.println("segment#" + i1 + ": " + seg1);
       }
   }
 
@@ -173,5 +249,119 @@ class Latin
   private int constant(LatinMetrics metrics, int c)
   {
     return c * (metrics.unitsPerEm / 2048);
+  }
+
+  private void computeSegments(GlyphHints hints, int dim)
+  {
+    Point[] points = hints.points;
+    if (dim == DIMENSION_HORZ)
+      {
+        for (int i = 0; i < hints.numPoints; i++)
+          {
+            points[i].setU(points[i].getOrigX());
+            points[i].setV(points[i].getOrigY());
+          }
+      }
+    else
+      {
+        for (int i = 0; i < hints.numPoints; i++)
+          {
+            points[i].setU(points[i].getOrigY());
+            points[i].setV(points[i].getOrigX());
+          }
+      }
+    // Now look at each contour.
+    AxisHints axis = hints.axis[dim];
+    int majorDir = Math.abs(axis.majorDir);
+    int segmentDir = majorDir;
+    Point[] contours = hints.contours;
+    int numContours = hints.numContours;
+    Segment segment = null;
+    for (int i = 0; i < numContours; i++)
+      {
+        int minPos = 32000;
+        int maxPos = -32000;
+
+        Point point = contours[i];
+        Point last = point.getPrev();
+        if (point == last) // Skip singletons.
+          continue;
+        if (Math.abs(last.getOutDir()) == majorDir
+            && Math.abs(point.getOutDir()) == majorDir)
+          {
+            // We are already on an edge. Locate its start.
+            last = point;
+            while (true)
+              {
+                point = point.getPrev();
+                if (Math.abs(point.getOutDir()) != majorDir)
+                  {
+                    point = point.getNext();
+                    break;
+                  }
+                if (point == last)
+                  break;
+              }
+          }
+        last = point;
+        boolean passed = false;
+        boolean onEdge = false;
+        while (true)    
+          {
+            int u, v;
+            if (onEdge)
+              {
+                u = point.getU();
+                if (u < minPos)
+                  minPos = u;
+                if (u > maxPos)
+                  maxPos = u;
+                if (point.getOutDir() != segmentDir || point == last)
+                  {
+                    // Leaving an edge. Record new segment.
+                    segment.last = point;
+                    // (minPos + maxPos) / 2.
+                    segment.pos = (minPos + maxPos) >> 1;
+                    if (segment.first.isControlPoint()
+                        || point.isControlPoint())
+                      segment.flags |= Segment.FLAG_EDGE_ROUND;
+                    minPos = maxPos = point.getV();
+                    v = segment.first.getV();
+                    if (v < minPos)
+                      minPos = v;
+                    if (v > maxPos)
+                      maxPos = v;
+                    segment.minPos = minPos;
+                    segment.maxPos = maxPos;
+                    onEdge = false;
+                    segment = null;
+                  }
+              }
+            if (point == last)
+              {
+                if (passed)
+                  break;
+                passed = true;
+              }
+            if (! onEdge && Math.abs(point.getOutDir()) == majorDir)
+              {
+                // This is the start of a new segment.
+                segmentDir = point.getOutDir();
+                segment = axis.newSegment();
+                segment.dir = segmentDir;
+                segment.flags = Segment.FLAG_EDGE_NORMAL;
+                minPos = maxPos = point.getU();
+                segment.first = point;
+                segment.last = point;
+                segment.contour = contours[i];
+                segment.score = 32000;
+                segment.len = 0;
+                segment.link = null;
+                onEdge = true;
+              }
+            point = point.getNext();
+          }
+      }
+    
   }
 }

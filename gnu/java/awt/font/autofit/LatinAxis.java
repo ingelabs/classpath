@@ -48,6 +48,6 @@ class LatinAxis
   int delta;
 
   int widthCount;
-  Width[] widths;
+  Width[] widths = new Width[Latin.MAX_WIDTHS];
   float edgeDistanceTreshold;
 }

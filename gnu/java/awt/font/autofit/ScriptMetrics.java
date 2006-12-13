@@ -46,4 +46,8 @@ class ScriptMetrics
 
   Script script;
   Scaler scaler;
+  ScriptMetrics()
+  {
+    scaler = new Scaler();
+  }
 }

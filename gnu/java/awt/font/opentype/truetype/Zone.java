@@ -47,27 +47,17 @@ import java.awt.geom.PathIterator;
  */
 public final class Zone
 {
-  private final int[] pos;
-  private final int[] origPos;
-  private final byte[] flags;
+  private Point[] points;
   private int numPoints;
-
-  private static final int FLAG_TOUCHED_X = 1;
-  private static final int FLAG_TOUCHED_Y = 2;
-  private static final int FLAG_ON_CURVE = 4;
-  private static final int FLAG_CONTOUR_END = 8;
 
   public Zone(int maxNumPoints)
   {
-    origPos = new int[maxNumPoints * 2];
-    pos = new int[maxNumPoints * 2];
-    flags = new byte[maxNumPoints];
+    points = new Point[maxNumPoints];
   }
-
 
   public int getCapacity()
   {
-    return flags.length;
+    return points.length;
   }
 
 
@@ -79,91 +69,89 @@ public final class Zone
 
   public int getX(int point)
   {
-    return pos[2 * point];
+    return points[point].scaledX;
   }
 
 
   public void setX(int point, int value, boolean touch)
   {
-    pos[2 * point] = value;
+    points[point].scaledX = value;
     if (touch)
-      flags[point] |= FLAG_TOUCHED_X;
+      points[point].flags |= Point.FLAG_TOUCHED_X;
   }
 
 
   public void setY(int point, int value, boolean touch)
   {
-    pos[2 * point + 1] = value;
+    points[point].scaledY = value;
     if (touch)
-      flags[point] |= FLAG_TOUCHED_Y;
+      points[point].flags |= Point.FLAG_TOUCHED_Y;
   }
 
 
   public int getY(int point)
   {
-    return pos[2 * point + 1];
+    return points[point].scaledY;
   }
 
 
   public int getOriginalX(int point)
   {
-    return origPos[2 * point];
+    return points[point].origX;
   }
 
 
   public int getOriginalY(int point)
   {
-    return origPos[2 * point + 1];
+    return points[point].origY;
   }
 
 
   public void setOriginalX(int point, int x)
   {
-    origPos[2 * point] = x;
+    points[point].origX = x;
   }
 
   public void setOriginalY(int point, int y)
   {
-    origPos[2 * point + 1] = y;
+    points[point].origY = y;
   }
 
   public void setNumPoints(int numPoints)
   {
-    this.numPoints = numPoints;
     for (int i = 0; i < numPoints; i++)
-      flags[i] = 0;
-    for (int i = 0; i < 2 * numPoints; i++)
-      origPos[i] = pos[i] = 0;
+      points[i] = new Point();
+    this.numPoints = numPoints;
   }
 
 
   public boolean isOnCurve(int point)
   {
-    return (flags[point] & FLAG_ON_CURVE) != 0;
+    return (points[point].flags & Point.FLAG_ON_CURVE) != 0;
   }
 
 
   public void setOnCurve(int point, boolean onCurve)
   {
     if (onCurve)
-      flags[point] |= FLAG_ON_CURVE;
+      points[point].flags |= Point.FLAG_ON_CURVE;
     else
-      flags[point] &= ~FLAG_ON_CURVE;
+      points[point].flags &= ~Point.FLAG_ON_CURVE;
   }
 
 
   public boolean isContourEnd(int point)
   {
-    return (flags[point] & FLAG_CONTOUR_END) != 0;
+    return (points[point].flags & Point.FLAG_CONTOUR_END) != 0;
   }
 
 
   public void setContourEnd(int point, boolean segEnd)
   {
     if (segEnd)
-      flags[point] |= FLAG_CONTOUR_END;
+      points[point].flags |= Point.FLAG_CONTOUR_END;
     else
-      flags[point] &= ~FLAG_CONTOUR_END;
+      points[point].flags &= ~Point.FLAG_CONTOUR_END;
   }
 
 
@@ -183,11 +171,13 @@ public final class Zone
 
     for (int i = 0; i < numPoints; i++)
     {
-      int x = origPos[2 * i] + preTranslateX;
-      int y = origPos[2 * i + 1] + preTranslateY;
+      int x = points[i].origX + preTranslateX;
+      int y = points[i].origY + preTranslateY;
 
-      origPos[2*i] = pos[2 * i] = Fixed.valueOf(scaleX * x + shearX * y);
-      origPos[2*i+1] = pos[2 * i + 1] = Fixed.valueOf(shearY * x + scaleY * y);
+      points[i].scaledX = /*points[i].origX = */Fixed.valueOf(scaleX * x
+                                                          + shearX * y);
+      points[i].scaledY = /*points[i].origY = */Fixed.valueOf(shearY * x
+                                                          + scaleY * y);
     }
   }
 
@@ -197,11 +187,7 @@ public final class Zone
   {
     int offset = this.numPoints - numPhantomPoints;
     int count = zone.numPoints;
-    System.arraycopy(zone.origPos, 0, this.origPos, 2 * offset,
-                     count * 2);
-    System.arraycopy(zone.pos, 0, this.pos, 2 * offset,
-                     count * 2);
-    System.arraycopy(zone.flags, 0, this.flags, offset, count);
+    System.arraycopy(zone.points, 0, this.points, offset, count);
     this.numPoints += count - numPhantomPoints;
   }
 
@@ -211,9 +197,9 @@ public final class Zone
     for (int i = 0; i < numPoints; i++)
     {
       System.out.print(" " + i + ": ");
-      System.out.print(Fixed.toString(pos[i*2], pos[i*2+1]));
+      System.out.print(Fixed.toString(points[i].scaledX, points[i].scaledY));
       System.out.print(' ');
-      System.out.print(Fixed.toString(origPos[i*2], origPos[i*2+1]));
+      System.out.print(Fixed.toString(points[i].origX, points[i].origY));
       System.out.print(' ');
       if (isOnCurve(i))
         System.out.print('.');
@@ -239,5 +225,26 @@ public final class Zone
     GeneralPath p = new GeneralPath(GeneralPath.WIND_NON_ZERO, numPoints);
     p.append(getPathIterator(), /* connect */ false);
     return p;
+  }
+
+  /**
+   * Returns the number of contours in this outline.
+   *
+   * @return the number of contours in this outline
+   */
+  public int getNumContours()
+  {
+    int num = 0;
+    for (int i = 0; i < numPoints; i++)
+      {
+        if (isContourEnd(i))
+          num++;
+      }
+    return num;
+  }
+
+  public Point[] getPoints()
+  {
+    return points;
   }
 }

@@ -51,6 +51,7 @@ import java.util.Locale;
 
 import gnu.java.awt.font.FontDelegate;
 import gnu.java.awt.font.GNUGlyphVector;
+import gnu.java.awt.font.autofit.AutoHinter;
 import gnu.java.awt.font.opentype.truetype.TrueTypeScaler;
 import gnu.java.awt.font.opentype.truetype.Zone;
 
@@ -146,7 +147,8 @@ public final class OpenTypeFont
    */
   private GlyphNamer glyphNamer;
 
-  
+  private Hinter hinter;
+
   /**
    * Constructs an OpenType or TrueType font.
    *
@@ -579,6 +581,9 @@ public final class OpenTypeFont
                                                     FontRenderContext frc,
                                                     CharacterIterator ci)
   {
+    // Initialize hinter if necessary.
+    checkHinter();
+
     CharGlyphMap cmap;    
     int numGlyphs;
     int[] glyphs;
@@ -836,5 +841,29 @@ public final class OpenTypeFont
     c[2] = (char) ((tag >> 8) & 0xff);
     c[3] = (char) (tag & 0xff);
     return new String(c);
+  }
+
+  /**
+   * Checks if a hinter is installed and installs one when not.
+   */
+  private void checkHinter()
+  {
+    // When another hinting impl gets added (maybe a true TrueType hinter)
+    // then add some options here. The Hinter interface might need to be
+    // tweaked.
+    if (hinter == null)
+      {
+        try
+          {
+            hinter = new AutoHinter();
+            hinter.init(this);
+          }
+        catch (Exception ex)
+          {
+            // Protect from problems inside hinter.
+            hinter = null;
+            ex.printStackTrace();
+          }
+      }
   }
 }

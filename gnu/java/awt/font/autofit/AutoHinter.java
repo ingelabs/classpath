@@ -1,4 +1,4 @@
-/* Width.java -- FIXME: briefly describe file purpose
+/* AutoHinter.java -- The entry point into the hinter implementation.
    Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,13 +38,23 @@ exception statement from your version. */
 
 package gnu.java.awt.font.autofit;
 
-public class Width
+import gnu.java.awt.font.opentype.Hinter;
+import gnu.java.awt.font.opentype.OpenTypeFont;
+
+/**
+ * The public interface to the automatic gridfitter.
+ */
+public class AutoHinter
+  implements Hinter
 {
-  int org;
-  int cur;
-  int fit;
-  Width(int dist)
+  Latin latinScript;
+  LatinMetrics metrics;
+
+  public void init(OpenTypeFont font)
   {
-    org = dist;
+    // TODO: Should support other scripts too.
+    latinScript = new Latin();
+    metrics = new LatinMetrics(font);
+    latinScript.initMetrics(metrics, font);
   }
 }

@@ -1,4 +1,4 @@
-/* AxisHints.java -- FIXME: briefly describe file purpose
+/* AxisHints.java -- Hints specific to an axis
    Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -42,4 +42,29 @@ class AxisHints
 {
 
   Segment[] segments;
+  int majorDir;
+  int numSegments;
+  int numEdges;
+
+  AxisHints()
+  {
+    segments = new Segment[4];
+  }
+
+  Segment newSegment()
+  {
+    if (numSegments >= segments.length)
+      {
+        // Grow array.
+        int newMax = segments.length;
+        newMax += (newMax >> 2) + 4; // From FreeType.
+        Segment[] newSegs = new Segment[newMax];
+        System.arraycopy(segments, 0, newSegs, 0, numSegments);
+        segments = newSegs;
+      }
+    Segment seg = new Segment();
+    segments[numSegments] = seg;
+    numSegments++;
+    return seg;
+  }
 }
