@@ -1,5 +1,10 @@
 2006-12-14  Roman Kennke  <kennke@aicas.com>
 
+	* gnu/java/awt/font/autofit/LatinBlue.java:
+	New class.
+
+2006-12-14  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/java/awt/font/autofit/Latin.java
 	(CAPITAL_TOP): New constant.
 	(CAPITAL_BOTTOM): New constant.
