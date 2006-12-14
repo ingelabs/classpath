@@ -1,3 +1,8 @@
+2006-12-13  David Daney  <ddaney@avtrex.com>
+
+	* java/lang/Collections.java
+	(UnmodifiableEntrySet.toArray): Fix bad casts.
+
 2006-12-13  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/font/autofit/AutoHinter.java: New class. The entry

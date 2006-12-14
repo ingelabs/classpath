@@ -5115,7 +5115,7 @@ public class Collections
       // Map.Entry
       public Map.Entry<K,V>[] toArray()
       {
-        Map.Entry<K,V>[] mapEntryResult = (Map.Entry<K,V>[]) super.toArray();
+        Object[] mapEntryResult = super.toArray();
         UnmodifiableMapEntry<K,V> result[] = null;
   
         if (mapEntryResult != null)
@@ -5123,7 +5123,7 @@ public class Collections
             result = (UnmodifiableMapEntry<K,V>[])
 	      new UnmodifiableMapEntry[mapEntryResult.length];
             for (int i = 0; i < mapEntryResult.length; ++i)
-	      result[i] = new UnmodifiableMapEntry(mapEntryResult[i]);
+	      result[i] = new UnmodifiableMapEntry<K,V>((Map.Entry<K,V>)mapEntryResult[i]);
 	  }
         return result;
       }
