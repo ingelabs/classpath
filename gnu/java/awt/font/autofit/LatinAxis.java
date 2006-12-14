@@ -49,7 +49,7 @@ class LatinAxis
 
   int widthCount;
   Width[] widths;
-  float edgeDistanceTreshold;
+  int edgeDistanceTreshold;
   LatinBlue[] blues;
   int blueCount;
   LatinAxis()

@@ -1,5 +1,58 @@
 2006-12-14  Roman Kennke  <kennke@aicas.com>
 
+	* gnu/java/awt/font/autofit/AutoHinter.java
+	(hints): New field.
+	(applyHints): New method. Implements the actual hinting.
+	* gnu/java/awt/font/autofit/AxisHints.java
+	(edges): New field.
+	(AxisHints): Initialize edges field.
+	(newEdge): New method. Records a new edge and sorts it into the
+	existing list.
+	* gnu/java/awt/font/autofit/Edge.java: New class.
+	* gnu/java/awt/font/autofit/GlyphHints.java
+	(GlyphHints): Initialize the scales with 1.
+	(doHorizontal): New method.
+	(doVertical): New method.
+	* gnu/java/awt/font/autofit/Latin.java
+	(alignEdgePoints): New stub method.
+	(alignStrongPoints): New stub method.
+	(alignWeakPoints): New stub method.
+	(applyHints): Take outline as argument. Implemented skeleton.
+	(computeBlueEdges): New stub method.
+	(computeEdges): New method. Detects edges on a glyph outline.
+	(detectFeatures): New methods. Performs local feature analysis.
+	(hintEdges): New stub method.
+	(initBlues): Remove debug output.
+	* gnu/java/awt/font/autofit/LatinAxis.java
+	(edgeDistanceThreshold): Changed to be an int
+	(as fixed-point decimal).
+	* gnu/java/awt/font/autofit/Script.java
+	(applyHints): Include the outline in the method call.
+	* gnu/java/awt/font/autofit/Segment.java
+	(FLAG_EDGE_NORMAL): Set value to 0.
+	(FLAG_EDGE_SERIF): New constant.
+	(FLAG_EDGE_DONE): New constant.
+	(edge): New field.
+	(edgeNext): New field.
+	* gnu/java/awt/font/opentype/Hinter.java
+	(applyHints): New method. Applies the hints to the specified outline.
+	* gnu/java/awt/font/opentype/OpenTypeFont.java
+	(getGlyphOutline): Check the hinter and call the scaler with the
+	hinter.
+	* gnu/java/awt/font/opentype/Scaler.java
+	(getOutline): Also pass a Hinter.
+	* gnu/java/awt/font/opentype/truetype/GlyphLoader.java
+	(loadCompoundGlyph): Also accept a hinter argument.
+	(loadGlyph): Also accept a hinter argument.
+	(loadSimpleGlyph): Also accept a hinter argument. Hint the
+	resulting outline.
+	(loadSubGlyph): Also accept a hinter argument.
+	* gnu/java/awt/font/opentype/truetype/TrueTypeScaler.java
+	(getOutline): Accept hinter and pass it to the loader.
+	(getRawOutline): Pass null hinter to the loader.
+
+2006-12-14  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/java/awt/font/autofit/LatinBlue.java:
 	New class.
 

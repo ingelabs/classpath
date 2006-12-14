@@ -699,8 +699,9 @@ public final class OpenTypeFont
     /* The synchronization is needed because the scaler is not
      * synchronized.
      */
+    checkHinter();
     return scaler.getOutline(glyph, pointSize, transform,
-                             antialias, fractionalMetrics);
+                             antialias, fractionalMetrics, hinter);
   }
 
   /**

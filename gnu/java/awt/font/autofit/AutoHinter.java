@@ -40,6 +40,7 @@ package gnu.java.awt.font.autofit;
 
 import gnu.java.awt.font.opentype.Hinter;
 import gnu.java.awt.font.opentype.OpenTypeFont;
+import gnu.java.awt.font.opentype.truetype.Zone;
 
 /**
  * The public interface to the automatic gridfitter.
@@ -49,6 +50,7 @@ public class AutoHinter
 {
   Latin latinScript;
   LatinMetrics metrics;
+  GlyphHints hints;
 
   public void init(OpenTypeFont font)
   {
@@ -56,5 +58,12 @@ public class AutoHinter
     latinScript = new Latin();
     metrics = new LatinMetrics(font);
     latinScript.initMetrics(metrics, font);
+  }
+
+  public void applyHints(Zone outline)
+  {
+    if (hints == null)
+      hints = new GlyphHints();
+    latinScript.applyHints(hints, outline, metrics);
   }
 }

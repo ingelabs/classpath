@@ -42,6 +42,7 @@ import java.awt.geom.AffineTransform;
 import java.util.HashSet;
 
 import gnu.java.awt.font.opentype.OpenTypeFont;
+import gnu.java.awt.font.opentype.truetype.Fixed;
 import gnu.java.awt.font.opentype.truetype.Point;
 import gnu.java.awt.font.opentype.truetype.Zone;
 
@@ -76,10 +77,58 @@ class Latin
     new String[]{"THEZOCQS", "HEZLOCUS", "fijkdbh",
                  "xzroesc", "xzroesc", "pqgjy"};
 
-  public void applyHints(GlyphHints hints, ScriptMetrics metrics)
+  public void applyHints(GlyphHints hints, Zone outline, ScriptMetrics metrics)
+  {
+    hints.reload(outline);
+    hints.rescale(metrics);
+    if (hints.doHorizontal())
+      {
+        detectFeatures(hints, DIMENSION_HORZ);
+      }
+    if (hints.doVertical())
+      {
+        detectFeatures(hints, DIMENSION_VERT);
+        computeBlueEdges(hints, (LatinMetrics) metrics);
+      }
+    // Grid-fit the outline.
+    for (int dim = 0; dim < DIMENSION_MAX; dim++)
+      {
+        if (dim == DIMENSION_HORZ && hints.doHorizontal()
+            || dim == DIMENSION_VERT && hints.doVertical())
+          {
+            hintEdges(hints, dim);
+            alignEdgePoints(hints, dim);
+            alignStrongPoints(hints, dim);
+            alignWeakPoints(hints, dim);
+            
+         }
+      }
+    // FreeType does a save call here. I guess that's not needed as we operate
+    // on the live glyph data anyway.
+  }
+
+  private void alignWeakPoints(GlyphHints hints, int dim)
   {
     // TODO Auto-generated method stub
+    
+  }
 
+  private void alignStrongPoints(GlyphHints hints, int dim)
+  {
+    // TODO Auto-generated method stub
+    
+  }
+
+  private void alignEdgePoints(GlyphHints hints, int dim)
+  {
+    // TODO Auto-generated method stub
+    
+  }
+
+  private void hintEdges(GlyphHints hints, int dim)
+  {
+    // TODO Auto-generated method stub
+    
   }
 
   public void doneMetrics(ScriptMetrics metrics)
@@ -426,7 +475,7 @@ class Latin
             blue.flags |= LatinBlue.FLAG_ADJUSTMENT;
           }
         // Debug: print out the blue zones.
-        System.err.println("blue zone #" + bb + ": " + blue);
+        // System.err.println("blue zone #" + bb + ": " + blue);
       }
   }
 
@@ -554,5 +603,183 @@ class Latin
   private boolean isTopBlue(int b)
   {
     return b == CAPITAL_TOP || b == SMALL_F_TOP || b == SMALL_TOP;
+  }
+
+  private void detectFeatures(GlyphHints hints, int dim)
+  {
+    computeSegments(hints, dim);
+    linkSegments(hints, dim);
+    computeEdges(hints, dim);
+  }
+
+  private void computeEdges(GlyphHints hints, int dim)
+  {
+    AxisHints axis = hints.axis[dim];
+    LatinAxis laxis = ((LatinMetrics) hints.metrics).axis[dim];
+    Segment[] segments = axis.segments;
+    int numSegments = axis.numSegments;
+    Segment seg;
+    int upDir;
+    int scale;
+    int edgeDistanceThreshold;
+    axis.numEdges = 0;
+    scale = dim == DIMENSION_HORZ ? hints.xScale : hints.yScale;
+    upDir = dim == DIMENSION_HORZ ? DIR_UP : DIR_RIGHT;
+
+    // We will begin by generating a sorted table of edges for the
+    // current direction. To do so, we simply scan each segment and try
+    // to find an edge in our table that corresponds to its position.
+    //
+    // If no edge is found, we create one and insert a new edge in the
+    // sorted table. Otherwise, we simply add the segment to the egde's
+    // list which will be processed in the second step to compute the
+    // edge's properties.
+    //
+    // Note that the edge table is sorted along the segment/edge
+    // position.
+
+    edgeDistanceThreshold = Fixed.mul(laxis.edgeDistanceTreshold, scale);
+    if (edgeDistanceThreshold > 64 / 4)
+      edgeDistanceThreshold = 64 / 4;
+    edgeDistanceThreshold = Fixed.div(edgeDistanceThreshold, scale);
+
+    for (int i = 0; i < numSegments; i++)
+      {
+        seg = segments[i];
+        Edge found = null;
+        for (int ee = 0; ee < axis.numEdges; ee++)
+          {
+            Edge edge = axis.edges[ee];
+            int dist = seg.pos - edge.fpos;
+            if (dist < 0)
+              dist = -dist;
+            if (dist < edgeDistanceThreshold)
+              {
+                found = edge;
+                break;
+              }
+          }
+        if (found == null)
+          {
+            // Insert new edge in the list and sort according to
+            // the position.
+            Edge edge = axis.newEdge(seg.pos);
+            edge.first = seg;
+            edge.last = seg;
+            edge.fpos = seg.pos;
+            edge.opos = Fixed.mul(seg.pos, scale);
+            seg.edgeNext = seg;
+            seg.edge = edge;
+          }
+        else
+          {
+            seg.edgeNext = found.first;
+            found.last.edgeNext = seg;
+            found.last = seg;
+            seg.edge = found;
+          }
+      }
+    // Good. We will now compute each edge's properties according to
+    // segments found on its position. Basically these are:
+    // - Edge's main direction.
+    // - Stem edge, serif edge, or both (which defaults to stem edge).
+    // - Rounded edge, straight or both (which defaults to straight).
+    // - Link for edge.
+
+    // Now, compute each edge properties.
+    for (int e = 0; e < axis.numEdges; e++)
+      {
+        Edge edge = axis.edges[e];
+        // Does it contain round segments?
+        int isRound = 0;
+        // Does it contain straight segments?
+        int isStraight = 0;
+        // Number of upward segments.
+        int ups = 0;
+        // Number of downward segments.
+        int downs = 0;
+
+        seg = edge.first;
+        do
+          {
+            // Check for roundness of segment.
+            if ((seg.flags & Segment.FLAG_EDGE_ROUND) != 0)
+              isRound++;
+            else
+              isStraight++;
+
+            // Check for segment direction.
+            if (seg.dir == upDir)
+              ups += seg.maxPos - seg.minPos;
+            else
+              downs += seg.maxPos - seg.minPos;
+
+            // Check for links. If seg.serif is set, then seg.link must
+            // be ignored.
+            boolean isSerif = seg.serif != null && seg.serif.edge != edge;
+            if (seg.link != null || isSerif)
+              {
+                Edge edge2 = edge.link;
+                Segment seg2 = seg.link;
+                if (isSerif)
+                  {
+                    seg2 = seg.serif;
+                    edge2 = edge.serif;
+                  }
+                if (edge2 != null)
+                  {
+                    int edgeDelta = edge.fpos - edge2.fpos;
+                    if (edgeDelta < 0)
+                      edgeDelta = -edgeDelta;
+                    int segDelta = seg.pos - seg2.pos;
+                    if (segDelta < 0)
+                      segDelta = -segDelta;
+                    if (segDelta < edgeDelta)
+                      edge2 = seg2.edge;
+                  }
+                else
+                  {
+                    edge2 = seg2.edge;
+                  }
+                if (isSerif)
+                  {
+                    edge.serif = edge2;
+                    edge2.flags |= Segment.FLAG_EDGE_SERIF;
+                  }
+                else
+                  {
+                    edge.link = edge2;
+                  }
+              }
+            seg = seg.edgeNext;
+          } while (seg != edge.first);
+        edge.flags = Segment.FLAG_EDGE_NORMAL;
+        if (isRound > 0 && isRound > isStraight)
+          edge.flags |= Segment.FLAG_EDGE_ROUND;
+
+        // Set the edge's main direction.
+        edge.dir = DIR_NONE;
+        if (ups > downs)
+          edge.dir = upDir;
+        else if (ups < downs)
+          edge.dir = -upDir;
+        else if (ups == downs)
+          edge.dir = 0;
+
+        // Gets rid of serif if link is set. This gets rid of many
+        // unpleasant artifacts.
+        if (edge.serif != null && edge.link != null)
+          {
+            edge.serif = null;
+          }
+
+        // Debug: Print out all edges.
+        // System.err.println("edge# " + e + ": " + edge);
+      }        
+  }
+
+  private void computeBlueEdges(GlyphHints hints, LatinMetrics metrics)
+  {
+    // TODO: Implement.
   }
 }

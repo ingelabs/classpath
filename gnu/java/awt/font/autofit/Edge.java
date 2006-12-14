@@ -1,4 +1,4 @@
-/* Hinter.java -- The interface to a hinting implementation
+/* Edge.java -- An edge of segments
    Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -36,26 +36,35 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package gnu.java.awt.font.opentype;
+package gnu.java.awt.font.autofit;
 
-import gnu.java.awt.font.opentype.truetype.Zone;
-
-/**
- * The interface to a hinting implementation.
- */
-public interface Hinter
+class Edge
 {
-  /**
-   * Initializes the hinter.
-   *
-   * @param face the font for which the hinter should be used
-   */
-  void init(OpenTypeFont face);
+  int fpos;
+  Segment first;
+  Segment last;
+  int opos;
+  Edge link;
+  Edge serif;
+  int flags;
+  int dir;
 
-  /**
-   * Hints the specified outline.
-   *
-   * @param outline the outline to hint
-   */
-  void applyHints(Zone outline);
+  public String toString()
+  {
+    StringBuilder s = new StringBuilder();
+    s.append("[Edge] id");
+    s.append(hashCode());
+    s.append(", fpos: ");
+    s.append(fpos);
+    s.append(", opos: ");
+    s.append(opos);
+    s.append(", dir: ");
+    s.append(dir);
+    s.append(", serif: ");
+    s.append(serif != null ? serif.hashCode() : "null");
+    s.append(", link: ");
+    s.append(link != null ? link.hashCode() : "null");
+    s.append(", flags: " + flags);
+    return s.toString();
+  }
 }

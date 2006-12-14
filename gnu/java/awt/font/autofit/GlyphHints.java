@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package gnu.java.awt.font.autofit;
 
+import gnu.java.awt.font.opentype.truetype.Fixed;
 import gnu.java.awt.font.opentype.truetype.Point;
 import gnu.java.awt.font.opentype.truetype.Zone;
 
@@ -71,6 +72,9 @@ class GlyphHints
     axis = new AxisHints[Constants.DIMENSION_MAX];
     axis[Constants.DIMENSION_VERT] = new AxisHints();
     axis[Constants.DIMENSION_HORZ] = new AxisHints();
+
+    xScale = Fixed.ONE;
+    yScale = Fixed.ONE;
   }
 
   void rescale(ScriptMetrics m)
@@ -276,4 +280,13 @@ class GlyphHints
       }
   }
 
+  boolean doHorizontal()
+  {
+    return true; // Check scaler flags here.
+  }
+
+  boolean doVertical()
+  {
+    return true; // Check scaler flags here.
+  }
 }

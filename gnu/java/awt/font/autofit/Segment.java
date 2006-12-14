@@ -43,8 +43,10 @@ import gnu.java.awt.font.opentype.truetype.Point;
 class Segment
 {
 
+  static final int FLAG_EDGE_NORMAL = 0;
   static final int FLAG_EDGE_ROUND = 1;
-  static final int FLAG_EDGE_NORMAL = 2;
+  static final int FLAG_EDGE_SERIF = 2;
+  static final int FLAG_EDGE_DONE = 4;
   int dir;
   int flags;
   Segment link;
@@ -58,6 +60,8 @@ class Segment
   int maxPos;
   int score;
   int len;
+  Segment edgeNext;
+  Edge edge;
 
   public String toString()
   {

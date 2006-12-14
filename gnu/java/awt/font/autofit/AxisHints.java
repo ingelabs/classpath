@@ -45,10 +45,12 @@ class AxisHints
   int majorDir;
   int numSegments;
   int numEdges;
+  Edge[] edges;
 
   AxisHints()
   {
     segments = new Segment[4];
+    edges = new Edge[4];
   }
 
   Segment newSegment()
@@ -66,5 +68,29 @@ class AxisHints
     segments[numSegments] = seg;
     numSegments++;
     return seg;
+  }
+
+  public Edge newEdge(int pos)
+  {
+    if (numEdges >= edges.length)
+      {
+        // Grow array.
+        int newMax = edges.length;
+        newMax += (newMax >> 2) + 4; // From FreeType.
+        Edge[] newEdges = new Edge[newMax];
+        System.arraycopy(edges, 0, newEdges, 0, numEdges);
+        edges = newEdges;
+      }
+    int edgeIndex = numEdges;
+    Edge edge = edges[edgeIndex] = new Edge();
+    while (edgeIndex > 0 && edges[edgeIndex].fpos > pos)
+      {
+        edges[edgeIndex] = edges[edgeIndex - 1];
+        edgeIndex--;
+      }
+    edges[edgeIndex] = edge;
+    numEdges++;
+    edge.fpos = pos;
+    return edge;
   }
 }
