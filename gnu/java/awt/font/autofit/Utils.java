@@ -196,4 +196,20 @@ class Utils
       delta -= ANGLE_2PI;
     return delta;
   }
+
+  static void sort(int num, int[] array)
+  {
+    int swap;
+    for (int i = 1; i < num; i++)
+      {
+        for (int j = i; j > 0; j--)
+          {
+            if (array[j] > array[j - 1])
+              break;
+            swap = array[j];
+            array[j] = array[j - 1];
+            array[j - 1] = swap;
+          }
+      }
+  }
 }

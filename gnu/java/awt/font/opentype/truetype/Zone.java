@@ -243,6 +243,23 @@ public final class Zone
     return num;
   }
 
+  public int getContourEnd(int n)
+  {
+    int idx = -1;
+    int num = 0;
+    for (int i = 0; i < numPoints; i++)
+      {
+        if (isContourEnd(i))
+          {
+            idx = i;
+            if (num == n)
+              break;
+            num++;
+          }
+      }
+    return idx;
+  }
+
   public Point[] getPoints()
   {
     return points;

@@ -54,6 +54,28 @@ class Latin
 
   static final int MAX_WIDTHS = 16;
 
+  private final static int MAX_TEST_CHARS = 12;
+
+  /**
+   * The types of the 6 blue zones.
+   */
+  private static final int CAPITAL_TOP = 0;
+  private static final int CAPITAL_BOTTOM = 1;
+  private static final int SMALL_F_TOP = 2;
+  private static final int SMALL_TOP = 3;
+  private static final int SMALL_BOTTOM = 4;
+  private static final int SMALL_MINOR = 5;
+  static final int BLUE_MAX = 6;
+
+  /**
+   * The test chars for the blue zones.
+   *
+   * @see #initBlues(LatinMetrics, OpenTypeFont)
+   */
+  private static final String[] TEST_CHARS =
+    new String[]{"THEZOCQS", "HEZLOCUS", "fijkdbh",
+                 "xzroesc", "xzroesc", "pqgjy"};
+
   public void applyHints(GlyphHints hints, ScriptMetrics metrics)
   {
     // TODO Auto-generated method stub
@@ -123,7 +145,7 @@ class Latin
     // TODO: Avoid that AffineTransform constructor and change
     // getRawGlyphOutline() to accept null or remove that parameter altogether.
     // Consider this when the thing is done and we know what we need that for.
-    Zone outline = face.getRawGlyphOutline(glyphIndex, new AffineTransform());
+    Zone outline = face.getRawGlyphOutline(glyphIndex, IDENTITY);
     LatinMetrics dummy = new LatinMetrics();
     Scaler scaler = dummy.scaler;
     dummy.unitsPerEm = metrics.unitsPerEm;
@@ -243,8 +265,172 @@ class Latin
    */
   private void initBlues(LatinMetrics metrics, OpenTypeFont face)
   {
-    // TODO: Implement.
+    int[] flats = new int[MAX_TEST_CHARS];
+    int[] rounds = new int[MAX_TEST_CHARS];
+    int numFlats;
+    int numRounds;
+    LatinBlue blue;
+    LatinAxis axis = metrics.axis[DIMENSION_VERT];
+    // We compute the blues simply by loading each character in the test
+    // strings, then compute its topmost or bottommost points.
+    for (int bb = 0; bb < BLUE_MAX; bb++)
+      {
+        String p = TEST_CHARS[bb];
+        int blueRef;
+        int blueShoot;
+        numFlats = 0;
+        numRounds = 0;
+        for (int i = 0; i < p.length(); i++)
+          {
+            // Load the character.
+            int glyphIndex = face.getGlyph(p.charAt(i));
+            Zone glyph =
+              face.getRawGlyphOutline(glyphIndex, IDENTITY);
+
+            // Now compute the min and max points.
+            int numPoints = glyph.getSize() - 4; // 4 phantom points.
+            Point[] points = glyph.getPoints();
+            Point point = points[0];
+            int extremum = 0;
+            int index = 1;
+            if (isTopBlue(bb))
+              {
+                for (; index < numPoints; index++)
+                  {
+                    point = points[index];
+                    // We have the vertical direction swapped. The higher
+                    // points have smaller (negative) Y.
+                    if (point.getOrigY() < points[extremum].getOrigY())
+                      extremum = index;
+                  }
+              }
+            else
+              {
+                for (; index < numPoints; index++)
+                  {
+                    point = points[index];
+                    // We have the vertical direction swapped. The higher
+                    // points have smaller (negative) Y.
+                    if (point.getOrigY() > points[extremum].getOrigY())
+                      extremum = index;
+                  }
+              }
+            // Debug, prints out the maxima.
+            // System.err.println("extremum for " + bb + " / "+ p.charAt(i)
+            //                    + ": " + points[extremum]);
+
+            // Now determine if the point is part of a straight or round
+            // segment.
+            boolean round;
+            int idx = extremum;
+            int first, last, prev, next, end;
+            int dist;
+            last = -1;
+            first = 0;
+            for (int n = 0; n < glyph.getNumContours(); n++)
+              {
+                end = glyph.getContourEnd(n);
+                // System.err.println("contour end for " + n + ": " + end);
+                if (end >= idx)
+                  {
+                    last = end;
+                    break;
+                  }
+                first = end + 1;
+              }
+            // Should never happen.
+            assert last >= 0;
+
+            // Now look for the previous and next points that are not on the
+            // same Y coordinate. Threshold the 'closeness'.
+            prev = idx;
+            next = prev;
+            do
+              {
+                if (prev > first)
+                  prev--;
+                else
+                  prev = last;
+                dist = points[prev].getOrigY() - points[extremum].getOrigY();
+                if (dist < -5 || dist > 5)
+                  break;
+              } while (prev != idx);
+            do
+              {
+                if (next < last)
+                  next++;
+                else
+                  next = first;
+                dist = points[next].getOrigY() - points[extremum].getOrigY();
+                if (dist < -5 || dist > 5)
+                  break;
+              } while (next != idx);
+            round = points[prev].isControlPoint()
+                    || points[next].isControlPoint();
+
+            if (round)
+              {
+                rounds[numRounds++] = points[extremum].getOrigY();
+                // System.err.println("new round extremum: " + bb + ": "
+                //                   + points[extremum].getOrigY());
+              }
+            else
+              {
+                flats[numFlats++] = points[extremum].getOrigY();
+                // System.err.println("new flat extremum: " + bb + ": "
+                //                    + points[extremum].getOrigY());
+              }
+          }
+        // We have computed the contents of the rounds and flats tables.
+        // Now determine the reference and overshoot position of the blues --
+        // we simply take the median after a simple sort.
+        Utils.sort(numRounds, rounds);
+        Utils.sort(numFlats, flats);
+        blue = axis.blues[axis.blueCount] = new LatinBlue();
+        axis.blueCount++;
+        if (numFlats == 0)
+          {
+            blue.ref = blue.shoot = new Width(rounds[numRounds / 2]);
+          }
+        else if (numRounds == 0)
+          {
+            blue.ref = blue.shoot = new Width(flats[numFlats / 2]);
+          }
+        else
+          {
+            blue.ref = new Width(flats[numFlats / 2]);
+            blue.shoot = new Width(rounds[numRounds / 2]);
+          }
+        // There are sometimes problems:  if the overshoot position of top
+        // zones is under its reference position, or the opposite for bottom
+        // zones. We must check everything there and correct problems.
+        if (blue.shoot != blue.ref)
+          {
+            int ref = blue.ref.org;
+            int shoot = blue.shoot.org;
+            // Inversed vertical coordinates!
+            boolean overRef = shoot < ref;
+            if (isTopBlue(bb) ^ overRef)
+              {
+                blue.shoot = blue.ref = new Width((shoot + ref) / 2);
+              }
+          }
+        blue.flags = 0;
+        if (isTopBlue(bb))
+          blue.flags |= LatinBlue.FLAG_TOP;
+        // The following flag is used later to adjust y and x scales in 
+        // order to optimize the pixel grid alignment of the top small
+        // letters.
+        if (bb == SMALL_TOP)
+          {
+            blue.flags |= LatinBlue.FLAG_ADJUSTMENT;
+          }
+        // Debug: print out the blue zones.
+        System.err.println("blue zone #" + bb + ": " + blue);
+      }
   }
+
+  private static final AffineTransform IDENTITY = new AffineTransform();
 
   private int constant(LatinMetrics metrics, int c)
   {
@@ -363,5 +549,10 @@ class Latin
           }
       }
     
+  }
+
+  private boolean isTopBlue(int b)
+  {
+    return b == CAPITAL_TOP || b == SMALL_F_TOP || b == SMALL_TOP;
   }
 }
