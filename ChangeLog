@@ -1,3 +1,7 @@
+2006-12-15  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* autogen.sh: Check for all 2.6x autoconf versions.
+
 2006-12-15  Francis Kung  <fkung@redhat.com>
 
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
