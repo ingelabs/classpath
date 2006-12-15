@@ -149,9 +149,10 @@ $(TOOLS_ZIP): $(TOOLS_JAVA_FILES)
 ## Compile ASM separately as it is latin-1 encoded.
 	find $(srcdir)/external/asm -name '*.java' -print > asm.lst
 	AC=`echo $(JCOMPILER) | sed -e 's/UTF-8/ISO-8859-1/g'`; \
-	  $$AC -d asm @asm.lst
+	  $$AC -g -w -d asm @asm.lst
 	find $(srcdir)/gnu/classpath/tools -name '*.java' -print > classes.lst
-	$(JCOMPILER) -d classes @classes.lst
+	$(JCOMPILER) -g -w -d classes @classes.lst
+	cat classes.lst asm.lst > all-classes.lst
 ## Copy over tools resource files.
 	@list=`cd $(top_srcdir)/resource && find gnu/classpath/tools -name \*.properties -print`; \
 	for p in $$list; do \
@@ -170,7 +171,7 @@ $(TOOLS_ZIP): $(TOOLS_JAVA_FILES)
 	if test "$(ZIP)" != ""; then $(ZIP) -u -r ../$(TOOLS_ZIP) .; fi; \
 	if test "$(FASTJAR)" != ""; then $(FASTJAR) uf ../$(TOOLS_ZIP) .; fi; \
 	cd ..)
-	rm -rf classes classes.lst
+	rm -rf classes classes.lst asm.lst
 
 # Zip file be gone! (and make sure the classes are gone too)
 clean-local:

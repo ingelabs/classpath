@@ -1,3 +1,12 @@
+2006-12-15  Andrew Haley  <aph@redhat.com>
+
+	* tools/Makefile.am (TOOLS_ZIP): Pass -g -w to javac.
+	Create all-classes.lst that contains all source filenames.
+	Delete asm.lst.
+
+	* tools/gnu/classpath/tools/jar/Creator.java (writeFile): Close
+	the inputStream.
+
 2006-12-14  David Daney  <ddaney@avtrex.com>
 
 	* gnu/java/net/protocol/http/HTTPURLConnection.java: Clean
