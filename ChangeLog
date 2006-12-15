@@ -1,3 +1,9 @@
+2006-12-15  Tom Tromey  <tromey@redhat.com>
+
+	PR classpath/29526:
+	* gnu/java/nio/ChannelInputStream.java (read): New overload.
+	(read): Mask return result.
+
 2006-12-15  Andrew Haley  <aph@redhat.com>
 
 	* tools/Makefile.am (TOOLS_ZIP): Pass -g -w to javac.
