@@ -1134,7 +1134,8 @@ public abstract class CairoGraphics2D extends Graphics2D
         setCustomPaint(r);
       }
 
-    setAntialias(hints.get(RenderingHints.KEY_ANTIALIASING));
+    setAntialias(!hints.get(RenderingHints.KEY_ANTIALIASING)
+                       .equals(RenderingHints.VALUE_ANTIALIAS_OFF));
     createPath(s, true);
     cairoStroke(nativePointer);
   }
@@ -1146,7 +1147,8 @@ public abstract class CairoGraphics2D extends Graphics2D
     if (customPaint)
       setCustomPaint(s.getBounds());
 
-    setAntialias(hints.get(RenderingHints.KEY_ANTIALIASING));
+    setAntialias(!hints.get(RenderingHints.KEY_ANTIALIASING)
+                       .equals(RenderingHints.VALUE_ANTIALIAS_OFF));
     double alpha = 1.0;
     if (comp instanceof AlphaComposite)
       alpha = ((AlphaComposite) comp).getAlpha();
@@ -1449,12 +1451,11 @@ public abstract class CairoGraphics2D extends Graphics2D
    * 
    * @param value RenderingHints.VALUE_ANTIALIAS_ON or RenderingHints.VALUE_ANTIALIAS_OFF
    */
-  private void setAntialias(Object value)
+  private void setAntialias(boolean needAA)
   {
     if (ignoreAA)
       return;
     
-    boolean needAA = ! (value.equals(RenderingHints.VALUE_ANTIALIAS_OFF)); 
     if (needAA != antialias)
       {
         antialias = !antialias;
@@ -1683,7 +1684,8 @@ public abstract class CairoGraphics2D extends Graphics2D
     
     // Set antialias to text_antialiasing, and set the ignoreAA flag so that
     // the setting doesn't get overridden in a draw() or fill() call.
-    setAntialias(hints.get(RenderingHints.KEY_TEXT_ANTIALIASING));
+    setAntialias(!hints.get(RenderingHints.KEY_TEXT_ANTIALIASING)
+                       .equals(RenderingHints.VALUE_TEXT_ANTIALIAS_OFF));
     ignoreAA = true;
     
     tl.draw(this, x, y);
@@ -1713,7 +1715,8 @@ public abstract class CairoGraphics2D extends Graphics2D
     if (comp instanceof AlphaComposite)
       alpha = ((AlphaComposite) comp).getAlpha();
     
-    setAntialias(hints.get(RenderingHints.KEY_TEXT_ANTIALIASING));
+    setAntialias(!hints.get(RenderingHints.KEY_TEXT_ANTIALIASING)
+                       .equals(RenderingHints.VALUE_TEXT_ANTIALIAS_OFF));
     ignoreAA = true;
     
     if (gv instanceof FreetypeGlyphVector && alpha == 1.0)

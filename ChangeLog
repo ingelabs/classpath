@@ -1,3 +1,12 @@
+2006-12-15  Francis Kung  <fkung@redhat.com>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java:
+	(draw): Pass boolean to setAntialias.
+	(drawGlyphVector): Likewise.
+	(drawString): Likewise.
+	(fill): Likewise.
+	(setAntialias): Change signature to accept boolean.
+
 2006-12-15  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/font/FontDelegate.java
