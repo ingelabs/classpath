@@ -694,14 +694,15 @@ public final class OpenTypeFont
                                                   float pointSize,
                                                   AffineTransform transform,
                                                   boolean antialias,
-                                                  boolean fractionalMetrics)
+                                                  boolean fractionalMetrics,
+                                                  int type)
   {
     /* The synchronization is needed because the scaler is not
      * synchronized.
      */
     checkHinter();
     return scaler.getOutline(glyph, pointSize, transform,
-                             antialias, fractionalMetrics, hinter);
+                             antialias, fractionalMetrics, hinter, type);
   }
 
   /**

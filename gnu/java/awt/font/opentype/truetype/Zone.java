@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package gnu.java.awt.font.opentype.truetype;
 
+import gnu.java.awt.font.FontDelegate;
+
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.PathIterator;
@@ -71,13 +73,34 @@ public final class Zone
 
   public int getX(int point)
   {
-    return points[point].scaledX;
+    return getX(point, FontDelegate.TYPE_FITTED);
+  }
+
+  public int getX(int point, int type)
+  {
+    int x;
+    switch (type)
+    {
+      case FontDelegate.TYPE_FITTED:
+        x = points[point].x;
+        break;
+      case FontDelegate.TYPE_ORIGINAL:
+        x = points[point].origX;
+        break;
+      case FontDelegate.TYPE_SCALED:
+        x = points[point].scaledX;
+        break;
+      default:
+        x = points[point].x;
+    }
+    return x;
   }
 
 
   public void setX(int point, int value, boolean touch)
   {
     points[point].scaledX = value;
+    points[point].x = value;
     if (touch)
       points[point].flags |= Point.FLAG_TOUCHED_X;
   }
@@ -86,14 +109,34 @@ public final class Zone
   public void setY(int point, int value, boolean touch)
   {
     points[point].scaledY = value;
+    points[point].y = value;
     if (touch)
       points[point].flags |= Point.FLAG_TOUCHED_Y;
   }
 
-
   public int getY(int point)
   {
-    return points[point].scaledY;
+    return getY(point, FontDelegate.TYPE_FITTED);
+  }
+
+  public int getY(int point, int type)
+  {
+    int y;
+    switch (type)
+    {
+      case FontDelegate.TYPE_FITTED:
+        y = points[point].y;
+        break;
+      case FontDelegate.TYPE_ORIGINAL:
+        y = points[point].origY;
+        break;
+      case FontDelegate.TYPE_SCALED:
+        y = points[point].scaledY;
+        break;
+      default:
+        y = points[point].y;
+    }
+    return y;
   }
 
 
@@ -175,10 +218,10 @@ public final class Zone
       int x = points[i].origX + preTranslateX;
       int y = points[i].origY + preTranslateY;
 
-      points[i].scaledX = /*points[i].origX = */Fixed.valueOf(scaleX * x
-                                                          + shearX * y);
-      points[i].scaledY = /*points[i].origY = */Fixed.valueOf(shearY * x
-                                                          + scaleY * y);
+      points[i].scaledX = points[i].x = Fixed.valueOf(scaleX * x
+                                                      + shearX * y);
+      points[i].scaledY = points[i].y = Fixed.valueOf(shearY * x
+                                                      + scaleY * y);
     }
   }
 
@@ -215,16 +258,16 @@ public final class Zone
   }
 
 
-  public PathIterator getPathIterator()
+  public PathIterator getPathIterator(int type)
   {
-    return new ZonePathIterator(this);
+    return new ZonePathIterator(this, type);
   }
 
 
-  public GeneralPath getPath()
+  public GeneralPath getPath(int type)
   {
     GeneralPath p = new GeneralPath(GeneralPath.WIND_NON_ZERO, numPoints);
-    p.append(getPathIterator(), /* connect */ false);
+    p.append(getPathIterator(type), /* connect */ false);
     return p;
   }
 

@@ -97,9 +97,9 @@ class Latin
             || dim == DIMENSION_VERT && hints.doVertical())
           {
             hintEdges(hints, dim);
-            alignEdgePoints(hints, dim);
-            alignStrongPoints(hints, dim);
-            alignWeakPoints(hints, dim);
+            hints.alignEdgePoints(dim);
+            hints.alignStrongPoints(dim);
+            hints.alignWeakPoints(dim);
             
          }
       }
@@ -107,28 +107,417 @@ class Latin
     // on the live glyph data anyway.
   }
 
-  private void alignWeakPoints(GlyphHints hints, int dim)
-  {
-    // TODO Auto-generated method stub
-    
-  }
-
-  private void alignStrongPoints(GlyphHints hints, int dim)
-  {
-    // TODO Auto-generated method stub
-    
-  }
-
-  private void alignEdgePoints(GlyphHints hints, int dim)
-  {
-    // TODO Auto-generated method stub
-    
-  }
-
   private void hintEdges(GlyphHints hints, int dim)
   {
+    AxisHints axis = hints.axis[dim];
+    Edge[] edges = axis.edges;
+    int numEdges = axis.numEdges;
+    Edge anchor = null;
+    int hasSerifs = 0;
+
+    // We begin by aligning all stems relative to the blue zone if
+    // needed -- that's only for horizontal edges.
+    if (dim == DIMENSION_VERT)
+      {
+        for (int e = 0; e < numEdges; e++)
+          {
+            Edge edge = edges[e];
+            if ((edge.flags & Segment.FLAG_EDGE_DONE) != 0)
+              continue;
+
+            Width blue = edge.blueEdge;
+            Edge edge1 = null;
+            Edge edge2 = edge.link;
+            if (blue != null)
+              {
+                edge1 = edge;
+              }
+            else if (edge2 != null && edge2.blueEdge != null)
+              {
+                blue = edge2.blueEdge;
+                edge1 = edge2;
+                edge2 = edge;
+              }
+            if (edge1 == null)
+              continue;
+
+            edge1.pos = blue.fit;
+            edge1.flags |= Segment.FLAG_EDGE_DONE;
+
+            if (edge2 != null && edge2.blueEdge == null)
+              {
+                alignLinkedEdge(hints, dim, edge1, edge2);
+                edge2.flags |= Segment.FLAG_EDGE_DONE;
+              }
+            if (anchor == null)
+              anchor = edge;
+          }
+      }
+
+    // Now we will align all stem edges, trying to maintain the
+    // relative order of stems in the glyph.
+    for (int e = 0; e < numEdges; e++)
+      {
+        Edge edge = edges[e];
+        if ((edge.flags & Segment.FLAG_EDGE_DONE) != 0)
+          continue;
+        Edge edge2 = edge.link;
+        if (edge2 == null)
+          {
+            hasSerifs++;
+            continue;
+          }
+        // Now align the stem.
+        // This should not happen, but it's better to be safe.
+        if (edge2.blueEdge != null || axis.getEdgeIndex(edge2) < e)
+          {
+            alignLinkedEdge(hints, dim, edge2, edge);
+            edge.flags |= Segment.FLAG_EDGE_DONE;
+            continue;
+          }
+
+        if (anchor == null)
+          {
+            int orgLen = edge2.opos - edge.opos;
+            int curLen = computeStemWidth(hints, dim, orgLen, edge.flags,
+                                          edge2.flags);
+            int uOff, dOff, orgCenter, curPos1, error1, error2;
+            if (curLen <= 64) // < 1 Pixel.
+              {
+                uOff = 32;
+                dOff = 32;
+              }
+            else
+              {
+                uOff = 38;
+                dOff = 26;
+              }
+            if (curLen < 96)
+              {
+                orgCenter = edge.opos + (orgLen >> 1);
+                curPos1 = Utils.pixRound(orgCenter);
+                error1 = orgCenter - (curPos1 - uOff);
+                if (error1 < 0)
+                  error1 = -error1;
+                error2 = orgCenter - (curPos1 + dOff);
+                if (error2 < 0)
+                  error2 = -error2;
+                if (error1 < error2)
+                  {
+                    curPos1 -= uOff;
+                  }
+                else
+                  {
+                    curPos1 += dOff;
+                  }
+                edge.pos = curPos1 - curLen / 2;
+                edge2.pos = curPos1 + curLen / 2;
+              }
+            else
+              {
+                edge.pos = Utils.pixRound(edge.opos);
+              }
+            anchor = edge;
+            edge.flags |= Segment.FLAG_EDGE_DONE;
+            alignLinkedEdge(hints, dim, edge, edge2);
+          }
+        else
+          {
+            int aDiff = edge.opos - anchor.opos;
+            int orgPos = anchor.pos + aDiff;
+            int orgLen = edge2.opos - edge.opos;
+            int orgCenter = orgPos + (orgLen >> 1);
+            int curLen = computeStemWidth(hints, dim, orgLen, edge.flags,
+                                          edge2.flags);
+            //System.err.println("stem width: " + curLen);
+            if (curLen < 96)
+              {
+                int uOff, dOff;
+                int curPos1 = Utils.pixRound(orgCenter);
+                if (curLen <= 64)
+                  {
+                    uOff = 32;
+                    dOff = 32;
+                  }
+                else
+                  {
+                    uOff = 38;
+                    dOff = 26;
+                  }
+                int delta1 = orgCenter - (curPos1 - uOff);
+                if (delta1 < 0)
+                  delta1 = -delta1;
+                int delta2 = orgCenter - (curPos1 + dOff);
+                if (delta2 < 0)
+                  delta2 = -delta2;
+                if (delta1 < delta2)
+                  {
+                    curPos1 -= uOff;
+                  }
+                else
+                  {
+                    curPos1 += dOff;
+                  }
+                edge.pos = curPos1 - curLen / 2;
+                edge2.pos = curPos1 + curLen / 2;
+              }
+            else
+              {
+                orgPos = anchor.pos + (edge.opos - anchor.opos);
+                orgLen = edge2.opos - edge.opos;
+                orgCenter = orgPos + (orgLen >> 1);
+                curLen = computeStemWidth(hints, dim, orgLen, edge.flags,
+                                          edge2.flags);
+                int curPos1 = Utils.pixRound(orgPos);
+                int delta1 = curPos1 + (curLen >> 1) - orgCenter;
+                if (delta1 < 0)
+                  delta1 = -delta1;
+                int curPos2 = Utils.pixRound(orgPos + orgLen) - curLen;
+                int delta2 = curPos2 + (curLen >> 1) - orgCenter;
+                if (delta2 < 0)
+                  delta2 = -delta2;
+                edge.pos = (delta1 < delta2) ? curPos1 : curPos2;
+                edge2.pos = edge.pos + curLen;
+              }
+            edge.flags |= Segment.FLAG_EDGE_DONE;
+            edge2.flags |= Segment.FLAG_EDGE_DONE;
+
+            if (e > 0 && edge.pos < edges[e - 1].pos)
+              edge.pos = edges[e - 1].pos;
+          }
+      }
+    // TODO: Implement the lowercase m symmetry thing.
+
+    // Now we hint the remaining edges (serifs and singles) in order
+    // to complete our processing.
+    if (hasSerifs > 0 || anchor == null)
+      {
+        for (int e = 0; e < numEdges; e++)
+          {
+            Edge edge = edges[e];
+            if ((edge.flags & Segment.FLAG_EDGE_DONE) != 0)
+              continue;
+            if (edge.serif != null)
+              {
+                alignSerifEdge(hints, edge.serif, edge);
+              }
+            else if (anchor == null)
+              {
+                edge.pos = Utils.pixRound(edge.opos);
+                anchor = edge;
+              }
+            else
+              {
+                edge.pos = anchor.pos
+                           + Utils.pixRound(edge.opos - anchor.opos);
+              }
+            edge.flags |= Segment.FLAG_EDGE_DONE;
+
+            if (e > 0 && edge.pos < edges[e - 1].pos)
+              {
+                edge.pos = edges[e - 1].pos;
+              }
+            if (e + 1 < numEdges
+                && (edges[e + 1].flags & Segment.FLAG_EDGE_DONE) != 0
+                && edge.pos > edges[e + 1].pos)
+              {
+                edge.pos = edges[e + 1].pos;
+              }
+          }
+      }
+
+    // Debug: print all hinted edges.
+    // System.err.println("hinted edges: " );
+    // for (int i = 0; i < numEdges; i++)
+    //   {
+    //     System.err.println("edge#" + i + ": " + edges[i]);
+    //   }
+  }
+
+  private void alignSerifEdge(GlyphHints hints, Edge base, Edge serif)
+  {
+    serif.pos = base.pos + (serif.opos - base.opos);
+  }
+
+  private int computeStemWidth(GlyphHints hints, int dim, int width,
+                               int baseFlags, int stemFlags)
+  {
+    LatinMetrics metrics = (LatinMetrics) hints.metrics;
+    LatinAxis axis = metrics.axis[dim];
+    int dist = width;
+    int sign = 0;
+    boolean vertical = dim == DIMENSION_VERT;
+    if (! doStemAdjust(hints))
+      return width;
+    if (dist < 0)
+      {
+        dist = -width;
+        sign = 1;
+      }
+    if ((vertical && ! doVertSnap(hints)) || ! vertical && ! doHorzSnap(hints))
+      {
+        // Smooth hinting process. Very lightly quantize the stem width.
+        // Leave the widths of serifs alone.
+        if ((stemFlags & Segment.FLAG_EDGE_SERIF) != 0 && vertical
+            && dist < 3 * 64)
+          {
+            return doneWidth(dist, sign);
+          }
+        else if ((baseFlags & Segment.FLAG_EDGE_ROUND) != 0)
+          {
+            if (dist < 80)
+              dist = 64;
+          }
+        else if (dist < 56)
+          {
+            dist = 56;
+          }
+        if (axis.widthCount > 0)
+          {
+            int delta;
+            if (axis.widthCount > 0)
+              {
+                delta = dist - axis.widths[0].cur;
+                if (delta < 0)
+                  {
+                    delta = -delta;
+                  }
+                if (delta < 40)
+                  {
+                    dist = axis.widths[0].cur;
+                    if (dist < 48)
+                      dist = 48;
+                    return doneWidth(dist, sign);
+                  }
+              }
+            if (dist < 3 * 64) // < 3 pixels.
+              {
+                delta = dist & 63;
+                dist &= -64;
+                if (delta < 10)
+                  dist += delta;
+                else if (delta < 32)
+                  dist += 10;
+                else if (delta < 54)
+                  dist += 54;
+                else
+                  dist += delta;
+                
+              }
+            else
+              {
+                dist = (dist + 32) & ~63;
+              }
+          }
+      }
+    else
+      {
+        // Strong hinting process: Snap the stem width to integer pixels.
+        dist = snapWidth(axis.widths, axis.widthCount, dist);
+        if (vertical)
+          {
+            // In the case of vertical hinting, always round
+            // the stem heights to integer pixels.
+            if (dist >= 64)
+              dist = (dist + 16) & ~63;
+            else
+              dist = 64;
+          }
+        else
+          {
+            if (doMono(hints))
+              {
+                // Monochrome horizontal hinting: Snap widths to integer pixels
+                // with a different threshold.
+                if (dist < 64)
+                  dist = 64;
+                else
+                  dist = (dist + 32) & ~63;
+              }
+            else
+              {
+                // For anti-aliased hinting, we adopt a more subtle
+                // approach: We strengthen small stems, round those stems
+                // whose size is between 1 and 2 pixels to an integer,
+                // otherwise nothing.
+                if (dist < 48)
+                  dist = (dist + 64) >> 1;
+                else if (dist < 128)
+                  dist = (dist + 22) & ~63;
+                else
+                  // Round otherwise to prevent color fringes in LCD mode.
+                  dist = (dist + 32) & ~63;
+              }
+          }
+      }
+    return doneWidth(dist, sign);
+  }
+
+  private boolean doMono(GlyphHints hints)
+  {
+    return true;
+  }
+
+  private int snapWidth(Width[] widths, int count, int width)
+  {
+    int best = 64 + 32 + 2;
+    int reference = width;
+    for (int n = 0; n < count; n++)
+      {
+        int w = widths[n].cur;
+        int dist = width - w;
+        if (dist < 0)
+          dist = -dist;
+        if (dist < best)
+          {
+            best = dist;
+            reference = w;
+          }
+      }
+    int scaled = Utils.pixRound(reference);
+    if (width >= reference)
+      {
+        if (width < scaled + 48)
+          width = reference;
+      }
+    else
+      {
+        if (width > scaled + 48)
+          width = reference;
+      }
+    return width;
+  }
+
+  private int doneWidth(int w, int s)
+  {
+    if (s == 1)
+      w = -w;
+    return w;
+  }
+
+  private boolean doVertSnap(GlyphHints hints)
+  {
     // TODO Auto-generated method stub
-    
+    return true;
+  }
+
+  private boolean doHorzSnap(GlyphHints hints)
+  {
+    // TODO Auto-generated method stub
+    return true;
+  }
+
+  private boolean doStemAdjust(GlyphHints hints)
+  {
+    // TODO Auto-generated method stub
+    return true;
+  }
+
+  private void alignLinkedEdge(GlyphHints hints, int dim, Edge base, Edge stem)
+  {
+    int dist = stem.opos - base.opos;
+    int fitted = computeStemWidth(hints, dim, dist, base.flags, stem.flags);
+    stem.pos = base.pos + fitted;
   }
 
   public void doneMetrics(ScriptMetrics metrics)
@@ -300,9 +689,6 @@ class Latin
     metrics.axis[DIMENSION_HORZ].widthCount = 0;
     metrics.axis[DIMENSION_VERT].widthCount = 0;
     int glyphIndex = face.getGlyph(ch);
-    // TODO: Avoid that AffineTransform constructor and change
-    // getRawGlyphOutline() to accept null or remove that parameter altogether.
-    // Consider this when the thing is done and we know what we need that for.
     Zone outline = face.getRawGlyphOutline(glyphIndex, IDENTITY);
     LatinMetrics dummy = new LatinMetrics();
     HintScaler scaler = dummy.scaler;

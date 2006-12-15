@@ -91,7 +91,7 @@ public abstract class Scaler
                                          AffineTransform transform,
                                          boolean antialias,
                                          boolean fractionalMetrics,
-                                         Hinter hinter);
+                                         Hinter hinter, int type);
 
 
   /**

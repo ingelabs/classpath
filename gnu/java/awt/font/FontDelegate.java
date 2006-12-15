@@ -61,6 +61,10 @@ import java.util.Locale;
  */
 public interface FontDelegate
 {
+  public static final int TYPE_ORIGINAL = 0;
+  public static final int TYPE_SCALED = 1;
+  public static final int TYPE_FITTED = 2;
+
   /**
    * Returns the full name of this font face in the specified
    * locale, for example <i>&#x201c;Univers Light&#x201d;</i>.
@@ -221,7 +225,8 @@ public interface FontDelegate
                                      float pointSize,
                                      AffineTransform transform,
                                      boolean antialias,
-                                     boolean fractionalMetrics);
+                                     boolean fractionalMetrics,
+                                     int type);
 
 
   /**

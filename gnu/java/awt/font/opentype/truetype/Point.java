@@ -43,13 +43,15 @@ package gnu.java.awt.font.opentype.truetype;
  */
 public class Point
 {
-  public static final byte FLAG_TOUCHED_X = 1;
-  public static final byte FLAG_TOUCHED_Y = 2;
-  public static final byte FLAG_ON_CURVE = 4;
-  public static final byte FLAG_CONTOUR_END = 8;
-  public static final byte FLAG_WEAK_INTERPOLATION = 16;
-  public static final byte FLAG_INFLECTION = 32;
-
+  public static final short FLAG_TOUCHED_X = 1;
+  public static final short FLAG_TOUCHED_Y = 2;
+  public static final short FLAG_ON_CURVE = 4;
+  public static final short FLAG_CONTOUR_END = 8;
+  public static final short FLAG_WEAK_INTERPOLATION = 16;
+  public static final short FLAG_INFLECTION = 32;
+  public static final short FLAG_DONE_X = 64;
+  public static final short FLAG_DONE_Y = 128;
+  
   /**
    * Right direction.
    */
@@ -106,7 +108,7 @@ public class Point
   /**
    * The glyph flags.
    */
-  byte flags;
+  short flags;
 
   /**
    * The previous point in the contour.
@@ -190,17 +192,17 @@ public class Point
     this.outDir = outDir;
   }
 
-  public byte getFlags()
+  public short getFlags()
   {
     return flags;
   }
 
-  public void setFlags(byte flags)
+  public void setFlags(short flags)
   {
     this.flags = flags;
   }
 
-  public void addFlags(byte flags)
+  public void addFlags(short flags)
   {
     this.flags |= flags;
   }
@@ -239,5 +241,45 @@ public class Point
     s.append(origY);
     // TODO: Add more info when needed.
     return s.toString();
+  }
+
+  public int getX()
+  {
+    return x;
+  }
+
+  public void setX(int x)
+  {
+    this.x = x;
+  }
+
+  public int getY()
+  {
+    return y;
+  }
+
+  public void setY(int y)
+  {
+    this.y = y;
+  }
+
+  public int getScaledX()
+  {
+    return scaledX;
+  }
+
+  public void setScaledX(int scaledX)
+  {
+    this.scaledX = scaledX;
+  }
+
+  public int getScaledY()
+  {
+    return scaledY;
+  }
+
+  public void setScaledY(int scaledY)
+  {
+    this.scaledY = scaledY;
   }
 }

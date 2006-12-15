@@ -53,6 +53,10 @@ public class Width
     StringBuilder s = new StringBuilder();
     s.append("[Width] org: ");
     s.append(org);
+    s.append(", cur: ");
+    s.append(cur);
+    s.append(", fit: ");
+    s.append(fit);
     return s.toString();
   }
 }

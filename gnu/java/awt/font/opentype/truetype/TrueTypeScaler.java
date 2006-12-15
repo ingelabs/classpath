@@ -192,11 +192,12 @@ public final class TrueTypeScaler
                                 float pointSize,
                                 AffineTransform deviceTransform,
                                 boolean antialias,
-                                boolean fractionalMetrics, Hinter hinter)
+                                boolean fractionalMetrics, Hinter hinter,
+                                int type)
   {
     glyphLoader.loadGlyph(glyphIndex, pointSize, deviceTransform,
                           antialias, glyphZone, hinter);
-    return glyphZone.getPath();
+    return glyphZone.getPath(type);
   }
 
   public Zone getRawOutline(int glyphIndex, AffineTransform transform)

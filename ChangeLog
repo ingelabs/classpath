@@ -1,3 +1,74 @@
+2006-12-15  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/font/FontDelegate.java
+	(TYPE_FITTED): New constant.
+	(TYPE_ORIGINAL): New constant.
+	(TYPE_SCALED): New constant.
+	(getGlyphOutline): Allow the kind of outline be specified as one
+	of the constants above.
+	* gnu/java/awt/font/GNUGlyphVector.java
+	(getGlyphOutline(int,int)): Add type parameter for fetching
+	the intermediate outlines for debugging.
+	(getGlyphOutline(int)): Fetch TYPE_FITTED outline from font
+	delegate.
+	(getOutline(float,float,int)): Added for debugging purpose.
+	(performDefaultLayout): Round the advance here for better hinting.
+	This is only a workaround for not hinting the metrics right now.
+	* gnu/java/awt/font/autofit/AxisHints.java
+	(getEdgeIndex): New helper method. Fetches the index of
+	a given edge in the array.
+	(newEdge): Fixed sorting.
+	* gnu/java/awt/font/autofit/Edge.java
+	(pos): New field. Stores the fitted position.
+	(scale): New field.
+	(toString): More debug output.
+	* gnu/java/awt/font/autofit/GlyphHints.java
+	(alignEdgePoints): New method. Aligns the points of an outline
+	to their edges hinted positions.
+	(alignStrongPoints): New method. Aligns strong points.
+	(alignWeakPoints): New method. Aligns weak points.
+	(getPointIndex): New helper method.
+	(iupInterp): New helper method. Interpolates points.
+	(iupShift): New helper method. Shifts a complete contour.
+	(storePoint): New helper method.
+	* gnu/java/awt/font/autofit/Latin.java
+	(alignEdgePoints): Moved to GlyphHints.
+	(alignLinkedEdge): New helper method.
+	(alignSerifEdge): New helper method.
+	(alignStrongPoints): Moved to GlyphHints.
+	(alignWeakPoints): Moved to GlyphHints.
+	(applyHints): Call moved methods on GlyphHints.
+	(computeStemWidth): New helper method.
+	(doHorzSnap): New helper method.
+	(doVertSnap): New helper method.
+	(doMono): New helper method.
+	(doneWidth): New helper method.
+	(doStemAdjust): New helper method.
+	(hintEdges): Implemented.
+	(initWidths): Removed old comment.
+	(snapWidth): New helper method.
+	* gnu/java/awt/font/autofit/Width.java
+	(toString): More debug output.
+	* gnu/java/awt/font/opentype/OpenTypeFont.java
+	(getGlyphOutline): Add type parameter for debugging.
+	* gnu/java/awt/font/opentype/Scaler.java
+	(getOutline): Add type parameter for debugging.
+	* gnu/java/awt/font/opentype/truetype/Point.java
+	Make all flags of short type. Add new accessor methods for
+	coordinates that can return scaled and original shapes too.
+	* gnu/java/awt/font/opentype/truetype/TrueTypeScaler.java
+	(getOutline): Add type parameter for debugging.
+	* gnu/java/awt/font/opentype/truetype/Zone.java
+	Add type parameter to X and Y accessors.
+	(getPath): Add type parameter.
+	(getPathIterator): Likewise.
+	(transform): Do store transformed value in the x and y fields too.
+	* gnu/java/awt/font/opentype/truetype/ZonePathIterator.java
+	(type): New field.
+	(ZonePathIterator): Add type parameter.
+	(getSegment): Fetch coordinates with type.
+	(getStartSegment): Likewise.
+
 2006-12-15  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	* autogen.sh: Check for all 2.6x autoconf versions.

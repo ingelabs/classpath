@@ -83,7 +83,7 @@ class AxisHints
       }
     int edgeIndex = numEdges;
     Edge edge = edges[edgeIndex] = new Edge();
-    while (edgeIndex > 0 && edges[edgeIndex].fpos > pos)
+    while (edgeIndex > 0 && edges[edgeIndex - 1].fpos > pos)
       {
         edges[edgeIndex] = edges[edgeIndex - 1];
         edgeIndex--;
@@ -91,6 +91,22 @@ class AxisHints
     edges[edgeIndex] = edge;
     numEdges++;
     edge.fpos = pos;
+
     return edge;
+
+  }
+
+  int getEdgeIndex(Edge edge2)
+  {
+    int idx = -1;
+    for (int i = 0; i < numEdges; i++)
+      {
+        if (edges[i] == edge2)
+          {
+            idx = i;
+            break;
+          }
+      }
+    return idx;
   }
 }

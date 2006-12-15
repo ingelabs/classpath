@@ -49,6 +49,8 @@ class Edge
   int flags;
   int dir;
   Width blueEdge;
+  int pos;
+  int scale;
 
   public String toString()
   {
@@ -59,6 +61,8 @@ class Edge
     s.append(fpos);
     s.append(", opos: ");
     s.append(opos);
+    s.append(", pos: ");
+    s.append(pos);
     s.append(", dir: ");
     s.append(dir);
     s.append(", serif: ");
@@ -66,10 +70,11 @@ class Edge
     s.append(", link: ");
     s.append(link != null ? link.hashCode() : "null");
     s.append(", flags: " + flags);
+    s.append(", blue: " + blueEdge);
     s.append(", first: ");
-    s.append(first.hashCode());
+    s.append(first == null ? "null" : first.hashCode());
     s.append(", last: ");
-    s.append(last.hashCode());
+    s.append(last == null ? "null" : last.hashCode());
     return s.toString();
   }
 }

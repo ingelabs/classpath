@@ -294,4 +294,329 @@ class GlyphHints
   {
     return true; // Check scaler flags here.
   }
+
+  void alignWeakPoints(int dim)
+  {
+    short touchFlag;
+    Point point;
+    // PASS 1 : Move segments to edge positions.
+    if (dim == DIMENSION_HORZ)
+      {
+        touchFlag = Point.FLAG_DONE_X;
+        for (int p = 0; p < numPoints; p++)
+          {
+            point = points[p];
+            point.setU(point.getX());
+            point.setV(point.getScaledX());
+          }
+      }
+    else
+      {
+        touchFlag = Point.FLAG_DONE_Y;
+        for (int p = 0; p < numPoints; p++)
+          {
+            point = points[p];
+            point.setU(point.getY());
+            point.setV(point.getScaledY());
+          }
+      }
+    point = points[0];
+    for (int c = 0; c < numContours; c++)
+      {
+        point = contours[c];
+        int idx = getPointIndex(point);
+        Point endPoint = point.getPrev();
+        int endIdx = getPointIndex(endPoint);
+        int firstIdx = idx;
+        while (idx <=  endIdx
+            && (point.getFlags() & touchFlag) == 0)
+          {
+            idx++;
+            point = points[idx];
+          }
+        if (idx <= endIdx)
+          {
+            int firstTouched = idx;
+            int curTouched = idx;
+            idx++;
+            point = points[idx];
+            while (idx <= endIdx)
+              {
+                if ((point.getFlags() & touchFlag) != 0)
+                  {
+                    // We found two successive touch points. We interpolate
+                    // all contour points between them.
+                    iupInterp(curTouched + 1, idx - 1, curTouched, idx);
+                    curTouched = idx;
+                  }
+                idx++;
+                point = points[idx];
+              }
+            if (curTouched == firstTouched)
+              {
+                // This is a special case: Only one point was touched in the
+                // contour. We thus simply shift the whole contour.
+                iupShift(firstIdx, endIdx, curTouched);
+              }
+            else
+              {
+                // Now interpolate after the last touched point to the end
+                // of the contour.
+                iupInterp(curTouched + 1, endIdx, curTouched, firstTouched);
+                // If the first contour point isn't touched, interpolate
+                // from the contour start to the first touched point.
+                if (firstTouched > 0)
+                  {
+                    iupInterp(firstIdx, firstTouched - 1, curTouched,
+                              firstTouched);
+                  }
+              }
+          }
+      }
+    // Now store the values back.
+    if (dim == DIMENSION_HORZ)
+      {
+        for (int p = 0; p < numPoints; p++)
+          {
+            point = points[p];
+            point.setX(point.getU());
+          }
+      }
+    else
+      {
+        for (int p = 0; p < numPoints; p++)
+          {
+            point = points[p];
+            point.setY(point.getU());
+          }
+      }
+  }
+
+  private void iupShift(int p1, int p2, int ref)
+  {
+    int delta = points[ref].getU() - points[ref].getV();
+    for (int p = p1; p < ref; p++)
+      {
+        points[p].setU(points[p].getV() + delta);
+      }
+    for (int p = ref + 1; p <= p2; p++)
+      {
+        points[p].setU(points[p].getV() + delta);
+      }
+  }
+
+  private void iupInterp(int p1, int p2, int ref1, int ref2)
+  {
+    int v1 = points[ref1].getV();
+    int v2 = points[ref2].getV();
+    int d1 = points[ref1].getU() - v1;
+    int d2 = points[ref2].getU() - v2;
+    if (p1 > p2)
+      return;
+    if (v1 == v2)
+      {
+        for (int p = p1; p <= p2; p++)
+          {
+            int u = points[p].getV();
+            if (u <= v1)
+              u += d1;
+            else
+              u += d2;
+            points[p].setU(u);
+          }
+      }
+    else if (v1 < v2)
+      {
+        for (int p = p1; p <= p2; p++)
+          {
+            int u = points[p].getV();
+            if (u <= v1)
+              u += d1;
+            else if (u >= v2)
+              u += d2;
+            else
+              {
+                u = points[ref1].getU() + Utils.mulDiv(u - v1,
+                                                       points[ref2].getU()
+                                                       - points[ref1].getU(),
+                                                       v2 - v1);
+              }
+            points[p].setU(u);
+          }
+      }
+    else
+      {
+        for (int p = p1; p <= p2; p++)
+          {
+            int u = points[p].getV();
+            if (u <= v2)
+              u += d2;
+            else if (u >= v1)
+              u += d1;
+            else
+              {
+                u = points[ref1].getU() + Utils.mulDiv(u - v1,
+                                                       points[ref2].getU()
+                                                       - points[ref1].getU(),
+                                                       v2 - v1);
+              }
+            points[p].setU(u);
+          }
+      }
+  }
+
+  void alignStrongPoints(int dim)
+  {
+    AxisHints ax = axis[dim];
+    Edge[] edges = ax.edges;
+    int numEdges = ax.numEdges;
+    short touchFlag;
+    if (dim == DIMENSION_HORZ)
+      touchFlag = Point.FLAG_DONE_X;
+    else
+      touchFlag = Point.FLAG_DONE_Y;
+
+    if (numEdges > 0)
+      {
+        for (int p = 0; p < numPoints; p++)
+          {
+            Point point = points[p];
+            if ((point.getFlags() & touchFlag) != 0)
+              continue;
+            // If this point is a candidate for weak interpolation, we
+            // interpolate it after all strong points have been processed.
+            if ((point.getFlags() & Point.FLAG_WEAK_INTERPOLATION) != 0
+                && (point.getFlags() & Point.FLAG_INFLECTION) == 0)
+              continue;
+
+            int u, ou, fu, delta;
+            if (dim == DIMENSION_VERT)
+              {
+                u = point.getOrigY();
+                ou = point.getScaledY();
+              }
+            else
+              {
+                u = point.getOrigX();
+                ou = point.getScaledX();
+              }
+            fu = u;
+            // Is the point before the first edge?
+            Edge edge = edges[0];
+            // Inversed vertical dimension.
+            delta = dim == DIMENSION_HORZ ? edge.fpos - u : u - edge.fpos;
+            if (delta >= 0)
+              {
+                u = edge.pos - (edge.opos - ou);
+                storePoint(point, u, dim, touchFlag);
+              }
+            else
+              {
+                // Is the point after the last edge?
+                edge = edges[numEdges - 1];
+                delta = dim == DIMENSION_HORZ ? u - edge.fpos : edge.fpos - u;
+                if (delta >= 0)
+                  {
+                    u = edge.pos + (ou - edge.opos);
+                    storePoint(point, u, dim, touchFlag);
+                  }
+                else
+                  {
+                    // Find enclosing edges.
+                    int min = 0;
+                    int max = numEdges;
+                    int mid, fpos;
+                    boolean found = false;
+                    while (min < max)
+                      {
+                        mid = (max + min) / 2;
+                        edge = edges[mid];
+                        fpos = edge.fpos;
+                        if (u < fpos)
+                          max = mid;
+                        else if (u > fpos)
+                          min = mid + 1;
+                        else
+                          {
+                            // Directly on the edge.
+                            u = edge.pos;
+                            storePoint(point, u, dim, touchFlag);
+                            found = true;
+                            break;
+                          }
+                      }
+                    if (! found)
+                      {
+                        Edge before = edges[min - 1];
+                        Edge after = edges[min];
+                        if (before.scale == 0)
+                          {
+                            before.scale = Fixed.div(after.pos - before.pos,
+                                                     after.fpos - before.fpos);
+                          }
+                        u = before.pos + Fixed.mul(fu - before.fpos,
+                                                   before.scale);
+                      }
+                  }
+              }
+            storePoint(point, u, dim, touchFlag);
+          }
+      }
+  }
+
+  private void storePoint(Point p, int u, int dim, short touchFlag)
+  {
+    if (dim == DIMENSION_HORZ)
+      p.setX(u);
+    else
+      p.setY(u);
+    p.addFlags(touchFlag);
+  }
+
+  void alignEdgePoints(int dim)
+  {
+    AxisHints ax = axis[dim];
+    Edge[] edges = ax.edges;
+    int numEdges = ax.numEdges;
+    for (int e = 0; e < numEdges; e++)
+      {
+        Edge edge = edges[e];
+        Segment seg = edge.first;
+        do
+          {
+            Point point = seg.first;
+            while (true)
+              {
+                if (dim == DIMENSION_HORZ)
+                  {
+                    point.setX(edge.pos);
+                    point.addFlags(Point.FLAG_DONE_X);
+                  }
+                else
+                  {
+                    point.setY(edge.pos);
+                    point.addFlags(Point.FLAG_DONE_Y);
+                  }
+                if (point == seg.last)
+                  break;
+                point = point.getNext();
+              }
+            seg = seg.edgeNext;
+          } while (seg != edge.first);
+      }
+  }
+
+  private int getPointIndex(Point p)
+  {
+    int idx = -1;
+    for (int i = 0; i < numPoints; i++)
+      {
+        if (p == points[i])
+          {
+            idx = i;
+            break;
+          }
+      }
+    return idx;
+  }
 }
