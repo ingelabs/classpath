@@ -50,6 +50,7 @@ import java.net.URL;
 import java.security.cert.Certificate;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.HandshakeCompletedEvent;
@@ -509,7 +510,7 @@ public class HTTPURLConnection
     return errorSink;
   }
 
-  public Map getHeaderFields()
+  public Map<String,List<String>> getHeaderFields()
   {
     if (!connected)
       {
@@ -522,7 +523,7 @@ public class HTTPURLConnection
             return null;
           }
       }
-    Map m = response.getHeaders().getAsMap();
+    Map<String,List<String>> m = response.getHeaders().getAsMap();
     m.put(null, Collections.singletonList(getStatusLine(response)));
     return Collections.unmodifiableMap(m);
   }

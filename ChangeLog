@@ -1,3 +1,20 @@
+2006-12-14  David Daney  <ddaney@avtrex.com>
+
+	* gnu/java/net/protocol/http/HTTPURLConnection.java: Clean
+	imports.
+	(getHeaderFields): Change return type to Map<String,List<String>>
+	* gnu/java/net/protocol/http/Headers.java: Clean imports.
+	(headers) Change type to ArrayList<HeaderElement>.
+	(iterator) Change return type to Iterator<HeaderElement>.
+	(getValue) Remove casts.
+	(put) Same.
+	(putAll) Same.
+	(remove) Same.
+	(getAsMap) Change return type to Map<String,List<String>> and use
+	generics internally.
+	(getHeaderName) Remove casts.
+	(getHeaderValue) Same.
+
 2006-12-14  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/font/autofit/HintScaler.java

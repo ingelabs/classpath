@@ -49,6 +49,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -65,7 +66,7 @@ class Headers
   /**
    * A list of HeaderElements
    */
-  private final ArrayList headers = new ArrayList();
+  private final ArrayList<HeaderElement> headers = new ArrayList();
   
   /**
    * The HTTP dateformat used to parse date header fields.
@@ -102,7 +103,7 @@ class Headers
    *
    * @return the Iterator.
    */
-  Iterator iterator()
+  Iterator<HeaderElement> iterator()
   {
     return headers.iterator();
   }
@@ -118,7 +119,7 @@ class Headers
   {
     for (int i = headers.size() - 1; i >= 0; i--)
       {
-        HeaderElement e = (HeaderElement)headers.get(i);
+        HeaderElement e = headers.get(i);
         if (e.name.equalsIgnoreCase(header))
           {
             return e.value;
@@ -219,7 +220,7 @@ class Headers
   {    
     for (int i = headers.size() - 1; i >= 0; i--)
       {
-        HeaderElement e = (HeaderElement)headers.get(i);
+        HeaderElement e = headers.get(i);
         if (e.name.equalsIgnoreCase(name))
           {
             e.value = value;
@@ -240,9 +241,9 @@ class Headers
    */
   public void putAll(Headers o)
   {
-    for (Iterator it = o.iterator(); it.hasNext(); )
+    for (Iterator<HeaderElement> it = o.iterator(); it.hasNext(); )
       {
-        HeaderElement e = (HeaderElement)it.next();
+        HeaderElement e = it.next();
         remove(e.name);
         addValue(e.name, e.value);
       }
@@ -256,9 +257,9 @@ class Headers
    */
   public void remove(String name)
   {
-    for (Iterator it = headers.iterator(); it.hasNext(); )
+    for (Iterator<HeaderElement> it = headers.iterator(); it.hasNext(); )
       {
-        HeaderElement e = (HeaderElement)it.next();
+        HeaderElement e = it.next();
         if (e.name.equalsIgnoreCase(name))
           it.remove();
       }
@@ -358,26 +359,26 @@ class Headers
    *
    * @return a Map containing all the headers.
    */
-  public Map getAsMap()
+  public Map<String,List<String>> getAsMap()
   {
-    LinkedHashMap m = new LinkedHashMap();
-    for (Iterator it = headers.iterator(); it.hasNext(); )
+    LinkedHashMap<String,List<String>> m = new LinkedHashMap<String,List<String>>();
+    for (Iterator<HeaderElement> it = headers.iterator(); it.hasNext(); )
       {
-        HeaderElement e = (HeaderElement)it.next();
-        ArrayList l = (ArrayList)m.get(e.name);
+        HeaderElement e = it.next();
+        ArrayList<String> l = (ArrayList<String>)m.get(e.name);
         if (l == null)
           {
-            l = new ArrayList(1);
+            l = new ArrayList<String>(1);
             l.add(e.value);
             m.put(e.name, l);
           }
         else
           l.add(0, e.value);
       }
-    for (Iterator it = m.entrySet().iterator(); it.hasNext(); )
+    for (Iterator<Map.Entry<String,List<String>>> it = m.entrySet().iterator(); it.hasNext(); )
       {
-        Map.Entry me = (Map.Entry)it.next();
-        ArrayList l = (ArrayList)me.getValue();
+        Map.Entry<String,List<String>> me = it.next();
+        List<String> l = me.getValue();
         me.setValue(Collections.unmodifiableList(l));
       }
     return m;
@@ -397,7 +398,7 @@ class Headers
     if (i >= headers.size() || i < 0)
       return null;
     
-    return ((HeaderElement)headers.get(i)).name;
+    return headers.get(i).name;
   }
 
   /**
@@ -414,8 +415,6 @@ class Headers
     if (i >= headers.size() || i < 0)
       return null;
     
-    return ((HeaderElement)headers.get(i)).value;
+    return headers.get(i).value;
   }
-  
 }
-
