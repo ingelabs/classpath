@@ -14,22 +14,26 @@ compile_classpath = $(vm_classes):$(top_srcdir):$(top_srcdir)/external/w3c_dom:$
 
 # handling source to bytecode compiler programs like gcj, jikes  and kjc
 if FOUND_ECJ
-JAVAC = $(ECJ) -1.5 -warn:-deprecation,serial,typeHiding,unchecked,unused,varargsCast -proceedOnError -bootclasspath '' -classpath $(compile_classpath) -d . @classes
+JCOMPILER = $(ECJ) -1.5 -warn:-deprecation,serial,typeHiding,unchecked,unused,varargsCast -proceedOnError -bootclasspath '' -classpath $(compile_classpath) -d . @classes
+else
+if FOUND_JAVAC
+JCOMPILER = $(JAVAC) -bootclasspath '' -classpath $(compile_classpath) -d . @classes
 #else
 #if FOUND_GCJ
 ## This should never be used when gcj is the compiler.
 ## See the compile-classes target.
-#JAVAC = exit 1
+#JCOMPILER = exit 1
 #else
 #if FOUND_JIKES
-#JAVAC = $(JIKES) $(JIKESWARNINGS) +F $(JIKESENCODING) -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(compile_classpath) -d . @classes
+#JCOMPILER = $(JIKES) $(JIKESWARNINGS) +F $(JIKESENCODING) -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(compile_classpath) -d . @classes
 #else
 #if FOUND_KJC
 ### FIXME: from what I can tell, kjc does not support a -encoding option.
-#JAVAC = $(KJC) -classpath .:$(USER_CLASSLIB) -d . @classes
+#JCOMPILER = $(KJC) -classpath .:$(USER_CLASSLIB) -d . @classes
 #endif # FOUND_KJC
 #endif # FOUND_GCJ
 #endif # FOUND_JIKES
+endif # FOUND_JAVAC
 endif # FOUND_ECJ
 
 JAVAH = $(USER_JAVAH) -jni -classpath .:$(USER_CLASSLIB)
@@ -42,7 +46,7 @@ collections.jar: mkcollections.pl
 #if FOUND_GCJ
 #	$(GCJ) -C `$(FIND) $(COLLECTIONS_PREFIX) -name '*.java' -type f -print`
 #else
-	$(JAVAC) `$(FIND) $(COLLECTIONS_PREFIX) -name '*.java' -type f -print`
+	$(JCOMPILER) `$(FIND) $(COLLECTIONS_PREFIX) -name '*.java' -type f -print`
 #endif
 	if test "$(FASTJAR)" != ""; then \
 	  $(FASTJAR) cf $@ $(COLLECTIONS_PREFIX); \
@@ -161,7 +165,7 @@ $(JAVA_DEPEND): genclasses
 #   	  touch compile-classes
 #else
 compile-classes: classes $(JAVA_SRCS) Makefile
-	$(JAVAC)
+	$(JCOMPILER)
 	touch compile-classes
 #endif
 

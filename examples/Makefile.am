@@ -11,9 +11,13 @@ GLIBJ_CLASSPATH='$(top_builddir)/lib':'$(top_builddir)/lib/glibj.zip':'$(top_bui
 if FOUND_ECJ
 JCOMPILER = $(ECJ) -1.5 -encoding UTF-8 -bootclasspath $(GLIBJ_CLASSPATH) -classpath .
 else
+if FOUND_JAVAC
+JCOMPILER = $(JAVAC) -encoding UTF-8 -bootclasspath $(GLIBJ_CLASSPATH) -classpath .
+else
 error dunno how to setup the JCOMPILER and compile
 #endif
 #endif
+endif
 endif
 
 # All our example java source files

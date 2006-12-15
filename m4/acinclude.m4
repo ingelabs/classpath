@@ -9,15 +9,18 @@ dnl  CLASSPATH_WITH_GCJ
 dnl  CLASSPATH_WITH_JIKES
 dnl  CLASSPATH_WITH_KJC
   CLASSPATH_WITH_ECJ
+  CLASSPATH_WITH_JAVAC
 
   if test "x${user_specified_javac}" = x; then
 dnl    AM_CONDITIONAL(FOUND_GCJ, test "x${GCJ}" != x)
 dnl    AM_CONDITIONAL(FOUND_JIKES, test "x${JIKES}" != x)
     AM_CONDITIONAL(FOUND_ECJ, test "x${ECJ}" != x)
+    AM_CONDITIONAL(FOUND_JAVAC, test "x${JAVAC}" != x)
   else
 dnl    AM_CONDITIONAL(FOUND_GCJ, test "x${user_specified_javac}" = xgcj)
 dnl    AM_CONDITIONAL(FOUND_JIKES, test "x${user_specified_javac}" = xjikes)
     AM_CONDITIONAL(FOUND_ECJ, test "x${user_specified_javac}" = xecj)
+    AM_CONDITIONAL(FOUND_JAVAC, test "x${user_specified_javac}" = xjavac)
   fi
 dnl  AM_CONDITIONAL(FOUND_KJC, test "x${user_specified_javac}" = xkjc)
 
@@ -420,5 +423,40 @@ AC_DEFUN([CLASSPATH_CHECK_ECJ],
     fi
   else
     AC_PATH_PROG(ECJ, "ecj")
+  fi
+])
+
+dnl -----------------------------------------------------------
+AC_DEFUN([CLASSPATH_WITH_JAVAC],
+[
+  AC_ARG_WITH([javac],
+	      [AS_HELP_STRING(--with-javac,bytecode compilation with javac)],
+  [
+    if test "x${withval}" != x && test "x${withval}" != xyes && test "x${withval}" != xno; then
+      CLASSPATH_CHECK_JAVAC(${withval})
+    else
+      if test "x${withval}" != xno; then
+        CLASSPATH_CHECK_JAVAC
+      fi
+    fi
+    user_specified_javac=javac
+  ],
+  [ 
+    CLASSPATH_CHECK_JAVAC
+  ])
+  AC_SUBST(JAVAC)
+])
+
+dnl -----------------------------------------------------------
+AC_DEFUN([CLASSPATH_CHECK_JAVAC],
+[
+  if test "x$1" != x; then
+    if test -f "$1"; then
+      JAVAC="$1"
+    else
+      AC_PATH_PROG(JAVAC, "$1")
+    fi
+  else
+    AC_PATH_PROG(JAVAC, "javac")
   fi
 ])

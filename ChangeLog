@@ -1,3 +1,14 @@
+2006-12-15  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* m4/acinclude.m4 (CLASSPATH_FIND_JAVAC): Added support for Sun's
+	javac.
+	(CLASSPATH_WITH_JAVAC): Added.
+	(CLASSPATH_CHECK_JAVAC): Likewise.
+	* lib/Makefile.am (JAVAC): Renamed to JCOMPILER.
+	(FOUND_JAVAC): Added support for Sun's javac.
+	* examples/Makefile.am: Likewise.
+	* tools/Makefile.am: Likewise.
+
 2006-12-15  Francis Kung  <fkung@redhat.com>
 
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java:
