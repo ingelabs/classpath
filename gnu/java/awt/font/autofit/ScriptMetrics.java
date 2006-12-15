@@ -45,9 +45,9 @@ class ScriptMetrics
 {
 
   Script script;
-  Scaler scaler;
+  HintScaler scaler;
   ScriptMetrics()
   {
-    scaler = new Scaler();
+    scaler = new HintScaler();
   }
 }

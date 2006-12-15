@@ -50,6 +50,8 @@ public final class Zone
   private Point[] points;
   private int numPoints;
 
+  public double scaleX, scaleY, shearX, shearY;
+
   public Zone(int maxNumPoints)
   {
     points = new Point[maxNumPoints];
@@ -160,7 +162,6 @@ public final class Zone
   void transform(double pointSize, AffineTransform deviceTransform,
                  int unitsPerEm, int preTranslateX, int preTranslateY)
   {
-    double scaleX, scaleY, shearX, shearY;
     double factor;
 
     factor = pointSize / (double) unitsPerEm;

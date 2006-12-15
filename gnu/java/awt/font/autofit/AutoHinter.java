@@ -40,6 +40,7 @@ package gnu.java.awt.font.autofit;
 
 import gnu.java.awt.font.opentype.Hinter;
 import gnu.java.awt.font.opentype.OpenTypeFont;
+import gnu.java.awt.font.opentype.truetype.Fixed;
 import gnu.java.awt.font.opentype.truetype.Zone;
 
 /**
@@ -52,18 +53,24 @@ public class AutoHinter
   LatinMetrics metrics;
   GlyphHints hints;
 
+  HintScaler scaler = new HintScaler();
   public void init(OpenTypeFont font)
   {
     // TODO: Should support other scripts too.
     latinScript = new Latin();
     metrics = new LatinMetrics(font);
     latinScript.initMetrics(metrics, font);
+    scaler.face = font;
   }
 
   public void applyHints(Zone outline)
   {
     if (hints == null)
       hints = new GlyphHints();
+    scaler.xScale = Fixed.valueOf16(outline.scaleX * 64);
+    scaler.yScale = Fixed.valueOf16(outline.scaleY * 64);
+    latinScript.scaleMetrics(metrics, scaler);
     latinScript.applyHints(hints, outline, metrics);
   }
+
 }

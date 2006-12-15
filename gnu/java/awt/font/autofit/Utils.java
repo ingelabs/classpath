@@ -212,4 +212,38 @@ class Utils
           }
       }
   }
+
+  static void sort(int num, Width[] array)
+  {
+    Width swap;
+    for (int i = 1; i < num; i++)
+      {
+        for (int j = 1; j > 0; j--)
+          {
+            if (array[j].org > array[j - 1].org)
+              break;
+            swap = array[j];
+            array[j] = array[j - 1];
+            array[j - 1] = swap;
+          }
+      }
+  }
+
+  static int pixRound(int val)
+  {
+    return pixFloor(val + 32);
+  }
+
+  static int pixFloor(int val)
+  {
+    return val & ~63;
+  }
+
+  public static int mulDiv(int a, int b, int c)
+  {
+    long prod = a * b;
+    long div = (prod / c);
+    return (int) div;
+  }
+
 }

@@ -40,8 +40,9 @@ package gnu.java.awt.font.autofit;
 
 public class LatinBlue
 {
-  static final int FLAG_TOP = 1;
-  static final int FLAG_ADJUSTMENT = 1;
+  static final int FLAG_BLUE_ACTIVE = 1 << 0;
+  static final int FLAG_TOP = 1 << 1;
+  static final int FLAG_ADJUSTMENT = 1 << 2;
   Width ref;
   Width shoot;
   int flags;

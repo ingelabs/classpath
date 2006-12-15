@@ -129,6 +129,11 @@ class GlyphHints
 
     // TODO: Freetype seems to scale and translate the glyph at that point.
     // I suppose that this is not really needed.
+    // The scales are scaling from font units to 1/64 device pixels.
+    xScale = Fixed.valueOf16(outline.scaleX * 64);
+    yScale = Fixed.valueOf16(outline.scaleY * 64);
+
+    // FIXME: What is that xDelta and yDelta used for?
     System.arraycopy(outline.getPoints(), 0, points, 0, numPoints);
 
     // Setup prev and next and contours array.

@@ -69,14 +69,21 @@ public final class Fixed
     return (int) ((((long) a) * b) >> 6);
   }
 
+  public static int mul16(int a, int b)
+  {
+    return (int) ((((long) a) * b) >> 16);
+  }
 
   public static int div(int a, int b)
   {
     return (int) ((((long) a) << 6) / b);
   }
 
+  public static int div16(int a, int b)
+  {
+    return (int) ((((long) a) << 16) / b);
+  }
 
-  
   public static int ceil(int a)
   {
     return (a + 63) & -64;
@@ -138,6 +145,10 @@ public final class Fixed
     return (int) (d * 64);
   }
 
+  public static int valueOf16(double d)
+  {
+    return (int) (d * (1 << 16));
+  }
 
   /**
    * Makes a string representation of a fixed-point number.

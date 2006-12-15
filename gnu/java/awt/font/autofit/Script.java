@@ -52,7 +52,7 @@ interface Script
    */
   void initMetrics(ScriptMetrics metrics, OpenTypeFont face);
 
-  void scaleMetrics(ScriptMetrics metrics/* , scaler, map this */);
+  void scaleMetrics(ScriptMetrics metrics , HintScaler scaler);
 
   void doneMetrics(ScriptMetrics metrics);
 

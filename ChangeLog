@@ -1,5 +1,56 @@
 2006-12-14  Roman Kennke  <kennke@aicas.com>
 
+	* gnu/java/awt/font/autofit/HintScaler.java
+	Renamed Scaler to HintScaler to avoid name-clash.
+	* gnu/java/awt/font/autofit/AutoHinter.java
+	(scaler): New field.
+	(applyHints): Scale the metrics before applying the hints.
+	(init): Copy font into scaler.
+	* gnu/java/awt/font/autofit/Edge.java
+	(blueEdge): New field.
+	(toString): Include first and last fields in debug output.
+	* gnu/java/awt/font/autofit/GlyphHints.java
+	(reload): Grab the scales here.
+	* gnu/java/awt/font/autofit/Latin.java
+	(computeBlueEdges): Implemented blue-edge detection.
+	(computeEdges): Correctly calculate edgeDistanceThreshold and
+	the scaled edge position.
+	(initWidths): Renamed Scaler to HintScaler. Sort widths and
+	store widthCount.
+	(scaleMetrics): Add HintScaler parameter. Implemented to scale
+	the metrics.
+	(scaleMetricsDim): New helper method.
+	* gnu/java/awt/font/autofit/LatinAxis.java
+	(orgDelta): New field.
+	(orgScale): New field.
+	* gnu/java/awt/font/autofit/LatinBlue.java: Reordered flags.
+	(FLAG_BLUE_ACTIVE): New flag.
+	* gnu/java/awt/font/autofit/Scaler.java: Renamed to HintScaler.
+	* gnu/java/awt/font/autofit/Script.java
+	(scaleMetrics): Add HintScaler argument.
+	* gnu/java/awt/font/autofit/ScriptMetrics.java
+	Renamed Scaler to HintScaler.
+	* gnu/java/awt/font/autofit/Utils.java
+	(sort(int,Width[])): New helper method. Sorts Width arrays.
+	(mulDiv): New helper method.
+	(pixFloor): New helper method.
+	(pixRound): New helper method.
+	* gnu/java/awt/font/autofit/Width.java
+	(toString): New method. For debug output.
+	* gnu/java/awt/font/opentype/truetype/Fixed.java
+	(mul16): New method. Multiplies with 16.16 fixed point arithmetics.
+	(div16): New method. Divides with 16.16 fixed point arithmetics.
+	(valueOf16): New method. Converts double to 16.16 fixed point.
+	* gnu/java/awt/font/opentype/truetype/Zone.java
+	(scaleX): New field.
+	(scaleY): New field.
+	(shearX): New field.
+	(shearY): New field.
+	(transform): Store translation and shearing in fields instead of
+	local vars.
+
+2006-12-14  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/java/awt/font/autofit/AutoHinter.java
 	(hints): New field.
 	(applyHints): New method. Implements the actual hinting.

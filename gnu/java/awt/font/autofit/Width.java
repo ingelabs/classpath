@@ -47,4 +47,12 @@ public class Width
   {
     org = dist;
   }
+
+  public String toString()
+  {
+    StringBuilder s = new StringBuilder();
+    s.append("[Width] org: ");
+    s.append(org);
+    return s.toString();
+  }
 }

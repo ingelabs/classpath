@@ -172,10 +172,119 @@ class Latin
     initBlues(lm, face);
   }
 
-  public void scaleMetrics(ScriptMetrics metrics)
+  public void scaleMetrics(ScriptMetrics metrics, HintScaler scaler)
   {
-    // TODO Auto-generated method stub
+    LatinMetrics lm = (LatinMetrics) metrics;
+    lm.scaler.renderMode = scaler.renderMode;
+    lm.scaler.face = scaler.face;
+    scaleMetricsDim(lm, scaler, DIMENSION_HORZ);
+    scaleMetricsDim(lm, scaler, DIMENSION_VERT);
+  }
 
+  private void scaleMetricsDim(LatinMetrics lm, HintScaler scaler, int dim)
+  {
+    int scale;
+    int delta;
+    if (dim == DIMENSION_HORZ)
+      {
+        scale = scaler.xScale;
+        delta = scaler.xDelta;
+      }
+    else
+      {
+        scale = scaler.yScale;
+        delta = scaler.yDelta;
+      }
+    LatinAxis axis = lm.axis[dim];
+    if (axis.orgScale == scale && axis.orgDelta == delta)
+      // No change, no need to adjust.
+      return;
+    axis.orgScale = scale;
+    axis.orgDelta = delta;
+
+    // Correct X and Y scale to optimize the alignment of the top small
+    // letters to the pixel grid.
+    LatinAxis axis2 = lm.axis[DIMENSION_VERT];
+    LatinBlue blue = null;
+    for (int nn = 0; nn < axis2.blueCount; nn++)
+      {
+        if ((axis2.blues[nn].flags & LatinBlue.FLAG_ADJUSTMENT) != 0)
+          {
+            blue = axis2.blues[nn];
+            break;
+          }
+      }
+    if (blue != null)
+      {
+        int scaled = Fixed.mul16(blue.shoot.org, scaler.yScale);
+        int fitted = Utils.pixRound(scaled);
+        if (scaled != fitted)
+          {
+            if (dim == DIMENSION_HORZ)
+              {
+                if (fitted < scaled)
+                  {
+                    scale -= scale / 50;
+                  }
+              }
+            else
+              {
+                scale = Utils.mulDiv(scale, fitted, scaled);
+              }
+          }
+      }
+    axis.scale = scale;
+    axis.delta = delta;
+    if (dim == DIMENSION_HORZ)
+      {
+        lm.scaler.xScale = scale;
+        lm.scaler.xDelta = delta;
+      }
+    else
+      {
+        lm.scaler.yScale = scale;
+        lm.scaler.yDelta = delta;
+      }
+    // Scale the standard widths.
+    for (int nn = 0; nn < axis.widthCount; nn++)
+      {
+        Width w = axis.widths[nn];
+        w.cur = Fixed.mul16(w.org, scale);
+        w.fit = w.cur;
+      }
+    // Scale blue zones.
+    if (dim == DIMENSION_VERT)
+      {
+        for (int nn = 0; nn < axis.blueCount; nn++)
+          {
+            blue = axis.blues[nn];
+            blue.ref.cur = Fixed.mul16(blue.ref.org, scale) + delta;
+            blue.ref.fit = blue.ref.cur;
+            blue.shoot.cur = Fixed.mul16(blue.ref.org, scale) + delta;
+            blue.flags &= ~LatinBlue.FLAG_BLUE_ACTIVE;
+            // A blue zone is only active if it is less than 3/4 pixels tall.
+            int dist = Fixed.mul16(blue.ref.org - blue.shoot.org, scale);
+            if (dist <= 48 && dist >= -48)
+              {
+                int delta1 = blue.shoot.org - blue.ref.org;
+                int delta2 = delta1;
+                if (delta1 < 0)
+                  delta2 = -delta2;
+                delta2 = Fixed.mul16(delta2, scale);
+                if (delta2 < 32)
+                  delta2 = 0;
+                else if (delta2 < 64)
+                  delta2 = 32 + (((delta2 - 32) + 16) & ~31);
+                else
+                  delta2 = Utils.pixRound(delta2);
+                if (delta1 < 0)
+                  delta2 = -delta2;
+                blue.ref.fit = Utils.pixRound(blue.ref.cur);
+                blue.shoot.fit = blue.ref.fit+ delta2;
+                blue.flags |= LatinBlue.FLAG_BLUE_ACTIVE;
+              }
+          }
+      }
   }
 
   /**
@@ -196,7 +305,7 @@ class Latin
     // Consider this when the thing is done and we know what we need that for.
     Zone outline = face.getRawGlyphOutline(glyphIndex, IDENTITY);
     LatinMetrics dummy = new LatinMetrics();
-    Scaler scaler = dummy.scaler;
+    HintScaler scaler = dummy.scaler;
     dummy.unitsPerEm = metrics.unitsPerEm;
     scaler.xScale = scaler.yScale = 10000;
     scaler.xDelta = scaler.yDelta = 0;
@@ -224,6 +333,8 @@ class Latin
               }
             touched.add(seg);
           }
+        Utils.sort(numWidths, axis.widths);
+        axis.widthCount = numWidths;
       }
     for (int dim = 0; dim < DIMENSION_MAX; dim++)
       {
@@ -638,11 +749,10 @@ class Latin
     // Note that the edge table is sorted along the segment/edge
     // position.
 
-    edgeDistanceThreshold = Fixed.mul(laxis.edgeDistanceTreshold, scale);
+    edgeDistanceThreshold = Fixed.mul16(laxis.edgeDistanceTreshold, scale);
     if (edgeDistanceThreshold > 64 / 4)
       edgeDistanceThreshold = 64 / 4;
-    edgeDistanceThreshold = Fixed.div(edgeDistanceThreshold, scale);
-
+    edgeDistanceThreshold = Fixed.div16(edgeDistanceThreshold, scale);
     for (int i = 0; i < numSegments; i++)
       {
         seg = segments[i];
@@ -667,7 +777,7 @@ class Latin
             edge.first = seg;
             edge.last = seg;
             edge.fpos = seg.pos;
-            edge.opos = Fixed.mul(seg.pos, scale);
+            edge.opos = Fixed.mul16(seg.pos, scale);
             seg.edgeNext = seg;
             seg.edge = edge;
           }
@@ -780,6 +890,83 @@ class Latin
 
   private void computeBlueEdges(GlyphHints hints, LatinMetrics metrics)
   {
-    // TODO: Implement.
+    AxisHints axis = hints.axis[DIMENSION_VERT];
+    Edge[] edges = axis.edges;
+    int numEdges = axis.numEdges;
+    LatinAxis latin = metrics.axis[DIMENSION_VERT];
+    int scale = latin.scale;
+
+    // Compute which blue zones are active. I.e. have their scaled
+    // size < 3/4 pixels.
+
+    // For each horizontal edge search the blue zone that is closest.
+    for (int e = 0; e < numEdges; e++)
+      {
+        Edge edge = edges[e];
+        // System.err.println("checking edge: " + edge);
+        Width bestBlue = null;
+        int bestDist = Fixed.mul16(metrics.unitsPerEm / 40, scale);
+        
+        if (bestDist > 64 / 2)
+          bestDist = 64 / 2;
+        for (int bb = 0; bb < BLUE_MAX; bb++)
+          {
+            LatinBlue blue = latin.blues[bb];
+            // System.err.println("checking blue: " + blue);
+            // Skip inactive blue zones, i.e. those that are too small.
+            if ((blue.flags & LatinBlue.FLAG_BLUE_ACTIVE) == 0)
+              continue;
+            // If it is a top zone, check for right edges. If it is a bottom
+            // zone, check for left edges.
+            boolean isTopBlue = (blue.flags & LatinBlue.FLAG_TOP) != 0;
+            boolean isMajorDir = edge.dir == axis.majorDir;
+
+            // If it is a top zone, the edge must be against the major
+            // direction. If it is a bottom zone it must be in the major
+            // direction.
+            if (isTopBlue ^ isMajorDir)
+              {
+                int dist = edge.fpos - blue.ref.org;
+                if (dist < 0)
+                  dist = -dist;
+                dist = Fixed.mul16(dist, scale);
+                if (dist < bestDist)
+                  {
+                    bestDist = dist;
+                    bestBlue = blue.ref;
+                  }
+
+                // Now, compare it to the overshoot position if the edge is
+                // rounded, and if the edge is over the reference position of
+                // a top zone, or under the reference position of a bottom
+                // zone.
+                if ((edge.flags & Segment.FLAG_EDGE_ROUND) != 0 && dist != 0)
+                  {
+                    // Inversed vertical coordinates!
+                    boolean isUnderRef = edge.fpos > blue.ref.org;
+                    if (isTopBlue ^ isUnderRef)
+                      {
+                        blue = latin.blues[bb]; // Needed?
+                        dist = edge.fpos - blue.shoot.org;
+                        if (dist < 0)
+                          dist = -dist;
+                        dist = Fixed.mul16(dist, scale);
+                        if (dist < bestDist)
+                          {
+                            bestDist = dist;
+                            bestBlue = blue.shoot;
+                          }
+                      }
+                  }
+
+              }
+          }
+        if (bestBlue != null)
+          {
+            edge.blueEdge = bestBlue;
+            // Debug: Print out the blue edges.
+            // System.err.println("blue edge for: " + edge + ": " + bestBlue);
+          }
+      }
   }
 }
