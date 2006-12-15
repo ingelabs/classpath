@@ -1,5 +1,24 @@
 2006-12-15  Tom Tromey  <tromey@redhat.com>
 
+	* tools/gnu/classpath/tools/serialver/SerialVer.java (addFileURL):
+	Genericized.
+	(getClassLoader): Likewise.
+	(classes): Likewise.
+	* tools/gnu/classpath/tools/native2ascii/Native2ASCII.java (main):
+	Removed unused variable.
+	* tools/gnu/classpath/tools/jar/WorkSet.java (allItems): Genericize.
+	(initSet): Likewise.
+	* tools/gnu/classpath/tools/jar/Main.java (entries): Genericize.
+	* tools/gnu/classpath/tools/jar/Indexer.java (indexJarFile):
+	Genericized.
+	* tools/gnu/classpath/tools/jar/Creator.java (writeFile): Close the
+	input stream.
+	(writtenItems): Genericize.
+	(addEntries): Likewise.
+	(getAllEntries): Likewise.
+
+2006-12-15  Tom Tromey  <tromey@redhat.com>
+
 	PR classpath/29526:
 	* gnu/java/nio/ChannelInputStream.java (read): New overload.
 	(read): Mask return result.
