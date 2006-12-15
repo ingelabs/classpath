@@ -777,6 +777,20 @@ Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoFillRect
   cairo_fill(gr->cr);
 }
 
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoSetAntialias
+(JNIEnv *env __attribute__ ((unused)), jobject obj __attribute__ ((unused)),
+ jlong pointer, jboolean aa)
+{
+  struct cairographics2d *gr = JLONG_TO_PTR(struct cairographics2d, pointer);
+  g_assert (gr != NULL);
+
+  if (aa)
+    cairo_set_antialias(gr->cr, CAIRO_ANTIALIAS_GRAY);
+  else
+    cairo_set_antialias(gr->cr, CAIRO_ANTIALIAS_NONE);
+}
+
 static void 
 update_pattern_transform (struct cairographics2d *gr)
 {

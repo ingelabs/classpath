@@ -172,6 +172,12 @@ public abstract class CairoGraphics2D extends Graphics2D
    * Rendering hint map.
    */
   private RenderingHints hints;
+  
+  /**
+   * Status of the anti-alias flag in cairo.
+   */
+  private boolean antialias = false;
+  private boolean ignoreAA = false;
 
   /**
    * Some operations (drawing rather than filling) require that their
@@ -228,6 +234,7 @@ public abstract class CairoGraphics2D extends Graphics2D
     setPaint(Color.black);
     setStroke(new BasicStroke());
     setTransform(new AffineTransform());
+    cairoSetAntialias(nativePointer, antialias);
   }
 
   /**
@@ -472,6 +479,11 @@ public abstract class CairoGraphics2D extends Graphics2D
    * Save clip
    */
   private native void cairoResetClip(long pointer);
+  
+  /**
+   * Set antialias.
+   */
+  private native void cairoSetAntialias(long pointer, boolean aa);
 
   /**
    * Draws a line from (x1,y1) to (x2,y2).
@@ -1121,7 +1133,8 @@ public abstract class CairoGraphics2D extends Graphics2D
         Rectangle r = findStrokedBounds(s);
         setCustomPaint(r);
       }
-    
+
+    setAntialias(hints.get(RenderingHints.KEY_ANTIALIASING));
     createPath(s, true);
     cairoStroke(nativePointer);
   }
@@ -1132,7 +1145,8 @@ public abstract class CairoGraphics2D extends Graphics2D
 
     if (customPaint)
       setCustomPaint(s.getBounds());
-    
+
+    setAntialias(hints.get(RenderingHints.KEY_ANTIALIASING));
     double alpha = 1.0;
     if (comp instanceof AlphaComposite)
       alpha = ((AlphaComposite) comp).getAlpha();
@@ -1428,6 +1442,25 @@ public abstract class CairoGraphics2D extends Graphics2D
     // Do bilinear interpolation as default
     return INTERPOLATION_BILINEAR;
   }
+  
+  /**
+   * Set antialias if needed.  If the ignoreAA flag is set, this method will
+   * return without doing anything.
+   * 
+   * @param value RenderingHints.VALUE_ANTIALIAS_ON or RenderingHints.VALUE_ANTIALIAS_OFF
+   */
+  private void setAntialias(Object value)
+  {
+    if (ignoreAA)
+      return;
+    
+    boolean needAA = ! (value.equals(RenderingHints.VALUE_ANTIALIAS_OFF)); 
+    if (needAA != antialias)
+      {
+        antialias = !antialias;
+        cairoSetAntialias(nativePointer, antialias);
+      }
+  }
 
   ///////////////////////// IMAGE. METHODS ///////////////////////////////////
 
@@ -1647,7 +1680,14 @@ public abstract class CairoGraphics2D extends Graphics2D
         tl = new TextLayout( str, getFont(), getFontRenderContext() );
         fontPeer.textLayoutCache.put(str, tl);
       }
+    
+    // Set antialias to text_antialiasing, and set the ignoreAA flag so that
+    // the setting doesn't get overridden in a draw() or fill() call.
+    setAntialias(hints.get(RenderingHints.KEY_TEXT_ANTIALIASING));
+    ignoreAA = true;
+    
     tl.draw(this, x, y);
+    ignoreAA = false;
   }
 
   public void drawString(String str, int x, int y)
@@ -1672,6 +1712,10 @@ public abstract class CairoGraphics2D extends Graphics2D
     
     if (comp instanceof AlphaComposite)
       alpha = ((AlphaComposite) comp).getAlpha();
+    
+    setAntialias(hints.get(RenderingHints.KEY_TEXT_ANTIALIASING));
+    ignoreAA = true;
+    
     if (gv instanceof FreetypeGlyphVector && alpha == 1.0)
       {
         int n = gv.getNumGlyphs ();
@@ -1692,6 +1736,8 @@ public abstract class CairoGraphics2D extends Graphics2D
         fill(gv.getOutline());
         translate(-x, -y);
       }
+    
+    ignoreAA = false;
   }
 
   public void drawString(AttributedCharacterIterator ci, float x, float y)
