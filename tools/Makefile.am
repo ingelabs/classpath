@@ -153,9 +153,9 @@ $(TOOLS_ZIP): $(TOOLS_JAVA_FILES)
 ## Compile ASM separately as it is latin-1 encoded.
 	find $(srcdir)/external/asm -name '*.java' -print > asm.lst
 	AC=`echo $(JCOMPILER) | sed -e 's/UTF-8/ISO-8859-1/g'`; \
-	  $$AC -g -w -d asm @asm.lst
+	  $$AC -g -d asm @asm.lst
 	find $(srcdir)/gnu/classpath/tools -name '*.java' -print > classes.lst
-	$(JCOMPILER) -g -w -d classes @classes.lst
+	$(JCOMPILER) -g -d classes @classes.lst
 	cat classes.lst asm.lst > all-classes.lst
 ## Copy over tools resource files.
 	@list=`cd $(top_srcdir)/resource && find gnu/classpath/tools -name \*.properties -print`; \
