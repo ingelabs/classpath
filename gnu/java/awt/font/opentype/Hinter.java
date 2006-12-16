@@ -58,4 +58,6 @@ public interface Hinter
    * @param outline the outline to hint
    */
   void applyHints(Zone outline);
+
+  void setFlags(int flags);
 }

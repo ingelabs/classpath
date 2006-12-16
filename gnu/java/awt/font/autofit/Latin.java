@@ -97,9 +97,12 @@ class Latin
             || dim == DIMENSION_VERT && hints.doVertical())
           {
             hintEdges(hints, dim);
-            hints.alignEdgePoints(dim);
-            hints.alignStrongPoints(dim);
-            hints.alignWeakPoints(dim);
+            if (hints.doAlignEdgePoints())
+              hints.alignEdgePoints(dim);
+            if (hints.doAlignStrongPoints())
+              hints.alignStrongPoints(dim);
+            if (hints.doAlignWeakPoints())
+              hints.alignWeakPoints(dim);
             
          }
       }
@@ -283,7 +286,9 @@ class Latin
             edge2.flags |= Segment.FLAG_EDGE_DONE;
 
             if (e > 0 && edge.pos < edges[e - 1].pos)
-              edge.pos = edges[e - 1].pos;
+              {
+                edge.pos = edges[e - 1].pos;
+              }
           }
       }
     // TODO: Implement the lowercase m symmetry thing.
@@ -595,33 +600,33 @@ class Latin
     // letters to the pixel grid.
     LatinAxis axis2 = lm.axis[DIMENSION_VERT];
     LatinBlue blue = null;
-    for (int nn = 0; nn < axis2.blueCount; nn++)
-      {
-        if ((axis2.blues[nn].flags & LatinBlue.FLAG_ADJUSTMENT) != 0)
-          {
-            blue = axis2.blues[nn];
-            break;
-          }
-      }
-    if (blue != null)
-      {
-        int scaled = Fixed.mul16(blue.shoot.org, scaler.yScale);
-        int fitted = Utils.pixRound(scaled);
-        if (scaled != fitted)
-          {
-            if (dim == DIMENSION_HORZ)
-              {
-                if (fitted < scaled)
-                  {
-                    scale -= scale / 50;
-                  }
-              }
-            else
-              {
-                scale = Utils.mulDiv(scale, fitted, scaled);
-              }
-          }
-      }
+//    for (int nn = 0; nn < axis2.blueCount; nn++)
+//      {
+//        if ((axis2.blues[nn].flags & LatinBlue.FLAG_ADJUSTMENT) != 0)
+//          {
+//            blue = axis2.blues[nn];
+//            break;
+//          }
+//      }
+//    if (blue != null)
+//      {
+//        int scaled = Fixed.mul16(blue.shoot.org, scaler.yScale);
+//        int fitted = Utils.pixRound(scaled);
+//        if (scaled != fitted)
+//          {
+//            if (dim == DIMENSION_HORZ)
+//              {
+//                if (fitted < scaled)
+//                  {
+//                    scale -= scale / 50;
+//                  }
+//              }
+//            else
+//              {
+//                scale = Utils.mulDiv(scale, fitted, scaled);
+//              }
+//          }
+//      }
     axis.scale = scale;
     axis.delta = delta;
     if (dim == DIMENSION_HORZ)
@@ -669,7 +674,7 @@ class Latin
                 if (delta1 < 0)
                   delta2 = -delta2;
                 blue.ref.fit = Utils.pixRound(blue.ref.cur);
-                blue.shoot.fit = blue.ref.fit+ delta2;
+                blue.shoot.fit = blue.ref.fit + delta2;
                 blue.flags |= LatinBlue.FLAG_BLUE_ACTIVE;
               }
           }
@@ -1163,7 +1168,7 @@ class Latin
             edge.first = seg;
             edge.last = seg;
             edge.fpos = seg.pos;
-            edge.opos = Fixed.mul16(seg.pos, scale);
+            edge.opos = edge.pos = Fixed.mul16(seg.pos, scale);
             seg.edgeNext = seg;
             seg.edge = edge;
           }

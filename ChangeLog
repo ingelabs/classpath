@@ -1,3 +1,43 @@
+2006-12-16  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/font/FontDelegate.java
+	(FLAG_FITTED): New constant field.
+	(FLAG_NO_HINT_HORIZONTAL): New constant field.
+	(FLAG_NO_HINT_VERTICAL): New constant field.w
+	(FLAG_NO_HINT_EDGE_POINTS): New constant field.
+	(FLAG_NO_HINT_STRONG_POINTS): New constant field.
+	(FLAG_NO_HINT_WEAK_POINTS): New constant field.
+	(TYPE_FITTED): Replaced by flags above.
+	(TYPE_SCALED): Replaced by flags above.
+	(TYPE_ORIGINAL): Replaced by flags above.
+	* gnu/java/awt/font/GNUGlyphVector.java
+	(getGlyphOutline): Use FLAG_FITTED.
+	* gnu/java/awt/font/autofit/AutoHinter.java
+	(setFlags): New method. Sets hinting flags.
+	* gnu/java/awt/font/autofit/GlyphHints.java
+	(flags): New field.
+	(alignStrongPoint): Use 16.16 fixed arithmetic.
+	(doAlignEdgePoints): New helper method.
+	(doAlignStrongPoints): New helper method.
+	(doAlignWeakPoints): New helper method.
+	(doHorizonal): Check flags.
+	(doVertical): Check flags.
+	* gnu/java/awt/font/autofit/Latin.java
+	(applyHints): Check hinting flags.
+	(computeEdges): Also initialize fitted position.
+	(scaleMetricsDim): Commented out buggy block.
+	* gnu/java/awt/font/opentype/Hinter.java
+	(setFlags): New method.
+	* gnu/java/awt/font/opentype/OpenTypeFont.java
+	(checkHinter): Accept flags parameter.
+	(createGlyphVector): Pass flags to hinter.
+	(getGlyphOutline): Pass flags to hinter.
+	* gnu/java/awt/font/opentype/truetype/Fixed.java
+	(floatValue16): New method.
+	* gnu/java/awt/font/opentype/truetype/Zone.java
+	(getX): Use new flags.
+	(getY): Use new flags.
+
 2006-12-16  Mark Wielaard  <mark@klomp.org>
 
 	* tools/Makefile.am (TOOLS_ZIP): Remove all-classes.lst.

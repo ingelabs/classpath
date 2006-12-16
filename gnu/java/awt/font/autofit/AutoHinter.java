@@ -73,4 +73,11 @@ public class AutoHinter
     latinScript.applyHints(hints, outline, metrics);
   }
 
+  public void setFlags(int flags)
+  {
+    if (hints == null)
+      hints = new GlyphHints();
+    hints.flags = flags;
+  }
+
 }

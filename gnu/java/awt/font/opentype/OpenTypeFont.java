@@ -582,7 +582,7 @@ public final class OpenTypeFont
                                                     CharacterIterator ci)
   {
     // Initialize hinter if necessary.
-    checkHinter();
+    checkHinter(FontDelegate.FLAG_FITTED);
 
     CharGlyphMap cmap;    
     int numGlyphs;
@@ -695,14 +695,14 @@ public final class OpenTypeFont
                                                   AffineTransform transform,
                                                   boolean antialias,
                                                   boolean fractionalMetrics,
-                                                  int type)
+                                                  int flags)
   {
     /* The synchronization is needed because the scaler is not
      * synchronized.
      */
-    checkHinter();
+    checkHinter(flags);
     return scaler.getOutline(glyph, pointSize, transform,
-                             antialias, fractionalMetrics, hinter, type);
+                             antialias, fractionalMetrics, hinter, flags);
   }
 
   /**
@@ -848,7 +848,7 @@ public final class OpenTypeFont
   /**
    * Checks if a hinter is installed and installs one when not.
    */
-  private void checkHinter()
+  private void checkHinter(int flags)
   {
     // When another hinting impl gets added (maybe a true TrueType hinter)
     // then add some options here. The Hinter interface might need to be
@@ -867,5 +867,6 @@ public final class OpenTypeFont
             ex.printStackTrace();
           }
       }
+    hinter.setFlags(flags);
   }
 }

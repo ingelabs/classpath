@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package gnu.java.awt.font.autofit;
 
+import gnu.java.awt.font.FontDelegate;
 import gnu.java.awt.font.opentype.truetype.Fixed;
 import gnu.java.awt.font.opentype.truetype.Point;
 import gnu.java.awt.font.opentype.truetype.Zone;
@@ -66,7 +67,8 @@ class GlyphHints
 
   ScriptMetrics metrics;
 
-  
+  int flags;
+
   GlyphHints()
   {
     axis = new AxisHints[Constants.DIMENSION_MAX];
@@ -287,12 +289,12 @@ class GlyphHints
 
   boolean doHorizontal()
   {
-    return true; // Check scaler flags here.
+    return (flags & FontDelegate.FLAG_NO_HINT_HORIZONTAL) == 0;
   }
 
   boolean doVertical()
   {
-    return true; // Check scaler flags here.
+    return (flags & FontDelegate.FLAG_NO_HINT_VERTICAL) == 0;
   }
 
   void alignWeakPoints(int dim)
@@ -551,15 +553,15 @@ class GlyphHints
                         Edge after = edges[min];
                         if (before.scale == 0)
                           {
-                            before.scale = Fixed.div(after.pos - before.pos,
+                            before.scale = Fixed.div16(after.pos - before.pos,
                                                      after.fpos - before.fpos);
                           }
-                        u = before.pos + Fixed.mul(fu - before.fpos,
-                                                   before.scale);
+                        u = before.pos + Fixed.mul16(fu - before.fpos,
+                                                     before.scale);
                       }
+                    storePoint(point, u, dim, touchFlag);
                   }
               }
-            storePoint(point, u, dim, touchFlag);
           }
       }
   }
@@ -618,5 +620,20 @@ class GlyphHints
           }
       }
     return idx;
+  }
+
+  public boolean doAlignEdgePoints()
+  {
+    return (flags & FontDelegate.FLAG_NO_HINT_EDGE_POINTS) == 0;
+  }
+
+  public boolean doAlignStrongPoints()
+  {
+    return (flags & FontDelegate.FLAG_NO_HINT_STRONG_POINTS) == 0;
+  }
+
+  public boolean doAlignWeakPoints()
+  {
+    return (flags & FontDelegate.FLAG_NO_HINT_WEAK_POINTS) == 0;
   }
 }

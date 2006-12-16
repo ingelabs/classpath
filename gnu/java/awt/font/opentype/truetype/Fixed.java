@@ -126,7 +126,10 @@ public final class Fixed
   {
     return ((float) f) / 64;
   }
-
+  public static float floatValue16(int f)
+  {
+    return ((float) f) / 65536;
+  }
 
   public static double doubleValue(int f)
   {

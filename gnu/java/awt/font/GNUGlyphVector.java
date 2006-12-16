@@ -328,7 +328,7 @@ public class GNUGlyphVector
     path = fontDelegate.getGlyphOutline(glyphs[glyphIndex], fontSize, tx,
                                         renderContext.isAntiAliased(),
                                         renderContext.usesFractionalMetrics(),
-                                        FontDelegate.TYPE_FITTED);
+                                        FontDelegate.FLAG_FITTED);
 
     tx = new AffineTransform();
     tx.translate(pos[glyphIndex * 2], pos[glyphIndex * 2 + 1]);

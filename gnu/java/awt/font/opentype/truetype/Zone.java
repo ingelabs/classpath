@@ -73,26 +73,16 @@ public final class Zone
 
   public int getX(int point)
   {
-    return getX(point, FontDelegate.TYPE_FITTED);
+    return getX(point, FontDelegate.FLAG_FITTED);
   }
 
-  public int getX(int point, int type)
+  public int getX(int point, int flags)
   {
     int x;
-    switch (type)
-    {
-      case FontDelegate.TYPE_FITTED:
-        x = points[point].x;
-        break;
-      case FontDelegate.TYPE_ORIGINAL:
-        x = points[point].origX;
-        break;
-      case FontDelegate.TYPE_SCALED:
-        x = points[point].scaledX;
-        break;
-      default:
-        x = points[point].x;
-    }
+    if ((flags & FontDelegate.FLAG_FITTED) != 0)
+      x = points[point].x;
+    else
+      x = points[point].scaledX;
     return x;
   }
 
@@ -116,26 +106,16 @@ public final class Zone
 
   public int getY(int point)
   {
-    return getY(point, FontDelegate.TYPE_FITTED);
+    return getY(point, FontDelegate.FLAG_FITTED);
   }
 
-  public int getY(int point, int type)
+  public int getY(int point, int flags)
   {
     int y;
-    switch (type)
-    {
-      case FontDelegate.TYPE_FITTED:
-        y = points[point].y;
-        break;
-      case FontDelegate.TYPE_ORIGINAL:
-        y = points[point].origY;
-        break;
-      case FontDelegate.TYPE_SCALED:
-        y = points[point].scaledY;
-        break;
-      default:
-        y = points[point].y;
-    }
+    if ((flags & FontDelegate.FLAG_FITTED) != 0)
+      y = points[point].y;
+    else
+      y = points[point].scaledY;
     return y;
   }
 
