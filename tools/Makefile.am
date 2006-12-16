@@ -175,11 +175,11 @@ $(TOOLS_ZIP): $(TOOLS_JAVA_FILES)
 	if test "$(ZIP)" != ""; then $(ZIP) -u -r ../$(TOOLS_ZIP) .; fi; \
 	if test "$(FASTJAR)" != ""; then $(FASTJAR) uf ../$(TOOLS_ZIP) .; fi; \
 	cd ..)
-	rm -rf classes classes.lst asm.lst
+	rm -rf classes classes.lst asm.lst all-classes.lst
 
 # Zip file be gone! (and make sure the classes are gone too)
 clean-local:
-	rm -rf $(TOOLS_ZIP) classes asm asm.lst
+	rm -rf $(TOOLS_ZIP) classes asm asm.lst all-classes.lst
 
 # FIXME: remove this when GNU Classpath includes a bootstrap VM.
 installcheck-binSCRIPTS:
