@@ -1,5 +1,10 @@
 2006-12-16  Roman Kennke  <kennke@aicas.com>
 
+	* examples/gnu/classpath/examples/awt/HintingDemo.java:
+	New demonstration program for the autohinter.
+
+2006-12-16  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/java/awt/font/FontDelegate.java
 	(FLAG_FITTED): New constant field.
 	(FLAG_NO_HINT_HORIZONTAL): New constant field.
