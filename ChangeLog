@@ -1,3 +1,9 @@
+2006-12-17  Mark Wielaard  <mark@klomp.org>
+
+	* tools/Makefile.am (TOOLS_ZIP): Don't remove .lst files immediately.
+	(clean-local): Remove all .lst files
+	* tools/.cvsignore: Add *.lst.
+
 2006-12-16  Roman Kennke  <kennke@aicas.com>
 
 	* examples/gnu/classpath/examples/awt/HintingDemo.java:
