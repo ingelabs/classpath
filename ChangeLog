@@ -1,5 +1,11 @@
 2006-12-17  Mark Wielaard  <mark@klomp.org>
 
+	* examples/Makefile.am (JCOMPILER): Don't warn for deprecation,
+	serial, typeHiding, unchecked, unused and varargsCast.
+	* tools/Makefile.am (JCOMPILER): Likewise.
+
+2006-12-17  Mark Wielaard  <mark@klomp.org>
+
 	* tools/Makefile.am (TOOLS_ZIP): Don't remove .lst files immediately.
 	(clean-local): Remove all .lst files
 	* tools/.cvsignore: Add *.lst.
