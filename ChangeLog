@@ -1,3 +1,45 @@
+2006-12-17  Tom Tromey  <tromey@redhat.com>
+
+	* javax/naming/spi/Resolver.java: Fixed comments and imports.
+	* javax/naming/ldap/InitialLdapContext.java (InitialLdapContext):
+	Genericized.
+	* javax/naming/directory/BasicAttributes.java (attributes):
+	Genericized.
+	(BasicAttributes): Updated.
+	(get): Likewise.
+	(getAll): Likewise.
+	(getIDs): Rewrote.
+	(readObject): Updated.
+	(BasicAttributesEnumeration): Genericized.
+	* javax/naming/directory/BasicAttribute.java (BasicAttribute):
+	Genericized.
+	(clone): Likewise.
+	(readObject): Likewise.
+	* javax/naming/Reference.java (Reference): Genericized.
+	(clone): Likewise.
+	(get): Likewise.
+	(get): Likewise.
+	* javax/naming/InitialContext.java (colon_list): Genericized.
+	(merge): Likewise.
+	* javax/naming/CompoundName.java (elts): Genericized.
+	(CompoundName): Updated.
+	(addAll): Likewise.
+	(compareTo): Likewise.
+	(endsWith): Likewise.
+	(get): Likewise.
+	(hashCode): Likewise.
+	(startsWith): Likewise.
+	(readObject): Likewise.
+	* javax/naming/CompositeName.java (elts): Genericized.
+	(CompositeName): Updated.
+	(addAll): Likewise.
+	(compareTo): Likewise.
+	(get): Likewise.
+	(getPrefix): Likewise.
+	(getSuffix): Likewise.
+	(toString): Likewise.
+	(readObject): Likewise.
+
 2006-12-17  Mark Wielaard  <mark@klomp.org>
 
 	* doc/www.gnu.org/include/layout.wml: Remove gif reference.
