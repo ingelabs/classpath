@@ -1,3 +1,8 @@
+<newsitem date="11 Dec 2006">
+<createlink name="GNU Classpath 0.93"
+            url="announce/20061211.html">
+</newsitem>
+
 <newsitem date="15 Nov 2006">
 <createlink name="FSF welcomes Sun's GPL release of Java"
             url="http://www.fsf.org/news/fsf-welcomes-gpl-java.html"><br>

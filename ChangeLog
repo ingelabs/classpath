@@ -1,5 +1,14 @@
 2006-12-17  Mark Wielaard  <mark@klomp.org>
 
+	* doc/www.gnu.org/include/layout.wml: Remove gif reference.
+	* doc/www.gnu.org/include/macros.wml: Correct FSF contact info.
+
+	* doc/www.gnu.org/newsitems.txt: Add 0.93.
+	* doc/www.gnu.org/downloads/downloads.wml: Likewise.
+	* doc/www.gnu.org/announce/20061211.wml: New file.
+
+2006-12-17  Mark Wielaard  <mark@klomp.org>
+
 	* examples/Makefile.am (JCOMPILER): Don't warn for deprecation,
 	serial, typeHiding, unchecked, unused and varargsCast.
 	* tools/Makefile.am (JCOMPILER): Likewise.
