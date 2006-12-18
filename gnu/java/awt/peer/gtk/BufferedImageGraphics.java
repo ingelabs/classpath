@@ -438,6 +438,11 @@ public class BufferedImageGraphics extends CairoGraphics2D
     if (comp == null || comp instanceof AlphaComposite)
       {
         super.drawGlyphVector(gv, x, y);
+        
+        // this returns an integer-based Rectangle (rather than a
+        // Rectangle2D), which takes care of any necessary rounding for us.
+        bounds = bounds.getBounds();
+        
         updateBufferedImage((int)bounds.getX(), (int)bounds.getY(),
                             (int)bounds.getWidth(), (int)bounds.getHeight());
       }
