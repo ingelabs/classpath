@@ -96,7 +96,7 @@ public class Request
   /**
    * Map of response header handlers.
    */
-  protected Map responseHeaderHandlers;
+  protected Map<String, ResponseHeaderHandler> responseHeaderHandlers;
 
   /**
    * The authenticator.
@@ -121,7 +121,7 @@ public class Request
     this.method = method;
     this.path = path;
     requestHeaders = new Headers();
-    responseHeaderHandlers = new HashMap();
+    responseHeaderHandlers = new HashMap<String, ResponseHeaderHandler>();
   }
 
   /**
@@ -461,7 +461,6 @@ public class Request
     throws IOException
   {
     long contentLength = -1;
-    Headers trailer = null;
     
     // Persistent connections are the default in HTTP/1.1
     boolean doClose = "close".equalsIgnoreCase(getHeader("Connection")) ||

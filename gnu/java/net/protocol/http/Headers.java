@@ -66,7 +66,8 @@ class Headers
   /**
    * A list of HeaderElements
    */
-  private final ArrayList<HeaderElement> headers = new ArrayList();
+  private final ArrayList<HeaderElement> headers
+    = new ArrayList<HeaderElement>();
   
   /**
    * The HTTP dateformat used to parse date header fields.

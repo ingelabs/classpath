@@ -1,5 +1,78 @@
 2006-12-18  Tom Tromey  <tromey@redhat.com>
 
+	* vm/reference/java/net/VMNetworkInterface.java (addresses):
+	Genericized.
+	(VMNetworkInterface): Updated.
+	* java/net/URLClassLoader.java (urls): Genericized.
+	(urlinfos): Likewise.
+	(addURLImpl): Updated.
+	(findClass): Likewise.
+	(newInstance): Likewise.
+	* java/net/URL.java (ph_cache): Genericized.
+	(getURLStreamHandler): Updated.
+	* java/net/ResolverCache.java (cache): Genericized.
+	(killqueue): Likewise.
+	* java/net/NetworkInterface.java (getInetAddresses): Genericized.
+	* java/net/MimeTypeMapper.java (mime_types): Genericized.
+	(fillFromFile): Likewise.
+	(main): Likewise.
+	* gnu/java/net/protocol/jar/Handler.java (flat): Genericized.
+	* gnu/java/net/protocol/jar/Connection.java (JarFileCache.cache):
+	Genericized.
+	(JarFileCache.get): Updated.
+	* gnu/java/net/protocol/http/SimpleCookieManager.java (cookies):
+	Genericized.
+	(SimpleCookieManager): Updated.
+	(setCookie): Likewise.
+	(getCookies): Likewise.
+	(addCookies): Likewise.
+	* gnu/java/net/protocol/http/Request.java (responseHeaderHandlers):
+	Genericized.
+	(Request): Updated.
+	(createResponseBodyStream): Removed unused variable.
+	* gnu/java/net/protocol/http/HTTPURLConnection.java (connect): Remove
+	unused variable.
+	(getRequestProperties): Genericized.
+	* gnu/java/net/protocol/http/HTTPConnection.java
+	(handshakeCompletedListeners): Genericized.
+	(nonceCounts): Likewise.
+	(HTTPConnection): Updated.
+	(Pool.connectionPool): Likewise.
+	(getNonceCount): Updated.
+	(incrementNonce): Likewise.
+	* gnu/java/net/protocol/http/Headers.java (headers): Genericized.
+	* gnu/java/net/protocol/http/ChunkedInputStream.java (CR, LF): Removed
+	unused fields.
+	* gnu/java/net/protocol/ftp/FTPURLConnection.java (connect):
+	Genericized.
+	(getRequestProperties): Likewise.
+	(addRequestPropertyValue): Likewise.  Fixed return result.
+	* gnu/java/net/protocol/ftp/FTPConnection.java (nameList):
+	Genericized.
+	* gnu/java/net/local/LocalSocket.java: Fixed imports.
+	* gnu/java/net/local/LocalServerSocket.java: Fixed imports.
+	* gnu/java/net/loader/URLStreamHandlerCache.java (factoryCache):
+	Genericized.
+	(add): Updated.
+	(get): Likewise.
+	* gnu/java/net/loader/URLLoader.java (getClassPath): Genericized.
+	* gnu/java/net/loader/JarURLLoader.java (classPath): Genericized.
+	(initialize): Updated.
+	(getClassPath): Genericized.
+	* gnu/java/net/IndexListParser.java (prefixes): Genericized.
+	(IndexListParser): Updated.
+	(getHeaders): Likewise.
+	* gnu/java/net/HeaderFieldHelper.java (headerFieldKeys): Genericized.
+	(headerFieldValues): Likewise.
+	(HeaderFieldHelper): Updated.
+	(getHeaderFieldValueByKey): Likewise.
+	(getHeaderFields): Likewise.
+	* gnu/java/net/GetLocalHostAction.java: Genericized.
+	* gnu/java/net/DefaultContentHandlerFactory.java (imageTypes):
+	Genericized.
+
+2006-12-18  Tom Tromey  <tromey@redhat.com>
+
 	* java/util/prefs/Preferences.java (getFactory): Genericized.
 	* java/util/prefs/AbstractPreferences.java (childCache): Genericized.
 	(nodeListeners): Likewise.

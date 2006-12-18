@@ -55,7 +55,6 @@ import java.util.Map;
 
 import javax.net.ssl.HandshakeCompletedEvent;
 import javax.net.ssl.HandshakeCompletedListener;
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSocketFactory;
@@ -171,7 +170,8 @@ public class HTTPURLConnection
             if (secure)
               {
                 SSLSocketFactory factory = getSSLSocketFactory();
-                HostnameVerifier verifier = getHostnameVerifier();
+                // FIXME: use the verifier
+                // HostnameVerifier verifier = getHostnameVerifier();
                 if (factory != null)
                   {
                     connection.setSSLSocketFactory(factory);
@@ -429,12 +429,12 @@ public class HTTPURLConnection
     return requestHeaders.getValue(key);
   }
 
-  public Map getRequestProperties()
+  public Map<String, List<String>> getRequestProperties()
   {
     if (connected)
       throw new IllegalStateException("Already connected");
     
-    Map m = requestHeaders.getAsMap();
+    Map<String, List<String>> m = requestHeaders.getAsMap();
     return Collections.unmodifiableMap(m);
   }
 
