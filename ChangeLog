@@ -1,3 +1,29 @@
+2006-12-18  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/prefs/Preferences.java (getFactory): Genericized.
+	* java/util/prefs/AbstractPreferences.java (childCache): Genericized.
+	(nodeListeners): Likewise.
+	(preferenceListeners): Likewise.
+	(cachedChildren): Rewrote.
+	(childrenNames): Updated.
+	(addNodeChangeListener): Likewise.
+	(addPreferenceChangeListener): Likewise.
+	* gnu/java/util/prefs/gconf/GConfNativePeer.java (getKeys):
+	Genericized.
+	(getChildrenNodes): Likewise.
+	(gconf_client_all_nodes): Likewise.
+	(gconf_client_all_keys): Likewise.
+	* gnu/java/util/prefs/MemoryBasedPreferences.java (entries):
+	Genericized.
+	(keysSpi): Likewise.
+	(getSpi): Likewise.
+	* gnu/java/util/prefs/GConfBasedPreferences.java (childrenNamesSpi):
+	Genericized.
+	(keysSpi): Likewise.
+	(postorderRemove): Likewise.
+	* gnu/java/util/prefs/EventDispatcher.java (queue): Genericized.
+	(run): Updated.
+
 2006-12-18  Francis Kung  <fkung@redhat.com>
 
 	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java
