@@ -220,4 +220,14 @@ public abstract class Enum<T extends Enum<T>>
       k = k.getSuperclass();
     return k;
   }
+
+  /**
+   * Enumerations can not have finalization methods.
+   *
+   * @since 1.6
+   */
+  protected final void finalize()
+  {
+  }
+
 }
