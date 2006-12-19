@@ -201,32 +201,36 @@ public class BeanImpl
       return ((Enum) value).name();
     Class vClass = value.getClass();
     if (vClass.isArray())
-      return value;
+      vClass = vClass.getComponentType();
     String cName = vClass.getName();
     String[] allowedTypes = OpenType.ALLOWED_CLASSNAMES;
     for (int a = 0; a < allowedTypes.length; ++a)
       if (cName.equals(allowedTypes[a]))
 	return value;
-    if (value instanceof List)
-      {
-	List l = (List) value;
-	Class e = null;
-	TypeVariable[] vars = vClass.getTypeParameters();
-	for (int a = 0; a < vars.length; ++a)
-	  if (vars[a].getName().equals("E"))
-	    e = (Class) vars[a].getGenericDeclaration();
-	if (e == null)
-	  e = Object.class;
-	Object[] array = (Object[]) Array.newInstance(e, l.size());
-	return l.toArray(array);
-      }
     OpenMBeanInfo info = (OpenMBeanInfo) getMBeanInfo();
-    OpenMBeanAttributeInfo[] attribs =
-      (OpenMBeanAttributeInfo[]) info.getAttributes();
+    MBeanAttributeInfo[] attribs =
+      (MBeanAttributeInfo[]) info.getAttributes();
     OpenType type = null;
     for (int a = 0; a < attribs.length; ++a)
-      if (attribs[a].getName().equals("attribute"))
-	type = attribs[a].getOpenType();
+      if (attribs[a].getName().equals(attribute))
+	type = ((OpenMBeanAttributeInfo) attribs[a]).getOpenType();
+    if (value instanceof List)
+      {
+	try
+	  {
+	    Class e =
+	      Class.forName(((ArrayType) type).getElementOpenType().getClassName());
+	    List l = (List) value;
+	    Object[] array = (Object[]) Array.newInstance(e, l.size());
+	    return l.toArray(array);
+	  }
+	catch (ClassNotFoundException e)
+	  {
+	    throw (InternalError) (new InternalError("The class of the list " +
+						     "element type could not " +
+						     "be created").initCause(e));
+	  }
+      }
     if (value instanceof Map)
       {
 	TabularType ttype = (TabularType) type;

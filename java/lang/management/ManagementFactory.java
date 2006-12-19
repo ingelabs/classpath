@@ -629,7 +629,7 @@ public class ManagementFactory
 	(mxbeanName.equals(THREAD_MXBEAN_NAME) &&
 	 mxbeanInterface != ThreadMXBean.class))
       throw new IllegalArgumentException("The interface, " + mxbeanInterface +
-					 "does not match the bean, " + mxbeanName);
+					 ", does not match the bean, " + mxbeanName);
     ObjectName bean;
     try
       {
