@@ -191,7 +191,7 @@ class PostScriptGraphics2D extends Graphics2D
 	  {
 	    int index = 0;
 	    while(spoolPage(out, printable, pageFormat, index++) ==
-		  Printable.PAGE_EXISTS);
+		  Printable.PAGE_EXISTS) continue;
 	  }
 	out.println("%%Trailer");
 	out.println("%%EOF");

@@ -2093,7 +2093,7 @@ public abstract class AbstractDocument implements Document, Serializable
     /**
      * The child elements of this BranchElement.
      */
-    private Element[] children;;
+    private Element[] children;
 
     /**
      * The number of children in the branch element.

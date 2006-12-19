@@ -115,8 +115,9 @@ abstract class ByteCharset extends Charset
             return CoderResult.OVERFLOW;
           }
 	
-	if((c = lookup[(int) (b & 0xFF)]) == NONE);
-	//	  return CoderResult.unmappableForLength (1);		
+	//if((c = lookup[(int) (b & 0xFF)]) == NONE);
+        //  return CoderResult.unmappableForLength (1);
+        c = lookup[(int) (b & 0xFF)];
         out.put (c);
       }
 

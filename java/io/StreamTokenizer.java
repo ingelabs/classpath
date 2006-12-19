@@ -329,7 +329,8 @@ public class StreamTokenizer
       if ((ch = in.read()) == '/' && slashSlash)
 	{
 	  while ((ch = in.read()) != '\n' && ch != '\r' && ch != TT_EOF)
-	    ;
+	    continue;
+          
 	  if (ch != TT_EOF)
 	    in.unread(ch);
 	  return nextToken(); // Recursive, but not too deep in normal cases
@@ -430,7 +431,8 @@ public class StreamTokenizer
     else if (isComment(ch))
       {
 	while ((ch = in.read()) != '\n' && ch != '\r' && ch != TT_EOF)
-	  ;
+	  continue;
+        
 	if (ch != TT_EOF)
 	  in.unread(ch);
 	return nextToken();	// Recursive, but not too deep in normal cases.

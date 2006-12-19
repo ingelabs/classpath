@@ -439,8 +439,8 @@ public class DecimalFormat extends NumberFormat
         FieldPosition pos = (FieldPosition) attributes.get(i);
         Format.Field attribute = pos.getFieldAttribute();
         
-        as.addAttribute(attribute, attribute, pos.getBeginIndex(), pos
-                        .getEndIndex());
+        as.addAttribute(attribute, attribute, pos.getBeginIndex(),
+                        pos.getEndIndex());
       }
     
     // return the CharacterIterator from AttributedString
@@ -723,25 +723,25 @@ public class DecimalFormat extends NumberFormat
 
     // now we have to check the suffix, done here after number parsing
     // or the index will not be updated correctly...
-    boolean isNegativeSuffix = str.endsWith(this.negativeSuffix);
-    boolean isPositiveSuffix = str.endsWith(this.positiveSuffix);
+    boolean hasNegativeSuffix = str.endsWith(this.negativeSuffix);
+    boolean hasPositiveSuffix = str.endsWith(this.positiveSuffix);
     boolean positiveEqualsNegative = negativeSuffix.equals(positiveSuffix);
 
     positiveLen = positiveSuffix.length();
     negativeLen = negativeSuffix.length();
     
-    if (isNegative && !isNegativeSuffix)
+    if (isNegative && !hasNegativeSuffix)
       {
         pos.setErrorIndex(i);
         return null;
       }
-    else if (isNegativeSuffix &&
+    else if (hasNegativeSuffix &&
              !positiveEqualsNegative &&
              (negativeLen > positiveLen))
       {
         isNegative = true;
       }
-    else if (!isPositiveSuffix)
+    else if (!hasPositiveSuffix)
       {
         pos.setErrorIndex(i);
         return null;

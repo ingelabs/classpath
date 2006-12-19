@@ -280,8 +280,7 @@ public abstract class ORB
   {
     throw new NO_IMPLEMENT();
   }
-  ;
-
+  
   /**
    * The support for {@link DynAny} and derived interfaces
    * has never been implemented in Sun's java releases,
@@ -296,7 +295,6 @@ public abstract class ORB
   {
     throw new NO_IMPLEMENT();
   }
-  ;
 
   /**
    * The support for {@link DynArray}
@@ -313,7 +311,6 @@ public abstract class ORB
   {
     throw new NO_IMPLEMENT();
   }
-  ;
 
   /**
    * The support for {@link DynEnum}
@@ -330,7 +327,6 @@ public abstract class ORB
   {
     throw new NO_IMPLEMENT();
   }
-  ;
 
   /**
    * The support for {@link DynSequence}
@@ -347,7 +343,6 @@ public abstract class ORB
   {
     throw new NO_IMPLEMENT();
   }
-  ;
 
   /**
    * The support for {@link DynStruct} and derived interfaces
@@ -364,8 +359,7 @@ public abstract class ORB
   {
     throw new NO_IMPLEMENT();
   }
-  ;
-
+  
   /**
    * The support for {@link DynUnion} and derived interfaces
    * has never been implemented in Sun's java releases,
@@ -381,7 +375,6 @@ public abstract class ORB
   {
     throw new NO_IMPLEMENT();
   }
-  ;
 
   /**
    * Create a typecode, defining the given enumeration.

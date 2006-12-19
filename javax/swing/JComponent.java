@@ -1927,7 +1927,8 @@ public abstract class JComponent extends Container implements Serializable
             int i = getComponentCount() - 1;
             if (paintChild != null && paintChild.isOpaque())
               {
-                for (; i >= 0 && getComponent(i) != paintChild; i--);
+                for (; i >= 0 && getComponent(i) != paintChild; i--)
+                  continue;
               }
             for (; i >= 0; i--)
               {
@@ -2188,7 +2189,8 @@ public abstract class JComponent extends Container implements Serializable
                   {
                     int count = c.getComponentCount();
                     int i = 0;
-                    for (; i < count && c.getComponent(i) != child; i++);
+                    for (; i < count && c.getComponent(i) != child; i++)
+                      continue;
 
                     if (jc.isCompletelyObscured(i, paintX, paintY, paintW,
                                                 paintH))

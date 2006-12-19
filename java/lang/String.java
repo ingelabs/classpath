@@ -1593,7 +1593,7 @@ public final class String
         return "";
     while (value[begin++] <= '\u0020');
     int end = limit;
-    while (value[--end] <= '\u0020');
+    while (value[--end] <= '\u0020') continue;
     return substring(begin - offset - 1, end - offset + 1);
   }
 

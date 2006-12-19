@@ -441,7 +441,7 @@ public class MetalFileChooserUI
       filechooser.revalidate();
       filechooser.repaint();
     }
-  };
+  }
   
   /** 
    * A combo box model containing the selected directory and all its parent

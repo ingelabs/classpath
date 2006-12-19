@@ -315,7 +315,7 @@ class CSSParser
     try
     {
       if (!parsingDeclaration)
-        while(getNextStatement());
+        while(getNextStatement()) continue;
       else
         parseDeclarationBlock();
     }

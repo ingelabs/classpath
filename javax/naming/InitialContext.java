@@ -87,7 +87,7 @@ public class InitialContext implements Context
       colon_list.add(Context.OBJECT_FACTORIES);
       colon_list.add(Context.URL_PKG_PREFIXES);
       colon_list.add(Context.STATE_FACTORIES);
-    };  
+    }  
     
    /**
     * The properties that are searched in the agreed places in the

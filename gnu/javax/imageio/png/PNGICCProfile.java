@@ -61,7 +61,7 @@ public class PNGICCProfile extends PNGChunk
   {
     super( type, data, crc );
     int i = 0;
-    while( data[i++] != 0 );
+    while( data[i++] != 0 ) continue;
     try
       {
 	name = new String(data, 0, i, "8859_1");

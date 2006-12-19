@@ -237,7 +237,8 @@ public class ZipInputStream extends InflaterInputStream implements ZipConstants
 	    /* We don't know how much we must skip, read until end. */
 	    byte[] tmp = new byte[2048];
 	    while (read(tmp) > 0)
-	      ;
+	      continue;
+            
 	    /* read will close this entry */
 	    return;
 	  }

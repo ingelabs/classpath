@@ -220,7 +220,7 @@ public class EnumMap<K extends Enum<K>, V>
 	      {
 		++count;
 		for (++index; store[index] == emptySlot; ++index)
-		  ;
+		  continue;
 		return enumClass.getEnumConstants()[index];
 	      }
 
@@ -278,7 +278,7 @@ public class EnumMap<K extends Enum<K>, V>
 	      {
 		++count;
 		for (++index; store[index] == emptySlot; ++index)
-		  ;
+		  continue;
 		return store[index];
 	      }
 
@@ -326,7 +326,7 @@ public class EnumMap<K extends Enum<K>, V>
 	      {
 		++count;
 		for (++index; store[index] == emptySlot; ++index)
-		  ;
+		  continue;
 		// FIXME: we could just return something that
 		// only knows the index.  That would be cleaner.
 		return new AbstractMap.SimpleEntry<K, V>(enumClass.getEnumConstants()[index],

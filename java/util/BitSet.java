@@ -477,7 +477,7 @@ public class BitSet implements Cloneable, Serializable
     // Set i to highest index that contains a non-zero value.
     int i;
     for (i = bits.length - 1; i >= 0 && bits[i] == 0; --i)
-      ;
+      continue;
 
     // if i < 0 all bits are cleared.
     if (i < 0)
