@@ -1,3 +1,42 @@
+2006-12-21  Mario Torre  <neugens@limasoftware.net>
+
+	* .settings/org.eclipse.jdt.core.prefs: set compilation flag to warning
+	instead of error for empty control flow statements.
+	* gnu/javax/swing/text/html/css/CSSParser.java (parseSelector): 
+	(parseValue): Reverted last change.
+	* java/text/BreakIterator.java (preceding): likewise.
+	* external/jsr166/java/util/AbstractQueue.java (clear): likewise.
+	* gnu/java/io/Base64InputStream.java (read): likewise.
+	* javax/swing/text/DefaultStyledDocument.java (ElementBuffer.insertUpdate): 
+	likewise.
+	* java/util/zip/DeflaterEngine.java (findLongestMatch): likewise.
+	* java/util/zip/ZipInputStream.java (closeEntry): likewise.
+	* java/util/zip/DeflaterHuffman.java (Tree.buildLength): likewise.
+	* java/io/StreamTokenizer.java (nextToken): likewise.
+	* gnu/javax/imageio/png/PNGICCProfile.java (PNGICCProfile): likewise.
+	* gnu/java/awt/font/opentype/truetype/VirtualMachine.java (execute):
+	likewise.
+	* gnu/java/nio/charset/ByteCharset.java (Decoder.decodeLoop): likewise.
+	Also fixed typo.
+	* gnu/java/awt/print/PostScriptGraphics2D.java (spoolPostScript): likewise.
+	* gnu/java/awt/print/JavaPrinterGraphics.java (spoolPostScript): likewise.
+	* gnu/javax/net/ssl/provider/SSLRSASignatureImpl.java (engineVerify):
+	likewise.
+	* javax/swing/text/html/CSSParser.java: 
+	(parse): likewise.
+	* java/lang/String.java (trim): likewise.
+	* java/lang/StrictMath.java (remPiOver2): likewise.
+	* gnu/java/awt/peer/qt/QtToolkit.java (QtToolkit): likewise.
+	* javax/swing/JComponent.java (paintImmediately2): likewise.
+	(paintChildren): likewise.
+	* java/util/EnumMap.java (..next): likewise.
+	* java/util/BitSet.java (length): likewise.
+	* java/util/Collections.java (binarySearch): likewise.
+	* java/util/StringTokenizer.java (nextToken): likewise.
+	* java/util/PriorityQueue.java (.next): likewise.
+	* java/math/BigInteger.java (BigInteger): likewise.
+	* gnu/java/lang/management/BeanImpl.java (translate): likewise.
+
 2006-12-19  Mario Torre  <neugens@limasoftware.net>
 
 	* javax/imageio/spi/ServiceRegistry.java: fixed Empty control-flow

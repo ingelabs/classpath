@@ -161,7 +161,7 @@ public class PriorityQueue<E> extends AbstractQueue<E> implements Serializable
       public E next()
       {
 	while (storage[++index] == null)
-	  continue;
+	  ;
         
 	++count;
 	return storage[index];

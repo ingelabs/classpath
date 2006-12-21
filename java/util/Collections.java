@@ -706,14 +706,16 @@ public class Collections
 	      {
 		if (!forward)
 		  itr.next(); // Changing direction first.
-		for ( ; i != pos; i++, o = itr.next()) continue;
+		for ( ; i != pos; i++, o = itr.next())
+                  ;
 		forward = true;
 	      }
             else
 	      {
 		if (forward)
 		  itr.previous(); // Changing direction first.
-		for ( ; i != pos; i--, o = itr.previous()) continue;
+		for ( ; i != pos; i--, o = itr.previous())
+                  ;
 		forward = false;
 	      }
 	    final int d = compare(o, key, c);

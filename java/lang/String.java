@@ -1592,8 +1592,10 @@ public final class String
       if (begin == limit)
         return "";
     while (value[begin++] <= '\u0020');
+    
     int end = limit;
-    while (value[--end] <= '\u0020') continue;
+    while (value[--end] <= '\u0020')
+      ;
     return substring(begin - offset - 1, end - offset + 1);
   }
 

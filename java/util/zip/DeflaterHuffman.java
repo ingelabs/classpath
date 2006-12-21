@@ -197,7 +197,7 @@ class DeflaterHuffman
 	{
 	  /* Find the first bit length which could increase: */
 	  while (bl_counts[--incrBitLen] == 0)
-	    continue;
+	    ;
 	  
 	  /* Move this node one down and remove a corresponding
 	   * amount of overflow nodes.

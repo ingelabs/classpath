@@ -2279,7 +2279,8 @@ public final strictfp class StrictMath
             if (j == 0) // Need recomputation.
               {
                 int k; // k = no. of terms needed.
-                for (k = 1; iq[jk - k] == 0; k++) continue;
+                for (k = 1; iq[jk - k] == 0; k++)
+                  ;
 
                 for (i = jz + 1; i <= jz + k; i++) // Add q[jz+1] to q[jz+k].
                   {

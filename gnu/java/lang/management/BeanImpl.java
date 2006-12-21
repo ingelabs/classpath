@@ -510,7 +510,8 @@ public class BeanImpl
     if (c.isArray())
       {
 	int depth;
-	for (depth = 0; c.getName().charAt(depth) == '['; ++depth) continue;
+	for (depth = 0; c.getName().charAt(depth) == '['; ++depth)
+          ;
 	OpenType ot = getTypeFromClass(c.getComponentType());
 	return new OpenMBeanParameterInfoSupport("TransParam",
 						 "Translated parameter",

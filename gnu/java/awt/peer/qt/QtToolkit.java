@@ -164,7 +164,8 @@ public class QtToolkit extends ClasspathToolkit
       initToolkit();
 
     // make sure the GUI thread has started.
-    while (!guiThread.isRunning()) continue;
+    while (!guiThread.isRunning())
+      ;
 
     if( graphicsEnv == null )
       graphicsEnv = new QtGraphicsEnvironment( this );

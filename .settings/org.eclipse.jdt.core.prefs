@@ -1,4 +1,5 @@
 #Tue Feb 07 05:21:36 EST 2006
+org.eclipse.jdt.core.compiler.codegen.unusedLocal=preserve
 org.eclipse.jdt.core.formatter.brace_position_for_enum_constant=next_line
 org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_method_invocation=do not insert
 org.eclipse.jdt.core.formatter.format_guardian_clause_on_one_line=false

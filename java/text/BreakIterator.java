@@ -341,7 +341,7 @@ public abstract class BreakIterator implements Cloneable
     if (following (pos) == DONE)
       last ();
     while (previous () >= pos)
-      continue;
+      ;
     return current ();
   }
 

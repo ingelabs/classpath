@@ -117,7 +117,7 @@ public abstract class AbstractQueue<E>
      */
     public void clear() {
         while (poll() != null)
-            continue;
+            ;
     }
 
     /**

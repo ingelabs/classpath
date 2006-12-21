@@ -499,7 +499,8 @@ class VirtualMachine
     // FIXME: SECURITY: Possible denial-of-service attack
     // via instructions that have an endless loop.
     while (instructions.hasRemaining()
-           && executeInstruction(instructions)) continue;
+           && executeInstruction(instructions))
+      ;
   }
 
 

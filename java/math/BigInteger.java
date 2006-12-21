@@ -171,7 +171,7 @@ public class BigInteger extends Number implements Comparable<BigInteger>
       {
 	int i;
 	for (i = magnitude.length - 1; i >= 0 && magnitude[i] == 0; --i)
-	  continue;
+	  ;
 	if (i >= 0)
 	  throw new NumberFormatException();
         return;
