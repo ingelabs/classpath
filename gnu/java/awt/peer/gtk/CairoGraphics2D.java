@@ -770,15 +770,11 @@ public abstract class CairoGraphics2D extends Graphics2D
     int userHeight = bounds.height;
     
     // Find bounds in device space
-    Point2D origin = transform.transform(new Point2D.Double(userX, userY),
-                                         null);
-    Point2D extreme = transform.transform(new Point2D.Double(userWidth + userX,
-                                                             userHeight + userY),
-                                          null);
-    int deviceX = (int)origin.getX();
-    int deviceY = (int)origin.getY();
-    int deviceWidth = (int)Math.ceil(extreme.getX() - origin.getX());
-    int deviceHeight = (int)Math.ceil(extreme.getY() - origin.getY());
+    Rectangle2D bounds2D = getTransformedBounds(bounds, transform);
+    int deviceX = (int)bounds2D.getX();
+    int deviceY = (int)bounds2D.getY();
+    int deviceWidth = (int)Math.ceil(bounds2D.getWidth());
+    int deviceHeight = (int)Math.ceil(bounds2D.getHeight());
 
     // Get raster of the paint background
     PaintContext pc = paint.createContext(CairoSurface.cairoColorModel,
@@ -983,18 +979,7 @@ public abstract class CairoGraphics2D extends Graphics2D
     if (transform == null)
       return uclip;
     else
-      {
-	Point2D pos = transform.transform(new Point2D.Double(uclip.getX(),
-	                                                     uclip.getY()),
-	                                  (Point2D) null);
-	Point2D extent = transform.deltaTransform(new Point2D.Double(uclip
-	                                                             .getWidth(),
-	                                                             uclip
-	                                                             .getHeight()),
-	                                          (Point2D) null);
-	return new Rectangle2D.Double(pos.getX(), pos.getY(), extent.getX(),
-	                              extent.getY());
-      }
+      return getTransformedBounds(clip.getBounds2D(), transform);
   }
 
   public void setClip(int x, int y, int width, int height)
@@ -1334,6 +1319,8 @@ public abstract class CairoGraphics2D extends Graphics2D
   public void copyArea(int ox, int oy, int owidth, int oheight, 
 		       int odx, int ody)
   {
+    // FIXME: does this handle a rotation transform properly?
+    // (the width/height might not be correct)
     Point2D pos = transform.transform(new Point2D.Double(ox, oy),
 				      (Point2D) null);
     Point2D dim = transform.transform(new Point2D.Double(ox + owidth, 
@@ -1449,7 +1436,7 @@ public abstract class CairoGraphics2D extends Graphics2D
    * Set antialias if needed.  If the ignoreAA flag is set, this method will
    * return without doing anything.
    * 
-   * @param value RenderingHints.VALUE_ANTIALIAS_ON or RenderingHints.VALUE_ANTIALIAS_OFF
+   * @param needAA RenderingHints.VALUE_ANTIALIAS_ON or RenderingHints.VALUE_ANTIALIAS_OFF
    */
   private void setAntialias(boolean needAA)
   {
@@ -1539,24 +1526,31 @@ public abstract class CairoGraphics2D extends Graphics2D
         Color oldColor = bg;
         setBackground(bgcolor);
         
-        double[] origin = new double[] {0,0};
-        double[] dimensions = new double[] {width, height};
-        xform.transform(origin, 0, origin, 0, 1);
-        xform.deltaTransform(dimensions, 0, dimensions, 0, 1);
-        clearRect((int)origin[0], (int)origin[1],
-                  (int)dimensions[0], (int)dimensions[1]);
+        Rectangle2D bounds = new Rectangle2D.Double(0, 0, width, height);
+        bounds = getTransformedBounds(bounds, xform);
+        
+        clearRect((int)bounds.getX(), (int)bounds.getY(),
+                  (int)bounds.getWidth(), (int)bounds.getHeight());
         
         setBackground(oldColor);
       }
 
     int[] pixels = b.getRGB(0, 0, width, height, null, 0, width);
-    
     // FIXME: The above method returns data in the standard ARGB colorspace,
     // meaning data should NOT be alpha pre-multiplied; however Cairo expects
     // data to be premultiplied.
+    
+    cairoSave(nativePointer);
+    cairoResetClip(nativePointer);
+    Rectangle2D bounds = new Rectangle2D.Double(0, 0, width, height);
+    bounds = getTransformedBounds(bounds, xform);
+    cairoRectangle(nativePointer, bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+    cairoClip(nativePointer);
 
     drawPixels(nativePointer, pixels, width, height, width, i2u, alpha,
                getInterpolation());
+    
+    cairoRestore(nativePointer);
 
     // Cairo seems to lose the current color which must be restored.
     updateColor();
@@ -2076,11 +2070,27 @@ public abstract class CairoGraphics2D extends Graphics2D
     if (clip == null)
       return;
 
-    if (! (clip instanceof GeneralPath))
-      clip = new GeneralPath(clip);
-
-    GeneralPath p = (GeneralPath) clip;
-    p.transform(t);
+    // If the clip is a rectangle, and the transformation preserves the shape
+    // (translate/stretch only), then keep the clip as a rectangle
+    double[] matrix = new double[4];
+    t.getMatrix(matrix);
+    if (clip instanceof Rectangle2D && matrix[1] == 0 && matrix[2] == 0)
+      {
+        Rectangle2D rect = (Rectangle2D)clip;
+        double[] origin = new double[] {rect.getX(), rect.getY()};
+        double[] dimensions = new double[] {rect.getWidth(), rect.getHeight()};
+        t.transform(origin, 0, origin, 0, 1);
+        t.deltaTransform(dimensions, 0, dimensions, 0, 1);
+        rect.setRect(origin[0], origin[1], dimensions[0], dimensions[1]);
+      }
+    else
+      {
+        if (! (clip instanceof GeneralPath))
+          clip = new GeneralPath(clip);
+    
+        GeneralPath p = (GeneralPath) clip;
+        p.transform(t);
+      }
   }
 
   private static Rectangle computeIntersection(int x, int y, int w, int h,
@@ -2102,5 +2112,40 @@ public abstract class CairoGraphics2D extends Graphics2D
       rect.setBounds(0, 0, 0, 0);
 
     return rect;
+  }
+  
+  static Rectangle2D getTransformedBounds(Rectangle2D bounds, AffineTransform tx)
+  {
+    double x1 = bounds.getX();
+    double x2 = bounds.getX() + bounds.getWidth();
+    double x3 = x1;
+    double x4 = x2;
+    double y1 = bounds.getY();
+    double y2 = y1;
+    double y3 = bounds.getY() + bounds.getHeight();
+    double y4 = y3;
+    
+    double[] points = new double[] {x1, y1, x2, y2, x3, y3, x4, y4};
+    tx.transform(points, 0, points, 0, 4);
+    
+    double minX = points[0];
+    double maxX = minX;
+    double minY = points[1];
+    double maxY = minY;
+    for (int i = 0; i < 8; i++)
+      {
+        if (points[i] < minX)
+          minX = points[i];
+        if (points[i] > maxX)
+          maxX = points[i];
+        i++;
+        
+        if (points[i] < minY)
+          minY = points[i];
+        if (points[i] > maxY)
+          maxY = points[i];
+      }
+    
+    return new Rectangle2D.Double(minX, minY, (maxX - minX), (maxY - minY));
   }
 }
