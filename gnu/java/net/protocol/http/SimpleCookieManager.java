@@ -1,5 +1,5 @@
 /* CookieManager.java --
-   Copyright (C) 2004 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -110,7 +110,7 @@ public class SimpleCookieManager
         ArrayList<String> expired = new ArrayList<String>();
         for (Map.Entry<String, Cookie> entry : map.entrySet())
           {
-            Cookie cookie = (Cookie) entry.getValue();
+            Cookie cookie = entry.getValue();
             Date expires = cookie.getExpiryDate();
             if (expires != null && expires.before(now))
               {

@@ -42,6 +42,7 @@ import gnu.java.net.LineInputStream;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.Iterable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ import java.util.Map;
  * @author Chris Burdess (dog@gnu.org)
  * @author David Daney (ddaney@avtrex.com)
  */
-class Headers
+class Headers implements Iterable<Headers.HeaderElement>
 {
   /**
    * A list of HeaderElements
@@ -104,7 +105,7 @@ class Headers
    *
    * @return the Iterator.
    */
-  Iterator<HeaderElement> iterator()
+  public Iterator<HeaderElement> iterator()
   {
     return headers.iterator();
   }

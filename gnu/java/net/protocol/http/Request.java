@@ -302,9 +302,8 @@ public class Request
             String line = method + ' ' + requestUri + ' ' + version + CRLF;
             out.write(line.getBytes(US_ASCII));
             // Request headers
-            for (Iterator i = requestHeaders.iterator(); i.hasNext(); )
+            for (Headers.HeaderElement elt : requestHeaders)
               {
-                Headers.HeaderElement elt = (Headers.HeaderElement)i.next();
                 line = elt.name + HEADER_SEP + elt.value + CRLF;
                 out.write(line.getBytes(US_ASCII));
               }
@@ -439,9 +438,8 @@ public class Request
 
   void notifyHeaderHandlers(Headers headers)
   {
-    for (Iterator i = headers.iterator(); i.hasNext(); )
+    for (Headers.HeaderElement entry : headers)
       {
-        Headers.HeaderElement entry = (Headers.HeaderElement) i.next();
         // Handle Set-Cookie
         if ("Set-Cookie".equalsIgnoreCase(entry.name))
             handleSetCookie(entry.value);

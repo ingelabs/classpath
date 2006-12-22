@@ -1,3 +1,14 @@
+2006-12-21  David Daney  <ddaney@avtrex.com)
+
+	* gnu/java/net/protocol/http/Headers.java: Update imports.  Implement
+	Iterable<Headers.HeaderElement>.
+	(iterator): Make public.
+	* gnu/java/net/protocol/http/Request.java (dispatch): Use enhanced for
+	loop.
+	(notifyHeaderHandlers): Same.
+	* gnu/java/net/protocol/http/SimpleCookieManager.java (addCookies):
+	Remove unneeded cast.
+
 2006-12-21  Mario Torre  <neugens@limasoftware.net>
 
 	* .settings/org.eclipse.jdt.core.prefs: set compilation flag to warning
