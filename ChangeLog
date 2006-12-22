@@ -1,5 +1,11 @@
 2006-12-22  Francis Kung  <fkung@redhat.com>
 
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(shiftX): Remove rounding.
+	(shiftY): Likewise.
+
+2006-12-22  Francis Kung  <fkung@redhat.com>
+
 	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java
 	(locked): Removed field.
 	(BufferedImageGraphics): Remove locked flag.

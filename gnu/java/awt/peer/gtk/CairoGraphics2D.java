@@ -1913,7 +1913,7 @@ public abstract class CairoGraphics2D extends Graphics2D
         double shift = 0.5;
         if (!transform.isIdentity())
           shift /= transform.getScaleX();
-        return Math.round(coord) + shift;
+        return (coord + shift);
       }
     else
       return coord;
@@ -1929,7 +1929,7 @@ public abstract class CairoGraphics2D extends Graphics2D
         double shift = 0.5;
         if (!transform.isIdentity())
           shift /= transform.getScaleY();
-        return Math.round(coord) + shift;
+        return (coord + shift);
       }
     else
       return coord;
