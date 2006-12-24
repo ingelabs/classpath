@@ -336,18 +336,18 @@ public class ThreadInfo
     if (data == null)
       return null;
     CompositeType type = data.getCompositeType();
-    checkAttribute(type, "threadId", SimpleType.LONG);
-    checkAttribute(type, "threadName", SimpleType.STRING);
-    checkAttribute(type, "threadState", SimpleType.STRING);
-    checkAttribute(type, "suspended", SimpleType.BOOLEAN);
-    checkAttribute(type, "inNative", SimpleType.BOOLEAN);
-    checkAttribute(type, "blockedCount", SimpleType.LONG);
-    checkAttribute(type, "blockedTime", SimpleType.LONG);
-    checkAttribute(type, "waitedCount", SimpleType.LONG);
-    checkAttribute(type, "waitedTime", SimpleType.LONG);
-    checkAttribute(type, "lockName", SimpleType.STRING);
-    checkAttribute(type, "lockOwnerId", SimpleType.LONG);
-    checkAttribute(type, "lockOwnerName", SimpleType.STRING);
+    checkAttribute(type, "ThreadId", SimpleType.LONG);
+    checkAttribute(type, "ThreadName", SimpleType.STRING);
+    checkAttribute(type, "ThreadState", SimpleType.STRING);
+    checkAttribute(type, "Suspended", SimpleType.BOOLEAN);
+    checkAttribute(type, "InNative", SimpleType.BOOLEAN);
+    checkAttribute(type, "BlockedCount", SimpleType.LONG);
+    checkAttribute(type, "BlockedTime", SimpleType.LONG);
+    checkAttribute(type, "WaitedCount", SimpleType.LONG);
+    checkAttribute(type, "WaitedTime", SimpleType.LONG);
+    checkAttribute(type, "LockName", SimpleType.STRING);
+    checkAttribute(type, "LockOwnerId", SimpleType.LONG);
+    checkAttribute(type, "LockOwnerName", SimpleType.STRING);
     try
       {
 	CompositeType seType = 
@@ -368,7 +368,7 @@ public class ThreadInfo
 			      SimpleType.STRING, SimpleType.INTEGER,
 			      SimpleType.BOOLEAN 
 			    });
-	checkAttribute(type, "stackTrace", new ArrayType(1, seType));
+	checkAttribute(type, "StackTrace", new ArrayType(1, seType));
       }
     catch (OpenDataException e)
       {
@@ -376,29 +376,29 @@ public class ThreadInfo
 					"the composite data type for the " +
 					"stack trace element.", e);
       }
-    CompositeData[] dTraces = (CompositeData[]) data.get("stackTrace");
+    CompositeData[] dTraces = (CompositeData[]) data.get("StackTrace");
     StackTraceElement[] traces = new StackTraceElement[dTraces.length];
     for (int a = 0; a < dTraces.length; ++a)
 	/* FIXME: We can't use the boolean as there is no available
 	   constructor. */
       traces[a] = 
-	new StackTraceElement((String) dTraces[a].get("className"),
-			      (String) dTraces[a].get("methodName"),
-			      (String) dTraces[a].get("fileName"),
+	new StackTraceElement((String) dTraces[a].get("ClassName"),
+			      (String) dTraces[a].get("MethodName"),
+			      (String) dTraces[a].get("FileName"),
 			      ((Integer) 
-			       dTraces[a].get("lineNumber")).intValue());
-    return new ThreadInfo(((Long) data.get("threadId")).longValue(),
-			  (String) data.get("threadName"),
-			  Thread.State.valueOf((String) data.get("threadState")),
-			  ((Long) data.get("blockedCount")).longValue(),
-			  ((Long) data.get("blockedTime")).longValue(),
-			  (String) data.get("lockName"),
-			  ((Long) data.get("lockOwnerId")).longValue(),
-			  (String) data.get("lockOwnerName"),  
-			  ((Long) data.get("waitedCount")).longValue(),
-			  ((Long) data.get("waitedTime")).longValue(),
-			  ((Boolean) data.get("inNative")).booleanValue(),
-			  ((Boolean) data.get("suspended")).booleanValue(),
+			       dTraces[a].get("LineNumber")).intValue());
+    return new ThreadInfo(((Long) data.get("ThreadId")).longValue(),
+			  (String) data.get("ThreadName"),
+			  Thread.State.valueOf((String) data.get("ThreadState")),
+			  ((Long) data.get("BlockedCount")).longValue(),
+			  ((Long) data.get("BlockedTime")).longValue(),
+			  (String) data.get("LockName"),
+			  ((Long) data.get("LockOwnerId")).longValue(),
+			  (String) data.get("LockOwnerName"),  
+			  ((Long) data.get("WaitedCount")).longValue(),
+			  ((Long) data.get("WaitedTime")).longValue(),
+			  ((Boolean) data.get("InNative")).booleanValue(),
+			  ((Boolean) data.get("Suspended")).booleanValue(),
 			  traces);
   }
 

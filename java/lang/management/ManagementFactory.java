@@ -56,8 +56,10 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import java.util.logging.LogManager;
 
@@ -70,7 +72,12 @@ import javax.management.MBeanServerFactory;
 import javax.management.MalformedObjectNameException;
 import javax.management.NotCompliantMBeanException;
 import javax.management.NotificationEmitter;
+import javax.management.NotificationFilter;
+import javax.management.NotificationListener;
 import javax.management.ObjectName;
+
+import javax.management.openmbean.CompositeData;
+import javax.management.openmbean.TabularData;
 
 /**
  * <p>
@@ -709,15 +716,37 @@ public class ManagementFactory
       String name = method.getName();
       if (name.equals("toString"))
 	return "Proxy for " + bean + " using " + conn;
+      if (name.equals("addNotificationListener"))
+	{
+	  conn.addNotificationListener(bean,
+				       (NotificationListener) args[0],
+				       (NotificationFilter) args[1],
+				       args[2]);
+	  return null;
+	}
+      if (name.equals("getNotificationInfo"))
+	return conn.getMBeanInfo(bean).getNotifications();
+      if (name.equals("removeNotificationListener"))
+	{
+	  if (args.length == 1)
+	    conn.removeNotificationListener(bean, 
+					    (NotificationListener)
+					    args[0]);
+	  else
+	    conn.removeNotificationListener(bean, 
+					    (NotificationListener)
+					    args[0],
+					    (NotificationFilter)
+					    args[1], args[2]);
+	  return null;
+	}
       String attrib = null;
       if (name.startsWith("get"))
 	attrib = name.substring(3);
       else if (name.startsWith("is"))
 	attrib = name.substring(2);
       if (attrib != null)
-	{
-	  return conn.getAttribute(bean, attrib);
-	}
+	return translate(conn.getAttribute(bean, attrib), method);
       else if (name.startsWith("set"))
 	{
 	  conn.setAttribute(bean, new Attribute(name.substring(3),
@@ -725,9 +754,64 @@ public class ManagementFactory
 	  return null;
 	}
       else
-	{
-	  return conn.invoke(bean, name, args, null);
-	}     
+	return translate(conn.invoke(bean, name, args, null), method);
     }
+
+    /**
+     * Translates the returned open data type to the value
+     * required by the interface.
+     *
+     * @param otype the open type returned by the method call.
+     * @param method the method that was called.
+     * @return the equivalent return type required by the interface.
+     * @throws Throwable if an exception is thrown in performing the
+     *                   conversion.
+     */
+    private final Object translate(Object otype, Method method)
+      throws Throwable
+    {
+      Class<?> returnType = method.getReturnType();
+      if (returnType.isEnum())
+	{
+	  String ename = (String) otype;
+	  Enum[] constants = (Enum[]) returnType.getEnumConstants();
+	  for (Enum c : constants)
+	    if (c.name().equals(ename))
+	      return c;
+	}
+      if (List.class.isAssignableFrom(returnType))
+	{
+	  Object[] elems = (Object[]) otype;
+	  List l = new ArrayList(elems.length);
+	  for (Object elem : elems)
+	    l.add(elem);
+	  return l;
+	}
+      if (Map.class.isAssignableFrom(returnType))
+	{
+	  TabularData data = (TabularData) otype;
+	  Map m = new HashMap(data.size());
+	  for (Object val : data.values())
+	    {
+	      CompositeData vals = (CompositeData) val;
+	      m.put(vals.get("key"), vals.get("value"));
+	    }
+	  return m;
+	}
+      try
+	{
+	  Method m = returnType.getMethod("from",
+					  new Class[]
+	    { CompositeData.class });
+	  return m.invoke(null, (CompositeData) otype);
+	}
+      catch (NoSuchMethodException e)
+	{
+	  /* Ignored; we expect this if this
+	     isn't a from(CompositeData) class */
+	}
+      return otype;
+    }
+
   }
 }

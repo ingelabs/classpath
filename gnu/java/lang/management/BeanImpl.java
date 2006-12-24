@@ -483,9 +483,9 @@ public class BeanImpl
     try
       {
 	c.getMethod("from", new Class[] { CompositeData.class });
-	Method[] methods = c.getMethods();
-	List names = new ArrayList();
-	List types = new ArrayList();
+	Method[] methods = c.getDeclaredMethods();
+	List<String> names = new ArrayList<String>();
+	List<OpenType> types = new ArrayList<OpenType>();
 	for (int a = 0; a < methods.length; ++a)
 	  {
 	    String name = methods[a].getName();
@@ -495,10 +495,10 @@ public class BeanImpl
 		types.add(getTypeFromClass(methods[a].getReturnType()));
 	      }
 	  }
-	String[] fields = (String[]) names.toArray();
+	String[] fields = names.toArray(new String[names.size()]);
 	CompositeType ctype = new CompositeType(c.getName(), c.getName(),
 						fields, fields,
-						(OpenType[]) types.toArray());
+						types.toArray(new OpenType[types.size()]));
 	return new OpenMBeanParameterInfoSupport("TransParam",
 						 "Translated parameter",
 						 ctype);
