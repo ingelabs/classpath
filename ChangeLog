@@ -1,3 +1,22 @@
+2006-12-24  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* gnu/classpath/Pair.java: New class.
+	* java/io/ObjectInputStream.java:
+	(readUnshared()): Implemented.
+	(readObject(boolean)): Renamed from readObject
+	in order to handle unshared serialization.
+	(parseContent(byte,boolean)): Added unshared parameter.
+	(assignNewHandle(Object,boolean)): Likewise.
+	(rememberHandle(Object,boolean,int)): Likewise.
+	(lookupHandle(int)): Added handling of invalidated handles.
+	(processResolution(ObjectStreamClass,Object,int,boolean)):
+	Added unshared parameter.
+	* java/io/ObjectOutputStream.java:
+	(writeUnshared()): Implemented.
+	(writeObject(Object,boolean)): Renamed from
+	writeObject(Object) in order to handle
+	unshared serialization.
+	
 2006-12-23  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* gnu/java/lang/management/BeanImpl.java:
