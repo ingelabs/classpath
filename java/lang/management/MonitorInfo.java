@@ -56,12 +56,12 @@ public class MonitorInfo
   /**
    * The stack depth at which the lock was obtained.
    */
-  public int stackDepth;
+  private int stackDepth;
 
   /**
    * The stack frame at which the lock was obtained.
    */
-  public StackTraceElement stackFrame;
+  private StackTraceElement stackFrame;
 
   /**
    * Constructs a new {@link MonitorInfo} using the specified

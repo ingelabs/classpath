@@ -92,8 +92,36 @@ public class Arrays
    */
   public static int binarySearch(byte[] a, byte key)
   {
-    int low = 0;
-    int hi = a.length - 1;
+    return binarySearch(a, 0, a.length - 1, key);
+  }
+
+  /**
+   * Perform a binary search of a range of a byte array for a key. The range
+   * must be sorted (as by the <code>sort(byte[], int, int)</code> method) -
+   * if it is not, the behaviour of this method is undefined, and may be an
+   * infinite loop. If the array contains the key more than once, any one of
+   * them may be found. Note: although the specification allows for an infinite
+   * loop if the array is unsorted, it will not happen in this implementation.
+   *
+   * @param a the array to search (must be sorted)
+   * @param low the lowest index to search from.
+   * @param hi the highest index to search to.
+   * @param key the value to search for
+   * @return the index at which the key was found, or -n-1 if it was not
+   *         found, where n is the index of the first value higher than key or
+   *         a.length if there is no such value.
+   * @throws IllegalArgumentException if <code>low > hi</code>
+   * @throws ArrayIndexOutOfBoundsException if <code>low < 0</code> or
+   *                                        <code>hi > a.length</code>.
+   */
+  public static int binarySearch(byte[] a, int low, int hi, byte key)
+  {
+    if (low > hi)
+      throw new IllegalArgumentException("The start index is higher than " +
+					 "the finish index.");
+    if (low < 0 || hi > a.length)
+      throw new ArrayIndexOutOfBoundsException("One of the indices is out " +
+					       "of bounds.");
     int mid = 0;
     while (low <= hi)
       {
@@ -126,8 +154,36 @@ public class Arrays
    */
   public static int binarySearch(char[] a, char key)
   {
-    int low = 0;
-    int hi = a.length - 1;
+    return binarySearch(a, 0, a.length - 1, key);
+  }
+
+  /**
+   * Perform a binary search of a range of a char array for a key. The range
+   * must be sorted (as by the <code>sort(char[], int, int)</code> method) -
+   * if it is not, the behaviour of this method is undefined, and may be an
+   * infinite loop. If the array contains the key more than once, any one of
+   * them may be found. Note: although the specification allows for an infinite
+   * loop if the array is unsorted, it will not happen in this implementation.
+   *
+   * @param a the array to search (must be sorted)
+   * @param low the lowest index to search from.
+   * @param hi the highest index to search to.
+   * @param key the value to search for
+   * @return the index at which the key was found, or -n-1 if it was not
+   *         found, where n is the index of the first value higher than key or
+   *         a.length if there is no such value.
+   * @throws IllegalArgumentException if <code>low > hi</code>
+   * @throws ArrayIndexOutOfBoundsException if <code>low < 0</code> or
+   *                                        <code>hi > a.length</code>.
+   */
+  public static int binarySearch(char[] a, int low, int hi, char key)
+  {
+    if (low > hi)
+      throw new IllegalArgumentException("The start index is higher than " +
+					 "the finish index.");
+    if (low < 0 || hi > a.length)
+      throw new ArrayIndexOutOfBoundsException("One of the indices is out " +
+					       "of bounds.");
     int mid = 0;
     while (low <= hi)
       {
@@ -160,8 +216,36 @@ public class Arrays
    */
   public static int binarySearch(short[] a, short key)
   {
-    int low = 0;
-    int hi = a.length - 1;
+    return binarySearch(a, 0, a.length - 1, key);
+  }
+
+  /**
+   * Perform a binary search of a range of a short array for a key. The range
+   * must be sorted (as by the <code>sort(short[], int, int)</code> method) -
+   * if it is not, the behaviour of this method is undefined, and may be an
+   * infinite loop. If the array contains the key more than once, any one of
+   * them may be found. Note: although the specification allows for an infinite
+   * loop if the array is unsorted, it will not happen in this implementation.
+   *
+   * @param a the array to search (must be sorted)
+   * @param low the lowest index to search from.
+   * @param hi the highest index to search to.
+   * @param key the value to search for
+   * @return the index at which the key was found, or -n-1 if it was not
+   *         found, where n is the index of the first value higher than key or
+   *         a.length if there is no such value.
+   * @throws IllegalArgumentException if <code>low > hi</code>
+   * @throws ArrayIndexOutOfBoundsException if <code>low < 0</code> or
+   *                                        <code>hi > a.length</code>.
+   */
+  public static int binarySearch(short[] a, int low, int hi, short key)
+  {
+    if (low > hi)
+      throw new IllegalArgumentException("The start index is higher than " +
+					 "the finish index.");
+    if (low < 0 || hi > a.length)
+      throw new ArrayIndexOutOfBoundsException("One of the indices is out " +
+					       "of bounds.");
     int mid = 0;
     while (low <= hi)
       {
@@ -194,8 +278,36 @@ public class Arrays
    */
   public static int binarySearch(int[] a, int key)
   {
-    int low = 0;
-    int hi = a.length - 1;
+    return binarySearch(a, 0, a.length - 1, key);
+  }
+
+  /**
+   * Perform a binary search of a range of an integer array for a key. The range
+   * must be sorted (as by the <code>sort(int[], int, int)</code> method) -
+   * if it is not, the behaviour of this method is undefined, and may be an
+   * infinite loop. If the array contains the key more than once, any one of
+   * them may be found. Note: although the specification allows for an infinite
+   * loop if the array is unsorted, it will not happen in this implementation.
+   *
+   * @param a the array to search (must be sorted)
+   * @param low the lowest index to search from.
+   * @param hi the highest index to search to.
+   * @param key the value to search for
+   * @return the index at which the key was found, or -n-1 if it was not
+   *         found, where n is the index of the first value higher than key or
+   *         a.length if there is no such value.
+   * @throws IllegalArgumentException if <code>low > hi</code>
+   * @throws ArrayIndexOutOfBoundsException if <code>low < 0</code> or
+   *                                        <code>hi > a.length</code>.
+   */
+  public static int binarySearch(int[] a, int low, int hi, int key)
+  {
+    if (low > hi)
+      throw new IllegalArgumentException("The start index is higher than " +
+					 "the finish index.");
+    if (low < 0 || hi > a.length)
+      throw new ArrayIndexOutOfBoundsException("One of the indices is out " +
+					       "of bounds.");
     int mid = 0;
     while (low <= hi)
       {
@@ -228,8 +340,36 @@ public class Arrays
    */
   public static int binarySearch(long[] a, long key)
   {
-    int low = 0;
-    int hi = a.length - 1;
+    return binarySearch(a, 0, a.length - 1, key);
+  }
+
+  /**
+   * Perform a binary search of a range of a long array for a key. The range
+   * must be sorted (as by the <code>sort(long[], int, int)</code> method) -
+   * if it is not, the behaviour of this method is undefined, and may be an
+   * infinite loop. If the array contains the key more than once, any one of
+   * them may be found. Note: although the specification allows for an infinite
+   * loop if the array is unsorted, it will not happen in this implementation.
+   *
+   * @param a the array to search (must be sorted)
+   * @param low the lowest index to search from.
+   * @param hi the highest index to search to.
+   * @param key the value to search for
+   * @return the index at which the key was found, or -n-1 if it was not
+   *         found, where n is the index of the first value higher than key or
+   *         a.length if there is no such value.
+   * @throws IllegalArgumentException if <code>low > hi</code>
+   * @throws ArrayIndexOutOfBoundsException if <code>low < 0</code> or
+   *                                        <code>hi > a.length</code>.
+   */
+  public static int binarySearch(long[] a, int low, int hi, long key)
+  {
+    if (low > hi)
+      throw new IllegalArgumentException("The start index is higher than " +
+					 "the finish index.");
+    if (low < 0 || hi > a.length)
+      throw new ArrayIndexOutOfBoundsException("One of the indices is out " +
+					       "of bounds.");
     int mid = 0;
     while (low <= hi)
       {
@@ -262,9 +402,37 @@ public class Arrays
    */
   public static int binarySearch(float[] a, float key)
   {
+    return binarySearch(a, 0, a.length - 1, key);
+  }
+
+  /**
+   * Perform a binary search of a range of a float array for a key. The range
+   * must be sorted (as by the <code>sort(float[], int, int)</code> method) -
+   * if it is not, the behaviour of this method is undefined, and may be an
+   * infinite loop. If the array contains the key more than once, any one of
+   * them may be found. Note: although the specification allows for an infinite
+   * loop if the array is unsorted, it will not happen in this implementation.
+   *
+   * @param a the array to search (must be sorted)
+   * @param low the lowest index to search from.
+   * @param hi the highest index to search to.
+   * @param key the value to search for
+   * @return the index at which the key was found, or -n-1 if it was not
+   *         found, where n is the index of the first value higher than key or
+   *         a.length if there is no such value.
+   * @throws IllegalArgumentException if <code>low > hi</code>
+   * @throws ArrayIndexOutOfBoundsException if <code>low < 0</code> or
+   *                                        <code>hi > a.length</code>.
+   */
+  public static int binarySearch(float[] a, int low, int hi, float key)
+  {
+    if (low > hi)
+      throw new IllegalArgumentException("The start index is higher than " +
+					 "the finish index.");
+    if (low < 0 || hi > a.length)
+      throw new ArrayIndexOutOfBoundsException("One of the indices is out " +
+					       "of bounds.");
     // Must use Float.compare to take into account NaN, +-0.
-    int low = 0;
-    int hi = a.length - 1;
     int mid = 0;
     while (low <= hi)
       {
@@ -297,9 +465,37 @@ public class Arrays
    */
   public static int binarySearch(double[] a, double key)
   {
+    return binarySearch(a, 0, a.length - 1, key);
+  }
+
+  /**
+   * Perform a binary search of a range of a double array for a key. The range
+   * must be sorted (as by the <code>sort(double[], int, int)</code> method) -
+   * if it is not, the behaviour of this method is undefined, and may be an
+   * infinite loop. If the array contains the key more than once, any one of
+   * them may be found. Note: although the specification allows for an infinite
+   * loop if the array is unsorted, it will not happen in this implementation.
+   *
+   * @param a the array to search (must be sorted)
+   * @param low the lowest index to search from.
+   * @param hi the highest index to search to.
+   * @param key the value to search for
+   * @return the index at which the key was found, or -n-1 if it was not
+   *         found, where n is the index of the first value higher than key or
+   *         a.length if there is no such value.
+   * @throws IllegalArgumentException if <code>low > hi</code>
+   * @throws ArrayIndexOutOfBoundsException if <code>low < 0</code> or
+   *                                        <code>hi > a.length</code>.
+   */
+  public static int binarySearch(double[] a, int low, int hi, double key)
+  {
+    if (low > hi)
+      throw new IllegalArgumentException("The start index is higher than " +
+					 "the finish index.");
+    if (low < 0 || hi > a.length)
+      throw new ArrayIndexOutOfBoundsException("One of the indices is out " +
+					       "of bounds.");
     // Must use Double.compare to take into account NaN, +-0.
-    int low = 0;
-    int hi = a.length - 1;
     int mid = 0;
     while (low <= hi)
       {
@@ -341,6 +537,27 @@ public class Arrays
   }
 
   /**
+   * Perform a binary search of a range of an Object array for a key. The range
+   * must be sorted (as by the <code>sort(Object[], int, int)</code> method) -
+   * if it is not, the behaviour of this method is undefined, and may be an
+   * infinite loop. If the array contains the key more than once, any one of
+   * them may be found. Note: although the specification allows for an infinite
+   * loop if the array is unsorted, it will not happen in this implementation.
+   *
+   * @param a the array to search (must be sorted)
+   * @param low the lowest index to search from.
+   * @param hi the highest index to search to.
+   * @param key the value to search for
+   * @return the index at which the key was found, or -n-1 if it was not
+   *         found, where n is the index of the first value higher than key or
+   *         a.length if there is no such value.
+   */
+  public static int binarySearch(Object[] a, int low, int hi, Object key)
+  {
+    return binarySearch(a, low, hi, key, null);
+  }
+
+  /**
    * Perform a binary search of an Object array for a key, using a supplied
    * Comparator. The array must be sorted (as by the sort() method with the
    * same Comparator) - if it is not, the behaviour of this method is
@@ -364,8 +581,42 @@ public class Arrays
    */
   public static <T> int binarySearch(T[] a, T key, Comparator<? super T> c)
   {
-    int low = 0;
-    int hi = a.length - 1;
+    return binarySearch(a, 0, a.length - 1, key, c);
+  }
+
+  /**
+   * Perform a binary search of a range of an Object array for a key using
+   * a {@link Comparator}. The range must be sorted (as by the
+   * <code>sort(Object[], int, int)</code> method) - if it is not, the
+   * behaviour of this method is undefined, and may be an infinite loop. If
+   * the array contains the key more than once, any one of them may be found.
+   * Note: although the specification allows for an infinite loop if the array
+   * is unsorted, it will not happen in this implementation.
+   *
+   * @param a the array to search (must be sorted)
+   * @param low the lowest index to search from.
+   * @param hi the highest index to search to.
+   * @param key the value to search for
+   * @param c the comparator by which the array is sorted; or null to
+   *        use the elements' natural order
+   * @return the index at which the key was found, or -n-1 if it was not
+   *         found, where n is the index of the first value higher than key or
+   *         a.length if there is no such value.
+   * @throws ClassCastException if key could not be compared with one of the
+   *         elements of a
+   * @throws IllegalArgumentException if <code>low > hi</code>
+   * @throws ArrayIndexOutOfBoundsException if <code>low < 0</code> or
+   *                                        <code>hi > a.length</code>.
+   */
+  public static <T> int binarySearch(T[] a, int low, int hi, T key,
+				     Comparator<? super T> c)
+  {
+    if (low > hi)
+      throw new IllegalArgumentException("The start index is higher than " +
+					 "the finish index.");
+    if (low < 0 || hi > a.length)
+      throw new ArrayIndexOutOfBoundsException("One of the indices is out " +
+					       "of bounds.");
     int mid = 0;
     while (low <= hi)
       {

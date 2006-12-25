@@ -1,5 +1,28 @@
 2006-12-25  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	* java/lang/management/MonitorInfo.java:
+	Make variables private.
+	* java/util/Arrays.java:
+	(binarySearch(byte[],byte)): Implemented in terms
+	of range-based variant.
+	(binarySearch(short[],short)): Likewise.
+	(binarySearch(int[],int)): Likewise.
+	(binarySearch(long[],long)): Likewise.
+	(binarySearch(char[],char)): Likewise.
+	(binarySearch(float[],float)): Likewise.
+	(binarySearch(double[],double)): Likewise.
+	(binarySearch(byte[],int,int,byte)): Implemented.
+	(binarySearch(short[],int,int,short)): Likewise.
+	(binarySearch(int[],int,int,int)): Likewise.
+	(binarySearch(long[],int,int,long)): Likewise.
+	(binarySearch(char[],int,int,char)): Likewise.
+	(binarySearch(float[],int,int,float)): Likewise.
+	(binarySearch(double[],int,int,double)): Likewise.
+	(binarySearch(Object[],int,int,Object)): Likewise.
+	(binarySearch(T[],int,int,T,Comparator)): Likewise.
+	
+2006-12-25  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* java/beans/ConstructorProperties.java:
 	New file.
 	* java/lang/management/LockInfo.java:
