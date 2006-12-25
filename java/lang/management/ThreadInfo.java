@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package java.lang.management;
 
+import java.util.Arrays;
+
 import javax.management.openmbean.ArrayType;
 import javax.management.openmbean.CompositeData;
 import javax.management.openmbean.CompositeType;
@@ -68,6 +70,8 @@ import javax.management.openmbean.SimpleType;
  * monitor, upon which the thread described here is blocked.</li>
  * <li>The stack trace of the thread (if requested on creation
  * of this object</li>
+ * <li>The current locks held on object monitors by the thread.</li>
+ * <li>The current locks held on ownable synchronizers by the thread.</li>
  * </ul>
  * <li><strong>Synchronization Statistics</strong>
  * <ul>
@@ -165,6 +169,17 @@ public class ThreadInfo
   private StackTraceElement[] trace;
 
   /**
+   * The array of information on monitors locked by the thread.
+   */
+  private MonitorInfo[] lockedMonitors;
+
+  /**
+   * The array of information on ownable synchronizers locked
+   * by the thread.
+   */
+  private LockInfo[] lockedSynchronizers;
+
+  /**
    * Cache a local reference to the thread management bean.
    */
   private static ThreadMXBean bean = null;
@@ -206,13 +221,57 @@ public class ThreadInfo
 		     long waitedTime, boolean isInNative, boolean isSuspended,
 		     StackTraceElement[] trace)
   {
+    this(thread, blockedCount, blockedTime, lock, lockOwner, waitedCount,
+	 waitedTime, isInNative, isSuspended, trace, new MonitorInfo[]{},
+	 new LockInfo[]{});
+  }
+
+  /**
+   * Constructs a new {@link ThreadInfo} corresponding
+   * to the thread specified.
+   *
+   * @param thread the thread on which the new instance
+   *               will be based.
+   * @param blockedCount the number of times the thread
+   *                     has been blocked.
+   * @param blockedTime the accumulated number of milliseconds
+   *                    the specified thread has been blocked
+   *                    (only used with contention monitoring enabled)
+   * @param lock the monitor lock the thread is waiting for
+   *             (only used if blocked)
+   * @param lockOwner the thread which owns the monitor lock, or
+   *                  <code>null</code> if it doesn't have an owner
+   *                  (only used if blocked)
+   * @param waitedCount the number of times the thread has been in a
+   *                    waiting state.
+   * @param waitedTime the accumulated number of milliseconds the
+   *                   specified thread has been waiting
+   *                   (only used with contention monitoring enabled)
+   * @param isInNative true if the thread is in a native method.
+   * @param isSuspended true if the thread is suspended.
+   * @param trace the stack trace of the thread to a pre-determined
+   *              depth (see VMThreadMXBeanImpl)
+   * @param lockedMonitors an array of {@link MonitorInfo} objects
+   *                       representing locks held on object monitors
+   *                       by the thread.
+   * @param lockedSynchronizers an array of {@link LockInfo} objects
+   *                            representing locks held on ownable
+   *                            synchronizers by the thread. 
+   * @since 1.6
+   */
+  private ThreadInfo(Thread thread, long blockedCount, long blockedTime,
+		     Object lock, Thread lockOwner, long waitedCount,
+		     long waitedTime, boolean isInNative, boolean isSuspended,
+		     StackTraceElement[] trace, MonitorInfo[] lockedMonitors,
+		     LockInfo[] lockedSynchronizers)
+  {
     this(thread.getId(), thread.getName(), thread.getState(), blockedCount, blockedTime,
          lock == null ? null : lock.getClass().getName() + "@" + 
 	       Integer.toHexString(System.identityHashCode(lock)),
          lockOwner == null ? -1 : lockOwner.getId(),
          lockOwner == null ? null : lockOwner.getName(),
          waitedCount, waitedTime, isInNative, isSuspended,
-	 trace);
+	 trace, lockedMonitors, lockedSynchronizers);
   }
 
   /**
@@ -254,6 +313,59 @@ public class ThreadInfo
 		     long waitedTime, boolean isInNative, boolean isSuspended,
 		     StackTraceElement[] trace)
   {
+    this(threadId, threadName, threadState, blockedCount, blockedTime,
+	 lockName, lockOwnerId, lockOwnerName, waitedCount, waitedTime,
+	 isInNative, isSuspended, trace, new MonitorInfo[]{}, new LockInfo[]{});
+  }
+
+  /**
+   * Constructs a new {@link ThreadInfo} corresponding
+   * to the thread details specified.
+   *
+   * @param threadId the id of the thread on which this
+   *                 new instance will be based.
+   * @param threadName the name of the thread on which
+   *                 this new instance will be based.
+   * @param threadState the state of the thread on which
+   *                 this new instance will be based.
+   * @param blockedCount the number of times the thread
+   *                     has been blocked.
+   * @param blockedTime the accumulated number of milliseconds
+   *                    the specified thread has been blocked
+   *                    (only used with contention monitoring enabled)
+   * @param lockName the name of the monitor lock the thread is waiting for
+   *                 (only used if blocked)
+   * @param lockOwnerId the id of the thread which owns the monitor
+   *                  lock, or <code>-1</code> if it doesn't have an owner
+   *                  (only used if blocked)
+   * @param lockOwnerName the name of the thread which owns the monitor
+   *                  lock, or <code>null</code> if it doesn't have an 
+   *                  owner (only used if blocked)
+   * @param waitedCount the number of times the thread has been in a
+   *                    waiting state.
+   * @param waitedTime the accumulated number of milliseconds the
+   *                   specified thread has been waiting
+   *                   (only used with contention monitoring enabled)
+   * @param isInNative true if the thread is in a native method.
+   * @param isSuspended true if the thread is suspended.
+   * @param trace the stack trace of the thread to a pre-determined
+   *              depth (see VMThreadMXBeanImpl)
+   * @param lockedMonitors an array of {@link MonitorInfo} objects
+   *                       representing locks held on object monitors
+   *                       by the thread.
+   * @param lockedSynchronizers an array of {@link LockInfo} objects
+   *                            representing locks held on ownable
+   *                            synchronizers by the thread. 
+   *
+   * @since 1.6
+   */
+  private ThreadInfo(long threadId, String threadName, Thread.State threadState,
+		     long blockedCount, long blockedTime, String lockName, 
+		     long lockOwnerId, String lockOwnerName, long waitedCount,
+		     long waitedTime, boolean isInNative, boolean isSuspended,
+		     StackTraceElement[] trace, MonitorInfo[] lockedMonitors,
+		     LockInfo[] lockedSynchronizers)
+  {
     this.threadId = threadId;
     this.threadName = threadName;
     this.threadState = threadState;
@@ -267,6 +379,8 @@ public class ThreadInfo
     this.isInNative = isInNative;
     this.isSuspended = isSuspended;
     this.trace = trace;
+    this.lockedMonitors = lockedMonitors;
+    this.lockedSynchronizers = lockedSynchronizers;
   }
 
   /**
@@ -403,6 +517,65 @@ public class ThreadInfo
 					"the array for the stack trace element.",
 					e);
       }
+    OpenType foundType = type.getType("LockedMonitors");
+    if (foundType != null)
+      try
+	{
+	  CompositeType mType = new CompositeType(MonitorInfo.class.getName(),
+						  "Information on a object monitor lock",
+						  new String[] { "ClassName",
+								 "IdentityHashCode",
+								 "LockedStackDepth",
+								 "LockedStackFrame"
+						  },
+						  new String[] { "Name of the class",
+								 "Identity hash code " +
+								 "of the class",
+								 "Stack depth at time " +
+								 "of lock",
+								 "Stack frame at time " +
+								 "of lock",
+						  },
+						  new OpenType[] {
+						    SimpleType.STRING, SimpleType.INTEGER,
+						    SimpleType.INTEGER, getStackTraceType()
+						  });
+	  if (!(foundType.equals(new ArrayType(1, mType))))
+	    throw new IllegalArgumentException("Field LockedMonitors is not of " +
+					       "type " + mType.getClassName());
+	}
+    catch (OpenDataException e)
+      {
+	throw new IllegalStateException("Something went wrong in creating " +
+					"the composite data type for the " +
+					"object monitor information array.", e);
+      }
+    foundType = type.getType("LockedSynchronizers");
+    if (foundType != null)
+      try
+	{
+	  CompositeType lType = new CompositeType(LockInfo.class.getName(),
+						  "Information on a lock",
+						  new String[] { "ClassName",
+								 "IdentityHashCode"
+						  },
+						  new String[] { "Name of the class",
+								 "Identity hash code " +
+								 "of the class"
+						  },
+						  new OpenType[] {
+						    SimpleType.STRING, SimpleType.INTEGER
+						  });
+	  if (!(foundType.equals(new ArrayType(1, lType))))
+	    throw new IllegalArgumentException("Field LockedSynchronizers is not of " +
+					       "type " + lType.getClassName());
+	}
+    catch (OpenDataException e)
+      {
+	throw new IllegalStateException("Something went wrong in creating " +
+					"the composite data type for the " +
+					"ownable synchronizerinformation array.", e);
+      }
     CompositeData[] dTraces = (CompositeData[]) data.get("StackTrace");
     StackTraceElement[] traces = new StackTraceElement[dTraces.length];
     for (int a = 0; a < dTraces.length; ++a)
@@ -414,6 +587,27 @@ public class ThreadInfo
 			      (String) dTraces[a].get("FileName"),
 			      ((Integer) 
 			       dTraces[a].get("LineNumber")).intValue());
+    MonitorInfo[] mInfo;
+    if (data.containsKey("LockedMonitors"))
+      {
+	CompositeData[] dmInfos = (CompositeData[]) data.get("LockedMonitors");
+	mInfo = new MonitorInfo[dmInfos.length];
+	for (int a = 0; a < dmInfos.length; ++a)
+	  mInfo[a] = MonitorInfo.from(dmInfos[a]);
+      }
+    else
+      mInfo = new MonitorInfo[]{};
+    LockInfo[] lInfo;
+    if (data.containsKey("LockedSynchronizers"))
+      {
+	CompositeData[] dlInfos = (CompositeData[]) data.get("LockedSynchronizers");
+	lInfo = new LockInfo[dlInfos.length];
+	for (int a = 0; a < dlInfos.length; ++a)
+	  lInfo[a] = new LockInfo((String) dlInfos[a].get("ClassName"),
+				  (Integer) dlInfos[a].get("IdentityHashCode"));
+      }
+    else
+      lInfo = new LockInfo[]{};
     return new ThreadInfo(((Long) data.get("ThreadId")).longValue(),
 			  (String) data.get("ThreadName"),
 			  Thread.State.valueOf((String) data.get("ThreadState")),
@@ -426,7 +620,7 @@ public class ThreadInfo
 			  ((Long) data.get("WaitedTime")).longValue(),
 			  ((Boolean) data.get("InNative")).booleanValue(),
 			  ((Boolean) data.get("Suspended")).booleanValue(),
-			  traces);
+			  traces, mInfo, lInfo);
   }
 
   /**
@@ -486,9 +680,74 @@ public class ThreadInfo
   }
 
   /**
+   * Returns an array of {@link MonitorInfo} objects representing
+   * information on the locks on object monitors held by the thread.
+   * If no locks are held, or such information was not requested
+   * on creating this {@link ThreadInfo} object, a zero-length
+   * array will be returned.
+   *
+   * @return information on object monitors locked by this thread.
+   */
+  public MonitorInfo[] getLockedMonitors()
+  {
+    return lockedMonitors;
+  }
+
+  /**
+   * Returns an array of {@link LockInfo} objects representing
+   * information on the locks on ownable synchronizers held by the thread.
+   * If no locks are held, or such information was not requested
+   * on creating this {@link ThreadInfo} object, a zero-length
+   * array will be returned.
+   *
+   * @return information on ownable synchronizers locked by this thread.
+   */
+  public LockInfo[] getLockedSynchronizers()
+  {
+    return lockedSynchronizers;
+  }
+
+  /**
+   * <p>
+   * Returns a {@link LockInfo} object representing the
+   * lock on which this thread is blocked.  If the thread
+   * is not blocked, this method returns <code>null</code>.
+   * </p>
+   * <p>
+   * The thread may be blocked due to one of three reasons:
+   * </p>
+   * <ol>
+   * <li>The thread is in the <code>BLOCKED</code> state
+   * waiting to acquire an object monitor in order to enter
+   * a synchronized method or block.</li>
+   * <li>The thread is in the <code>WAITING</code> or
+   * <code>TIMED_WAITING</code> state due to a call to
+   * {@link java.lang.Object#wait()}.</li>
+   * <li>The thread is in the <code>WAITING</code> or
+   * <code>TIMED_WAITING</code> state due to a call
+   * to {@link java.util.concurrent.locks.LockSupport#park()}.
+   * The lock is the return value of
+   * {@link java.util.concurrent.locks.LockSupport#getBlocker()}.</li>
+   * </ol>
+   * 
+   * @return a {@link LockInfo} object representing the lock on
+   *         which the thread is blocked, or <code>null</code> if
+   *         the thread isn't blocked.
+   * @since 1.6
+   * @see #getLockName()
+   */
+  public LockInfo getLockInfo()
+  {
+    String lockName = getLockName();
+    int at = lockName.indexOf('@');
+    return new LockInfo(lockName.substring(0, at),
+			Integer.decode(lockName.substring(at + 1)));
+  }
+
+  /**
    * <p>
    * Returns a {@link java.lang.String} representation of
-   * the monitor lock on which this thread is blocked.  If
+   * the lock on which this thread is blocked.  If
    * the thread is not blocked, this method returns
    * <code>null</code>.
    * </p>
@@ -504,7 +763,8 @@ public class ThreadInfo
    * and
    * <code>Integer.toHexString(System.identityHashCode(l))</code>.
    * The value is only unique to the extent that the identity
-   * hash code is also unique.
+   * hash code is also unique.  The value is the same as would
+   * be returned by <code>getLockInfo().toString()</code>
    * </p>
    *
    * @return a string representing the lock on which this
@@ -513,7 +773,7 @@ public class ThreadInfo
    */
   public String getLockName()
   {
-    if (threadState != Thread.State.BLOCKED)
+    if (!isThreadBlocked())
       return null;
     return lockName;
   }
@@ -531,7 +791,7 @@ public class ThreadInfo
    */
   public long getLockOwnerId()
   {
-    if (threadState != Thread.State.BLOCKED)
+    if (!isThreadBlocked())
       return -1;
     return lockOwnerId;
   }
@@ -549,7 +809,7 @@ public class ThreadInfo
    */
   public String getLockOwnerName()
   {
-    if (threadState != Thread.State.BLOCKED)
+    if (!isThreadBlocked())
       return null;
     return lockOwnerName;
   }
@@ -724,10 +984,40 @@ public class ThreadInfo
       ", waitedCount=" + waitedCount +
       ", isInNative=" + isInNative + 
       ", isSuspended=" + isSuspended +
-      (threadState == Thread.State.BLOCKED ? 
+      (isThreadBlocked() ? 
        ", lockOwnerId=" + lockOwnerId +
        ", lockOwnerName=" + lockOwnerName : "") +
+      ", lockedMonitors=" + Arrays.toString(lockedMonitors) +
+      ", lockedSynchronizers=" + Arrays.toString(lockedSynchronizers) +
       "]";
   }
 
+  /**
+   * <p>
+   * Returns true if the thread is in a blocked state.
+   * The thread is regarded as blocked if:
+   * </p>
+   * <ol>
+   * <li>The thread is in the <code>BLOCKED</code> state
+   * waiting to acquire an object monitor in order to enter
+   * a synchronized method or block.</li>
+   * <li>The thread is in the <code>WAITING</code> or
+   * <code>TIMED_WAITING</code> state due to a call to
+   * {@link java.lang.Object#wait()}.</li>
+   * <li>The thread is in the <code>WAITING</code> or
+   * <code>TIMED_WAITING</code> state due to a call
+   * to {@link java.util.concurrent.locks.LockSupport#park()}.
+   * The lock is the return value of
+   * {@link java.util.concurrent.locks.LockSupport#getBlocker()}.</li>
+   * </ol>
+   *
+   * @return true if the thread is blocked.
+   */
+  private boolean isThreadBlocked()
+  {
+    return (threadState == Thread.State.BLOCKED ||
+	    threadState == Thread.State.WAITING ||
+	    threadState == Thread.State.TIMED_WAITING);
+  }
+  
 }
