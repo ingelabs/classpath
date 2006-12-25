@@ -170,6 +170,12 @@ public class ThreadInfo
   private static ThreadMXBean bean = null;
 
   /**
+   * Cache the {@link javax.management.openmbean.CompositeType}
+   * for the {@link StackTraceElement}.
+   */
+  private static CompositeType seType;
+
+  /**
    * Constructs a new {@link ThreadInfo} corresponding
    * to the thread specified.
    *
@@ -287,6 +293,44 @@ public class ThreadInfo
   }
 
   /**
+   * Returns the {@link javax.management.openmbean.CompositeType} for
+   * a {@link StackTraceElement}.
+   *
+   * @return the type for the stack trace element.
+   */
+  static CompositeType getStackTraceType()
+  {
+    if (seType == null)
+      try
+	{
+	  seType = new CompositeType(StackTraceElement.class.getName(),
+				     "An element of a stack trace",
+				     new String[] { "className", "methodName",
+						    "fileName", "lineNumber",
+						    "nativeMethod" 
+				     },
+				     new String[] { "Name of the class",
+						    "Name of the method",
+						    "Name of the source code file",
+						    "Line number",
+						    "True if this is a native method" 
+				     },
+				     new OpenType[] {
+				       SimpleType.STRING, SimpleType.STRING,
+				       SimpleType.STRING, SimpleType.INTEGER,
+				       SimpleType.BOOLEAN 
+				     });
+	}
+      catch (OpenDataException e)
+	{
+	  throw new IllegalStateException("Something went wrong in creating " +
+					  "the composite data type for the " +
+					  "stack trace element.", e);
+	}
+    return seType;
+  }
+
+  /**
    * <p>
    * Returns a {@link ThreadInfo} instance using the values
    * given in the supplied
@@ -350,31 +394,14 @@ public class ThreadInfo
     checkAttribute(type, "LockOwnerName", SimpleType.STRING);
     try
       {
-	CompositeType seType = 
-	  new CompositeType(StackTraceElement.class.getName(),
-			    "An element of a stack trace",
-			    new String[] { "className", "methodName",
-					   "fileName", "lineNumber",
-					   "nativeMethod" 
-			    },
-			    new String[] { "Name of the class",
-					   "Name of the method",
-					   "Name of the source code file",
-					   "Line number",
-					   "True if this is a native method" 
-			    },
-			    new OpenType[] {
-			      SimpleType.STRING, SimpleType.STRING,
-			      SimpleType.STRING, SimpleType.INTEGER,
-			      SimpleType.BOOLEAN 
-			    });
-	checkAttribute(type, "StackTrace", new ArrayType(1, seType));
+	checkAttribute(type, "StackTrace",
+		       new ArrayType(1, getStackTraceType()));
       }
     catch (OpenDataException e)
       {
 	throw new IllegalStateException("Something went wrong in creating " +
-					"the composite data type for the " +
-					"stack trace element.", e);
+					"the array for the stack trace element.",
+					e);
       }
     CompositeData[] dTraces = (CompositeData[]) data.get("StackTrace");
     StackTraceElement[] traces = new StackTraceElement[dTraces.length];
