@@ -1,5 +1,10 @@
 2006-12-25  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	* NEWS:
+	Add information on threading bean VM update.
+	
+2006-12-25  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* doc/vmintegration.texinfo:
 	Updated to match new threading bean API.
 	* gnu/java/lang/management/ThreadMXBeanImpl.java:

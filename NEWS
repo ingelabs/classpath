@@ -5,6 +5,18 @@ New in release 0.94 (UNRELEASED)
 * The setReadTimeout and getReadTimeout methods have been added to
   java.net.URLConnection.  They are now fully implemented for http URLs.  
 
+Runtime interface changes:
+
+* gnu.java.lang.management.VMThreadMXBeanImpl has gained three new
+  optional native methods to allow the 1.6 version of the threading
+  bean to be supported.  One (getMonitorInfo) fills in information
+  about object monitor locks held by a thread and is only required
+  if the monitoring of object monitor locks is supported by the VM.
+  The other two (findDeadlockedThreads and getLockInfo) are related
+  to ownable synchronizers (part of the java.util.concurrent suite)
+  and only required if monitoring of locks relating to these is
+  supported by the VM.
+
 New in release 0.93 (Dec 8, 2006)
 
 * CORBA objects that exist on the same virtual machine and only are connected
