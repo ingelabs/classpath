@@ -1,5 +1,6 @@
-/* OperatingSystemMXBeanImpl.java - Implementation of an operating system bean
-   Copyright (C) 2006 Free Software Foundation
+/* VMOperatingSystemMXBeanImpl.c - gnu.java.lang.management native functions
+   Copyright (C) 2006
+   Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -7,7 +8,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
-
+ 
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -35,61 +36,25 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package gnu.java.lang.management;
+#include <config.h>
+#include <stdlib.h>
 
-import java.lang.management.OperatingSystemMXBean;
+#include "gnu_java_lang_management_VMOperatingSystemMXBeanImpl.h"
 
-import javax.management.NotCompliantMBeanException;
-
-/**
- * Provides access to information about the underlying operating
- * system.  
- *
- * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
- * @since 1.5
+/*
+ * Class:     gnu_java_lang_management_VMOperatingSystemMXBeanImpl
+ * Method:    getSystemLoadAverage
+ * Signature: ()D
  */
-public final class OperatingSystemMXBeanImpl
-  extends BeanImpl
-  implements OperatingSystemMXBean
+JNIEXPORT jdouble JNICALL
+Java_gnu_java_lang_management_VMOperatingSystemMXBeanImpl_getSystemLoadAverage (JNIEnv * env __attribute__ ((__unused__)), jclass cls __attribute__ ((__unused__)))
 {
-
-  /**
-   * Constructs a new <code>OperatingSystemMXBeanImpl</code>.
-   *
-   * @throws NotCompliantMBeanException if this class doesn't implement
-   *                                    the interface or a method appears
-   *                                    in the interface that doesn't comply
-   *                                    with the naming conventions.
-   */
-  public OperatingSystemMXBeanImpl()
-    throws NotCompliantMBeanException
-  {
-    super(OperatingSystemMXBean.class);
-  }
-
-  public String getArch()
-  {
-    return System.getProperty("os.arch");
-  }
-
-  public int getAvailableProcessors()
-  {
-    return Runtime.getRuntime().availableProcessors();
-  }
-
-  public String getName()
-  {
-    return System.getProperty("os.name");
-  }
-
-  public double getSystemLoadAverage()
-  {
-    return VMOperatingSystemMXBeanImpl.getSystemLoadAverage();
-  }
-
-  public String getVersion()
-  {
-    return System.getProperty("os.version");
-  }
-  
+#ifdef HAVE_GETLOADAVG
+  double avg[1];
+  int nos = getloadavg(avg, 1);
+  if (nos == 1)
+    return avg[0];
+  else
+#endif
+    return -1;
 }

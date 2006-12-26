@@ -5,6 +5,9 @@ New in release 0.94 (UNRELEASED)
 * The setReadTimeout and getReadTimeout methods have been added to
   java.net.URLConnection.  They are now fully implemented for http URLs.  
 
+* The java.lang.management implementation now includes the new features
+  added in 1.6
+
 Runtime interface changes:
 
 * gnu.java.lang.management.VMThreadMXBeanImpl has gained three new
