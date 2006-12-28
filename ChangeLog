@@ -1,3 +1,72 @@
+2006-12-28  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/util/AbstractMap.java:
+	(SimpleImmutableEntry): Document and add
+	serialVersionUID.
+	(SimpleEntry): Likewise, and fix JAPI errors.
+	* java/util/TreeMap.java:
+	(entrySet()): Return navigableSet instead.
+	(headMap(K, boolean)): Implemented.
+	(subMap(K, boolean, K, boolean)): Likewise.
+	(tailMap(K, boolean)): Likewise.
+	(highestLessThan(K,boolean)): Likewise.
+	(lowestGreaterThan(K,boolean,boolean)): Likewise.
+	(SubMap.ceilingEntry(K)): Likewise.
+	(SubMap.ceilingKey(K)): Likewise.
+	(SubMap.descendingKeySet()): Likewise.
+	(SubMap.descendingMap()): Likewise.
+	(SubMap.entrySet()): Return navigableSet instead.
+	(SubMap.firstEntry()): Implemented.
+	(SubMap.floorEntry(K)): Likewise.
+	(SubMap.floorKey(K)): Likewise.
+	(SubMap.headMap(K,boolean)): Likewise.
+	(SubMap.higherEntry(K)): Likewise.
+	(SubMap.higherKey(K)): Likewise.
+	(SubMap.lastEntry()): Likewise.
+	(SubMap.lowerEntry(K)): Likewise.
+	(SubMap.lowerKey(K)): Likewise.
+	(SubMap.navigableKeySet()): Likewise.
+	(SubMap.pollFirstEntry()): Likewise.
+	(SubMap.pollLastEntry()): Likewise.
+	(SubMap.subMap(K,boolean,K,boolean)): Likewise.
+	(SubMap.tailMap(K,boolean)): Likewise.
+	(SubMap.KeySet): New class for keySet().
+	(SubMap.NavigableKeySet): New class for navigableKeySet().
+	(SubMap.EntrySet): New class for entrySet().
+	(SubMap.NavigableEntrySet): Likewise.
+	(ceilingEntry(K)): Likewise.
+	(ceilingKey(K)): Likewise.
+	(descendingKeySet()): Likewise.
+	(descendingMap()): Likewise.
+	(firstEntry()): Implemented.
+	(floorEntry(K)): Likewise.
+	(floorKey(K)): Likewise.
+	(higherEntry(K)): Likewise.
+	(higherKey(K)): Likewise.
+	(lastEntry()): Likewise.
+	(lowerEntry(K)): Likewise.
+	(lowerKey(K)): Likewise.
+	(navigableKeySet()): Likewise.
+	(pollFirstEntry()): Likewise.
+	(pollLastEntry()): Likewise.
+	(DescendingMap): New class for descendingMap().
+	(KeySet): New class for keySet().
+	(NavigableKeySet): New class for navigableKeySet().
+	(DescendingSet): New class for descendingSet().
+	(EntrySet): New class for entrySet().
+	(NavigableEntrySet): Likewise.
+	* java/util/TreeSet.java:
+	(headSet(T,boolean)): Implemented.
+	(subSet(T,boolean,T,boolean)): Likewise.
+	(tailSet(T,boolean)): Likewise.
+	(descendingIterator()): Likewise.
+	(descendingSet()): Likewise.
+	(floor(T)): Likewise.
+	(higher(T)): Likewise.
+	(lower(T)): Likewise.
+	(pollFirst(T)): Likewise.
+	(pollLast(T)): Likewise.
+	
 2006-12-27  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/util/LinkedList.java:
