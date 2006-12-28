@@ -7425,4 +7425,187 @@ public class Collections
     }
   } // class CheckedSortedSet
 
+  /**
+   * Returns a view of a {@link Deque} as a stack or LIFO (Last-In-First-Out)
+   * {@link Queue}.  Each call to the LIFO queue corresponds to one
+   * equivalent method call to the underlying deque, with the exception
+   * of {@link Collection#addAll(Collection)}, which is emulated by a series
+   * of {@link Deque#push(E)} calls.
+   *
+   * @param deque the deque to convert to a LIFO queue.
+   * @return a LIFO queue.
+   * @since 1.6
+   */
+  public static <T> Queue<T> asLifoQueue(Deque<T> deque)
+  {
+    return new LIFOQueue<T>(deque);
+  }
+
+  /**
+   * Returns a set backed by the supplied map.  The resulting set
+   * has the same performance, concurrency and ordering characteristics
+   * as the original map.  The supplied map must be empty and should not
+   * be used after the set is created.  Each call to the set corresponds
+   * to one equivalent method call to the underlying map, with the exception
+   * of {@link Set#addAll(Collection)} which is emulated by a series of
+   * calls to <code>put</code>.
+   *
+   * @param map the map to convert to a set.
+   * @return a set backed by the supplied map.
+   * @throws IllegalArgumentException if the map is not empty.
+   * @since 1.6
+   */
+  public static <E> Set<E> newSetFromMap(Map<E,Boolean> map)
+  {
+    return new MapSet<E>(map);
+  }
+
+  /**
+   * The implementation of {@link #asLIFOQueue(Deque)}. 
+   *
+   * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
+   * @since 1.6
+   */
+  private static class LIFOQueue<T>
+    extends AbstractQueue<T>
+  {
+    
+    /**
+     * The backing deque.
+     */
+    private Deque<T> deque;
+
+    /**
+     * Constructs a new {@link LIFOQueue} with the specified
+     * backing {@link Deque}.
+     *
+     * @param deque the backing deque.
+     */
+    public LIFOQueue(Deque<T> deque)
+    {
+      this.deque = deque;
+    }
+
+    public boolean add(T e)
+    {
+      return deque.offerFirst(e);
+    }
+    
+    public boolean addAll(Collection<? extends T> c)
+    {
+      boolean result = false;
+      for (T e : c)
+	result |= deque.offerFirst(e);
+      return result;
+    }
+    
+    public void clear()
+    {
+      deque.clear();
+    }
+    
+    public boolean isEmpty()
+    {
+      return deque.isEmpty();
+    }
+    
+    public Iterator<T> iterator()
+    {
+      return deque.iterator();
+    }
+    
+    public boolean offer(T e)
+    {
+      return deque.offerFirst(e);
+    }
+    
+    public T peek()
+    {
+      return deque.peek();
+    }
+
+    public T poll()
+    {
+      return deque.poll();
+    }
+    
+    public int size()
+    {
+      return deque.size();
+    }
+  } // class LIFOQueue
+
+  /**
+   * The implementation of {@link #newSetFromMap(Map)}. 
+   *
+   * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
+   * @since 1.6
+   */
+  private static class MapSet<E>
+    extends AbstractSet<E>
+  {
+    
+    /**
+     * The backing map.
+     */
+    private Map<E,Boolean> map;
+
+    /**
+     * Constructs a new {@link MapSet} using the specified
+     * backing {@link Map}.
+     *
+     * @param map the backing map.
+     * @throws IllegalArgumentException if the map is not empty.
+     */
+    public MapSet(Map<E,Boolean> map)
+    {
+      if (!map.isEmpty())
+	throw new IllegalArgumentException("The map must be empty.");
+      this.map = map;
+    }
+
+    public boolean add(E e)
+    {
+      return map.put(e, true) == null;
+    }
+    
+    public boolean addAll(Collection<? extends E> c)
+    {
+      boolean result = false;
+      for (E e : c)
+	result |= (map.put(e, true) == null);
+      return result;
+    }
+    
+    public void clear()
+    {
+      map.clear();
+    }
+    
+    public boolean contains(Object o)
+    {
+      return map.containsKey(o);
+    }
+    
+    public boolean isEmpty()
+    {
+      return map.isEmpty();
+    }
+    
+    public Iterator<E> iterator()
+    {
+      return map.keySet().iterator();
+    }
+    
+    public boolean remove(Object o)
+    {
+      return map.remove(o) != null;
+    }
+    
+    public int size()
+    {
+      return map.size();
+    }
+  } // class MapSet
+  
 } // class Collections
