@@ -1,5 +1,5 @@
 /* DateFormatSymbols.java -- Format over a range of numbers
-   Copyright (C) 1998, 1999, 2000, 2001, 2003, 2005  Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001, 2003, 2005, 2006  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -45,7 +45,9 @@ import java.util.ResourceBundle;
 /**
  * This class acts as container for locale specific date/time formatting
  * information such as the days of the week and the months of the year.
+ *
  * @author Per Bothner (bothner@cygnus.com)
+ * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @date October 24, 1998.
  */
 /* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3.
@@ -114,11 +116,17 @@ public class DateFormatSymbols implements java.io.Serializable, Cloneable
   /**
    * This method initializes a new instance of <code>DateFormatSymbols</code>
    * by loading the date format information for the specified locale.
+   * This constructor only obtains instances using the runtime's resources;
+   * to also include {@link java.text.spi.DateFormatSymbolsProvider} instances,
+   * call {@link #getInstance(Locale)} instead.
    *
    * @param locale The locale for which date formatting symbols should
    *               be loaded. 
+   * @throws MissingResourceException if the resources for the specified
+   *                                  locale could not be found or loaded.
    */
-  public DateFormatSymbols (Locale locale) throws MissingResourceException
+  public DateFormatSymbols (Locale locale)
+    throws MissingResourceException
   {
     ResourceBundle res
       = ResourceBundle.getBundle("gnu.java.locale.LocaleInformation", locale,
@@ -139,8 +147,12 @@ public class DateFormatSymbols implements java.io.Serializable, Cloneable
   /**
    * This method loads the format symbol information for the default
    * locale.
+   *
+   * @throws MissingResourceException if the resources for the default
+   *                                  locale could not be found or loaded.
    */
-  public DateFormatSymbols () throws MissingResourceException
+  public DateFormatSymbols() 
+    throws MissingResourceException
   {
     this (Locale.getDefault());
   }
@@ -537,4 +549,50 @@ public class DateFormatSymbols implements java.io.Serializable, Cloneable
 	    ^ hashCode(weekdays)
 	    ^ hashCode(zoneStrings));
   }
+
+  /**
+   * Returns a {@link DateFormatSymbols} instance for the
+   * default locale obtained from either the runtime itself
+   * or one of the installed
+   * {@link java.text.spi.DateFormatSymbolsProvider} instances.
+   * This is equivalent to calling
+   * <code>getInstance(Locale.getDefault())</code>.
+   * 
+   * @return a {@link DateFormatSymbols} instance for the default
+   *         locale.
+   * @since 1.6
+   */
+  public static final DateFormatSymbols getInstance()
+  {
+    return getInstance(Locale.getDefault());
+  }
+
+  /**
+   * Returns a {@link DateFormatSymbols} instance for the
+   * specified locale obtained from either the runtime itself
+   * or one of the installed
+   * {@link java.text.spi.DateFormatSymbolsProvider} instances.
+   * 
+   * @param locale the locale for which an instance should be
+   *               returned.
+   * @return a {@link DateFormatSymbols} instance for the specified
+   *         locale.
+   * @throws NullPointerException if <code>locale</code> is
+   *                              <code>null</code>.
+   * @since 1.6
+   */
+  public static final DateFormatSymbols getInstance(Locale locale)
+  {
+    try
+      {
+	DateFormatSymbols syms = new DateFormatSymbols(locale);
+	return syms;
+      }
+    catch (MissingResourceException e)
+      {
+	/* FIXME: Check the service provider */
+	return null;
+      }
+  }
+
 }
