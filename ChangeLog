@@ -1,5 +1,47 @@
 2007-01-02  Roman Kennke  <roman@kennke.org>
 
+	* gnu/java/awt/java2d/AbstractGraphics2D.java
+	(FONT): New constant field. This is the default font to use as long
+	as nothing else is set.
+	(paintContext): New field. Temporarily stores the paint context.
+	(scanlineConverters): New field. Stores the scanline converters
+	for each thread.
+	(shapeCache): Genericified.
+	(STANDARD_HINTS): New constant field. The standard rendering hints
+	as long as nothing else is set.
+	(STANDARD_STROKE): New constant field. The standard stroke as long
+	as nothing else is set.
+	(static_initializer): Initialize standard hints.
+	(AbstractGraphics2D): Use constant fields for hints and stroke.
+	(drawGlyphVector): Use simpler method to draw the outline.
+	(fillScanline): Use paintContext field.
+	(fillShape): Use new ScanlineConverter to fill shapes.
+	(fillShapeAntialias): Removed. This will be done in fillShape.
+	(fillShapeImpl): Removed. This is done now in the ScanlineConverter
+	class.
+	(getScanlineConverter): New method. Returns the scanline converter
+	for each thread.
+	(getSegments): Removed. This is now implemented in ScanlineConverter.
+	(getShapeCache): Use genericified shapeCache field.
+	(init): Use fixed default font. Don't fetch destination raster here.
+	* gnu/java/awt/java2d/ActiveEdges.java: New class. Stores a set
+	of active edges for scanline conversion.
+	* gnu/java/awt/java2d/PolyEdge.java
+	(poolNext): Implements linked list for edge pool.
+	(scanlineNext): Implements linked list for scanline edge lists.
+	(slope): Use fixed point decimal.
+	(slope,x0,y0,x1,y1,xIntersection): Use fixed point decimal.
+	(PolyEdge()): New constructor.
+	(PolyEdge): Use fixed point decimals.
+	(init): Use fixed point decimals.
+	(intersect): New method. Intersects this edge with a scanline.
+	* gnu/java/awt/java2d/Scanline.java: New class. A list of edges
+	for a scanline plus utilities.
+	* gnu/java/awt/java2d/ScanlineConverter.java: New class. Implements
+	an efficient scanline converter for rendering Shape objects.
+
+2007-01-02  Roman Kennke  <roman@kennke.org>
+
 	* gnu/java/math/Fixed.java: New class. Fixed point arithmetics
 	utilities.
 
