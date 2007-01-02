@@ -44,6 +44,8 @@ import java.io.IOException;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 
+import java.util.spi.CurrencyNameProvider;
+
 /**
  * Representation of a currency for a particular locale.  Each currency
  * is identified by its ISO 4217 code, and only one instance of this
@@ -402,8 +404,37 @@ public final class Currency
    */
   public String getSymbol(Locale locale)
   {
-    return LocaleHelper.getLocalizedString(locale, currencyCode,
-					   "currenciesSymbol", false, true);
+    String localizedString;
+    String property = "currenciesSymbol." + currencyCode;
+    try
+      {
+        localizedString =
+	  ResourceBundle.getBundle("gnu.java.locale.LocaleInformation",
+				   locale).getString(property);
+      }
+    catch (MissingResourceException exception)
+      {
+	localizedString = null;
+      }
+    if (localizedString != null)
+      return localizedString;
+    for (CurrencyNameProvider p :
+	   ServiceLoader.load(CurrencyNameProvider.class))
+      {
+	for (Locale loc : p.getAvailableLocales())
+	  {
+	    if (loc.equals(locale))
+	      {
+		localizedString = p.getSymbol(currencyCode,
+					      locale);
+		if (localizedString != null)
+		  return localizedString;
+	      }
+	  }
+      }
+    if (locale.equals(Locale.ROOT)) // Base case
+      return currencyCode;
+    return getSymbol(LocaleHelper.getFallbackLocale(locale));
   }
 
   /**

@@ -1,3 +1,21 @@
+2007-01-02  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* gnu/java/locale/LocaleHelper.java:
+	(getLocalizedString(Locale,String,String,boolean,
+	boolean)): Removed, no longer needed.
+	(getFallbackLocale(Locale)): Implemented.
+	* java/lang/String.java:
+	(isEmpty()): Implemented.
+	* java/util/Currency.java:
+	(getSymbol(Locale)): Reimplemented to use SPI.
+	* java/util/Locale.java:
+	(ROOT): Added.
+	* java/util/spi/CurrencyNameProvider.java:
+	New file.
+	* java/util/spi/LocaleServiceProvider.java:
+	Likewise.
+	* java/util/spi/package.html: Likewise.
+	
 2007-01-02  Roman Kennke  <roman@kennke.org>
 
 	* gnu/java/awt/java2d/AbstractGraphics2D.java

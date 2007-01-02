@@ -1990,4 +1990,17 @@ public final class String
     return Character.offsetByCodePoints(value, offset, count, offset + index,
                                         codePointOffset);
   }
+
+  /**
+   * Returns true if, and only if, {@link #length()}
+   * is <code>0</code>.
+   *
+   * @return true if the length of the string is zero.
+   * @since 1.6
+   */
+  public boolean isEmpty()
+  {
+    return count == 0;
+  }
+
 }

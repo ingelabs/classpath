@@ -161,6 +161,11 @@ public final class Locale implements Serializable, Cloneable
   /** Locale which represents the French speaking portion of Canada. */
   public static final Locale CANADA_FRENCH = getLocale("fr", "CA");
 
+  /** The root locale, used as the base case in lookups by
+   *  locale-sensitive operations.
+   */
+  public static final Locale ROOT = new Locale("","","");
+
   /**
    * Compatible with JDK 1.1+.
    */
