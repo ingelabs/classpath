@@ -404,20 +404,17 @@ public final class Currency
    */
   public String getSymbol(Locale locale)
   {
-    String localizedString;
     String property = "currenciesSymbol." + currencyCode;
     try
       {
-        localizedString =
-	  ResourceBundle.getBundle("gnu.java.locale.LocaleInformation",
-				   locale).getString(property);
+        return ResourceBundle.getBundle("gnu.java.locale.LocaleInformation",
+					locale).getString(property);
       }
     catch (MissingResourceException exception)
       {
-	localizedString = null;
+	/* This means runtime support for the locale
+	 * is not available, so we check providers. */
       }
-    if (localizedString != null)
-      return localizedString;
     for (CurrencyNameProvider p :
 	   ServiceLoader.load(CurrencyNameProvider.class))
       {
@@ -425,10 +422,11 @@ public final class Currency
 	  {
 	    if (loc.equals(locale))
 	      {
-		localizedString = p.getSymbol(currencyCode,
-					      locale);
+		String localizedString = p.getSymbol(currencyCode,
+						     locale);
 		if (localizedString != null)
 		  return localizedString;
+		break;
 	      }
 	  }
       }
