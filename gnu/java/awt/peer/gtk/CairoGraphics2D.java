@@ -281,6 +281,9 @@ public abstract class CairoGraphics2D extends Graphics2D
     setTransformImpl(transform);
     setClip(clip);
     setComposite(comp);
+    
+    antialias = !g.antialias;
+    setAntialias(g.antialias);
   }
 
   /**

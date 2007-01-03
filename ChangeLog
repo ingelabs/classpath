@@ -1,3 +1,8 @@
+2007-01-03  Francis Kung  <fkung@redhat.com>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java:
+	(copy): Copy and set antialias value.
+
 2007-01-03  Tania Bento  <tbento@redhat.com>
 
 	* java/awt/CardLayout.java:
