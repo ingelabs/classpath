@@ -1,5 +1,5 @@
 /* Toolkit.java -- AWT Toolkit superclass
-   Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006
+   Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007
    Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -40,6 +40,7 @@ exception statement from your version. */
 package java.awt;
 
 import gnu.classpath.SystemProperties;
+import gnu.java.awt.AWTUtilities;
 import gnu.java.awt.peer.GLightweightPeer;
 import gnu.java.awt.peer.headless.HeadlessToolkit;
 
@@ -802,12 +803,11 @@ public abstract class Toolkit
    */
   public boolean getLockingKeyState(int keyCode)
   {
-    if (keyCode != KeyEvent.VK_CAPS_LOCK
-        && keyCode != KeyEvent.VK_NUM_LOCK
-        && keyCode != KeyEvent.VK_SCROLL_LOCK)
-      throw new IllegalArgumentException();
-    
-    throw new UnsupportedOperationException();
+    if (AWTUtilities.isValidKey(keyCode))
+      throw new UnsupportedOperationException
+	("cannot get locking state of key code " + keyCode);
+
+    throw new IllegalArgumentException("invalid key code " + keyCode);
   }
 
   /**

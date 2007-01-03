@@ -1,5 +1,5 @@
 /* GtkToolkit.java -- Implements an AWT Toolkit using GTK for peers
-   Copyright (C) 1998, 1999, 2002, 2003, 2004, 2005, 2006
+   Copyright (C) 1998, 1999, 2002, 2003, 2004, 2005, 2006, 2007
    Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -39,6 +39,7 @@ exception statement from your version. */
 
 package gnu.java.awt.peer.gtk;
 
+import gnu.java.awt.AWTUtilities;
 import gnu.java.awt.EmbeddedWindow;
 import gnu.java.awt.dnd.GtkMouseDragGestureRecognizer;
 import gnu.java.awt.dnd.peer.gtk.GtkDragSourceContextPeer;
@@ -84,6 +85,7 @@ import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DragGestureRecognizer;
 import java.awt.dnd.DragSource;
+import java.awt.event.KeyEvent;
 import java.awt.dnd.InvalidDnDOperationException;
 import java.awt.dnd.peer.DragSourceContextPeer;
 import java.awt.im.InputMethodHighlight;
@@ -667,6 +669,22 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
   {
     return new GdkRobotPeer (screen);
   }
+
+  public boolean getLockingKeyState(int keyCode)
+  {
+    int state = getLockState(keyCode);
+    
+    if (state != -1)
+      return state == 1;
+    
+    if (AWTUtilities.isValidKey(keyCode))
+      throw new UnsupportedOperationException
+        ("cannot get locking state of key code " + keyCode);
+    
+    throw new IllegalArgumentException("invalid key code " + keyCode);
+  }
+
+  protected native int getLockState(int keyCode);
 
   public void registerImageIOSpis(IIORegistry reg)
   {

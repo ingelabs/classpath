@@ -1,5 +1,5 @@
 /* gtktoolkit.c -- Native portion of GtkToolkit
-   Copyright (C) 1998, 1999, 2005  Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2005, 2007  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -72,6 +72,12 @@ exception statement from your version. */
 #define AWT_INFO                    24
 #define AWT_INFO_TEXT               25
 #define AWT_NUM_COLORS              26
+
+#define VK_SHIFT 16
+#define VK_CONTROL 17
+#define VK_ALT 18
+#define VK_CAPS_LOCK 20
+#define VK_META 157
 
 struct state_table *cp_gtk_native_state_table;
 struct state_table *cp_gtk_native_global_ref_table;
@@ -512,6 +518,53 @@ gdk_color_to_java_color (GdkColor gdk_color)
   blue  = (float) gdk_color.blue  * factor;
 
   return (jint) (0xff000000 | (red << 16) | (green << 8) | blue);
+}
+
+JNIEXPORT jint JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkToolkit_getLockState
+  (JNIEnv *env __attribute__((unused)), jobject obj __attribute__((unused)),
+   jint key)
+{
+  gint coord;
+  GdkModifierType state, mask;
+  GdkWindow *root_window;
+
+  gdk_threads_enter ();
+
+  root_window = gdk_get_default_root_window ();
+  gdk_window_get_pointer (root_window, &coord, &coord, &state);
+
+  switch (key)
+    {
+    case VK_SHIFT:
+      mask = GDK_SHIFT_MASK;
+      break;
+    case VK_CONTROL:
+      mask = GDK_CONTROL_MASK;
+      break;
+    case VK_ALT:
+      /* This is dubious, since MOD1 could have been mapped to something
+         other than ALT. */
+      mask = GDK_MOD1_MASK;
+      break;
+#if GTK_CHECK_VERSION(2, 10, 0)
+    case VK_META:
+      mask = GDK_META_MASK;
+      break;
+#endif
+    case VK_CAPS_LOCK:
+      mask = GDK_LOCK_MASK;
+      break;
+    default:
+      mask = 0;
+    }
+
+  gdk_threads_leave ();
+
+  if (mask == 0)
+    return -1;
+
+  return state & mask ? 1 : 0;
 }
 
 static gboolean
