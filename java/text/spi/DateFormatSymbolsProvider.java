@@ -1,4 +1,4 @@
-/* DateFormatSymbolsProvider.java -- Providers of localized currency symbols
+/* DateFormatSymbolsProvider.java -- Providers of localized instances
    Copyright (C) 2007 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.

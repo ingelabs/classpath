@@ -59,6 +59,11 @@ public class ServiceConfigurationError
 {
   
   /**
+   * Compatible with JDK 1.6
+   */
+  private static final long serialVersionUID = 74132770414881L;
+
+  /**
    * Constructs a new {@link ServiceConfigurationError}
    * with the specified message.
    *

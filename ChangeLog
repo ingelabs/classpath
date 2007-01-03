@@ -1,3 +1,17 @@
+2007-01-03  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/text/BreakIterator.java:
+	(getCharacterInstance(Locale)): Check providers.
+	(getLineInstance(Locale)): Likewise.
+	(getSentenceInstance(Locale)): Likewise.
+	(getWordInstance(Locale)): Likewise.
+	* java/text/spi/BreakIteratorProvider.java:
+	New file.
+	* java/text/spi/DateFormatSymbolsProvider.java:
+	Update header text.
+	* java/util/ServiceConfigurationError.java:
+	Add serialVersionUID.
+	
 2007-01-03  Francis Kung  <fkung@redhat.com>
 
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java:
