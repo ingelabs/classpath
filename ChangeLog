@@ -1,3 +1,17 @@
+2007-01-03  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/text/DateFormatSymbols.java:
+	(getZoneStrings(ResourceBundle)): Changed to...
+	(getZoneStrings(ResourceBundle,Locale)): Added
+	use of TimeZoneNamesProvider.
+	(getZoneStrings()): Return either mutated zone
+	strings or initial ones.
+	(getInstance(Locale)): Check DateFormatSymbolsProvider
+	instances.
+	* java/text/spi/DateFormatSymbolsProvider.java:
+	New file.
+	* java/text/spi/package.html: New file.
+	
 2007-01-02  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/util/Currency.java:
