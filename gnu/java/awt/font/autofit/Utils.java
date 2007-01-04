@@ -85,8 +85,9 @@ class Utils
   };
 
   private static final int ANGLE_PI = 256;
+  private static final int ANGLE_PI2 = ANGLE_PI / 2;
+  private static final int ANGLE_PI4 = ANGLE_PI / 4;
   private static final int ANGLE_2PI = ANGLE_PI * 2;
-  private static final int ANGLE_4PI = ANGLE_PI * 4;
 
   /**
    * Computes the direction constant for the specified vector. The vector is
@@ -151,9 +152,9 @@ class Utils
       }
     else if (dx == 0)
       {
-        angle = ANGLE_2PI;
+        angle = ANGLE_PI2;
         if (dy < 0)
-          angle = - ANGLE_2PI;
+          angle = - ANGLE_PI2;
         return angle;
       }
 
@@ -170,18 +171,23 @@ class Utils
         int tmp = dx;
         dx = -dy;
         dy = tmp;
-        angle = - ANGLE_2PI;
+        angle -= ANGLE_PI2;
       }
     if (dx == 0 && dy == 0)
       return 0;
-    if (dx == dy)
-      angle += ANGLE_4PI;
-    else if (dx > dy)
-      angle += ATAN[Fixed.div(dy, dx) >> (26 - ATAN_BITS)];
-    else
-      angle += ANGLE_2PI - ATAN[Fixed.div(dx, dy) >> (26 - ATAN_BITS)];
 
-    if (angle > Math.PI)
+    if (dx == dy)
+      angle += ANGLE_PI4;
+    else if (dx > dy)
+      {
+        angle += ATAN[Fixed.div(dy, dx) << (ATAN_BITS - 6)];
+      }
+    else
+      {
+        angle += ANGLE_PI2 - ATAN[Fixed.div(dx, dy) << (ATAN_BITS - 6)];
+      }
+
+    if (angle > ANGLE_PI)
       angle -= ANGLE_2PI;
     return angle;
   }
@@ -192,7 +198,7 @@ class Utils
     delta %= ANGLE_2PI;
     if (delta < 0)
       delta += ANGLE_2PI;
-    if (delta > ANGLE_2PI)
+    if (delta > ANGLE_PI)
       delta -= ANGLE_2PI;
     return delta;
   }

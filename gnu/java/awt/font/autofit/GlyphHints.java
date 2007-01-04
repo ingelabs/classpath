@@ -212,7 +212,7 @@ class GlyphHints
   private void computeInflectionPoints()
   {
     // Do each contour separately.
-    for (int c = 0; c < contours.length; c++)
+    contours : for (int c = 0; c < contours.length; c++)
       {
         Point point = contours[c];
         Point first = point;
@@ -222,11 +222,11 @@ class GlyphHints
           {
             end = end.getNext();
             if (end == first)
-              return;
+              continue contours;
           } while (end.getOrigX() == first.getOrigX()
                    && end.getOrigY() == first.getOrigY());
-        
-        // Extend segment whenever possible.
+
+        // Extend segment start whenever possible.
         Point before = start;
         int angleIn;
         int angleSeg = Utils.atan(end.getOrigX() - start.getOrigX(),
@@ -238,12 +238,13 @@ class GlyphHints
                 start = before;
                 before = before.getPrev();
                 if (before == first)
-                  return;
+                  continue contours;
               } while (before.getOrigX() == start.getOrigX()
                        && before.getOrigY() == start.getOrigY());
             angleIn = Utils.atan(start.getOrigX() - before.getOrigX(),
                                  start.getOrigY() - before.getOrigY());
           } while (angleIn == angleSeg);
+
         first = start;
         int diffIn = Utils.angleDiff(angleIn, angleSeg);
         // Now, process all segments in the contour.
@@ -506,7 +507,7 @@ class GlyphHints
             // Is the point before the first edge?
             Edge edge = edges[0];
             // Inversed vertical dimension.
-            delta = dim == DIMENSION_HORZ ? edge.fpos - u : u - edge.fpos;
+            delta = edge.fpos - u;
             if (delta >= 0)
               {
                 u = edge.pos - (edge.opos - ou);
@@ -516,7 +517,7 @@ class GlyphHints
               {
                 // Is the point after the last edge?
                 edge = edges[numEdges - 1];
-                delta = dim == DIMENSION_HORZ ? u - edge.fpos : edge.fpos - u;
+                delta = u - edge.fpos;
                 if (delta >= 0)
                   {
                     u = edge.pos + (ou - edge.opos);
