@@ -1,5 +1,28 @@
 2007-01-04  Roman Kennke  <roman@kennke.org>
 
+	PR 30122
+	* java/awt/Component.java
+	(getFont): Don't synchronize on tree lock here. The method is
+	thread-safe 'enough' by fetching local variables in getFontImpl().
+
+2007-01-04  Roman Kennke  <roman@kennke.org>
+
+	* java/awt/AWTEvent.java
+	(toString): Don't include the whole component in the output,
+	only its name.
+	* java/awt/Component.java
+	(isShowing): Create local copy of parent field for better
+	thread safety and efficiency.
+	* java/awt/EventDispatchThread.java
+	(EventDispatchThread): Make sure the event thread is not a daemon
+	thread in case it gets started by a daemon thread.
+	* java/awt/image/IndexColorModel.java
+	(createColorMap): New helper method for creating the color map.
+	(IndexColorModel): (all constructors) use createColorMap() helper
+	method.
+
+2007-01-04  Roman Kennke  <roman@kennke.org>
+
 	* gnu/java/awt/font/autofit/GlyphHints.java
 	(alignStrongPoints): Don't special case the vertical dimension.
 	(computeInflectionPoints): Corrected computation of inflection

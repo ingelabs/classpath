@@ -823,7 +823,8 @@ public abstract class Component
    */
   public boolean isShowing()
   {
-    return visible && peer != null && (parent == null || parent.isShowing());
+    Component par = parent;
+    return visible && peer != null && (par == null || par.isShowing());
   }
 
   /**
@@ -1179,19 +1180,12 @@ public abstract class Component
    */
   public Font getFont()
   {
-    Font f;
-    synchronized (getTreeLock())
-      {
-        f = getFontImpl();
-      }
-    return f;
+    return getFontImpl();
   }
 
   /**
    * Implementation of getFont(). This is pulled out of getFont() to prevent
-   * client programs from overriding this. This method is executed within
-   * a tree lock, so we can assume that the hierarchy doesn't change in
-   * between.
+   * client programs from overriding this.
    *
    * @return the font of this component
    */
