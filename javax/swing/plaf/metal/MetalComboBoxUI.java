@@ -217,7 +217,7 @@ public class MetalComboBoxUI extends BasicComboBoxUI
    */
   protected ComboPopup createPopup()
   {
-    return new MetalComboPopup(comboBox);
+    return super.createPopup();
   }
   
   /**
@@ -305,7 +305,6 @@ public class MetalComboBoxUI extends BasicComboBoxUI
       {
         MetalComboBoxButton b = (MetalComboBoxButton) arrowButton;
         d = getDisplaySize();
-        Insets insets = b.getInsets();
         Insets arrowInsets = b.getInsets();
         Insets comboInsets = comboBox.getInsets();
         Icon icon = b.getComboIcon();

@@ -1,3 +1,30 @@
+2007-01-06  Roman Kennke  <roman@kennke.org>
+
+	PR 30337
+	* javax/swing/plaf/basic/BasicComboBoxUI.java
+	(installUI): Install popup and list here.
+	Don't configure the arrow button and editor here.
+	(installComponents): Don't install popup and list here. (Moved
+	to installUI). Configure arrow button here and check for null.
+	(addEditor): Configure editor here.
+	(configureArrowButton): Directly fetch listeners from popup.
+	(paintCurrentValue): Removed unused local variables.
+	(layoutContainer): Removed unused local variables.
+	(PropertyChangeHandler.propertyChange): Don't invalidate minimumSize
+	on each property change. Avoid calling getPropertyName() repeatedly.
+	Clean up. Call addEditor() when editor changes. Configure and
+	unconfigure editor when editable changes. Use 'model' instead
+	of non-existing 'dataModel' property.
+	* javax/swing/plaf/basic/BasicComboPopup.java
+	(uninstallingUI): Remove property change listener and item listener
+	here. Uninstall list listeners. Set model to null to prevent leakage.
+	(configureList): Don't sync list selection there.
+	(uninstallComboBoxListeners): Moved to uninstallingUI.
+	(uninstallListeners): Moved to uninstallingUI.
+	* javax/swing/plaf/metal/MetalComboBoxUI.java
+	(createPopup): Call super.
+	(getMinimumSize): Removed unused statement.
+
 2007-01-06  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/text/Collator.java:
