@@ -1198,7 +1198,12 @@ public abstract class Component
         if (p != null)
           f = p.getFontImpl();
         else
-          f = new Font("Dialog", Font.PLAIN, 12);
+          {
+            // It is important to return null here and not some kind of default
+            // font, otherwise the Swing UI would not install its fonts because
+            // it keeps non-UIResource fonts.
+            f = null;
+          }
       }
     return f;
   }

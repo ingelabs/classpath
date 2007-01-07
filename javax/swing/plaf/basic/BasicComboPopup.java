@@ -282,7 +282,6 @@ public class BasicComboPopup extends JPopupMenu implements ComboPopup
     uninstallComboBoxModelListeners(comboBox.getModel());
     uninstallKeyboardActions();
     uninstallListListeners();
-    list.setModel(null);
   }
 
   /**

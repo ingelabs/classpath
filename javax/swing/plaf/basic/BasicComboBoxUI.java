@@ -489,24 +489,20 @@ public class BasicComboBoxUI extends ComboBoxUI
    */
   protected void uninstallComponents()
   {
-    // uninstall arrow button
-    unconfigureArrowButton();
-    comboBox.remove(arrowButton);
-    arrowButton = null;
-
-    popup = null;
-
-    if (comboBox.getRenderer() instanceof UIResource)
-      comboBox.setRenderer(null);
-
-    // if the editor is not an instanceof UIResource, it was not set by the
-    // UI delegate, so don't clear it...
-    ComboBoxEditor currentEditor = comboBox.getEditor();
-    if (currentEditor instanceof UIResource)
+    // Unconfigure arrow button.
+    if (arrowButton != null)
       {
-        comboBox.setEditor(null);
-        editor = null;
+        unconfigureArrowButton();
       }
+
+    // Unconfigure editor.
+    if (editor != null)
+      {
+        unconfigureEditor();
+      }
+
+    comboBox.removeAll();
+    arrowButton = null;
   }
 
   /**
@@ -1349,7 +1345,7 @@ public class BasicComboBoxUI extends ComboBoxUI
 
           comboBox.repaint();
         }
-      else if (propName.equals("editor"))
+      else if (propName.equals("editor") && comboBox.isEditable())
         {
           addEditor();
           comboBox.revalidate();
@@ -1367,7 +1363,7 @@ public class BasicComboBoxUI extends ComboBoxUI
 
           comboBox.revalidate();
         }
-      else if (e.getPropertyName().equals("model"))
+      else if (propName.equals("model"))
         {
           // remove ListDataListener from old model and add it to new model
           ComboBoxModel oldModel = (ComboBoxModel) e.getOldValue();
@@ -1387,7 +1383,7 @@ public class BasicComboBoxUI extends ComboBoxUI
           comboBox.revalidate();
           comboBox.repaint();
         }
-      else if (e.getPropertyName().equals("font"))
+      else if (propName.equals("font"))
         {
           Font font = (Font) e.getNewValue();
           if (editor != null)
@@ -1398,7 +1394,16 @@ public class BasicComboBoxUI extends ComboBoxUI
           isMinimumSizeDirty = true;
           comboBox.revalidate();
         }
-
+      else if (propName.equals("prototypeDisplayValue"))
+        {
+          isMinimumSizeDirty = true;
+          comboBox.revalidate();
+        }
+      else if (propName.equals("renderer"))
+        {
+          isMinimumSizeDirty = true;
+          comboBox.revalidate();
+        }
       // FIXME: Need to handle changes in other bound properties.       
     }
   }

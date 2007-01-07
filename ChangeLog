@@ -1,3 +1,21 @@
+2007-01-07  Roman Kennke  <roman@kennke.org>
+
+	PR 30337
+	* java/awt/Component.java
+	(getFontImpl): Return null when the component has no font set
+	and also has no parent yet.
+	* javax/swing/plaf/basic/BasicComboBoxUI.java
+	(PropertyChangeHandler.propertyChange): Only add editor when combo
+	box is editable. Avoid fetching the property name repeatedly.
+	Invalidate when renderer or prototypeDisplayValue change.
+	(uninstallComponents): Unconfigure everything and then remove all
+	components.
+	* javax/swing/plaf/basic/BasicComboPopup.java
+	(uninstallingUI): Don't nullify list model.
+	* javax/swing/plaf/metal/MetalComboBoxUI.java
+	(createArrowButton): Pass currentValuePane to the MetalComboBoxButton
+	constructor rather than a new (unconnected) CellRendererPane.
+
 2007-01-06  Roman Kennke  <roman@kennke.org>
 
 	PR 30337
