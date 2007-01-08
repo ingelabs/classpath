@@ -1,3 +1,8 @@
+2007-01-08  Tom Tromey  <tromey@redhat.com>
+
+	* tools/gnu/classpath/tools/native2ascii/Native2ASCII.java (run):
+	Fix length check.  PR classpath/30346.
+
 2007-01-09  Raif S. Naffah  <classpath@naffah-raif.name>
 
 	* tools/gnu/classpath/tools/jarsigner/SFHelper.java: Updated copyright year.
