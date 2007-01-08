@@ -1,3 +1,24 @@
+2007-01-09  Raif S. Naffah  <classpath@naffah-raif.name>
+
+	* tools/gnu/classpath/tools/jarsigner/SFHelper.java: Updated copyright year.
+	(sfEntries): Use generics.
+	(writeDSA()): Likewise.
+	(startSigning()): Likewise.
+	(updateEntry()): Likewise.
+	* tools/gnu/classpath/tools/jarsigner/Messages.java: Updated copyright year.
+	(CACHED_FORMATS): Use generics.
+	(getFormattedString()): Likewise.
+	* tools/gnu/classpath/tools/jarsigner/Main.java: Updated copyright year.
+	(fileAndAlias): Use generics.
+	(ToolParser.validate()): Likewise.
+	* tools/gnu/classpath/tools/jarsigner/JarVerifier.java:
+	Updated copyright year.
+	Re-ordered imports and removed unused entries.
+	(entryHashes): Use generics.
+	(start()): Likewise.
+	(verifySFEntries()): Likewise.
+	Use map's entrySet() instead of its keySet().
+
 2007-01-08  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/text/DateFormat.java:
