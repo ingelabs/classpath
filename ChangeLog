@@ -1,3 +1,19 @@
+2007-01-11  Andreas Tobler  <a.tobler@schweiz.org>
+
+	* examples/gnu/classpath/examples/awt/AicasGraphicsBenchmark.java
+	(AicasGraphicsBenchmark): Load images from ../icons.
+	* examples/gnu/classpath/examples/java2d/J2dBenchmark.java (init):
+	Likewise.
+	* examples/Makefile.am (EXAMPLE_ICONS): Add rule to copy *.gif files
+	to icons.
+	* examples/gnu/classpath/examples/awt/aicas.png: Move to ../icons.
+	Delete here.
+	* examples/gnu/classpath/examples/awt/palme.gif: Likewise.
+	* examples/gnu/classpath/examples/java2d/aicas.png: Likewise.
+	* examples/gnu/classpath/examples/java2d/palme.gif: Likewise.
+	* examples/gnu/classpath/examples/icons/aicas.png: Moved.
+	* examples/gnu/classpath/examples/icons/palme.gif: Likewise.
+
 2007-01-09  Tania Bento  <tbento@redhat.com>
 
 	* java/security/Permission.java:

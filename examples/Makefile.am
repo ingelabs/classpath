@@ -35,6 +35,7 @@ BUILT_SOURCES = $(EXAMPLE_ZIP)
 
 # the png icons we use in some of the examples.
 EXAMPLE_ICONS = $(srcdir)/gnu/classpath/examples/icons/*.png
+EXAMPLE_ICONS += $(srcdir)/gnu/classpath/examples/icons/*.gif
 
 # the html pages we use in the swing demo example.
 EXAMPLE_HTML = $(srcdir)/gnu/classpath/examples/swing/*.html
