@@ -51,7 +51,7 @@ public class AttributeValueExp
   /**
    * Compatible with JDK 1.5
    */
-  private static final long serialVersionUID = -776802504653916338L;
+  private static final long serialVersionUID = -7768025046539163385L;
 
   /**
    * The name of the attribute.
