@@ -77,7 +77,7 @@ import java.util.List;
    * @throws ClassNotFoundException if all the class loaders fail
    *                                to load the class.
    */
-  public Class loadClass(String name)
+  public static Class loadClass(String name)
     throws ClassNotFoundException
   {
     List<MBeanServer> servers = MBeanServerFactory.findMBeanServer(null);
@@ -124,7 +124,7 @@ import java.util.List;
    * @throws ClassNotFoundException if all the class loaders fail
    *                                to load the class.
    */
-  public Class loadClassWithout(ClassLoader exclude, String name)
+  public static Class loadClassWithout(ClassLoader exclude, String name)
     throws ClassNotFoundException
   {
     List<MBeanServer> servers = MBeanServerFactory.findMBeanServer(null);
