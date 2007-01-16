@@ -1,4 +1,4 @@
-/* InvalidSlotException.java -- an invalid variable slot exception
+/* TypeMismatchException.java -- mismatched type of local variable
    Copyright (C) 2007 Free Software Foundation
 
 This file is part of GNU Classpath.
@@ -42,21 +42,21 @@ package gnu.classpath.jdwp.exception;
 import gnu.classpath.jdwp.JdwpConstants;
 
 /**
- * An exception thrown when an invalid Slot id is used by the debugger 
- * (i.e. when trying to access a variable slot which doesn't exist).
+ * An exception throw when attempting to access a local variable of the wrong
+ * type.
  *
- * @author Kyle Galloway (kgallowa@redhat.com)
+ * @author Kyle Galloway  (kgallowa@redhat.com)
  */
-public class InvalidSlotException
+public class TypeMismatchException
   extends JdwpException
 {
-  public InvalidSlotException(int slot)
+  public TypeMismatchException(byte tag)
   {
-    super(JdwpConstants.Error.INVALID_SLOT, "invalid slot: " + slot);
+    super(JdwpConstants.Error.TYPE_MISMATCH, "incorrect tag: " + tag);
   }
 
-  public InvalidSlotException(String msg)
+  public TypeMismatchException(String msg)
   {
-    super(JdwpConstants.Error.INVALID_SLOT, msg);
+    super(JdwpConstants.Error.TYPE_MISMATCH, msg);
   }
 }

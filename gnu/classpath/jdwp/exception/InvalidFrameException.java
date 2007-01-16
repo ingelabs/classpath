@@ -56,8 +56,8 @@ public class InvalidFrameException
 		  "invalid frame id (" + id + ")");
   }
 
-	 public InvalidFrameException(String msg)
-	 {
-	 	 super(JdwpConstants.Error.INVALID_FRAMEID, msg);
-	 }
+  public InvalidFrameException(String msg)
+  {
+    super(JdwpConstants.Error.INVALID_FRAMEID, msg);
+  }
 }
