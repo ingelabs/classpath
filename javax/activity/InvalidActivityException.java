@@ -51,7 +51,7 @@ public class InvalidActivityException extends RemoteException
    * Creates an exception with a null message, and cause initialized
    * to null.
    */
-  InvalidActivityException()
+  public InvalidActivityException()
   {
     this(null, null);
   }
@@ -62,7 +62,7 @@ public class InvalidActivityException extends RemoteException
    *
    * @param s the message
    */
-  InvalidActivityException(String s)
+  public InvalidActivityException(String s)
   {
     this(s, null);
   }
@@ -72,7 +72,7 @@ public class InvalidActivityException extends RemoteException
    *
    * @param e the cause
    */
-  InvalidActivityException(Throwable e)
+  public InvalidActivityException(Throwable e)
   {
     this(null, e);
   }
@@ -83,7 +83,7 @@ public class InvalidActivityException extends RemoteException
    * @param s the message
    * @param e the cause
    */
-  InvalidActivityException(String s, Throwable e)
+  public InvalidActivityException(String s, Throwable e)
   {
     super(s, e);
   }

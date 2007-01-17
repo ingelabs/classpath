@@ -51,7 +51,7 @@ public class ActivityRequiredException extends RemoteException
    * Creates an exception with a null message, and cause initialized
    * to null.
    */
-  ActivityRequiredException()
+  public ActivityRequiredException()
   {
     this(null, null);
   }
@@ -62,7 +62,7 @@ public class ActivityRequiredException extends RemoteException
    *
    * @param s the message
    */
-  ActivityRequiredException(String s)
+  public ActivityRequiredException(String s)
   {
     this(s, null);
   }
@@ -72,7 +72,7 @@ public class ActivityRequiredException extends RemoteException
    *
    * @param e the cause
    */
-  ActivityRequiredException(Throwable e)
+  public ActivityRequiredException(Throwable e)
   {
     this(null, e);
   }
@@ -83,7 +83,7 @@ public class ActivityRequiredException extends RemoteException
    * @param s the message
    * @param e the cause
    */
-  ActivityRequiredException(String s, Throwable e)
+  public ActivityRequiredException(String s, Throwable e)
   {
     super(s, e);
   }

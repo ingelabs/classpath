@@ -51,7 +51,7 @@ public class ActivityCompletedException extends RemoteException
    * Creates an exception with a null message, and cause initialized
    * to null.
    */
-  ActivityCompletedException()
+  public ActivityCompletedException()
   {
     this(null, null);
   }
@@ -62,7 +62,7 @@ public class ActivityCompletedException extends RemoteException
    *
    * @param s the message
    */
-  ActivityCompletedException(String s)
+  public ActivityCompletedException(String s)
   {
     this(s, null);
   }
@@ -72,7 +72,7 @@ public class ActivityCompletedException extends RemoteException
    *
    * @param e the cause
    */
-  ActivityCompletedException(Throwable e)
+  public ActivityCompletedException(Throwable e)
   {
     this(null, e);
   }
@@ -83,7 +83,7 @@ public class ActivityCompletedException extends RemoteException
    * @param s the message
    * @param e the cause
    */
-  ActivityCompletedException(String s, Throwable e)
+  public ActivityCompletedException(String s, Throwable e)
   {
     super(s, e);
   }
