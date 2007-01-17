@@ -1,3 +1,11 @@
+2007-01-17  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicRadioButtonUI.java
+	(paint): Use helper method to figure out icon. Don't override
+	the icon field in that class. Check for null icons.
+	(getCurrentIcon): New helper function to determine icon to be
+	painted.
+
 2007-01-17  Mark Wielaard  <mark@klomp.org>
 
 	* javax/activity/ActivityCompletedException.java: New file.
