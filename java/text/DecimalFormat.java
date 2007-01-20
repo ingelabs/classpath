@@ -659,6 +659,7 @@ public class DecimalFormat extends NumberFormat
     // correct the size of the end parsing flag
     int len = str.length();
     if (len < stop) stop = len;
+    char groupingSeparator = symbols.getGroupingSeparator();
     
     int i = start;
     while (i < stop)
@@ -672,6 +673,7 @@ public class DecimalFormat extends NumberFormat
           }
         else if (this.parseIntegerOnly)
           {
+            i--;
             break;
           }
         else if (ch == decimalSeparator)
@@ -688,8 +690,19 @@ public class DecimalFormat extends NumberFormat
             if (inExponent)
               number.append(ch);
             else
-              break;
+	      {
+		i--;
+        	break;
+	      }
           }
+	else
+	  {
+	    if (!groupingUsed || ch != groupingSeparator)
+	      {
+	        i--;
+	        break;
+	      }
+	  }
       }
 
     // 2nd special case: infinity
@@ -749,7 +762,7 @@ public class DecimalFormat extends NumberFormat
     
     if (isNegative) number.insert(0, '-');
    
-    pos.setIndex(i - 1);
+    pos.setIndex(i);
     
     // now we handle the return type
     BigDecimal bigDecimal = new BigDecimal(number.toString());

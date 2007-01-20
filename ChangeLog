@@ -1,5 +1,10 @@
 2007-01-20  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
+	* java/text/DecimalFormat.java(parse): Corrected the ParsePosition
+	settings.
+
+2007-01-20  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
 	* java/text/SimpleDateFormat(parse): Corrected the usage of
 		NumberFormat.
 
