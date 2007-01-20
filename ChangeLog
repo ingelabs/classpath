@@ -1,5 +1,10 @@
 2007-01-20  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
+	* java/text/SimpleDateFormat(parse): Corrected the usage of
+		NumberFormat.
+
+2007-01-20  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
 	Fixes bug #30488
 	* native/jni/native-lib/cpnet.c(SOCKET_NOSIGNAL): Deleted,
 	(setsockopt_NOSIGPIPE): New function,
