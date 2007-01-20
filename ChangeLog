@@ -1,3 +1,11 @@
+2007-01-20  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	Fixes bug #30488
+	* native/jni/native-lib/cpnet.c(SOCKET_NOSIGNAL): Deleted,
+	(setsockopt_NOSIGPIPE): New function,
+	(cpnet_send): Corrected the option setting to send(),
+	(cpnet_sendTo): Corrected the option setting to sendto(). 
+
 2007-01-19  Marco Trudel  <mtrudel@gmx.ch>
 
 	* java/util/Arrays.java (binarySearch): Change comparison order.
