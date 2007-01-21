@@ -93,7 +93,7 @@ public class AttributeChangeNotificationFilter
    * to pass through the filter.  If the attribute is
    * enabled, this has no effect.
    *
-   * @param name the name of the attribute to disable.
+   * @param name the name of the attribute to enable.
    */
   public void enableAttribute(String name)
   {
