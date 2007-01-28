@@ -1501,6 +1501,10 @@ Java_gnu_java_nio_VMChannel_accept (JNIEnv *env,
           case EWOULDBLOCK:
 #endif
           case EAGAIN:
+            if (!is_non_blocking_fd(fd))
+              {
+                JCL_ThrowException(env, SOCKET_TIMEOUT_EXCEPTION, "Accept timed out");
+              }
             /* Socket in non-blocking mode and no pending connection. */
             return -1;
           default:

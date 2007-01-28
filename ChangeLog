@@ -1,3 +1,11 @@
+2007-01-28  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	* native/jni/java-nio/gnu_java_nio_VMChannel.c
+	(Java_gnu_java_nio_VMChannel_accept): Throw SocketTimeoutException
+	in case of timeout.
+	* native/jni/java-nio/javanio.c(cpnio_accept): Call select() if
+	SO_RCVTIMEO is set.
+
 2007-01-26  Tom Tromey  <tromey@redhat.com>
 
 	* tools/gnu/classpath/tools/javah/FieldHelper.java (print): Print
