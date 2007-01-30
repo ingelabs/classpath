@@ -1,3 +1,10 @@
+2007-01-30  Roman Kennke  <kennke@aicas.com>
+
+	PR 20577
+	* javax/swing/DefaultDesktopManager.java
+	(activateFrame): Added a bunch of null checks. Don't call
+	JInternalFrame.setSelected() to avoid recursion.
+
 2007-01-29  Andrew Haley  <aph@redhat.com>
 
 	* java/lang/SecurityManager.java (SecurityManager): Load and
