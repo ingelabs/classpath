@@ -1,5 +1,5 @@
 /* Request.java --
-   Copyright (C) 2004, 2005, 2006 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,8 +38,8 @@ exception statement from your version. */
 
 package gnu.java.net.protocol.http;
 
-import gnu.java.net.BASE64;
 import gnu.java.net.LineInputStream;
+import gnu.java.util.Base64;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -529,7 +529,7 @@ public class Request
         Credentials creds = authenticator.getCredentials(realm, attempts);
         String userPass = creds.getUsername() + ':' + creds.getPassword();
         byte[] b_userPass = userPass.getBytes("US-ASCII");
-        byte[] b_encoded = BASE64.encode(b_userPass);
+        byte[] b_encoded = Base64.encode(b_userPass).getBytes("US-ASCII");
         String authorization =
           scheme + " " + new String(b_encoded, "US-ASCII");
         setHeader("Authorization", authorization);

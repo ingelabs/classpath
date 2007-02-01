@@ -1,5 +1,5 @@
 /* Base64.java -- Base64 encoding and decoding.
-   Copyright (C) 2006  Free Software Foundation, Inc.
+   Copyright (C) 2006, 2007  Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -81,7 +81,7 @@ SOFTWARE, EVEN IF IBM IS APPRISED OF THE POSSIBILITY OF SUCH
 DAMAGES.  */
 
 
-package gnu.javax.net.ssl;
+package gnu.java.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -103,6 +103,17 @@ public final class Base64
   private static final char BASE_64_PAD = '=';
 
   /**
+   * Base64 encode a byte array, with no line wrapping.
+   *
+   * @param buf The byte array to encode.
+   * @return <tt>buf</tt> encoded in Base64.
+   */
+  public static String encode(byte[] buf)
+  {
+    return encode(buf, 0);
+  }
+  
+  /**
    * Base64 encode a byte array, returning the returning string.
    *
    * @param buf The byte array to encode.
@@ -111,11 +122,29 @@ public final class Base64
    */
   public static String encode(byte[] buf, int tw)
   {
-    int srcLength = buf.length;
+    return encode(buf, 0, buf.length, tw);
+  }
+
+  /**
+   * Base64 encode a byte array, returning the returning string.
+   * 
+   * @param buf The byte array to encode.
+   * @param offset The offset in the byte array to start.
+   * @param length The number of bytes to encode.
+   * @param tw The total length of any line, 0 for unlimited.
+   * @return <tt>buf</tt> encoded in Base64.
+   */
+  public static String encode(byte[] buf, int offset, int length, int tw)
+  {
+    if (offset < 0 || length < 0 || offset + length > buf.length)
+      throw new ArrayIndexOutOfBoundsException(buf.length  + " "
+                                               + offset + " "
+                                               + length);
+    int srcLength = buf.length - offset;
     byte[] input = new byte[3];
     int[] output = new int[4];
     StringBuffer out = new StringBuffer();
-    int i = 0;
+    int i = offset;
     int chars = 0;
 
     while (srcLength > 2)
@@ -270,6 +299,7 @@ public final class Base64
             throw new IOException("malformed Base64 sequence");
 
           case 2:
+            i++;
             for ( ; i < b64.length(); i++)
               {
                 if (!Character.isWhitespace(b64.charAt(i)))
@@ -292,7 +322,6 @@ public final class Base64
                 // We should only see whitespace after this.
                 if (!Character.isWhitespace(b64.charAt(i)))
                   {
-                    System.err.println(b64.charAt(i));
                     throw new IOException("malformed Base64 sequence");
                   }
               }

@@ -1,5 +1,21 @@
 2007-01-31  Casey Marshall  <csm@gnu.org>
 
+	* gnu/javax/net/ssl/Base64.java: move to `gnu/java/util/Base64.java.' 
+	* gnu/javax/net/ssl/PrivateCredentials.java: clean up unused imports.
+	(add): use `gnu.java.util.Base64.'
+	* gnu/java/net/protocol/http/Request.java (authenticate): use
+	`gnu.java.util.Base64.'
+	* tools/gnu/classpath/tools/jarsigner/HashUtils.java (hashStream):
+	likewise.
+	* tools/gnu/classpath/tools/keytool/CertReqCmd.java (start): likewise.
+	* tools/gnu/classpath/tools/keytool/ExportCmd.java (start): likewise.
+	* tools/gnu/classpath/tools/keytool/ListCmd.java (printRFC1421):
+	likewise.
+	* gnu/java/net/Base64.java: removed.
+	* gnu/java/security/util/Base64.java: removed.
+
+2007-01-31  Casey Marshall  <csm@gnu.org>
+
 	Fixes PR classpath/24191.
 	Fix suggested by Rafael Teixeira <monoman@gmail.com>.
 	* javax/crypto/CipherOutputStream.java (write): check return value
