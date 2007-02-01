@@ -1,3 +1,10 @@
+2007-01-31  Casey Marshall  <csm@gnu.org>
+
+	Fixes PR classpath/24191.
+	Fix suggested by Rafael Teixeira <monoman@gmail.com>.
+	* javax/crypto/CipherOutputStream.java (write): check return value
+	of `update' for null.
+
 2007-01-31  Tom Tromey  <tromey@redhat.com>
 
 	* resource/gnu/classpath/tools/jar/messages.properties
