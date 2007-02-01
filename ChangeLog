@@ -1,3 +1,8 @@
+2007-02-01  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/logging/LogManager.java (reset): Remove bogus
+	'while'.
+
 2007-01-31  Casey Marshall  <csm@gnu.org>
 
 	* gnu/javax/net/ssl/Base64.java: move to `gnu/java/util/Base64.java.' 

@@ -1,6 +1,6 @@
 /* LogManager.java -- a class for maintaining Loggers and managing
    configuration properties
-   Copyright (C) 2002, 2005, 2006 Free Software Foundation, Inc.
+   Copyright (C) 2002, 2005, 2006, 2007 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -446,8 +446,8 @@ public class LogManager
 
     Iterator<WeakReference<Logger>> iter = loggers.values().iterator();
     while (iter.hasNext())
-      for (WeakReference<Logger> ref : loggers.values())
       {
+	WeakReference<Logger> ref;
 	Logger logger;
 
 	ref = iter.next();
