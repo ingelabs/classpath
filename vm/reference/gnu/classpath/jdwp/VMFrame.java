@@ -53,6 +53,9 @@ public class VMFrame
    * Returns the size of a frame ID over JDWP
    */
   public static final int SIZE = 8;
+  
+  //The thread this frame resides in
+  private Thread thread;
 
   // The object this frame resides in
   private Object obj;
@@ -62,6 +65,20 @@ public class VMFrame
   
   // id of this frame
   private long id;
+  
+  /**
+   * Create a new VMFrame object.
+   * 
+   * @param thr a Thread, the thread this frame is in
+   * @param frame_id a long, the jframeID of this frame
+   * @param frame_loc a Location, the location of this frame
+   */
+  public VMFrame(Thread thr, long frame_id, Location frame_loc)
+  {
+    thread = thr;
+    id = frame_id;
+    loc = frame_loc;
+  }
   
   /**
    * Gets the current location of the frame.
@@ -84,6 +101,14 @@ public class VMFrame
    * @param value The value to assign the variable to
    */
   public native void setValue(int slot, Object value);
+  
+  /**
+   * Get the thread this frame is in.
+   */
+  public Thread getThread()
+  {
+    return thread;
+  }
 
   /**
    * Get the object which is represented by 'this' in the context of the frame,

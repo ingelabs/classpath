@@ -62,13 +62,13 @@ public class VMVirtualMachine
    *
    * @param  thread  the thread to suspend
    */
-  public static native void suspendThread (Thread thread)
+  public static native void suspendThread(Thread thread)
     throws JdwpException;
 
   /**
    * Suspend all threads
    */
-  public static void suspendAllThreads ()
+  public static void suspendAllThreads()
     throws JdwpException
   {
     // Our JDWP thread group -- don't suspend any of those threads
@@ -115,7 +115,7 @@ public class VMVirtualMachine
    *
    * @param  thread  the thread to resume
    */
-  public static native void resumeThread (Thread thread)
+  public static native void resumeThread(Thread thread)
     throws JdwpException;
 
   /**
@@ -123,7 +123,7 @@ public class VMVirtualMachine
    * suspend count. It can not be used to force the application
    * to run.
    */
-  public static void resumeAllThreads ()
+  public static void resumeAllThreads()
     throws JdwpException
   {
     // Our JDWP thread group -- don't resume
@@ -166,19 +166,19 @@ public class VMVirtualMachine
    * @param  thread  the thread whose suspend count is desired
    * @return the number of times the thread has been suspended
    */
-  public static native int getSuspendCount (Thread thread)
+  public static native int getSuspendCount(Thread thread)
     throws JdwpException;
  
   /**
    * Returns a count of the number of loaded classes in the VM
    */
-  public static native int getAllLoadedClassesCount ()
+  public static native int getAllLoadedClassesCount()
     throws JdwpException;
 
   /**
    * Returns an iterator over all the loaded classes in the VM
    */
-  public static native Iterator getAllLoadedClasses ()
+  public static native Iterator getAllLoadedClasses()
     throws JdwpException;
 
   /**
@@ -188,7 +188,7 @@ public class VMVirtualMachine
    * @return a flag containing the class's status
    * @see JdwpConstants.ClassStatus
    */
-  public static native int getClassStatus (Class clazz)
+  public static native int getClassStatus(Class clazz)
     throws JdwpException;
 
   /**
@@ -198,7 +198,7 @@ public class VMVirtualMachine
    * @param  klass  the class whose methods are desired
    * @return an array of virtual machine methods
    */
-  public static native VMMethod[] getAllClassMethods (Class klass)
+  public static native VMMethod[] getAllClassMethods(Class klass)
     throws JdwpException;
 
   /**
@@ -223,7 +223,7 @@ public class VMVirtualMachine
    * @param  length  number of frames to return (-1 for all frames)
    * @return a list of frames
    */
-  public static native ArrayList getFrames (Thread thread, int start,
+  public static native ArrayList getFrames(Thread thread, int start,
 					    int length)
     throws JdwpException;
 
@@ -237,7 +237,7 @@ public class VMVirtualMachine
    * @param  bb      buffer containing the frame's ID
    * @return the desired frame
    */
-  public static native VMFrame getFrame (Thread thread, ByteBuffer bb)
+  public static native VMFrame getFrame(Thread thread, long frameID)
     throws JdwpException;
 
   /**
@@ -246,7 +246,7 @@ public class VMVirtualMachine
    * @param  thread  the thread for which to get a frame count
    * @return the number of frames in the thread's stack
    */
-  public static native int getFrameCount (Thread thread)
+  public static native int getFrameCount(Thread thread)
     throws JdwpException;
 
 
@@ -257,7 +257,7 @@ public class VMVirtualMachine
    * @return integer status of the thread
    * @see JdwpConstants.ThreadStatus
    */
-  public static native int getThreadStatus (Thread thread)
+  public static native int getThreadStatus(Thread thread)
     throws JdwpException;
 
   /**
@@ -267,7 +267,7 @@ public class VMVirtualMachine
    * @param  cl  the class loader
    * @return a list of all visible classes
    */
-  public static native ArrayList getLoadRequests (ClassLoader cl)
+  public static native ArrayList getLoadRequests(ClassLoader cl)
     throws JdwpException;
 
   /**
@@ -282,7 +282,7 @@ public class VMVirtualMachine
    *                     (instance methods only) "
    * @return a result object containing the results of the invocation
    */
-  public static native MethodResult executeMethod (Object obj, Thread thread,
+  public static native MethodResult executeMethod(Object obj, Thread thread,
 					    Class clazz, Method method,
 					    Object[] values,
 					    boolean nonVirtual)
@@ -295,7 +295,7 @@ public class VMVirtualMachine
    * @return a string containing the source file name; "no path information
    *         for the file is included"
    */
-  public static native String getSourceFile (Class clazz)
+  public static native String getSourceFile(Class clazz)
     throws JdwpException;
 
   /**
@@ -307,7 +307,7 @@ public class VMVirtualMachine
    * or do some internal work to set up the event notification (useful for
    * execution-related events like breakpoints, single-stepping, etc.).
    */
-  public static native void registerEvent (EventRequest request)
+  public static native void registerEvent(EventRequest request)
     throws JdwpException;
 
   /**
@@ -315,7 +315,7 @@ public class VMVirtualMachine
    *
    * @param  request  the request to unregister
    */
-  public static native void unregisterEvent (EventRequest request)
+  public static native void unregisterEvent(EventRequest request)
     throws JdwpException;
 
 
@@ -324,6 +324,6 @@ public class VMVirtualMachine
    *
    * @param  kind  the type of events to clear
    */
-  public static native void clearEvents (byte kind)
+  public static native void clearEvents(byte kind)
     throws JdwpException;
 }

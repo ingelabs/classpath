@@ -1,3 +1,15 @@
+2007-02-02  Kyle Galloway  <kgallowa@redhat.com>
+
+	* gnu/classpath/jdwp/processor/StackFrameCommandSet.java
+	(executeGetValues): Changed getFrame to use a jlong to pass frameID.
+	(executeSetValues): Ditto.
+	(executeThisObject): Ditto.
+	* vm/reference/gnu/classpath/jdwp/VMFrame.java: Added thread field and a
+	constructor used to create VMFrames.
+	(getThread): New method.
+	* vm/reference/gnu/classpath/jdwp/VMVirtualMachine.java(getFrame): Changed
+	to take a long instead of a ByteBuffer to pass the frameID.
+
 2007-02-01  Tom Tromey  <tromey@redhat.com>
 
 	* java/util/logging/LogManager.java (reset): Remove bogus
