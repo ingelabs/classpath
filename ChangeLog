@@ -1,5 +1,16 @@
 2007-02-04  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/lang/Class.java
+	(newInstance): Moved setAccessible call to helper method.
+	(getEnumConstants): Call new helper method to allow values method to be
+	called on non-public enum classes.
+	(setAccessible): New helper method.
+	* java/lang/Enum.java
+	(valueOf): Call new helper method in class to allow field value to
+	be read on non-public enum classes.
+
+2007-02-04  Jeroen Frijters  <jeroen@frijters.net>
+
 	Fix for #30693
 	* gnu/java/nio/charset/ByteCharset.java
 	(ByteCharset.Decoder.decodeLoop): Reset input buffer position if

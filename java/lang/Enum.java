@@ -97,9 +97,12 @@ public abstract class Enum<T extends Enum<T>>
 
     try
       {
+        // XXX We should not use getDeclaredField, because it does
+        // an unnecessary security check.
         Field f = etype.getDeclaredField(s);
         if (! f.isEnumConstant())
           throw new IllegalArgumentException(s);
+        Class.setAccessible(f);
         return (S) f.get(null);
       }
     catch (NoSuchFieldException exception)
