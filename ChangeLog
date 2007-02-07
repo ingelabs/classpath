@@ -1,3 +1,10 @@
+2007-02-07  Chris Burdess  <dog@gnu.org>
+
+	Fixes PR 30718.
+	* gnu/xml/dom/ls/SAXEventSink.java: Add public accessor/mutators.
+	* gnu/xml/transform/XSLURIResolver.java: Add support for custom
+	  SAXSources without a backing URL or stream.
+
 2007-02-06  Tom Tromey  <tromey@redhat.com>
 
 	PR libgcj/30707:
