@@ -1,3 +1,22 @@
+2007-02-08  Roman Kennke  <kennke@aicas.com>
+
+	PR 30347
+	* javax/swing/JViewport.java
+	(scrollRectToVisible): Use correct X/Y offset for calculations.
+	(paintBackingStore): Update backbuffer when we are not the paint
+	root.
+
+2007-02-08  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/image/SinglePixelPackedSampleModel.java
+	(getDataElements(int,int,Object,DataBuffer)):
+	Replace DataBuffer using method with simple
+	switch. This does not check for the exact type (class) of the
+	DataBuffer but instead checks the transfer type.
+	(getDataElements(int,int,int,intObject,DataBuffer)): Removed.
+	(setDataElements): Fixed indentation.
+	(setPixels): Removed unused statement.
+
 2007-02-07  Tom Tromey  <tromey@redhat.com>
 
 	* tools/gnu/classpath/tools/javah/PathOptionGroup.java
