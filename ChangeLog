@@ -1,3 +1,35 @@
+2007-02-09  Mario Torre  <neugens@limasoftware.net>
+
+	* vm/reference/java/io/VMFile.java: 
+	(canExecute): new 1.6 native method.
+	(setReadable): likewise.
+	(setWritable): likewise.
+	(setExecutable): likewise.
+	* java/io/File.java: added import for gnu.classpath.NotImplementedException.
+	(setReadOnly): new 1.6 method.
+	(canExecute): likewise. 
+	(setReadable): likewise. 
+	(setWritable): likewise.
+	(setExecutable): likewise.
+	(getUsableSpace): added stub for new 1.6 method.
+	(getFreeSpace): likewise.
+	(getTotalSpace): likewise.
+	(checkExec): new private method to support new 1.6 additions.
+	* native/jni/java-io/java_io_VMFile.c:
+	set_file_permissions: new helper function.
+	Java_java_io_VMFile_setReadable: new native method to bakcup 1.6 methods
+	in VMFile.java.
+	Java_java_io_VMFile_setWritable: likewise. 
+	Java_java_io_VMFile_setExecutable: likewise. 
+	Java_java_io_VMFile_canExecute: likewise. 
+	* native/jni/native-lib/cpio.h: added new flags: CPFILE_FLAG_EXEC,
+	CPFILE_FLAG_USR and CPFILE_FLAG_OFF.
+	cpio_chmod: new function declaration.
+	cpio_checkAccess: likewise.
+	* native/jni/native-lib/cpio.c:
+	cpio_chmod: new function definition.
+	cpio_checkAccess: likewise.
+
 2007-02-09  Gary Benson  <gbenson@redhat.com>
 
 	* javax/management/ObjectName.java
