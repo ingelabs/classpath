@@ -39,7 +39,6 @@ exception statement from your version. */
 
 package java.io;
 
-import gnu.classpath.NotImplementedException;
 import gnu.classpath.SystemProperties;
 
 import java.net.MalformedURLException;
@@ -1292,40 +1291,7 @@ public class File implements Serializable, Comparable<File>
     checkWrite();
     return VMFile.setExecutable(path, executable, ownerOnly);
   }
-  
-  /**
-   * 
-   * @return
-   * @since 1.6
-   */
-  public long getTotalSpace()
-    throws NotImplementedException
-  {
-    return 0L;
-  }
-  
-  /**
-   * 
-   * @return
-   * @since 1.6
-   */
-  public long getFreeSpace()
-    throws NotImplementedException
-  {
-    return 0L;
-  }
-  
-  /**
-   * 
-   * @return
-   * @since 1.6
-   */
-  public long getUsableSpace()
-    throws NotImplementedException
-  {
-    return 0L;
-  }
-  
+
   /**
    * This method sets the file represented by this object to be read only.
    * A read only file or directory cannot be modified.  Please note that 
