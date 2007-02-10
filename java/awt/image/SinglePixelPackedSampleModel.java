@@ -253,73 +253,39 @@ public class SinglePixelPackedSampleModel extends SampleModel
   public Object getDataElements(int x, int y, Object obj,
 				DataBuffer data)
   {
-    int offset = scanlineStride*y + x + data.getOffset();
-    
-    return Buffers.getData(data, offset, obj,
-			   0, // destination offset,
-			   1  // length
-			   );
-  }
-  
-  /**
-   * This is a more efficient implementation of the default implementation in 
-   * the super class. 
-   * @param x The x-coordinate of the pixel rectangle to store in 
-   *     <code>obj</code>.
-   * @param y The y-coordinate of the pixel rectangle to store in 
-   *     <code>obj</code>.
-   * @param w The width of the pixel rectangle to store in <code>obj</code>.
-   * @param h The height of the pixel rectangle to store in <code>obj</code>.
-   * @param obj The primitive array to store the pixels into or null to force 
-   *     creation.
-   * @param data The DataBuffer that is the source of the pixel data.
-   * @return The primitive array containing the pixel data.
-   * @see java.awt.image.SampleModel#getDataElements(int, int, int, int, 
-   *     java.lang.Object, java.awt.image.DataBuffer)
-   */
-  public Object getDataElements(int x, int y, int w, int h, Object obj,
-							DataBuffer data)
-  {
-    int size = w*h;
-    int dataSize = size;
-    Object pixelData = null;
-    switch (getTransferType())
-    {
+    int type = getTransferType();
+    Object ret = null;
+    switch (type)
+      {
       case DataBuffer.TYPE_BYTE:
-        pixelData = ((DataBufferByte) data).getData();
-        if (obj == null) obj = new byte[dataSize];
-        break;
-       case DataBuffer.TYPE_USHORT:
-         pixelData = ((DataBufferUShort) data).getData();
-         if (obj == null) obj = new short[dataSize];
-         break;
-        case DataBuffer.TYPE_INT:
-          pixelData = ((DataBufferInt) data).getData();
-          if (obj == null) obj = new int[dataSize];
-          break;
-         default:
-             // Seems like the only sensible thing to do.
-           throw new ClassCastException();
-      }
-      if(x == 0 && scanlineStride == w)
-      { 
-        // The full width need to be copied therefore we can copy in one shot.
-        System.arraycopy(pixelData, scanlineStride*y + data.getOffset(), obj, 
-                         0, size);
-      }
-      else
-      {  
-        // Since we do not need the full width we need to copy line by line.
-        int outOffset = 0;
-        int dataOffset = scanlineStride*y + x + data.getOffset();
-        for (int yy = y; yy<(y+h); yy++)
         {
-          System.arraycopy(pixelData, dataOffset, obj, outOffset, w);
-          dataOffset += scanlineStride;
-          outOffset += w;
+          byte[] in = (byte[]) obj;
+          if (in == null)
+            in = new byte[1];
+          in[0] = (byte) data.getElem(x + y * scanlineStride);
+          ret = in;
         }
+        break;
+      case DataBuffer.TYPE_USHORT:
+        {
+          short[] in = (short[]) obj;
+          if (in == null)
+            in = new short[1];
+          in[0] = (short) data.getElem(x + y * scanlineStride);
+          ret = in;
+        }
+        break;
+      case DataBuffer.TYPE_INT:
+        {
+          int[] in = (int[]) obj;
+          if (in == null)
+            in = new int[1];
+          in[0] = data.getElem(x + y * scanlineStride);
+          ret = in;
+        }
+        break;
       }
-    return obj;
+    return ret;
   }
   
   /**
@@ -414,30 +380,29 @@ public class SinglePixelPackedSampleModel extends SampleModel
   
   public void setDataElements(int x, int y, Object obj, DataBuffer data)
   {
-    
     int transferType = getTransferType();
-        switch (transferType)
-          {
-          case DataBuffer.TYPE_BYTE:
-            {
-              byte[] in = (byte[]) obj;
-              data.setElem(y * scanlineStride + x, ((int) in[0]) & 0xff);
-              break;
-            }
-          case DataBuffer.TYPE_USHORT:
-            {
-              short[] in = (short[]) obj;
+    switch (transferType)
+      {
+      case DataBuffer.TYPE_BYTE:
+        {
+          byte[] in = (byte[]) obj;
+          data.setElem(y * scanlineStride + x, ((int) in[0]) & 0xff);
+        }
+        break;
+      case DataBuffer.TYPE_USHORT:
+        {
+          short[] in = (short[]) obj;
           data.setElem(y * scanlineStride + x, ((int) in[0]) & 0xffff);
-          break;
-            }
-          case DataBuffer.TYPE_INT:
-            {
-              int[] in = (int[]) obj;
+        }
+        break;
+      case DataBuffer.TYPE_INT:
+        {
+          int[] in = (int[]) obj;
           data.setElem(y * scanlineStride + x, in[0]);
           break;
-            }
-          }
-    }
+        }
+      }
+  }
 
   /**
    * Sets the samples for the pixel at (x, y) in the specified data buffer to
@@ -479,7 +444,6 @@ public class SinglePixelPackedSampleModel extends SampleModel
 						DataBuffer data)
   {
     int inOffset = 0;
-    int[] pixel = new int[numBands];
     for (int yy=y; yy<(y+h); yy++)
      {
       int offset = scanlineStride*yy + x;
