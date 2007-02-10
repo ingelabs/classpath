@@ -1,5 +1,12 @@
 2007-02-10  Roman Kennke  <kennke@aicas.com>
 
+	* javax/imageio/stream/ImageOutputStreamImpl.java
+	(flushBits): Implemented.
+	(writeBit): Implemented.
+	(writeBits): Implemented.
+
+2007-02-10  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/TransferHandler.java
 	(SwingDragGestureRecognizer): New inner class.
 	(SwingDragHandler): New inner class.
