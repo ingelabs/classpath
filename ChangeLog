@@ -1,5 +1,13 @@
 2007-02-10  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/TransferHandler.java
+	(SwingDragGestureRecognizer): New inner class.
+	(SwingDragHandler): New inner class.
+	(recognizer): New field.
+	(exportAsDrag): Implemented missing method.
+
+2007-02-10  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/GraphicsConfiguration.java
 	(createCompatibleVolatileImage(int,int,ImageCapabilities): Provide
 	default implementation that delegates to
