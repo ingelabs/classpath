@@ -1,5 +1,5 @@
 /* Socket.java -- Client socket implementation
-   Copyright (C) 1998, 1999, 2000, 2002, 2003, 2004, 2006
+   Copyright (C) 1998, 1999, 2000, 2002, 2003, 2004, 2006, 2007
    Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -330,7 +330,7 @@ public class Socket
   }
 
   /**
-   * Binds the socket to the givent local address/port
+   * Binds the socket to the given local address/port
    *
    * @param bindpoint The address/port to bind to
    *
