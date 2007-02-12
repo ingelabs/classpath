@@ -107,8 +107,9 @@ public class StandardMBean
 	catch (ClassNotFoundException e)
 	  {
 	    throw (NotCompliantMBeanException) 
-	      (new NotCompliantMBeanException("An interface for the class " +
-					      className + " was not found.").initCause(e));
+	      (new NotCompliantMBeanException("An interface, " + className +
+					      "MBean, for the class " + className +
+					      " was not found.").initCause(e));
 	  }
       }
     if (!(iface.isInstance(this)))
@@ -142,13 +143,15 @@ public class StandardMBean
 	String className = impl.getClass().getName();
 	try
 	  {
-	    iface = Class.forName(className + "MBean");
+	    iface = Class.forName(className + "MBean", true,
+				  impl.getClass().getClassLoader());
 	  }
 	catch (ClassNotFoundException e)
 	  {
 	    throw (NotCompliantMBeanException) 
-	      (new NotCompliantMBeanException("An interface for the class " +
-					      className + " was not found.").initCause(e));
+	      (new NotCompliantMBeanException("An interface, " + className +
+					      "MBean, for the class " + className +
+					      " was not found.").initCause(e));
 	  }
       }
     if (!(iface.isInstance(impl)))
