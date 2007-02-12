@@ -1,3 +1,19 @@
+2007-02-12  Jakub Jelinek  <jakub@redhat.com>
+
+	PR 23566
+	* scripts/timezones.pl: Parse each file in 2 passes, in one parse
+	just Rule lines, in the other everything else.	Pass 0 instead of
+	$savings as second argument to parseRule when parsing the start
+	rule.
+	* java/util/TimeZone.java (timezones): Regenerate from tzdata2007a.
+
+2007-02-12  Jakub Jelinek  <jakub@redhat.com>
+
+	* vm/reference/java/util/VMTimeZone.java: Rewrite to handle both
+	the old 'TZif\0' format and the new one.
+	* java/util/TimeZone.java: Handle default (one hour) daylight
+	savings.
+
 2007-02-12  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/management/Query.java:
