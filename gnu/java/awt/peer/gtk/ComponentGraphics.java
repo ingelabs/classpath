@@ -52,7 +52,6 @@ import java.awt.Shape;
 import java.awt.Toolkit;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -78,7 +77,7 @@ public class ComponentGraphics extends CairoGraphics2D
   protected long cairo_t;
   private BufferedImage buffer, componentBuffer;
 
-  private static ThreadLocal hasLock = new ThreadLocal();
+  private static ThreadLocal<Integer> hasLock = new ThreadLocal<Integer>();
   private static Integer ONE = Integer.valueOf(1);
 
   ComponentGraphics()
@@ -117,8 +116,8 @@ public class ComponentGraphics extends CairoGraphics2D
     Integer i = (Integer) hasLock.get();
     if (i == null)
       {
-	start_gdk_drawing();
-	hasLock.set(ONE);
+        start_gdk_drawing();
+        hasLock.set(ONE);
       }
     else
       hasLock.set(Integer.valueOf(i.intValue() + 1));
@@ -131,8 +130,8 @@ public class ComponentGraphics extends CairoGraphics2D
       throw new IllegalStateException();
     if (i == ONE)
       {
-	hasLock.set(null);
-	end_gdk_drawing();
+        hasLock.set(null);
+        end_gdk_drawing();
       }
     else
       hasLock.set(Integer.valueOf(i.intValue() - 1));
@@ -180,11 +179,11 @@ public class ComponentGraphics extends CairoGraphics2D
   private static native Pointer nativeGrab(GtkComponentPeer component);
 
   private native void copyAreaNative(GtkComponentPeer component, int x, int y, 
-				     int width, int height, int dx, int dy);
+                                     int width, int height, int dx, int dy);
 
   private native void drawVolatile(GtkComponentPeer component,
-				   long vimg, int x, int y, 
-				   int width, int height, int cx, int cy,
+                                   long vimg, int x, int y, 
+                                   int width, int height, int cx, int cy,
                                    int cw, int ch);
 
   /**
@@ -254,7 +253,7 @@ public class ComponentGraphics extends CairoGraphics2D
       }
     finally
       {
-	unlock();
+        unlock();
       }
   }
 
@@ -280,7 +279,7 @@ public class ComponentGraphics extends CairoGraphics2D
       }
     finally
       {
-	unlock();
+        unlock();
       }
   }
 
@@ -305,7 +304,7 @@ public class ComponentGraphics extends CairoGraphics2D
       }
     finally
       {
-	unlock();
+        unlock();
       }
   }
 
@@ -352,12 +351,12 @@ public class ComponentGraphics extends CairoGraphics2D
             rv = drawComposite(new Rectangle2D.Double(origin.getX(),
                                                         origin.getY(),
                                                         pt.getX(), pt.getY()),
-                                 obs);
+                               obs);
           }
       }
     finally
       {
-	unlock();
+        unlock();
       }
     return rv;
   }
@@ -387,7 +386,7 @@ public class ComponentGraphics extends CairoGraphics2D
       }
     finally
       {
-	unlock();
+        unlock();
       }
   }
   
@@ -417,8 +416,8 @@ public class ComponentGraphics extends CairoGraphics2D
                          (int) r.getHeight());
             return true;
           }
-	else
-	  return super.drawImage(vimg.getSnapshot(), x, y, observer);
+        else
+          return super.drawImage(vimg.getSnapshot(), x, y, observer);
       }
 
     BufferedImage bimg;
@@ -426,7 +425,7 @@ public class ComponentGraphics extends CairoGraphics2D
       bimg = (BufferedImage) img;
     else
       {
-	ImageProducer source = img.getSource();
+        ImageProducer source = img.getSource();
         if (source == null)
           return false;
         bimg = (BufferedImage) Toolkit.getDefaultToolkit().createImage(source);
@@ -462,9 +461,9 @@ public class ComponentGraphics extends CairoGraphics2D
                          (int) r.getHeight());
             return true;
           }
-	else
-	  return super.drawImage(vimg.getSnapshot(), x, y,
-				 width, height, observer);
+        else
+          return super.drawImage(vimg.getSnapshot(), x, y,
+                                 width, height, observer);
       }
 
     BufferedImage bimg;
@@ -473,7 +472,7 @@ public class ComponentGraphics extends CairoGraphics2D
       bimg = (BufferedImage) img;
     else
       {
-	ImageProducer source = img.getSource();
+        ImageProducer source = img.getSource();
         if (source == null)
           return false;
         bimg = (BufferedImage) Toolkit.getDefaultToolkit().createImage(source);
@@ -486,11 +485,11 @@ public class ComponentGraphics extends CairoGraphics2D
     lock();
     try
       {
-	super.setClip(s);
+        super.setClip(s);
       }
     finally
       {
-	unlock();
+        unlock();
       }
   }
 
@@ -516,8 +515,8 @@ public class ComponentGraphics extends CairoGraphics2D
     transform.transform(points, 0, points, 0, 2);
     
     Rectangle2D deviceBounds = new Rectangle2D.Double(points[0], points[1],
-                                                       points[2] - points[0],
-                                                       points[3] - points[1]);
+                                                      points[2] - points[0],
+                                                      points[3] - points[1]);
     
     Rectangle2D.intersect(deviceBounds, this.getClipInDevSpace(), deviceBounds);
     
@@ -579,8 +578,8 @@ public class ComponentGraphics extends CairoGraphics2D
                                           new Point(0,0));
         
         componentBuffer = new BufferedImage(GtkVolatileImage.gdkColorModel, rst,
-                                   GtkVolatileImage.gdkColorModel.isAlphaPremultiplied(),
-                                   new Hashtable());
+                                            GtkVolatileImage.gdkColorModel.isAlphaPremultiplied(),
+                                            new Hashtable());
       }
   }
   

@@ -83,7 +83,7 @@ public class BufferedImage extends Image
   /**
    * Vector of TileObservers (or null)
    */
-  Vector tileObservers;
+  Vector<TileObserver> tileObservers;
   
   /**
    * The image's WritableRaster
@@ -572,7 +572,7 @@ public class BufferedImage extends Image
   {
     return new ImageProducer()
       {
-        Vector consumers = new Vector();
+        Vector<ImageConsumer> consumers = new Vector<ImageConsumer>();
 
         public void addConsumer(ImageConsumer ic)
         {
@@ -608,9 +608,9 @@ public class BufferedImage extends Image
 
           consumers.add(ic);
 
-          for(int i=0;i<consumers.size();i++)
+          for(int i = 0; i < consumers.size(); i++)
             {
-              ImageConsumer c = (ImageConsumer) consumers.elementAt(i);
+              ImageConsumer c = consumers.elementAt(i);
               c.setHints(ImageConsumer.SINGLEPASS);
               c.setDimensions(getWidth(), getHeight());
               c.setPixels(x, y, width, height, model, pixels, offset, stride);
@@ -794,7 +794,7 @@ public class BufferedImage extends Image
   public void addTileObserver (TileObserver to)
   {
     if (tileObservers == null)
-      tileObservers = new Vector ();
+      tileObservers = new Vector<TileObserver>();
 	
     tileObservers.add (to);
   }

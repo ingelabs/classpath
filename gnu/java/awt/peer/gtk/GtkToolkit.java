@@ -85,9 +85,9 @@ import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DragGestureRecognizer;
 import java.awt.dnd.DragSource;
-import java.awt.event.KeyEvent;
 import java.awt.dnd.InvalidDnDOperationException;
 import java.awt.dnd.peer.DragSourceContextPeer;
+import java.awt.font.TextAttribute;
 import java.awt.im.InputMethodHighlight;
 import java.awt.image.ColorModel;
 import java.awt.image.DirectColorModel;
@@ -106,8 +106,8 @@ import java.awt.peer.LabelPeer;
 import java.awt.peer.ListPeer;
 import java.awt.peer.MenuBarPeer;
 import java.awt.peer.MenuItemPeer;
-import java.awt.peer.MouseInfoPeer;
 import java.awt.peer.MenuPeer;
+import java.awt.peer.MouseInfoPeer;
 import java.awt.peer.PanelPeer;
 import java.awt.peer.PopupMenuPeer;
 import java.awt.peer.RobotPeer;
@@ -169,14 +169,14 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
   private native void getScreenSizeDimensions(int[] xy);
   
   public int checkImage (Image image, int width, int height, 
-			 ImageObserver observer) 
+                         ImageObserver observer) 
   {
     int status = ImageObserver.ALLBITS 
       | ImageObserver.WIDTH 
       | ImageObserver.HEIGHT;
 
     if (image instanceof GtkImage)
-	return ((GtkImage) image).checkImage (observer);
+      return ((GtkImage) image).checkImage (observer);
 
     if (image instanceof AsyncImage)
       return ((AsyncImage) image).checkImage(observer);
@@ -210,11 +210,11 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
     Image image;
     try
       {
-	image = CairoSurface.getBufferedImage( new GtkImage( filename ) );
+        image = CairoSurface.getBufferedImage( new GtkImage( filename ) );
       }
     catch (IllegalArgumentException iae)
       {
-	image = null;
+        image = null;
       }
     return imageOrError(image);
   }
@@ -232,11 +232,11 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
     Image image;
     try
       {
-	image = CairoSurface.getBufferedImage( new GtkImage( producer ) );
+        image = CairoSurface.getBufferedImage( new GtkImage( producer ) );
       }
     catch (IllegalArgumentException iae)
       {
-	image = null;
+        image = null;
       }
     return imageOrError(image);
   }
@@ -247,13 +247,13 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
     Image image;
     try
       {
-	byte[] data = new byte[ imagelength ];
-	System.arraycopy(imagedata, imageoffset, data, 0, imagelength);
-	image = CairoSurface.getBufferedImage( new GtkImage( data ) );
+        byte[] data = new byte[ imagelength ];
+        System.arraycopy(imagedata, imageoffset, data, 0, imagelength);
+        image = CairoSurface.getBufferedImage( new GtkImage( data ) );
       }
     catch (IllegalArgumentException iae)
       {
-	image = null;
+        image = null;
       }
     return imageOrError(image);
   }
@@ -277,22 +277,22 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
   {
     /* Return the GDK-native ABGR format */
     return new DirectColorModel(32, 
-				0x000000FF,
-				0x0000FF00,
-				0x00FF0000,
-				0xFF000000);
+                                0x000000FF,
+                                0x0000FF00,
+                                0x00FF0000,
+                                0xFF000000);
   }
 
   public String[] getFontList () 
   {
     return (new String[] { "Dialog", 
-			   "DialogInput", 
-			   "Monospaced", 
-			   "Serif", 
-			   "SansSerif" });
+                           "DialogInput", 
+                           "Monospaced", 
+                           "Serif",
+                           "SansSerif" });
   }
 
-  static class LRUCache extends LinkedHashMap
+  static class LRUCache<K,V> extends LinkedHashMap<K,V>
   {    
     int max_entries;
     public LRUCache(int max)
@@ -306,8 +306,9 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
     }
   }
 
-  private LRUCache fontCache = new LRUCache(50);
-  private LRUCache imageCache = new LRUCache(50);
+  private LRUCache<Map,ClasspathFontPeer> fontCache =
+    new LRUCache<Map,ClasspathFontPeer>(50);
+  private LRUCache<Object,Image> imageCache = new LRUCache<Object,Image>(50);
 
   public FontMetrics getFontMetrics (Font font) 
   {
@@ -317,7 +318,7 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
   public Image getImage (String filename) 
   {
     if (imageCache.containsKey(filename))
-      return (Image) imageCache.get(filename);
+      return imageCache.get(filename);
     else
       {
         Image im = createImage(filename);
@@ -329,7 +330,7 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
   public Image getImage (URL url) 
   {
     if (imageCache.containsKey(url))
-      return (Image) imageCache.get(url);
+      return imageCache.get(url);
     else
       {
         Image im = createImage(url);
@@ -380,12 +381,12 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
    * assumes the image is already prepared for rendering.
    */
   public boolean prepareImage (Image image, int width, int height, 
-			       ImageObserver observer) 
+                               ImageObserver observer) 
   {
     /* GtkImages are always prepared, as long as they're loaded. */
     if (image instanceof GtkImage)
-      return ((((GtkImage)image).checkImage (observer) & 
-	       ImageObserver.ALLBITS) != 0);
+      return ((((GtkImage)image).checkImage (observer)
+               & ImageObserver.ALLBITS) != 0);
 
     if (image instanceof AsyncImage)
       {
@@ -413,11 +414,11 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
     /* Make the Peer reflect the state of the Component */
     if (! (c instanceof Window))
       {
-	cp.setCursor (c.getCursor ());
+        cp.setCursor (c.getCursor ());
 	
-	Rectangle bounds = c.getBounds ();
-	cp.setBounds (bounds.x, bounds.y, bounds.width, bounds.height);
-	cp.setVisible (c.isVisible ());
+        Rectangle bounds = c.getBounds ();
+        cp.setBounds (bounds.x, bounds.y, bounds.width, bounds.height);
+        cp.setVisible (c.isVisible ());
       }
   }
 
@@ -565,7 +566,7 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
    */
   private FontPeer getFontPeer (String name, int style, int size) 
   {
-    Map attrs = new HashMap ();
+    Map<TextAttribute,Object> attrs = new HashMap<TextAttribute,Object>();
     ClasspathFontPeer.copyStyleToAttrs (style, attrs);
     ClasspathFontPeer.copySizeToAttrs (size, attrs);
     return getClasspathFontPeer (name, attrs);
@@ -577,16 +578,17 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
    * model, hence "ClasspathFontPeer". 
    */
 
-  public ClasspathFontPeer getClasspathFontPeer (String name, Map attrs)
+  public ClasspathFontPeer getClasspathFontPeer (String name,
+                                                 Map<?,?> attrs)
   {
-    Map keyMap = new HashMap (attrs);
+    Map<Object,Object> keyMap = new HashMap<Object,Object>(attrs);
     // We don't know what kind of "name" the user requested (logical, face,
     // family), and we don't actually *need* to know here. The worst case
     // involves failure to consolidate fonts with the same backend in our
     // cache. This is harmless.
     keyMap.put ("GtkToolkit.RequestedFontName", name);
     if (fontCache.containsKey (keyMap))
-      return (ClasspathFontPeer) fontCache.get (keyMap);
+      return fontCache.get (keyMap);
     else
       {
         ClasspathFontPeer newPeer = new GdkFontPeer (name, attrs);
@@ -621,11 +623,10 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
     return new GtkDragSourceContextPeer(e);
   }
   
-  public DragGestureRecognizer createDragGestureRecognizer(Class recognizer,
-                                                           DragSource ds,
-                                                           Component comp,
-                                                           int actions,
-                                                           DragGestureListener l)
+  public <T extends DragGestureRecognizer> T
+  createDragGestureRecognizer(Class<T> recognizer, DragSource ds, 
+                              Component comp, int actions,
+                              DragGestureListener l)
   {
     if (recognizer.getName().equals("java.awt.dnd.MouseDragGestureRecognizer")
         && ! GraphicsEnvironment.isHeadless())
@@ -633,7 +634,8 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
         GtkMouseDragGestureRecognizer gestureRecognizer
           = new GtkMouseDragGestureRecognizer(ds, comp, actions, l);
         gestureRecognizer.registerListeners();
-        return gestureRecognizer;
+        recognizer.asSubclass(gestureRecognizer.getClass());
+        return recognizer.cast(gestureRecognizer);
       }
     else
       {
@@ -641,7 +643,7 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
       }
   }
 
-  public Map mapInputMethodHighlight(InputMethodHighlight highlight)
+  public Map<TextAttribute,?> mapInputMethodHighlight(InputMethodHighlight highlight)
   {
     throw new Error("not implemented");
   }

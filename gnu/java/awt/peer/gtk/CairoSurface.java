@@ -188,36 +188,36 @@ public class CairoSurface extends WritableRaster
     // Swap ordering from GdkPixbuf to Cairo
     if (ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN)
       {
-	for (int i = 0; i < data.length; i++ )
-	  {
-	    // On a big endian system we get a RRGGBBAA data array.
-	    int alpha = data[i] & 0xFF;
-	    if( alpha == 0 ) // I do not know why we need this, but it works.
-	      data[i] = 0;
-	    else
-	      {
-		// Cairo needs a ARGB32 native array.
-		data[i] = (data[i] >>> 8) | (alpha << 24);
-	      }
-	  }
+        for (int i = 0; i < data.length; i++ )
+          {
+            // On a big endian system we get a RRGGBBAA data array.
+            int alpha = data[i] & 0xFF;
+            if( alpha == 0 ) // I do not know why we need this, but it works.
+              data[i] = 0;
+            else
+              {
+                // Cairo needs a ARGB32 native array.
+                data[i] = (data[i] >>> 8) | (alpha << 24);
+              }
+          }
       }
     else
       {
-	for (int i = 0; i < data.length; i++ )
-	  {
-	    // On a little endian system we get a AABBGGRR data array.
-	    int alpha = data[i] & 0xFF000000;
-	    if( alpha == 0 ) // I do not know why we need this, but it works.
-	      data[i] = 0;
-	    else
-	      {
-		int b = (data[i] & 0xFF0000) >> 16;
-		int g = (data[i] & 0xFF00);
-		int r = (data[i] & 0xFF) << 16;
-		// Cairo needs a ARGB32 native array.
-		data[i] = alpha | r | g | b;
-	      }
-	  }
+        for (int i = 0; i < data.length; i++ )
+          {
+            // On a little endian system we get a AABBGGRR data array.
+            int alpha = data[i] & 0xFF000000;
+            if( alpha == 0 ) // I do not know why we need this, but it works.
+              data[i] = 0;
+            else
+              {
+                int b = (data[i] & 0xFF0000) >> 16;
+                int g = (data[i] & 0xFF00);
+                int r = (data[i] & 0xFF) << 16;
+                // Cairo needs a ARGB32 native array.
+                data[i] = alpha | r | g | b;
+              }
+          }
       }
 
     setPixels( data );
@@ -289,7 +289,7 @@ public class CairoSurface extends WritableRaster
     public int getElem(int bank, int i)
     {
       if(bank != 0 || i < 0 || i >= width * height)
-	throw new IndexOutOfBoundsException(i+" size: "+width * height);
+        throw new IndexOutOfBoundsException(i+" size: "+width * height);
       return nativeGetElem(bufferPointer, i);
     }
   
@@ -299,7 +299,7 @@ public class CairoSurface extends WritableRaster
     public void setElem(int bank, int i, int val)
     {
       if(bank != 0 || i < 0 || i >= width*height)
-	throw new IndexOutOfBoundsException(i+" size: "+width * height);
+        throw new IndexOutOfBoundsException(i+" size: "+width * height);
       nativeSetElem(bufferPointer, i, val);
     }
   }

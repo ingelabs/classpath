@@ -176,13 +176,13 @@ public class GtkFramePeer extends GtkWindowPeer
 
   public void setIconImage (Image image) 
   {
-      if (image != null)
-	{
-	  if (image instanceof GtkImage)
-	    nativeSetIconImage((GtkImage) image);
-	  else
-	    nativeSetIconImage(new GtkImage(image.getSource()));
-	}
+    if (image != null)
+      {
+        if (image instanceof GtkImage)
+          nativeSetIconImage((GtkImage) image);
+        else
+          nativeSetIconImage(new GtkImage(image.getSource()));
+      }
   }
 
   protected void postConfigureEvent (int x, int y, int width, int height)

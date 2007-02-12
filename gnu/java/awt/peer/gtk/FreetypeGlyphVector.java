@@ -112,11 +112,11 @@ public class FreetypeGlyphVector extends GlyphVector
     getGlyphs();
     if( flags == Font.LAYOUT_RIGHT_TO_LEFT )
       {
-	// reverse the glyph ordering.
-	int[] temp = new int[ nGlyphs ];
-	for(int i = 0; i < nGlyphs; i++)
-	  temp[ i ] = glyphCodes[ nGlyphs - i - 1];
-	glyphCodes = temp;
+        // reverse the glyph ordering.
+        int[] temp = new int[ nGlyphs ];
+        for(int i = 0; i < nGlyphs; i++)
+          temp[i] = glyphCodes[nGlyphs - i - 1];
+        glyphCodes = temp;
       }
     performDefaultLayout();
   }
@@ -152,8 +152,8 @@ public class FreetypeGlyphVector extends GlyphVector
 
     if( gv.metricsCache != null )
       {
-	metricsCache = new GlyphMetrics[ nGlyphs ];
-	System.arraycopy(gv.metricsCache, 0, metricsCache, 0, nGlyphs);
+        metricsCache = new GlyphMetrics[ nGlyphs ];
+        System.arraycopy(gv.metricsCache, 0, metricsCache, 0, nGlyphs);
       }
 
     glyphCodes = new int[ nGlyphs ];
@@ -180,11 +180,11 @@ public class FreetypeGlyphVector extends GlyphVector
 
     for(int i = 0; i < nGlyphs; i++)
       {
-	codePoints[i] = s.codePointAt( stringIndex );
+        codePoints[i] = s.codePointAt( stringIndex );
         // UTF32 surrogate handling
-	if( codePoints[i] != (int)s.charAt( stringIndex ) )
-	  stringIndex ++;
-	stringIndex ++;
+        if( codePoints[i] != (int)s.charAt( stringIndex ) )
+          stringIndex ++;
+        stringIndex ++;
 
         if (Character.isISOControl(codePoints[i]))
           {
@@ -291,7 +291,7 @@ public class FreetypeGlyphVector extends GlyphVector
    * Returns multiple glyphcodes.
    */
   public int[] getGlyphCodes(int beginGlyphIndex, int numEntries, 
-			     int[] codeReturn)
+                             int[] codeReturn)
   {
     int[] rval;
 
@@ -335,26 +335,25 @@ public class FreetypeGlyphVector extends GlyphVector
 
     for(int i = 0; i < nGlyphs; i++)
       {
-	GlyphMetrics gm = (GlyphMetrics)
-	  peer.getGlyphMetrics( glyphCodes[ i ] );
-	if( gm == null )
-	  {
-	    double[] val = getMetricsNative( glyphCodes[ i ] );
-	    if( val == null )
-	      gm = null;
-	    else
-	      {
-		gm = new GlyphMetrics( true, 
-				       (float)val[1], 
-				       (float)val[2], 
-				       new Rectangle2D.Double
-				       ( val[3], val[4], 
-					 val[5], val[6] ),
-				       GlyphMetrics.STANDARD );
-		peer.putGlyphMetrics( glyphCodes[ i ], gm );
-	      }
-	  }
-	metricsCache[ i ] = gm;
+        GlyphMetrics gm = (GlyphMetrics)
+        peer.getGlyphMetrics( glyphCodes[ i ] );
+        if( gm == null )
+          {
+            double[] val = getMetricsNative( glyphCodes[ i ] );
+            if( val == null )
+              gm = null;
+            else
+              {
+                gm = new GlyphMetrics(true, 
+                                      (float)val[1], 
+                                      (float)val[2], 
+                                      new Rectangle2D.Double(val[3], val[4], 
+                                                             val[5], val[6] ),
+                                      GlyphMetrics.STANDARD );
+                peer.putGlyphMetrics( glyphCodes[ i ], gm );
+              }
+          }
+        metricsCache[ i ] = gm;
       }
   }
 
@@ -432,7 +431,6 @@ public class FreetypeGlyphVector extends GlyphVector
       return logicalBounds;
 
     Rectangle2D rect = (Rectangle2D)getGlyphLogicalBounds( 0 );
-    AffineTransform tx = new AffineTransform();
     for( int i = 1; i < nGlyphs; i++ )
       {
         Rectangle2D r2 = (Rectangle2D)getGlyphLogicalBounds( i );

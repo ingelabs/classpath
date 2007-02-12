@@ -87,7 +87,8 @@ public class BufferedImageGraphics extends CairoGraphics2D
   /**
    * Cache BufferedImageGraphics surfaces.
    */
-  static WeakHashMap bufferedImages = new WeakHashMap();
+  static WeakHashMap<BufferedImage, CairoSurface> bufferedImages
+    = new WeakHashMap<BufferedImage, CairoSurface>();
 
   /**
    * Its corresponding cairo_t.
@@ -108,24 +109,24 @@ public class BufferedImageGraphics extends CairoGraphics2D
       hasFastCM = false;
     else if(bi.getColorModel().equals(CairoSurface.cairoCM_opaque))
       {
-	hasFastCM = true;
-	hasAlpha = false;
+        hasFastCM = true;
+        hasAlpha = false;
       }
     else if(bi.getColorModel().equals(CairoSurface.cairoColorModel))
       {
-	hasFastCM = true;
-	hasAlpha = true;
+        hasFastCM = true;
+        hasAlpha = true;
       }
     else
       hasFastCM = false;
 
     // Cache surfaces.
     if( bufferedImages.get( bi ) != null )
-      surface = (CairoSurface)bufferedImages.get( bi );
+      surface = bufferedImages.get( bi );
     else
       {
-	surface = new CairoSurface( imageWidth, imageHeight );
-	bufferedImages.put(bi, surface);
+        surface = new CairoSurface( imageWidth, imageHeight );
+        bufferedImages.put(bi, surface);
       }
 
     cairo_t = surface.newCairoContext();
@@ -154,7 +155,8 @@ public class BufferedImageGraphics extends CairoGraphics2D
             int scanline = sm.getScanlineStride();
             
             for (int i = 0; i < imageHeight; i++)
-              System.arraycopy(pixels, (i - minY) * scanline - minX, pixels2, i * imageWidth, imageWidth);
+              System.arraycopy(pixels, (i - minY) * scanline - minX, pixels2,
+                               i * imageWidth, imageWidth);
             
             pixels = pixels2;
           }
@@ -166,7 +168,8 @@ public class BufferedImageGraphics extends CairoGraphics2D
       }
     else
       {
-        pixels = CairoGraphics2D.findSimpleIntegerArray(image.getColorModel(),image.getData());
+        pixels = CairoGraphics2D.findSimpleIntegerArray(image.getColorModel(),
+                                                        image.getData());
       }
     
     surface.setPixels( pixels );
@@ -393,7 +396,7 @@ public class BufferedImageGraphics extends CairoGraphics2D
         
         // Find translated bounds
         Rectangle2D bounds = new Rectangle(bImg.getMinX(), bImg.getMinY(),
-                                         bImg.getWidth(), bImg.getHeight());
+                                           bImg.getWidth(), bImg.getHeight());
         if (xform != null)
           bounds = getTransformedBounds(bounds, xform);
         

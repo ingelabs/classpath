@@ -251,7 +251,7 @@ public abstract class CairoGraphics2D extends Graphics2D
 
     if (g.fg.getAlpha() != -1)
       foreground = new Color(g.fg.getRed(), g.fg.getGreen(), g.fg.getBlue(),
-                     g.fg.getAlpha());
+                             g.fg.getAlpha());
     else
       foreground = new Color(g.fg.getRGB());
 
@@ -321,8 +321,8 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   public abstract GraphicsConfiguration getDeviceConfiguration();
 
-  protected abstract void copyAreaImpl(int x, int y, 
-				       int width, int height, int dx, int dy);
+  protected abstract void copyAreaImpl(int x, int y, int width, int height,
+                                       int dx, int dy);
 
 
   /**
@@ -355,8 +355,8 @@ public abstract class CairoGraphics2D extends Graphics2D
                                   int g2, int b2, int a2, boolean cyclic);
   
   private native void setPaintPixels(long pointer, int[] pixels, int w,
-                                       int h, int stride, boolean repeat,
-                                       int x, int y);
+                                     int h, int stride, boolean repeat,
+                                     int x, int y);
 
   /**
    * Set the current transform matrix
@@ -718,33 +718,35 @@ public abstract class CairoGraphics2D extends Graphics2D
         setColor((Color) paint);
         customPaint = false;
       }
+    
     else if (paint instanceof TexturePaint)
       {
-	TexturePaint tp = (TexturePaint) paint;
-	BufferedImage img = tp.getImage();
+        TexturePaint tp = (TexturePaint) paint;
+        BufferedImage img = tp.getImage();
 
-	// map the image to the anchor rectangle  
-	int width = (int) tp.getAnchorRect().getWidth();
-	int height = (int) tp.getAnchorRect().getHeight();
+        // map the image to the anchor rectangle  
+        int width = (int) tp.getAnchorRect().getWidth();
+        int height = (int) tp.getAnchorRect().getHeight();
 
-	double scaleX = width / (double) img.getWidth();
-	double scaleY = height / (double) img.getHeight();
+        double scaleX = width / (double) img.getWidth();
+        double scaleY = height / (double) img.getHeight();
 
-	AffineTransform at = new AffineTransform(scaleX, 0, 0, scaleY, 0, 0);
-	AffineTransformOp op = new AffineTransformOp(at, getRenderingHints());
-	BufferedImage texture = op.filter(img, null);
-	int[] pixels = texture.getRGB(0, 0, width, height, null, 0, width);
-	setPaintPixels(nativePointer, pixels, width, height, width, true, 0, 0);
+        AffineTransform at = new AffineTransform(scaleX, 0, 0, scaleY, 0, 0);
+        AffineTransformOp op = new AffineTransformOp(at, getRenderingHints());
+        BufferedImage texture = op.filter(img, null);
+        int[] pixels = texture.getRGB(0, 0, width, height, null, 0, width);
+        setPaintPixels(nativePointer, pixels, width, height, width, true, 0, 0);
         customPaint = false;
       }
+    
     else if (paint instanceof GradientPaint)
       {
-	GradientPaint gp = (GradientPaint) paint;
-	Point2D p1 = gp.getPoint1();
-	Point2D p2 = gp.getPoint2();
-	Color c1 = gp.getColor1();
-	Color c2 = gp.getColor2();
-	setGradient(nativePointer, p1.getX(), p1.getY(), p2.getX(), p2.getY(),
+        GradientPaint gp = (GradientPaint) paint;
+        Point2D p1 = gp.getPoint1();
+        Point2D p2 = gp.getPoint2();
+        Color c1 = gp.getColor1();
+        Color c2 = gp.getColor2();
+        setGradient(nativePointer, p1.getX(), p1.getY(), p2.getX(), p2.getY(),
                     c1.getRed(), c1.getGreen(), c1.getBlue(), c1.getAlpha(),
                     c2.getRed(), c2.getGreen(), c2.getBlue(), c2.getAlpha(),
                     gp.isCyclic());
@@ -858,21 +860,22 @@ public abstract class CairoGraphics2D extends Graphics2D
     stroke = st;
     if (stroke instanceof BasicStroke)
       {
-	BasicStroke bs = (BasicStroke) stroke;
-	cairoSetLine(nativePointer, bs.getLineWidth(), bs.getEndCap(), 
-		     bs.getLineJoin(), bs.getMiterLimit());
+        BasicStroke bs = (BasicStroke) stroke;
+        cairoSetLine(nativePointer, bs.getLineWidth(), bs.getEndCap(), 
+                     bs.getLineJoin(), bs.getMiterLimit());
 
-	float[] dashes = bs.getDashArray();
-	if (dashes != null)
-	  {
-	    double[] double_dashes = new double[dashes.length];
-	    for (int i = 0; i < dashes.length; i++)
-	      double_dashes[i] = dashes[i];
-	    cairoSetDash(nativePointer, double_dashes, double_dashes.length,
-	                 (double) bs.getDashPhase());
-	  }
-	else
-	  cairoSetDash(nativePointer, new double[0], 0, 0.0);
+        float[] dashes = bs.getDashArray();
+        if (dashes != null)
+          {
+            double[] double_dashes = new double[dashes.length];
+            for (int i = 0; i < dashes.length; i++)
+              double_dashes[i] = dashes[i];
+            
+            cairoSetDash(nativePointer, double_dashes, double_dashes.length,
+                         (double) bs.getDashPhase());
+          }
+        else
+          cairoSetDash(nativePointer, new double[0], 0, 0.0);
       }
   }
 
@@ -930,6 +933,7 @@ public abstract class CairoGraphics2D extends Graphics2D
   {
     if (fg == null)
       fg = Color.BLACK;
+    
     cairoSetRGBAColor(nativePointer, fg.getRed() / 255.0,
                       fg.getGreen() / 255.0,fg.getBlue() / 255.0,
                       fg.getAlpha() / 255.0);
@@ -1001,8 +1005,8 @@ public abstract class CairoGraphics2D extends Graphics2D
     // initial clip properly.
     if( firstClip )
       {
-	originalClip = s;
-	firstClip = false;
+        originalClip = s;
+        firstClip = false;
       }
 
     clip = s;
@@ -1062,7 +1066,7 @@ public abstract class CairoGraphics2D extends Graphics2D
 
     if (comp instanceof AlphaComposite)
       {
-	AlphaComposite a = (AlphaComposite) comp;
+        AlphaComposite a = (AlphaComposite) comp;
         cairoSetOperator(nativePointer, a.getRule());
       }
       
@@ -1325,12 +1329,12 @@ public abstract class CairoGraphics2D extends Graphics2D
     // FIXME: does this handle a rotation transform properly?
     // (the width/height might not be correct)
     Point2D pos = transform.transform(new Point2D.Double(ox, oy),
-				      (Point2D) null);
+                                      (Point2D) null);
     Point2D dim = transform.transform(new Point2D.Double(ox + owidth, 
-							 oy + oheight),
-				      (Point2D) null);
+                                                         oy + oheight),
+                                      (Point2D) null);
     Point2D p2 = transform.transform(new Point2D.Double(ox + odx, oy + ody),
-				     (Point2D) null);
+                                     (Point2D) null);
     int x = (int)pos.getX();
     int y = (int)pos.getY();
     int width = (int)(dim.getX() - pos.getX());
@@ -1352,14 +1356,14 @@ public abstract class CairoGraphics2D extends Graphics2D
     // Clip edges if necessary 
     if( x + dx < r.getX() ) // left
       {
-	width = x + dx + width;
-	x = (int)r.getX() - dx;
+        width = x + dx + width;
+        x = (int)r.getX() - dx;
       }
 
     if( y + dy < r.getY() ) // top
       {
-	height = y + dy + height;
-	y = (int)r.getY() - dy;
+        height = y + dy + height;
+        y = (int)r.getY() - dy;
       }
 
     if( x + dx + width >= r.getWidth() ) // right
@@ -1386,10 +1390,10 @@ public abstract class CairoGraphics2D extends Graphics2D
     return hints.get(hintKey);
   }
 
-  public void setRenderingHints(Map hints)
+  public void setRenderingHints(Map<?,?> hints)
   {
     this.hints = new RenderingHints(getDefaultHints());
-    this.hints.add(new RenderingHints(hints));
+    this.hints.putAll(hints);
     
     shiftDrawCalls = hints.containsValue(RenderingHints.VALUE_STROKE_NORMALIZE)
       || hints.containsValue(RenderingHints.VALUE_STROKE_DEFAULT);
@@ -1403,7 +1407,7 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   public void addRenderingHints(Map hints)
   {
-    this.hints.add(new RenderingHints(hints));
+    this.hints.putAll(hints);
   }
 
   public RenderingHints getRenderingHints()
@@ -1475,12 +1479,12 @@ public abstract class CairoGraphics2D extends Graphics2D
 
     try
       {
-	invertedXform = xform.createInverse();
+        invertedXform = xform.createInverse();
       }
     catch (NoninvertibleTransformException e)
       {
-	throw new ImagingOpException("Unable to invert transform "
-				     + xform.toString());
+        throw new ImagingOpException("Unable to invert transform "
+                                     + xform.toString());
       }
 
     // Unrecognized image - convert to a BufferedImage
@@ -1490,10 +1494,10 @@ public abstract class CairoGraphics2D extends Graphics2D
     img = AsyncImage.realImage(img, obs);
     if( !(img instanceof BufferedImage) )
       {
-	ImageProducer source = img.getSource();
-	if (source == null)
-	  return false;
-	img = Toolkit.getDefaultToolkit().createImage(source);
+        ImageProducer source = img.getSource();
+        if (source == null)
+          return false;
+        img = Toolkit.getDefaultToolkit().createImage(source);
       }
 
     BufferedImage b = (BufferedImage) img;
@@ -1506,7 +1510,7 @@ public abstract class CairoGraphics2D extends Graphics2D
     // use the cached CairoSurface that BIG is drawing onto
     
     if( BufferedImageGraphics.bufferedImages.get( b ) != null )
-      raster = (Raster)BufferedImageGraphics.bufferedImages.get( b );
+      raster = BufferedImageGraphics.bufferedImages.get( b );
     else
       raster = b.getRaster();
 
@@ -1518,10 +1522,10 @@ public abstract class CairoGraphics2D extends Graphics2D
 
     if(raster instanceof CairoSurface)
       {
-	((CairoSurface)raster).drawSurface(nativePointer, i2u, alpha,
+        ((CairoSurface)raster).drawSurface(nativePointer, i2u, alpha,
                                            getInterpolation());
         updateColor();
-	return true;
+        return true;
       }
 	    
     if( bgcolor != null )
@@ -1547,7 +1551,8 @@ public abstract class CairoGraphics2D extends Graphics2D
     cairoResetClip(nativePointer);
     Rectangle2D bounds = new Rectangle2D.Double(0, 0, width, height);
     bounds = getTransformedBounds(bounds, xform);
-    cairoRectangle(nativePointer, bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+    cairoRectangle(nativePointer, bounds.getX(), bounds.getY(),
+                   bounds.getWidth(), bounds.getHeight());
     cairoClip(nativePointer);
 
     drawPixels(nativePointer, pixels, width, height, width, i2u, alpha,
@@ -1724,11 +1729,11 @@ public abstract class CairoGraphics2D extends Graphics2D
 
         setFont (gv.getFont ());
         GdkFontPeer fontPeer = (GdkFontPeer) font.getPeer();
-	synchronized (fontPeer) 
-	  { 
-	    cairoDrawGlyphVector(nativePointer, fontPeer,
-				 x, y, n, codes, positions);
-	  }
+        synchronized (fontPeer) 
+          { 
+            cairoDrawGlyphVector(nativePointer, fontPeer,
+                                 x, y, n, codes, positions);
+          }
       }
     else
       {
@@ -1803,9 +1808,9 @@ public abstract class CairoGraphics2D extends Graphics2D
   {
     if( onStroke )
       {
-	Shape stroked = stroke.createStrokedShape( s );
-	return stroked.intersects( (double)rect.x, (double)rect.y, 
-				   (double)rect.width, (double)rect.height );
+        Shape stroked = stroke.createStrokedShape( s );
+        return stroked.intersects( (double)rect.x, (double)rect.y, 
+                                   (double)rect.width, (double)rect.height );
       }
     return s.intersects( (double)rect.x, (double)rect.y, 
 			 (double)rect.width, (double)rect.height );
@@ -1848,34 +1853,34 @@ public abstract class CairoGraphics2D extends Graphics2D
       imageToUser.getMatrix(i2u);
     else
       {
-	i2u[0] = 1;
-	i2u[1] = 0;
-	i2u[2] = 0;
-	i2u[3] = 1;
-	i2u[4] = 0;
-	i2u[5] = 0;
+        i2u[0] = 1;
+        i2u[1] = 0;
+        i2u[2] = 0;
+        i2u[3] = 1;
+        i2u[4] = 0;
+        i2u[5] = 0;
       }
 
     int[] pixels = findSimpleIntegerArray(cm, r);
 
     if (pixels == null)
       {
-	// FIXME: I don't think this code will work correctly with a non-RGB
-	// MultiPixelPackedSampleModel. Although this entire method should 
-	// probably be rewritten to better utilize Cairo's different supported
-	// data formats.
-	if (sm instanceof MultiPixelPackedSampleModel)
-	  {
-	    pixels = r.getPixels(0, 0, r.getWidth(), r.getHeight(), pixels);
-	    for (int i = 0; i < pixels.length; i++)
-	      pixels[i] = cm.getRGB(pixels[i]);
-	  }
-	else
-	  {
-	    pixels = new int[r.getWidth() * r.getHeight()];
-	    for (int i = 0; i < pixels.length; i++)
-	      pixels[i] = cm.getRGB(db.getElem(i));
-	  }
+        // FIXME: I don't think this code will work correctly with a non-RGB
+        // MultiPixelPackedSampleModel. Although this entire method should 
+        // probably be rewritten to better utilize Cairo's different supported
+        // data formats.
+        if (sm instanceof MultiPixelPackedSampleModel)
+          {
+            pixels = r.getPixels(0, 0, r.getWidth(), r.getHeight(), pixels);
+            for (int i = 0; i < pixels.length; i++)
+              pixels[i] = cm.getRGB(pixels[i]);
+          }
+        else
+          {
+            pixels = new int[r.getWidth() * r.getHeight()];
+            for (int i = 0; i < pixels.length; i++)
+              pixels[i] = cm.getRGB(db.getElem(i));
+          }
       }
 
     // Change all transparent pixels in the image to the specified bgcolor,
@@ -1883,20 +1888,21 @@ public abstract class CairoGraphics2D extends Graphics2D
     // correctly.
     if (cm.hasAlpha())
       {
-	if (bgcolor != null && cm.hasAlpha())
-	  for (int i = 0; i < pixels.length; i++)
-	    {
-	      if (cm.getAlpha(pixels[i]) == 0)
-		pixels[i] = bgcolor.getRGB();
-	    }
+        if (bgcolor != null && cm.hasAlpha())
+          for (int i = 0; i < pixels.length; i++)
+            {
+              if (cm.getAlpha(pixels[i]) == 0)
+                pixels[i] = bgcolor.getRGB();
+            }
       }
     else
       for (int i = 0; i < pixels.length; i++)
-	pixels[i] |= 0xFF000000;
+        pixels[i] |= 0xFF000000;
 
     double alpha = 1.0;
     if (comp instanceof AlphaComposite)
       alpha = ((AlphaComposite) comp).getAlpha();
+    
     drawPixels(nativePointer, pixels, r.getWidth(), r.getHeight(),
                r.getWidth(), i2u, alpha, getInterpolation());
 
@@ -1950,53 +1956,54 @@ public abstract class CairoGraphics2D extends Graphics2D
     cairoSetFillRule(nativePointer, p.getWindingRule());
     for (; ! p.isDone(); p.next())
       {
-	int seg = p.currentSegment(coords);
-	switch (seg)
-	  {
-	  case PathIterator.SEG_MOVETO:
-	    x = shiftX(coords[0], doShift);
-	    y = shiftY(coords[1], doShift);
-	    cairoMoveTo(nativePointer, x, y);
-	    break;
-	  case PathIterator.SEG_LINETO:
-	    x = shiftX(coords[0], doShift);
-	    y = shiftY(coords[1], doShift);
-	    cairoLineTo(nativePointer, x, y);
-	    break;
-	  case PathIterator.SEG_QUADTO:
-	    // splitting a quadratic bezier into a cubic:
-	    // see: http://pfaedit.sourceforge.net/bezier.html
-	    double x1 = x + (2.0 / 3.0) * (shiftX(coords[0], doShift) - x);
-	    double y1 = y + (2.0 / 3.0) * (shiftY(coords[1], doShift) - y);
+        int seg = p.currentSegment(coords);
+        switch (seg)
+          {
+          case PathIterator.SEG_MOVETO:
+            x = shiftX(coords[0], doShift);
+            y = shiftY(coords[1], doShift);
+            cairoMoveTo(nativePointer, x, y);
+            break;
+          case PathIterator.SEG_LINETO:
+            x = shiftX(coords[0], doShift);
+            y = shiftY(coords[1], doShift);
+            cairoLineTo(nativePointer, x, y);
+            break;
+          case PathIterator.SEG_QUADTO:
+            // splitting a quadratic bezier into a cubic:
+            // see: http://pfaedit.sourceforge.net/bezier.html
+            double x1 = x + (2.0 / 3.0) * (shiftX(coords[0], doShift) - x);
+            double y1 = y + (2.0 / 3.0) * (shiftY(coords[1], doShift) - y);
 
-	    double x2 = x1 + (1.0 / 3.0) * (shiftX(coords[2], doShift) - x);
-	    double y2 = y1 + (1.0 / 3.0) * (shiftY(coords[3], doShift) - y);
+            double x2 = x1 + (1.0 / 3.0) * (shiftX(coords[2], doShift) - x);
+            double y2 = y1 + (1.0 / 3.0) * (shiftY(coords[3], doShift) - y);
 
-	    x = shiftX(coords[2], doShift);
-	    y = shiftY(coords[3], doShift);
-	    cairoCurveTo(nativePointer, x1, y1, x2, y2, x, y);
-	    break;
-	  case PathIterator.SEG_CUBICTO:
-	    x = shiftX(coords[4], doShift);
-	    y = shiftY(coords[5], doShift);
-	    cairoCurveTo(nativePointer, shiftX(coords[0], doShift),
-	                 shiftY(coords[1], doShift),
-	                 shiftX(coords[2], doShift),
-	                 shiftY(coords[3], doShift), x, y);
-	    break;
-	  case PathIterator.SEG_CLOSE:
-	    cairoClosePath(nativePointer);
-	    break;
-	  }
+            x = shiftX(coords[2], doShift);
+            y = shiftY(coords[3], doShift);
+            cairoCurveTo(nativePointer, x1, y1, x2, y2, x, y);
+            break;
+          case PathIterator.SEG_CUBICTO:
+            x = shiftX(coords[4], doShift);
+            y = shiftY(coords[5], doShift);
+            cairoCurveTo(nativePointer, shiftX(coords[0], doShift),
+                         shiftY(coords[1], doShift),
+                         shiftX(coords[2], doShift),
+                         shiftY(coords[3], doShift), x, y);
+            break;
+          case PathIterator.SEG_CLOSE:
+            cairoClosePath(nativePointer);
+            break;
+          }
       }
   }
 
   /**
    * Used by setRenderingHints()
    */
-  private Map getDefaultHints()
+  private Map<RenderingHints.Key, Object> getDefaultHints()
   {
-    HashMap defaultHints = new HashMap();
+    HashMap<RenderingHints.Key, Object> defaultHints =
+      new HashMap<RenderingHints.Key, Object>();
 
     defaultHints.put(RenderingHints.KEY_TEXT_ANTIALIASING,
                      RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT);

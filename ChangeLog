@@ -1,3 +1,42 @@
+2007-02-12  Francis Kung  <fkung@redhat.com>
+
+	* gnu/java/awt/ClasspathToolkit.java: 
+	* gnu/java/awt/peer/gtk/AsyncImage.java,
+	* gnu/java/awt/peer/gtk/BufferedImageGraphics.java,
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java,
+	* gnu/java/awt/peer/gtk/CairoSurface.java,
+	* gnu/java/awt/peer/gtk/ComponentGraphics.java,
+	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java,
+	* gnu/java/awt/peer/gtk/GdkFontPeer.java,
+	* gnu/java/awt/peer/gtk/GdkPixbufDecoder.java,
+	* gnu/java/awt/peer/gtk/GdkScreenGraphicsDevice.java,
+	* gnu/java/awt/peer/gtk/GtkCheckboxPeer.java,
+	* gnu/java/awt/peer/gtk/GtkChoicePeer.java,
+	* gnu/java/awt/peer/gtk/GtkClipboard.java,
+	* gnu/java/awt/peer/gtk/GtkClipboardNotifier.java,
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java,
+	* gnu/java/awt/peer/gtk/GtkFileDialogPeer.java,
+	* gnu/java/awt/peer/gtk/GtkFramePeer.java,
+	* gnu/java/awt/peer/gtk/GtkImage.java,
+	* gnu/java/awt/peer/gtk/GtkImageConsumer.java,
+	* gnu/java/awt/peer/gtk/GtkLabelPeer.java,
+	* gnu/java/awt/peer/gtk/GtkListPeer.java,
+	* gnu/java/awt/peer/gtk/GtkMainThread.java,
+	* gnu/java/awt/peer/gtk/GtkMenuBarPeer.java,
+	* gnu/java/awt/peer/gtk/GtkMenuComponentPeer.java,
+	* gnu/java/awt/peer/gtk/GtkMenuPeer.java,
+	* gnu/java/awt/peer/gtk/GtkMouseInfoPeer.java,
+	* gnu/java/awt/peer/gtk/GtkScrollbarPeer.java,
+	* gnu/java/awt/peer/gtk/GtkScrollPanePeer.java,
+	* gnu/java/awt/peer/gtk/GtkSelection.java,
+	* gnu/java/awt/peer/gtk/GtkTextAreaPeer.java,
+	* gnu/java/awt/peer/gtk/GtkTextFieldPeer.java,
+	* gnu/java/awt/peer/gtk/GtkToolkit.java,
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java,
+	* gnu/java/awt/peer/gtk/VolatileImageGraphics.java,
+	* java/awt/RenderingHints.java,
+	* java/awt/image/BufferedImage.java: Reformatted and added generics.
+
 2007-02-12  Tom Tromey  <tromey@redhat.com>
 
 	* java/net/Socket.java (bind): Typo fix.
