@@ -715,19 +715,18 @@ public class ObjectName
 
   /**
    * Returns a textual representation of the object name.
-   * The format is unspecified, but it should be expected that
-   * two equivalent object names will return the same string
-   * from this method.
+   *
+   * <p>The format is unspecified beyond that equivalent object
+   * names will return the same string from this method, but note
+   * that Tomcat depends on the string returned by this method
+   * being a valid textual representation of the object name and
+   * will fail to start if it is not.
    *
    * @return a textual representation of the object name.
    */
   public String toString()
   {
-    return getClass().toString() +
-      "[domain = " + domain +
-      ",properties = " + properties +
-      ",propertyPattern = " + propertyPattern +
-      "]";
+    return getCanonicalName();
   }
 
   /**
