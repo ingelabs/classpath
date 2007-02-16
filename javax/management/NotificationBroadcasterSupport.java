@@ -37,7 +37,7 @@ exception statement from your version. */
 
 package javax.management;
 
-import gnu.classpath.ListenerData;
+import gnu.javax.management.ListenerData;
 
 import java.util.ArrayList;
 import java.util.Iterator;
