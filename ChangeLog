@@ -1,5 +1,40 @@
 2007-02-16  Francis Kung  <fkung@redhat.com>
 
+	* gnu/java/awt/ClasspathGraphicsEnvironment.java: New file.
+	* gnu/java/awt/peer/gtk/CairoSurface.java
+	(CairoDataBuffer): Removed inner class.
+	(CairoSurface(int,int,int,int)): New constructor.
+	(CairoSurface(int,int)): Delegate to new constructor.
+	(CairoSurface(SampleModel,CairoSurface,Rectangle,Point)): New constructor
+	for creating child rasters.
+	(create): Added int[] parameter.
+	(createChild): New method.
+	(createCompatibleWritableRaster): New methods.
+	(createTranslatedChild): New method.
+	(createWritableChild): New method.
+	(createWritableTranslatedChild): New method.
+	(destroy): Added int[] parameter.
+	(dispose): Only free native resources if this Surface has no parents.
+	(isCompatibleColorModel): New method.
+	(isCompatibleSampleModel): New method.
+	* gnu/java/awt/peer/gtk/CairoSurfaceGraphics.java
+	(draw): Set transform, smarter bounds generation.
+	(drawComposite): Improved clipping.
+	(drawImage): Fixed bounds translation.
+	(drawRenderedImage): Set transform in buffer.
+	(fill): Set transform in buffer.
+	* gnu/java/awt/peer/gtk/GdkGraphicsEnvironment.java
+	(createRaster): New method.
+	* java/awt/image/BufferedImage.java
+	(BufferedImage(int,int,int)): Use optimized raster if possible.
+	* include/gnu_java_awt_peer_gtk_CairoSurface.h: Regenerated.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c
+	(Java_gnu_java_awt_peer_gtk_CairoSurface_create): Share data buffer between
+	Cairo and Java.
+	(Java_gnu_java_awt_peer_gtk_CairoSurface_destroy): Free data array.
+
+2007-02-16  Francis Kung  <fkung@redhat.com>
+
 	* javax/management/NotificationBroadcasterSupport.java: Update imports.
 
 2007-02-16  Andrew Haley  <aph@redhat.com>

@@ -56,11 +56,14 @@ static void setNativeObject( JNIEnv *env, jobject obj, void *ptr, const char *po
  * Creates a cairo surface, ARGB32, native ordering, premultiplied alpha.
  */
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_CairoSurface_create (JNIEnv *env, jobject obj, jint width, jint height, jint stride)
+Java_gnu_java_awt_peer_gtk_CairoSurface_create
+(JNIEnv *env, jobject obj, jint width, jint height, jint stride,
+ jintArray buf )
 {
   cairo_surface_t* surface;
-  void *data = g_malloc(stride * height * 4);
-  memset(data, 0, stride * height * 4);
+  jboolean isCopy;
+  void *data = (*env)->GetIntArrayElements (env, buf, &isCopy);
+/*  FIXME: provide fallback if (isCopy == true) */
   setNativeObject(env, obj, data, BUFFER);
 
   surface = cairo_image_surface_create_for_data
@@ -75,16 +78,16 @@ Java_gnu_java_awt_peer_gtk_CairoSurface_create (JNIEnv *env, jobject obj, jint w
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_CairoSurface_destroy
 (JNIEnv *env __attribute__((unused)), jobject obj __attribute__((unused)),
- jlong surfacePointer, jlong bufferPointer)
+ jlong surfacePointer, jlong bufferPointer, jintArray buf)
 {
   void *buffer;
   cairo_surface_t* surface = JLONG_TO_PTR(void, surfacePointer);
-  if( surface != NULL )
-    cairo_surface_destroy(surface);
-
   buffer = JLONG_TO_PTR(void, bufferPointer);
-  if( buffer != NULL )
-    g_free(buffer);
+  if( surface != NULL )
+  {
+  	(*env)->ReleaseIntArrayElements (env, buf, buffer, 0);
+    cairo_surface_destroy(surface);
+  }
 }
 
 /**

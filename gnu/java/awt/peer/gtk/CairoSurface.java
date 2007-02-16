@@ -42,15 +42,20 @@ import gnu.java.awt.Buffers;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
+import java.awt.image.DataBufferInt;
 import java.awt.image.DirectColorModel;
+import java.awt.image.Raster;
+import java.awt.image.RasterFormatException;
 import java.awt.image.SampleModel;
 import java.awt.image.SinglePixelPackedSampleModel;
 import java.awt.image.WritableRaster;
 import java.nio.ByteOrder;
+import java.util.Arrays;
 import java.util.Hashtable;
 
 /**
@@ -98,12 +103,12 @@ public class CairoSurface extends WritableRaster
    * @param width, height - the image size
    * @param stride - the buffer row stride. (in ints)
    */
-  private native void create(int width, int height, int stride);
+  private native void create(int width, int height, int stride, int[] buf);
 
   /**
    * Destroys the cairo surface and frees the buffer.
    */
-  private native void destroy(long surfacePointer, long bufferPointer);
+  private native void destroy(long surfacePointer, long bufferPointer, int[] buf);
 
   /**
    * Gets buffer elements
@@ -158,20 +163,40 @@ public class CairoSurface extends WritableRaster
    */
   public CairoSurface(int width, int height)
   {
+    this(0, 0, width, height);
+  }
+  
+  public CairoSurface(int x, int y, int width, int height)
+  {
     super(createCairoSampleModel(width, height),
-	      null, new Point(0, 0));
+	      null, new Point(x, y));
 
     if(width <= 0 || height <= 0)
       throw new IllegalArgumentException("Image must be at least 1x1 pixels.");
     
     this.width = width;
     this.height = height;
-    create(width, height, width);
+    dataBuffer = new DataBufferInt(width * height);
+    create(width, height, width, ((DataBufferInt)dataBuffer).getData());
 
     if(surfacePointer == 0 || bufferPointer == 0)
       throw new Error("Could not allocate bitmap.");
 
-    dataBuffer = new CairoDataBuffer();
+  }
+  
+  /**
+   * Create a Cairo Surface that is a subimage of another Cairo Surface
+   */
+  public CairoSurface(SampleModel sm, CairoSurface parent, Rectangle bounds,
+                      Point origin)
+  {
+    super(sm, parent.dataBuffer, bounds, origin, parent);
+    
+    this.width = parent.width;
+    this.height = parent.height;
+    this.bufferPointer = parent.bufferPointer;
+    this.surfacePointer = parent.surfacePointer;
+    this.dataBuffer = parent.dataBuffer;
   }
 
   /**
@@ -228,8 +253,9 @@ public class CairoSurface extends WritableRaster
    */
   public void dispose()
   {
-    if(surfacePointer != 0)
-      destroy(surfacePointer, bufferPointer);
+    if(surfacePointer != 0 && parent == null)
+      destroy(surfacePointer, bufferPointer,
+              ((DataBufferInt)dataBuffer).getData());
   }
 
   /**
@@ -276,34 +302,6 @@ public class CairoSurface extends WritableRaster
                              new Hashtable());
   }
 
-  private class CairoDataBuffer extends DataBuffer
-  {
-    public CairoDataBuffer()
-    {
-      super(DataBuffer.TYPE_INT, width * height);
-    }
-
-    /**
-     * DataBuffer.getElem implementation
-     */
-    public int getElem(int bank, int i)
-    {
-      if(bank != 0 || i < 0 || i >= width * height)
-        throw new IndexOutOfBoundsException(i+" size: "+width * height);
-      return nativeGetElem(bufferPointer, i);
-    }
-  
-    /**
-     * DataBuffer.setElem implementation
-     */
-    public void setElem(int bank, int i, int val)
-    {
-      if(bank != 0 || i < 0 || i >= width*height)
-        throw new IndexOutOfBoundsException(i+" size: "+width * height);
-      nativeSetElem(bufferPointer, i, val);
-    }
-  }
-
   /**
    * Return a Graphics2D drawing to the CairoSurface.
    */
@@ -344,5 +342,86 @@ public class CairoSurface extends WritableRaster
     return new SinglePixelPackedSampleModel(DataBuffer.TYPE_INT, w, h,
                                             new int[]{0x00FF0000, 0x0000FF00,
                                                       0x000000FF, 0xFF000000});    
+  }
+  
+  /**
+   * Returns whether this ColorModel is compatible with Cairo's native types.
+   * 
+   * @param cm The color model to check.
+   * @return Whether it is compatible.
+   */
+  public static boolean isCompatibleColorModel(ColorModel cm)
+  {
+    return (cm.equals(cairoCM_pre) || cm.equals(cairoCM_opaque) ||
+            cm.equals(cairoColorModel));
+  }
+  
+  /**
+   * Returns whether this SampleModel is compatible with Cairo's native types.
+   * 
+   * @param sm The sample model to check.
+   * @return Whether it is compatible.
+   */
+  public static boolean isCompatibleSampleModel(SampleModel sm)
+  {
+    return (sm instanceof SinglePixelPackedSampleModel
+        && sm.getDataType() == DataBuffer.TYPE_INT
+        && Arrays.equals(((SinglePixelPackedSampleModel)sm).getBitMasks(),
+                         new int[]{0x00FF0000, 0x0000FF00,
+                                   0x000000FF, 0xFF000000}));
+  }
+
+  ///// Methods interhited from Raster and WritableRaster /////
+  public Raster createChild(int parentX, int parentY, int width, int height,
+                            int childMinX, int childMinY, int[] bandList)
+  {
+    return createWritableChild(parentX, parentY, width, height,
+                               childMinX, childMinY, bandList);
+  }
+  
+  public WritableRaster createCompatibleWritableRaster()
+  {
+    return new CairoSurface(width, height);
+  }
+  
+  public WritableRaster createCompatibleWritableRaster (int x, int y,
+                                                        int w, int h)
+  {
+    return new CairoSurface(x, y, w, h);
+  }
+  
+  public Raster createTranslatedChild(int childMinX, int childMinY)
+  {
+    return createWritableTranslatedChild(childMinX, childMinY);
+  }
+  
+  public WritableRaster createWritableChild(int parentX, int parentY,
+                                            int w, int h, int childMinX,
+                                            int childMinY, int[] bandList)
+  {
+    if (true)
+      return this;
+    if (parentX < minX || parentX + w > minX + width
+        || parentY < minY || parentY + h > minY + height)
+      throw new RasterFormatException("Child raster extends beyond parent");
+    
+    SampleModel sm = (bandList == null) ?
+      sampleModel :
+      sampleModel.createSubsetSampleModel(bandList);
+
+    return new CairoSurface(sm, this,
+                            new Rectangle(childMinX, childMinY, w, h),
+                            new Point(sampleModelTranslateX + childMinX - parentX,
+                                      sampleModelTranslateY + childMinY - parentY));
+  }
+  
+  public WritableRaster createWritableTranslatedChild(int x, int y)
+  {
+    int tcx = sampleModelTranslateX - minX + x;
+    int tcy = sampleModelTranslateY - minY + y;
+    
+    return new CairoSurface(sampleModel, this,
+                      new Rectangle(x, y, width, height),
+                      new Point(tcx, tcy));
   }
 }

@@ -39,7 +39,9 @@ exception statement from your version. */
 package java.awt.image;
 
 import gnu.java.awt.Buffers;
+import gnu.java.awt.ClasspathGraphicsEnvironment;
 import gnu.java.awt.ComponentDataBlitOp;
+import gnu.java.awt.peer.gtk.CairoSurface;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -273,11 +275,20 @@ public class BufferedImage extends Image
                                       Transparency.OPAQUE, buftype );
       }
 
-      init( cm,
-            Raster.createWritableRaster(sm, new Point( 0, 0 ) ),
-            premultiplied,
-            null, // no properties
-            type );
+    WritableRaster rst = null;
+    
+    // Attempt to create an accelerated backend for this image
+    GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    if (env instanceof ClasspathGraphicsEnvironment)
+      rst = ((ClasspathGraphicsEnvironment)env).createRaster(cm, sm);
+    
+    // Default to a standard Java raster & databuffer if needed
+    if (rst == null)
+      rst = Raster.createWritableRaster(sm, new Point( 0, 0 ) );
+    
+    init(cm, rst, premultiplied,
+         null, // no properties
+         type );
   }
 
   public BufferedImage(int w, int h, int type, IndexColorModel indexcolormodel)

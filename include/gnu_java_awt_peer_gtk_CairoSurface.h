@@ -10,8 +10,8 @@ extern "C"
 {
 #endif
 
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoSurface_create (JNIEnv *env, jobject, jint, jint, jint);
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoSurface_destroy (JNIEnv *env, jobject, jlong, jlong);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoSurface_create (JNIEnv *env, jobject, jint, jint, jint, jintArray);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoSurface_destroy (JNIEnv *env, jobject, jlong, jlong, jintArray);
 JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_CairoSurface_nativeGetElem (JNIEnv *env, jobject, jlong, jint);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoSurface_nativeSetElem (JNIEnv *env, jobject, jlong, jint, jint);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoSurface_nativeDrawSurface (JNIEnv *env, jobject, jlong, jlong, jdoubleArray, jdouble, jint);
