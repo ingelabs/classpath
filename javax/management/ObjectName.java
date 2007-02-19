@@ -105,7 +105,7 @@ public class ObjectName
   /**
    * The properties, as key-value pairs.
    */
-  private TreeMap<String,String> properties;
+  private TreeMap<String,String> properties = new TreeMap<String,String>();
 
   /**
    * The properties as a string (stored for ordering).
@@ -164,7 +164,6 @@ public class ObjectName
 	  throw new MalformedObjectNameException("A name that is not a " +
 						 "pattern must contain at " +
 						 "least one key-value pair.");
-	properties = new TreeMap<String,String>();
 	for (int a = 0; a < pairs.length; ++a)
 	  {
 	    int sep = pairs[a].indexOf('=');
@@ -197,7 +196,6 @@ public class ObjectName
     throws MalformedObjectNameException
   {
     this.domain = domain;
-    properties = new TreeMap<String,String>();
     properties.put(key, value);
     checkComponents();
   }
