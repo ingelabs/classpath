@@ -76,3 +76,6 @@ gserialver.pod: $(srcdir)/cp-tools.texinfo
 
 gtnameserv.pod: $(srcdir)/cp-tools.texinfo
 	-$(TEXI2POD) -D gtnameserv < $< > $@
+
+CLEANFILES = $(TOOLS_MANFILES)
+
