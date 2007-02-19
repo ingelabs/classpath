@@ -1,7 +1,7 @@
 \input texinfo @c -*-texinfo-*-
 
 @c %**start of header
-@setfilename tools.info
+@setfilename cp-tools.info
 @settitle GNU Classpath Tools Guide
 @c %**end of header
 
@@ -22,7 +22,7 @@
 This file documents the Tools included in a standard distribution of the GNU
 Classpath project deliverables.
 
-Copyright (C) 2006 Free Software Foundation, Inc.
+Copyright (C) 2006, 2007 Free Software Foundation, Inc.
 
 @ifnotplaintext
 @dircategory GNU Libraries

@@ -1,3 +1,11 @@
+2007-02-19  Dalibor Topic  <robilad@kaffe.org>
+
+	* cp-hacking.texinfo, cp-tools.texinfo, 
+	cp-vmintegration.texinfo: Prefix output file name
+	with cp.
+
+
+
 2007-02-19  Gary Benson  <gbenson@redhat.com>
 
 	* javax/management/ObjectName.java

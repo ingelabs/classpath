@@ -1,7 +1,7 @@
 \input texinfo @c -*-texinfo-*-
 
 @c %**start of header
-@setfilename vmintegration.info
+@setfilename cp-vmintegration.info
 @settitle GNU Classpath VM Integration Guide
 @c %**end of header
 
@@ -12,7 +12,7 @@ This file contains important information you will need to know if you
 are going to write an interface between GNU Classpath and a Virtual
 Machine.
 
-Copyright (C) 1998-2002, 2004, 2005, 2006 Free Software Foundation, Inc.
+Copyright (C) 1998-2002, 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
 
 @ifnotplaintext
 @dircategory GNU Libraries
