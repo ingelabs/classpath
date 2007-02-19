@@ -105,7 +105,7 @@ public class ObjectName
   /**
    * The properties, as key-value pairs.
    */
-  private TreeMap properties;
+  private TreeMap<String,String> properties;
 
   /**
    * The properties as a string (stored for ordering).
@@ -164,7 +164,7 @@ public class ObjectName
 	  throw new MalformedObjectNameException("A name that is not a " +
 						 "pattern must contain at " +
 						 "least one key-value pair.");
-	properties = new TreeMap();
+	properties = new TreeMap<String,String>();
 	for (int a = 0; a < pairs.length; ++a)
 	  {
 	    int sep = pairs[a].indexOf('=');
@@ -197,7 +197,7 @@ public class ObjectName
     throws MalformedObjectNameException
   {
     this.domain = domain;
-    properties = new TreeMap();
+    properties = new TreeMap<String,String>();
     properties.put(key, value);
     checkComponents();
   }
@@ -216,7 +216,7 @@ public class ObjectName
    * @throws NullPointerException if one of the parameters is
    *                              <code>null</code>.
    */
-  public ObjectName(String domain, Hashtable properties)
+  public ObjectName(String domain, Hashtable<String,String> properties)
     throws MalformedObjectNameException
   {
     this.domain = domain;
@@ -542,7 +542,8 @@ public class ObjectName
    *                                      specifications.
    * @throws NullPointerException if <code>name</code> is <code>null</code>.
    */
-  public static ObjectName getInstance(String domain, Hashtable properties)
+  public static ObjectName getInstance(String domain,
+				       Hashtable<String,String> properties)
     throws MalformedObjectNameException
   {
     return new ObjectName(domain, properties);
@@ -571,9 +572,9 @@ public class ObjectName
    * @return a {@link java.util.Hashtable}, containing each of the object
    *         name's properties.
    */
-  public Hashtable getKeyPropertyList()
+  public Hashtable<String,String> getKeyPropertyList()
   {
-    return new Hashtable(properties);
+    return new Hashtable<String,String>(properties);
   }
 
   /**
