@@ -1,3 +1,9 @@
+2007-02-20  Gary Benson  <gbenson@redhat.com>
+
+	* javax/management/ObjectName.java
+	(domainMatches): New method.
+	(apply): Rearranged to use the above.
+
 2007-02-19  Mark Wielaard  <mark@klomp.org>
 
 	* doc/.cvsignore: Add *.1.
