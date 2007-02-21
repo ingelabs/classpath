@@ -1,3 +1,58 @@
+2007-02-21  Francis Kung  <fkung@redhat.com>
+
+	* gnu/java/awt/peer/gtk/BufferedImageGraphcs.java
+	(constructor): Add pre-multiplied colour model to types available for
+	optimization.
+	(updateBufferedImage): Change surface.getPixels() call to surface.getData().
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(drawImage): Add checks before using CairoSurface optimization.
+	* gnu/java/awt/peer/gtk/CairoSurface.java
+	(bufferPointer): Removed field.
+	(sharedBuffer): New field.
+	(CairoSurface(GtkImage)): Copy array rather than using setPixels() call.
+	(CairoSurface(int,int,int)): Use getData() convenience method.
+	(CairoSurface(SampleModel,CairoSurface,Rectangle,Point)): Remove reference
+	to deleted bufferPointer field.
+	(copyAreaNative): Update documentation, remove reference to bufferPointer.
+	(copyAreaNative2): Remove reference to deleted bufferPointer field.
+	(destroy): Remove reference to deleted bufferPointer field.
+	(dispose): Updated to reflect new method signature for destroy().
+	(drawSurface): Added documentation.
+	(getData): New convience method.
+	(getFlippedBuffer): Removed method parameters.
+	(getGtkImage): Updated to reflect new method signature.
+	(getPixels): Removed method.
+	(nativeGetElem): Removed method.
+	(netiveGetPixels): Removed method.
+	(nativeSetElem): Removed method.
+	(nativeSetPixels): Removed method.
+	(setPixels): Removed method.
+	(syncJavaToNative): New method.
+	(syncNativeToJava): New method.
+	* gnu/java/awt/peer/gtk/CairoSurfaceGraphics.java
+	(draw): Sync buffers if necessary.
+	(drawGlyphVector): Likewise.
+	(drawImage): Likewise.
+	(drawRenderedImage): Likewise,
+	(fill): Likewise.
+	* include/gnu_java_awt_peer_gtk_CairoSurface.h: Regenerated.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c
+	(Java_gnu_java_awt_peer_gtk_CairoSurface_copyAreaNative2): Use pointer to
+	surface rather than pointer to buffer.
+	(Java_gnu_java_awt_peer_gtk_CairoSurface_create): Provide fall-back for
+	copied arrays.
+	(Java_gnu_java_awt_peer_gtk_CairoSurface_destroy): Handle copied arrays.
+	(Java_gnu_java_awt_peer_gtk_CairoSurface_getFlippedBuffer): Retrieve
+	information on size using JNI calls.
+	(Java_gnu_java_awt_peer_gtk_CairoSurface_getElem): Removed.
+	(Java_gnu_java_awt_peer_gtk_CairoSurface_getPixels): Removed.
+	(Java_gnu_java_awt_peer_gtk_CairoSurface_setElem): Removed.
+	(Java_gnu_java_awt_peer_gtk_CairoSurface_setPixels): Removed.
+	(Java_gnu_java_awt_peer_gtk_CairoSurface_syncJavaToNative): New function.
+	(Java_gnu_java_awt_peer_gtk_CairoSurface_syncNativeToJava): New function.
+	(BUFFER): Removed constant.
+	(SHARED): New constant.
+
 2007-02-20  Gary Benson  <gbenson@redhat.com>
 
 	* javax/management/ObjectName.java

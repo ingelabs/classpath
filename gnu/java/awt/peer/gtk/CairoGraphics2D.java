@@ -1520,7 +1520,9 @@ public abstract class CairoGraphics2D extends Graphics2D
     if (comp instanceof AlphaComposite)
       alpha = ((AlphaComposite) comp).getAlpha();
 
-    if(raster instanceof CairoSurface)
+    if(raster instanceof CairoSurface
+        && ((CairoSurface)raster).getParent() == null
+        && ((CairoSurface)raster).sharedBuffer == true)
       {
         ((CairoSurface)raster).drawSurface(nativePointer, i2u, alpha,
                                            getInterpolation());

@@ -116,6 +116,9 @@ public class CairoSurfaceGraphics extends CairoGraphics2D
    */
   public void draw(Shape s)
   {
+    if (!surface.sharedBuffer)
+      surface.syncJavaToNative(surface.surfacePointer, surface.getData());
+    
     // Find total bounds of shape
     Rectangle r = findStrokedBounds(s);
     if (shiftDrawCalls)
@@ -140,10 +143,16 @@ public class CairoSurfaceGraphics extends CairoGraphics2D
         
         drawComposite(r.getBounds2D(), null);
       }
+    
+    if (!surface.sharedBuffer)
+      surface.syncNativeToJava(surface.surfacePointer, surface.getData());
   }
 
   public void fill(Shape s)
   {
+    if (!surface.sharedBuffer)
+      surface.syncJavaToNative(surface.surfacePointer, surface.getData());
+    
     if (comp == null || comp instanceof AlphaComposite)
       super.fill(s);
     
@@ -159,10 +168,16 @@ public class CairoSurfaceGraphics extends CairoGraphics2D
         
         drawComposite(s.getBounds2D(), null);
       }
+    
+    if (!surface.sharedBuffer)
+      surface.syncNativeToJava(surface.surfacePointer, surface.getData());
   }
 
   public void drawRenderedImage(RenderedImage image, AffineTransform xform)
   {
+    if (!surface.sharedBuffer)
+      surface.syncJavaToNative(surface.surfacePointer, surface.getData());
+    
     if (comp == null || comp instanceof AlphaComposite)
       super.drawRenderedImage(image, xform);
     
@@ -177,14 +192,20 @@ public class CairoSurfaceGraphics extends CairoGraphics2D
         
         drawComposite(buffer.getRaster().getBounds(), null);
       }
-
+    
+    if (!surface.sharedBuffer)
+      surface.syncNativeToJava(surface.surfacePointer, surface.getData());
   }
 
   protected boolean drawImage(Image img, AffineTransform xform,
                               Color bgcolor, ImageObserver obs)
   {
+    if (!surface.sharedBuffer)
+      surface.syncJavaToNative(surface.surfacePointer, surface.getData());
+
+    boolean ret;
     if (comp == null || comp instanceof AlphaComposite)
-      return super.drawImage(img, xform, bgcolor, obs);
+      ret = super.drawImage(img, xform, bgcolor, obs);
     
     else
       {
@@ -212,12 +233,20 @@ public class CairoSurfaceGraphics extends CairoGraphics2D
         g2d.drawImage(img, xform, obs);
 
         // Perform compositing
-        return drawComposite(bounds, obs);
+        ret = drawComposite(bounds, obs);
       }
+    
+    if (!surface.sharedBuffer)
+      surface.syncNativeToJava(surface.surfacePointer, surface.getData());
+    
+    return ret;
   }
 
   public void drawGlyphVector(GlyphVector gv, float x, float y)
   {
+    if (!surface.sharedBuffer)
+      surface.syncJavaToNative(surface.surfacePointer, surface.getData());
+    
     if (comp == null || comp instanceof AlphaComposite)
       super.drawGlyphVector(gv, x, y);
     
@@ -235,6 +264,9 @@ public class CairoSurfaceGraphics extends CairoGraphics2D
                                         bounds.getWidth(), bounds.getHeight());
         drawComposite(bounds, null);
       }
+    
+    if (!surface.sharedBuffer)
+      surface.syncNativeToJava(surface.surfacePointer, surface.getData());
   }
   
   private boolean drawComposite(Rectangle2D bounds, ImageObserver observer)

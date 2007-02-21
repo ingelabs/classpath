@@ -1,5 +1,5 @@
 /* CairoSurface.java
-   Copyright (C) 2006 Free Software Foundation, Inc.
+   Copyright (C) 2006, 2007 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -73,9 +73,9 @@ public class CairoSurface extends WritableRaster
   long surfacePointer;
 
   /**
-   * The native pointer to the image's data buffer
+   * Whether the data buffer is shared between java and cairo.
    */
-  long bufferPointer;
+  boolean sharedBuffer;
 
   // FIXME: use only the cairoCM_pre colormodel
   // since that's what Cairo really uses (is there a way to do this cheaply?
@@ -108,17 +108,7 @@ public class CairoSurface extends WritableRaster
   /**
    * Destroys the cairo surface and frees the buffer.
    */
-  private native void destroy(long surfacePointer, long bufferPointer, int[] buf);
-
-  /**
-   * Gets buffer elements
-   */
-  private native int nativeGetElem(long bufferPointer, int i);
-  
-  /**
-   * Sets buffer elements.
-   */
-  private native void nativeSetElem(long bufferPointer, int i, int val);
+  private native void destroy(long surfacePointer, int[] buf);
 
   /**
    * Draws this image to a given CairoGraphics context, 
@@ -128,6 +118,30 @@ public class CairoSurface extends WritableRaster
                                        double[] i2u, double alpha,
                                        int interpolation);
 
+  /**
+   * Synchronizes the image's data buffers, copying any changes made in the
+   * Java array into the native array.
+   * 
+   * This method should only be called if (sharedBuffers == false).
+   */
+  native void syncNativeToJava(long surfacePointer, int[] buffer);
+  
+  /**
+   * Synchronizes the image's data buffers, copying any changes made in the
+   * native array into the Java array.
+   * 
+   * This method should only be called if (sharedBuffers == false).
+   */
+  native void syncJavaToNative(long surfacePointer, int[] buffer);
+  
+  /**
+   * Draw this CairoSurface image onto a given Cairo context.
+   * 
+   * @param contextPointer A pointer to the context to draw onto.
+   * @param i2u The transformation matrix (cannot be null).
+   * @param alpha The alpha value to paint with ( 0 <= alpha <= 1).
+   * @param interpolation The interpolation type, as defined in CairoGraphcs2D.
+   */
   public void drawSurface(long contextPointer, double[] i2u, double alpha,
                           int interpolation)
   {
@@ -135,26 +149,13 @@ public class CairoSurface extends WritableRaster
   }
 
   /**
-   * getPixels -return the pixels as a java array.
+   * Return the buffer, with the sample values of each pixel reversed
+   * (ie, in ABGR instead of ARGB). 
+   * 
+   * @return A pointer to a flipped buffer.  The memory is allocated in native
+   *        code, and must be explicitly freed when it is no longer needed.
    */
-  native int[] nativeGetPixels(long bufferPointer, int size);
-
-  public int[] getPixels(int size)
-  {
-    return nativeGetPixels(bufferPointer, size);
-  }
-
-  /**
-   * getPixels -return the pixels as a java array.
-   */
-  native void nativeSetPixels(long bufferPointer, int[] pixels);
-
-  public void setPixels(int[] pixels)
-  {
-    nativeSetPixels(bufferPointer, pixels);
-  }
-
-  native long getFlippedBuffer(long bufferPointer, int size);
+  native long getFlippedBuffer();
 
   /**
    * Create a cairo_surface_t with specified width and height.
@@ -168,8 +169,7 @@ public class CairoSurface extends WritableRaster
   
   public CairoSurface(int x, int y, int width, int height)
   {
-    super(createCairoSampleModel(width, height),
-	      null, new Point(x, y));
+    super(createCairoSampleModel(width, height), null, new Point(x, y));
 
     if(width <= 0 || height <= 0)
       throw new IllegalArgumentException("Image must be at least 1x1 pixels.");
@@ -177,11 +177,10 @@ public class CairoSurface extends WritableRaster
     this.width = width;
     this.height = height;
     dataBuffer = new DataBufferInt(width * height);
-    create(width, height, width, ((DataBufferInt)dataBuffer).getData());
+    create(width, height, width, getData());
 
-    if(surfacePointer == 0 || bufferPointer == 0)
+    if(surfacePointer == 0)
       throw new Error("Could not allocate bitmap.");
-
   }
   
   /**
@@ -194,7 +193,6 @@ public class CairoSurface extends WritableRaster
     
     this.width = parent.width;
     this.height = parent.height;
-    this.bufferPointer = parent.bufferPointer;
     this.surfacePointer = parent.surfacePointer;
     this.dataBuffer = parent.dataBuffer;
   }
@@ -245,7 +243,7 @@ public class CairoSurface extends WritableRaster
           }
       }
 
-    setPixels( data );
+    System.arraycopy(data, 0, getData(), 0, data.length);
   }
 
   /**
@@ -254,8 +252,7 @@ public class CairoSurface extends WritableRaster
   public void dispose()
   {
     if(surfacePointer != 0 && parent == null)
-      destroy(surfacePointer, bufferPointer,
-              ((DataBufferInt)dataBuffer).getData());
+      destroy(surfacePointer, getData());
   }
 
   /**
@@ -271,8 +268,17 @@ public class CairoSurface extends WritableRaster
    */
   public GtkImage getGtkImage()
   {
-    return new GtkImage( width, height,
-                         getFlippedBuffer(bufferPointer, width * height ));
+    return new GtkImage(width, height, getFlippedBuffer());
+  }
+  
+  /**
+   * Convenience method to quickly grab the data array backing this Raster.
+   * 
+   * @return The array behind the databuffer.
+   */
+  public int[] getData()
+  {
+    return ((DataBufferInt)dataBuffer).getData();
   }
 
   /**
@@ -323,16 +329,24 @@ public class CairoSurface extends WritableRaster
   }
 
   /**
-   * Copy an area of the surface. Expects parameters must be within bounds. 
-   * Count on a segfault otherwise.
+   * Copy a portion of this surface to another area on the surface.  The given
+   * parameters must be within bounds - count on a segfault otherwise.
+   * 
+   * @param x The x coordinate of the area to be copied from.
+   * @param y The y coordinate of the area to be copied from.
+   * @param width The width of the area to be copied.
+   * @param height The height of the area to be copied.
+   * @param dx The destination x coordinate.
+   * @param dy The destination y coordinate.
+   * @param stride The scanline stride.
    */
-  native void copyAreaNative2(long bufferPointer, int x, int y, int width,
-                             int height, int dx, int dy, int stride);
   public void copyAreaNative(int x, int y, int width,
                              int height, int dx, int dy, int stride)
   {
-    copyAreaNative2(bufferPointer, x, y, width, height, dx, dy, stride);
+    copyAreaNative2(x, y, width, height, dx, dy, stride);
   }
+  native void copyAreaNative2(int x, int y, int width, int height,
+                              int dx, int dy, int stride);
   
   /**
    * Creates a SampleModel that matches Cairo's native format

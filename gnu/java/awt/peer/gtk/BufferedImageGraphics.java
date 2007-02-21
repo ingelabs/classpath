@@ -112,7 +112,8 @@ public class BufferedImageGraphics extends CairoGraphics2D
         hasFastCM = true;
         hasAlpha = false;
       }
-    else if(bi.getColorModel().equals(CairoSurface.cairoColorModel))
+    else if(bi.getColorModel().equals(CairoSurface.cairoColorModel)
+        || bi.getColorModel().equals(CairoSurface.cairoCM_pre))
       {
         hasFastCM = true;
         hasAlpha = true;
@@ -142,10 +143,7 @@ public class BufferedImageGraphics extends CairoGraphics2D
         int minY = image.getRaster().getSampleModelTranslateY();
 
         // Pull pixels directly out of data buffer
-        if(raster instanceof CairoSurface)
-          pixels = ((CairoSurface)raster).getPixels(raster.getWidth() * raster.getHeight());
-        else
-          pixels = ((DataBufferInt)raster.getDataBuffer()).getData();
+        pixels = ((DataBufferInt)raster.getDataBuffer()).getData();
 
         // Discard pixels that fall outside of the image's bounds
         // (ie, this image is actually a subimage of a different image)
@@ -170,10 +168,11 @@ public class BufferedImageGraphics extends CairoGraphics2D
       {
         pixels = CairoGraphics2D.findSimpleIntegerArray(image.getColorModel(),
                                                         image.getData());
+        if (pixels != null)
+          System.arraycopy(pixels, 0, surface.getData(),
+                           0, pixels.length);
       }
     
-    surface.setPixels( pixels );
-
     setup( cairo_t );
     setClip(0, 0, imageWidth, imageHeight);
   }
@@ -204,7 +203,7 @@ public class BufferedImageGraphics extends CairoGraphics2D
     width = bounds.width;
     height = bounds.height;
 
-    int[] pixels = surface.getPixels(imageWidth * imageHeight);
+    int[] pixels = surface.getData();
 
     if( x > imageWidth || y > imageHeight )
       return;
