@@ -155,7 +155,7 @@ public class CairoSurface extends WritableRaster
    * @return A pointer to a flipped buffer.  The memory is allocated in native
    *        code, and must be explicitly freed when it is no longer needed.
    */
-  native long getFlippedBuffer();
+  native long getFlippedBuffer(long surfacePointer);
 
   /**
    * Create a cairo_surface_t with specified width and height.
@@ -268,7 +268,7 @@ public class CairoSurface extends WritableRaster
    */
   public GtkImage getGtkImage()
   {
-    return new GtkImage(width, height, getFlippedBuffer());
+    return new GtkImage(width, height, getFlippedBuffer(surfacePointer));
   }
   
   /**
@@ -343,9 +343,10 @@ public class CairoSurface extends WritableRaster
   public void copyAreaNative(int x, int y, int width,
                              int height, int dx, int dy, int stride)
   {
-    copyAreaNative2(x, y, width, height, dx, dy, stride);
+    copyAreaNative2(surfacePointer, x, y, width, height, dx, dy, stride);
   }
-  native void copyAreaNative2(int x, int y, int width, int height,
+  native void copyAreaNative2(long surfacePointer,
+                              int x, int y, int width, int height,
                               int dx, int dy, int stride);
   
   /**

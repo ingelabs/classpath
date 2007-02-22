@@ -1,3 +1,11 @@
+2007-02-22  Francis Kung  <fkung@redhat.com>
+
+	* gnu/java/awt/peer/gtk/CairoSurface.java
+	(copyAreaNative): Pass surface pointer into copyAreaNative2().
+	(copyAreaNative2): Add parameter for surface pointer.
+	(getFlippedBuffer): Add parameter for surface pointer.
+	(getGtkImage): Pass surface pointer into getFlippedBuffer().
+
 2007-02-21  Francis Kung  <fkung@redhat.com>
 
 	* gnu/java/awt/peer/gtk/BufferedImageGraphcs.java
