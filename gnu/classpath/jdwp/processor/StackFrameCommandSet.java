@@ -115,7 +115,7 @@ public class StackFrameCommandSet
       {
         int slot = bb.getInt();
         byte sig = bb.get();
-        Object val = frame.getValue(slot);
+        Object val = frame.getValue(slot, sig);
         Value.writeTaggedValue(os, val);
       }
   }

@@ -1,3 +1,10 @@
+2007-02-22  Kyle Galloway  <kgallowa@redhat.com>
+
+	* gnu/classpath/jdwp/processor/StackFrameCommandSet.java 
+	(executeGetValues): Pass a signature byte to VMFrame.getValue.
+	* vm/reference/gnu/classpath/jdwp/VMFrame.java (getValue): Add
+	signature parameter.
+
 2007-02-22  Francis Kung  <fkung@redhat.com>
 
 	* gnu/java/awt/peer/gtk/CairoSurface.java

@@ -93,7 +93,7 @@ public class VMFrame
    * 
    * @param slot the slot containing the variable
    */
-  public native Object getValue(int slot);
+  public native Object getValue(int slot, byte sig);
 
   /**
    * Assigns the given variable to the given value. 
