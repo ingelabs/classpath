@@ -1,7 +1,7 @@
 /* VMVirtualMachine.java -- A reference implementation of a JDWP virtual
    machine
 
-   Copyright (C) 2005, 2006 Free Software Foundation
+   Copyright (C) 2005, 2006, 2007 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -48,7 +48,7 @@ import gnu.classpath.jdwp.util.MethodResult;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collection;
 
 /**
  * A virtual machine according to JDWP.
@@ -170,15 +170,9 @@ public class VMVirtualMachine
     throws JdwpException;
  
   /**
-   * Returns a count of the number of loaded classes in the VM
+   * Returns a Collection of all classes loaded in the VM
    */
-  public static native int getAllLoadedClassesCount()
-    throws JdwpException;
-
-  /**
-   * Returns an iterator over all the loaded classes in the VM
-   */
-  public static native Iterator getAllLoadedClasses()
+  public static native Collection getAllLoadedClasses()
     throws JdwpException;
 
   /**

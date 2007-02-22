@@ -1,6 +1,6 @@
 /* VirtualMachineCommandSet.java -- class to implement the VirtualMachine
    Command Set
-   Copyright (C) 2005, 2006 Free Software Foundation
+   Copyright (C) 2005, 2006, 2007 Free Software Foundation
  
 This file is part of GNU Classpath.
 
@@ -54,6 +54,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -179,7 +180,8 @@ public class VirtualMachineCommandSet
     ArrayList allMatchingClasses = new ArrayList();
 
     // This will be an Iterator over all loaded Classes
-    Iterator iter = VMVirtualMachine.getAllLoadedClasses();
+    Collection classes = VMVirtualMachine.getAllLoadedClasses();
+    Iterator iter = classes.iterator ();
 
     while (iter.hasNext())
       {
@@ -203,22 +205,11 @@ public class VirtualMachineCommandSet
   private void executeAllClasses(ByteBuffer bb, DataOutputStream os)
     throws JdwpException, IOException
   {
-    // Disable garbage collection while we're collecting the info on loaded
-    // classes so we some classes don't get collected between the time we get
-    // the count and the time we get the list
-    //VMVirtualMachine.disableGarbageCollection();
+    Collection classes = VMVirtualMachine.getAllLoadedClasses();
+    os.writeInt(classes.size ());
 
-    int classCount = VMVirtualMachine.getAllLoadedClassesCount();
-    os.writeInt(classCount);
-
-    // This will be an Iterator over all loaded Classes
-    Iterator iter = VMVirtualMachine.getAllLoadedClasses();
-    //VMVirtualMachine.enableGarbageCollection();
-    int count = 0;
-
-    // Note it's possible classes were created since out classCount so make
-    // sure we don't write more classes than we told the debugger
-    while (iter.hasNext() && count++ < classCount)
+    Iterator iter = classes.iterator ();
+    while (iter.hasNext())
       {
         Class clazz = (Class) iter.next();
         ReferenceTypeId id = idMan.getReferenceTypeId(clazz);
