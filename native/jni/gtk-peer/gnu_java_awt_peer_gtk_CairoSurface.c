@@ -71,8 +71,6 @@ Java_gnu_java_awt_peer_gtk_CairoSurface_create
   jfieldID field = (*env)->GetFieldID (env, cls, SHARED, "Z");
   g_assert (field != 0);
   
-  isCopy = JNI_TRUE;
-  
   if (isCopy == JNI_TRUE)
     {
       (*env)->SetBooleanField (env, obj, field, JNI_FALSE);

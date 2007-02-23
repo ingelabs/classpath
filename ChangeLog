@@ -1,3 +1,8 @@
+2007-02-23  Francis Kung  <fkung@redhat.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c
+	(Java_gnu_java_awt_peer_gtk_CairoSurface_create): Remove debug line.
+
 2007-02-22  Keith Seitz  <keiths@redhat.ecom>
 
 	* vm/refernece/gnu/classpath/jdwp/VMVirtualMachine.java
