@@ -317,9 +317,8 @@ public class CairoSurfaceGraphics extends CairoGraphics2D
     // not one of the wrappers, to ensure that the composite isn't processed
     // more than once!
     boolean rv = super.drawImage(buffer2,
-//                                 AffineTransform.getTranslateInstance(bounds.getX(),
-//                                                                      bounds.getY()),
-                               AffineTransform.getTranslateInstance(0,0),
+                                 AffineTransform.getTranslateInstance(bounds.getX(),
+                                                                      bounds.getY()),
                                  null, null);
     setComposite(oldcomp);
     updateColor();

@@ -1,3 +1,17 @@
+2007-02-23  Francis Kung  <fkung@redhat.com>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(drawCairoSurface): New method.
+	(drawImage(Image,AffineTransform,Color,ImageObserver)): Use new
+	drawCairoSurface() method.
+	* gnu/java/awt/peer/gtk/CairoSurface.java
+	(CairoSurface(SampleModel,CairoSurface,Rectangle,Point)): Copy correct
+	width/height values, and copy sharedBuffer value.
+	(createWritableChild): Remove debug line.
+	(drawSurface): Removed method.
+	* gnu/java/awt/peer/gtk/CairoSurfaceGraphics.java
+	(drawComposite): Translate image when drawing.
+
 2007-02-23  Gary Benson  <gbenson@redhat.com>
 	    Jakub Jelinek  <jakub@redhat.com>
 

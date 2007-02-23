@@ -1521,11 +1521,9 @@ public abstract class CairoGraphics2D extends Graphics2D
       alpha = ((AlphaComposite) comp).getAlpha();
 
     if(raster instanceof CairoSurface
-        && ((CairoSurface)raster).getParent() == null
         && ((CairoSurface)raster).sharedBuffer == true)
       {
-        ((CairoSurface)raster).drawSurface(nativePointer, i2u, alpha,
-                                           getInterpolation());
+        drawCairoSurface((CairoSurface)raster, xform, alpha, getInterpolation());
         updateColor();
         return true;
       }
@@ -1671,6 +1669,67 @@ public abstract class CairoGraphics2D extends Graphics2D
   {
     return drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null, observer);
   }
+  
+  /**
+   * Optimized method for drawing a CairoSurface onto this graphics context.
+   * 
+   * @param surface The surface to draw.
+   * @param tx The transformation matrix (cannot be null).
+   * @param alpha The alpha value to paint with ( 0 <= alpha <= 1).
+   * @param interpolation The interpolation type.
+   */
+  private void drawCairoSurface(CairoSurface surface, AffineTransform tx,
+                                double alpha, int interpolation)
+  {
+    // Find offset required if this surface is a sub-raster, and append offset
+    // to transformation.
+    if (surface.getSampleModelTranslateX() != 0
+        || surface.getSampleModelTranslateY() != 0)
+      {
+        Point2D origin = new Point2D.Double(0, 0);
+        Point2D offset = new Point2D.Double(surface.getSampleModelTranslateX(),
+                                            surface.getSampleModelTranslateY());
+        
+        tx.transform(origin, origin);
+        tx.transform(offset, offset);
+        
+        tx.translate(offset.getX() - origin.getX(),
+                     offset.getY() - origin.getY());
+      }
+    
+    // Find dimensions of this surface relative to the root parent surface
+    Rectangle bounds = new Rectangle(-surface.getSampleModelTranslateX(),
+                                     -surface.getSampleModelTranslateY(),
+                                     surface.width, surface.height);
+    
+    // Clip to the translated image
+    //   We use direct cairo methods to avoid the overhead of maintaining a
+    //   java copy of the clip, since we will be reverting it immediately
+    //   after drawing
+    Shape newBounds = tx.createTransformedShape(bounds);
+    cairoSave(nativePointer);
+    cairoResetClip(nativePointer);
+    walkPath(newBounds.getPathIterator(null), false);
+    cairoClip(nativePointer);
+    
+    // Draw the surface
+    try
+    {
+      double[] i2u = new double[6];
+      tx.createInverse().getMatrix(i2u);
+      surface.nativeDrawSurface(surface.surfacePointer, nativePointer, i2u,
+                                alpha, interpolation);
+    }
+    catch (NoninvertibleTransformException ex)
+    {
+      // This should never happen(?), so we don't need to do anything here.
+      ;
+    }
+    
+    // Restore clip
+    cairoRestore(nativePointer);
+  }
+
 
   ///////////////////////// TEXT METHODS ////////////////////////////////////
 

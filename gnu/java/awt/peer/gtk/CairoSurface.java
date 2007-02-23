@@ -43,7 +43,9 @@ import gnu.java.awt.Buffers;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.color.ColorSpace;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
@@ -135,20 +137,6 @@ public class CairoSurface extends WritableRaster
   native void syncJavaToNative(long surfacePointer, int[] buffer);
   
   /**
-   * Draw this CairoSurface image onto a given Cairo context.
-   * 
-   * @param contextPointer A pointer to the context to draw onto.
-   * @param i2u The transformation matrix (cannot be null).
-   * @param alpha The alpha value to paint with ( 0 <= alpha <= 1).
-   * @param interpolation The interpolation type, as defined in CairoGraphcs2D.
-   */
-  public void drawSurface(long contextPointer, double[] i2u, double alpha,
-                          int interpolation)
-  {
-    nativeDrawSurface(surfacePointer, contextPointer, i2u, alpha, interpolation);
-  }
-
-  /**
    * Return the buffer, with the sample values of each pixel reversed
    * (ie, in ABGR instead of ARGB). 
    * 
@@ -191,9 +179,10 @@ public class CairoSurface extends WritableRaster
   {
     super(sm, parent.dataBuffer, bounds, origin, parent);
     
-    this.width = parent.width;
-    this.height = parent.height;
+    this.width = super.width;
+    this.height = super.height;
     this.surfacePointer = parent.surfacePointer;
+    this.sharedBuffer = parent.sharedBuffer;
     this.dataBuffer = parent.dataBuffer;
   }
 
@@ -414,8 +403,6 @@ public class CairoSurface extends WritableRaster
                                             int w, int h, int childMinX,
                                             int childMinY, int[] bandList)
   {
-    if (true)
-      return this;
     if (parentX < minX || parentX + w > minX + width
         || parentY < minY || parentY + h > minY + height)
       throw new RasterFormatException("Child raster extends beyond parent");
