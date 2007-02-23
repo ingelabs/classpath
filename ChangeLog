@@ -1,3 +1,46 @@
+2007-02-23  Gary Benson  <gbenson@redhat.com>
+	    Jakub Jelinek  <jakub@redhat.com>
+
+	PR libgcj/17002
+	PR classpath/28550
+	* java/util/Date.java (parse): Properly parse 09:01:02 as
+	hours/minutes/seconds, not as hours/minutes/year.
+	* java/util/SimpleTimeZone.java (SimpleTimeZone): Simplify
+	{start,end}TimeMode constructor by calling shorter constructor,
+	set {start,end}TimeMode fields after it returns.
+	(setStartRule): Don't adjust startTime into WALL_TIME.  Set
+	startTimeMode to WALL_TIME.
+	(endStartRule): Similarly.
+	(getOffset): Handle properly millis + dstOffset overflowing into the
+	next day.  Adjust startTime resp. endTime based on startTimeMode
+	resp. endTimeMode.
+	* java/util/TimeZone.java (zoneinfo_dir, availableIDs, aliases0): New
+	static fields.
+	(timezones): Remove synchronized keyword.  Set zoneinfo_dir.
+	If non-null, set up aliases0 and don't put anything into
+	timezones0.
+	(defaultZone): Call getTimeZone instead of timezones().get.
+	(getDefaultTimeZone): Fix parsing of EST5 or EST5EDT6.  Use
+	getTimeZoneInternal instead of timezones().get.
+	(parseTime): Parse correctly hour:minute.
+	(getTimeZoneInternal): New private method.
+	(getTimeZone): Do the custom ID checking first, canonicalize
+	ID for custom IDs as required by documentation.  Call
+	getTimeZoneInternal to handle the rest.
+	(getAvailableIDs(int)): Add locking.  Handle zoneinfo_dir != null.
+	(getAvailableIDs(File,String,ArrayList)): New private method.
+	(getAvailableIDs()): Add locking.  Handle zoneinfo_dir != null.
+	* vm/reference/java/util/VMTimeZone.java (getDefaultTimeZoneId):
+	To read /etc/localtime, use ZoneInfo.readTZFile instead of
+	VMTimeZone.readtzFile.  Get better timezone name for
+	/etc/localtime, either if it is a symlink or through
+	/etc/sysconfig/clock.
+	(readSysconfigClockFile): New static method.
+	(readtzFile): Removed.
+	* gnu/java/util/ZoneInfo.java: New file.	
+	* java/lang/System.java: Add gnu.java.util.zoneinfo.dir to comments.
+        * NEWS: Documented TimeZone interface changes.
+
 2007-02-23  Francis Kung  <fkung@redhat.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c
@@ -5,7 +48,7 @@
 
 2007-02-22  Keith Seitz  <keiths@redhat.ecom>
 
-	* vm/refernece/gnu/classpath/jdwp/VMVirtualMachine.java
+	* vm/reference/gnu/classpath/jdwp/VMVirtualMachine.java
 	(getAllLoadedClassesCount): Remove.
 	(getAllLoadedClasses): Return a Collection.
 	* gnu/classpath/jdwp/processor/VirtualMachineCommandSet.java

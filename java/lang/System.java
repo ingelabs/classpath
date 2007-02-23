@@ -1,5 +1,5 @@
 /* System.java -- useful methods to interface with the system
-   Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005
+   Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2007
    Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -362,6 +362,7 @@ public final class System
    * <dt>gnu.java.io.encoding_scheme_alias.iso-latin-_?</dt> <dd>8859_?</dd>
    * <dt>gnu.java.io.encoding_scheme_alias.latin?</dt>       <dd>8859_?</dd>
    * <dt>gnu.java.io.encoding_scheme_alias.utf-8</dt>        <dd>UTF8</dd>
+   * <dt>gnu.java.util.zoneinfo.dir</dt>	<dd>Root of zoneinfo tree</dd>
    * <dt>gnu.javax.print.server</dt>     <dd>Hostname of external CUPS server.</dd>
    * </dl>
    *
