@@ -1,5 +1,11 @@
 2007-02-26  Francis Kung  <fkung@redhat.com>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c
+	(Java_gnu_java_awt_peer_gtk_GdkFontPeer_setFont): Stop using deprecated
+	function for creating new font map.
+
+2007-02-26  Francis Kung  <fkung@redhat.com>
+
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
 	(drawCairoSurface): Do not reset clip.
 	(drawImage(Image,AffineTransform,Color,ImageObserver)): Likewise.

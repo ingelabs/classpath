@@ -278,8 +278,9 @@ Java_gnu_java_awt_peer_gtk_GdkFontPeer_setFont
   pango_font_description_set_size (pfont->desc, size * PANGO_SCALE);
   if (pfont->ctx == NULL)
     {
-      ft2_map = PANGO_FT2_FONT_MAP(pango_ft2_font_map_for_display ());
+      ft2_map = PANGO_FT2_FONT_MAP(pango_ft2_font_map_new());
       pfont->ctx = pango_ft2_font_map_create_context (ft2_map);
+      g_object_unref(ft2_map);
     }
 
   g_assert (pfont->ctx != NULL);
