@@ -1548,7 +1548,6 @@ public abstract class CairoGraphics2D extends Graphics2D
     // data to be premultiplied.
     
     cairoSave(nativePointer);
-    cairoResetClip(nativePointer);
     Rectangle2D bounds = new Rectangle2D.Double(0, 0, width, height);
     bounds = getTransformedBounds(bounds, xform);
     cairoRectangle(nativePointer, bounds.getX(), bounds.getY(),
@@ -1708,7 +1707,6 @@ public abstract class CairoGraphics2D extends Graphics2D
     //   after drawing
     Shape newBounds = tx.createTransformedShape(bounds);
     cairoSave(nativePointer);
-    cairoResetClip(nativePointer);
     walkPath(newBounds.getPathIterator(null), false);
     cairoClip(nativePointer);
     
