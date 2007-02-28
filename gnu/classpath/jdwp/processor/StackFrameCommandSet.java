@@ -1,5 +1,5 @@
 /* StackFrameCommandSet.java -- class to implement the StackFrame Command Set
-   Copyright (C) 2005 Free Software Foundation
+   Copyright (C) 2005, 2007 Free Software Foundation
  
 This file is part of GNU Classpath.
 
@@ -45,7 +45,7 @@ import gnu.classpath.jdwp.VMVirtualMachine;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
 import gnu.classpath.jdwp.exception.NotImplementedException;
-import gnu.classpath.jdwp.id.ObjectId;
+import gnu.classpath.jdwp.id.ThreadId;
 import gnu.classpath.jdwp.util.Value;
 
 import java.io.DataOutputStream;
@@ -98,8 +98,8 @@ public class StackFrameCommandSet
   private void executeGetValues(ByteBuffer bb, DataOutputStream os)
       throws JdwpException, IOException
   {
-    ObjectId tId = idMan.readObjectId(bb);
-    Thread thread = (Thread) tId.getObject();
+    ThreadId tId = (ThreadId) idMan.readObjectId(bb);
+    Thread thread = tId.getThread();
 
     // Although Frames look like other ids they are not. First they are not
     // ObjectIds since they don't exist in the users code. Storing them as an
@@ -123,8 +123,8 @@ public class StackFrameCommandSet
   private void executeSetValues(ByteBuffer bb, DataOutputStream os)
       throws JdwpException, IOException
   {
-    ObjectId tId = idMan.readObjectId(bb);
-    Thread thread = (Thread) tId.getObject();
+    ThreadId tId = (ThreadId) idMan.readObjectId(bb);
+    Thread thread = tId.getThread();
 
     long frameID = bb.getLong();
     VMFrame frame = VMVirtualMachine.getFrame(thread, frameID);
@@ -141,8 +141,8 @@ public class StackFrameCommandSet
   private void executeThisObject(ByteBuffer bb, DataOutputStream os)
       throws JdwpException, IOException
   {
-    ObjectId tId = idMan.readObjectId(bb);
-    Thread thread = (Thread) tId.getObject();
+    ThreadId tId = (ThreadId) idMan.readObjectId(bb);
+    Thread thread = tId.getThread();
 
     long frameID = bb.getLong();
     VMFrame frame = VMVirtualMachine.getFrame(thread, frameID);

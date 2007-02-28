@@ -1,3 +1,19 @@
+2007-02-28  Keith Seitz  <keiths@redhat.com>
+
+	* gnu/classpath/jdwp/processor/MethodCommandSet.java
+	(executeLineTable): Use ReferenceTypeId instead of
+	ClassReferenceTypeId.
+	(executeVariableTable): Likewise.
+	(executeVariableTableWithGeneric): Fix error message.
+	* gnu/classpath/jdwp/processor/ReferenceTypeCommandSet.java
+	(executeSignatureWithGeneric): Fix error message.
+	(executeFieldWithGeneric): Likewise.
+	(executeMethodsWithGeneric): Likewise.
+	* gnu/classpath/jdwp/processor/StackFrameCommandSet.java
+	(executeGetValues): Use ThreadId instead of ObjectId.
+	(executeSetValues): Likewise.
+	(executeThisObject): Likewise.
+
 2007-02-28  Kyle Galloway  <kgallowa@redhat.com>
 
 	* gnu/classpath/jdwp/id/NullObjectId.java: New class.

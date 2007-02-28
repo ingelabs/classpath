@@ -1,6 +1,6 @@
 /* ReferenceTypeCommandSet.java -- class to implement the ReferenceType
    Command Set
-   Copyright (C) 2005, 2006 Free Software Foundation
+   Copyright (C) 2005, 2006, 2007 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -314,7 +314,7 @@ public class ReferenceTypeCommandSet
   {
     // We don't have generics yet
     throw new NotImplementedException(
-      "Command SourceDebugExtension not implemented.");
+      "Command SignatureWithGeneric not implemented.");
   }
 
   private void executeFieldWithGeneric(ByteBuffer bb, DataOutputStream os)
@@ -322,7 +322,7 @@ public class ReferenceTypeCommandSet
   {
     // We don't have generics yet
     throw new NotImplementedException(
-      "Command SourceDebugExtension not implemented.");
+      "Command executeFieldWithGeneric not implemented.");
   }
 
   private void executeMethodsWithGeneric(ByteBuffer bb, DataOutputStream os)
@@ -330,6 +330,6 @@ public class ReferenceTypeCommandSet
   {
     // We don't have generics yet
     throw new NotImplementedException(
-      "Command SourceDebugExtension not implemented.");
+      "Command executeMethodsWithGeneric not implemented.");
   }
 }
