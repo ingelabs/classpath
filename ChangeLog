@@ -1,3 +1,11 @@
+2007-02-28  Kyle Galloway  <kgallowa@redhat.com>
+
+	* gnu/classpath/jdwp/id/NullObjectId.java: New class.
+	* gnu/classpath/jdwp/util/NullObject.java: New class.
+	* vm/reference/gnu/classpath/jdwp/VMIdManager.java
+	(getObjectId): Handle null object.
+	(get): Handle objectId of 0. 
+
 2007-02-26  Francis Kung  <fkung@redhat.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c
