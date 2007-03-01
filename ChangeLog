@@ -1,3 +1,39 @@
+2007-02-28  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* INSTALL: Document --with-ecj-jar configure option and ecj jar
+	requirement for com.sun.tools.javac support.
+	* configure.ac: Add --with-ecj-jar configure option.
+	* gnu/classpath/Configuration.java.in (ECJ_JAR): New field.
+	* tools/Makefile.am: Build decendents of com and sun directories.
+	* resource/com/sun/tools/javac/messages.properties,
+	resource/sun/rmi/rmic/messages.properties,
+	tools/com/sun/javadoc/ClassDoc.java,
+	tools/com/sun/javadoc/ConstructorDoc.java,
+	tools/com/sun/javadoc/Doc.java,
+	tools/com/sun/javadoc/DocErrorReporter.java,
+	tools/com/sun/javadoc/Doclet.java,
+	tools/com/sun/javadoc/ExecutableMemberDoc.java,
+	tools/com/sun/javadoc/FieldDoc.java,
+	tools/com/sun/javadoc/MemberDoc.java,
+	tools/com/sun/javadoc/MethodDoc.java,
+	tools/com/sun/javadoc/PackageDoc.java,
+	tools/com/sun/javadoc/ParamTag.java,
+	tools/com/sun/javadoc/Parameter.java,
+	tools/com/sun/javadoc/ProgramElementDoc.java,
+	tools/com/sun/javadoc/RootDoc.java,
+	tools/com/sun/javadoc/SeeTag.java,
+	tools/com/sun/javadoc/SerialFieldTag.java,
+	tools/com/sun/javadoc/SourcePosition.java,
+	tools/com/sun/javadoc/Tag.java,
+	tools/com/sun/javadoc/ThrowsTag.java,
+	tools/com/sun/javadoc/Type.java,
+	tools/com/sun/javadoc/TypeVariable.java,
+	tools/com/sun/tools/doclets/Taglet.java,
+	tools/com/sun/tools/javac/Main.java,
+	tools/com/sun/tools/javac/Messages.java,
+	tools/sun/rmi/rmic/Main.java, tools/sun/rmi/rmic/Messages.java:
+	New files.
+
 2007-02-28  Keith Seitz  <keiths@redhat.com>
 
 	* gnu/classpath/jdwp/processor/MethodCommandSet.java

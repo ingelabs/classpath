@@ -687,6 +687,19 @@ AC_SUBST(INIT_LOAD_LIBRARY)
 
 
 dnl -----------------------------------------------------------
+dnl Specify the jar file containing the Eclipse Java Compiler.  If
+dnl this option is not specified then the com.sun.tools.javac
+dnl implementation will not be included in tools.zip.
+dnl -----------------------------------------------------------
+AC_ARG_WITH([ecj-jar],
+  	    [AS_HELP_STRING([--with-ecj-jar=ABS.PATH],
+  	    [specify jar file containing the Eclipse Java Compiler])],
+  	    [ECJ_JAR=$withval]
+  	    )
+AC_SUBST(ECJ_JAR)
+AM_CONDITIONAL(FOUND_ECJ_JAR, test -n "$ECJ_JAR")
+
+dnl -----------------------------------------------------------
 dnl Should the VM explicitly run class initialization subfunctions for
 dnl java.lang.System?   (default is false -- the subfunctions will be run 
 dnl automatically by the class initializer)
