@@ -726,7 +726,23 @@ public abstract class Component
    */
   public GraphicsConfiguration getGraphicsConfiguration()
   {
-    return getGraphicsConfigurationImpl();
+    GraphicsConfiguration conf = null;
+    synchronized (getTreeLock())
+      {
+        if (graphicsConfig != null)
+          {
+            conf = graphicsConfig;
+          }
+        else
+          {
+            Component par = getParent();
+            if (par != null)
+              {
+                conf = parent.getGraphicsConfiguration();
+              }
+          }
+      }
+    return conf;
   }
 
   /**
@@ -5431,27 +5447,6 @@ p   * <li>the set of backward traversal keys
   final void setPeer(ComponentPeer peer)
   {
     this.peer = peer;
-  }
-
-  /**
-   * Implementation method that allows classes such as Canvas and Window to
-   * override the graphics configuration without violating the published API.
-   *
-   * @return the graphics configuration
-   */
-  GraphicsConfiguration getGraphicsConfigurationImpl()
-  {
-    if (peer != null)
-      {
-        GraphicsConfiguration config = peer.getGraphicsConfiguration();
-        if (config != null)
-          return config;
-      }
-
-    if (parent != null)
-      return parent.getGraphicsConfiguration();
-
-    return null;
   }
 
   /**

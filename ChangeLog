@@ -1,3 +1,26 @@
+2007-03-01  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Canvas.java
+	(graphicsConfiguration): Removed duplicate (from Component) field.
+	(Canvas(GraphicsConfiguration)): Set the Component's graphicsConfig
+	field.
+	(getGraphicsConfigurationImpl): Removed.
+	* java/awt/Component.java
+	(getGraphicsConfiguration): Moved implementation here. Synchronize
+	on tree lock to prevent threading nastiness. Don't query peer
+	and instead return the setting of the graphicsConfig field.
+	(getGraphicsConfigurationImpl): Removed.
+	* java/awt/Window.java
+	(graphicsConfiguration): Removed duplicate (from Component) field.
+	(Window): Set the Component's graphicsConfig field.
+	(Window(GraphicsConfiguration)): Set the Component's graphicsConfig
+	field.
+	(Window(Window,GraphicsConfiguration)): Set the Component's 
+	graphicsConfig field.
+	(getGraphicsConfigurationImpl): Removed.
+	(getGraphicsConfiguration): Fetch the local graphics env here
+	if not already done and return that.
+
 2007-02-28  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* INSTALL: Document --with-ecj-jar configure option and ecj jar
