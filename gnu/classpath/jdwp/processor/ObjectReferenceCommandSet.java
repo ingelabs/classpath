@@ -1,6 +1,6 @@
 /* ObjectReferenceCommandSet.java -- class to implement the ObjectReference
    Command Set
-   Copyright (C) 2005 Free Software Foundation
+   Copyright (C) 2005, 2007 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -47,8 +47,9 @@ import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
 import gnu.classpath.jdwp.exception.NotImplementedException;
 import gnu.classpath.jdwp.id.ObjectId;
 import gnu.classpath.jdwp.id.ReferenceTypeId;
-import gnu.classpath.jdwp.util.Value;
 import gnu.classpath.jdwp.util.MethodResult;
+import gnu.classpath.jdwp.util.MonitorInfo;
+import gnu.classpath.jdwp.util.Value;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -183,13 +184,18 @@ public class ObjectReferenceCommandSet
   }
 
   private void executeMonitorInfo(ByteBuffer bb, DataOutputStream os)
-    throws JdwpException
+    throws JdwpException, IOException
   {
-    // This command is optional, determined by VirtualMachines CapabilitiesNew
-    // so we'll leave it till later to implement
-    throw new NotImplementedException(
-      "Command ExecuteMonitorInfo not implemented.");
+    if (!VMVirtualMachine.canGetMonitorInfo)
+      {
+	String msg = "getting monitor info not supported";
+	throw new NotImplementedException(msg);
+      }
 
+    ObjectId oid = idMan.readObjectId(bb);
+    Object obj = oid.getObject();
+    MonitorInfo info = VMVirtualMachine.getMonitorInfo(obj);
+    info.write(os);
   }
 
   private void executeInvokeMethod(ByteBuffer bb, DataOutputStream os)

@@ -152,10 +152,17 @@ public class StackFrameCommandSet
   }
 
   private void executePopFrames(ByteBuffer bb, DataOutputStream os)
-      throws JdwpException
+    throws JdwpException, IOException
   {
-    // This command is optional, determined by VirtualMachines CapabilitiesNew
-    // so we'll leave it till later to implement
-    throw new NotImplementedException("Command PopFrames not implemented.");
+    if (!VMVirtualMachine.canPopFrames)
+      {
+	String msg = "popping frames is unsupported";
+	throw new NotImplementedException(msg);
+      }
+
+    ThreadId tid = (ThreadId) idMan.readObjectId(bb);
+    Thread thread = tid.getThread();
+    long fid = bb.getLong();
+    VMVirtualMachine.popFrames(thread, fid);
   }
 }

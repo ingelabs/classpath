@@ -45,6 +45,8 @@ import gnu.classpath.jdwp.event.EventRequest;
 import gnu.classpath.jdwp.exception.InvalidMethodException;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.util.MethodResult;
+import gnu.classpath.jdwp.util.MonitorInfo;
+
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -57,6 +59,23 @@ import java.util.Collection;
  */
 public class VMVirtualMachine
 {
+  // VM Capabilities
+  public static final boolean canWatchFieldModification = false;
+  public static final boolean canWatchFieldAccess = false;
+  public static final boolean canGetBytecodes = false;
+  public static final boolean canGetSyntheticAttribute = false;
+  public static final boolean canGetOwnedMonitorInfo = false;
+  public static final boolean canGetCurrentContendedMonitor = false;
+  public static final boolean canGetMonitorInfo = false;
+  public static final boolean canRedefineClasses = false;
+  public static final boolean canAddMethod = false;
+  public static final boolean canUnrestrictedlyRedefineClasses = false;
+  public static final boolean canPopFrames = false;
+  public static final boolean canUseInstanceFilters = false;
+  public static final boolean canGetSourceDebugExtension = false;
+  public static final boolean canRequestVMDeathEvent = false;
+  public static final boolean canSetDefaultStratum = false;
+
   /**
    * Suspend a thread
    *
@@ -320,4 +339,86 @@ public class VMVirtualMachine
    */
   public static native void clearEvents(byte kind)
     throws JdwpException;
+
+  /**
+   * Redefines the given types. VM must support canRedefineClasses
+   * capability (may also require canAddMethod and/or
+   * canUnrestrictedlyRedefineClasses capabilities)
+   *
+   * @param types the classes to redefine
+   * @param bytecodes the new bytecode definitions for the classes
+   */
+  public static native void redefineClasses(Class[] types, byte[][] bytecodes)
+    throws JdwpException;
+
+  /**
+   * Sets the default stratum. VM must support the
+   * canSetDefaultStratum capability.
+   *
+   * @param stratum the new default stratum or empty string to
+   *        use the reference default
+   */
+  public static native void setDefaultStratum(String stratum)
+    throws JdwpException;
+
+  /**
+   * Returns the source debug extension. VM must support the
+   * canGetSourceDebugExtension capability.
+   *
+   * @param klass the class for which to return information
+   * @returns the source debug extension
+   */
+  public static native String getSourceDebugExtension(Class klass)
+    throws JdwpException;
+
+  /**
+   * Returns the bytecode for the given method. VM must support the
+   * canGetBytecodes capability.
+   *
+   * @param method the method for which to get bytecodes
+   * @returns the bytecodes
+   */
+  public static native byte[] getBytecodes(VMMethod method)
+    throws JdwpException;
+
+  /**
+   * Returns monitor information about an object. VM must support
+   * the canGetMonitorInformation capability.
+   *
+   * @param obj the object
+   * @returns monitor information (owner, entry count, waiters)
+   */
+  public static native MonitorInfo getMonitorInfo(Object obj)
+    throws JdwpException;
+
+  /**
+   * Returns a list of owned monitors. VM must support the
+   * canGetOwnedMonitorInfo capability.
+   *
+   * @param thread a thread
+   * @returns the list of monitors owned by this thread
+   */
+  public static native Object[] getOwnedMonitors(Thread thread)
+    throws JdwpException;
+
+  /**
+   * Returns the current contended monitor for a thread. VM must
+   * support canGetCurrentContendedMonitor capability.
+   *
+   * @param thread the thread
+   * @returns the contended monitor
+   */
+  public static native Object getCurrentContendedMonitor(Thread thread)
+    throws JdwpException;
+
+  /**
+   * Pop all frames up to and including the given frame. VM must
+   * support canPopFrames capability. It is the responsibility
+   * of the VM to check if the thread is suspended. If it is not,
+   * the VM should throw ThreadNotSuspendedException.
+   *
+   * @param thread the thread
+   * @param frame the frame ID
+   */
+  public static native void popFrames(Thread thread, long frameId);
 }

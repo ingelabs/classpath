@@ -40,6 +40,7 @@ package gnu.classpath.jdwp.processor;
 
 import gnu.classpath.jdwp.JdwpConstants;
 import gnu.classpath.jdwp.VMMethod;
+import gnu.classpath.jdwp.VMVirtualMachine;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
 import gnu.classpath.jdwp.exception.NotImplementedException;
@@ -119,11 +120,20 @@ public class MethodCommandSet
   }
 
   private void executeByteCodes(ByteBuffer bb, DataOutputStream os)
-      throws JdwpException
+    throws JdwpException, IOException
   {
-    // This command is optional, determined by VirtualMachines CapabilitiesNew
-    // so we'll leave it till later to implement
-    throw new NotImplementedException("Command ByteCodes not implemented.");
+    if (!VMVirtualMachine.canGetBytecodes)
+      {
+	String msg = "getting bytecodes is unsupported";
+	throw new NotImplementedException(msg);
+      }
+
+    ReferenceTypeId id = idMan.readReferenceTypeId(bb);
+    Class klass = id.getType();
+    VMMethod method = VMMethod.readId(klass, bb);
+    byte[] bytecode = VMVirtualMachine.getBytecodes(method);
+    os.writeInt(bytecode.length);
+    os.write(bytecode);
   }
 
   private void executeIsObsolete(ByteBuffer bb, DataOutputStream os)

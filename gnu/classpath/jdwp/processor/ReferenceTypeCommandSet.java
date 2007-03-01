@@ -303,10 +303,15 @@ public class ReferenceTypeCommandSet
   private void executeSourceDebugExtension(ByteBuffer bb, DataOutputStream os)
     throws JdwpException, IOException
   {
-    // This command is optional, determined by VirtualMachines CapabilitiesNew
-    // so we'll leave it till later to implement
-    throw new NotImplementedException(
-      "Command SourceDebugExtension not implemented.");
+    if (!VMVirtualMachine.canGetSourceDebugExtension)
+      {
+	String msg = "source debug extension is not supported";
+	throw new NotImplementedException(msg);
+      }
+
+    ReferenceTypeId id = idMan.readReferenceTypeId(bb);
+    String ext = VMVirtualMachine.getSourceDebugExtension (id.getType());
+    JdwpString.writeString(os, ext);
   }
 
   private void executeSignatureWithGeneric(ByteBuffer bb, DataOutputStream os)

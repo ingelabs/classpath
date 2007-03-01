@@ -331,14 +331,13 @@ public class VirtualMachineCommandSet
   private void executeCapabilities(ByteBuffer bb, DataOutputStream os)
     throws JdwpException, IOException
   {
-    // Store these somewhere?
-    os.writeBoolean(false); // canWatchFieldModification
-    os.writeBoolean(false); // canWatchFieldAccess
-    os.writeBoolean(false); // canGetBytecodes
-    os.writeBoolean(false); // canGetSyntheticAttribute
-    os.writeBoolean(false); // canGetOwnedMonitorInfo
-    os.writeBoolean(false); // canGetCurrentContendedMonitor
-    os.writeBoolean(false); // canGetMonitorInfo
+    os.writeBoolean(VMVirtualMachine.canWatchFieldModification);
+    os.writeBoolean(VMVirtualMachine.canWatchFieldAccess);
+    os.writeBoolean(VMVirtualMachine.canGetBytecodes);
+    os.writeBoolean(VMVirtualMachine.canGetSyntheticAttribute);
+    os.writeBoolean(VMVirtualMachine.canGetOwnedMonitorInfo);
+    os.writeBoolean(VMVirtualMachine.canGetCurrentContendedMonitor);
+    os.writeBoolean(VMVirtualMachine.canGetMonitorInfo);
   }
 
   private void executeClassPaths(ByteBuffer bb, DataOutputStream os)
@@ -392,43 +391,60 @@ public class VirtualMachineCommandSet
   private void executeCapabilitiesNew(ByteBuffer bb, DataOutputStream os)
     throws JdwpException, IOException
   {
-    // Store these somewhere?
     final int CAPABILITIES_NEW_SIZE = 32;
-    os.writeBoolean(false); // canWatchFieldModification
-    os.writeBoolean(false); // canWatchFieldAccess
-    os.writeBoolean(false); // canGetBytecodes
-    os.writeBoolean(false); // canGetSyntheticAttribute
-    os.writeBoolean(false); // canGetOwnedMonitorInfo
-    os.writeBoolean(false); // canGetCurrentContendedMonitor
-    os.writeBoolean(false); // canGetMonitorInfo
-    os.writeBoolean(false); // canRedefineClasses
-    os.writeBoolean(false); // canAddMethod
-    os.writeBoolean(false); // canUnrestrictedlyRedefineClasses
-    os.writeBoolean(false); // canPopFrames
-    os.writeBoolean(false); // canUseInstanceFilters
-    os.writeBoolean(false); // canGetSourceDebugExtension
-    os.writeBoolean(false); // canRequestVMDeathEvent
-    os.writeBoolean(false); // canSetDefaultStratum
+
+    executeCapabilities(bb, os);
+    os.writeBoolean(VMVirtualMachine.canRedefineClasses);
+    os.writeBoolean(VMVirtualMachine.canAddMethod);
+    os.writeBoolean(VMVirtualMachine.canUnrestrictedlyRedefineClasses);
+    os.writeBoolean(VMVirtualMachine.canPopFrames);
+    os.writeBoolean(VMVirtualMachine.canUseInstanceFilters);
+    os.writeBoolean(VMVirtualMachine.canGetSourceDebugExtension);
+    os.writeBoolean(VMVirtualMachine.canRequestVMDeathEvent);
+    os.writeBoolean(VMVirtualMachine.canSetDefaultStratum);
     for (int i = 15; i < CAPABILITIES_NEW_SIZE; i++)
-      // Future capabilities
-      // currently unused
-      os.writeBoolean(false); // Set to false
+      {
+	// Future capabilities (currently unused)
+	os.writeBoolean(false);
+      }
   }
 
   private void executeRedefineClasses(ByteBuffer bb, DataOutputStream os)
     throws JdwpException
   {
-    // Optional command, don't implement
-    throw new NotImplementedException(
-      "Command VirtualMachine.RedefineClasses not implemented");
+    if (!VMVirtualMachine.canRedefineClasses)
+      {
+	String msg = "redefinition of classes is not supported";
+	throw new NotImplementedException(msg);
+      }
+
+    int classes = bb.getInt();
+    Class[] types = new Class[classes];
+    byte[][] bytecodes = new byte[classes][];
+    for (int i = 0; i < classes; ++i)
+      {
+	ReferenceTypeId id = idMan.readReferenceTypeId(bb);
+	int classfile = bb.getInt();
+	byte[] bytecode = new byte[classfile];
+	bb.get(bytecode);
+	types[i] = id.getType();
+	bytecodes[i] = bytecode;
+      }
+
+    VMVirtualMachine.redefineClasses (types, bytecodes);
   }
 
   private void executeSetDefaultStratum(ByteBuffer bb, DataOutputStream os)
     throws JdwpException
   {
-    // Optional command, don't implement
-    throw new NotImplementedException(
-      "Command VirtualMachine.SetDefaultStratum not implemented");
+    if (!VMVirtualMachine.canSetDefaultStratum)
+      {
+	String msg = "setting the default stratum is not supported";
+	throw new NotImplementedException(msg);
+      }
+
+    String stratum = JdwpString.readString(bb);
+    VMVirtualMachine.setDefaultStratum(stratum);
   }
 
   private void executeAllClassesWithGeneric(ByteBuffer bb, DataOutputStream os)

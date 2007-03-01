@@ -1,3 +1,52 @@
+2007-02-28  Keith Seitz  <keiths@redhat.com>
+
+	* gnu/classpath/jdwp/processor/EventRequestCommandSet.java
+	(executeSet): Check if VM has capability for field access
+	or modification events.
+	* gnu/classpath/jdwp/processor/MethodCommandSet.java
+	(executeByteCodes): Check if VM has capability and
+	implement.
+	* gnu/classpath/jdwp/processor/ObjectReferenceCommandSet.java
+	(executeMonitorInfo): Likewise.
+	* gnu/classpath/jdwp/processor/ReferenceTypeCommandSet.java
+	(executeSourceDebugExtension): Likewise.
+	* gnu/classpath/jdwp/processor/StackFrameCommandSet.java
+	(executePopFrames): Likewise.
+	* gnu/classpath/jdwp/processor/ThreadReferenceCommandSet.java
+	(executeOwnedMonitors): Likewise.
+	(executeCurrentContendedMonitor): Likewise.
+	* gnu/classpath/jdwp/processor/VirtualMachineCommandSet.java
+	(executeCapabilities): Rewrite using new VMVirtualMachine
+	capabilities.
+	(executeRedefineClasses): Check if VM has capability and
+	implement.
+	(executeSetDefaultStratum): Likewise.
+	* gnu/classpath/jdwp/util/MonitorInfo.java; New file.
+	* vm/reference/gnu/classpath/jdwp/VMVirtualMachine.java
+	(canWatchFieldModification): New class constant.
+	(canWatchFieldAccess): Likewise.
+	(canGetBytecodes): Likewise.
+	(canGetSyntheticAttribute): Likewise.
+	(canGetOwnedMonitorInfo): Likewise.
+	(canGetCurrentContendedMonitor): Likewise.
+	(canGetMonitorInfo): Likewise.
+	(canRedefineClasses): Likewise.
+	(canAddMethod): Likewise.
+	(canUnrestrictedlyRedefineClasses): Likewise.
+	(canPopFrames): Likewise.
+	(canUseInstanceFilters): Likewise.
+	(canGetSourceDebugExtension): Likewise.
+	(canRequestVMDeathEvent): Likewise.
+	(canSetDefaultStratum): Likewise.
+	(redefineClasses): New method.
+	(setDefaultStratum): Likewise.
+	(getSourceDebugExtension): Likewise.
+	(getBytecodes): Likewise.
+	(getMonitorInfo): Likewise.
+	(getOwnedMonitors): Likewise.
+	(getCurrentContendedMonitor): Likewise.
+	(popFrames): Likewise.
+
 2007-03-01  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/Canvas.java
