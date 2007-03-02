@@ -1,5 +1,11 @@
 2007-03-02  Mario Torre  <neugens@limasoftware.net>
 
+	PR classpath/31017:
+	committed for Petteri Räty <betelgeuse@gentoo.org>
+	* configure.ac: fix broken build for gcj browser plugin
+	
+2007-03-02  Mario Torre  <neugens@limasoftware.net>
+
 	* java/awt/Desktop.java: new java 1.6 class.
 	* java/awt/peer/DesktopPeer.java: new inteface.
 	* gnu/java/awt/peer/GnomeDesktopPeer.java: new class.
