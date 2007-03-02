@@ -63,6 +63,7 @@ import java.awt.peer.CanvasPeer;
 import java.awt.peer.CheckboxMenuItemPeer;
 import java.awt.peer.CheckboxPeer;
 import java.awt.peer.ChoicePeer;
+import java.awt.peer.DesktopPeer;
 import java.awt.peer.DialogPeer;
 import java.awt.peer.FileDialogPeer;
 import java.awt.peer.FontPeer;
@@ -148,6 +149,15 @@ public abstract class Toolkit
     awtEventListeners = new AWTEventListenerProxy[0];
   }
 
+  /**
+   * 
+   * @param target
+   * @return
+   * @throws HeadlessException
+   */
+  protected abstract DesktopPeer createDesktopPeer(Desktop target)
+    throws HeadlessException;
+  
   /**
    * Creates a peer object for the specified <code>Button</code>.
    *

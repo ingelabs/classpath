@@ -38,17 +38,21 @@ exception statement from your version. */
 
 package gnu.java.awt;
 
+import gnu.java.awt.peer.ClasspathDesktopPeer;
 import gnu.java.awt.peer.ClasspathFontPeer;
 import gnu.java.awt.peer.EmbeddedWindowPeer;
 import gnu.java.security.action.SetAccessibleAction;
 
 import java.awt.AWTException;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.font.TextAttribute;
+import java.awt.peer.DesktopPeer;
 import java.awt.peer.RobotPeer;
 import java.io.IOException;
 import java.io.InputStream;
@@ -212,5 +216,18 @@ public abstract class ClasspathToolkit
    {
      return -1;
    }
+   
+   /* (non-Javadoc)
+    * @see java.awt.Toolkit#createDesktopPeer(java.awt.Desktop)
+    */
+   protected DesktopPeer createDesktopPeer(Desktop target)
+     throws HeadlessException
+   {
+     if (GraphicsEnvironment.isHeadless())
+       throw new HeadlessException();
+     
+     return ClasspathDesktopPeer.getDesktop();
+   }
+
 }
 

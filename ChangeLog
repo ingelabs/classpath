@@ -1,3 +1,16 @@
+2007-03-02  Mario Torre  <neugens@limasoftware.net>
+
+	* java/awt/Desktop.java: new java 1.6 class.
+	* java/awt/peer/DesktopPeer.java: new inteface.
+	* gnu/java/awt/peer/GnomeDesktopPeer.java: new class.
+	* gnu/java/awt/peer/ClasspathDesktopPeer.java: new class.
+	* gnu/java/awt/peer/KDEDesktopPeer.java: new class.
+	* java/awt/Toolkit.java (createDesktopPeer): new method to support the
+	creation of DesktopPeer instances.
+	* gnu/java/awt/peer/qt/QtToolkit.java: update copyright notice and
+	organize import.
+	* gnu/java/awt/ClasspathToolkit.java (createDesktopPeer): new method.
+
 2007-02-28  Keith Seitz  <keiths@redhat.com>
 
 	* gnu/classpath/jdwp/processor/EventRequestCommandSet.java
