@@ -1,3 +1,29 @@
+2007-03-05  Andrew John Hughs  <gnu_andrew@member.fsf.org>
+
+	* gnu/java/lang/management/BeanImpl.java:
+	Reference the new Translator class.
+	(translate(String)): Moved to Translator.
+	* gnu/javax/management/Translator.java:
+	New file.
+	* javax/management/JMX.java:
+	Likewise.
+	* javax/management/MBeanServerInvocationHandler.java:
+	Likewise.
+	* javax/management/MXBean.java:
+	Likewise.
+	* javax/management/ObjectName.java:
+	(ObjectName(String)): Catch a key without a value.
+	* javax/management/StandardMBean.java:
+	(StandardMBean(Class<?>)): Handle MXBeans.
+	(StandardMBean(Object, Class<?>)): Likewise.
+	(invoke(String,Object[],String[])): Disallow
+	calling attribute methods and handle null signatures.
+	(setAttribute(Attribute)): Search for mutators
+	with the appropriate signature.
+	* javax/management/openmbean/OpenType.java:
+	Add generic typing.
+	(ALLOWED_CLASSNAMES_LIST): New field.
+	
 2007-03-02  Mario Torre  <neugens@limasoftware.net>
 
 	PR classpath/31017:

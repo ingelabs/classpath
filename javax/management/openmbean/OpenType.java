@@ -39,6 +39,9 @@ package javax.management.openmbean;
 
 import java.io.Serializable;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * The superclass of all open types, which describe the
  * applicable data values for open MBeans.  An open type
@@ -48,7 +51,7 @@ import java.io.Serializable;
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.5
  */
-public abstract class OpenType
+public abstract class OpenType<T>
   implements Serializable
 {
 
@@ -76,7 +79,10 @@ public abstract class OpenType
    * An array which defines the set of Java types which can be
    * used as open types.  Note that each type is also available
    * in array form, possibly with multiple dimensions.
+   *
+   * @deprecated Use {@link ALLOWED_CLASSNAMES_LIST} instead.
    */
+  @Deprecated
   public static final String[] ALLOWED_CLASSNAMES = {
     "java.lang.Void",
     "java.lang.Boolean",
@@ -95,6 +101,14 @@ public abstract class OpenType
     CompositeData.class.getName(),
     TabularData.class.getName() 
   };
+
+  /**
+   * A list which defines the set of Java types that may be
+   * used as open types.  Note that each type is also available
+   * in array form, possibly with multiple dimensions.
+   */
+  public static final List<String> ALLOWED_CLASSNAMES_LIST = 
+    Arrays.asList(ALLOWED_CLASSNAMES); 
 
   /**
    * Constructs a new {@link OpenType} for the specified class

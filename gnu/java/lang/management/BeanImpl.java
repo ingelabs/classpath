@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package gnu.java.lang.management;
 
+import gnu.javax.management.Translator;
+
 import java.lang.management.ManagementPermission;
 
 import java.lang.reflect.Array;
@@ -124,7 +126,7 @@ public class BeanImpl
 	  new OpenMBeanAttributeInfoSupport[oldA.length];
 	for (int a = 0; a < oldA.length; ++a)
 	  {
-	    OpenMBeanParameterInfo param = translate(oldA[a].getType());
+	    OpenMBeanParameterInfo param = Translator.translate(oldA[a].getType());
 	    if (param.getMinValue() == null)
 	      {
 		Object[] lv;
@@ -166,7 +168,7 @@ public class BeanImpl
 	new OpenMBeanOperationInfoSupport(oldO[a].getName(),
 					  oldO[a].getDescription(),
 					  translateSignature(oldO[a].getSignature()),
-					  translate(oldO[a].getReturnType()).getOpenType(),
+					  Translator.translate(oldO[a].getReturnType()).getOpenType(),
 					  oldO[a].getImpact());
 	openInfo = new OpenMBeanInfoSupport(info.getClassName(), info.getDescription(),
 					    attribs, cons, ops, info.getNotifications());
@@ -323,19 +325,13 @@ public class BeanImpl
     return getCachedMBeanInfo();
   }
 
-  private OpenType getTypeFromClass(Class c)
-    throws OpenDataException
-  {
-    return translate(c.getName()).getOpenType();
-  }
-
   private OpenMBeanParameterInfo[] translateSignature(MBeanParameterInfo[] oldS)
     throws OpenDataException
   {
     OpenMBeanParameterInfo[] sig = new OpenMBeanParameterInfoSupport[oldS.length];
     for (int a = 0; a < oldS.length; ++a)
       {
-	OpenMBeanParameterInfo param = translate(oldS[a].getType());
+	OpenMBeanParameterInfo param = Translator.translate(oldS[a].getType());
 	if (param.getMinValue() == null)
 	  {
 	    Object[] lv;
@@ -360,165 +356,5 @@ public class BeanImpl
     return sig;
   }
 
-  private OpenMBeanParameterInfo translate(String type)
-    throws OpenDataException
-  {
-    if (type.equals("boolean") || type.equals(Boolean.class.getName()))
-      return new OpenMBeanParameterInfoSupport("TransParam",
-					       "Translated parameter",
-					       SimpleType.BOOLEAN,
-					       null,
-					       new Object[] {
-						 Boolean.TRUE,
-						 Boolean.FALSE
-					       });
-    if (type.equals("byte") || type.equals(Byte.class.getName()))
-      return new OpenMBeanParameterInfoSupport("TransParam",
-					       "Translated parameter",
-					       SimpleType.BYTE,
-					       null,
-					       Byte.valueOf(Byte.MIN_VALUE),
-					       Byte.valueOf(Byte.MAX_VALUE));
-    if (type.equals("char") || type.equals(Character.class.getName()))
-      return new OpenMBeanParameterInfoSupport("TransParam",
-					       "Translated parameter",
-					       SimpleType.CHARACTER,
-					       null,
-					       Character.valueOf(Character.MIN_VALUE),
-					       Character.valueOf(Character.MAX_VALUE));
-    if (type.equals("double") || type.equals(Double.class.getName()))
-      return new OpenMBeanParameterInfoSupport("TransParam",
-					       "Translated parameter",
-					       SimpleType.DOUBLE,
-					       null,
-					       Double.valueOf(Double.MIN_VALUE),
-					       Double.valueOf(Double.MAX_VALUE));
-    if (type.equals("float") || type.equals(Float.class.getName()))
-      return new OpenMBeanParameterInfoSupport("TransParam",
-					       "Translated parameter",
-					       SimpleType.FLOAT,
-					       null,
-					       Float.valueOf(Float.MIN_VALUE),
-					       Float.valueOf(Float.MAX_VALUE));
-    if (type.equals("int") || type.equals(Integer.class.getName()))
-      return new OpenMBeanParameterInfoSupport("TransParam",
-					       "Translated parameter",
-					       SimpleType.INTEGER,
-					       null,
-					       Integer.valueOf(Integer.MIN_VALUE),
-					       Integer.valueOf(Integer.MAX_VALUE));
-    if (type.equals("long") || type.equals(Long.class.getName()))
-      return new OpenMBeanParameterInfoSupport("TransParam",
-					       "Translated parameter",
-					       SimpleType.LONG,
-					       null,
-					       Long.valueOf(Long.MIN_VALUE),
-					       Long.valueOf(Long.MAX_VALUE));
-    if (type.equals("short") || type.equals(Short.class.getName()))
-      return new OpenMBeanParameterInfoSupport("TransParam",
-					       "Translated parameter",
-					       SimpleType.SHORT,
-					       null,
-					       Short.valueOf(Short.MIN_VALUE),
-					       Short.valueOf(Short.MAX_VALUE));
-    if (type.equals(String.class.getName()))
-      return new OpenMBeanParameterInfoSupport("TransParam",
-					       "Translated parameter",
-					       SimpleType.STRING);
-    if (type.equals("void"))
-      return new OpenMBeanParameterInfoSupport("TransParam",
-					       "Translated parameter",
-					       SimpleType.VOID);
-    if (type.startsWith("java.util.Map"))
-      {
-	int lparam = type.indexOf("<");
-	int comma = type.indexOf(",", lparam);
-	int rparam = type.indexOf(">", comma);
-	String key = type.substring(lparam + 1, comma).trim();
-	OpenType k = translate(key).getOpenType();
-	OpenType v = translate(type.substring(comma + 1, rparam).trim()).getOpenType(); 
- 	CompositeType ctype = new CompositeType(Map.class.getName(), Map.class.getName(),
-						new String[] { "key", "value" },
-						new String[] { "Map key", "Map value"},
-						new OpenType[] { k, v});
-	TabularType ttype = new TabularType(key, key, ctype,
-					    new String[] { "key" });
-	return new OpenMBeanParameterInfoSupport("TransParam",
-						 "Translated parameter",
-						 ttype);
-      }
-    if (type.startsWith("java.util.List"))
-      {
-	int lparam = type.indexOf("<");
-	int rparam = type.indexOf(">");
-       	OpenType e = translate(type.substring(lparam + 1, rparam).trim()).getOpenType();
-	return new OpenMBeanParameterInfoSupport("TransParam",
-						 "Translated parameter",
-						 new ArrayType(1, e)
-						 );
-      }	
-    Class c;
-    try
-      {
-	c = Class.forName(type);
-      }
-    catch (ClassNotFoundException e)
-      {
-	throw (InternalError)
-	  (new InternalError("The class for a type used in a management bean " +
-			     "could not be loaded.").initCause(e));
-      }
-    if (c.isEnum())
-      {
-	Object[] values = c.getEnumConstants();
-	String[] names = new String[values.length];
-	for (int a = 0; a < values.length; ++a)
-	  names[a] = values[a].toString();
-	return new OpenMBeanParameterInfoSupport("TransParam",
-						 "Translated parameter",
-						 SimpleType.STRING,
-						 null,
-						 (Object[]) names);
-      }
-    try
-      {
-	c.getMethod("from", new Class[] { CompositeData.class });
-	Method[] methods = c.getDeclaredMethods();
-	List<String> names = new ArrayList<String>();
-	List<OpenType> types = new ArrayList<OpenType>();
-	for (int a = 0; a < methods.length; ++a)
-	  {
-	    String name = methods[a].getName();
-	    if (name.startsWith("get"))
-	      {
-		names.add(name.substring(3));
-		types.add(getTypeFromClass(methods[a].getReturnType()));
-	      }
-	  }
-	String[] fields = names.toArray(new String[names.size()]);
-	CompositeType ctype = new CompositeType(c.getName(), c.getName(),
-						fields, fields,
-						types.toArray(new OpenType[types.size()]));
-	return new OpenMBeanParameterInfoSupport("TransParam",
-						 "Translated parameter",
-						 ctype);
-      }
-    catch (NoSuchMethodException e)
-      {
-	/* Ignored; we expect this if this isn't a from(CompositeData) class */
-      }
-    if (c.isArray())
-      {
-	int depth;
-	for (depth = 0; c.getName().charAt(depth) == '['; ++depth)
-          ;
-	OpenType ot = getTypeFromClass(c.getComponentType());
-	return new OpenMBeanParameterInfoSupport("TransParam",
-						 "Translated parameter",
-						 new ArrayType(depth, ot)
-						 );
-      }
-    throw new InternalError("The type used does not have an open type translation.");
-  }
 
 }

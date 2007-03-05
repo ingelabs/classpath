@@ -106,10 +106,19 @@ public class StandardMBean
 	  }
 	catch (ClassNotFoundException e)
 	  {
-	    throw (NotCompliantMBeanException) 
-	      (new NotCompliantMBeanException("An interface, " + className +
-					      "MBean, for the class " + className +
-					      " was not found.").initCause(e));
+	    for (Class<?> nextIface : getClass().getInterfaces())
+	    {
+	      if (JMX.isMXBeanInterface(nextIface))
+		{
+		  iface = nextIface;
+		  break;
+		}
+	    }
+	    if (iface == null)  
+	      throw (NotCompliantMBeanException) 
+		(new NotCompliantMBeanException("An interface for the class " 
+						+ className +
+						" was not found.").initCause(e));
 	  }
       }
     if (!(iface.isInstance(this)))
@@ -140,18 +149,28 @@ public class StandardMBean
       throw new IllegalArgumentException("The specified implementation is null.");
     if (iface == null)
       {
-	String className = impl.getClass().getName();
+	Class<?> implClass = impl.getClass();
+	String className = implClass.getName();
 	try
 	  {
 	    this.iface = Class.forName(className + "MBean", true,
-				       impl.getClass().getClassLoader());
+				       implClass.getClassLoader());
 	  }
 	catch (ClassNotFoundException e)
 	  {
-	    throw (NotCompliantMBeanException) 
-	      (new NotCompliantMBeanException("An interface, " + className +
-					      "MBean, for the class " + className +
-					      " was not found.").initCause(e));
+	    for (Class<?> nextIface : implClass.getInterfaces())
+	    {
+	      if (JMX.isMXBeanInterface(nextIface))
+		{
+		  this.iface = nextIface;
+		  break;
+		}
+	    }
+	    if (this.iface == null)  
+	      throw (NotCompliantMBeanException) 
+		(new NotCompliantMBeanException("An interface for the class " +
+						className +
+						" was not found.").initCause(e));
 	  }
       }
     else
@@ -753,19 +772,30 @@ public class StandardMBean
   public Object invoke(String name, Object[] params, String[] signature)
     throws MBeanException, ReflectionException
   {
-    Class[] sigTypes = new Class[signature.length];
+    if (name.startsWith("get") || name.startsWith("is") ||
+	name.startsWith("set"))
+      throw new ReflectionException(new NoSuchMethodException(),
+				    "Invocation of an attribute " +
+				    "method is disallowed.");
     ClassLoader loader = getClass().getClassLoader();
-    for (int a = 0; a < signature.length; ++a)
-      try 
-	{
-	  sigTypes[a] = Class.forName(signature[a], true, loader);
-	}
-      catch (ClassNotFoundException e)
-	{
-	  throw new ReflectionException(e, "The class, " + signature[a] + 
-					", in the method signature " +
-					"could not be loaded.");
-	}
+    Class[] sigTypes;
+    if (signature != null)
+      {
+	sigTypes = new Class[signature.length];
+	for (int a = 0; a < signature.length; ++a)
+	  try 
+	    {
+	      sigTypes[a] = Class.forName(signature[a], true, loader);
+	    }
+	  catch (ClassNotFoundException e)
+	    {
+	      throw new ReflectionException(e, "The class, " + signature[a] + 
+					    ", in the method signature " +
+					    "could not be loaded.");
+	    }
+      }
+    else
+      sigTypes = null;
     Method method;
     try
       {
@@ -826,11 +856,12 @@ public class StandardMBean
   {
     Method setter;
     String name = attribute.getName();
+    Object val = attribute.getValue();
     try 
       {
 	setter = iface.getMethod("set" +
 				 name.substring(0, 1).toUpperCase() +
-				 name.substring(1), null);
+				 name.substring(1), val.getClass());
       }
     catch (NoSuchMethodException e)
       {
@@ -840,7 +871,7 @@ public class StandardMBean
       }
     try
       {
-	setter.invoke(impl, new Object[] { attribute.getValue() });
+	setter.invoke(impl, new Object[] { val });
       }
     catch (IllegalAccessException e)
       {

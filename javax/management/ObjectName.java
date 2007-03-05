@@ -167,6 +167,9 @@ public class ObjectName
 	for (int a = 0; a < pairs.length; ++a)
 	  {
 	    int sep = pairs[a].indexOf('=');
+	    if (sep == -1)
+	      throw new MalformedObjectNameException("A key must be " +
+						     "followed by a value.");
 	    String key = pairs[a].substring(0, sep);
 	    if (properties.containsKey(key))
 	      throw new MalformedObjectNameException("The same key occurs " +
