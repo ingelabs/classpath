@@ -1,5 +1,5 @@
 /* ArrayType.java -- Open type descriptor for an array.
-   Copyright (C) 2006 Free Software Foundation, Inc.
+   Copyright (C) 2006, 2007 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -47,8 +47,8 @@ import java.util.Arrays;
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.5
  */
-public class ArrayType
-  extends OpenType
+public class ArrayType<T>
+  extends OpenType<T>
 {
   
   /**
@@ -64,7 +64,7 @@ public class ArrayType
   /**
    * The element type of arrays of this type.
    */
-  private OpenType elementType;
+  private OpenType<?> elementType;
 
   /**
    * The hash code of this instance.
@@ -136,7 +136,7 @@ public class ArrayType
    *                           {@link SimpleType}, {@link CompositeType}
    *                           or {@link TabularType}.
    */
-  public ArrayType(int dim, OpenType elementType)
+  public ArrayType(int dim, OpenType<?> elementType)
     throws OpenDataException
   {
     super(getArrayClassName(elementType.getClassName(), dim),
@@ -197,7 +197,7 @@ public class ArrayType
    *
    * @return the type of the elements.
    */
-  public OpenType getElementOpenType()
+  public OpenType<?> getElementOpenType()
   {
     return elementType;
   }

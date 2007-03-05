@@ -308,7 +308,7 @@ public final class Translator
 					       "Translated parameter",
 					       SimpleType.BOOLEAN,
 					       null,
-					       new Object[] {
+					       new Boolean[] {
 						 Boolean.TRUE,
 						 Boolean.FALSE
 					       });
@@ -417,8 +417,7 @@ public final class Translator
 	return new OpenMBeanParameterInfoSupport("TransParam",
 						 "Translated parameter",
 						 SimpleType.STRING,
-						 null,
-						 (Object[]) names);
+						 null, names);
       }
     try
       {

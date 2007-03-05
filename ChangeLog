@@ -1,4 +1,34 @@
-2007-03-05  Andrew John Hughs  <gnu_andrew@member.fsf.org>
+2007-03-05  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* gnu/javax/management/Translator.java:
+	(translate(String)): Use a Boolean array to
+	comply with the new typing.
+	* javax/management/openmbean/ArrayType.java:
+	Added generic types and updated copyright headers.
+	* javax/management/openmbean/CompositeData.java:
+	Likewise.
+	* javax/management/openmbean/CompositeDataSupport.java:
+	Likewise.	
+	* javax/management/openmbean/CompositeType.java:
+	Likewise.	
+	* javax/management/openmbean/OpenMBeanAttributeInfoSupport.java:
+	Likewise.	
+	* javax/management/openmbean/OpenMBeanOperationInfoSupport.java:
+	Likewise.	
+	* javax/management/openmbean/OpenMBeanParameterInfoSupport.java:
+	Likewise.	
+	* javax/management/openmbean/OpenType.java:
+	Updated copyright header.	
+	* javax/management/openmbean/SimpleType.java:
+	Added generic types and updated copyright headers.
+	* javax/management/openmbean/TabularData.java:
+	Likewise.
+	* javax/management/openmbean/TabularDataSupport.java:
+	Likewise.
+	* javax/management/openmbean/TabularType.java:
+	Likewise.
+	
+2007-03-05  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* gnu/java/lang/management/BeanImpl.java:
 	Reference the new Translator class.
