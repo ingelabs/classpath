@@ -370,13 +370,20 @@ public class FreetypeGlyphVector extends GlyphVector
 
   /**
    * Returns the outline of a single glyph.
+   * 
+   * Despite what the Sun API says, this method returns the glyph relative to
+   * the origin of the *entire string*, not each individual glyph.
    */
   public Shape getGlyphOutline(int glyphIndex)
   {
     GeneralPath gp = getGlyphOutlineNative( glyphCodes[ glyphIndex ] );
-    if (glyphTransforms[glyphIndex] != null)
-      gp.transform( glyphTransforms[glyphIndex]);
     
+    AffineTransform tx = AffineTransform.getTranslateInstance(glyphPositions[glyphIndex*2],
+                                                              glyphPositions[glyphIndex*2+1]);
+    if (glyphTransforms[glyphIndex] != null)
+      tx.concatenate( glyphTransforms[glyphIndex]);
+
+    gp.transform(tx);
     return gp;
   }
 
@@ -456,14 +463,8 @@ public class FreetypeGlyphVector extends GlyphVector
   public Shape getOutline()
   {
     GeneralPath path = new GeneralPath();
-    AffineTransform tx = new AffineTransform();
     for( int i = 0; i < getNumGlyphs(); i++ )
-      {
-        Shape outline = getGlyphOutline(i);
-        tx.setToTranslation(glyphPositions[i*2], glyphPositions[i*2 +1]);
-        outline = tx.createTransformedShape(outline);
-        path.append(outline, false);
-      }
+      path.append(getGlyphOutline(i), false);
     return path;
   }
 
