@@ -340,7 +340,7 @@ public class CompositeDataSupport
    *
    * @return the values of this instance.
    */
-  public Collection values()
+  public Collection<?> values()
   {
     return Collections.unmodifiableCollection(contents.values());
   }

@@ -136,7 +136,8 @@ public class BeanImpl
 		  lv = param.getLegalValues().toArray();
 		attribs[a] = new OpenMBeanAttributeInfoSupport(oldA[a].getName(),
 							       oldA[a].getDescription(),
-							       param.getOpenType(),
+							       ((OpenType<Object>)
+								param.getOpenType()),
 							       oldA[a].isReadable(),
 							       oldA[a].isWritable(),
 							       oldA[a].isIs(),
@@ -146,13 +147,16 @@ public class BeanImpl
 	    else
 	      attribs[a] = new OpenMBeanAttributeInfoSupport(oldA[a].getName(),
 							     oldA[a].getDescription(),
-							     param.getOpenType(),
+							     ((OpenType<Object>)
+							      param.getOpenType()),
 							     oldA[a].isReadable(),
 							     oldA[a].isWritable(),
 							     oldA[a].isIs(),
 							     param.getDefaultValue(),
-							     param.getMinValue(),
-							     param.getMaxValue());
+							     ((Comparable<Object>)
+							       param.getMinValue()),
+							     ((Comparable<Object>)
+							       param.getMaxValue()));
 	  }
 	MBeanConstructorInfo[] oldC = info.getConstructors();
 	OpenMBeanConstructorInfo[] cons = new OpenMBeanConstructorInfoSupport[oldC.length];
@@ -341,17 +345,21 @@ public class BeanImpl
 	      lv = param.getLegalValues().toArray();
 	    sig[a] = new OpenMBeanParameterInfoSupport(oldS[a].getName(),
 						       oldS[a].getDescription(),
-						       param.getOpenType(),
+						       ((OpenType<Object>)
+							param.getOpenType()),
 						       param.getDefaultValue(),
 						       lv);
 	  }
 	else
 	  sig[a] = new OpenMBeanParameterInfoSupport(oldS[a].getName(),
 						     oldS[a].getDescription(),
-						     param.getOpenType(),
+						     ((OpenType<Object>)
+						      param.getOpenType()),
 						     param.getDefaultValue(),
-						     param.getMinValue(),
-						     param.getMaxValue());
+						     ((Comparable<Object>)
+						      param.getMinValue()),
+						     ((Comparable<Object>)
+						      param.getMaxValue()));
       }
     return sig;
   }
