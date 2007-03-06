@@ -1,3 +1,13 @@
+2007-03-06  Tom Tromey  <tromey@redhat.com>
+
+	* tools/gnu/classpath/tools/javah/Main.java (getName): New
+	method.
+	(getParser): Now protected.  Use getName.  Add '-v' alias for
+	--verbose.
+	(postParse): New method.
+	(run): Now protected.  Use postParse.
+	* tools/gnu/classpath/tools/javah/GcjhMain.java: New file.
+
 2007-03-05  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* gnu/javax/management/Translator.java:
