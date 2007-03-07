@@ -1,3 +1,8 @@
+2007-03-07  Gary Benson  <gbenson@redhat.com>
+
+	* resource/META-INF/services/org.w3c.dom.DOMImplementationSourceList:
+	New file.
+
 2007-03-06  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* gnu/java/lang/management/BeanImpl.java:
