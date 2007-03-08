@@ -1,3 +1,8 @@
+2007-03-08  Tom Tromey  <tromey@redhat.com>
+
+	PR libgcj/31093:
+	* java/net/MulticastSocket.java (setTimeToLive): Allow ttl==0.
+
 2007-03-08  Gary Benson  <gbenson@redhat.com>
 
 	PR classpath/30983:
