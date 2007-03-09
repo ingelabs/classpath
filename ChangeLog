@@ -1,5 +1,11 @@
 2007-03-09  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/image/SinglePixelPackageSampleModel.java
+	(createDataBuffer): Avoid use of Buffers class and create
+	DataBuffer directly in place.
+
+2007-03-09  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/image/ComponentSampleModel.java
 	(tightPixelPacking): Removed.
 	(ComponentSampleModel): Removed unnecessary 'optimization' code.

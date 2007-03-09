@@ -39,7 +39,6 @@ package java.awt.image;
 import java.util.Arrays;
 
 import gnu.java.awt.BitMaskExtent;
-import gnu.java.awt.Buffers;
 
 /**
  * A <code>SampleModel</code> used when all samples are stored in a single
@@ -151,14 +150,25 @@ public class SinglePixelPackedSampleModel extends SampleModel
    */
   public DataBuffer createDataBuffer()
   {
-    int size;
-
     // We can save (scanlineStride - width) pixels at the very end of
     // the buffer. The Sun reference implementation (J2SE 1.3.1 and
     // 1.4.1_01) seems to do this; tested with Mauve test code.
-    size = scanlineStride * (height - 1) + width;
+    int size = scanlineStride * (height - 1) + width;
 
-    return Buffers.createBuffer(getDataType(), size);
+    DataBuffer buffer = null;
+    switch (getTransferType())
+      {
+      case DataBuffer.TYPE_BYTE:
+        buffer = new DataBufferByte(size);
+        break;
+      case DataBuffer.TYPE_USHORT:
+        buffer = new DataBufferUShort(size);
+        break;
+      case DataBuffer.TYPE_INT:
+        buffer = new DataBufferInt(size);
+        break;
+      }
+    return buffer;
   }
 
   /**
