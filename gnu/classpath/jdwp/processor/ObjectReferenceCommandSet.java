@@ -49,7 +49,8 @@ import gnu.classpath.jdwp.id.ObjectId;
 import gnu.classpath.jdwp.id.ReferenceTypeId;
 import gnu.classpath.jdwp.util.MethodResult;
 import gnu.classpath.jdwp.util.MonitorInfo;
-import gnu.classpath.jdwp.util.Value;
+import gnu.classpath.jdwp.value.Value;
+import gnu.classpath.jdwp.value.ValueFactory;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -138,7 +139,9 @@ public class ObjectReferenceCommandSet
           {
             field.setAccessible(true); // Might be a private field
             Object value = field.get(obj);
-            Value.writeTaggedValue(os, value);
+            Value val = ValueFactory.createFromObject(value, 
+                                                      field.getType());
+            val.writeTagged(os);
           }
         catch (IllegalArgumentException ex)
           {
@@ -164,7 +167,7 @@ public class ObjectReferenceCommandSet
     for (int i = 0; i < numFields; i++)
       {
         Field field = (Field) idMan.readObjectId(bb).getObject();
-        Object value = Value.getUntaggedObj(bb, field.getType());
+        Object value = Value.getUntaggedObject(bb, field.getType());
         try
           {
             field.setAccessible(true); // Might be a private field
@@ -218,7 +221,7 @@ public class ObjectReferenceCommandSet
 
     for (int i = 0; i < args; i++)
       {
-        values[i] = Value.getObj(bb);
+        values[i] = Value.getTaggedObject(bb);
       }
 
     int invokeOptions = bb.getInt();
@@ -238,11 +241,14 @@ public class ObjectReferenceCommandSet
     MethodResult mr = VMVirtualMachine.executeMethod(obj, thread,
 						     clazz, method,
 						     values, nonVirtual);
+    mr.setResultType (method.getReturnType());
+    
     Object value = mr.getReturnedValue();
     Exception exception = mr.getThrownException();
 
     ObjectId eId = idMan.getObjectId(exception);
-    Value.writeTaggedValue(os, value);
+    Value val = ValueFactory.createFromObject(value, mr.getResultType());
+    val.writeTagged(os);
     eId.writeTagged(os);
   }
 

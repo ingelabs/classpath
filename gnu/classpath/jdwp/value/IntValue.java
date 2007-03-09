@@ -1,6 +1,5 @@
-/* MethodResult.java -- class to wrap around values returned from a Method call
-   in the VM 
-   Copyright (C) 2005 Free Software Foundation
+/* IntValue.java -- JDWP wrapper class for an int value
+   Copyright (C) 2007 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -29,7 +28,6 @@ permission to link this library with independent modules to produce an
 executable, regardless of the license terms of these independent
 modules, and to copy and distribute the resulting executable under
 terms of your choice, provided that you also meet, for each linked
-terms of your choice, provided that you also meet, for each linked
 independent module, the terms and conditions of the license of that
 module.  An independent module is a module which is not derived from
 or based on this library.  If you modify this library, you may extend
@@ -37,53 +35,66 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+package gnu.classpath.jdwp.value;
 
-package gnu.classpath.jdwp.util;
+import gnu.classpath.jdwp.JdwpConstants;
+
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 /**
- * A class to wrap around values returned from a Method call in the VM.
+ * Wrapper for an int value.
  * 
- * @author Aaron Luchko <aluchko@redhat.com>
+ * @author Kyle Galloway <kgallowa@redhat.com>
  */
-public class MethodResult
+public final class IntValue
+    extends Value
 {
-  // The Object returned by the executing method
-  private Object returnedValue;
-  
-  // Any Exception that was thrown by the executing method
-  private Exception thrownException;
-  
-  // The type of this result
-  private Class resType;
+  // The int wrapped by this class
+  int _value;
 
-  public Object getReturnedValue()
+  /**
+   * Create a new IntValue from an int
+   * 
+   * @param value the int to wrap
+   */
+  public IntValue(int value)
   {
-    return returnedValue;
-  }
-
-  public void setReturnedValue(Object returnedValue)
-  {
-    this.returnedValue = returnedValue;
-  }
-
-  public Exception getThrownException()
-  {
-    return thrownException;
-  }
-
-  public void setThrownException(Exception thrownException)
-  {
-    this.thrownException = thrownException;
+    super(JdwpConstants.Tag.INT);
+    _value = value;
   }
   
-  public Class getResultType()
+  /**
+   * Get the value held in this Value
+   * 
+   * @return the value represented by this Value object
+   */
+  public int getValue()
   {
-    return resType;
+    return _value;
   }
   
-  public void setResultType(Class type)
+  /**
+   * Return an object representing this type
+   * 
+   * @return an Object represntation of this value
+   */
+  @Override
+  protected Object getObject()
   {
-    resType = type;
+    return new Integer(_value);
   }
-  
+
+  /**
+   * Write the wrapped int to the given DataOutputStream.
+   * 
+   * @param os the output stream to write to
+   */
+  @Override
+  protected void write(DataOutputStream os)
+    throws IOException
+  {
+    os.writeInt(_value);
+  }
 }
+

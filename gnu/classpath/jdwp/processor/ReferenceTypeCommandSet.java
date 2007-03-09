@@ -51,7 +51,8 @@ import gnu.classpath.jdwp.id.ObjectId;
 import gnu.classpath.jdwp.id.ReferenceTypeId;
 import gnu.classpath.jdwp.util.JdwpString;
 import gnu.classpath.jdwp.util.Signature;
-import gnu.classpath.jdwp.util.Value;
+import gnu.classpath.jdwp.value.Value;
+import gnu.classpath.jdwp.value.ValueFactory;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -220,7 +221,9 @@ public class ReferenceTypeCommandSet
               {
                 field.setAccessible(true); // Might be a private field
                 Object value = field.get(null);
-                Value.writeTaggedValue(os, value);
+                Value val = ValueFactory.createFromObject(value, 
+                                                          field.getType());
+                val.writeTagged(os);
               }
             catch (IllegalArgumentException ex)
               {

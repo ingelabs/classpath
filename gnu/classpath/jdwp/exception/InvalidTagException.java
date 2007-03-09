@@ -1,6 +1,5 @@
-/* MethodResult.java -- class to wrap around values returned from a Method call
-   in the VM 
-   Copyright (C) 2005 Free Software Foundation
+/* InvalidTagException.java -- an invalid type tag exception
+   Copyright (C) 2007 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -37,53 +36,22 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+package gnu.classpath.jdwp.exception;
 
-package gnu.classpath.jdwp.util;
+import gnu.classpath.jdwp.JdwpConstants;
 
 /**
- * A class to wrap around values returned from a Method call in the VM.
- * 
- * @author Aaron Luchko <aluchko@redhat.com>
+ * An exception thrown when an invalid tag is used by
+ * the debugger
+ *
+ * @author Kyle Galloway  (kgallowa@redhat.com)
  */
-public class MethodResult
+public class InvalidTagException
+  extends JdwpException
 {
-  // The Object returned by the executing method
-  private Object returnedValue;
-  
-  // Any Exception that was thrown by the executing method
-  private Exception thrownException;
-  
-  // The type of this result
-  private Class resType;
-
-  public Object getReturnedValue()
+  public InvalidTagException (byte tag)
   {
-    return returnedValue;
+    super (JdwpConstants.Error.INVALID_TAG,
+       "invalid tag (" + tag + ")");
   }
-
-  public void setReturnedValue(Object returnedValue)
-  {
-    this.returnedValue = returnedValue;
-  }
-
-  public Exception getThrownException()
-  {
-    return thrownException;
-  }
-
-  public void setThrownException(Exception thrownException)
-  {
-    this.thrownException = thrownException;
-  }
-  
-  public Class getResultType()
-  {
-    return resType;
-  }
-  
-  public void setResultType(Class type)
-  {
-    resType = type;
-  }
-  
 }

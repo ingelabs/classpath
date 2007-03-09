@@ -1,3 +1,41 @@
+2007-03-09  Kyle Galloway  <kgallowa@redhat.com>
+
+	* gnu/classpath/jdwp/exception/InvalidTagException.java: New file.
+	* gnu/classpath/jdwp/processor/ArrayReferenceCommandSet.java
+	(executeGetValues): Use Value type.
+	(exectureSetValues): Ditto.  
+	* gnu/classpath/jdwp/processor/ClassTypeCommandSet.java
+	(executeGetValues): Use Value type.
+	(executeSetValues): Ditto.
+	(invokeMethod): Record method return type.
+	* gnu/classpath/jdwp/processor/ObjectReferenceCommandSet.java
+	(executeGetValues): Use Value type.
+	(executeSetValues): Ditto.
+	* gnu/classpath/jdwp/processor/ReferenceTypeCommandSet.java
+	(executeGetValues): Use Value type.
+	* gnu/classpath/jdwp/processor/StackFrameCommandSet.java
+	(executeGetValues): Use Value type.
+	(executeSetValues): Ditto.
+	* gnu/classpath/jdwp/util/MethodResult.java: Add resType to store return
+	type.
+	(getResultType): New Method.
+	(setResultType): Ditto.
+	* gnu/classpath/jdwp/util/Value.java: Remove.
+	* gnu/classpath/jdwp/value: New Package.
+	* gnu/classpath/jdwp/value/Value.java: New file.
+	* gnu/classpath/jdwp/value/BooleanValue.java: New file.
+	* gnu/classpath/jdwp/value/ByteValue.java: New file.
+	* gnu/classpath/jdwp/value/CharValue.java: New file.
+	* gnu/classpath/jdwp/value/DoubleValue.java: New file.
+	* gnu/classpath/jdwp/value/FloatValue.java: New file.
+	* gnu/classpath/jdwp/value/IntValue.java: New file.
+	* gnu/classpath/jdwp/value/LongValue.java: New file.
+	* gnu/classpath/jdwp/value/ObjectValue.java: New file.
+	* gnu/classpath/jdwp/value/ShortValue.java: New file.
+	* gnu/classpath/jdwp/value/StringValue.java: New file.
+	* gnu/classpath/jdwp/value/ValueFactory.java: New file.
+	* gnu/classpath/jdwp/value/VoidValue.java: New file.
+
 2007-03-09  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/image/SinglePixelPackageSampleModel.java

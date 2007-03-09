@@ -1,6 +1,5 @@
-/* MethodResult.java -- class to wrap around values returned from a Method call
-   in the VM 
-   Copyright (C) 2005 Free Software Foundation
+/* VoidValue.java -- JDWP wrapper class for a void value
+   Copyright (C) 2007 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -29,7 +28,6 @@ permission to link this library with independent modules to produce an
 executable, regardless of the license terms of these independent
 modules, and to copy and distribute the resulting executable under
 terms of your choice, provided that you also meet, for each linked
-terms of your choice, provided that you also meet, for each linked
 independent module, the terms and conditions of the license of that
 module.  An independent module is a module which is not derived from
 or based on this library.  If you modify this library, you may extend
@@ -37,53 +35,48 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+package gnu.classpath.jdwp.value;
 
-package gnu.classpath.jdwp.util;
+import gnu.classpath.jdwp.JdwpConstants;
+
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 /**
- * A class to wrap around values returned from a Method call in the VM.
+ * Wrapper for an void value.
  * 
- * @author Aaron Luchko <aluchko@redhat.com>
+ * @author Kyle Galloway <kgallowa@redhat.com>
  */
-public class MethodResult
+public class VoidValue
+    extends Value
 {
-  // The Object returned by the executing method
-  private Object returnedValue;
-  
-  // Any Exception that was thrown by the executing method
-  private Exception thrownException;
-  
-  // The type of this result
-  private Class resType;
-
-  public Object getReturnedValue()
+  /**
+   * Create a new VoidValue.
+   */
+  public VoidValue ()
   {
-    return returnedValue;
+    super(JdwpConstants.Tag.VOID);
   }
-
-  public void setReturnedValue(Object returnedValue)
+  
+  /**
+   * Return an object representing this type
+   * 
+   * @return an Object represntation of this value
+   */
+  @Override
+  protected Object getObject()
   {
-    this.returnedValue = returnedValue;
-  }
-
-  public Exception getThrownException()
-  {
-    return thrownException;
+    return null;
   }
 
-  public void setThrownException(Exception thrownException)
+  /**
+   * Write the wrapped void to the given DataOutputStream.
+   * 
+   * @param os the output stream to write to
+   */
+  @Override
+  protected void write(DataOutputStream os) 
+    throws IOException
   {
-    this.thrownException = thrownException;
   }
-  
-  public Class getResultType()
-  {
-    return resType;
-  }
-  
-  public void setResultType(Class type)
-  {
-    resType = type;
-  }
-  
 }

@@ -46,7 +46,9 @@ import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
 import gnu.classpath.jdwp.exception.NotImplementedException;
 import gnu.classpath.jdwp.id.ThreadId;
-import gnu.classpath.jdwp.util.Value;
+import gnu.classpath.jdwp.value.ObjectValue;
+import gnu.classpath.jdwp.value.Value;
+import gnu.classpath.jdwp.value.ValueFactory;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -115,8 +117,8 @@ public class StackFrameCommandSet
       {
         int slot = bb.getInt();
         byte sig = bb.get();
-        Object val = frame.getValue(slot, sig);
-        Value.writeTaggedValue(os, val);
+        Value val = frame.getValue(slot, sig);
+        val.writeTagged(os);
       }
   }
 
@@ -133,7 +135,7 @@ public class StackFrameCommandSet
     for (int i = 0; i < slots; i++)
       {
         int slot = bb.getInt();
-        Object value = Value.getObj(bb);
+        Value value = ValueFactory.createFromTagged(bb);
         frame.setValue(slot, value);
       }
   }
@@ -147,8 +149,8 @@ public class StackFrameCommandSet
     long frameID = bb.getLong();
     VMFrame frame = VMVirtualMachine.getFrame(thread, frameID);
 
-    Object thisObject = frame.getObject();
-    Value.writeTaggedValue(os, thisObject);
+    ObjectValue objVal = new ObjectValue(frame.getObject());
+    objVal.writeTagged(os);
   }
 
   private void executePopFrames(ByteBuffer bb, DataOutputStream os)
