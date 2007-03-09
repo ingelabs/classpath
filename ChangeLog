@@ -1,3 +1,18 @@
+2007-03-09  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/image/ComponentSampleModel.java
+	(tightPixelPacking): Removed.
+	(ComponentSampleModel): Removed unnecessary 'optimization' code.
+	(createDataBuffer): Avoid use of Buffers helper class.
+	(getDataElements(int,int,int,int,Object,DataBuffer): Removed.
+	(getDataElements(int,int,Object,DataBuffer): Do not use Buffers
+	helper class and instead fetch the values directly. Don't expect
+	any specific DataBuffer subclass.
+	(setDataElements(int,int,int,int,Object,DataBuffer): Removed.
+	(setDataElements(int,int,Object,DataBuffer): Do not use Buffers
+	helper class and instead set the values directly. Don't expect
+	any specific DataBuffer subclass.
+
 2007-03-08  Tom Tromey  <tromey@redhat.com>
 
 	PR libgcj/31093:
