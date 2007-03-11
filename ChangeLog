@@ -1,3 +1,31 @@
+2007-03-11  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/management/openmbean/ArrayType.java:
+	(getArrayClassName(String, int)): Replaced by...
+	(getArrayClassName(OpenType, int, boolean)):
+	Returns appropriate class name for the array.
+	(getDimensions(OpenType, int)): New method.
+	(getPrimitiveType(Class<?>)): Likewise.
+	(getPrimitiveTypeClass(OpenType<?>)): Likewise.
+	(getElementType(OpenType<?>)): Likewise.
+	(getElementTypeName(OpenType<?>)): Likewise.
+	(ArrayType(int, OpenType<?>)): Rewritten
+	to handle ArrayTypes as input.
+	(ArrayType(SimpleType<?>, boolean)): New constructor.
+	(equals(Object)): Handle primitiveArray flag.
+	(hashCode()): Likewise.
+	(getArrayType(OpenType<E>)): New method.
+	(getPrimitiveArrayType(Class<T>)): Likewise.
+	(isPrimitiveArray()): Likewise.
+	(toString()): Updated to list primitiveArray
+	flag.
+	* javax/management/openmbean/OpenType.java:
+	(OpenType(String,String,String)): Use Class.forName()
+	and methods of Class to validate arrays.
+	* javax/management/openmbean/SimpleType.java:
+	Include causal exception when creating pre-defined types
+	throws an exception.
+	
 2007-03-09  Andreas Tobler  <a.tobler@schweiz.org>
 
 	Port change from gcc:

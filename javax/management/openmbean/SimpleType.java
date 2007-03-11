@@ -192,7 +192,7 @@ public final class SimpleType<T>
 	/* In normal circumstances, this shouldn't be possible. */
 	throw new IllegalStateException("A invalid class name " +
 					"was passed to the SimpleType " +
-					"constructor.");
+					"constructor.", e);
       }
   }
 

@@ -140,17 +140,20 @@ public abstract class OpenType<T>
     if (desc == null || desc.equals(""))
       throw new IllegalArgumentException("The description can not " +
 					 "be null or the empty string.");
-    String testString;
-    if (className.startsWith("["))
-      testString = className.substring(className.indexOf("L") + 1);
-    else
-      testString = className;
-    boolean openTypeFound = false;
-    for (int a = 0; a < ALLOWED_CLASSNAMES.length; ++a)
-      if (ALLOWED_CLASSNAMES[a].equals(testString))
-	openTypeFound = true;
-    if (!openTypeFound)
-      throw new OpenDataException("The class name, " + testString + 
+    Class<?> type;
+    try
+      {
+	type = Class.forName(className);
+      }
+    catch (ClassNotFoundException e)
+      {
+	throw (OpenDataException) new OpenDataException("The class name, " + className +
+							", is unavailable.").initCause(e);
+      }
+    while (type.isArray())
+      type = type.getComponentType();
+    if (!(type.isPrimitive() || ALLOWED_CLASSNAMES_LIST.contains(type.getName())))
+      throw new OpenDataException("The class name, " + className + 
 				  ", does not specify a valid open type.");
     this.className = className;
     typeName = name;
