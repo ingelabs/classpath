@@ -1,3 +1,8 @@
+2007-03-16  Mark Wielaard  <mark@klomp.org>
+
+	* configure.ac (COMPILE_PLUGIN): Stop when no plugin headers found.
+	Also check for gtk+ dependency.
+
 2007-03-16  Tom Tromey  <tromey@redhat.com>
 
 	* tools/gnu/classpath/tools/javah/JniStubPrinter.java

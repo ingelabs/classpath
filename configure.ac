@@ -601,12 +601,19 @@ if test "x${COMPILE_JNI}" = xyes; then
     if test "x${MOZILLA_FOUND}" = xno; then
       PKG_CHECK_MODULES(MOZILLA, seamonkey-plugin seamonkey-xpcom, [MOZILLA_FOUND=yes], [MOZILLA_FOUND=no])
     fi
+    if test "x${MOZILLA_FOUND}" = xno; then
+      AC_MSG_ERROR([Couldn't find plugin support headers and libraries, try --disable-plugin])
+    fi
+
     PKG_CHECK_MODULES(GLIB, glib-2.0)
+    PKG_CHECK_MODULES(GTK, gtk+-2.0)
 
     AC_SUBST(MOZILLA_CFLAGS)
     AC_SUBST(MOZILLA_LIBS)
     AC_SUBST(GLIB_CFLAGS)
     AC_SUBST(GLIB_LIBS)
+    AC_SUBST(GTK_CFLAGS)
+    AC_SUBST(GTK_LIBS)
 
     AC_SUBST(PLUGIN_DIR, $HOME/.mozilla/plugins/)
   fi
