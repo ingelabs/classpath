@@ -13,11 +13,11 @@ extern "C"
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoSurface_create (JNIEnv *env, jobject, jint, jint, jint, jintArray);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoSurface_destroy (JNIEnv *env, jobject, jlong, jintArray);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoSurface_nativeDrawSurface (JNIEnv *env, jobject, jlong, jlong, jdoubleArray, jdouble, jint);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoSurface_syncNativeToJava (JNIEnv *env, jobject, jlong, jintArray);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoSurface_syncJavaToNative (JNIEnv *env, jobject, jlong, jintArray);
 JNIEXPORT jlong JNICALL Java_gnu_java_awt_peer_gtk_CairoSurface_getFlippedBuffer (JNIEnv *env, jobject, jlong);
 JNIEXPORT jlong JNICALL Java_gnu_java_awt_peer_gtk_CairoSurface_nativeNewCairoContext (JNIEnv *env, jobject, jlong);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoSurface_copyAreaNative2 (JNIEnv *env, jobject, jlong, jint, jint, jint, jint, jint, jint, jint);
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoSurface_syncJavaToNative (JNIEnv *env, jobject, jlong, jintArray);
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_CairoSurface_syncNativeToJava (JNIEnv *env, jobject, jlong, jintArray);
 
 #ifdef __cplusplus
 }
