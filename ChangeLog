@@ -1,3 +1,9 @@
+2007-03-16  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* configure.ac (FOUND_ECJ_JAR): Remove conditional.
+	* tools/Makefile.am: Build com.sun.tools.javac package
+	unconditionally.
+
 2007-03-16  Mark Wielaard  <mark@klomp.org>
 
 	* configure.ac (COMPILE_PLUGIN): Stop when no plugin headers found.
