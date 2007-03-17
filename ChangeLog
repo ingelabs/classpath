@@ -1,5 +1,9 @@
 2007-03-16  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* resource/com/sun/tools/javac/messages.properties
+	(Main.FailedToRead, Main.MalformedURL, Main.FailedToLoad): Clarify
+	messages for when --with-ecj-jar is not specified.
+
 	* configure.ac (FOUND_ECJ_JAR): Remove conditional.
 	* tools/Makefile.am: Build com.sun.tools.javac package
 	unconditionally.
