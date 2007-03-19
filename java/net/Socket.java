@@ -83,6 +83,11 @@ public class Socket
   SocketImpl impl;
 
   /**
+   * True if impl.create() has been called.
+   */
+  private boolean implCreated;
+
+  /**
    * True if the socket is bound.
    * Package private so it can be set from ServerSocket when accept is called.
    */
@@ -326,6 +331,18 @@ public class Socket
 
   private SocketImpl getImpl() throws SocketException
   {
+    if (! implCreated)
+      {
+        try
+          {
+            impl.create(true);
+          }
+        catch (IOException x)
+          {
+            throw (SocketException) new SocketException().initCause(x);
+          }
+        implCreated = true;
+      }
     return impl;
   }
 
@@ -359,7 +376,6 @@ public class Socket
     // bind to address/port
     try
       {
-	getImpl().create(true);
 	getImpl().bind(tmp.getAddress(), tmp.getPort());
 	bound = true;
       }

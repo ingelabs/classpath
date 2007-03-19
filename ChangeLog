@@ -1,3 +1,10 @@
+2007-03-19  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/net/Socket.java
+	(implCreated): New field.
+	(getImpl): Call impl.create() if it hasn't been called yet.
+	(bind): Removed explicit impl.create() call.
+
 2007-03-18  Mark Wielaard  <mark@klomp.org>
 
 	* javax/crypto/CipherOutputStream.java (write): Use out.write()
