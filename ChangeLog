@@ -1,3 +1,11 @@
+2007-03-19  Mario Torre  <neugens@limasoftware.net>
+
+	* gnu/java/awt/peer/KDEDesktopPeer.java: 
+	(mail): Fixed error dialog in KDE when the mail method is called without
+	argument; now opens the default mailer with a blank window.
+	(getCommand): Handle the use of kprinter as default print command for KDE.
+	(supportCommand): Enable the print command when a KDE desktop is detected.
+
 2007-03-19  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/net/Socket.java

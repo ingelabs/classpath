@@ -37,6 +37,7 @@
 
 package gnu.java.awt.peer;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -69,7 +70,7 @@ public class KDEDesktopPeer
               }
             else if (action == _PRINT)
               {
-                command = null;
+                command = "kprinter";
               }
             else
               {
@@ -87,11 +88,6 @@ public class KDEDesktopPeer
      
   protected boolean supportCommand(String check)
   {
-    if (check == _PRINT)
-      { 
-        return super.supportCommand(check);
-      }
-    
     return true;
   }
   
@@ -104,7 +100,7 @@ public class KDEDesktopPeer
     if (mail == null)
       throw new UnsupportedOperationException();
     
-    Runtime.getRuntime().exec(mail + " mailto:");
+    Runtime.getRuntime().exec(mail + " 'mailto: '");
   }
   
   protected String execQuery(String command) throws IOException
