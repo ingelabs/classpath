@@ -1,5 +1,10 @@
 2007-03-18  Mark Wielaard  <mark@klomp.org>
 
+	* javax/crypto/CipherOutputStream.java (write): Use out.write()
+	not super.write().
+
+2007-03-18  Mark Wielaard  <mark@klomp.org>
+
 	* configure.ac (COMPILE_PLUGIN): Check for gtk+-2.0 >= 2.8
 	gthread-2.0 >= 2.2 and gdk-pixbuf-2.0
 

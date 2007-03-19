@@ -149,6 +149,6 @@ public class CipherOutputStream extends FilterOutputStream
   {
     byte[] b = cipher.update(buf, off, len);
     if (b != null)
-      super.write(b);
+      out.write(b);
   }
 }
