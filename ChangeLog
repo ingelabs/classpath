@@ -1,3 +1,8 @@
+2007-03-18  Mark Wielaard  <mark@klomp.org>
+
+	* configure.ac (COMPILE_PLUGIN): Check for gtk+-2.0 >= 2.8
+	gthread-2.0 >= 2.2 and gdk-pixbuf-2.0
+
 2007-03-16  Tom Tromey  <tromey@redhat.com>
 
 	* tools/gnu/classpath/tools/javah/Main.java (run): Use class'
