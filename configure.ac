@@ -498,7 +498,7 @@ if test "x${COMPILE_JNI}" = xyes; then
 
   dnl gconf-peer
   if  test "x${COMPILE_GCONF_PEER}" = xyes; then
-    PKG_CHECK_MODULES(GCONF, gconf-2.0 >= 2.11.2)
+    PKG_CHECK_MODULES(GCONF, gconf-2.0 >= 2.6.0)
     AC_SUBST(GCONF_CFLAGS)
     AC_SUBST(GCONF_LIBS)
     dnl we also need gdk for locking

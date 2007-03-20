@@ -1,3 +1,8 @@
+2007-03-20  Mario Torre  <neugens@limasoftware.net>
+
+	* configure.ac: GConf requirement for building the java.util.prefs backend
+	are relaxed down to version 2.6.0 (instead of 2.11.2).
+
 2007-03-19  Mario Torre  <neugens@limasoftware.net>
 
 	* gnu/java/awt/peer/KDEDesktopPeer.java: 
