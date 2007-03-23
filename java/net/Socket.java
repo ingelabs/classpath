@@ -85,7 +85,8 @@ public class Socket
   /**
    * True if impl.create() has been called.
    */
-  private boolean implCreated;
+  // package-private because ServerSocket.implAccept() needs to access it.
+  boolean implCreated;
 
   /**
    * True if the socket is bound.

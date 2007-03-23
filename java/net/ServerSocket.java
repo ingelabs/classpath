@@ -386,6 +386,7 @@ public class ServerSocket
 
     impl.accept(socket.impl);
     socket.bound = true;
+    socket.implCreated = true;
 
     SecurityManager sm = System.getSecurityManager();
     if (sm != null)

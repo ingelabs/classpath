@@ -1,3 +1,10 @@
+2007-03-23  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/net/ServerSocket.java (implAccept): set implCreated flag on
+	socket.
+	* java/net/Socket.java (implCreated): Make package accessible for
+	ServerSocket.
+
 2007-03-22  Casey Marshall  <csm@gnu.org>
 
 	* gnu/javax/net/ssl/provider/ClientHandshake.java (RSAGen.implRun):
