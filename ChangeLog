@@ -1,3 +1,12 @@
+2007-03-25  Dalibor Topic  <robilad@kaffe.org>
+
+	* doc/cp-tools.texinfo: Fix node ordering.
+
+2007-03-19  Matthias Klose  <doko@ubuntu.com>
+
+	* doc/Makefile.am: Build a gcjh(1) man page.
+	* doc/cp-tools.texinfo: Add documentation for gcjh.
+
 2007-03-23  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/net/ServerSocket.java (implAccept): set implCreated flag on
