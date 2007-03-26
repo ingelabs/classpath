@@ -1615,3 +1615,8 @@
 	* java/util/ServiceConfigurationError.java: New file.
 	* java/util/ServiceLoader.java: Likewise.
 	
+
+
+Local Variables:
+coding: iso-latin-1-unix	
+End:
