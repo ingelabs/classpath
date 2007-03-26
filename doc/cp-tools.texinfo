@@ -1416,7 +1416,11 @@ javac(1), @dots{}
 
 @c man begin DESCRIPTION gcjh
 
-To be written @dots{}
+The @code{gcjh} program is used to generate header files from class
+files.  It can generate both CNI and JNI header files, as well as stub
+implementation files which can be used as a basis for implementing the
+required native methods.  It is similar to @code{javah} but has
+slightly different command line options, and defaults to CNI.
 
 @c man end
 
@@ -1427,6 +1431,9 @@ gcjh [@var{OPTIONS}]@dots{} @var{CLASS}@dots{}
 @end ignore
 
 @c man begin OPTIONS gcjh
+
+See @code{javah} for a full description; this page only lists the
+additional options provided by @code{gcjh}.
 
 CNI text options
 @table @gcctabopt
@@ -1614,7 +1621,8 @@ javac(1), @dots{}
 
 @c man begin DESCRIPTION grmid
 
-To be written @dots{}
+@command{rmiregistry} starts a remote object registry on the current
+host.  If no port number is specified, then port 1099 is used.
 
 @c man end
 
