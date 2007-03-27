@@ -1,3 +1,59 @@
+2007-03-27  Roman Kennke  <roman@kennke.org>
+
+	* java/io/InputStreamReader.java
+	(BUFFER_SIZE): New constant.
+	(bytesCache): Removed.
+	(cacheLock): Removed.
+	(hasSavedSurrogate): Removed.
+	(lastArray): New field. Used for caching CharBuffers.
+	(lastBuffer): New field. Used for caching CharBuffers.
+	(maxBytesPerChar): Removed.
+	(oneChar): New field. Caches a char array for read().
+	(savedSurrogate): New field.
+	(InputStreamReader): (all constructors) Cleaned up.
+	Use initDecoderAndBuffer() method. Check for null parameters.
+	Use new EncodingHelper.getDefaultCharset() for fetching the
+	default charset.
+	(decode): New helper method. Decodes using the NIO decoder or
+	using a raw Latin1 decoding.
+	(getCharBuffer): New helper method. Implements caching of
+	CharBuffers for output arrays.
+	(initDecoderAndBuffer): New helper method. Initializes the decoder
+	and input buffer.
+	(read): Use cached array.
+	(read(char[],int,int)): Reworked using a cleaner NIO based
+	implementation. This decodes the incoming data in bigger chunks
+	rather then calling the decoder for each character.
+	(ready): Also check the input buffer.
+	(refillInputBuffer): New helper methods. Refills the input buffer
+	when it runs out of data.
+	* java/io/OutputStreamWriter.java
+	(lastArray): Implements caching of the output array buffer.
+	(lastBuffer): Implements caching of the output array buffer.
+	(oneChar): New field. Caches a char array for write().
+	(outputBuffer): Make this a ByteBuffer.
+	(OutputStreamWriter): (all constructors) Cleaned up.
+	Use initEncoderAndBuffer() method. Check for null parameters.
+	Use new EncodingHelper.getDefaultCharset() for fetching the
+	default charset.
+	(encode): New helper method. Encodes the input buffer to the output
+	buffer using either the NIO encoder or a raw Latin1 encoding.
+	(encodeChars): New helper method. The encoding loop.
+	(flush): Directly use the array of the output buffer.
+	(getCharBuffer): New helper method. Implements caching of the
+	output buffer.
+	(initEncoderAndBuffer): New helper method for initialization.
+	(write(char[],int,int)): Reworked to make better use of the NIO
+	encoders.
+	(write): Use cached array.
+	(write(String,int,int)): Don't copy the string but rather wrap it
+	and handle it the same as the wrapped char array.
+	(writeConvert): Removed.
+	* gnu/java/nio/charset/EncodingHelper.java
+	(getDefaultCharset): New method. Returns the default charset for
+	the case when the file.encoding charset is not valid. This
+	always returns an UTF8 codec.
+
 2007-03-27  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/Frame.java
