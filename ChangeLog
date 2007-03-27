@@ -1,5 +1,17 @@
 2007-03-27  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/Frame.java
+	(weakFrames): Make this generic and package private.
+	(noteFrame): Use generic WeakReference.
+	* java/awt/EventQueue.java
+	(isShutdown): Iterate over the weakFrames directly, rather than
+	using Frame.getFrames(). The latter iterates several times over
+	weakFrames completely and creates a new array on each call. The
+	former iterates only once and aborts when it finds a frame which
+	is displayable.
+
+2007-03-27  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JScrollBar.java
 	(getUnitIncrement(int)): Don't multiply direction parameter.
 	(getBlockIncrement(int)): Don't multiply direction parameter.

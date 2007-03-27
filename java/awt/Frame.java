@@ -484,13 +484,18 @@ public class Frame extends Window implements MenuContainer
     return super.paramString () + ",title=" + title + resizable + state;
   }
 
-  private static ArrayList weakFrames = new ArrayList();
+  /**
+   * This is static private because we need to access this efficiently from
+   * the EventQueue.
+   */
+  static ArrayList<WeakReference<Frame>> weakFrames =
+    new ArrayList<WeakReference<Frame>>();
 
   private static void noteFrame(Frame f)
   {
     synchronized (weakFrames)
       {
-        weakFrames.add(new WeakReference(f));
+        weakFrames.add(new WeakReference<Frame>(f));
       }
   }
 

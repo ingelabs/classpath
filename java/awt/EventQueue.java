@@ -48,6 +48,7 @@ import java.awt.event.InvocationEvent;
 import java.awt.event.PaintEvent;
 import java.awt.peer.ComponentPeer;
 import java.awt.peer.LightweightPeer;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.util.EmptyStackException;
 
@@ -128,10 +129,15 @@ public class EventQueue
     if (peekEvent() != null)
       return false;
 
-    Frame[] frames = Frame.getFrames();
-    for (int i = 0; i < frames.length; ++i)
-      if (frames[i].isDisplayable())
-        return false;
+    synchronized (Frame.weakFrames)
+      {
+        for (WeakReference<Frame> r : Frame.weakFrames)
+          {
+            Frame f = (Frame) r.get();
+            if (f != null && f.isDisplayable())
+              return false;
+          }
+      }
 
     return true;
   }
