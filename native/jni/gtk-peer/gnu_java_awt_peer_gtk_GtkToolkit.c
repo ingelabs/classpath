@@ -160,6 +160,40 @@ Java_gnu_java_awt_peer_gtk_GtkToolkit_gtkInit (JNIEnv *env,
   argv[0] = (char *) g_malloc(1);
   argv[0][0] = '\0';
   argv[1] = NULL;
+  
+  /* Due to a bug in GNOME accessibility, we force accessibility off by
+   * stripping "gail" and "atk-bridge" out of the gnome modules list.
+   * See http://bugzilla.gnome.org/show_bug.cgi?id=423057
+   */
+  char* gtk_env_modules = getenv("GTK_MODULES");
+  
+  if (gtk_env_modules != NULL && strlen(gtk_env_modules) != 0)
+    {
+      if (!strcmp(gtk_env_modules, "gail:atk-bridge"))
+        unsetenv("GTK_MODULES");
+    
+      else if (gtk_env_modules != NULL)
+        {
+          char* token = strtok(gtk_env_modules, ":");
+          int len = strlen(gtk_env_modules); 
+          char* modules = (char*)g_malloc (sizeof(char*) * len);
+          modules[0] = '\0';
+          while (token != NULL)
+            {
+              if (strcmp(token, "gail") != 0 &&
+                  strcmp(token, "atk-bridge") != 0)
+                {
+                  if (modules[0] != '\0')
+                    strcat(modules, ":");
+                  strcat(modules, token);
+                }
+              token = strtok(NULL, ":");
+            }
+
+          setenv("GTK_MODULES", modules, 1);
+          g_free (modules);
+        }
+    }
 
   init_glib_threads(env, portableNativeSync);
 

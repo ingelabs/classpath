@@ -1,3 +1,9 @@
+2007-03-27  Francis Kung  <fkung@redhat.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkToolkit.c
+	(Java_gnu_java_awt_peer_gtk_GtkToolkit_gtkInit): Prevent loading of
+	accessibility modules as temporary workaround for Gnome bug.
+
 2007-03-27  Kyle Galloway  <kgallowa@redhat.com>
 
 	* gnu/classpth/jdwp/processor/ThreadReferenceCommandSet.java
