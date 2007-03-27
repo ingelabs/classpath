@@ -1,3 +1,9 @@
+2007-03-27  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JScrollBar.java
+	(getUnitIncrement(int)): Don't multiply direction parameter.
+	(getBlockIncrement(int)): Don't multiply direction parameter.
+
 2007-03-26  Tom Tromey  <tromey@redhat.com>
 
 	* doc/cp-tools.texinfo (gcjh Tool): Added more text.
