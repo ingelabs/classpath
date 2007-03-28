@@ -98,11 +98,6 @@ import java.nio.charset.CodingErrorAction;
 public class InputStreamReader extends Reader
 {
   /**
-   * The default buffer size.
-   */
-  private final static int BUFFER_SIZE = 1024;
-
-  /**
    * The input stream.
    */
   private InputStream in;
@@ -118,6 +113,11 @@ public class InputStreamReader extends Reader
   private boolean isDone = false;
 
   /**
+   * Need this.
+   */
+  private float maxBytesPerChar;
+
+  /**
    * Buffer holding surplus loaded bytes (if any)
    */
   private ByteBuffer byteBuffer;
@@ -128,22 +128,21 @@ public class InputStreamReader extends Reader
   private String encoding;
 
   /**
-   * One char as array to be used in {@link #read()}.
+   * We might decode to a 2-char UTF-16 surrogate, which won't fit in the
+   * output buffer. In this case we need to save the surrogate char.
    */
-  private char[] oneChar = new char[1];
+  private char savedSurrogate;
+  private boolean hasSavedSurrogate = false;
 
   /**
-   * The last char array that has been passed to read(char[],int,int). This
-   * is used to cache the associated CharBuffer because read(char[],int,int)
-   * is usually called with the same array repeatedly and we don't want to
-   * allocate a new CharBuffer object on each call.
+   * A byte array to be reused in read(byte[], int, int).
    */
-  private char[] lastArray;
+  private byte[] bytesCache;
 
   /**
-   * The cached CharBuffer associated with the above array.
+   * Locks the bytesCache above in read(byte[], int, int).
    */
-  private CharBuffer lastBuffer;
+  private Object cacheLock = new Object();
 
   /**
    * This method initializes a new instance of <code>InputStreamReader</code>
@@ -155,31 +154,38 @@ public class InputStreamReader extends Reader
   {
     if (in == null)
       throw new NullPointerException();
-
     this.in = in;
-
-    String encodingName = SystemProperties.getProperty("file.encoding");
-    try
-      {
-        Charset cs = EncodingHelper.getCharset(encodingName);
-        decoder = cs.newDecoder();
-        // The encoding should be the old name, if such exists.
-        encoding = EncodingHelper.getOldCanonical(cs.name());
-      }
-    catch(RuntimeException e)
-      {
-        // For bootstrapping problems only.
-        decoder = null;
-        encoding = "ISO8859_1";
-      }
-    catch (UnsupportedEncodingException ex)
-      {
-        Charset cs = EncodingHelper.getDefaultCharset();
-        decoder = cs.newDecoder();
-        // The encoding should be the old name, if such exists.
-        encoding = EncodingHelper.getOldCanonical(cs.name());
-      }    
-    initDecoderAndBuffer();
+    try 
+	{ 
+	  encoding = SystemProperties.getProperty("file.encoding");
+	  // Don't use NIO if avoidable
+	  if(EncodingHelper.isISOLatin1(encoding))
+	    {
+	      encoding = "ISO8859_1";
+	      maxBytesPerChar = 1f;
+	      decoder = null;
+	      return;
+	    }
+	  Charset cs = EncodingHelper.getCharset(encoding);
+	  decoder = cs.newDecoder();
+	  encoding = EncodingHelper.getOldCanonical(cs.name());
+	  try {
+	      maxBytesPerChar = cs.newEncoder().maxBytesPerChar();
+	  } catch(UnsupportedOperationException _){
+	      maxBytesPerChar = 1f;
+	  } 
+	  decoder.onMalformedInput(CodingErrorAction.REPLACE);
+	  decoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
+	  decoder.reset();
+	} catch(RuntimeException e) {
+	  encoding = "ISO8859_1";
+	  maxBytesPerChar = 1f;
+	  decoder = null;
+	} catch(UnsupportedEncodingException e) {
+	  encoding = "ISO8859_1";
+	  maxBytesPerChar = 1f;
+	  decoder = null;
+	}
   }
 
   /**
@@ -197,26 +203,39 @@ public class InputStreamReader extends Reader
   public InputStreamReader(InputStream in, String encoding_name)
     throws UnsupportedEncodingException
   {
-    if (in == null || encoding_name == null)
+    if (in == null
+        || encoding_name == null)
       throw new NullPointerException();
-
+    
     this.in = in;
-
-    try
+    // Don't use NIO if avoidable
+    if(EncodingHelper.isISOLatin1(encoding_name))
       {
-        Charset cs = EncodingHelper.getCharset(encoding_name);
-        decoder = cs.newDecoder();
-        // The encoding should be the old name, if such exists.
-        encoding = EncodingHelper.getOldCanonical(cs.name());
+	encoding = "ISO8859_1";
+	maxBytesPerChar = 1f;
+	decoder = null;
+	return;
       }
-    catch(RuntimeException e)
-      {
-        // For bootstrapping problems only.
-        decoder = null;
-        encoding = "ISO8859_1";
-      }
+    try {
+      Charset cs = EncodingHelper.getCharset(encoding_name);
+      try {
+        maxBytesPerChar = cs.newEncoder().maxBytesPerChar();
+      } catch(UnsupportedOperationException _){
+	maxBytesPerChar = 1f;
+      } 
 
-    initDecoderAndBuffer();
+      decoder = cs.newDecoder();
+      decoder.onMalformedInput(CodingErrorAction.REPLACE);
+      decoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
+      decoder.reset();
+
+      // The encoding should be the old name, if such exists.
+      encoding = EncodingHelper.getOldCanonical(cs.name());
+    } catch(RuntimeException e) {
+      encoding = "ISO8859_1";
+      maxBytesPerChar = 1f;
+      decoder = null;
+    }
   }
 
   /**
@@ -226,15 +245,22 @@ public class InputStreamReader extends Reader
    * 
    * @since 1.4
    */
-  public InputStreamReader(InputStream in, Charset charset)
-  {
-    if (in == null || charset == null)
+  public InputStreamReader(InputStream in, Charset charset) {
+    if (in == null)
       throw new NullPointerException();
-
     this.in = in;
     decoder = charset.newDecoder();
+
+    try {
+      maxBytesPerChar = charset.newEncoder().maxBytesPerChar();
+    } catch(UnsupportedOperationException _){
+      maxBytesPerChar = 1f;
+    }
+
+    decoder.onMalformedInput(CodingErrorAction.REPLACE);
+    decoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
+    decoder.reset();
     encoding = EncodingHelper.getOldCanonical(charset.name());
-    initDecoderAndBuffer();
   }
 
   /**
@@ -243,34 +269,31 @@ public class InputStreamReader extends Reader
    * 
    * @since 1.4
    */
-  public InputStreamReader(InputStream in, CharsetDecoder decoder)
-  {
-    if (in == null || decoder == null)
+  public InputStreamReader(InputStream in, CharsetDecoder decoder) {
+    if (in == null)
       throw new NullPointerException();
-
     this.in = in;
     this.decoder = decoder;
-    encoding = EncodingHelper.getOldCanonical(decoder.charset().name());
-    initDecoderAndBuffer();
+
+    Charset charset = decoder.charset();
+    try {
+      if (charset == null)
+        maxBytesPerChar = 1f;
+      else
+        maxBytesPerChar = charset.newEncoder().maxBytesPerChar();
+    } catch(UnsupportedOperationException _){
+	maxBytesPerChar = 1f;
+    } 
+
+    decoder.onMalformedInput(CodingErrorAction.REPLACE);
+    decoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
+    decoder.reset();
+    if (charset == null)
+      encoding = "US-ASCII";
+    else
+      encoding = EncodingHelper.getOldCanonical(decoder.charset().name());      
   }
-
-  /**
-   * Initializes the decoder and the input buffer.
-   */
-  private void initDecoderAndBuffer()
-  {
-    if (decoder != null)
-      {
-        decoder.onMalformedInput(CodingErrorAction.REPLACE);
-        decoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
-        decoder.reset();
-      }
-
-    byteBuffer = ByteBuffer.allocate(BUFFER_SIZE);
-    // No bytes available initially.
-    byteBuffer.position(byteBuffer.limit());
-  }
-
+  
   /**
    * This method closes this stream, as well as the underlying 
    * <code>InputStream</code>.
@@ -319,7 +342,8 @@ public class InputStreamReader extends Reader
   {
     if (in == null)
       throw new IOException("Reader has been closed");
-    return byteBuffer.hasRemaining() || in.available() != 0;
+    
+    return in.available() != 0;
   }
 
   /**
@@ -341,28 +365,109 @@ public class InputStreamReader extends Reader
       throw new IOException("Reader has been closed");
     if (isDone)
       return -1;
-
-    CharBuffer outBuffer = getCharBuffer(buf, offset, length);
-    int startPos = outBuffer.position();
-    int remaining = outBuffer.remaining();
-    int start = remaining;
-    CoderResult cr = null;
-    // Try to decode as long as the output buffer can hold more data.
-    // Decode at least one character (block when necessary).
-    boolean moreAvailable = true;
-    while (remaining > 0 && moreAvailable)
+    if(decoder != null)
       {
-        if (byteBuffer.remaining() == 0
-            || (cr != null && (cr.isUnderflow())))
+	int totalBytes = (int)((double) length * maxBytesPerChar);
+        if (byteBuffer != null)
+          totalBytes = Math.max(totalBytes, byteBuffer.remaining());
+	byte[] bytes;
+        // Fetch cached bytes array if available and big enough.
+        synchronized(cacheLock)
           {
-            // Block when we have not yet decoded at least one character.
-            boolean block = remaining == start;
-            moreAvailable = refillInputBuffer(block);
+            bytes = bytesCache;
+            if (bytes == null || bytes.length < totalBytes)
+              bytes = new byte[totalBytes];
+            else
+              bytesCache = null;
           }
-        cr = decode(outBuffer);
-        remaining = outBuffer.remaining();
+
+	int remaining = 0;
+	if(byteBuffer != null)
+	{
+	    remaining = byteBuffer.remaining();
+	    byteBuffer.get(bytes, 0, remaining);
+	}
+	int read;
+	if(totalBytes - remaining > 0)
+	  {
+	    read = in.read(bytes, remaining, totalBytes - remaining);
+	    if(read == -1){
+	      read = remaining;
+	      isDone = true;
+	    } else
+	      read += remaining;
+	  } else 
+            read = remaining;
+	byteBuffer = ByteBuffer.wrap(bytes, 0, read);	
+	CharBuffer cb = CharBuffer.wrap(buf, offset, length);
+	int startPos = cb.position();
+
+ 	if(hasSavedSurrogate){
+ 	    hasSavedSurrogate = false;
+ 	    cb.put(savedSurrogate);
+	    read++;
+ 	}
+
+	CoderResult cr = decoder.decode(byteBuffer, cb, isDone);
+	decoder.reset();
+	// 1 char remains which is the first half of a surrogate pair.
+	if(cr.isOverflow() && cb.hasRemaining()){
+	    CharBuffer overflowbuf = CharBuffer.allocate(2);
+	    cr = decoder.decode(byteBuffer, overflowbuf, isDone);
+	    overflowbuf.flip();
+	    if(overflowbuf.hasRemaining())
+	    {
+	      cb.put(overflowbuf.get());
+	      savedSurrogate = overflowbuf.get();
+	      hasSavedSurrogate = true;	    
+	      isDone = false;
+	    }
+	}
+
+	if(byteBuffer.hasRemaining()) {
+	    byteBuffer.compact();
+	    byteBuffer.flip();	  
+	    isDone = false;
+	} else
+	    byteBuffer = null;
+
+	read = cb.position() - startPos;
+
+        // Put cached bytes array back if we are finished and the cache
+        // is null or smaller than the used bytes array.
+        synchronized (cacheLock)
+          {
+            if (byteBuffer == null
+                && (bytesCache == null || bytesCache.length < bytes.length))
+              bytesCache = bytes;
+          }
+        return (read <= 0) ? -1 : read;
       }
-    return outBuffer.position() - startPos;
+    else
+      {
+	byte[] bytes;
+        // Fetch cached bytes array if available and big enough.
+        synchronized (cacheLock)
+          {
+            bytes = bytesCache;
+            if (bytes == null || length < bytes.length)
+              bytes = new byte[length];
+            else
+              bytesCache = null;
+          }
+
+	int read = in.read(bytes);
+	for(int i=0;i<read;i++)
+          buf[offset+i] = (char)(bytes[i]&0xFF);
+
+        // Put back byte array into cache if appropriate.
+        synchronized (cacheLock)
+          {
+            if (bytesCache == null || bytesCache.length < bytes.length)
+              bytesCache = bytes;
+          }
+	return read;
+    }
   }
 
   /**
@@ -378,8 +483,9 @@ public class InputStreamReader extends Reader
    */
   public int read() throws IOException
   {
-    int count = read(oneChar, 0, 1);
-    return count > 0 ? oneChar[0] : -1;
+    char[] buf = new char[1];
+    int count = read(buf, 0, 1);
+    return count > 0 ? buf[0] : -1;
   }
 
   /**
@@ -397,127 +503,7 @@ public class InputStreamReader extends Reader
    {
      if (in == null)
        throw new IOException("Reader has been closed");
-
+     
      return super.skip(count);
    }
-
-  /**
-   * Returns a CharBuffer that wraps the specified char array. This tries
-   * to return a cached instance because usually the read() method is called
-   * repeatedly with the same char array instance, or the no-arg read
-   * method is called repeatedly which uses the oneChar field of this class
-   * over and over again.
-   *
-   * @param buf the array to wrap
-   * @param offset the offset
-   * @param length the length
-   *
-   * @return a prepared CharBuffer to write to
-   */
-  private final CharBuffer getCharBuffer(char[] buf, int offset, int length)
-  {
-    CharBuffer outBuffer;
-    if (lastArray == buf)
-      {
-        outBuffer = lastBuffer;
-        outBuffer.position(offset);
-        outBuffer.limit(offset + length);
-      }
-    else
-      {
-        lastArray = buf;
-        lastBuffer = CharBuffer.wrap(buf, offset, length);
-        outBuffer = lastBuffer;
-      }
-    return outBuffer;
-  }
-
-  /**
-   * Refills the input buffer by reading a chunk of bytes from the underlying
-   * input stream
-   *
-   * @param block true when this method is allowed to block when necessary,
-   *        false otherwise
-   *
-   * @return true when data has been read, false when no data has been
-   *         available without blocking
-   *
-   * @throws IOException from the underlying stream
-   */
-  private final boolean refillInputBuffer(boolean block)
-    throws IOException
-  {
-    boolean refilled = false;
-
-    // Refill input buffer.
-    byteBuffer.compact();
-    if (byteBuffer.hasArray())
-      {
-        byte[] buffer = byteBuffer.array();
-        int offs = byteBuffer.arrayOffset();
-        int pos = byteBuffer.position();
-        int rem = byteBuffer.remaining();
-        int avail = in.available();
-        int readBytes = 0;
-        int len;
-        // Try to not block.
-        if (block)
-          len = avail != 0 ? Math.min(avail, rem) : rem;
-        else
-          len = Math.min(avail, rem);
-        readBytes = in.read(buffer, offs + pos, len);
-
-        if (readBytes > 0)
-          {
-            byteBuffer.position(pos + readBytes);
-            byteBuffer.limit(pos + readBytes);
-            refilled = true;
-          }
-        isDone = readBytes == -1;
-      }
-    else
-      {
-        assert false;
-        // Shouldn't happen, but anyway...
-        byte[] buffer = new byte[byteBuffer.limit()
-                                 - byteBuffer.position()];
-        int readBytes = in.read(buffer);
-        isDone = readBytes == -1;
-        byteBuffer.put(buffer);
-      }
-    byteBuffer.flip();
-    return refilled;
-  }
-
-  /**
-   * Decodes the current byteBuffer into the specified outBuffer. This takes
-   * care of the corner case when we have no decoder (i.e. bootstrap problems)
-   * and performs a primitive Latin1 decoding in this case.
-   *
-   * @param outBuffer the buffer to decode to
-   *
-   * @return the coder result
-   */
-  private CoderResult decode(CharBuffer outBuffer)
-  {
-    CoderResult cr;
-    if (decoder != null)
-      {
-        cr = decoder.decode(byteBuffer, outBuffer, false);
-      }
-    else
-      {
-        // Perform primitive Latin1 decoding.
-        while (outBuffer.hasRemaining() && byteBuffer.hasRemaining())
-          {
-            outBuffer.put((char) (0xff & byteBuffer.get()));
-          }
-        // One of the buffers must be drained.
-        if (! outBuffer.hasRemaining())
-          cr = CoderResult.OVERFLOW;
-        else
-          cr = CoderResult.UNDERFLOW;
-      }
-    return cr;
-  }
 }

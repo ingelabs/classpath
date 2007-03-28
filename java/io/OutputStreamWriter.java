@@ -42,10 +42,11 @@ import gnu.java.nio.charset.EncodingHelper;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
+import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
-import java.nio.charset.CoderResult;
 import java.nio.charset.CodingErrorAction;
+import java.nio.charset.MalformedInputException;
 
 /**
  * This class writes characters to an output stream that is byte oriented
@@ -83,11 +84,6 @@ import java.nio.charset.CodingErrorAction;
 public class OutputStreamWriter extends Writer
 {
   /**
-   * The default buffer size.
-   */
-  private final static int BUFFER_SIZE = 1024;
-
-  /**
    * The output stream.
    */
   private OutputStream out;
@@ -103,28 +99,10 @@ public class OutputStreamWriter extends Writer
   private String encodingName;
 
   /**
-   * This buffer receives the encoded data and is flushed to the underlying
-   * stream when it gets too full.
+   * Buffer output before character conversion as it has costly overhead.
    */
-  private ByteBuffer outputBuffer;
-
-  /**
-   * A one-char array to be reused in read().
-   */
-  private char[] oneChar = new char[1];
-
-  /**
-   * The last char array that has been passed to write(char[],int,int). This
-   * is used to cache the associated CharBuffer because write(char[],int,int)
-   * is usually called with the same array repeatedly and we don't want to
-   * allocate a new CharBuffer object on each call.
-   */
-  private Object lastArray;
-
-  /**
-   * The cached char buffer.
-   */
-  private CharBuffer lastBuffer;
+  private CharBuffer outputBuffer;
+  private final static int BUFFER_SIZE = 1024;
 
   /**
    * This method initializes a new instance of <code>OutputStreamWriter</code>
@@ -142,49 +120,60 @@ public class OutputStreamWriter extends Writer
   public OutputStreamWriter (OutputStream out, String encoding_scheme) 
     throws UnsupportedEncodingException
   {
-    if (out == null || encoding_scheme == null)
-      throw new NullPointerException();
-
     this.out = out;
     try 
       {
-        /*
-         * Workraround for encodings with a byte-order-mark.
-         * We only want to write it once per stream.
-         */
-        try 
-          {
-            if(encoding_scheme.equalsIgnoreCase("UnicodeBig")
-                ||encoding_scheme.equalsIgnoreCase("UTF-16") ||
-                encoding_scheme.equalsIgnoreCase("UTF16"))
-              {
-                encoding_scheme = "UTF-16BE";	  
-                out.write((byte)0xFE);
-                out.write((byte)0xFF);
-              } 
-            else if(encoding_scheme.equalsIgnoreCase("UnicodeLittle")){
-              encoding_scheme = "UTF-16LE";
-              out.write((byte)0xFF);
-              out.write((byte)0xFE);
-            }
-          }
-        catch(IOException ioe)
-          {
-          }
+	// Don't use NIO if avoidable
+	if(EncodingHelper.isISOLatin1(encoding_scheme))
+	  {
+	    encodingName = "ISO8859_1";
+	    encoder = null;
+	    return;
+	  }
 
-        Charset cs = EncodingHelper.getCharset(encoding_scheme);
-        encoder = cs.newEncoder();
-        encodingName = EncodingHelper.getOldCanonical(cs.name());
+	/*
+	 * Workraround for encodings with a byte-order-mark.
+	 * We only want to write it once per stream.
+	 */
+	try 
+	  {
+	    if(encoding_scheme.equalsIgnoreCase("UnicodeBig") || 
+	       encoding_scheme.equalsIgnoreCase("UTF-16") ||
+	       encoding_scheme.equalsIgnoreCase("UTF16"))
+	      {
+		encoding_scheme = "UTF-16BE";	  
+		out.write((byte)0xFE);
+		out.write((byte)0xFF);
+	      } 
+	    else if(encoding_scheme.equalsIgnoreCase("UnicodeLittle")){
+	      encoding_scheme = "UTF-16LE";
+	      out.write((byte)0xFF);
+	      out.write((byte)0xFE);
+	    }
+	  }
+	catch(IOException ioe)
+	  {
+	  }
+      
+	outputBuffer = CharBuffer.allocate(BUFFER_SIZE);
 
+	Charset cs = EncodingHelper.getCharset(encoding_scheme);
+	if(cs == null)
+	  throw new UnsupportedEncodingException("Encoding "+encoding_scheme+
+						 " unknown");
+	encoder = cs.newEncoder();
+	encodingName = EncodingHelper.getOldCanonical(cs.name());
+
+	encoder.onMalformedInput(CodingErrorAction.REPLACE);
+	encoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
       } 
     catch(RuntimeException e) 
       {
-        // Default to ISO Latin-1, will happen if this is called, for instance,
-        // before the NIO provider is loadable.
-        encoder = null; 
-        encodingName = "ISO8859_1";
+	// Default to ISO Latin-1, will happen if this is called, for instance,
+	//  before the NIO provider is loadable.
+	encoder = null; 
+	encodingName = "ISO8859_1";
       }
-    initEncoderAndBuffer();
   }
 
   /**
@@ -196,21 +185,26 @@ public class OutputStreamWriter extends Writer
   public OutputStreamWriter (OutputStream out)
   {
     this.out = out;
+    outputBuffer = null;
     try 
       {
-        String encoding = System.getProperty("file.encoding");
-        Charset cs = Charset.forName(encoding);
-        encoder = cs.newEncoder();
-        encodingName =  EncodingHelper.getOldCanonical(cs.name());
+	String encoding = System.getProperty("file.encoding");
+	Charset cs = Charset.forName(encoding);
+	encoder = cs.newEncoder();
+	encodingName =  EncodingHelper.getOldCanonical(cs.name());
       } 
     catch(RuntimeException e) 
       {
-        // For bootstrap problems.
-        encoder = null;
-        encodingName = "ISO8859_1";
+	encoder = null; 
+	encodingName = "ISO8859_1";
       }
 
-    initEncoderAndBuffer();
+    if(encoder != null)
+      {
+	encoder.onMalformedInput(CodingErrorAction.REPLACE);
+	encoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
+	outputBuffer = CharBuffer.allocate(BUFFER_SIZE);
+      }
   }
 
   /**
@@ -226,8 +220,10 @@ public class OutputStreamWriter extends Writer
   {
     this.out = out;
     encoder = cs.newEncoder();
+    encoder.onMalformedInput(CodingErrorAction.REPLACE);
+    encoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
+    outputBuffer = CharBuffer.allocate(BUFFER_SIZE);
     encodingName = EncodingHelper.getOldCanonical(cs.name());
-    initEncoderAndBuffer();
   }
   
   /**
@@ -244,25 +240,12 @@ public class OutputStreamWriter extends Writer
   {
     this.out = out;
     encoder = enc;
+    outputBuffer = CharBuffer.allocate(BUFFER_SIZE);
     Charset cs = enc.charset();
     if (cs == null)
       encodingName = "US-ASCII";
     else
       encodingName = EncodingHelper.getOldCanonical(cs.name());
-    initEncoderAndBuffer();
-  }
-
-  /**
-   * Initializes the encoder and the output buffer.
-   */
-  private void initEncoderAndBuffer()
-  {
-    if (encoder != null)
-      {
-        encoder.onMalformedInput(CodingErrorAction.REPLACE);
-        encoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
-      }
-    outputBuffer = ByteBuffer.allocate(BUFFER_SIZE);
   }
 
   /**
@@ -299,26 +282,18 @@ public class OutputStreamWriter extends Writer
    */
   public void flush () throws IOException
   {
-    int len = outputBuffer.position();
-    if (len > 0)
-      {
-        outputBuffer.flip();
-        if (outputBuffer.hasArray())
-          {
-            byte[] bytes = outputBuffer.array();
-            int p = outputBuffer.arrayOffset();
-            out.write(bytes, p, len);
-          }
-        else
-          {
-            // Shouldn't happen for normal (non-direct) ByteBuffers.
-            byte[] bytes = new byte[len];
-            outputBuffer.get(bytes);
-            out.write(bytes, 0, len);
-          }
-        outputBuffer.clear();
+      if(out != null){	  
+	  if(outputBuffer != null){
+	      char[] buf = new char[outputBuffer.position()];
+	      if(buf.length > 0){
+		  outputBuffer.flip();
+		  outputBuffer.get(buf);
+		  writeConvert(buf, 0, buf.length);
+		  outputBuffer.clear();
+	      }
+	  }
+	  out.flush ();
       }
-    out.flush ();
   }
 
   /**
@@ -339,9 +314,59 @@ public class OutputStreamWriter extends Writer
     if(buf == null)
       throw new IOException("Buffer is null.");
 
-    CharBuffer charBuffer = getCharBuffer(buf, offset, count);
-    encodeChars(charBuffer);
-    flush();
+    if(outputBuffer != null)
+	{
+	    if(count >= outputBuffer.remaining())
+		{
+		    int r = outputBuffer.remaining();
+		    outputBuffer.put(buf, offset, r);
+		    writeConvert(outputBuffer.array(), 0, BUFFER_SIZE);
+		    outputBuffer.clear();
+		    offset += r;
+		    count -= r;
+		    // if the remaining bytes is larger than the whole buffer, 
+		    // just don't buffer.
+		    if(count >= outputBuffer.remaining()){
+                      writeConvert(buf, offset, count);
+		      return;
+		    }
+		}
+	    outputBuffer.put(buf, offset, count);
+	} else writeConvert(buf, offset, count);
+  }
+
+ /**
+  * Converts and writes characters.
+  */
+  private void writeConvert (char[] buf, int offset, int count) 
+      throws IOException
+  {
+    if(encoder == null)
+    {
+      byte[] b = new byte[count];
+      for(int i=0;i<count;i++)
+	b[i] = (byte)((buf[offset+i] <= 0xFF)?buf[offset+i]:'?');
+      out.write(b);
+    } else {
+      try  {
+	ByteBuffer output = encoder.encode(CharBuffer.wrap(buf,offset,count));
+	encoder.reset();
+	if(output.hasArray())
+	  out.write(output.array());
+	else
+	  {
+	    byte[] outbytes = new byte[output.remaining()];
+	    output.get(outbytes);
+	    out.write(outbytes);
+	  }
+      } catch(IllegalStateException e) {
+	throw new IOException("Internal error.");
+      } catch(MalformedInputException e) {
+	throw new IOException("Invalid character sequence.");
+      } catch(CharacterCodingException e) {
+	throw new IOException("Unmappable character.");
+      }
+    }
   }
 
   /**
@@ -358,16 +383,10 @@ public class OutputStreamWriter extends Writer
    */
   public void write (String str, int offset, int count) throws IOException
   {
-    if (out == null)
-      throw new IOException("Stream is closed.");
-    if (str == null)
-      throw new IOException("Buffer is null.");
+    if(str == null)
+      throw new IOException("String is null.");
 
-    // Don't call str.toCharArray() here to avoid allocation.
-    // TODO: CharBuffer.wrap(String) should not allocate a char array either.
-    CharBuffer charBuffer = getCharBuffer(str, offset, count);
-    encodeChars(charBuffer);
-    flush();
+    write(str.toCharArray(), offset, count);
   }
 
   /**
@@ -379,99 +398,7 @@ public class OutputStreamWriter extends Writer
    */
   public void write (int ch) throws IOException
   {
-    oneChar[0] = (char) ch;
-    write(oneChar, 0, 1);
-  }
-
-  /**
-   * Encodes the specified buffer of characters. The encoded data is stored
-   * in an intermediate buffer and only flushed when this buffer gets full.
-   *
-   * @param chars the characters to encode
-   *
-   * @throws IOException if something goes wrong on the underlying stream
-   */
-  private void encodeChars(CharBuffer chars)
-    throws IOException
-  {
-    assert out != null;
-    assert encoder != null;
-    int remaining = chars.remaining();
-    while (remaining > 0)
-      {
-        CoderResult cr = encode(chars);
-        remaining = chars.remaining();
-        // Flush when the output buffer has no more space or when the
-        // space is not enough to hold more encoded data (that when the
-        // input buffer does not change).
-        if (cr.isOverflow())
-          flush();
-      }
-  }
-
-  /**
-   * Encodes the specified CharBuffer into the output buffer. This takes
-   * care for the seldom case when we have no decoder, i.e. bootstrapping
-   * problems.
-   *
-   * @param chars the char buffer to encode
-   */
-  private CoderResult encode(CharBuffer chars)
-  {
-    CoderResult cr;
-    if (encoder != null)
-      {
-        cr = encoder.encode(chars, outputBuffer, false);
-      }
-    else
-      {
-        // For bootstrapping weirdness.
-        // Perform primitive Latin1 decoding.
-        while (chars.hasRemaining() && outputBuffer.hasRemaining())
-          {
-            outputBuffer.put((byte) (chars.get()));
-          }
-        // One of the buffers must be drained.
-        if (! outputBuffer.hasRemaining())
-          cr = CoderResult.OVERFLOW;
-        else
-          cr = CoderResult.UNDERFLOW;
-      }
-    return cr;
-  }
-
-  /**
-   * Returns a CharBuffer that wraps the specified char array. This tries
-   * to return a cached instance because usually the read() method is called
-   * repeatedly with the same char array instance, or the no-arg read
-   * method is called repeatedly which uses the oneChar field of this class
-   * over and over again.
-   *
-   * @param buf the array to wrap
-   * @param offset the offset
-   * @param length the length
-   *
-   * @return a prepared CharBuffer to write to
-   */
-  private final CharBuffer getCharBuffer(Object buf, int offset, int length)
-  {
-    CharBuffer outBuffer;
-    if (lastArray == buf)
-      {
-        outBuffer = lastBuffer;
-        outBuffer.position(offset);
-        outBuffer.limit(offset + length);
-      }
-    else
-      {
-        lastArray = buf;
-        if (buf instanceof String)
-          lastBuffer = CharBuffer.wrap((String) buf, offset, length);
-        else
-          lastBuffer = CharBuffer.wrap((char[]) buf, offset, length);
-        outBuffer = lastBuffer;
-      }
-    return outBuffer;
+    write(new char[]{ (char)ch }, 0, 1);
   }
 } // class OutputStreamWriter
 

@@ -1,3 +1,9 @@
+2007-03-28  Roman Kennke  <roman@kennke.org>
+
+	* java/io/OutputStreamWriter.java,
+	* java/io/InputStreamReader.java: Revert big stream patch due to
+	problems.
+
 2007-03-28  Tom Tromey  <tromey@redhat.com>
 
 	PR classpath/31303:
