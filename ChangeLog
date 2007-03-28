@@ -1,3 +1,10 @@
+2007-03-28  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/java-nio/Makefile.am (LIBADD): Don't add
+	libclasspathnative.
+	* native/jni/java-nio/gnu_java_nio_VMChannel.c
+	(Java_gnu_java_nio_VMChannel_open): Don't set and reset umask.
+
 2007-03-27  Francis Kung  <fkung@redhat.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkToolkit.c

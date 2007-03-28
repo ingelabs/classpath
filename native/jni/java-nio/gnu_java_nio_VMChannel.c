@@ -1,5 +1,5 @@
 /* gnu_java_nio_VMChannel.c -
-   Copyright (C) 2003, 2004, 2005, 2006  Free Software Foundation, Inc.
+   Copyright (C) 2003, 2004, 2005, 2006, 2007  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -1609,8 +1609,6 @@ Java_gnu_java_nio_VMChannel_open (JNIEnv *env,
   int nmode = 0;
   int ret;
   const char *npath;
-  mode_t mask = umask (0);
-  umask (mask);
 
   if ((mode & CPNIO_READ) && (mode & CPNIO_WRITE))
     nmode = O_RDWR;
@@ -1630,7 +1628,7 @@ Java_gnu_java_nio_VMChannel_open (JNIEnv *env,
 
 /*   NIODBG("path: %s; mode: %x", npath, nmode); */
 
-  ret = open (npath, nmode, 0777 & ~mask);
+  ret = open (npath, nmode, 0666);
 
 /*   NIODBG("ret: %d\n", ret); */
 
