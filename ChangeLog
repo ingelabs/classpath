@@ -1,3 +1,11 @@
+2007-03-28  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/management/StandardMBean.java:
+	(setAttribute(Attribute)): Add handling of primitive
+	types and subtype parameters.
+	(getMutator(String,Class<?>)): New helper method to
+	return the mutator.
+	
 2007-03-28  Roman Kennke  <roman@kennke.org>
 
 	* java/io/OutputStreamWriter.java,
