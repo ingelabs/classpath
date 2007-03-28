@@ -1,3 +1,9 @@
+2007-03-28  Tom Tromey  <tromey@redhat.com>
+
+	PR classpath/31276:
+	* native/jni/java-lang/java_lang_VMDouble.c
+	(parseDoubleFromChars): Use %p, not %i.
+
 2007-03-28  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/java-nio/Makefile.am (LIBADD): Don't add

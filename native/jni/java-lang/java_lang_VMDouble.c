@@ -1,5 +1,5 @@
 /* VMDouble.c - java.lang.VMDouble native functions
-   Copyright (C) 1998, 1999, 2001, 2003, 2004, 2005, 2006
+   Copyright (C) 1998, 1999, 2001, 2003, 2004, 2005, 2006, 2007
    Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -236,7 +236,7 @@ parseDoubleFromChars(JNIEnv * env, const char * buf)
 
 #ifdef DEBUG
       fprintf (stderr, "java.lang.VMDouble.parseDouble val = %g\n", val);
-      fprintf (stderr, "java.lang.VMDouble.parseDouble %i != %i ???\n",
+      fprintf (stderr, "java.lang.VMDouble.parseDouble %p != %p ???\n",
 	       endptr, last_non_ws);
 #endif
       if (endptr != last_non_ws)
