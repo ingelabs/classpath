@@ -12,6 +12,7 @@ libjavanio_la_SOURCES = gnu_java_nio_VMPipe.c \
 			javanio.h
 
 libjavanio_la_LIBADD = $(top_builddir)/native/jni/classpath/jcl.lo \
+		       $(top_builddir)/native/jni/native-lib/libclasspathnative.la \
 		       $(LTLIBICONV) 
 
 # Directly included through javanio.h
