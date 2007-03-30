@@ -1,3 +1,8 @@
+2007-03-30  Kyle Galloway  <kgallowa@redhat.com>
+
+	* gnu/classpath/jdwp/util/VariableTable.java: Make argCnt and slots ints.
+	(write): Replace writeLong with writeInt for above.
+
 2007-03-30  Tom Tromey  <tromey@redhat.com>
 
 	PR libgcj/29869:
