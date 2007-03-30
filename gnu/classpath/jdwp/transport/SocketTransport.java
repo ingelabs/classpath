@@ -107,12 +107,9 @@ class SocketTransport
 	String[] s = p.split(":");
 	if (s.length == 1)
 	  {
-	    // Assume localhost for non-server case or
-	    // port number for server case
-	    if (_server)
-	      _port = Integer.parseInt(s[0]);
-	    else
-	      _host = "localhost";
+	    // Port number only. Assume "localhost"
+	    _port = Integer.parseInt(s[0]);
+	    _host = "localhost";
 	  }
 	else
 	  {
