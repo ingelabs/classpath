@@ -39,6 +39,7 @@ package gnu.javax.management;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 
 import java.util.ArrayList;
@@ -48,6 +49,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
+
+import javax.management.JMX;
+import javax.management.MBeanServerInvocationHandler;
 
 import javax.management.openmbean.ArrayType;
 import javax.management.openmbean.CompositeData;
@@ -88,7 +92,7 @@ public final class Translator
     Type[] gtypes = method.getGenericParameterTypes();
     Object[] otypes = new Object[jtypes.length];
     for (int a = 0; a < jtypes.length; ++a)
-      jtypes[a] = fromJava(otypes[a], (Class<?>) gtypes[a]);
+      otypes[a] = fromJava(jtypes[a], (Class<?>) gtypes[a]);
     return otypes;
   }
 
@@ -210,7 +214,28 @@ public final class Translator
 	  }
 	return data;
       }	
-    /* FIXME: Handle MXBean and other types */
+    if (JMX.isMXBeanInterface(jclass))
+      {
+	try
+	  {
+	    MBeanServerInvocationHandler ih = (MBeanServerInvocationHandler)
+	      Proxy.getInvocationHandler(jtype);
+	    return ih.getObjectName();
+	  }
+	catch (IllegalArgumentException e)
+	  {
+	    throw new IllegalArgumentException("For a MXBean to be translated " +
+					       "to an open type, it must be a " +
+					       "proxy.", e);
+	  }
+	catch (ClassCastException e)
+	  {
+	    throw new IllegalArgumentException("For a MXBean to be translated " +
+					       "to an open type, it must have a " +
+					       "MBeanServerInvocationHandler.", e);
+	  }
+      }
+    /* FIXME: Handle other types */
     throw new IllegalArgumentException("The type, " + jtype +
 				       ", is not convertible.");
   }

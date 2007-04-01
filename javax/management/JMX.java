@@ -298,7 +298,7 @@ public class JMX
   public static <T> T newMXBeanProxy(MBeanServerConnection conn,
 				     ObjectName name, Class<T> iface)
   {
-    return newMBeanProxy(conn, name, iface, false);
+    return newMXBeanProxy(conn, name, iface, false);
   }
 
   /**

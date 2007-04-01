@@ -874,8 +874,8 @@ public class StandardMBean
       }
     catch (InvocationTargetException e)
       {
-	throw new MBeanException((Exception) e.getCause(), "The getter of "
-				 + name + " threw an exception");
+	throw new MBeanException(e, "The getter of " + name +
+				 " threw an exception");
       }
   }
 
