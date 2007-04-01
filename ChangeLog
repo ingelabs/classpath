@@ -1,3 +1,21 @@
+2007-04-01  Mark Wielaard  <mark@klomp.org>
+
+	* org/omg/CORBA/DynAny.java: Mark as deprecated.
+	* org/omg/CORBA/DynArray.java: Likewise.
+	* org/omg/CORBA/DynEnum.java: Likewise.
+	* org/omg/CORBA/DynFixed.java: Likewise.
+	* org/omg/CORBA/DynSequence.java: Likewise.
+	* org/omg/CORBA/DynStruct.java: Likewise.
+	* org/omg/CORBA/DynUnion.java: Likewise.
+	* org/omg/CORBA/DynValue.java: Likewise.
+	* org/omg/CORBA/ORB.java (create_basic_dyn_any): Likewise.
+	(create_dyn_any): Likewise.
+	(create_dyn_array): likewise.
+	(create_dyn_enum): Likewise.
+	(create_dyn_sequence): Likewise.
+	(create_dyn_struct): Likewise.
+	(create_dyn_union): Likewise.
+
 2007-04-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* gnu/javax/management/Translator.java:

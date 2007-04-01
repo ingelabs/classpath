@@ -273,6 +273,8 @@ public abstract class ORB
    * Since v1.4 this stil missing implementation was replaced
    * by the new DynamicAny package.
    *
+   * @deprecated Use {@link org.omg.DynamicAny.DynAnyFactory}
+   *
    * @throws NO_IMPLEMENT, always.
    */
   public DynAny create_basic_dyn_any(org.omg.CORBA.TypeCode t)
@@ -289,6 +291,8 @@ public abstract class ORB
    * Since v1.4 this stil missing implementation was replaced
    * by the new DynamicAny package.
    *
+   * @deprecated Use {@link org.omg.DynamicAny.DynAnyFactory}
+   *
    * @throws NO_IMPLEMENT, always.
    */
   public DynAny create_dyn_any(org.omg.CORBA.Any a)
@@ -303,6 +307,8 @@ public abstract class ORB
    *
    * Since v1.4 this stil missing implementation was replaced
    * by the new DynamicAny package.
+   *
+   * @deprecated Use {@link org.omg.DynamicAny.DynAnyFactory}
    *
    * @throws NO_IMPLEMENT, always.
    */
@@ -320,6 +326,8 @@ public abstract class ORB
    * Since v1.4 this stil missing implementation was replaced
    * by the new DynamicAny package.
    *
+   * @deprecated Use {@link org.omg.DynamicAny.DynAnyFactory}
+   *
    * @throws NO_IMPLEMENT, always.
    */
   public DynEnum create_dyn_enum(org.omg.CORBA.TypeCode t)
@@ -335,6 +343,8 @@ public abstract class ORB
    *
    * Since v1.4 this stil missing implementation was replaced
    * by the new DynamicAny package.
+   *
+   * @deprecated Use {@link org.omg.DynamicAny.DynAnyFactory}
    *
    * @throws NO_IMPLEMENT, always.
    */
@@ -352,6 +362,8 @@ public abstract class ORB
    * Since v1.4 this stil missing implementation was replaced
    * by the new DynamicAny package.
    *
+   * @deprecated Use {@link org.omg.DynamicAny.DynAnyFactory}
+   *
    * @throws NO_IMPLEMENT, always.
    */
   public DynStruct create_dyn_struct(org.omg.CORBA.TypeCode t)
@@ -367,6 +379,8 @@ public abstract class ORB
    *
    * Since v1.4 this stil missing implementation was replaced
    * by the new DynamicAny package.
+   *
+   * @deprecated Use {@link org.omg.DynamicAny.DynAnyFactory}
    *
    * @throws NO_IMPLEMENT, always.
    */
