@@ -35,6 +35,7 @@
    obligated to do so.  If you do not wish to do so, delete this
    exception statement from your version. */
 
+#define PANGO_ENABLE_ENGINE
 #include <pango/pango.h>
 #include <pango/pangoft2.h>
 #include <pango/pangofc-font.h>
@@ -97,6 +98,8 @@ Java_gnu_java_awt_peer_gtk_GdkFontPeer_dispose
     g_object_unref (pfont->layout);
   if (pfont->font != NULL)
     g_object_unref (pfont->font);
+  if (pfont->set != NULL)
+    g_object_unref (pfont->set);
   if (pfont->ctx != NULL)
     g_object_unref (pfont->ctx);
   if (pfont->desc != NULL)
@@ -257,6 +260,8 @@ Java_gnu_java_awt_peer_gtk_GdkFontPeer_setFont
     g_object_unref (pfont->ctx);
   if (pfont->font != NULL)
     g_object_unref (pfont->font);
+  if (pfont->set != NULL)
+    g_object_unref (pfont->set);
   if (pfont->desc != NULL)
     pango_font_description_free (pfont->desc);
 
@@ -267,7 +272,6 @@ Java_gnu_java_awt_peer_gtk_GdkFontPeer_setFont
   g_assert (family_name != NULL);
   pango_font_description_set_family (pfont->desc, family_name);
   (*env)->ReleaseStringUTFChars(env, family_name_str, family_name);
-
 
   if (style & java_awt_font_BOLD)
     pango_font_description_set_weight (pfont->desc, PANGO_WEIGHT_BOLD);
@@ -293,6 +297,8 @@ Java_gnu_java_awt_peer_gtk_GdkFontPeer_setFont
   
   pango_context_set_font_description (pfont->ctx, pfont->desc);
   pango_context_set_language (pfont->ctx, gtk_get_default_language());
+  pfont->set = pango_context_load_fontset(pfont->ctx, pfont->desc,
+  										  gtk_get_default_language());
   pfont->font = pango_context_load_font (pfont->ctx, pfont->desc);
   g_assert (pfont->font != NULL);
 

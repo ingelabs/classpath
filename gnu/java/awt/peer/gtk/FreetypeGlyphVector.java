@@ -79,6 +79,11 @@ public class FreetypeGlyphVector extends GlyphVector
    * The glyph codes
    */
   private int[] glyphCodes;
+  
+  /**
+   * The set of fonts used in this glyph vector.
+   */
+  private long[] fontSet;
 
   /**
    * Glyph transforms. (de facto only the translation is used)
@@ -86,6 +91,8 @@ public class FreetypeGlyphVector extends GlyphVector
   private AffineTransform[] glyphTransforms;
 
   private GlyphMetrics[] metricsCache;
+  
+  private native void dispose(long[] fonts);
 
   /**
    * Create a glyphvector from a given (Freetype) font and a String.
@@ -167,6 +174,11 @@ public class FreetypeGlyphVector extends GlyphVector
     System.arraycopy(gv.glyphPositions, 0, glyphPositions, 0,
                      glyphPositions.length);
   }
+  
+  public void finalize()
+  {
+    dispose(fontSet);
+  }
 
   /**
    * Create the array of glyph codes.
@@ -175,6 +187,7 @@ public class FreetypeGlyphVector extends GlyphVector
   {
     nGlyphs = s.codePointCount( 0, s.length() );
     glyphCodes = new int[ nGlyphs ];
+    fontSet = new long[ nGlyphs ];
     int[] codePoints = new int[ nGlyphs ];
     int stringIndex = 0;
 
@@ -194,22 +207,22 @@ public class FreetypeGlyphVector extends GlyphVector
           }
       }
 
-   glyphCodes = getGlyphs( codePoints );
+    getGlyphs( codePoints, glyphCodes, fontSet );
   }
 
   /**
    * Returns the glyph code within the font for a given character
    */
-  public native int[] getGlyphs(int[] codepoints);
+  public native int[] getGlyphs(int[] codepoints, int[] glyphs, long[] fonts);
 
   /**
    * Returns the kerning of a glyph pair
    */
-  private native Point2D getKerning(int leftGlyph, int rightGlyph);
+  private native Point2D getKerning(int leftGlyph, int rightGlyph, long font);
 
-  private native double[] getMetricsNative( int glyphCode );
+  private native double[] getMetricsNative(int glyphCode, long font);
 
-  private native GeneralPath getGlyphOutlineNative(int glyphIndex);
+  private native GeneralPath getGlyphOutlineNative(int glyphIndex, long font);
 
 
   public Object clone()
@@ -267,10 +280,12 @@ public class FreetypeGlyphVector extends GlyphVector
 
         x += gm.getAdvanceX();
         y += gm.getAdvanceY();
-        
-        if (i != nGlyphs-1)
+
+        // Get the kerning only if it's not the last glyph, and the two glyphs are
+        // using the same font
+        if (i != nGlyphs-1 && fontSet[i] == fontSet[i+1])
           {
-            Point2D p = getKerning(glyphCodes[i], glyphCodes[i + 1]);
+            Point2D p = getKerning(glyphCodes[i], glyphCodes[i + 1], fontSet[i]);
             x += p.getX();
             y += p.getY();
           }
@@ -305,6 +320,26 @@ public class FreetypeGlyphVector extends GlyphVector
     return rval;
   }
 
+  /**
+   * Returns pointers to the fonts used in this glyph vector.
+   * 
+   * The array index matches that of the glyph vector itself.
+   */
+  protected long[] getGlyphFonts(int beginGlyphIndex, int numEntries, 
+                                 long[] codeReturn)
+  {
+    long[] rval;
+
+    if( codeReturn == null || codeReturn.length < numEntries)
+      rval = new long[ numEntries ];
+    else
+      rval = codeReturn;
+    
+    System.arraycopy(fontSet, beginGlyphIndex, rval, 0, numEntries);
+
+    return rval;
+  }
+
   public Shape getGlyphLogicalBounds(int glyphIndex)
   {
     GlyphMetrics gm = getGlyphMetrics( glyphIndex );
@@ -335,11 +370,10 @@ public class FreetypeGlyphVector extends GlyphVector
 
     for(int i = 0; i < nGlyphs; i++)
       {
-        GlyphMetrics gm = (GlyphMetrics)
-        peer.getGlyphMetrics( glyphCodes[ i ] );
+        GlyphMetrics gm = (GlyphMetrics)peer.getGlyphMetrics(glyphCodes[i]);
         if( gm == null )
           {
-            double[] val = getMetricsNative( glyphCodes[ i ] );
+            double[] val = getMetricsNative(glyphCodes[i], fontSet[i]);
             if( val == null )
               gm = null;
             else
@@ -376,7 +410,8 @@ public class FreetypeGlyphVector extends GlyphVector
    */
   public Shape getGlyphOutline(int glyphIndex)
   {
-    GeneralPath gp = getGlyphOutlineNative( glyphCodes[ glyphIndex ] );
+    GeneralPath gp = getGlyphOutlineNative(glyphCodes[glyphIndex],
+                                           fontSet[glyphIndex]);
     
     AffineTransform tx = AffineTransform.getTranslateInstance(glyphPositions[glyphIndex*2],
                                                               glyphPositions[glyphIndex*2+1]);

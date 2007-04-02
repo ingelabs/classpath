@@ -1,3 +1,48 @@
+2007-04-02  Francis Kung  <fkung@redhat.com>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(cairoDrawGlyphVector): Added parameter.
+	(drawGlyphVector): Retrieve and pass fontset parameter.
+	* gnu/java/awt/peer/gtk/ComponentGraphics.java
+	(cairoDrawGlyphVector): Added parameter.
+	(lock): Removed unnecessary cast.
+	(unlock): Removed unnecessary cast and explicitly set to ONE variable.
+	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java
+	(fontSet): New field.
+	(dispose): New native method.
+	(finalize): New method.
+	(getGlyphFonts): New method.
+	(getGlyphOutline): Pass fontSet parameter to native method.
+	(getGlyphOutlineNative): Added parameter.
+	(getGlyphs): Pass extra parameters to native method.
+	(getGlyphsNative): Added parameters.
+	(getKerning): Added fontSet parameter.
+	(getMetricsNative): Added fontSet parameter.
+	(performDefaultLayout): Only check kerning if glyphs use the same font.
+	(setupGlyphMetrics): Pass extra parameters to native methods.
+	* include/gnu_java_awt_peer_gtk_CairoGraphics2D.h,
+	* include/gnu_java_awt_peer_gtk_FreetypGlyphVector.h: Regenerated.
+	* native/jni/gtk-peer/gdkfont.h: Enable pango engine.
+	(peerfont): Add variable for fontset.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoGraphics2D.c
+	(Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoDrawGlyphVector): Accept
+	array of font pointers to use when drawing glyphs.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_FreetypeGlyphVector.c
+	(getFontSet): New function.
+	(Java_gnu_java_awt_peer_gtk_FreetypeGlyphVector_dispose): New function.
+	(Java_gnu_java_awt_peer_gtk_FreetypeGlyphVector_getGlyphOutlineNative):
+	Added and use new fontSet parameter.
+	(Java_gnu_java_awt_peer_gtk_FreetypeGlyphVector_getGlyphs): Use pango
+	to retrieve glyphs and estimate font, if the current font does not contain
+	a requested glyph.
+	(Java_gnu_java_awt_peer_gtk_FreetypeGlyphVector_getKerning): Added and use
+	new fontSet parameter.
+	(Java_gnu_java_awt_peer_gtk_FreetypeGlyphVector_getMetricsNative): Added
+	and use new fontSet parameter.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c
+	(Java_gnu_java_awt_peer_gtk_GdkFontPeer_dispose): Free fontset.
+	(Java_gnu_java_awt_peer_gtk_GdkFontPeer_setFont): Load fontset.
+
 2007-04-02  Andrew Haley  <aph@redhat.com>
 
 	* javax/management/ObjectName.java: Handle 0-length names.

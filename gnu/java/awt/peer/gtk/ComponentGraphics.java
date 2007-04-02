@@ -121,7 +121,7 @@ public class ComponentGraphics extends CairoGraphics2D
    */
   private void lock()
   {
-    Integer i = (Integer) hasLock.get();
+    Integer i = hasLock.get();
     if (i == null)
       {
         start_gdk_drawing();
@@ -136,7 +136,7 @@ public class ComponentGraphics extends CairoGraphics2D
    */
   private void unlock()
   {
-    Integer i = (Integer) hasLock.get();
+    Integer i = hasLock.get();
     if (i == null)
       throw new IllegalStateException();
     if (i == ONE)
@@ -144,6 +144,8 @@ public class ComponentGraphics extends CairoGraphics2D
         hasLock.set(null);
         end_gdk_drawing();
       }
+    else if (i.intValue() == 2)
+      hasLock.set(ONE);
     else
       hasLock.set(Integer.valueOf(i.intValue() - 1));
   }
@@ -744,12 +746,14 @@ public class ComponentGraphics extends CairoGraphics2D
   @Override
   protected void cairoDrawGlyphVector(long pointer, GdkFontPeer font,
                                       float x, float y, int n,
-                                      int[] codes, float[] positions)
+                                      int[] codes, float[] positions,
+                                      long[] fontset)
   {
     try
     {
       lock();
-      super.cairoDrawGlyphVector(pointer, font, x, y, n, codes, positions);
+      super.cairoDrawGlyphVector(pointer, font, x, y, n, codes, positions,
+                                 fontset);
     }
     finally
     {
