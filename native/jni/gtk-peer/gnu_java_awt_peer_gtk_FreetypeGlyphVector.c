@@ -420,3 +420,16 @@ Java_gnu_java_awt_peer_gtk_FreetypeGlyphVector_dispose
 
   (*env)->ReleaseLongArrayElements (env, fontset, fontArray, 0);
 }
+
+JNIEXPORT jlong JNICALL 
+Java_gnu_java_awt_peer_gtk_FreetypeGlyphVector_getNativeFontPointer
+ (JNIEnv *env, jobject obj, jint n)
+{
+  int i;
+  PangoFcFont *font = getFont(env, obj);
+  
+  for (i = 0; i < n; i++)
+    g_object_ref(font);
+  
+  return PTR_TO_JLONG(font);
+}

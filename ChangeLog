@@ -1,5 +1,18 @@
 2007-04-02  Francis Kung  <fkung@redhat.com>
 
+	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java
+	(fontSet): Initialize to null.
+	(FreetypeGlyphVector(Font, int[], FontRenderContext)): Populate fontSet
+	array with default font if needed.
+	(FreetypeGlyphVector(FreetypeGlyphVector)): Clone all fields.
+	(getNativeFontPointer): New native method.
+	* include/gnu_java_awt_peer_gtk_FreetypeGlyphVector.h: Regenerated.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_FreetypeGlyphVector.c
+	(Java_gnu_java_awt_peer_gtk_FreetypeGlyphVector_getNativeFontPointer):
+	New function.
+
+2007-04-02  Francis Kung  <fkung@redhat.com>
+
 	* INSTALL: Document known bug in at-spi, atk, and gail packages prior to
 	version 1.18.0.
 

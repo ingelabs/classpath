@@ -83,7 +83,7 @@ public class FreetypeGlyphVector extends GlyphVector
   /**
    * The set of fonts used in this glyph vector.
    */
-  private long[] fontSet;
+  private long[] fontSet = null;
 
   /**
    * Glyph transforms. (de facto only the translation is used)
@@ -93,6 +93,17 @@ public class FreetypeGlyphVector extends GlyphVector
   private GlyphMetrics[] metricsCache;
   
   private native void dispose(long[] fonts);
+  
+  /**
+   * Returns a pointer to the native PangoFcFont object.
+   * 
+   * The object will be referenced with g_object_ref n times before being
+   * returned, and must be unreferenced a corresponding number of times.
+   * 
+   * @param n Number of times to reference the object.
+   * @return Pointer to the native default font.
+   */
+  private native long getNativeFontPointer(int n);
 
   /**
    * Create a glyphvector from a given (Freetype) font and a String.
@@ -142,6 +153,13 @@ public class FreetypeGlyphVector extends GlyphVector
     glyphCodes = new int[ codes.length ];
     System.arraycopy(codes, 0, glyphCodes, 0, codes.length);
     nGlyphs = glyphCodes.length;
+    
+    if (fontSet == null)
+      {
+        fontSet = new long[nGlyphs];
+        Arrays.fill(fontSet, getNativeFontPointer(nGlyphs));
+      }
+    
     performDefaultLayout();
   }
 
@@ -164,6 +182,7 @@ public class FreetypeGlyphVector extends GlyphVector
       }
 
     glyphCodes = new int[ nGlyphs ];
+    fontSet = new long[nGlyphs];
     glyphPositions = new float[(nGlyphs + 1) * 2];
     glyphTransforms = new AffineTransform[ nGlyphs ];
     for(int i = 0; i < nGlyphs; i++ )
@@ -173,6 +192,8 @@ public class FreetypeGlyphVector extends GlyphVector
       }
     System.arraycopy(gv.glyphPositions, 0, glyphPositions, 0,
                      glyphPositions.length);
+    System.arraycopy(gv.glyphCodes, 0, glyphCodes, 0, nGlyphs);
+    System.arraycopy(gv.fontSet, 0, fontSet, 0, nGlyphs);
   }
   
   public void finalize()
