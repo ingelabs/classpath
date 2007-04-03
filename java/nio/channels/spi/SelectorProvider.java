@@ -40,6 +40,7 @@ package java.nio.channels.spi;
 import gnu.java.nio.SelectorProviderImpl;
 
 import java.io.IOException;
+import java.nio.channels.Channel;
 import java.nio.channels.DatagramChannel;
 import java.nio.channels.Pipe;
 import java.nio.channels.ServerSocketChannel;
@@ -113,6 +114,19 @@ public abstract class SelectorProvider
    * @exception IOException if an error occurs
    */
   public abstract SocketChannel openSocketChannel() throws IOException;
+
+  /**
+   * Returns the inherited channel of the VM.
+   *
+   * @return the inherited channel of the VM
+   *
+   * @throws IOException If an I/O error occurs
+   * @throws SecurityException If an installed security manager denies access
+   *         to RuntimePermission("inheritedChannel")
+   *
+   * @since 1.5
+   */
+  public abstract Channel inheritedChannel() throws IOException;
 
   /**
    * Returns the system-wide default selector provider for this invocation

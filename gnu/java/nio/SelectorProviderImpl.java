@@ -41,6 +41,7 @@ package gnu.java.nio;
 import gnu.classpath.SystemProperties;
 
 import java.io.IOException;
+import java.nio.channels.Channel;
 import java.nio.channels.DatagramChannel;
 import java.nio.channels.Pipe;
 import java.nio.channels.ServerSocketChannel;
@@ -116,5 +117,14 @@ public class SelectorProviderImpl extends SelectorProvider
     throws IOException
   {
     return new SocketChannelImpl (this);
+  }
+
+  public Channel inheritedChannel() throws IOException
+  {
+    // Implementation note: The default implementation can't do much more
+    // than return null. If a VM can provide something more useful it should
+    // install its own SelectorProvider (maybe a subclass of this one) to
+    // return something more useful.
+    return null;
   }
 }

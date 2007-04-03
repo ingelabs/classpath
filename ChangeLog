@@ -1,5 +1,15 @@
 2007-04-03  Roman Kennke  <roman@kennke.org>
 
+	* java/lang/System.java
+	(inheritedChannel): New method, wraps
+	SelectorProvider.inheritedChannel().
+	* java/nio/channels/spi/SelectorProvider.java
+	(inheritedChannel): New abstract method.
+	* gnu/java/nio/SelectorProviderImpl.java
+	(inheritedChannel): New method, return null as default.
+
+2007-04-03  Roman Kennke  <roman@kennke.org>
+
 	* java/nio/ByteOrder.java
 	(nativeByteOrder): Let this fail when the corresponding
 	property is not set properly.

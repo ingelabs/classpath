@@ -42,8 +42,11 @@ package java.lang;
 import gnu.classpath.SystemProperties;
 import gnu.classpath.VMStackWalker;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.nio.channels.Channel;
+import java.nio.channels.spi.SelectorProvider;
 import java.util.AbstractCollection;
 import java.util.Collection;
 import java.util.Collections;
@@ -672,6 +675,25 @@ public final class System
     return VMRuntime.mapLibraryName(libname);
   }
 
+  /**
+   * Returns the inherited channel of the VM.
+   *
+   * This wraps the inheritedChannel() call of the system's default
+   * {@link SelectorProvider}.
+   *
+   * @return the inherited channel of the VM
+   *
+   * @throws IOException If an I/O error occurs
+   * @throws SecurityException If an installed security manager denies access
+   *         to RuntimePermission("inheritedChannel")
+   *
+   * @since 1.5
+   */
+  public static Channel inheritedChannel()
+    throws IOException
+  {
+    return SelectorProvider.provider().inheritedChannel();
+  }
 
   /**
    * This is a specialised <code>Collection</code>, providing
