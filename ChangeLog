@@ -1,3 +1,8 @@
+2007-04-03  Francis Kung  <fkung@redhat.com>
+
+	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java
+	(getGlyphs(int[], int[], long[])): Return void.
+
 2007-04-03  Kyle Galloway  <kgallowa@redhat.com>
 
 	* gnu/classpath/jdwp/value/ArrayValue.java: New file. 

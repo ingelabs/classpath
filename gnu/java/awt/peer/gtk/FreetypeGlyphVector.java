@@ -234,7 +234,7 @@ public class FreetypeGlyphVector extends GlyphVector
   /**
    * Returns the glyph code within the font for a given character
    */
-  public native int[] getGlyphs(int[] codepoints, int[] glyphs, long[] fonts);
+  public native void getGlyphs(int[] codepoints, int[] glyphs, long[] fonts);
 
   /**
    * Returns the kerning of a glyph pair
