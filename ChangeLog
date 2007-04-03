@@ -1,5 +1,17 @@
 2007-04-03  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/plaf/basic/BasicLabelUI.java
+	(cachedInsets): New field. Used for reusing the insets instance.
+	(getFontMetrics): New helper method for fetching a suitable
+	FontMetrics object.
+	(getPreferredSize): Use new helper method for font metrics.
+	(paint): Only do something if we have an icon or text.
+	Use cached Insets instance and new font metrics helper.
+	(paintDisabledText): Don't restore the graphics' color.
+	(paintEnabledText): Don't restore the graphics' color.
+
+2007-04-03  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/plaf/metal/MetalButtonUI.java
 	(paintButtonPressed): Fill the whole button not only visibleRect.
 	* javax/swing/plaf/metal/MetalLookAndFeel.java
