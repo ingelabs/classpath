@@ -1,5 +1,15 @@
 2007-04-03  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/plaf/metal/MetalButtonUI.java
+	(paintButtonPressed): Fill the whole button not only visibleRect.
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(LAF_defaults): Removed.
+	(getDefaults): Always fetch super's defaults.
+	* javax/swing/plaf/metal/MetalMenuBarUI.java
+	(update): Don't leave 2 pixel gap.
+
+2007-04-03  Roman Kennke  <roman@kennke.org>
+
 	* native/target/.cvsignore,
 	* native/target/Linux/.cvsignore,
 	* native/target/generic/.cvsignore: Some new ignores.
