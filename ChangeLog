@@ -1,5 +1,11 @@
 2007-04-03  Roman Kennke  <roman@kennke.org>
 
+	* native/target/.cvsignore,
+	* native/target/Linux/.cvsignore,
+	* native/target/generic/.cvsignore: Some new ignores.
+
+2007-04-03  Roman Kennke  <roman@kennke.org>
+
 	* gnu/java/awt/peer/gtk/GThreadMutex.java,
 	* gnu/java/awt/peer/gtk/GThreadNativeMethodRunner.java,
 	* include/gnu_java_awt_peer_gtk_GThreadNativeMethodRunner.h,
