@@ -1,5 +1,11 @@
 2007-04-03  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(getPathBounds): Consider the tree's insets. Added a bunch of
+	null checks.
+
+2007-04-03  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/plaf/basic/BasicLabelUI.java
 	(cachedInsets): New field. Used for reusing the insets instance.
 	(getFontMetrics): New helper method for fetching a suitable
