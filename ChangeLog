@@ -1,5 +1,11 @@
 2007-04-03  Roman Kennke  <roman@kennke.org>
 
+	* java/nio/ByteOrder.java
+	(nativeByteOrder): Let this fail when the corresponding
+	property is not set properly.
+
+2007-04-03  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/plaf/basic/BasicTreeUI.java
 	(getPathBounds): Consider the tree's insets. Added a bunch of
 	null checks.
