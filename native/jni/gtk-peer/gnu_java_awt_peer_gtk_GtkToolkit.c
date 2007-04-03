@@ -1,3 +1,4 @@
+
 /* gtktoolkit.c -- Native portion of GtkToolkit
    Copyright (C) 1998, 1999, 2005, 2007  Free Software Foundation, Inc.
 
@@ -88,6 +89,11 @@ static JavaVM *java_vm;
 static jmethodID printCurrentThreadID;
 static jmethodID setRunningID;
 
+/**
+ * The global AWT lock object.
+ */
+static jobject global_lock;
+
 union env_union
 {
   void *void_env;
@@ -106,7 +112,9 @@ cp_gtk_gdk_env()
 GtkWindowGroup *cp_gtk_global_window_group;
 double cp_gtk_dpi_conversion_factor;
 
-static void init_glib_threads(JNIEnv *, jint);
+static void jni_lock_cb();
+static void jni_unlock_cb();
+static void init_glib_threads(JNIEnv *, jint, jobject);
 static gboolean post_set_running_flag (gpointer);
 static gboolean set_running_flag (gpointer);
 static gboolean clear_running_flag (gpointer);
@@ -137,7 +145,8 @@ static void glog_func (const gchar *log_domain,
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkToolkit_gtkInit (JNIEnv *env, 
 					       jclass clazz __attribute__((unused)),
-					       jint portableNativeSync)
+					       jint portableNativeSync,
+                                               jobject lock)
 {
   int argc = 1;
   char **argv;
@@ -161,7 +170,7 @@ Java_gnu_java_awt_peer_gtk_GtkToolkit_gtkInit (JNIEnv *env,
   argv[0][0] = '\0';
   argv[1] = NULL;
   
-  init_glib_threads(env, portableNativeSync);
+  init_glib_threads(env, portableNativeSync, lock);
 
   /* From GDK 2.0 onwards we have to explicitly call gdk_threads_init */
   gdk_threads_init();
@@ -215,6 +224,32 @@ Java_gnu_java_awt_peer_gtk_GtkToolkit_gtkInit (JNIEnv *env,
                                             "setRunning", "(Z)V");
 }
 
+/**
+ * A callback function that implements gdk_threads_enter(). This is
+ * implemented to wrap the JNI MonitorEnter() function.
+ */
+static void jni_lock_cb()
+{
+  JNIEnv * env = cp_gtk_gdk_env();
+  if ((*env)->MonitorEnter(env, global_lock) != JNI_OK)
+    {
+      printf("failure while entering GTK monitor\n");
+    }
+}
+
+/**
+ * A callback function that implements gdk_threads_leave(). This is
+ * implemented to wrap the JNI MonitorExit() function.
+ */
+static void jni_unlock_cb()
+{
+
+  JNIEnv * env = cp_gtk_gdk_env();
+  if ((*env)->MonitorExit(env, global_lock))
+    {
+      printf("failure while exiting GTK monitor\n");
+    }
+}
 
 /** Initialize GLIB's threads properly, based on the value of the
     gnu.classpath.awt.gtk.portable.native.sync Java system property.  If
@@ -222,7 +257,7 @@ Java_gnu_java_awt_peer_gtk_GtkToolkit_gtkInit (JNIEnv *env,
     In some release following 0.10, that config.h macro will go away.)
     */ 
 static void 
-init_glib_threads(JNIEnv *env, jint portableNativeSync)
+init_glib_threads(JNIEnv *env, jint portableNativeSync, jobject lock)
 {
   if (portableNativeSync < 0)
     {
@@ -238,9 +273,11 @@ init_glib_threads(JNIEnv *env, jint portableNativeSync)
   if (!g_thread_supported ())
     {
       if (portableNativeSync)
-        g_thread_init ( &cp_gtk_portable_native_sync_jni_functions );
-      else
-        g_thread_init ( NULL );
+        {
+          global_lock = lock;
+          gdk_threads_set_lock_functions(&jni_lock_cb, &jni_unlock_cb);
+        }
+      g_thread_init(NULL);
     }
   else
     {
@@ -336,14 +373,14 @@ JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkToolkit_gtkMain
 (JNIEnv *env __attribute__((unused)), jobject obj __attribute__((unused)))
 {
-  gdk_threads_enter ();
+  gdk_threads_enter();
 
   gtk_init_add (post_set_running_flag, NULL);
   gtk_quit_add (gtk_main_level (), clear_running_flag, NULL);
 
   gtk_main ();
 
-  gdk_threads_leave ();
+  gdk_threads_leave();
 }
 
 JNIEXPORT void JNICALL
@@ -591,3 +628,4 @@ clear_running_flag (gpointer data __attribute__((unused)))
                                               setRunningID, FALSE);
   return FALSE;
 }
+

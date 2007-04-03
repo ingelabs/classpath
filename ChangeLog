@@ -1,3 +1,25 @@
+2007-04-03  Roman Kennke  <roman@kennke.org>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkToolkit.c
+	(global_lock): New global variable that holds the object reference
+	to the global GTK lock.
+	(init_glib_threads): Add lock argument. Use
+	gdk_threads_set_lock_functions to replace GTK's locking function
+	with two callbacks that allow reentrant locking, based on
+	JNI's MonitorEnter() and MonitorExit().
+	(jni_lock_cb): New callback function for GTK locking.
+	(jni_unlock_cb): New callback function for GTK unlocking.
+	(Java_gnu_java_awt_peer_gtk_GtkToolkit_gtkInit): Add lock argument.
+	Call init_glib_threads() with lock object.
+	* include/gnu_java_awt_peer_gtk_GtkToolkit.h
+	Regenerated.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java
+	(GTK_LOCK): New static field. This is used as the global lock for
+	GTK.
+	(gtkInit): Add lock parameter.
+	(static_init): Initialize global lock and call gtkInit() with
+	that lock.
+
 2007-04-02  Francis Kung  <fkung@redhat.com>
 
 	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java

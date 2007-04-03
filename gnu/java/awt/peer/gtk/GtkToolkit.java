@@ -134,9 +134,11 @@ import javax.imageio.spi.IIORegistry;
 
 public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
 {
+  static final Object GTK_LOCK;
+
   private static EventQueue q;
 
-  static native void gtkInit(int portableNativeSync);
+  static native void gtkInit(int portableNativeSync, Object lock);
 
   static native void gtkMain();
 
@@ -156,8 +158,9 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
       portableNativeSync = 1;   // true
     else
       portableNativeSync = 0;   // false
-      
-    gtkInit(portableNativeSync);
+
+    GTK_LOCK = new String("GTK LOCK");
+    gtkInit(portableNativeSync, GTK_LOCK);
   }
 
   public GtkToolkit ()
