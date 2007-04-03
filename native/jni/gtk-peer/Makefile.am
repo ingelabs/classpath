@@ -6,7 +6,6 @@ libgtkpeer_la_SOURCES = gnu_java_awt_peer_gtk_CairoSurface.c \
 			gnu_java_awt_peer_gtk_ComponentGraphics.c \
 			gnu_java_awt_peer_gtk_ComponentGraphicsCopy.c \
 			gnu_java_awt_peer_gtk_FreetypeGlyphVector.c \
-			gnu_java_awt_peer_gtk_GThreadNativeMethodRunner.c \
 			gnu_java_awt_peer_gtk_GdkFontPeer.c \
 			gnu_java_awt_peer_gtk_GdkGraphicsEnvironment.c \
 			gnu_java_awt_peer_gtk_GdkPixbufDecoder.c \
@@ -42,10 +41,8 @@ libgtkpeer_la_SOURCES = gnu_java_awt_peer_gtk_CairoSurface.c \
 			gnu_java_awt_peer_gtk_GtkVolatileImage.c \
 			GtkDragSourceContextPeer.c \
 			cairographics2d.h \
-			gthread-jni.c \
 			gdkdisplay.h \
 			gdkfont.h \
-			gthread-jni.h \
 			gtk_jawt.c \
 			gtkpeer.h
 
