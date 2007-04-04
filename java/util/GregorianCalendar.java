@@ -223,7 +223,6 @@ public class GregorianCalendar extends Calendar
   {
     this(zone, locale, false);
     setTimeInMillis(System.currentTimeMillis());
-    complete();
   }
 
   /**
