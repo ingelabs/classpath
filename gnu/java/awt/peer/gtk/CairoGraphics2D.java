@@ -1623,8 +1623,8 @@ public abstract class CairoGraphics2D extends Graphics2D
    * @param alpha The alpha value to paint with ( 0 <= alpha <= 1).
    * @param interpolation The interpolation type.
    */
-  private void drawCairoSurface(CairoSurface surface, AffineTransform tx,
-                                double alpha, int interpolation)
+  protected void drawCairoSurface(CairoSurface surface, AffineTransform tx,
+                                  double alpha, int interpolation)
   {
     // Find offset required if this surface is a sub-raster, and append offset
     // to transformation.

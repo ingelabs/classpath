@@ -560,6 +560,17 @@ public class ComponentGraphics extends CairoGraphics2D
    * methods ends up being called, we will deadlock.  The lock is only reentrant
    * when called via our lock() method. 
    */
+  
+  /* These methods are already locked in the superclass CairoGraphics2D
+   * so they do not need to be overridden:
+   * 
+   * public void disposeNative
+   *
+   * protected void cairoDrawGlyphVector
+   * 
+   * protected void cairoSetFont
+   */
+  
   @Override
   protected long init(long pointer)
   {
@@ -576,20 +587,6 @@ public class ComponentGraphics extends CairoGraphics2D
     }
     
     return ret;
-  }
-  
-  @Override
-  public void disposeNative(long pointer)
-  {
-    try
-    {
-      lock();
-      super.disposeNative(pointer);
-    }
-    finally
-    {
-      unlock();
-    }
   }
   
   @Override
@@ -742,39 +739,7 @@ public class ComponentGraphics extends CairoGraphics2D
       unlock();
     }
   }
-  
-  @Override
-  protected void cairoDrawGlyphVector(long pointer, GdkFontPeer font,
-                                      float x, float y, int n,
-                                      int[] codes, float[] positions,
-                                      long[] fontset)
-  {
-    try
-    {
-      lock();
-      super.cairoDrawGlyphVector(pointer, font, x, y, n, codes, positions,
-                                 fontset);
-    }
-    finally
-    {
-      unlock();
-    }
-  }
-  
-  @Override
-  protected void cairoSetFont(long pointer, GdkFontPeer font)
-  {
-    try
-    {
-      lock();
-      super.cairoSetFont(pointer, font);
-    }
-    finally
-    {
-      unlock();
-    }
-  }
-  
+
   @Override
   protected void cairoRectangle(long pointer, double x, double y,
                                 double width, double height)
@@ -967,6 +932,21 @@ public class ComponentGraphics extends CairoGraphics2D
     {
       lock();
       super.cairoSetAntialias(pointer, aa);
+    }
+    finally
+    {
+      unlock();
+    }
+  }
+  
+  @Override
+  protected void drawCairoSurface(CairoSurface surface, AffineTransform tx,
+                                  double alpha, int interpolation)
+  {
+    try
+    {
+      lock();
+      super.drawCairoSurface(surface, tx, alpha, interpolation);
     }
     finally
     {
