@@ -126,7 +126,20 @@ public abstract class SelectorProvider
    *
    * @since 1.5
    */
-  public abstract Channel inheritedChannel() throws IOException;
+  public Channel inheritedChannel()
+    throws IOException
+  {
+    SecurityManager sm = System.getSecurityManager();
+    if (sm != null)
+      {
+        sm.checkPermission(new RuntimePermission("inheritedChannel"));
+      }
+    // Implementation note: The default implementation can't do much more
+    // than return null. If a VM can provide something more useful it should
+    // install its own SelectorProvider (maybe a subclass of this one) to
+    // return something more useful.
+    return null;
+  }
 
   /**
    * Returns the system-wide default selector provider for this invocation

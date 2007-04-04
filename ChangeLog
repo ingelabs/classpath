@@ -1,5 +1,13 @@
 2007-04-04  Roman Kennke  <roman@kennke.org>
 
+	* java/nio/channels/spi/SelectorProvider.java
+	(inheritedChannel): Make method concrete and move default impl
+	to here. Perform security checks as mandated by the spec.
+	* gnu/java/nio/SelectorProviderImpl.java
+	(inheritedChannel): Removed. Default impl is in SelectorProvider.
+
+2007-04-04  Roman Kennke  <roman@kennke.org>
+
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkToolkit.c
 	(init_glib_threads): Create global reference on lock object.
 
