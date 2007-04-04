@@ -1,3 +1,12 @@
+2007-04-04  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c
+	(cp_gtk_image_get_pixbuf): Return NULL when pointer is NULL.
+	* gnu/java/awt/peer/gtk/GtkImage.java (setImage): Set loaded and
+	call deliver() after pixels have been set.
+	* gnu/java/awt/peer/gtk/GtkFramePeer.java (setIconImage): Only
+	set icon when image has been properly loaded.
+
 2007-04-04  Francis Kung  <fkung@redhat.com>
 
 	* gnu/java/awt/peer/gtk/CairoGraphics2D.java

@@ -374,13 +374,13 @@ public class GtkImage extends Image
         return;
       }
 
-    isLoaded = true;
-    deliver();
     synchronized(pixbufLock)
       {
         createPixbuf();
         setPixels(pixels);
       }
+    isLoaded = true;
+    deliver();
   }
 
   // java.awt.Image methods ////////////////////////////////////////////////

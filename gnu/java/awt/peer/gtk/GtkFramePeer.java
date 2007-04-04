@@ -1,5 +1,5 @@
 /* GtkFramePeer.java -- Implements FramePeer with GTK
-   Copyright (C) 1999, 2002, 2004, 2006 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2002, 2004, 2006, 2007 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -178,10 +178,14 @@ public class GtkFramePeer extends GtkWindowPeer
   {
     if (image != null)
       {
+        GtkImage gtkImage;
         if (image instanceof GtkImage)
-          nativeSetIconImage((GtkImage) image);
-        else
-          nativeSetIconImage(new GtkImage(image.getSource()));
+          gtkImage = (GtkImage) image;
+	else
+	  gtkImage = new GtkImage(image.getSource());
+
+        if (gtkImage.isLoaded && ! gtkImage.errorLoading)
+          nativeSetIconImage(gtkImage);
       }
   }
 
