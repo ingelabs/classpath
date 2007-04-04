@@ -113,7 +113,7 @@ double cp_gtk_dpi_conversion_factor;
 
 static void jni_lock_cb();
 static void jni_unlock_cb();
-static void init_glib_threads(jint, jobject);
+static void init_glib_threads(JNIEnv*, jint, jobject);
 static gboolean post_set_running_flag (gpointer);
 static gboolean set_running_flag (gpointer);
 static gboolean clear_running_flag (gpointer);
@@ -169,7 +169,7 @@ Java_gnu_java_awt_peer_gtk_GtkToolkit_gtkInit (JNIEnv *env,
   argv[0][0] = '\0';
   argv[1] = NULL;
   
-  init_glib_threads(portableNativeSync, lock);
+  init_glib_threads(env, portableNativeSync, lock);
 
   /* From GDK 2.0 onwards we have to explicitly call gdk_threads_init */
   gdk_threads_init();
@@ -256,7 +256,7 @@ static void jni_unlock_cb()
     In some release following 0.10, that config.h macro will go away.)
     */ 
 static void 
-init_glib_threads(jint portableNativeSync, jobject lock)
+init_glib_threads(JNIEnv *env, jint portableNativeSync, jobject lock)
 {
   if (portableNativeSync < 0)
     {
@@ -272,7 +272,7 @@ init_glib_threads(jint portableNativeSync, jobject lock)
     {
       if (portableNativeSync)
         {
-          global_lock = lock;
+          global_lock = (*env)->NewGlobalRef(env, lock);
           gdk_threads_set_lock_functions(&jni_lock_cb, &jni_unlock_cb);
         }
       g_thread_init(NULL);
