@@ -1,5 +1,12 @@
 2007-04-05  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
+	PR classpath/22800:
+	* native/jni/java-lang/java_lang_VMDouble.c (doubleToLongBits)
+	(doubleToRawLongBits, longBitsToDouble): Swap the byte
+	ordering for little-endian arms without VFP.
+
+2007-04-05  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
 	* native/jni/java-net/java_net_VMNetworkInterface.c
 	[HAVE_IFADDRS_H && HAVE_GETIFADDRS] (free_netif_list): Added
 	#ifdef.
