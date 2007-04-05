@@ -1,3 +1,8 @@
+2007-04-05  Francis Kung  <fkung@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkToolkit.java
+	(createDragGestureRecognizer): Remove failing subClass call.
+
 2007-04-05  Gary Benson  <gbenson@redhat.com>
 
 	* java/util/GregorianCalendar.java
