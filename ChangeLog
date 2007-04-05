@@ -1,5 +1,9 @@
 2007-04-05  Francis Kung  <fkung@redhat.com>
 
+	* include/Makefile.am: Remove old entry.
+
+2007-04-05  Francis Kung  <fkung@redhat.com>
+
 	* gnu/java/awt/peer/gtk/GtkToolkit.java
 	(createDragGestureRecognizer): Remove failing subClass call.
 
