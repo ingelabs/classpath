@@ -1,3 +1,14 @@
+2007-04-05  Mark Wielaard  <mark@klomp.org>
+
+	* autogen.sh: Recognize automake 1.10.
+	* configure.ac (AM_INIT_AUTOMAKE): Add -Wno-portability.
+	* native/jawt/Makefile.am (libjawt_la_LDFLAGS): Add AM_LDFLAGS.
+	* native/jni/gconf-peer/Makefile.am (libgconfpeer_la_LDFLAGS): Likewise.
+	* native/jni/gtk-peer/Makefile.am (libgtkpeer_la_LDFLAGS): Likewise.
+	* native/jni/midi-alsa/Makefile.am (libgjsmalsa_la_LDFLAGS): Likewise.
+	* native/jni/midi-dssi/Makefile.am (libgjsmdssi_la_LDFLAGS): Likewise.
+	* native/jni/qt-peer/Makefile.am (libqtpeer_la_LDFLAGS): Likewise.
+
 2007-04-04  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c
