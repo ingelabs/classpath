@@ -1,3 +1,14 @@
+2007-04-05  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* native/jni/java-nio/gnu_java_nio_charset_iconv_IconvDecoder.c,
+	native/jni/java-nio/gnu_java_nio_charset_iconv_IconvEncoder.c
+	[HAVE_ICONV] (createRawData, getData, infid, outfid): Added
+	#ifdef.
+	(openIconv): Added UNUSED argument attribute, so we can build with
+	-Werror.
+	(decode): Likewise.
+	(closeIconv): Likewise.
+
 2007-04-05  Mark Wielaard  <mark@klomp.org>
 
 	* autogen.sh: Recognize automake 1.10.
