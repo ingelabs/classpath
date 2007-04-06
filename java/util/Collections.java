@@ -1462,8 +1462,10 @@ public class Collections
   public static int frequency (Collection<?> c, Object o)
   {
     int result = 0;
-    for (Object v : c)
+    final Iterator<?> it = c.iterator();
+    while (it.hasNext())
       {
+	Object v = it.next();
 	if (AbstractCollection.equals(o, v))
 	  ++result;
       }
@@ -1524,8 +1526,9 @@ public class Collections
   public static boolean disjoint(Collection<?> c1, Collection<?> c2)
   {
     Collection<Object> oc1 = (Collection<Object>) c1;
-    for (Object o : oc1)
-      if (c2.contains(o))
+    final Iterator<Object> it = oc1.iterator();
+    while (it.hasNext())
+      if (c2.contains(it.next()))
 	return false;
     return true;
   }
@@ -5827,8 +5830,10 @@ public class Collections
     public boolean addAll(Collection<? extends E> coll)
     {
       Collection<E> typedColl = (Collection<E>) c;
-      for (E element : typedColl)
+      final Iterator<E> it = typedColl.iterator();
+      while (it.hasNext())
 	{
+	  final E element = it.next();
 	  if (!type.isInstance(element))
 	    throw new ClassCastException("A member of the collection is not of the correct type.");
 	}
@@ -6169,9 +6174,10 @@ public class Collections
     public boolean addAll(int index, Collection<? extends E> coll)
     {
       Collection<E> typedColl = (Collection<E>) coll;
-      for (E element : typedColl)
+      final Iterator<E> it = typedColl.iterator();
+      while (it.hasNext())
 	{
-	  if (!type.isInstance(element))
+	  if (!type.isInstance(it.next()))
 	    throw new ClassCastException("A member of the collection is not of the correct type.");
 	}
       return list.addAll(index, coll);
@@ -6872,8 +6878,10 @@ public class Collections
     public void putAll(Map<? extends K, ? extends V> map)
     {
       Map<K,V> typedMap = (Map<K,V>) map;
-      for (Map.Entry<K,V> entry : typedMap.entrySet())
+      final Iterator<Map.Entry<K,V>> it = typedMap.entrySet().iterator();
+      while (it.hasNext())
 	{
+	  final Map.Entry<K,V> entry = it.next();
 	  if (!keyType.isInstance(entry.getKey()))
 	    throw new ClassCastException("A key is of the wrong type.");
 	  if (!valueType.isInstance(entry.getValue()))
@@ -7494,8 +7502,9 @@ public class Collections
     public boolean addAll(Collection<? extends T> c)
     {
       boolean result = false;
-      for (T e : c)
-	result |= deque.offerFirst(e);
+      final Iterator<? extends T> it = c.iterator();
+      while (it.hasNext())
+	result |= deque.offerFirst(it.next());
       return result;
     }
     
@@ -7572,8 +7581,9 @@ public class Collections
     public boolean addAll(Collection<? extends E> c)
     {
       boolean result = false;
-      for (E e : c)
-	result |= (map.put(e, true) == null);
+      final Iterator<? extends E> it = c.iterator();
+      while (it.hasNext())
+	result |= (map.put(it.next(), true) == null);
       return result;
     }
     

@@ -2721,8 +2721,10 @@ public class TreeMap<K, V> extends AbstractMap<K, V>
     public String toString()
     {
       StringBuilder r = new StringBuilder("{");
-      for (Entry<DK,DV> e : entrySet())
+      final Iterator<Entry<DK,DV>> it = entrySet().iterator();
+      while (it.hasNext())
       {
+	final Entry<DK,DV> e = it.next();
         r.append(e.getKey());
         r.append('=');
         r.append(e.getValue());
@@ -3157,8 +3159,10 @@ public class TreeMap<K, V> extends AbstractMap<K, V>
     public String toString()
     {
       StringBuilder r = new StringBuilder("[");
-      for (D o : this)
+      final Iterator<D> it = iterator();
+      while (it.hasNext())
       {
+	final D o = it.next();
 	if (o == this)
 	  r.append("<this>");
 	else

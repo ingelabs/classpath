@@ -1,3 +1,11 @@
+2007-04-06  Mark Wielaard  <mark@klomp.org>
+
+	* lib/mkcollections.pl.in: Add externalclasses.
+	* java/util/Collections.java: Unroll enhanced for loops.
+	* java/util/HashMap.java: Likewise.
+	* java/util/Hashtable.java: Likewise.
+	* java/util/TreeMap.java: Likewise.
+
 2007-04-06  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* gnu/javax/management/Translator.java:
@@ -182,7 +190,7 @@
 	for removed files.
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkToolkit.c
 	Removed unused bits from gthread-jni.c.
-	
+
 2007-04-03  Francis Kung  <fkung@redhat.com>
 
 	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java
