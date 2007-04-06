@@ -127,11 +127,7 @@ public final class Translator
 	  celems[a] = fromJava(elems[a], elems[a].getClass());
 	return makeArraySpecific(celems);
       }
-    String tName = null;
-    if (type instanceof Class)
-      tName = ((Class<?>) type).getName();
-    else
-      tName = type.toString();
+    String tName = getTypeName(type);
     if (jtype instanceof List || jtype instanceof Set ||
 	jtype instanceof SortedSet)
       {
@@ -497,6 +493,52 @@ public final class Translator
     throws OpenDataException
   {
     return Translator.translate(c.getName()).getOpenType();
+  }
+
+  /**
+   * <p>
+   * Returns the type name according to the rules described
+   * in {@link javax.management.MXBean}.  Namely, for a type,
+   * {@code T}, {@code typename(T)} is computed as follows:
+   * </p>
+   * <ul>
+   * <li>If T is non-generic and not an array, then the value
+   * of {@link java.lang.Class#getName()} is returned.</li>
+   * <li>If T is an array type, {@code{E[]}, then the type name
+   * is {@code typename(E)} followed by an occurrence
+   * of {@code '[]'} for each dimension.</li>
+   * <li>If T is a generic or parameterized type, the type name
+   * is composed of {@code typename(P)}, where {@code P} is the
+   * parameterized type name, followed by {@code '<'}, the resulting
+   * list of type names of the parameters after applying {@code typename}
+   * to each, separated by commas, and {@code '>'}.</li>
+   * </ul>
+   *
+   * @param type the type to return the type name of.
+   * @return the type name computed according to the rules above.
+   */
+  private static final String getTypeName(Type type)
+  { 
+    if (type instanceof Class)
+      {
+	Class<?> c = (Class<?>) type;
+	if (c.isArray())
+	  {
+	    StringBuilder b =
+	      new StringBuilder(c.getComponentType().getName());
+	    String normName = c.getName();
+	    for (int a = 0; a < normName.length(); ++a)
+	      {
+		if (normName.charAt(a) == '[')
+		  b.append("[]");
+		else
+		  break;
+	      }
+	    return b.toString();
+	  }
+	return c.getName();
+      }
+    return type.toString();
   }
 
 }
