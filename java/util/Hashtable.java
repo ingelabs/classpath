@@ -859,7 +859,7 @@ public class Hashtable<K, V> extends Dictionary<K, V>
     final Map<K,V> addMap = (Map<K,V>) m;
     final Iterator<Map.Entry<K,V>> it = addMap.entrySet().iterator();
     size = 0;
-    while (it.hasNext());
+    while (it.hasNext())
       {
 	final Map.Entry<K,V> e = it.next();
         size++;
