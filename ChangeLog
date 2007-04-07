@@ -1,3 +1,12 @@
+2007-04-07  Mark Wielaard  <mark@klomp.org>
+
+	* resource/META-INF/services/javax.xml.parsers.DocumentBuilderFactor,
+	resource/META-INF/services/javax.xml.parsers.SAXParserFactory,
+	resource/META-INF/services/javax.xml.parsers.TransformerFactory,
+	resource/META-INF/services/org.relaxng.datatype.DatatypeLibraryFactory,
+	resource/META-INF/services/org.w3c.dom.DOMImplementationSourceList,
+	resource/META-INF/services/org.xml.sax.driver: Removed.
+
 2007-04-07  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/management/ObjectName.java:
