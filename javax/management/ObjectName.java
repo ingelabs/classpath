@@ -190,9 +190,9 @@ public class ObjectName
     if (domainSep == -1)
       throw new MalformedObjectNameException("No domain separator was found.");
     domain = name.substring(0, domainSep);
-    propertyListString = name.substring(domainSep + 1);
+    String rest = name.substring(domainSep + 1);
     properties = new TreeMap<String,String>();
-    String[] pairs = propertyListString.split(",");
+    String[] pairs = rest.split(",");
     if (pairs.length == 0 && !isPattern())
       throw new MalformedObjectNameException("A name that is not a " +
 					     "pattern must contain at " +
@@ -212,7 +212,11 @@ public class ObjectName
 	if (properties.containsKey(key))
 	  throw new MalformedObjectNameException("The same key occurs " +
 						 "more than once.");
-	properties.put(key, pairs[a].substring(sep + 1));     	
+	String value = pairs[a].substring(sep+1);
+	properties.put(key, value);
+	propertyListString += key + "=" + value;
+	if (a != (pairs.length - 1))
+	  propertyListString += ",";
       }
     checkComponents();
   }
