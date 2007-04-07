@@ -282,16 +282,17 @@ public class ObjectName
     if (domain.indexOf('\n') != -1)
       throw new MalformedObjectNameException("The domain includes a newline " +
 					     "character.");
-    char[] chars = new char[] { ':', ',', '*', '?', '=' };
+    char[] keychars = new char[] { ':', ',', '*', '?', '=' };
+    char[] valchars = new char[] { ':', ',', '=' };
     Iterator i = properties.entrySet().iterator();
     while (i.hasNext())
       {
 	Map.Entry entry = (Map.Entry) i.next();
 	String key = (String) entry.getKey();
-	for (int a = 0; a < chars.length; ++a)
-	  if (key.indexOf(chars[a]) != -1)
+	for (int a = 0; a < keychars.length; ++a)
+	  if (key.indexOf(keychars[a]) != -1)
 	    throw new MalformedObjectNameException("A key contains a '" +
-						   chars[a] + "' " +
+						   keychars[a] + "' " +
 						   "character.");
 	String value = (String) entry.getValue();
 	int quote = value.indexOf('"');
@@ -312,10 +313,10 @@ public class ObjectName
 						 "a '\"' character.");
 	else
 	  {
-	    for (int a = 0; a < chars.length; ++a)
-	      if (value.indexOf(chars[a]) != -1)
+	    for (int a = 0; a < valchars.length; ++a)
+	      if (value.indexOf(valchars[a]) != -1)
 		throw new MalformedObjectNameException("A value contains " +
-						       "a '" + chars[a] + "' " +
+						       "a '" + valchars[a] + "' " +
 						       "character.");
 	  }
       }
