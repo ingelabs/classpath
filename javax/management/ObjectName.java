@@ -190,36 +190,29 @@ public class ObjectName
     if (domainSep == -1)
       throw new MalformedObjectNameException("No domain separator was found.");
     domain = name.substring(0, domainSep);
-    String rest = name.substring(domainSep + 1);
+    propertyListString = name.substring(domainSep + 1);
     properties = new TreeMap<String,String>();
-    if (rest.equals("*"))
-      propertyPattern = true;
-    else
+    String[] pairs = propertyListString.split(",");
+    if (pairs.length == 0 && !isPattern())
+      throw new MalformedObjectNameException("A name that is not a " +
+					     "pattern must contain at " +
+					     "least one key-value pair.");
+    for (int a = 0; a < pairs.length; ++a)
       {
-	if (rest.endsWith(",*"))
+	if (pairs[a].equals("*"))
 	  {
 	    propertyPattern = true;
-	    propertyListString = rest.substring(0, rest.length() - 2);
+	    continue;
 	  }
-	else
-	  propertyListString = rest;
-	String[] pairs = propertyListString.split(",");
-	if (pairs.length == 0 && !isPattern())
-	  throw new MalformedObjectNameException("A name that is not a " +
-						 "pattern must contain at " +
-						 "least one key-value pair.");
-	for (int a = 0; a < pairs.length; ++a)
-	  {
-	    int sep = pairs[a].indexOf('=');
-	    if (sep == -1)
-	      throw new MalformedObjectNameException("A key must be " +
-						     "followed by a value.");
-	    String key = pairs[a].substring(0, sep);
-	    if (properties.containsKey(key))
-	      throw new MalformedObjectNameException("The same key occurs " +
-						     "more than once.");
-	    properties.put(key, pairs[a].substring(sep + 1));
-	  }	
+	int sep = pairs[a].indexOf('=');
+	if (sep == -1)
+	  throw new MalformedObjectNameException("A key must be " +
+						 "followed by a value.");
+	String key = pairs[a].substring(0, sep);
+	if (properties.containsKey(key))
+	  throw new MalformedObjectNameException("The same key occurs " +
+						 "more than once.");
+	properties.put(key, pairs[a].substring(sep + 1));     	
       }
     checkComponents();
   }
