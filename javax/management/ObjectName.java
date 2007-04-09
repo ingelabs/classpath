@@ -209,10 +209,14 @@ public class ObjectName
       throw new MalformedObjectNameException("A name that is not a " +
 					     "pattern must contain at " +
 					     "least one key-value pair.");
+    propertyListString = "";
     for (int a = 0; a < pairs.length; ++a)
       {
 	if (pairs[a].equals("*"))
 	  {
+	    if (propertyListPattern)
+	      throw new MalformedObjectNameException("Multiple wildcards " +
+						     "in properties.");
 	    propertyListPattern = true;
 	    continue;
 	  }
@@ -226,10 +230,11 @@ public class ObjectName
 						 "more than once.");
 	String value = pairs[a].substring(sep+1);
 	properties.put(key, value);
-	propertyListString += key + "=" + value;
-	if (a != (pairs.length - 1))
-	  propertyListString += ",";
+	propertyListString += key + "=" + value + ",";
       }
+    if (propertyListString.length() > 0)
+      propertyListString =
+	propertyListString.substring(0, propertyListString.length() - 1);
     checkComponents();
   }
 
@@ -298,8 +303,8 @@ public class ObjectName
     if (domain.indexOf('\n') != -1)
       throw new MalformedObjectNameException("The domain includes a newline " +
 					     "character.");
-    char[] keychars = new char[] { ':', ',', '*', '?', '=' };
-    char[] valchars = new char[] { ':', ',', '=' };
+    char[] keychars = new char[] { '\n', ':', ',', '*', '?', '=' };
+    char[] valchars = new char[] { '\n', ':', ',', '=' };
     Iterator i = properties.entrySet().iterator();
     while (i.hasNext())
       {
@@ -320,8 +325,9 @@ public class ObjectName
 	      }
 	    catch (IllegalArgumentException e)
 	      {
-		throw new MalformedObjectNameException("The quoted value is " +
-						       "invalid.");
+		throw (MalformedObjectNameException)
+		  new MalformedObjectNameException("The quoted value is " +
+						   "invalid.").initCause(e);
 	      }
 	  }
 	else if (quote != -1)
@@ -927,10 +933,12 @@ public class ObjectName
 	  {
 	    n = q.charAt(++a);
 	    if (n != '"' && n != '?' && n != '*' &&
-		n != '\n' && n != '\\')
+		n != 'n' && n != '\\')
 	      throw new IllegalArgumentException("Illegal escaped character: "
 						 + n);
 	  }
+	else if (n == '"' || n == '\n') 
+	  throw new IllegalArgumentException("Illegal character: " + n);
 	builder.append(n);
       }
 
