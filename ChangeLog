@@ -1,3 +1,15 @@
+2007-04-09  Francis Kung  <fkung@redhat.com>
+
+	PR 31311
+	* gnu/java/awt/peer/gtk/ComponentGraphics.java
+	(dispose): Removed method.
+	(disposeSurface): Removed method.
+	* gnu_java_awt_peer_gtk_ComponentGraphics.h: Regenerated.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphics.c
+	(Java_gnu_java_awt_peer_gtk_ComponentGraphics_disposeSurface): Removed.
+	(Java_gnu_java_awt_peer_gtk_ComponentGraphics_initState): Destroy surface
+	after it is used to create a cairo context.
+
 2007-04-07  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/management/ObjectName.java:
