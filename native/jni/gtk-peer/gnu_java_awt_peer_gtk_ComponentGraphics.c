@@ -1,5 +1,5 @@
 /* gnu_java_awt_peer_gtk_ComponentGraphics.c
-   Copyright (C) 2006 Free Software Foundation, Inc.
+   Copyright (C) 2006, 2007 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -197,6 +197,7 @@ Java_gnu_java_awt_peer_gtk_ComponentGraphics_initFromVolatile
 
   cr = cairo_create (surface);
   g_assert(cr != NULL);
+  cairo_surface_destroy(surface);
 
   gdk_threads_leave();
 
