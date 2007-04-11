@@ -41,12 +41,12 @@ exception statement from your version.  */
  * we include this file in the header, and do not compile it.
  */
 
+#include <fcntl.h>
+#include <unistd.h>
 #include <sys/types.h>
-#include <sys/fcntl.h>
 #include <sys/socket.h>
 #include <sys/select.h>
 #include <sys/uio.h>
-#include <unistd.h>
 
 CPNIO_EXPORT ssize_t
 cpnio_read (int fd, void *buf, size_t nbytes)

@@ -1,5 +1,10 @@
 2007-04-11  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
+	* native/jni/java-nio/javanio.c: Include fcntl.h instead of
+	sys/fcntl.h.
+
+2007-04-11  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
 	* native/jni/native-lib/cpproc.c (cpproc_forkAndExec): Fixed
 	warning on some compilers, e.g. MIPSpro.
 
