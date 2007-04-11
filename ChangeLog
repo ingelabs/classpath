@@ -1,3 +1,8 @@
+2007-04-11  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* native/jni/native-lib/cpproc.c (cpproc_forkAndExec): Fixed
+	warning on some compilers, e.g. MIPSpro.
+
 2007-04-11  Francis Kung  <fkung@redhat.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_FreetypeGlyphVector.c
