@@ -1,3 +1,12 @@
+2007-04-11  Francis Kung  <fkung@redhat.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_FreetypeGlyphVector.c
+	(Java_gnu_java_awt_peer_gtk_FreetypeGlyphVector_getGlyphs): Avoid unneeded
+	object reference.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c
+	(Java_gnu_java_awt_peer_gtk_GdkFontPeer_getFontMetrics): Unlock font.
+	(Java_gnu_java_awt_peer_gtk_GdkFontPeer_setFont): Remove redundant checks.
+
 2007-04-11  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	* configure.ac: Added AC_C_INLINE.

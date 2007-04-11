@@ -169,6 +169,8 @@ Java_gnu_java_awt_peer_gtk_GdkFontPeer_getFontMetrics
     face->underline_position / factory;
   native_metrics[FONT_METRICS_UNDERLINE_THICKNESS] =
     face->underline_thickness / factory;
+    
+  pango_fc_font_unlock_face((PangoFcFont *)pfont->font);
 
   (*env)->ReleaseDoubleArrayElements (env, 
 				      java_metrics, 
@@ -256,6 +258,7 @@ Java_gnu_java_awt_peer_gtk_GdkFontPeer_setFont
   pfont = (struct peerfont *)NSA_GET_FONT_PTR (env, self);
   g_assert (pfont != NULL);
 
+  /* Clear old font information */
   if (pfont->ctx != NULL)
     g_object_unref (pfont->ctx);
   if (pfont->font != NULL)
@@ -265,6 +268,7 @@ Java_gnu_java_awt_peer_gtk_GdkFontPeer_setFont
   if (pfont->desc != NULL)
     pango_font_description_free (pfont->desc);
 
+  /* Set new description information */
   pfont->desc = pango_font_description_new ();
   g_assert (pfont->desc != NULL);
 
@@ -280,23 +284,17 @@ Java_gnu_java_awt_peer_gtk_GdkFontPeer_setFont
     pango_font_description_set_style (pfont->desc, PANGO_STYLE_ITALIC);
 
   pango_font_description_set_size (pfont->desc, size * PANGO_SCALE);
-  if (pfont->ctx == NULL)
-    {
-      ft2_map = PANGO_FT2_FONT_MAP(pango_ft2_font_map_new());
-      pfont->ctx = pango_ft2_font_map_create_context (ft2_map);
-      g_object_unref(ft2_map);
-    }
-
-  g_assert (pfont->ctx != NULL);
   
-  if (pfont->font != NULL)
-    {
-      g_object_unref (pfont->font);
-      pfont->font = NULL;
-    }
+  /* Create new context */
+  ft2_map = PANGO_FT2_FONT_MAP(pango_ft2_font_map_new());
+  pfont->ctx = pango_ft2_font_map_create_context (ft2_map);
+  g_object_unref(ft2_map);
+  g_assert (pfont->ctx != NULL);
   
   pango_context_set_font_description (pfont->ctx, pfont->desc);
   pango_context_set_language (pfont->ctx, gtk_get_default_language());
+  
+  /* Create new fontset and default font */
   pfont->set = pango_context_load_fontset(pfont->ctx, pfont->desc,
   										  gtk_get_default_language());
   pfont->font = pango_context_load_font (pfont->ctx, pfont->desc);

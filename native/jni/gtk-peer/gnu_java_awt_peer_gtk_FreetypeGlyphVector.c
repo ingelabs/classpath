@@ -145,17 +145,21 @@ Java_gnu_java_awt_peer_gtk_FreetypeGlyphVector_getGlyphs
   	    if (pango_fc_font_has_char(default_font, cpvals[i]))
   	      {
   	        current_font = default_font;
+            g_object_ref(current_font);
   	      }
   	    else
   	      {
   	        current_font = (PangoFcFont*)pango_fontset_get_font(pfs, cpvals[i]);
   	      }
   	  }
+  	else
+      {
+        g_object_ref(current_font);
+      }
   	
   	/* Get glyph, and store both glyph and pointer to font */
     glyphArray[i] = (int)pango_fc_font_get_glyph(current_font,
                                                  (gunichar)cpvals[i]);
-    g_object_ref(current_font);
     fontArray[i] = PTR_TO_JLONG(current_font);
   }
   
