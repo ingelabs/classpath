@@ -1,5 +1,13 @@
 2007-04-12  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkClipboard.c
+	(clipboard_get_func): Call DeleteLocalRef.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkSelection.c
+	(clipboard_targets_received): Likewise.
+	(clipboard_uris_received): Likewise.
+
+2007-04-12  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
 	* LICENSE: Added m4/ax_func_which_gethostbyname_r.m4 license.
 	* configure.ac: Added AX_FUNC_WHICH_GETHOSTBYNAME_R check.
 	* m4/ax_func_which_gethostbyname_r.m4: New file.
