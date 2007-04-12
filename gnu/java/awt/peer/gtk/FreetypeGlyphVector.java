@@ -43,6 +43,8 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphJustificationInfo;
 import java.awt.font.GlyphMetrics;
 import java.awt.font.GlyphVector;
+import java.awt.font.TextAttribute;
+import java.awt.font.TransformAttribute;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
@@ -313,6 +315,24 @@ public class FreetypeGlyphVector extends GlyphVector
       }
     glyphPositions[nGlyphs * 2] = x;
     glyphPositions[nGlyphs * 2 + 1] = y;
+    
+    // Apply any transform that may be in the font's attributes
+    TransformAttribute ta;
+    ta = (TransformAttribute)font.getAttributes().get(TextAttribute.TRANSFORM);
+    if (ta != null)
+      {
+        AffineTransform tx = ta.getTransform();
+        
+        // Transform glyph positions
+        tx.transform(glyphPositions, 0, glyphPositions, 0,
+                     glyphPositions.length / 2);
+        
+        // Also store per-glyph scale/shear/rotate (but not translation) 
+        double[] matrix = new double[4];
+        tx.getMatrix(matrix);
+        AffineTransform deltaTx = new AffineTransform(matrix);
+        Arrays.fill(glyphTransforms, deltaTx);
+      }
   }
 
   /**
@@ -375,7 +395,7 @@ public class FreetypeGlyphVector extends GlyphVector
                                     p.getY() + r.getY() + r.getHeight()};
     
     if (glyphTransforms[glyphIndex] != null)
-      glyphTransforms[glyphIndex].transform(bounds, 0, bounds, 0, 4);
+      glyphTransforms[glyphIndex].transform(bounds, 0, bounds, 0, 2);
     
     return new Rectangle2D.Double(bounds[0], bounds[1], bounds[2] - bounds[0],
                                   bounds[3] - bounds[1]);

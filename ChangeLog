@@ -1,5 +1,15 @@
 2007-04-12  Francis Kung  <fkung@redhat.com>
 
+	PR 23887
+	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java
+	(getGlyphLogicalBounds): Fix number of coordinates in transform call.
+	(performDefaultLayout): Respect transformation in font attributes.
+	* javax/swing/plaf/basic/BasicProgressBarUI.java
+	(getStringPlacement): Handle vertical orientations.
+	(paintString): Space vertical text properly.
+
+2007-04-12  Francis Kung  <fkung@redhat.com>
+
 	PR 31539
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c
 	(ft2_map): New static variable.
