@@ -1,5 +1,13 @@
 2007-04-12  Mark Wielaard  <mark@klomp.org>
 
+	* gnu/java/awt/peer/ClasspathFontPeer.java (LRUCache): New static
+	inner class.
+	(transCache): New static LRUChache field.
+	(copyTransformToAttrs): Check whether a TransformAttribute already
+	exists in the transCache for the given AffineTransform.
+
+2007-04-12  Mark Wielaard  <mark@klomp.org>
+
 	* configure.ac (COMPILE_GTK_PEER): Add check for cairo >= 1.1.8.
 
 2007-04-11  Christian Thalinger  <twisti@complang.tuwien.ac.at>
