@@ -1,5 +1,13 @@
 2007-04-12  Roman Kennke  <roman@kennke.org>
 
+	* java/nio/Buffer.java
+	(array): New abstract method.
+	(hasArray): New abstract method.
+	(arrayOffset): New abstract method.
+	(isDirect): New abstract method.
+
+2007-04-12  Roman Kennke  <roman@kennke.org>
+
 	* java/nio/CharBuffer.java
 	(wrap(CharSequence,int,int)): Reimplemented using specialized
 	subclass.
