@@ -1,3 +1,11 @@
+2007-04-12  Francis Kung  <fkung@redhat.com>
+
+	PR 31539
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c
+	(ft2_map): New static variable.
+	(Java_gnu_java_awt_peer_gtk_GdkFontPeer_initStaticState): Set up ft2_map.
+	(Java_gnu_java_awt_peer_gtk_GdkFontPeer_setFont): Use cached ft2_map.
+
 2007-04-12  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkClipboard.c
