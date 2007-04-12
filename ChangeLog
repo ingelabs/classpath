@@ -1,6 +1,18 @@
 2007-04-12  Francis Kung  <fkung@redhat.com>
 
 	PR 23887
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java
+	(drawGlyphVector): Check for transforms before using optimized path.
+	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java
+	(FreetypeGlyphVector(FreetypeGlyphVector)): Initialize glyphTransforms array
+	to null and check for nulls in copied array.
+	(hasTransforms): New method.
+	(performDefaultLayout): Check for identity transform.
+	(setGlyphTransform): Check for equality before making changes.
+
+2007-04-12  Francis Kung  <fkung@redhat.com>
+
+	PR 23887
 	* gnu/java/awt/peer/gtk/FreetypeGlyphVector.java
 	(getGlyphLogicalBounds): Fix number of coordinates in transform call.
 	(performDefaultLayout): Respect transformation in font attributes.
