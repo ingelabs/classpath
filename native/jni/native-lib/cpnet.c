@@ -635,8 +635,17 @@ jint cpnet_getHostByName (JNIEnv *env, const char *hostname, cpnet_address ***ad
   do
     {
       buf = (char *)JCL_malloc(env, buflen);
+
 #ifdef HAVE_GETHOSTBYNAME_R
+# if defined(HAVE_FUNC_GETHOSTBYNAME_R_6)
       ret = gethostbyname_r (hostname, &hret, buf, buflen, &result, &herr);
+# elif defined(HAVE_FUNC_GETHOSTBYNAME_R_5)
+      result = gethostbyname_r(hostname, &hret, buf, buflen, &herr);
+# elif defined(HAVE_FUNC_GETHOSTBYNAME_R_3)
+#  error IMPLEMENT ME!
+# else
+#  error unknown number of arguments for gethostbyname_r
+# endif
 #else
       hret.h_addr_list = NULL;
       hret.h_addrtype = 0;

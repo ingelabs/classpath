@@ -421,6 +421,7 @@ if test "x${COMPILE_JNI}" = xyes; then
   AC_C_CONST
   AC_C_INLINE
   AC_C_ATTRIBUTE
+  AX_FUNC_WHICH_GETHOSTBYNAME_R
 
   dnl See if we HAVE_ICONV, how ICONV_CONST is set and LTLIBICONV
   AM_ICONV

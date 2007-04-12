@@ -1,3 +1,11 @@
+2007-04-12  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* LICENSE: Added m4/ax_func_which_gethostbyname_r.m4 license.
+	* configure.ac: Added AX_FUNC_WHICH_GETHOSTBYNAME_R check.
+	* m4/ax_func_which_gethostbyname_r.m4: New file.
+	* native/jni/native-lib/cpnet.c (cpnet_getHostByName): Check for
+	different number of arguments of gethostbyname_r.
+
 2007-04-12  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/awt/peer/ClasspathFontPeer.java (LRUCache): New static
