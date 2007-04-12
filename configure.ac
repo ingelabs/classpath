@@ -474,6 +474,7 @@ if test "x${COMPILE_JNI}" = xyes; then
     PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.8 gthread-2.0 >= 2.2 gdk-pixbuf-2.0)
     PKG_CHECK_MODULES(FREETYPE2, freetype2)
     PKG_CHECK_MODULES(PANGOFT2, pangoft2)
+    PKG_CHECK_MODULES(CAIRO, cairo >= 1.1.8)
     dnl Check if we can link against the XRender library and set
     dnl HAVE_XRENDER accordingly.
     AC_CHECK_LIB([Xrender], [XRenderQueryExtension],
