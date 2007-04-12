@@ -1,3 +1,11 @@
+2007-04-12  Roman Kennke  <roman@kennke.org>
+
+	* java/nio/CharBuffer.java
+	(wrap(CharSequence,int,int)): Reimplemented using specialized
+	subclass.
+	* java/nio/CharSequenceBuffer.java: New class. Implements char
+	buffers that wrap CharSequences.
+
 2007-04-12  Francis Kung  <fkung@redhat.com>
 
 	PR 23887
