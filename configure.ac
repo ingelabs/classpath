@@ -605,6 +605,9 @@ if test "x${COMPILE_JNI}" = xyes; then
       PKG_CHECK_MODULES(MOZILLA, seamonkey-plugin seamonkey-xpcom, [MOZILLA_FOUND=yes], [MOZILLA_FOUND=no])
     fi
     if test "x${MOZILLA_FOUND}" = xno; then
+      PKG_CHECK_MODULES(MOZILLA, iceape-plugin iceape-xpcom, [MOZILLA_FOUND=yes], [MOZILLA_FOUND=no])
+    fi
+    if test "x${MOZILLA_FOUND}" = xno; then
       AC_MSG_ERROR([Couldn't find plugin support headers and libraries, try --disable-plugin])
     fi
 
