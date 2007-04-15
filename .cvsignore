@@ -16,3 +16,7 @@ stamp-h
 stamp-h.in
 autom4te*.cache
 install
+depcomp
+install-sh
+missing
+mkinstalldirs
