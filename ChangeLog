@@ -1,5 +1,9 @@
 2007-04-15  Dalibor Topic  <robilad@kaffe.org>
 
+	* native/target/.cvsignore: Removed.
+
+2007-04-15  Dalibor Topic  <robilad@kaffe.org>
+
 	* doc/Makefile.am: Fix portability warnings from
 	automake 1.10.
 
