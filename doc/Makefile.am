@@ -4,10 +4,10 @@ EXTRA_DIST = README.jaxp texi2pod.pl
 
 info_TEXINFOS = cp-hacking.texinfo cp-vmintegration.texinfo cp-tools.texinfo
 
-%.dvi : %.texinfo
+.texinfo.dvi:
 	texi2dvi $<
 
-%.ps : %.dvi
+.dvi.ps:
 	dvips -o $@ $<
 
 docs: cp-hacking.ps cp-vmintegration.ps cp-tools.ps $(TOOLS_MANFILES)
@@ -31,7 +31,7 @@ POD2MAN = pod2man --center="GNU" --release="$(VERSION)"
 TEXI2POD = perl $(srcdir)/texi2pod.pl
 STAMP = echo timestamp >
 
-%.1: %.pod
+.pod.1:
 	$(STAMP) $@
 	-($(POD2MAN) --section=1 $< > $(@).T$$$$ && \
 		mv -f $(@).T$$$$ $@) || \
