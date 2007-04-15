@@ -1,5 +1,13 @@
 2007-04-15  Dalibor Topic  <robilad@kaffe.org>
 
+	* doc/cp-hacking.texinfo: Updated with information from
+	INSTALL file. Removed duplicate and outdated information.
+	Updated compiler information. Fixed versioning information
+	where entries diverged. Turned command, option, file and
+	URL strings into proper texinfo elements.
+
+2007-04-15  Dalibor Topic  <robilad@kaffe.org>
+
 	* configure.ac: Added support for Iceape libraries as 
 	a substitute for Mozilla for Debian.
 
