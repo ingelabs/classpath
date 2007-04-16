@@ -1,11 +1,16 @@
+2007-04-16  Mark Wielaard  <mark@klomp.org>
+
+	Fixes bug #31590
+	* java/net/URI.java (parseServerAuthority): Allow empty portStr.
+
 2007-04-16  Andrew Haley  <aph@redhat.com>
 
-        * org/omg/IOP/TaggedComponentHelper.java (read): Use
-        read_octet_array(), not read().
-        (write): Use write_octet_array(), not write().
+	* org/omg/IOP/TaggedComponentHelper.java (read): Use
+	read_octet_array(), not read().
+	(write): Use write_octet_array(), not write().
 
-        * org/omg/PortableServer/Servant.java (_get_delegate): Throw if no
-        delegate has been set.
+	* org/omg/PortableServer/Servant.java (_get_delegate): Throw if no
+	delegate has been set.
 
 2007-04-16  Chris Burdess  <dog@gnu.org>
 
