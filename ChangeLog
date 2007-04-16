@@ -1,5 +1,10 @@
 2007-04-16  Dalibor Topic  <robilad@kaffe.org>
 
+	* configure.ac (AM_PROG_CC_C_O): Added to fix automake 1.10
+	warning.
+
+2007-04-16  Dalibor Topic  <robilad@kaffe.org>
+
 	* native/plugin/Makefile.am (libgcjwebplugin_la_LDFLAGS):
 	Added AM_LDFLAGS for automake 1.10.
 
