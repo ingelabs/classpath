@@ -1,5 +1,12 @@
 2007-04-17  Dalibor Topic  <robilad@kaffe.org>
 
+	* m4/acinclude.m4 (CLASSPATH_CHECK_JAVAH):
+	Use AC_CHECK_PROGS and AC_MSG_ERROR. Check for
+	gjavah, gcjh-wrapper-4.1 and gcjh-4.1. Error out
+	when no javah implementation can be found.
+
+2007-04-17  Dalibor Topic  <robilad@kaffe.org>
+
 	* configure.ac (CLASSPATH_WITH_JAVAH): Only check if
 	the JNI headers need to be regenerated.
 
