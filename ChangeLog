@@ -1,3 +1,19 @@
+2007-04-17  Casey Marshall  <csm@gnu.org>
+
+	PR classpath/31302:
+	* gnu/javax/net/ssl/provider/SSLSocketImpl.java (SSLSocketImpl):
+	Always make a new socket.
+	(bind, connect, getInetAddress, getLocalAddress, getPort,
+	getLocalPort, getRemoteSocketAddress, getLocalSocketAddress,
+	setTcpNoDelay, getTcpNoDelay, setSoLinger, getSoLinger,
+	setOOBInline, getOOBInline, setSoTimeout, getSoTimeout,
+	setSendBufferSize, getSendBufferSize, setReceiveBufferSize,
+	getReceiveBufferSize, setKeepAlive, getKeepAlive, setTrafficClass,
+	getTrafficClass, setReuseAddress, getReuseAddress, close,
+	shutdownInput, shutdownOutput, isConnected, isBound, isClosed,
+	isInputShutdown, isOutputShutdown): Always use
+	'underlyingSocket'.
+
 2007-04-16  Dalibor Topic  <robilad@kaffe.org>
 
 	* configure.ac (AM_PROG_CC_C_O): Added to fix automake 1.10
