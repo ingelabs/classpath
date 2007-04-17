@@ -36,8 +36,6 @@ JCOMPILER = $(JAVAC) -bootclasspath '' -classpath $(compile_classpath) -d . @cla
 endif # FOUND_JAVAC
 endif # FOUND_ECJ
 
-JAVAH = $(USER_JAVAH) -jni -classpath .:$(USER_CLASSLIB)
-
 if CREATE_COLLECTIONS
 COLLECTIONS = collections.jar
 
