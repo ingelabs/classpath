@@ -43,7 +43,6 @@ exception statement from your version. */
 #include <config-int.h>
 
 #include <sys/types.h>
-#include <sys/ioctl.h>
 #include <sys/mman.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
@@ -66,6 +65,14 @@ exception statement from your version. */
 #ifdef HAVE_FCNTL_H
 #include <fcntl.h>
 #endif /* HAVE_FCNTL_H */
+
+#if defined(HAVE_SYS_IOCTL_H)
+#define BSD_COMP /* Get FIONREAD on Solaris2 */
+#include <sys/ioctl.h>
+#endif
+#if defined(HAVE_SYS_FILIO_H) /* Get FIONREAD on Solaris 2.5 */
+#include <sys/filio.h>
+#endif
 
 #define CONNECT_EXCEPTION "java/net/ConnectException"
 #define IO_EXCEPTION "java/io/IOException"

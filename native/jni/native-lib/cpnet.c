@@ -46,10 +46,17 @@ exception statement from your version. */
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <netdb.h>
-#include <sys/ioctl.h>
 #include <sys/time.h>
 #include <unistd.h>
 #include <arpa/inet.h>
+
+#if defined(HAVE_SYS_IOCTL_H)
+#define BSD_COMP /* Get FIONREAD on Solaris2 */
+#include <sys/ioctl.h>
+#endif
+#if defined(HAVE_SYS_FILIO_H) /* Get FIONREAD on Solaris 2.5 */
+#include <sys/filio.h>
+#endif
 
 #include "cpnet.h"
 
