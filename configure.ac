@@ -626,7 +626,9 @@ if test "x${COMPILE_JNI}" = xyes; then
   fi
 fi
 
-CLASSPATH_WITH_JAVAH
+if test "x${REGENERATE_JNI_HEADERS}" = xyes; then
+  CLASSPATH_WITH_JAVAH
+fi
 
 dnl ----------------------------------------------------------- 
 dnl Add the include files for the native abstraction layer.

@@ -1,5 +1,13 @@
 2007-04-17  Dalibor Topic  <robilad@kaffe.org>
 
+	* configure.ac (CLASSPATH_WITH_JAVAH): Only check if
+	the JNI headers need to be regenerated.
+
+	* m4/acinclude.m4 (USER_SPECIFIED_JAVAH): Removed unused
+	conditional.
+
+2007-04-17  Dalibor Topic  <robilad@kaffe.org>
+
 	* lib/Makefile.am (JAVAH): Removed unused variable.
 
 2007-04-17  Casey Marshall  <csm@gnu.org>
