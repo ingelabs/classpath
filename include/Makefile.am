@@ -167,12 +167,16 @@ $(top_srcdir)/include/gnu_java_awt_peer_gtk_%.h: $(top_builddir)/$(CLASSDIR)/gnu
 $(top_srcdir)/include/gnu_java_awt_peer_qt_%.h: $(top_builddir)/$(CLASSDIR)/gnu/java/awt/peer/qt/%.class
 	$(JAVAH) -o $@ gnu.java.awt.peer.qt.$*
 
-$(top_srcdir)/include/gnu_javax_sound_midi_alsa_%.h: $(top_builddir)/$(CLASSDIR)/gnu/javax/sound/midi/alsa/%.class
-	$(JAVAH) -o $@ gnu.javax.sound.midi.alsa.$*
-
-$(top_srcdir)/include/gnu_javax_sound_midi_dssi_%.h: $(top_builddir)/$(CLASSDIR)/gnu/javax/sound/midi/dssi/%.class
-	$(JAVAH) -o $@ gnu.javax.sound.midi.dssi.$*
-
+$(top_srcdir)/include/gnu_javax_sound_midi_alsa_AlsaPortDevice.h: $(top_srcdir)/gnu/javax/sound/midi/alsa/AlsaPortDevice.java
+	$(JAVAH) -o $@ gnu.javax.sound.midi.alsa.AlsaPortDevice
+$(top_srcdir)/include/gnu_javax_sound_midi_alsa_AlsaMidiSequencerDevice.h: $(top_srcdir)/gnu/javax/sound/midi/alsa/AlsaMidiSequencerDevice.java
+	$(JAVAH) -o $@ gnu.javax.sound.midi.alsa.AlsaMidiSequencerDevice
+$(top_srcdir)/include/gnu_javax_sound_midi_alsa_AlsaMidiDeviceProvider.h: $(top_srcdir)/gnu/javax/sound/midi/alsa/AlsaMidiDeviceProvider.java
+	$(JAVAH) -o $@ gnu.javax.sound.midi.alsa.AlsaMidiDeviceProvider
+$(top_srcdir)/include/gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider.h: $(top_srcdir)/gnu/javax/sound/midi/dssi/DSSIMidiDeviceProvider.java
+	$(JAVAH) -o $@ gnu.javax.sound.midi.dssi.DSSIMidiDeviceProvider
+$(top_srcdir)/include/gnu_javax_sound_midi_dssi_DSSISynthesizer.h: $(top_srcdir)/gnu/javax/sound/midi/dssi/DSSISynthesizer.java
+	$(JAVAH) -o $@ gnu.javax.sound.midi.dssi.DSSISynthesizer
 $(top_srcdir)/include/gnu_java_util_prefs_gconf_GConfNativePeer.h: $(top_srcdir)/gnu/java/util/prefs/gconf/GConfNativePeer.java
 	$(JAVAH) -o $@ gnu.java.util.prefs.gconf.GConfNativePeer
 $(top_srcdir)/include/gnu_java_net_VMPlainSocketImpl.h: $(top_srcdir)/vm/reference/gnu/java/net/VMPlainSocketImpl.java
