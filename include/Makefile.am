@@ -100,7 +100,6 @@ $(top_srcdir)/include/gnu_java_awt_peer_qt_QtPanelPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_qt_QPainterPath.h \
 $(top_srcdir)/include/gnu_java_awt_peer_qt_QtFontMetrics.h \
 $(top_srcdir)/include/gnu_java_awt_peer_qt_QtScrollPanePeer.h \
-$(top_srcdir)/include/gnu_java_awt_peer_qt_QtGraphicsEnvironment.h \
 $(top_srcdir)/include/gnu_java_awt_peer_qt_QMatrix.h \
 $(top_srcdir)/include/gnu_java_awt_peer_qt_QtLabelPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_qt_QtPopupMenuPeer.h \
