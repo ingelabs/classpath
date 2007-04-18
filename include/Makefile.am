@@ -112,7 +112,6 @@ $(top_srcdir)/include/gnu_java_awt_peer_qt_QtCanvasPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_qt_QtMenuComponentPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_qt_MainQtThread.h \
 $(top_srcdir)/include/gnu_java_awt_peer_qt_QtFileDialogPeer.h \
-$(top_srcdir)/include/gnu_java_awt_peer_qt_QtContainerPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_qt_QtEmbeddedWindowPeer.h 
 
 GCONF_PREFS_FILES = \
