@@ -1,5 +1,16 @@
 2007-04-18  Dalibor Topic  <robilad@kaffe.org>
 
+	* native/jni/xmlj/xmlj_xpath.c: Don't include 
+	gnu_xml_libxmlj_dom_GnomeXPathNSResolver.h.
+
+	* include/gnu_xml_libxmlj_dom_GnomeXPathNSResolver.h:
+	Removed empty header file.
+
+	* include/Makefile.am (XMLJ_H_FILES): Removed
+	gnu_xml_libxmlj_dom_GnomeXPathNSResolver.h.
+
+2007-04-18  Dalibor Topic  <robilad@kaffe.org>
+
 	* include/gnu_java_awt_peer_qt_QtContainerPeer.h: Removed
 	empty header file.
 

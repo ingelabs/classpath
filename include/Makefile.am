@@ -19,7 +19,6 @@ $(top_srcdir)/include/gnu_xml_libxmlj_dom_GnomeDocument.h \
 $(top_srcdir)/include/gnu_xml_libxmlj_dom_GnomeXPathNodeList.h \
 $(top_srcdir)/include/gnu_xml_libxmlj_dom_GnomeDocumentType.h \
 $(top_srcdir)/include/gnu_xml_libxmlj_dom_GnomeProcessingInstruction.h \
-$(top_srcdir)/include/gnu_xml_libxmlj_dom_GnomeXPathNSResolver.h \
 $(top_srcdir)/include/gnu_xml_libxmlj_dom_GnomeTypeInfo.h \
 $(top_srcdir)/include/gnu_xml_libxmlj_dom_GnomeNodeList.h \
 $(top_srcdir)/include/gnu_xml_libxmlj_dom_GnomeNotation.h \
