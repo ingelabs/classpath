@@ -164,9 +164,74 @@ $(top_srcdir)/include/gnu_xml_libxmlj_transform_%.h: $(top_builddir)/$(CLASSDIR)
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_%.h: $(top_builddir)/$(CLASSDIR)/gnu/java/awt/peer/gtk/%.class
 	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.$*
 
-$(top_srcdir)/include/gnu_java_awt_peer_qt_%.h: $(top_builddir)/$(CLASSDIR)/gnu/java/awt/peer/qt/%.class
-	$(JAVAH) -o $@ gnu.java.awt.peer.qt.$*
-
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtCheckboxPeer.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtCheckboxPeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtCheckboxPeer
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtToolkit.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtToolkit.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtToolkit
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtAudioClip.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtAudioClip.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtAudioClip
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtScreenDevice.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtScreenDevice.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtScreenDevice
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtTextFieldPeer.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtTextFieldPeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtTextFieldPeer
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtMenuItemPeer.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtMenuItemPeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtMenuItemPeer
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtButtonPeer.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtButtonPeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtButtonPeer
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtWindowPeer.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtWindowPeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtWindowPeer
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtDialogPeer.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtDialogPeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtDialogPeer
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtImage.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtImage.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtImage
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtMenuBarPeer.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtMenuBarPeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtMenuBarPeer
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtVolatileImage.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtVolatileImage.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtVolatileImage
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtFontPeer.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtFontPeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtFontPeer
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtChoicePeer.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtChoicePeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtChoicePeer
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtGraphics.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtGraphics.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtGraphics
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtComponentPeer.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtComponentPeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtComponentPeer
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtMenuPeer.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtMenuPeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtMenuPeer
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtTextAreaPeer.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtTextAreaPeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtTextAreaPeer
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QPen.h: $(top_srcdir)/gnu/java/awt/peer/qt/QPen.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QPen
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtPanelPeer.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtPanelPeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtPanelPeer
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QPainterPath.h: $(top_srcdir)/gnu/java/awt/peer/qt/QPainterPath.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QPainterPath
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtFontMetrics.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtFontMetrics.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtFontMetrics
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtScrollPanePeer.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtScrollPanePeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtScrollPanePeer
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QMatrix.h: $(top_srcdir)/gnu/java/awt/peer/qt/QMatrix.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QMatrix
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtLabelPeer.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtLabelPeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtLabelPeer
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtPopupMenuPeer.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtPopupMenuPeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtPopupMenuPeer
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtFramePeer.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtFramePeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtFramePeer
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtListPeer.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtListPeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtListPeer
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtScrollbarPeer.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtScrollbarPeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtScrollbarPeer
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtCanvasPeer.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtCanvasPeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtCanvasPeer
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtMenuComponentPeer.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtMenuComponentPeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtMenuComponentPeer
+$(top_srcdir)/include/gnu_java_awt_peer_qt_MainQtThread.h: $(top_srcdir)/gnu/java/awt/peer/qt/MainQtThread.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.MainQtThread
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtFileDialogPeer.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtFileDialogPeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtFileDialogPeer
+$(top_srcdir)/include/gnu_java_awt_peer_qt_QtEmbeddedWindowPeer.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtEmbeddedWindowPeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtEmbeddedWindowPeer
 $(top_srcdir)/include/gnu_javax_sound_midi_alsa_AlsaPortDevice.h: $(top_srcdir)/gnu/javax/sound/midi/alsa/AlsaPortDevice.java
 	$(JAVAH) -o $@ gnu.javax.sound.midi.alsa.AlsaPortDevice
 $(top_srcdir)/include/gnu_javax_sound_midi_alsa_AlsaMidiSequencerDevice.h: $(top_srcdir)/gnu/javax/sound/midi/alsa/AlsaMidiSequencerDevice.java
