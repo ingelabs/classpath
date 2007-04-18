@@ -36,7 +36,7 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 #include "gtkpeer.h"
-#include "GtkDragSourceContextPeer.h"
+#include "gnu_java_awt_dnd_peer_gtk_GtkDragSourceContextPeer.h"
 
 #include <jni.h>
 #include <gtk/gtk.h>

@@ -1,5 +1,23 @@
 2007-04-18  Dalibor Topic  <robilad@kaffe.org>
 
+	* include/GtkDragSourceContextPeer.h: Removed, renamed to ..
+
+	* include/gnu_java_awt_dnd_peer_gtk_GtkDragSourceContextPeer.h:
+	New file.
+
+	* native/jni/gtk-peer/GtkDragSourceContextPeer.c: Include 
+	gnu_java_awt_dnd_peer_gtk_GtkDragSourceContextPeer.h.
+
+	* include/Makefile.am (GTKPEER_H_FILES): Renamed
+	GtkDragSourceContextPeer.h to 
+	gnu_java_awt_dnd_peer_gtk_GtkDragSourceContextPeer.h
+	per current convention. Use portable construct to create
+	gtk and libxmlj peer headers. Depend on the java source code, 
+	rather then the class files in order to avoid spurious 
+	regeneration.
+
+2007-04-18  Dalibor Topic  <robilad@kaffe.org>
+
 	* include/Makefile.am: Use portable construct to create
 	qt peer headers. Depend on the java source code, 
 	rather then the class files in order to avoid spurious 
