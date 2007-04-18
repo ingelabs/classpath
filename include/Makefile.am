@@ -173,9 +173,8 @@ $(top_srcdir)/include/gnu_javax_sound_midi_alsa_%.h: $(top_builddir)/$(CLASSDIR)
 $(top_srcdir)/include/gnu_javax_sound_midi_dssi_%.h: $(top_builddir)/$(CLASSDIR)/gnu/javax/sound/midi/dssi/%.class
 	$(JAVAH) -o $@ gnu.javax.sound.midi.dssi.$*
 
-$(top_srcdir)/include/gnu_java_util_prefs_gconf_%.h: $(top_builddir)/$(CLASSDIR)/gnu/java/util/prefs/gconf/%.class
-	$(JAVAH) -o $@ gnu.java.util.prefs.gconf.$*
-
+$(top_srcdir)/include/gnu_java_util_prefs_gconf_GConfNativePeer.h: $(top_srcdir)/gnu/java/util/prefs/gconf/GConfNativePeer.java
+	$(JAVAH) -o $@ gnu.java.util.prefs.gconf.GConfNativePeer
 $(top_srcdir)/include/gnu_java_net_VMPlainSocketImpl.h: $(top_srcdir)/vm/reference/gnu/java/net/VMPlainSocketImpl.java
 	$(JAVAH) -o $@ gnu.java.net.VMPlainSocketImpl
 $(top_srcdir)/include/gnu_java_net_local_LocalSocketImpl.h: $(top_srcdir)/gnu/java/net/local/LocalSocketImpl.java
