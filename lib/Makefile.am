@@ -5,11 +5,6 @@ JAVA_DEPEND = java.dep
 ## this file and restart the make process again
 sinclude $(JAVA_DEPEND)
 
-propertyfiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java javax org -name \*\.properties -print)
-cssfiles := $(shell cd $(top_srcdir) && $(FIND) gnu java javax org -name \*\.css -print)
-metafiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) META-INF -name CVS -prune -o -name \*\.in -prune -o -type f -print)
-iconfiles :=  $(shell cd $(top_srcdir) && $(FIND) gnu/javax/swing/plaf/gtk/icons -name *.png -type f -print)
-
 compile_classpath = $(vm_classes):$(top_srcdir):$(top_srcdir)/external/w3c_dom:$(top_srcdir)/external/sax:$(top_srcdir)/external/relaxngDatatype:$(top_srcdir)/external/jsr166:.:$(USER_CLASSLIB):$(PATH_TO_ESCHER)
 
 # handling source to bytecode compiler programs like gcj, jikes  and kjc
@@ -101,23 +96,23 @@ glibj.zip: classes compile-classes resources
 endif # USE_PREBUILT_GLIBJ_ZIP
 
 resources: copy-vmresources.sh
-	@list='$(propertyfiles)'; for p in $$list; do \
+	@list=`cd $(top_srcdir)/resource && $(FIND) gnu java javax org -name \*\.properties -print`; for p in $$list; do \
           dirname=`dirname $$p`; \
           if ! test -d "$$dirname"; then mkdir -p "$$dirname"; fi; \
 	  cp $(top_srcdir)/resource/$$p $$p; \
 	done
-	@list='$(cssfiles)'; for p in $$list; do \
+	@list=`cd $(top_srcdir) && $(FIND) gnu java javax org -name \*\.css -print`; for p in $$list; do \
           dirname=`dirname $$p`; \
           if ! test -d "$$dirname"; then mkdir -p "$$dirname"; fi; \
 	  cp $(top_srcdir)/$$p $$p; \
 	done
-	@list='$(metafiles)'; for p in $$list; do \
+	@list=`cd $(top_srcdir)/resource && $(FIND) META-INF -name CVS -prune -o -name \*\.in -prune -o -type f -print`; for p in $$list; do \
           dirname=`dirname $$p`; \
           if ! test -d "$$dirname"; then mkdir -p "$$dirname"; fi; \
 	  cp $(top_srcdir)/resource/$$p $$p; \
 	done
 	@$(SHELL) ./copy-vmresources.sh
-	@list='$(iconfiles)'; for p in $$list; do \
+	@list=`cd $(top_srcdir) && $(FIND) gnu/javax/swing/plaf/gtk/icons -name *.png -type f -print`; for p in $$list; do \
           dirname=`dirname $$p`; \
           if ! test -d "$$dirname"; then mkdir -p "$$dirname"; fi; \
 	  cp $(top_srcdir)/$$p $$p; \

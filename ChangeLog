@@ -1,3 +1,10 @@
+2007-04-19  Dalibor Topic  <robilad@kaffe.org>
+
+	* lib/Makefile.am (propertyfiles, cssfiles, metafiles, 
+	iconfiles) Removed variables, inlined them into resource
+	target to avoid use of shell construct and fix portability
+	warning from autimake 1.10.
+
 2007-04-18  Tom Tromey  <tromey@redhat.com>
 
 	* tools/gnu/classpath/tools/javah/MethodHelper.java (print):
