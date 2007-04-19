@@ -25,7 +25,7 @@ dnl    AM_CONDITIONAL(FOUND_JIKES, test "x${user_specified_javac}" = xjikes)
 dnl  AM_CONDITIONAL(FOUND_KJC, test "x${user_specified_javac}" = xkjc)
 
 dnl  if test "x${GCJ}" = x && test "x${JIKES}" = x && test "x${user_specified_javac}" != xkjc; then
-  if test "x${ECJ}" = x && test "x${user_specified_javac}" != xecj; then
+  if test "x${ECJ}" = x && test "x${JAVAC}" = x && test "x${user_specified_javac}" != xecj; then
       AC_MSG_ERROR([cannot find javac, try --with-ecj])
   fi
 ])
