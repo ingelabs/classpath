@@ -1,3 +1,10 @@
+2007-04-19  Dalibor Topic  <robilad@kaffe.org>
+
+	* INSTALL: Replaced by generic install file.
+
+	* autogen.sh: Removed redundant and no longer necessary 
+	sections. Use autoreconf.
+ 
 2007-04-19  Andrew John Hughes  <gnu_andrew@member.fsf.org>
  
         * m4/acinclude.m4
