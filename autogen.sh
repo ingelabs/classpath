@@ -50,8 +50,7 @@ if test "x$AUTOGEN_SUBDIR_MODE" = "xyes"; then
         fi
 fi
 
-# Use the "-I m4 flag in order to include pkg.m4 and other .m4 files.
-autoreconf -I m4  --force --install --warnings=no-portability || exit $?
+autoreconf --force --install --warnings=no-portability || exit $?
 
 cd $ORIGDIR || exit $?
 
