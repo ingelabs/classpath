@@ -4,7 +4,8 @@
 SUBDIRS = lib doc external include native resource scripts tools $(EXAMPLESDIR)
 DIST_SUBDIRS = lib doc external include native resource scripts tools examples
 
-ACLOCAL_AMFLAGS = -I m4
+# Allow users to pass site-specific flags to autoreconf via an env var. 
+ACLOCAL_AMFLAGS = -I m4 ${LOCAL_AUTORECONF_FLAGS}
 
 native: lib
 

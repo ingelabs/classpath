@@ -1,5 +1,11 @@
 2007-04-22  Dalibor Topic  <robilad@kaffe.org>
 
+	* Makefile.am (ACLOCAL_AMFLAGS): Add contents of env var 
+	LOCAL_ACLOCAL_AMFLAGS to allow for systems where the user
+	has a mix of system & hacked-up autotools.
+
+2007-04-22  Dalibor Topic  <robilad@kaffe.org>
+
 	* autogen.sh: Removed unnecessary -I m4 flag.
 
 2007-04-19  Casey Marshall  <csm@gnu.org>
