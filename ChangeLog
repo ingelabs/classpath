@@ -1,5 +1,11 @@
 2007-04-23  Mark Wielaard  <mark@klomp.org>
 
+	* doc/www.gnu.org/newsitems.txt: Add 0.95.
+	* doc/www.gnu.org/downloads/downloads.wml: Likewise.
+	* doc/www.gnu.org/announce/20070423.wml: New file.
+
+2007-04-23  Mark Wielaard  <mark@klomp.org>
+
 	* NEWS: Add new 0.95 features.
 
 2007-04-23  Jeroen Frijters  <jeroen@frijters.net>
