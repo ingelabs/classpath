@@ -1,3 +1,68 @@
+2007-04-25  Roman Kennke  <roman@kennke.org>
+
+	* gnu/java/awt/peer/gtk/GdkFontPeer.java,
+	* gnu/java/awt/peer/gtk/GdkGraphicsEnvironment.java,
+	* gnu/java/awt/peer/gtk/GdkPixbufDecoder.java,
+	* gnu/java/awt/peer/gtk/GdkScreenGraphicsDevice.java,
+	* gnu/java/awt/peer/gtk/GtkGenericPeer.java,
+	* gnu/java/awt/peer/gtk/GtkToolkit.java:
+	Added fields to hold the native state. Added class initialization
+	things to fetch the JNI field IDs.
+	* include/gnu_java_awt_peer_gtk_GdkGraphicsEnvironment.h,
+	* include/gnu_java_awt_peer_gtk_GdkScreenGraphicsDevice.h,
+	* include/gnu_java_awt_peer_gtk_GtkGenericPeer.h,
+	* include/gnu_java_awt_peer_gtk_GtkToolkit.h:
+	Added / changed class init methods for field ID initialization.
+	* native/jni/classpath/Makefile.am: Removed native_state stuff.
+	* native/jni/classpath/native_state.c,
+	* native/jni/classpath/native_state.h: Removed.
+	* native/jni/gconf-peer/Makefile.am: Removed native_state stuff.
+	* native/jni/gtk-peer/Makefile.am: Removed native_state stuff.
+	* native/jni/gtk-peer/cairographics2d.h,
+	* native/jni/gtk-peer/gdkdisplay.h,
+	* native/jni/gtk-peer/gdkfont.h,
+	* native/jni/gtk-peer/GtkDragSourceContextPeer.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoGraphics2D.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphics.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphicsCopy.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_FreetypeGlyphVector.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphicsEnvironment.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkPixbufDecoder.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkScreenGraphicsDevice.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkButtonPeer.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCanvasPeer.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxMenuItemPeer.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxPeer.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkChoicePeer.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkFileDialogPeer.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkFramePeer.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkGenericPeer.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkLabelPeer.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkListPeer.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuBarPeer.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuComponentPeer.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuItemPeer.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuPeer.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkPanelPeer.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkPopupMenuPeer.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkScrollPanePeer.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkScrollbarPeer.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkTextAreaPeer.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkTextFieldPeer.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkToolkit.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkVolatileImage.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c,
+	* native/jni/gtk-peer/gtk_jawt.c:
+	Removed native state stuff and replaced that with an approach
+	to store the native state of an object directly in that object.
+	* native/jni/gtk-peer/gtkpeer.c: New file. Implements the new native
+	state management.
+	* native/jni/gtk-peer/gtkpeer.h: Remove NSA stuff and added
+	prototypes for new native state handling.
+
 2007-04-23  Mark Wielaard  <mark@klomp.org>
 
 	* doc/www.gnu.org/newsitems.txt: Add 0.95.

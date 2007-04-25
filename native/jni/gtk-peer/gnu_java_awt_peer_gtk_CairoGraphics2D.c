@@ -327,7 +327,7 @@ Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoDrawGlyphVector
   gr = JLONG_TO_PTR(struct cairographics2d, pointer);
   g_assert (gr != NULL);
 
-  pfont = (struct peerfont *)NSA_GET_FONT_PTR (env, font);
+  pfont = (struct peerfont *) gtkpeer_get_font(env, font);
   g_assert (pfont != NULL);
 
   glyphs = g_malloc( sizeof(cairo_glyph_t) * n);
@@ -391,7 +391,7 @@ Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoSetFont
   gr = JLONG_TO_PTR(struct cairographics2d, pointer);
   g_assert (gr != NULL);
   
-  pfont = (struct peerfont *)NSA_GET_FONT_PTR (env, font);
+  pfont = (struct peerfont *) gtkpeer_get_font(env, font);
   g_assert (pfont != NULL);
 
   gdk_threads_enter();
