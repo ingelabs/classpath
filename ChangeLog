@@ -1,3 +1,18 @@
+2007-04-27  Roman Kennke  <roman@kennke.org>
+
+	* java/nio/CharViewBufferImpl.java
+	(slice): Fixed offset for slice buffer.
+	* java/nio/DoubleViewBufferImpl.java
+	(slice): Fixed offset for slice buffer.
+	* java/nio/FloatViewBufferImpl.java
+	(slice): Fixed offset for slice buffer.
+	* java/nio/IntViewBufferImpl.java
+	(slice): Fixed offset for slice buffer.
+	* java/nio/LongViewBufferImpl.java
+	(slice): Fixed offset for slice buffer.
+	* java/nio/ShortViewBufferImpl.java
+	(slice): Fixed offset for slice buffer.
+
 2007-04-25  Roman Kennke  <roman@kennke.org>
 
 	* gnu/java/awt/peer/gtk/GdkFontPeer.java,
