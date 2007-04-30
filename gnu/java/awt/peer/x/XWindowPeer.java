@@ -135,7 +135,7 @@ public class XWindowPeer
    */
   public Graphics getGraphics()
   {
-    return new XGraphics(xwindow);
+    return new XGraphics2D(xwindow);
   }
 
   public Image createImage(int w, int h)
@@ -168,6 +168,9 @@ public class XWindowPeer
                                 new Rectangle(0, 0, w.getWidth(),
                                               w.getHeight())));
 
+    Graphics g = getGraphics();
+    g.clearRect(0, 0, awtComponent.getWidth(), awtComponent.getHeight());
+    g.dispose();
 //    // Reset input selection.
 //    atts.set_override_redirect(false);
 //    xwindow.change_attributes(atts);
@@ -240,7 +243,7 @@ public class XWindowPeer
    */
   public FontMetrics getFontMetrics(Font font)
   {
-    XFontPeer fontPeer = (XFontPeer) font.getPeer();
+    XFontPeer2 fontPeer = (XFontPeer2) font.getPeer();
     return fontPeer.getFontMetrics(font);
   }
 

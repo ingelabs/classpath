@@ -44,7 +44,6 @@ import java.awt.Canvas;
 import java.awt.Checkbox;
 import java.awt.CheckboxMenuItem;
 import java.awt.Choice;
-import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -88,7 +87,6 @@ import java.awt.peer.FileDialogPeer;
 import java.awt.peer.FontPeer;
 import java.awt.peer.FramePeer;
 import java.awt.peer.LabelPeer;
-import java.awt.peer.LightweightPeer;
 import java.awt.peer.ListPeer;
 import java.awt.peer.MenuBarPeer;
 import java.awt.peer.MenuItemPeer;
@@ -179,16 +177,16 @@ public class XToolkit
    */
   public ClasspathFontPeer getClasspathFontPeer(String name, Map attrs)
   {
-    String canonical = XFontPeer.encodeFont(name, attrs);
+    String canonical = XFontPeer2.encodeFont(name, attrs);
     ClasspathFontPeer font;
     if (!fontCache.containsKey(canonical))
       {
         String graphics2d =
           SystemProperties.getProperty("gnu.xawt.graphics2d");
-        if (graphics2d != null && graphics2d.equals("gl"))
+        //if (graphics2d != null && graphics2d.equals("gl"))
           font = new XFontPeer2(name, attrs);
-        else
-          font = new XFontPeer(name, attrs);
+//        else
+//          font = new XFontPeer(name, attrs);
         fontCache.put(canonical, font);
       }
     else
@@ -601,8 +599,4 @@ public class XToolkit
     return (XGraphicsDevice) env.getDefaultScreenDevice();
   }
 
-  protected LightweightPeer createComponent(Component c)
-  {
-    return new XLightweightPeer(c);
-  }
 }

@@ -1,5 +1,43 @@
 2007-04-30  Roman Kennke  <roman@kennke.org>
 
+	* gnu/java/awt/peer/x/XLightweightPeer.java: Removed.
+	* gnu/java/awt/peer/x/XEventPump.java
+	(handleEvent): Improved handling of event ids to window mapping.
+	* gnu/java/awt/peer/x/XFontPeer2.java:
+	Load font.properties at startup.
+	(XLineMetrics.glyphVector): New field.
+	(XLineMetrics.XLineMetrics): Get glyphVector from font delegate.
+	(XLineMetrics.getHeight): Implemented using glyph vector.
+	(XLineMetrics.getLeading): Implemented.
+	(XFontPeer2): Change hardwired font to something more common.
+	(encodeFont): New methods, encodes a font to the font.properties
+	format.
+	(validName): New method. Checks and returns a valid font name.
+	* gnu/java/awt/peer/x/XGraphics2D.java
+	(foreground): New field.
+	(rawSetPixel): Removed.
+	(rawDrawLine): Draw a segment.
+	(rawSetForeground): Removed.
+	(fillScanline): New method.
+	(fillScanlineAA): New method.
+	(setPaint): Set the foreground color.
+	(fillShape): Synchronize super behaviour.
+	(rawDrawImage): Optimize XImage.
+	* gnu/java/awt/peer/x/XGraphicsDevice.java
+	(getDisplay): Improve creation of socket.
+	(createLocalSocket): New helper method to create a local socket.
+	* gnu/java/awt/peer/x/XImage.java
+	(getGraphics): Return an XGraphics2D.
+	* gnu/java/awt/peer/x/XToolkit.java
+	(getClasspathFontPeer): Use XFontPeer2.
+	(createComponent): Removed.
+	* gnu/java/awt/peer/x/XWindowPeer.java
+	(getGraphics): Return an XGraphics2D.
+	(show): Clear the window.
+	(getFontMetrics): Use XFontPeer2.
+
+2007-04-30  Roman Kennke  <roman@kennke.org>
+
 	* gnu/java/awt/peer/swing/SwingButtonPeer.java
 	(SwingButton.handleFocusEvent): New method. Handles focus events.
 	(SwingButton.requestFocus): Overridden to avoid loop into peer

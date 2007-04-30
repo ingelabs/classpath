@@ -148,9 +148,14 @@ public class XEventPump
 
   private void handleEvent(Event xEvent)
   {
-    Integer key = new Integer(xEvent.window_id());;
-    Window awtWindow = (Window) windows.get(key);
 
+    Integer key = null;
+    Window awtWindow = null;
+    if (xEvent instanceof Input)
+      {
+        key= new Integer(((Input) xEvent).child_window_id);
+        awtWindow = (Window) windows.get(key);
+      }
     if (XToolkit.DEBUG)
       System.err.println("fetched event: " + xEvent);
     switch (xEvent.code())
@@ -195,6 +200,8 @@ public class XEventPump
       Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(mm);
       break;
     case ConfigureNotify.CODE:
+      key= new Integer(((ConfigureNotify) xEvent).event_window_id);
+      awtWindow = (Window) windows.get(key);
       ConfigureNotify c = (ConfigureNotify) xEvent;
       if (XToolkit.DEBUG)
         System.err.println("resize request for window id: " + key);
@@ -213,6 +220,8 @@ public class XEventPump
         }
       break;
     case Expose.CODE:
+      key= new Integer(((Expose) xEvent).window_id);
+      awtWindow = (Window) windows.get(key);
       Expose exp = (Expose) xEvent;
       if (XToolkit.DEBUG)
         System.err.println("expose request for window id: " + key);
