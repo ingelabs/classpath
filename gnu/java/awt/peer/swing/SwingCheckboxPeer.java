@@ -1,5 +1,5 @@
-/* SwingLabelPeer.java -- A Swing based peer for AWT labels
-   Copyright (C)  2006, 2007  Free Software Foundation, Inc.
+/* SwingCheckboxPeer.java -- A Swing based peer for AWT checkboxes
+   Copyright (C)  2007  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -37,49 +37,51 @@ exception statement from your version. */
 
 package gnu.java.awt.peer.swing;
 
+import java.awt.Button;
+import java.awt.Checkbox;
+import java.awt.CheckboxGroup;
 import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Label;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.peer.LabelPeer;
+import java.awt.peer.CheckboxPeer;
 
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-
+import javax.swing.JToggleButton;
 
 /**
- * A Label peer based on {@link JLabel}.
- *
- * @author Roman Kennke (kennke@aicas.com)
+ * A CheckboxPeer implementation that is backed by the Swing JCheckBox.
  */
-public class SwingLabelPeer
-  extends SwingComponentPeer
-  implements LabelPeer
-{
+public class SwingCheckboxPeer extends SwingComponentPeer implements
+        CheckboxPeer {
 
   /**
-   * A spezialized Swing label used to paint the label for the AWT Label. 
-   *
-   * @author Roman Kennke (kennke@aicas.com)
+   * A spezialized Swing checkbox used to paint the checkbox for the
+   * AWT checkbox. 
    */
-  private class SwingLabel
-    extends JLabel
+  private class SwingCheckbox
+    extends JCheckBox
     implements SwingComponent
   {
-    Label label;
-      
-      
-    SwingLabel(Label label)
+    Checkbox checkbox;
+
+    SwingCheckbox(Checkbox checkbox)
     {
-        this.label = label;
+      this.checkbox = checkbox;
     }
-    
+
     /**
-     * Returns this label.
+     * Returns this checkbox.
      *
      * @return <code>this</code>
      */
@@ -96,6 +98,7 @@ public class SwingLabelPeer
      */
     public void handleMouseEvent(MouseEvent ev)
     {
+      ev.setSource(this);
       processMouseEvent(ev);
     }
 
@@ -107,6 +110,7 @@ public class SwingLabelPeer
      */
     public void handleMouseMotionEvent(MouseEvent ev)
     {
+      ev.setSource(this);
       processMouseMotionEvent(ev);
     }
 
@@ -117,6 +121,7 @@ public class SwingLabelPeer
      */
     public void handleKeyEvent(KeyEvent ev)
     {
+      ev.setSource(this);
       processKeyEvent(ev);
     }
 
@@ -139,12 +144,12 @@ public class SwingLabelPeer
      */
     public Point getLocationOnScreen()
     {
-      return SwingLabelPeer.this.getLocationOnScreen();
+      return SwingCheckboxPeer.this.getLocationOnScreen();
     }
 
     /**
-     * Overridden so that the isShowing method returns the correct value for the
-     * swing button, even if it has no peer on its own.
+     * Overridden so that the isShowing method returns the correct value
+     * for the swing button, even if it has no peer on its own.
      *
      * @return <code>true</code> if the button is currently showing,
      *         <code>false</code> otherwise
@@ -152,8 +157,8 @@ public class SwingLabelPeer
     public boolean isShowing()
     {
       boolean retVal = false;
-      if (label != null)
-        retVal = label.isShowing();
+      if (checkbox != null)
+        retVal = checkbox.isShowing();
       return retVal;
     }
 
@@ -168,75 +173,89 @@ public class SwingLabelPeer
      */
     public Image createImage(int w, int h)
     {
-      return SwingLabelPeer.this.createImage(w, h);
+      return SwingCheckboxPeer.this.createImage(w, h);
     }
 
     public Graphics getGraphics()
     {
-      return SwingLabelPeer.this.getGraphics();
+      return SwingCheckboxPeer.this.getGraphics();
     }
 
     public Container getParent()
     {
       Container par = null;
-      if (label != null)
-        par = label.getParent();
+      if (checkbox != null)
+        par = checkbox.getParent();
       return par;
+    }
+
+    public void requestFocus() {
+      SwingCheckboxPeer.this.requestFocus(awtComponent, false, true, 0);
+    }
+
+    public boolean requestFocus(boolean temporary) {
+      return SwingCheckboxPeer.this.requestFocus(awtComponent, temporary,
+                                                 true, 0);
     }
   }
 
   /**
-   * Creates a new <code>SwingLabelPeer</code> for the specified AWT label.
-   *
-   * @param label the AWT label
+   * Listens for ActionEvents on the Swing button and triggers corresponding
+   * ActionEvents on the AWT button.
    */
-  public SwingLabelPeer(Label label)
+  class SwingCheckboxListener implements ItemListener
   {
-    super();
-    SwingLabel swingLabel = new SwingLabel(label);
-    swingLabel.setText(label.getText());
-    swingLabel.setOpaque(true);
-    init(label, swingLabel);
-    setAlignment(label.getAlignment());
+    Checkbox awtCheckbox;
+
+    SwingCheckboxListener(Checkbox checkbox)
+    {
+      awtCheckbox = checkbox;
+    }
+
+    /**
+     * Receives notification when an action was performend on the button.
+     *
+     * @param event the action event
+     */ 
+    public void itemStateChanged(ItemEvent event)
+    {
+      awtCheckbox.setState(event.getStateChange()==ItemEvent.SELECTED);
+      ItemListener[] l = awtCheckbox.getItemListeners();
+      if (l.length == 0)
+        return;
+      ItemEvent ev = new ItemEvent(awtCheckbox, ItemEvent.ITEM_STATE_CHANGED,
+                                   awtCheckbox, event.getStateChange());
+      for (int i = 0; i < l.length; ++i)
+        l[i].itemStateChanged(ev);
+    }
+  }
+    
+  /**
+   * Creates a new SwingCheckboxPeer instance.
+   */
+  public SwingCheckboxPeer(Checkbox checkbox)
+  {
+    SwingCheckbox swingCheckbox = new SwingCheckbox(checkbox);
+    swingCheckbox.addItemListener(new SwingCheckboxListener(checkbox));
+
+    init(checkbox, swingCheckbox);
+    setLabel(checkbox.getLabel());
+    setState(checkbox.getState());
   }
 
-  /**
-   * Sets the text of the label. This is implemented to set the text on the
-   * Swing label.
-   *
-   * @param text the text to be set
-   */
-  public void setText(String text)
+  public void setCheckboxGroup(CheckboxGroup group)
   {
-    ((JLabel) swingComponent.getJComponent()).setText(text);
+    // TODO: Implement this.
   }
 
-  /**
-   * Sets the horizontal alignment of the label. This is implemented to
-   * set the alignment on the Swing label.
-   *
-   * @param alignment the horizontal alignment
-   *
-   * @see Label#LEFT
-   * @see Label#RIGHT
-   * @see Label#CENTER
-   */
-  public void setAlignment(int alignment)
+  public void setLabel(String label)
   {
-    JLabel swingLabel = (JLabel) swingComponent.getJComponent();
-    switch (alignment)
-      {
-      case Label.RIGHT:
-        swingLabel.setHorizontalAlignment(JLabel.RIGHT);
-        break;
-      case Label.CENTER:
-        swingLabel.setHorizontalAlignment(JLabel.CENTER);
-        break;
-      case Label.LEFT:
-      default:
-        swingLabel.setHorizontalAlignment(JLabel.LEFT);
-        break;
-      }
+    ((JToggleButton) swingComponent).setText(label);
+  }
+
+  public void setState(boolean state)
+  {
+    ((JToggleButton) swingComponent).setSelected(state);
   }
 
 }

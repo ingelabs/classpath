@@ -1,3 +1,42 @@
+2007-04-30  Roman Kennke  <roman@kennke.org>
+
+	* gnu/java/awt/peer/swing/SwingButtonPeer.java
+	(SwingButton.handleFocusEvent): New method. Handles focus events.
+	(SwingButton.requestFocus): Overridden to avoid loop into peer
+	and back.
+	(SwingButton.requestFocus(boolean)): Overridden to avoid loop
+	into peer and back.
+	* gnu/java/awt/peer/swing/SwingCheckboxPeer.java: New class.
+	Implements CheckboxPeer for Swing toolkit.
+	* gnu/java/awt/peer/swing/SwingComponent.java
+	(handleFocusEvent): New method. Handles focus events.
+	* gnu/java/awt/peer/swing/SwingComponentPeer.java
+	(getMinimumSize): Delegate to minimumSize().
+	(getPreferredSize): Delegate to preferredSize().
+	(handleEvent): Only paint when component is showing. Coalesce
+	paint event in any case. Reformat. Handle focus events.
+	(requestFocus): Post FOCUS_GAINED event.
+	(handleFocusEvent): New method. Delegate to SwingComponent
+	object.
+	* gnu/java/awt/peer/swing/SwingContainerPeer.java
+	(addHeavyweightDescendent): Make this protected.
+	(removeHeavyweightDescendent): Make this protected.
+	(getHeavyweightDescendents): New method. Returns all registered
+	heavyweights.
+	(handleKeyEvent): Delegate to peer's handleEvent() method.
+	* gnu/java/awt/peer/swing/SwingLabelPeer.java
+	(SwingLabel.handleFocusEvent): New method.
+	* gnu/java/awt/peer/swing/SwingListPeer.java
+	(SwingList.handleFocusEvent): New method.
+	* gnu/java/awt/peer/swing/SwingPanelPeer.java
+	Fix typo and import.
+	* gnu/java/awt/peer/swing/SwingTextAreaPeer.java
+	Wrap up text area in viewport.
+	* gnu/java/awt/peer/swing/SwingTextFieldPeer.java
+	(SwingTextField.handleFocusEvent): New method.
+	(SwingTextField.requestFocus): New method.
+	(SwingTextField.requestFocus(boolean)): New method.
+
 2007-04-27  Keith Seitz  <keiths@redhat.com>
 
 	* gnu/classpath/jdwp/event/EventManager.java
