@@ -96,15 +96,10 @@ glibj.zip: classes compile-classes resources
 endif # USE_PREBUILT_GLIBJ_ZIP
 
 resources: copy-vmresources.sh
-	@list=`cd $(top_srcdir)/resource && $(FIND) gnu java javax org -name \*\.properties -print`; for p in $$list; do \
+	@list=`cd $(top_srcdir)/resource && $(FIND) gnu java javax org -name \*\.properties -o -name \*\.css -print`; for p in $$list; do \
           dirname=`dirname $$p`; \
           if ! test -d "$$dirname"; then mkdir -p "$$dirname"; fi; \
 	  cp $(top_srcdir)/resource/$$p $$p; \
-	done
-	@list=`cd $(top_srcdir) && $(FIND) gnu java javax org -name \*\.css -print`; for p in $$list; do \
-          dirname=`dirname $$p`; \
-          if ! test -d "$$dirname"; then mkdir -p "$$dirname"; fi; \
-	  cp $(top_srcdir)/$$p $$p; \
 	done
 	@list=`cd $(top_srcdir)/resource && $(FIND) META-INF -name CVS -prune -o -name \*\.in -prune -o -type f -print`; for p in $$list; do \
           dirname=`dirname $$p`; \

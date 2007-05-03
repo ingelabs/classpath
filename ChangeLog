@@ -1,3 +1,12 @@
+2007-05-03  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=237304
+	* javax/swing/text/html/HTMLEditorKit.java
+	(getStyleSheet): Throw RuntimeException when style loading fails.
+	* lib/Makefile.am: Treat css files as a property files.
+	* javax/swing/text/html/default.css: Move to...
+	* resource/javax/swing/text/html/default.css: New file.
+
 2007-05-03  Andrew Haley  <aph@redhat.com>
 
 	* gnu/javax/management/Server.java (Server): Record the delegate.
