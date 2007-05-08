@@ -1,5 +1,20 @@
 2007-05-08  Roman Kennke  <roman@kennke.org>
 
+	* gnu/java/awt/peer/x/XFontPeer.java: Removed.
+	* gnu/java/awt/peer/x/XGraphics.java: Removed
+	* gnu/java/awt/peer/x/XFontPeer2.java
+	(XLineMetrics.getDescent): Use cached idendity transform.
+	(XFontMetrics.cachedPoint): New field. Caches a Point2D instance
+	for reuse.
+	(XFontMetrics.getAscent): Use cached idendity transform.
+	(XFontMetrics.getDescent): Use cached idendity transform.
+	(XFontMetrics.getHeight): Use cached idendity transform.
+	(XFontMetrics.charWidth): Map character to glyph index first.
+	(XFontMetrics.stringWidth): Use cached idendity transform.
+	(IDENDITY): New static field. A reused AffineTransform instance.
+
+2007-05-08  Roman Kennke  <roman@kennke.org>
+
 	* gnu/java/awt/font/FontDelegate.java
 	(getGlyphIndex): New method. Maps characters to their
 	glyph index in the font.

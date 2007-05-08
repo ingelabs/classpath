@@ -127,9 +127,8 @@ public class XFontPeer2
 
     public float getDescent()
     {
-      return (int) fontDelegate.getDescent(font.getSize(),
-                                           new AffineTransform(), false, false,
-                                           false);
+      return (int) fontDelegate.getDescent(font.getSize(), IDENDITY, false,
+                                           false, false);
     }
 
     public float getHeight()
@@ -173,6 +172,11 @@ public class XFontPeer2
   private class XFontMetrics
     extends FontMetrics
   {
+    /**
+     * A cached point instance, to be used in #charWidth().
+     */
+    private Point2D cachedPoint = new Point2D.Double();
+
     XFontMetrics(Font f)
     {
       super(f);
@@ -180,22 +184,20 @@ public class XFontPeer2
 
     public int getAscent()
     {
-      return (int) fontDelegate.getAscent(getFont().getSize(),
-                                          new AffineTransform(), false, false,
-                                          false);
+      return (int) fontDelegate.getAscent(getFont().getSize(), IDENDITY,
+                                          false, false, false);
     }
 
     public int getDescent()
     {
-      return (int) fontDelegate.getDescent(getFont().getSize(),
-                                           new AffineTransform(), false, false,
-                                           false);
+      return (int) fontDelegate.getDescent(getFont().getSize(), IDENDITY,
+                                           false, false, false);
     }
     
     public int getHeight()
     {
       GlyphVector gv = fontDelegate.createGlyphVector(getFont(),
-                    new FontRenderContext(new AffineTransform(), false, false),
+                    new FontRenderContext(IDENDITY, false, false),
                     new StringCharacterIterator("m"));
       Rectangle2D b = gv.getVisualBounds();
       return (int) b.getHeight();
@@ -203,8 +205,9 @@ public class XFontPeer2
 
     public int charWidth(char c)
     {
+      int code = fontDelegate.getGlyphIndex(c);
       Point2D advance = new Point2D.Double();
-      fontDelegate.getAdvance(c, getFont().getSize(), new AffineTransform(),
+      fontDelegate.getAdvance(code, font.getSize2D(), IDENDITY,
                               false, false, true, advance);
       return (int) advance.getX();
     }
@@ -217,12 +220,17 @@ public class XFontPeer2
     public int stringWidth(String s)
     {
       GlyphVector gv = fontDelegate.createGlyphVector(getFont(),
-                    new FontRenderContext(new AffineTransform(), false, false),
+                    new FontRenderContext(IDENDITY, false, false),
                     new StringCharacterIterator(s));
       Rectangle2D b = gv.getVisualBounds();
       return (int) b.getWidth();
     }
   }
+
+  /**
+   * The indendity transform, to be used in several methods.
+   */
+  private static final AffineTransform IDENDITY = new AffineTransform();
 
   private FontDelegate fontDelegate;
 
