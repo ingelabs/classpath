@@ -1,3 +1,8 @@
+2007-05-08  Kyle Galloway  <kgallowa@redhat.com>
+
+	* vm/reference/VMFrame.java (<init>): Add a parameter for the "this"
+	pointer of the frame.
+
 2007-05-08  Roman Kennke  <roman@kennke.org>
 
 	* gnu/java/awt/peer/x/XFontPeer.java: Removed.
