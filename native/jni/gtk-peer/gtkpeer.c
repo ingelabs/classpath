@@ -39,17 +39,17 @@ exception statement from your version. */
 #include "jni.h"
 
 /**
- * The Pointer32 class.
+ * The Pointer class.
  */
 static jclass pointerClass;
 
 /**
- * The Pointer32 constructor.
+ * The Pointer constructor.
  */
 static jmethodID pointerConstructorMID;
 
 /**
- * The field ID of the data field in the Pointer32 class.
+ * The field ID of the data field in the Pointer class.
  */
 static jfieldID pointerDataFID;
 
@@ -90,12 +90,27 @@ static jfieldID pixbufLoaderFID;
  */
 void gtkpeer_init_pointer_IDs(JNIEnv* env)
 {
+#if SIZEOF_VOID_P == 8
+  pointerClass = (*env)->FindClass (env, "gnu/classpath/Pointer64");
+  if (pointerClass != NULL)
+    {
+      pointerClass = (*env)->NewGlobalRef (env, pointerClass);
+      pointerDataFID = (*env)->GetFieldID (env, pointerClass, "data", "J");
+      pointerConstructorMID = (*env)->GetMethodID (env, pointerClass, "<init>",
+						   "(J)V");
+    }
+#else
+#if SIZEOF_VOID_P == 4
   pointerClass = (*env)->FindClass(env, "gnu/classpath/Pointer32");
   pointerDataFID = (*env)->GetFieldID(env, pointerClass, "data", "I");
 
   /* Find the Pointer32 constructor. */
   pointerConstructorMID = (*env)->GetMethodID(env, pointerClass, "<init>",
                                               "(I)V");
+#else
+#error "Pointer size is not supported."
+#endif /* SIZEOF_VOID_P == 4 */
+#endif /* SIZEOF_VOID_P == 8 */
 }
 
 /**
@@ -133,13 +148,22 @@ void gtkpeer_set_widget(JNIEnv *env, jobject peer, void *widget)
   if (obj == NULL)
     {
       /* Create if necessary. */
+#if SIZEOF_VOID_P == 8
+      obj = (*env)->NewObject(env, pointerClass, pointerConstructorMID,
+                              (jlong) widget);
+#else
       obj = (*env)->NewObject(env, pointerClass, pointerConstructorMID,
                               (jint) widget);
+#endif
       (*env)->SetObjectField(env, peer, widgetFID, obj);
     }
   else
     {
+#if SIZEOF_VOID_P == 8
+      (*env)->SetLongField(env, obj, pointerDataFID, (jlong) widget);
+#else
       (*env)->SetIntField(env, obj, pointerDataFID, (jint) widget);
+#endif
     }
 }
 
@@ -160,7 +184,11 @@ void* gtkpeer_get_widget(JNIEnv *env, jobject peer)
   obj = (*env)->GetObjectField(env, peer, widgetFID);
 
   /* Fetch actual widget pointer. */
+#if SIZEOF_VOID_P == 8
+  widget = (void*) (*env)->GetLongField(env, obj, pointerDataFID);
+#else
   widget = (void*) (*env)->GetIntField(env, obj, pointerDataFID);
+#endif
   return widget;
 }
 
@@ -184,13 +212,22 @@ void gtkpeer_set_global_ref(JNIEnv *env, jobject peer)
   if (obj == NULL)
     {
       /* Create if necessary. */
+#if SIZEOF_VOID_P == 8
+      obj = (*env)->NewObject(env, pointerClass, pointerConstructorMID,
+                              (jlong) globalRef);
+#else
       obj = (*env)->NewObject(env, pointerClass, pointerConstructorMID,
                               (jint) globalRef);
+#endif
       (*env)->SetObjectField(env, peer, globalRefFID, obj);
     }
   else
     {
+#if SIZEOF_VOID_P == 8
+      (*env)->SetLongField(env, obj, pointerDataFID, (jlong) globalRef);
+#else
       (*env)->SetIntField(env, obj, pointerDataFID, (jint) globalRef);
+#endif
     }
 }
 
@@ -211,7 +248,11 @@ void* gtkpeer_get_global_ref(JNIEnv *env, jobject peer)
   obj = (*env)->GetObjectField(env, peer, globalRefFID);
 
   /* Fetch actual globalRef pointer. */
+#if SIZEOF_VOID_P == 8
+  globalRef = (void*) (*env)->GetLongField(env, obj, pointerDataFID);
+#else
   globalRef = (void*) (*env)->GetIntField(env, obj, pointerDataFID);
+#endif
   return globalRef;
 }
 
@@ -231,7 +272,11 @@ void gtkpeer_del_global_ref(JNIEnv* env, jobject peer)
   obj = (*env)->GetObjectField(env, peer, globalRefFID);
 
   /* Fetch actual globalRef pointer. */
+#if SIZEOF_VOID_P == 8
+  globalRef = (void*) (*env)->GetLongField(env, obj, pointerDataFID);
+#else
   globalRef = (void*) (*env)->GetIntField(env, obj, pointerDataFID);
+#endif
   (*env)->DeleteGlobalRef(env, globalRef);
 }
 
@@ -266,13 +311,22 @@ void gtkpeer_set_display(JNIEnv* env, jobject graphicsenv, void* display)
   if (obj == NULL)
     {
       /* Create if necessary. */
+#if SIZEOF_VOID_P == 8
+      obj = (*env)->NewObject(env, pointerClass, pointerConstructorMID,
+                              (jlong) display);
+#else
       obj = (*env)->NewObject(env, pointerClass, pointerConstructorMID,
                               (jint) display);
+#endif
       (*env)->SetObjectField(env, graphicsenv, displayFID, obj);
     }
   else
     {
+#if SIZEOF_VOID_P == 8
+      (*env)->SetLongField(env, obj, pointerDataFID, (jlong) display);
+#else
       (*env)->SetIntField(env, obj, pointerDataFID, (jint) display);
+#endif
     }
 }
 
@@ -293,7 +347,11 @@ void* gtkpeer_get_display(JNIEnv* env, jobject graphicsenv)
   obj = (*env)->GetObjectField(env, graphicsenv, displayFID);
 
   /* Fetch actual display pointer. */
+#if SIZEOF_VOID_P == 8
+  display = (void*) (*env)->GetLongField(env, obj, pointerDataFID);
+#else
   display = (void*) (*env)->GetIntField(env, obj, pointerDataFID);
+#endif
   return display;
 }
 
@@ -330,13 +388,22 @@ void gtkpeer_set_screen(JNIEnv* env, jobject screen_graphics_device,
   if (obj == NULL)
     {
       /* Create if necessary. */
+#if SIZEOF_VOID_P == 8
+      obj = (*env)->NewObject(env, pointerClass, pointerConstructorMID,
+                              (jlong) ptr);
+#else
       obj = (*env)->NewObject(env, pointerClass, pointerConstructorMID,
                               (jint) ptr);
+#endif
       (*env)->SetObjectField(env, screen_graphics_device, screenFID, obj);
     }
   else
     {
+#if SIZEOF_VOID_P == 8
+      (*env)->SetLongField(env, obj, pointerDataFID, (jlong) ptr);
+#else
       (*env)->SetIntField(env, obj, pointerDataFID, (jint) ptr);
+#endif
     }
 }
 
@@ -357,7 +424,11 @@ void* gtkpeer_get_screen(JNIEnv* env, jobject screen_graphics_device)
   obj = (*env)->GetObjectField(env, screen_graphics_device, screenFID);
 
   /* Fetch actual display pointer. */
+#if SIZEOF_VOID_P == 8
+  screen = (void*) (*env)->GetLongField(env, obj, pointerDataFID);
+#else
   screen = (void*) (*env)->GetIntField(env, obj, pointerDataFID);
+#endif
   return screen;
 }
 
@@ -392,13 +463,22 @@ void gtkpeer_set_font(JNIEnv* env, jobject font_peer, void* font)
   if (obj == NULL)
     {
       /* Create if necessary. */
+#if SIZEOF_VOID_P == 8
+      obj = (*env)->NewObject(env, pointerClass, pointerConstructorMID,
+                              (jlong) font);
+#else
       obj = (*env)->NewObject(env, pointerClass, pointerConstructorMID,
                               (jint) font);
+#endif
       (*env)->SetObjectField(env, font_peer, fontFID, obj);
     }
   else
     {
+#if SIZEOF_VOID_P == 8
+      (*env)->SetLongField(env, obj, pointerDataFID, (jlong) font);
+#else
       (*env)->SetIntField(env, obj, pointerDataFID, (jint) font);
+#endif
     }
 }
 
@@ -419,7 +499,11 @@ void* gtkpeer_get_font(JNIEnv* env, jobject font_peer)
   obj = (*env)->GetObjectField(env, font_peer, fontFID);
 
   /* Fetch actual font pointer. */
+#if SIZEOF_VOID_P == 8
+  font = (void*) (*env)->GetLongField(env, obj, pointerDataFID);
+#else
   font = (void*) (*env)->GetIntField(env, obj, pointerDataFID);
+#endif
   return font;
 }
 
@@ -455,13 +539,22 @@ void gtkpeer_set_pixbuf_loader(JNIEnv* env, jobject pixbuf_dec,
   if (obj == NULL)
     {
       /* Create if necessary. */
+#if SIZEOF_VOID_P == 8
+      obj = (*env)->NewObject(env, pointerClass, pointerConstructorMID,
+                              (jlong) pixbuf_loader);
+#else
       obj = (*env)->NewObject(env, pointerClass, pointerConstructorMID,
                               (jint) pixbuf_loader);
+#endif
       (*env)->SetObjectField(env, pixbuf_dec, pixbufLoaderFID, obj);
     }
   else
     {
+#if SIZEOF_VOID_P == 8
+      (*env)->SetLongField(env, obj, pointerDataFID, (jlong) pixbuf_loader);
+#else
       (*env)->SetIntField(env, obj, pointerDataFID, (jint) pixbuf_loader);
+#endif
     }
 }
 
@@ -482,6 +575,10 @@ void* gtkpeer_get_pixbuf_loader(JNIEnv* env, jobject pixbuf_dec)
   obj = (*env)->GetObjectField(env, pixbuf_dec, pixbufLoaderFID);
 
   /* Fetch actual font pointer. */
+#if SIZEOF_VOID_P == 8
+  loader = (void*) (*env)->GetLongField(env, obj, pointerDataFID);
+#else
   loader = (void*) (*env)->GetIntField(env, obj, pointerDataFID);
+#endif
   return loader;
 }
