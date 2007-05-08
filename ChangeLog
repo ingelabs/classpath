@@ -1,5 +1,34 @@
 2007-05-08  Roman Kennke  <roman@kennke.org>
 
+	* gnu/java/awt/java2d/AbstractGraphics2D.java
+	(AA_SAMPLING): Removed.
+	(alpha): Removed field.
+	(edgeTable): Removed field.
+	(fillScanlineAA): Removed obsolete method.
+	(drawPolyline): Implemented by using a GeneralPath.
+	(drawPolygon): Reset the cached polygon.
+	(fillPolygon): Reset the cached polygon.
+	(fillShape): Default to antialias on for text.
+	(rawDrawLine): Use ShapeCache.
+	(rawDrawRect): Use ShapeCache.
+	(rawFillRect): Use ShapeCache.
+	(fillScanlineAA): New method for antialiased rendering.	
+	* gnu/java/awt/java2d/ScanlineConverter.java
+	(scanlinesPerPixel): New field.
+	(minX,maxX): New fields.
+	(scanlineYCov,scanlineXCov): New fields.
+	(slPix0): New field.
+	(alphaRes): New field.
+	(renderShape): Add antialiasing functionality.
+	(doScanline): Add antialiasing functionality.
+	(setResolution): Add antialiasing functionality.
+	(addShape): Determine span in X direction.
+	(fit): Fix thinko.
+	* gnu/java/awt/java2d/ShapeCache.java
+	(polyline): New field for caching polylines.
+
+2007-05-08  Roman Kennke  <roman@kennke.org>
+
 	* examples/gnu/classpath/examples/awt/HintingDemo.java
 	Add support for showing the original vs the hinted glyphs plus
 	a grid.
