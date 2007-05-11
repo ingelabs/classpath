@@ -1,3 +1,12 @@
+2007-05-11  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/lang/Float.java
+	(toString(float)): Call VMFloat instead of VMDouble.
+	(parseFloat): Call VMFloat. Fixed comment.
+	* vm/reference/java/lang/VMFloat.java
+	(toString, parseFloat): New methods.
+	NEWS: added note about these changes.
+
 2007-05-08  Kyle Galloway  <kgallowa@redhat.com>
 
 	* vm/reference/VMFrame.java (<init>): Add a parameter for the "this"
