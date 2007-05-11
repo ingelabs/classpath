@@ -1,3 +1,8 @@
+2007-05-11  Kyle Galloway  <kgallowa@redhat.com>
+
+	* gnu/classpath/jdwp/processor/ReferenceTypeCommandSet.java
+	(executeMethods): Remove cast to ClassReferenceTypeId.
+
 2007-05-11  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/lang/Float.java
