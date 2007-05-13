@@ -41,7 +41,7 @@
 ##
 
 prefix=@prefix@
-datarootdir = @datarootdir@
+datarootdir=@datarootdir@
 tools_dir=@datadir@/@PACKAGE@
 tools_cp=${tools_dir}/tools.zip
 
