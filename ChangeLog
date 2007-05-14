@@ -1,3 +1,15 @@
+2007-05-14  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/rmi/MarshelledObject.java,
+	* java/rmi/activation/Activatable.java,
+	* java/rmi/activation/ActivationDesc.java,
+	* java/rmi/activation/ActivationGroup.java,
+	* java/rmi/activation/ActivationGroupDesc.java,
+	* java/rmi/activation/ActivationInstantiator.java,
+	* java/rmi/activation/ActivationMonitor.java,
+	* java/rmi/activation/Activator.java:
+	Genericized.
+
 2007-05-13  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* configure.ac:
