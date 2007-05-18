@@ -28,9 +28,9 @@ if $have_libtool ; then : ; else
 	echo "You must have libtool 1.5 installed to compile $PROJECT."
 	echo "Install the appropriate package for your distribution,"
 	echo "or get the source tarball at http://ftp.gnu.org/gnu/libtool/"
-	echo "For Darwin you need the latest stable (1.5.18) to support"
-	echo "Frameworks linking. Also, you have to point ACLOCAL_FLAGS"
-	echo "to this libtool/share/aclocal."
+	echo "For Darwin you need the latest stable (1.5.22) to support"
+	echo "Frameworks linking. Also, you have to point"
+	echo "LOCAL_AUTORECONF_FLAGS to this libtool/share/aclocal."
 	DIE=1
 fi
 

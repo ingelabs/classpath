@@ -1,3 +1,7 @@
+2007-05-18  Andreas Tobler  <a.tobler@schweiz.org>
+
+	* autogen.sh (have_libtool): Update comments for Darwin.
+
 2007-05-18  Roman Kennke  <roman@kennke.org>
 
 	* gnu/java/awt/java2d/AbstractGraphics2D.java
