@@ -1,3 +1,31 @@
+2007-05-18  Roman Kennke  <roman@kennke.org>
+
+	* gnu/java/awt/java2d/AbstractGraphics2D.java
+	(fillScanlineAA): Removed. Replaced by renderScanline().
+	(fillScanline): Dito.
+	(renderScanline): New method. Renders a scanline according to
+	the coverage information from the scanline converter.
+	* gnu/java/awt/java2d/Pixelizer.java: New interface. Describes
+	the targets of the rasterizer.
+	* gnu/java/awt/java2d/ScanlineConverter.java
+	(alphaRes): Removed.
+	(ONE): Removed.
+	(scanlineCoverage): New field. Manages the coverage information.
+	(scanlinesPerPixel): Removed.
+	(scanlineXCov): Removed.
+	(scanlineYCov): Removed.
+	(slPix0): Removed.
+	(ScanlineConverter): Initialize scanline coverage data structure.
+	(clear): Also clear the scanline coverage.
+	(doScanline): Work with Pixelizer objects.
+	Use the ScanlineCoverage datastructure.
+	(main): New method. Performs some tests.
+	(renderShape): Work with pixelizer objects rather than directly
+	on AbstractGraphic2D. Adjust to use ScanlineCoverage datastructure.
+	(setResolution): Set resolution on ScanlineCoverage data too.
+	* gnu/java/awt/java2d/ScanlineCoverage.java: New class. Stores
+	and manages scanline coverage information.
+
 2007-05-14  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/rmi/MarshelledObject.java,

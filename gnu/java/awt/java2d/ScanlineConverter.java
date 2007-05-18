@@ -1,5 +1,5 @@
 /* ScanlineConverter.java -- Rasterizes Shapes
-   Copyright (C) 2006 Free Software Foundation, Inc.
+   Copyright (C) 2006, 2007 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -47,18 +47,13 @@ import java.awt.geom.PathIterator;
 /**
  * Rasterizes {@link Shape} objects on an AbstractGraphics2D.
  */
-final class ScanlineConverter
+public final class ScanlineConverter
 {
 
   /**
    * The number of digits to use for fixed point arithmetics.
    */
   private static int FIXED_DIGITS = 6;
-
-  /**
-   * The fixed value for the number 1.
-   */
-  private static int ONE = Fixed.fixedValue(FIXED_DIGITS, 1);
 
   /**
    * The actual number of scanlines.
@@ -87,8 +82,6 @@ final class ScanlineConverter
    */
   private int resolution;
 
-  private int scanlinesPerPixel;
-
   /**
    * One half step according to the resolution. This is stored to avoid
    * unnecessary operations during rendering.
@@ -114,10 +107,10 @@ final class ScanlineConverter
   private int minX;
   private int maxX;
 
-  private int[] scanlineYCov;
-  private int[] scanlineXCov;
-  private int slPix0;
-  private int alphaRes;
+  /**
+   * Holds and manages information about the pixel coverage.
+   */
+  private ScanlineCoverage scanlineCoverage;
 
   /**
    * Create a new ScanlineConverter.
@@ -129,16 +122,18 @@ final class ScanlineConverter
     activeEdges = new ActiveEdges();
     edgePool = new PolyEdge();
     edgePoolLast = edgePool;
+    scanlineCoverage = new ScanlineCoverage();
   }
 
   /**
    * Renders the specified shape using the specified clip and transform.
    *
+   * @param p the pixelizer that receives the coverage information
    * @param shape the shape to render
    * @param clip the clip
    * @param trans the transform
    */
-  void renderShape(AbstractGraphics2D g, Shape shape, Shape clip,
+  void renderShape(Pixelizer p, Shape shape, Shape clip,
                    AffineTransform trans, int res)
   {
     // Prepare resolution and upper bounds.
@@ -164,20 +159,6 @@ final class ScanlineConverter
       {
         addEdge(edge);
         edge = edge.poolNext;
-      }
-
-    // For AA: Prepare the scanline pixels array.
-    if (resolution < ONE)
-      {
-        int x0 = Fixed.intValue(FIXED_DIGITS, minX);
-        int x1 = Fixed.intValue(FIXED_DIGITS, maxX) + 1;
-        int span = x1 - x0;
-        if (scanlineYCov == null || span >= scanlineYCov.length)
-          {
-            scanlineYCov = new int[span];
-            scanlineXCov = new int[span];
-          }
-        slPix0 = x0;
       }
 
     int y = upperBounds;
@@ -210,7 +191,7 @@ final class ScanlineConverter
         // Ok, now we can perform the actual scanlining.
         int realY = Fixed.intValue(FIXED_DIGITS, y + resolution);
         boolean push = lastRealY != realY;
-        doScanline(g, y, push, haveClip);
+        doScanline(p, y, push, haveClip);
 
         // Remove obsolete active edges.
         //activeEdges.remove(y + halfStep);
@@ -237,6 +218,9 @@ final class ScanlineConverter
           sl.clear();
       }
 
+    // Reset scanline coverage.
+    scanlineCoverage.clear();
+
     // Reset bounds.
     minY = Integer.MAX_VALUE;
     maxY = Integer.MIN_VALUE;
@@ -246,11 +230,18 @@ final class ScanlineConverter
 
   /**
    * Performs the scanlining on the current set of active edges.
+   *
+   * @param p the pixelizer to receive the pixel coverage data
+   * @param y the Y coordinate
+   * @param push true when the scanline is ready to be pushed to the
+   *        pixelizer
+   * @param haveClip true when there's a clip, false otherwise
    */
-  private void doScanline(AbstractGraphics2D g, int y, boolean push,
+  private void doScanline(Pixelizer p, int y, boolean push,
                           boolean haveClip)
   {
-
+    // First, rewind the scanline coverage.
+    scanlineCoverage.rewind();
     // We begin outside the clip and outside the shape. We only draw when
     // we are inside the clip AND inside the shape.
     boolean inClip = ! haveClip;
@@ -266,25 +257,12 @@ final class ScanlineConverter
             int x0 = lastEdge.xIntersection;
             int x1 = edge.xIntersection;
             assert x0 <= x1;
-            if (resolution == ONE)
-              {
-                // Non-AA rendering.
-                g.fillScanline(Fixed.intValue(FIXED_DIGITS, x0 + resolution / 2),
-                               Fixed.intValue(FIXED_DIGITS, x1 - resolution / 2),
-                               Fixed.intValue(FIXED_DIGITS, y));
-              }
-            else
-              {
-                int pix0 = Fixed.intValue(FIXED_DIGITS, x0);
-                int frac0 = ONE - (x0 - Fixed.floor(FIXED_DIGITS, x0));
-                int pix1 = Fixed.intValue(FIXED_DIGITS, x1);
-                int frac1 = ONE - (x1 - Fixed.floor(FIXED_DIGITS, x1));
-                //System.err.println("render scanline AA: " + Fixed.floatValue(FIXED_DIGITS, y) + ", " + pix0 + ", " + pix1 + "(" + Fixed.floatValue(FIXED_DIGITS, x0) + ", " + Fixed.floatValue(FIXED_DIGITS, x1) +")");
-                scanlineYCov[pix0 - slPix0] += alphaRes;
-                scanlineYCov[pix1 - slPix0] -= alphaRes;
-                scanlineXCov[pix0 - slPix0] += frac0;
-                scanlineXCov[pix1 - slPix0] += frac1;
-              }
+
+            int pix0 = Fixed.intValue(FIXED_DIGITS, x0);
+            int pix1 = Fixed.intValue(FIXED_DIGITS, x1);
+            //System.err.println("render scanline AA: " + Fixed.floatValue(FIXED_DIGITS, y) + ", " + pix0 + ", " + pix1 + "(" + Fixed.floatValue(FIXED_DIGITS, x0) + ", " + Fixed.floatValue(FIXED_DIGITS, x1) +")")
+            scanlineCoverage.add(pix0, 1);
+            scanlineCoverage.add(pix1, -1);
           }
         if (edge.isClip)
           inClip = ! inClip;
@@ -294,35 +272,11 @@ final class ScanlineConverter
         lastEdge = edge;
       }
 
-    // For AA we push out the scanline when necessary.
-    if (push && ONE > resolution)
+    // Push out the whole scanline to the pixelizer.
+    if (push && ! scanlineCoverage.isEmpty())
       {
-        // Push out AA'ed scanline.
-        int rx1 = 0;
-        int alpha = 0;
-        for (int idx = 0; idx < scanlineYCov.length; idx++)
-          {
-            rx1 = slPix0 + idx;
-            if (scanlineYCov[idx] != 0)
-              {
-                // Render transitioning pixel with x coverage included.
-                int transAlpha = alpha + (scanlineYCov[idx] * scanlineXCov[idx]) / (scanlinesPerPixel * 64);
-                //System.err.println("pixel: " + rx1 + " old alpha: " + alpha + " ycov:" + scanlineYCov[idx] + " xcov: " + scanlineXCov[idx] + " tAlpha: " + transAlpha);
-                g.fillScanlineAA(rx1, rx1,
-                                 Fixed.intValue(FIXED_DIGITS, y),
-                                 Math.max(Math.min(transAlpha, 255), 0));
-                alpha = alpha + scanlineYCov[idx];
-              }
-            else if (alpha > 0)
-              {
-                //System.err.println("pixel: " + rx1 + " alpha: " + alpha);
-                g.fillScanlineAA(rx1, rx1,
-                                 Fixed.intValue(FIXED_DIGITS, y),
-                                 Math.min(alpha, 255));
-              } 
-            scanlineYCov[idx] = 0;
-            scanlineXCov[idx] = 0;
-          } 
+        p.renderScanline(Fixed.intValue(FIXED_DIGITS, y), scanlineCoverage);
+        scanlineCoverage.clear();
       }
   } 
 
@@ -335,11 +289,11 @@ final class ScanlineConverter
    */
   private void setResolution(int res)
   {
-    scanlinesPerPixel = 1 << res;
+    int scanlinesPerPixel = 1 << res;
     int one = Fixed.fixedValue(FIXED_DIGITS, 1);
-    resolution = one / (1 << res);
+    resolution = one / (scanlinesPerPixel);
     halfStep = resolution / 2;
-    alphaRes = 256 >> res;
+    scanlineCoverage.setMaxCoverage(scanlinesPerPixel);
   }
 
   /**
@@ -469,5 +423,15 @@ final class ScanlineConverter
           }
         edgePoolLast = edgePoolLast.poolNext;
       }
+  }
+
+  /**
+   * Performs some tests.
+   *
+   * @param args
+   */
+  public static void main(String[] args)
+  {
+    ScanlineCoverage.test();
   }
 }

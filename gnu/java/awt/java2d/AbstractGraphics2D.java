@@ -51,6 +51,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Paint;
 import java.awt.PaintContext;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -75,6 +76,7 @@ import java.awt.image.DataBuffer;
 import java.awt.image.ImageObserver;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
+import java.awt.image.SampleModel;
 import java.awt.image.WritableRaster;
 import java.awt.image.renderable.RenderableImage;
 import java.text.AttributedCharacterIterator;
@@ -146,7 +148,7 @@ import java.util.Map;
  */
 public abstract class AbstractGraphics2D
   extends Graphics2D
-  implements Cloneable
+  implements Cloneable, Pixelizer
 {
 
   /**
@@ -1720,10 +1722,42 @@ public abstract class AbstractGraphics2D
    * @param x1 the right offset
    * @param y the scanline
    */
-  protected void fillScanline(int x0, int x1, int y)
+  public void renderScanline(int y, ScanlineCoverage c)
   {
     PaintContext pCtx = paintContext;
+    int x0 = c.getMinX();
+    int x1 = c.getMaxX();
     Raster paintRaster = pCtx.getRaster(x0, y, x1 - x0, 1);
+
+    // Do the anti aliasing thing.
+    float coverageAlpha = 0;
+    float maxCoverage = c.getMaxCoverage();
+    ColorModel cm = pCtx.getColorModel();
+    DataBuffer db = paintRaster.getDataBuffer();
+    Point loc = new Point(paintRaster.getMinX(), paintRaster.getMinY());
+    SampleModel sm = paintRaster.getSampleModel();
+    WritableRaster writeRaster = Raster.createWritableRaster(sm, db, loc);
+    WritableRaster alphaRaster = cm.getAlphaRaster(writeRaster);
+    int pixel;
+    ScanlineCoverage.Coverage start = c.iterate();
+    ScanlineCoverage.Coverage end = c.next();
+    assert (start != null);
+    assert (end != null);
+    do
+      {
+        coverageAlpha = coverageAlpha + (start.getCoverageDelta() / maxCoverage);
+        if (coverageAlpha < 1.0)
+          {
+            for (int x = start.getXPos(); x < end.getXPos(); x++)
+              {
+                pixel = alphaRaster.getSample(x, y, 0);
+                pixel = (int) (pixel * coverageAlpha);
+                alphaRaster.setSample(x, y, 0, pixel);
+              }
+          }
+        start = end;
+        end = c.next();
+      } while (end != null);
     ColorModel paintColorModel = pCtx.getColorModel();
     CompositeContext cCtx = composite.createContext(paintColorModel,
                                                     getColorModel(),
@@ -1914,8 +1948,4 @@ public abstract class AbstractGraphics2D
     return sc;
   }
 
-  protected void fillScanlineAA(int x0, int x1, int y, int alpha2)
-  {
-    System.err.println("override!");
-  }
 }
