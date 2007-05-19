@@ -1,3 +1,8 @@
+2007-05-19  Andreas Tobler  <a.tobler@schweiz.org>
+
+	PR libgcj/31659
+	* m4/ax_create_stdint_h.m4: Apply patch from PR31659.
+
 2007-05-18  Andreas Tobler  <a.tobler@schweiz.org>
 
 	* autogen.sh (have_libtool): Update comments for Darwin.
