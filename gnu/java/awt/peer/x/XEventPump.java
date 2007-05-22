@@ -241,6 +241,8 @@ public class XEventPump
       break;
     case KeyPress.CODE:
     case KeyRelease.CODE:
+      key = new Integer(((Input) xEvent).event_window_id);
+      awtWindow = (Window) windows.get(key);
       handleKeyEvent(xEvent, awtWindow);
       break;
     default:
