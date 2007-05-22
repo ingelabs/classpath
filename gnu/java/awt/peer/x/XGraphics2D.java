@@ -52,6 +52,7 @@ import java.awt.image.Raster;
 import java.util.HashMap;
 
 import gnu.java.awt.java2d.AbstractGraphics2D;
+import gnu.java.awt.java2d.ScanlineCoverage;
 import gnu.x11.Colormap;
 import gnu.x11.Drawable;
 import gnu.x11.GC;
@@ -216,6 +217,45 @@ public class XGraphics2D
       }
   }
 
+  public void renderScanline(int y, ScanlineCoverage c)
+  {
+    ScanlineCoverage.Coverage start = c.iterate();
+    ScanlineCoverage.Coverage end = c.next();
+    assert (start != null);
+    assert (end != null);
+    int coverageAlpha = 0;
+    int maxCoverage = c.getMaxCoverage();
+    Color old = getColor();
+    Color col = getColor();
+    if (col == null)
+      col = Color.BLACK;
+    do
+      {
+        // TODO: Dumb implementation for testing.
+        coverageAlpha = coverageAlpha + start.getCoverageDelta();
+        if (coverageAlpha > 0)
+          {
+            int red = col.getRed();
+            int green = col.getGreen();
+            int blue = col.getBlue();
+            if (coverageAlpha < c.getMaxCoverage())
+              {
+                float alpha = coverageAlpha / maxCoverage;
+                red = 255 - (int) ((255 - red) * alpha);
+                green = 255 - (int) ((255 - green) * alpha);
+                blue = 255 - (int) ((255 - blue) * alpha);
+              }
+            xgc.set_foreground(red << 16 | green << 8 | blue);
+            int x0 = start.getXPos();
+            int x1 = end.getXPos();
+            xdrawable.fill_rectangle(xgc, x0, y, x1 - x0, 1);
+          }
+        start = end;
+        end = c.next();
+      } while (end != null);
+    xgc.set_foreground(old.getRGB());
+  }
+
   protected void fillScanline(int x0, int x1, int y)
   {
     xdrawable.segment(xgc, x0, y, x1, y);
@@ -238,6 +278,7 @@ public class XGraphics2D
 
   public void setPaint(Paint p)
   {
+    super.setPaint(p);
     if (p instanceof Color)
       {
         Color c = (Color) p;

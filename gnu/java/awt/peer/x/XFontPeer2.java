@@ -206,7 +206,7 @@ public class XFontPeer2
     public int charWidth(char c)
     {
       int code = fontDelegate.getGlyphIndex(c);
-      Point2D advance = new Point2D.Double();
+      Point2D advance = cachedPoint;
       fontDelegate.getAdvance(code, font.getSize2D(), IDENDITY,
                               false, false, true, advance);
       return (int) advance.getX();
