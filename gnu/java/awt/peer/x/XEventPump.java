@@ -162,10 +162,15 @@ public class XEventPump
       awtWindow = (Window) windows.get(key);
       // Create and post the mouse event.
       int button = bp.detail();
+
+      // AWT cannot handle more than 3 buttons and expects 0 instead.
+      if (button >= gnu.x11.Input.BUTTON3)
+        button = 0;
       drag = button;
 
       MouseEvent mp = new MouseEvent(awtWindow, MouseEvent.MOUSE_PRESSED,
-                                     System.currentTimeMillis(), 0,
+                                     System.currentTimeMillis(),
+                                     KeyboardMapping.mapModifiers(bp.state()) | buttonToModifier(button),
                                      bp.event_x(), bp.event_y(),
                                      1, false, button);
       Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(mp);
@@ -174,11 +179,17 @@ public class XEventPump
       ButtonRelease br = (ButtonRelease) xEvent;
       key= new Integer(br.event_window_id);
       awtWindow = (Window) windows.get(key);
+
+      button = br.detail();
+      // AWT cannot handle more than 3 buttons and expects 0 instead.
+      if (button >= gnu.x11.Input.BUTTON3)
+        button = 0;
       drag = -1;
       MouseEvent mr = new MouseEvent(awtWindow, MouseEvent.MOUSE_RELEASED,
-                                     System.currentTimeMillis(), 0,
+                                     System.currentTimeMillis(),
+                                     KeyboardMapping.mapModifiers(br.state()) | buttonToModifier(button),
                                      br.event_x(), br.event_y(),
-                                     1, false, br.detail());
+                                     1, false, button);
       Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(mr);
       break;
     case MotionNotify.CODE:
@@ -297,6 +308,23 @@ public class XEventPump
 
   }
 
+  /** Translates an X button identifier to the AWT's MouseEvent modifier
+   *  mask. As the AWT cannot handle more than 3 buttons those return
+   *  <code>0</code>.
+   */
+  static int buttonToModifier(int button)
+  {
+    switch (button)
+    {
+      case gnu.x11.Input.BUTTON1:
+        return MouseEvent.BUTTON1_DOWN_MASK | MouseEvent.BUTTON1_MASK;
+      case gnu.x11.Input.BUTTON2:
+        return MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON2_MASK;
+      case gnu.x11.Input.BUTTON3:
+        return MouseEvent.BUTTON3_DOWN_MASK | MouseEvent.BUTTON3_MASK;
+    }
+
+    return 0;        
+  }
 
 }
-

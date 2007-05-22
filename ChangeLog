@@ -1,6 +1,15 @@
 2007-05-22  Robert Schuster  <robertschuster@fsfe.org>
 
         * gnu/java/awt/peer/x/XEventQueue.java:
+        (handleEvent): Calculate modifier value for mouse presse
+        and release events, clip button values.
+        (buttonToModifier): New method.
+        * gnu/java/awt/peer/x/KeyboardMapping.java:
+        (mapModifiers): Added cases for alt gr and the meta key.
+
+2007-05-22  Robert Schuster  <robertschuster@fsfe.org>
+
+        * gnu/java/awt/peer/x/XEventQueue.java:
         (handleEvent): Use Input.event_window_id for 
         key presses/releases.
 
