@@ -151,20 +151,19 @@ public class XEventPump
 
     Integer key = null;
     Window awtWindow = null;
-    if (xEvent instanceof Input)
-      {
-        key= new Integer(((Input) xEvent).child_window_id);
-        awtWindow = (Window) windows.get(key);
-      }
+
     if (XToolkit.DEBUG)
       System.err.println("fetched event: " + xEvent);
     switch (xEvent.code())
     {
     case ButtonPress.CODE:
       ButtonPress bp = (ButtonPress) xEvent;
+      key= new Integer(bp.event_window_id);
+      awtWindow = (Window) windows.get(key);
       // Create and post the mouse event.
       int button = bp.detail();
       drag = button;
+
       MouseEvent mp = new MouseEvent(awtWindow, MouseEvent.MOUSE_PRESSED,
                                      System.currentTimeMillis(), 0,
                                      bp.event_x(), bp.event_y(),
@@ -173,6 +172,8 @@ public class XEventPump
       break;
     case ButtonRelease.CODE:
       ButtonRelease br = (ButtonRelease) xEvent;
+      key= new Integer(br.event_window_id);
+      awtWindow = (Window) windows.get(key);
       drag = -1;
       MouseEvent mr = new MouseEvent(awtWindow, MouseEvent.MOUSE_RELEASED,
                                      System.currentTimeMillis(), 0,
@@ -182,6 +183,9 @@ public class XEventPump
       break;
     case MotionNotify.CODE:
       MotionNotify mn = (MotionNotify) xEvent;
+      key= new Integer(mn.event_window_id);
+      awtWindow = (Window) windows.get(key);
+
       MouseEvent mm;
       if (drag == -1)
         {

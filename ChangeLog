@@ -1,3 +1,9 @@
+2007-05-22  Robert Schuster  <robertschuster@fsfe.org>
+
+        * gnu/java/awt/peer/x/XEventQueue.java:
+        (handleEvent): Use Input.event_window_id instead of
+        Input.child_window_id for mouse & key presses/releases.
+
 2007-05-19  Andreas Tobler  <a.tobler@schweiz.org>
 
 	PR libgcj/31659
