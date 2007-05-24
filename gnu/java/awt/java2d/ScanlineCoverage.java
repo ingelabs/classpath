@@ -48,19 +48,200 @@ public final class ScanlineCoverage
 {
 
   /**
-   * One bucket in the list.
+   * Iterates over the coverage list and calculates the actual coverage
+   * ranges on a scanline.
    */
-  public static final class Coverage
+  public final class Iterator
   {
     /**
-     * The X coordinate on the scanline to which this bucket belongs.
+     * This instance is reused in the iteration.
+     */
+    private Range range;
+
+    /**
+     * The pointer to the current item in the iteration.
+     */
+    private Coverage currentItem;
+
+    /**
+     * The current coverage value.
+     */
+    private int currentCoverage;
+
+    /**
+     * Creates a new CoverageIterator.
+     */
+    Iterator()
+    {
+      range = new Range();
+    }
+
+    /**
+     * Returns the next coverage range on the scanline. The returned object
+     * will always be the same object, but with different values. Keep that
+     * in mind when dealing with this object.
+     *
+     * @return the next coverage range on the scanline
+     */
+    public Range next()
+    {
+      currentCoverage += currentItem.covDelta;
+      range.setCoverage(currentCoverage);
+      range.setXPos(currentItem.xPos);
+      currentItem = currentItem.next;
+      range.setLength(currentItem.xPos - range.xPos);
+      return range;
+    }
+
+    /**
+     * Returns {@ true} when there are more coverage ranges to iterate,
+     * {@ false} otherwise.
+     *
+     * @return {@ true} when there are more coverage ranges to iterate,
+     *         {@ false} otherwise
+     */
+    public boolean hasNext()
+    {
+      boolean hasNext;
+      if (currentItem == null || currentItem.next == null
+          || currentItem.next == last)
+        hasNext = false;
+      else
+        hasNext = true;
+      return hasNext;
+    }
+
+    /**
+     * Resets this iterator to the start of the list.
+     */
+    void reset()
+    {
+      currentItem = head;
+      currentCoverage = 0;
+    }
+  }
+
+  /**
+   * A data object that carries information about pixel coverage on a scanline.
+   * The data consists of a starting X position on the scanline, the
+   * length of the range in pixels and the actual coverage value.
+´  */
+  public static final class Range
+  {
+    /**
+     * The X position on the scanline, in pixels.
      */
     private int xPos;
 
     /**
+     * The length of the range, in pixels.
+     */
+    private int length;
+
+    /**
+     * The actual coverage. The relation depends on
+     * {@link ScanlineCoverage#maxCoverage}.
+     */
+    private int coverage;
+
+    /**
+     * Creates a new CoverageRange object.
+     */
+    Range()
+    {
+      // Nothing to do. The values get initialized in the corresponding
+      // setters.
+    }
+
+    /**
+     * Sets the X start position (left) on the scanline. This value is
+     * considered to be in pixels and device space.
+     *
+     * @param x the x position
+     */
+    void setXPos(int x)
+    {
+      xPos = x;
+    }
+
+    /**
+     * Returns the X start position (left) on the scanline. This value
+     * is considered to be in pixels and device space.
+     * 
+     * @return the X position on the scanline
+     */
+    public int getXPos()
+    {
+      return xPos;
+    }
+
+    /**
+     * Sets the length of the pixel range. This is in pixel units.
+     *
+     * @param l the length of the range
+     */
+    void setLength(int l)
+    {
+      length = l;
+    }
+
+    /**
+     * Returns the length of the range in pixel units.
+     *
+     * @return the length of the range in pixel units
+     */
+    public int getLength()
+    {
+      return length;
+    }
+
+    /**
+     * Returns the first X position after the range.
+     *
+     * @return the first X position after the range
+     */
+    public int getXPosEnd()
+    {
+      return xPos + length;
+    }
+
+    /**
+     * Sets the coverage of the pixel range. The relation of that value
+     * depends on {@link ScanlineCoverage#maxCoverage}.
+     *
+     * @param cov the coverage value for the pixel range
+     */
+    void setCoverage(int cov)
+    {
+      coverage = cov;
+    }
+
+    /**
+     * Returns the coverage of the pixel range. The relation of this value
+     * depends on {@link ScanlineCoverage#getMaxCoverage()}.
+     *
+     * @return the coverage of the pixel range
+     */
+    public int getCoverage()
+    {
+      return coverage;
+    }
+  }
+
+  /**
+   * One bucket in the list.
+   */
+  private static final class Coverage
+  {
+    /**
+     * The X coordinate on the scanline to which this bucket belongs.
+     */
+    int xPos;
+
+    /**
      * The X coverage delta.
      */
-    private int covDelta;
+    int covDelta;
 
     /**
      * Implements a linked list. This points to the next element of the list.
@@ -156,6 +337,19 @@ public final class ScanlineCoverage
    * The maximum coverage value.
    */
   private int maxCoverage;
+
+  /**
+   * The iterator over the ranges of this scanline.
+   */
+  private Iterator iterator;
+
+  /**
+   * Creates a new ScanlineCoverage instance.
+   */
+  public ScanlineCoverage()
+  {
+    iterator = new Iterator();
+  }
 
   /**
    * Indicates the the next scan of the scanline begins and that the next
@@ -359,36 +553,15 @@ public final class ScanlineCoverage
   }
 
   /**
-   * (Re-)Starts iterating the coverage entries by returning the first Coverage
-   * item in the list. Pixels left to that entry have a zero coverage.
+   * (Re-)Starts iterating the coverage values for the scanline.
+   * Use the returned iterator to get the consecutive coverage ranges.
    *
-   * @return the first coverage item
+   * @return the iterator
    */
-  public Coverage iterate()
+  public Iterator iterate()
   {
-    if (head == last)
-      current = null;
-    else
-      current = head;
-    currentPrev = null;
-    return current;
-  }
-
-  /**
-   * Returns the next coverage item in the list, according to the current
-   * iteration state.
-   *
-   * @return the next coverage item in the list or {@ null} if the end has
-   *         been reached
-   */
-  public Coverage next()
-  {
-    currentPrev = current;
-    if (current == null || current.next == last)
-      current = null;
-    else
-      current = current.next;
-    return current;
+    iterator.reset();
+    return iterator;
   }
 
   /**
@@ -400,115 +573,8 @@ public final class ScanlineCoverage
    */
   public boolean isEmpty()
   {
-    return head == null || head == last;
+    return head == null || head == last
+           || head.next == null || head.next == last;
   }
 
-  /**
-   * Performs some tests to check if this class is working correctly.
-   * There are comments about a bunch of test points in this method, which
-   * correspond to other points in this class as commented.
-   */
-  static void test()
-  {
-    System.out.println("ScanlineCoverage test 1");
-    // Test testpoint 1 & 2.
-    ScanlineCoverage c = new ScanlineCoverage();
-    c.add(2, 3);
-    c.add(3, 4);
-    c.add(4, 5);
-
-    Coverage cov = c.iterate();
-    assertion(cov.xPos == 2);
-    assertion(cov.covDelta == 3);
-    cov = c.next();
-    assertion(cov.xPos == 3);
-    assertion(cov.covDelta == 4);
-    cov = c.next();
-    assertion(cov.xPos == 4);
-    assertion(cov.covDelta == 5);
-    assertion(c.next() == null);
-    
-    System.out.println("ScanlineCoverage test 2");
-    // Test testpoint 3 and 4.
-    c.clear();
-    c.add(5, 4);
-    c.add(7, 5);
-    c.add(7, 10);
-    cov = c.iterate();
-    assertion(cov.xPos == 5);
-    assertion(cov.covDelta == 4);
-    cov = c.next();
-    assertion(cov.xPos == 7);
-    assertion(cov.covDelta == 15);
-    assertion(c.next() == null);
-
-    System.out.println("ScanlineCoverage test 3");
-    // Test testpoint 5.
-    c.rewind();
-    c.add(6, 20);
-    cov = c.iterate();
-    assertion(cov.xPos == 5);
-    assertion(cov.covDelta == 4);
-    cov = c.next();
-    assertion(cov.xPos == 6);
-    assertion(cov.covDelta == 20);
-    cov = c.next();
-    assertion(cov.xPos == 7);
-    assertion(cov.covDelta == 15);
-    assertion(c.next() == null);
-    
-    System.out.println("ScanlineCoverage test 4");
-    // Test testpoint 6.
-    c.rewind();
-    c.add(8, 21);
-    cov = c.iterate();
-    assertion(cov.xPos == 5);
-    assertion(cov.covDelta == 4);
-    cov = c.next();
-    assertion(cov.xPos == 6);
-    assertion(cov.covDelta == 20);
-    cov = c.next();
-    assertion(cov.xPos == 7);
-    assertion(cov.covDelta == 15);
-    cov = c.next();
-    assertion(cov.xPos == 8);
-    assertion(cov.covDelta == 21);
-    assertion(c.next() == null);
-    
-    System.out.println("ScanlineCoverage test 5");
-    // Test testpoint 6.
-    c.rewind();
-    c.add(2, 100);
-    cov = c.iterate();
-    assertion(cov.xPos == 2);
-    assertion(cov.covDelta == 100);
-    cov = c.next();
-    assertion(cov.xPos == 5);
-    assertion(cov.covDelta == 4);
-    cov = c.next();
-    assertion(cov.xPos == 6);
-    assertion(cov.covDelta == 20);
-    cov = c.next();
-    assertion(cov.xPos == 7);
-    assertion(cov.covDelta == 15);
-    cov = c.next();
-    assertion(cov.xPos == 8);
-    assertion(cov.covDelta == 21);
-    assertion(c.next() == null);
-    
-  }
-
-  /**
-   * Checks a condition and throws and AssertionError if this condition
-   * fails.
-   *
-   * @param b the condition
-   */
-  private static void assertion(boolean b)
-  {
-    if (! b)
-      {
-        throw new AssertionError();
-      }
-  }
 }

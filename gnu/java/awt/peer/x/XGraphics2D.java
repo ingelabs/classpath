@@ -219,20 +219,18 @@ public class XGraphics2D
 
   public void renderScanline(int y, ScanlineCoverage c)
   {
-    ScanlineCoverage.Coverage start = c.iterate();
-    ScanlineCoverage.Coverage end = c.next();
-    assert (start != null);
-    assert (end != null);
-    int coverageAlpha = 0;
+    ScanlineCoverage.Iterator iter = c.iterate();
+    float coverageAlpha = 0;
     int maxCoverage = c.getMaxCoverage();
     Color old = getColor();
     Color col = getColor();
     if (col == null)
       col = Color.BLACK;
-    do
+    while (iter.hasNext())
       {
+        ScanlineCoverage.Range range = iter.next();
         // TODO: Dumb implementation for testing.
-        coverageAlpha = coverageAlpha + start.getCoverageDelta();
+        coverageAlpha = range.getCoverage();
         if (coverageAlpha > 0)
           {
             int red = col.getRed();
@@ -246,13 +244,11 @@ public class XGraphics2D
                 blue = 255 - (int) ((255 - blue) * alpha);
               }
             xgc.set_foreground(red << 16 | green << 8 | blue);
-            int x0 = start.getXPos();
-            int x1 = end.getXPos();
-            xdrawable.fill_rectangle(xgc, x0, y, x1 - x0, 1);
+            int x0 = range.getXPos();
+            int l = range.getLength();
+            xdrawable.fill_rectangle(xgc, x0, y, l, 1);
           }
-        start = end;
-        end = c.next();
-      } while (end != null);
+      }
     xgc.set_foreground(old.getRGB());
   }
 

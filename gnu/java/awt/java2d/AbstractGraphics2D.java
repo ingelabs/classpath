@@ -1561,7 +1561,6 @@ public abstract class AbstractGraphics2D
         Object v = renderingHints.get(RenderingHints.KEY_ANTIALIASING);
         antialias = (v == RenderingHints.VALUE_ANTIALIAS_ON);
       }
-
     ScanlineConverter sc = getScanlineConverter();
     int resolution = 0;
     if (antialias)
@@ -1739,25 +1738,21 @@ public abstract class AbstractGraphics2D
     WritableRaster writeRaster = Raster.createWritableRaster(sm, db, loc);
     WritableRaster alphaRaster = cm.getAlphaRaster(writeRaster);
     int pixel;
-    ScanlineCoverage.Coverage start = c.iterate();
-    ScanlineCoverage.Coverage end = c.next();
-    assert (start != null);
-    assert (end != null);
-    do
+    ScanlineCoverage.Iterator iter = c.iterate();
+    while (iter.hasNext())
       {
-        coverageAlpha = coverageAlpha + (start.getCoverageDelta() / maxCoverage);
+        ScanlineCoverage.Range range = iter.next();
+        coverageAlpha = range.getCoverage() / maxCoverage;
         if (coverageAlpha < 1.0)
           {
-            for (int x = start.getXPos(); x < end.getXPos(); x++)
+            for (int x = range.getXPos(); x < range.getXPosEnd(); x++)
               {
                 pixel = alphaRaster.getSample(x, y, 0);
                 pixel = (int) (pixel * coverageAlpha);
                 alphaRaster.setSample(x, y, 0, pixel);
               }
           }
-        start = end;
-        end = c.next();
-      } while (end != null);
+      }
     ColorModel paintColorModel = pCtx.getColorModel();
     CompositeContext cCtx = composite.createContext(paintColorModel,
                                                     getColorModel(),

@@ -424,14 +424,4 @@ public final class ScanlineConverter
         edgePoolLast = edgePoolLast.poolNext;
       }
   }
-
-  /**
-   * Performs some tests.
-   *
-   * @param args
-   */
-  public static void main(String[] args)
-  {
-    ScanlineCoverage.test();
-  }
 }
