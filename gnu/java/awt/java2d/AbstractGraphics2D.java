@@ -1568,7 +1568,7 @@ public abstract class AbstractGraphics2D
         // Adjust resolution according to rendering hints.
         resolution = 2;
       }
-    sc.renderShape(this, s, clip, transform, resolution);
+    sc.renderShape(this, s, clip, transform, resolution, renderingHints);
   }
 
   /**

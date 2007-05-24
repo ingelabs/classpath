@@ -40,6 +40,7 @@ package gnu.java.awt.java2d;
 
 import gnu.java.math.Fixed;
 
+import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
@@ -54,6 +55,16 @@ public final class ScanlineConverter
    * The number of digits to use for fixed point arithmetics.
    */
   private static int FIXED_DIGITS = 6;
+
+  /**
+   * The fixed point constant for the number one.
+   */
+  private static int ONE = Fixed.fixedValue(FIXED_DIGITS, 1);
+
+  /**
+   * The number of significant bits for the Y resolution.
+   */
+  private static int Y_RESOLUTION = 4;
 
   /**
    * The actual number of scanlines.
@@ -133,9 +144,12 @@ public final class ScanlineConverter
    * @param clip the clip
    * @param trans the transform
    */
-  void renderShape(Pixelizer p, Shape shape, Shape clip,
-                   AffineTransform trans, int res)
+  public void renderShape(Pixelizer p, Shape shape, Shape clip,
+                          AffineTransform trans, int res, RenderingHints hints)
   {
+    // TODO: Do something useful with the rendering hints. Like, adjusting
+    // the resolution.
+
     // Prepare resolution and upper bounds.
     clear();
     setResolution(res);
@@ -242,6 +256,7 @@ public final class ScanlineConverter
   {
     // First, rewind the scanline coverage.
     scanlineCoverage.rewind();
+
     // We begin outside the clip and outside the shape. We only draw when
     // we are inside the clip AND inside the shape.
     boolean inClip = ! haveClip;
@@ -260,9 +275,13 @@ public final class ScanlineConverter
 
             int pix0 = Fixed.intValue(FIXED_DIGITS, x0);
             int pix1 = Fixed.intValue(FIXED_DIGITS, x1);
-            //System.err.println("render scanline AA: " + Fixed.floatValue(FIXED_DIGITS, y) + ", " + pix0 + ", " + pix1 + "(" + Fixed.floatValue(FIXED_DIGITS, x0) + ", " + Fixed.floatValue(FIXED_DIGITS, x1) +")")
-            scanlineCoverage.add(pix0, 1);
-            scanlineCoverage.add(pix1, -1);
+            int frac0 = ONE - Fixed.trunc(FIXED_DIGITS, x0);
+            int frac1 = ONE - Fixed.trunc(FIXED_DIGITS, x1);
+            // Only keep the first 4 digits after the point.
+            frac0 = frac0 >> (FIXED_DIGITS - Y_RESOLUTION);
+            frac1 = frac1 >> (FIXED_DIGITS - Y_RESOLUTION);
+            scanlineCoverage.add(pix0, 1 * (1 << Y_RESOLUTION), frac0);
+            scanlineCoverage.add(pix1, -1 * (1 << Y_RESOLUTION), -frac1);
           }
         if (edge.isClip)
           inClip = ! inClip;
@@ -293,7 +312,8 @@ public final class ScanlineConverter
     int one = Fixed.fixedValue(FIXED_DIGITS, 1);
     resolution = one / (scanlinesPerPixel);
     halfStep = resolution / 2;
-    scanlineCoverage.setMaxCoverage(scanlinesPerPixel);
+
+    scanlineCoverage.setMaxCoverage(scanlinesPerPixel << Y_RESOLUTION);
   }
 
   /**

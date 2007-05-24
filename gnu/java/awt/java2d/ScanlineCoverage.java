@@ -69,6 +69,12 @@ public final class ScanlineCoverage
     private int currentCoverage;
 
     /**
+     * True when the current pixel coverage has already been handled, false
+     * otherwise.
+     */
+    private boolean handledPixelCoverage;
+
+    /**
      * Creates a new CoverageIterator.
      */
     Iterator()
@@ -85,11 +91,26 @@ public final class ScanlineCoverage
      */
     public Range next()
     {
-      currentCoverage += currentItem.covDelta;
-      range.setCoverage(currentCoverage);
-      range.setXPos(currentItem.xPos);
-      currentItem = currentItem.next;
-      range.setLength(currentItem.xPos - range.xPos);
+      // TODO: Lump together the single-pixel coverage and the
+      // between-pixel coverage when the pixel coverage delta is 0.
+      if (handledPixelCoverage == false)
+        {
+          // Handle single pixel coverage.
+          range.setXPos(currentItem.xPos);
+          range.setLength(1);
+          range.setCoverage(currentCoverage + currentItem.pixelCoverage);
+          handledPixelCoverage = true;
+        }
+      else
+        {
+          // Handle pixel span coverage.
+          currentCoverage += currentItem.covDelta;
+          range.setCoverage(currentCoverage);
+          range.setXPos(currentItem.xPos + 1);
+          currentItem = currentItem.next;
+          range.setLength(currentItem.xPos - range.xPos);
+          handledPixelCoverage = false;
+        }
       return range;
     }
 
@@ -103,11 +124,21 @@ public final class ScanlineCoverage
     public boolean hasNext()
     {
       boolean hasNext;
-      if (currentItem == null || currentItem.next == null
+      if (currentItem != null && handledPixelCoverage == false)
+        {
+          // We have at least one more coverage item when there's a pixel
+          // coverage piece left.
+          hasNext = true;
+        }
+      else if (currentItem == null || currentItem.next == null
           || currentItem.next == last)
-        hasNext = false;
+        {
+          hasNext = false;
+        }
       else
-        hasNext = true;
+        {
+          hasNext = true;
+        }
       return hasNext;
     }
 
@@ -118,6 +149,7 @@ public final class ScanlineCoverage
     {
       currentItem = head;
       currentCoverage = 0;
+      handledPixelCoverage = false;
     }
   }
 
@@ -226,6 +258,15 @@ public final class ScanlineCoverage
     {
       return coverage;
     }
+
+    /**
+     * Returns a string representation.
+     */
+    public String toString()
+    {
+      return "Coverage range: xPos=" + xPos + ", length=" + length
+             + ", coverage: " + coverage;
+    }
   }
 
   /**
@@ -239,9 +280,15 @@ public final class ScanlineCoverage
     int xPos;
 
     /**
-     * The X coverage delta.
+     * The coverage delta from the pixel at xPos to xPos + 1.
      */
     int covDelta;
+
+    /**
+     * The delta for the pixel at xPos. This is added to the pixel at xPos,
+     * but not to the following pixel.
+     */
+    int pixelCoverage;
 
     /**
      * Implements a linked list. This points to the next element of the list.
@@ -385,10 +432,11 @@ public final class ScanlineCoverage
    * @param xc the x coverage
    * @param yc the y coverage
    */
-  public void add(int x, int xc)
+  public void add(int x, int xc, int yc)
   {
     Coverage bucket = findOrInsert(x);
     bucket.covDelta += xc;
+    bucket.pixelCoverage += yc;
     minX = Math.min(minX, x);
     maxX = Math.max(maxX, x);
   }
@@ -491,6 +539,7 @@ public final class ScanlineCoverage
         lastPrev = match;
         match.xPos = x;
         match.covDelta = 0;
+        match.pixelCoverage = 0;
         // Keep link to last element or null, indicating the end of the list.
         current = match;
         currentPrev = prev;
@@ -528,6 +577,7 @@ public final class ScanlineCoverage
         
         cov.xPos = x;
         cov.covDelta = 0;
+        cov.pixelCoverage = 0;
 
         // Insert this item in the list.
         if (prev != null)

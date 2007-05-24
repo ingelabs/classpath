@@ -1,5 +1,25 @@
 2007-05-24  Roman Kennke  <roman@kennke.org>
 
+	* gnu/java/awt/java2d/AbstractGraphics2D.java
+	(fillShape): Pass rendering hints to scanline converter.
+	* gnu/java/awt/java2d/ScanlineConverter.java
+	(ONE): New constant for the number 1 as fixed point number.
+	(Y_RESOLUTION): New constant for the Y resolution.
+	(doScanline): Handle the Y resolution.
+	(renderShape): Accept rendering hints.
+	(setResolution): Adjust maximum resolution with Y resolution.
+	* gnu/java/awt/java2d/ScanlineCoverage.java
+	(Iterator.handledPixelCoverage): New field.
+	(Iterator.next): Handle single pixel coverage.
+	(Iterator.hasNext): Handle single pixel coverage.
+	(Iterator.reset): Reset single pixel coverage.
+	(Range.toString): New method.
+	(Coverage.pixelCoverage): New field.
+	(add): Include Y (pixel) coverage.
+	(findOrInsert): Reset Y coverage in reused entries.
+
+2007-05-24  Roman Kennke  <roman@kennke.org>
+
 	* gnu/java/awt/java2d/ScanlineCoverage.java
 	(Iterator): New class.
 	(Range): New class.
