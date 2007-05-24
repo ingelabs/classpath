@@ -1582,6 +1582,8 @@ Java_gnu_java_nio_VMChannel_available (JNIEnv *env,
                                        jclass c __attribute__((unused)),
                                        jint fd)
 {
+#if defined (FIONREAD)
+
   jint avail = 0;
 
 /*   NIODBG("fd: %d", fd); */
@@ -1590,6 +1592,53 @@ Java_gnu_java_nio_VMChannel_available (JNIEnv *env,
 /*   NIODBG("avail: %d", avail); */
 
   return avail;
+
+#elif defined(HAVE_FSTAT)
+
+  jint avail = 0;
+
+  struct stat statBuffer;
+  off_t n;
+
+  if ((fstat (fd, &statBuffer) == 0) && S_ISREG (statBuffer.st_mode))
+    {
+      n = lseek (fd, 0, SEEK_CUR);
+      if (n != -1) 
+        { 
+	  avail = statBuffer.st_size - n;
+	  return avail;
+        } 
+    }
+  JCL_ThrowException (env, IO_EXCEPTION, strerror (errno));
+
+#elif defined(HAVE_SELECT)
+
+  jint avail = 0;
+  fd_set filedescriptset;
+  struct timeval tv;
+
+  FD_ZERO (&filedescriptset);
+  FD_SET (fd,&filedescriptset);
+  memset (&tv, 0, sizeof(tv));
+
+  switch (select (fd+1, &filedescriptset, NULL, NULL, &tv))
+    {
+      case -1:
+        break;
+      case  0:
+        avail = 0;
+	return avail;
+      default:
+        avail = 1;
+	return avail;
+    }
+  JCL_ThrowException (env, IO_EXCEPTION, strerror (errno));
+
+#else
+
+  JCL_ThrowException (env, IO_EXCEPTION, "No native method for available");
+
+#endif
 }
 
 

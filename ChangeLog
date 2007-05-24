@@ -1,3 +1,10 @@
+2007-05-24  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	* native/jni/java-nio/gnu_java_nio_VMChannel.c
+	(Java_gnu_java_nio_VMChannel_available): Use fstat or select as an
+	alternative to ioctl.
+	* native/jni/native-lib/cpio.c(cpio_availableBytes): Corrected typo.
+
 2007-05-24  Roman Kennke  <roman@kennke.org>
 
 	* gnu/java/math/Fixed.java
