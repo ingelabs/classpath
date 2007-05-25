@@ -94,12 +94,15 @@ public class XGraphics2D
 
   protected void rawDrawLine(int x0, int y0, int x1, int y1)
   {
-    xdrawable.segment(xgc, x0, y0, x1, y1);
+    int tx = (int) transform.getTranslateX();
+    int ty = (int) transform.getTranslateY();
+    xdrawable.segment(xgc, x0 + tx, y0 + ty, x1 + tx, y1 + ty);
   }
 
   protected void rawFillRect(int x, int y, int w, int h)
   {
-    xdrawable.rectangle(xgc, x, y, w, h, true);
+    xdrawable.rectangle(xgc, x + (int) transform.getTranslateX(),
+                             y + (int) transform.getTranslateY(), w, h, true);
   }
 
   /**
@@ -317,4 +320,7 @@ public class XGraphics2D
       }
     return ret;
   }
+
+
 }
+
