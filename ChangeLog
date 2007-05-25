@@ -1,3 +1,9 @@
+2007-05-25  Robert Schuster  <robertschuster@fsfe.org>
+
+        * gnu/java/awt/font/opentype/OpenTypeFont.java:
+        (getGlyphIndex): Call getGlyphCharMap() instead of
+        accessing cmap field directly.
+
 2007-05-24  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	* native/jni/java-nio/gnu_java_nio_VMChannel.c

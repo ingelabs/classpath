@@ -626,7 +626,7 @@ public final class OpenTypeFont
    */
   public int getGlyphIndex(int c)
   {
-    return cmap.getGlyph(c);
+    return getCharGlyphMap().getGlyph(c);
   }
 
   /**
