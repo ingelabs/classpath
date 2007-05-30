@@ -1,14 +1,21 @@
+2007-05-30  Mark Wielaard  <mark@klomp.org>
+
+	Fixes bug #32030 reported by Steve.Blackburn@anu.edu.au
+	* native/jni/java-nio/gnu_java_nio_VMChannel.c
+	(Java_gnu_java_nio_VMChannel_open): Only set O_TRUNC on CPNIO_APPEND
+	and O_WRONLY.
+
 2007-05-25  Robert Schuster  <robertschuster@fsfe.org>
 
-        * gnu/java/awt/peer/x/XGraphics2D.java:
-        (rawDrawLine): Added addition of translation.
-        (rawFillRect): Dito.
+	* gnu/java/awt/peer/x/XGraphics2D.java:
+	(rawDrawLine): Added addition of translation.
+	(rawFillRect): Dito.
 
 2007-05-25  Robert Schuster  <robertschuster@fsfe.org>
 
-        * gnu/java/awt/font/opentype/OpenTypeFont.java:
-        (getGlyphIndex): Call getGlyphCharMap() instead of
-        accessing cmap field directly.
+	* gnu/java/awt/font/opentype/OpenTypeFont.java:
+	(getGlyphIndex): Call getGlyphCharMap() instead of
+	accessing cmap field directly.
 
 2007-05-24  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 

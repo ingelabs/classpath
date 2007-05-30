@@ -1676,7 +1676,7 @@ Java_gnu_java_nio_VMChannel_open (JNIEnv *env,
   nmode = (nmode
            | ((nmode == O_RDWR || nmode == O_WRONLY) ? O_CREAT : 0)
            | ((mode & CPNIO_APPEND) ? O_APPEND :
-              ((nmode == O_RDWR || nmode == O_WRONLY) ? O_TRUNC : 0))
+              ((nmode == O_WRONLY) ? O_TRUNC : 0))
            | ((mode & CPNIO_EXCL) ? O_EXCL : 0)
            | ((mode & CPNIO_SYNC) ? O_SYNC : 0));
 
