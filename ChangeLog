@@ -2,8 +2,8 @@
 
 	Fixes bug #32030 reported by Steve.Blackburn@anu.edu.au
 	* native/jni/java-nio/gnu_java_nio_VMChannel.c
-	(Java_gnu_java_nio_VMChannel_open): Only set O_TRUNC on CPNIO_APPEND
-	and O_WRONLY.
+	(Java_gnu_java_nio_VMChannel_open): Only set O_TRUNC when
+	CPNIO_APPEND is not, but O_WRONLY is set.
 
 2007-05-25  Robert Schuster  <robertschuster@fsfe.org>
 
