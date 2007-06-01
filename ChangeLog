@@ -1,3 +1,9 @@
+2007-06-01  Robin Garner  <robin.garner@anu.edu.au>
+
+	Fixes #32162
+	* gnu/xml/dom/DomNode.java: Correct concurrency problem when deep
+	  cloning nodes.
+
 2007-05-30  Mark Wielaard  <mark@klomp.org>
 
 	Fixes bug #32030 reported by Steve.Blackburn@anu.edu.au
