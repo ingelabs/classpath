@@ -1,3 +1,7 @@
+2007-07-10  Dalibor Topic  <robilad@kaffe.org>
+
+	* configure.ac (FOUND_CACAO): Removed.
+
 2007-06-01  Robin Garner  <robin.garner@anu.edu.au>
 
 	Fixes #32162

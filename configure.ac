@@ -268,7 +268,6 @@ AC_ARG_WITH([vm],
 	    ])
 
 AC_SUBST(VM_BINARY)
-AM_CONDITIONAL(FOUND_CACAO, test "x`basename $VM_BINARY`" = xcacao)
 
 dnl -----------------------------------------------------------
 dnl Regenerate headers at build time (disabled by default)
