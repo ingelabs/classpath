@@ -1,5 +1,18 @@
 2007-06-21  Jeroen Frijters  <jeroen@frijters.net>
 
+	* gnu/java/net/loader/URLLoader.java
+	(URLLoader(URLClassLoader,URLStreamHandlerCache,
+	URLStreamHandlerFactory,URL,URL)): Disabiguate CodeSource constructor
+	invocation.
+	* java/awt/AWTKeyStroke.java
+	(LinkedHashMap.removeEldestEntry): Use Map.Entry to fix compile
+	error when compiled against OpenJDK java.util package.
+	* java/awt/AlphaComposite.java
+	(LinkedHashMap.removeEldestEntry): Use Map.Entry to fix compile
+	error when compiled against OpenJDK java.util package.
+
+2007-06-21  Jeroen Frijters  <jeroen@frijters.net>
+
 	* gnu/java/security/Engine.java
 	(getInstance(String,String,Provider,Object[]): Use correctly cased
 	property name.
