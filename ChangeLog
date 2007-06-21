@@ -1,5 +1,12 @@
 2007-06-21  Jeroen Frijters  <jeroen@frijters.net>
 
+	Fixes #32356
+	* java/lang/reflect/Array.java
+	(newInstance(Class,int[])): Call createMultiArray correctly.
+	(createMultiArray): Fixed dimensions processing order.
+
+2007-06-21  Jeroen Frijters  <jeroen@frijters.net>
+
 	* gnu/java/net/loader/URLLoader.java
 	(URLLoader(URLClassLoader,URLStreamHandlerCache,
 	URLStreamHandlerFactory,URL,URL)): Disabiguate CodeSource constructor
