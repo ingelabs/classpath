@@ -1,5 +1,10 @@
 2007-06-21  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/io/ObjectStreamClass.java (getClassUID): Return 0L for
+	enums and proxies.
+
+2007-06-21  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/net/URLClassLoader.java
 	(URLClassLoader(URL[],ClassLoader,URLStreamHandlerFactory):
 	Add factory to cache before calling addURLS.
