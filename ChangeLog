@@ -1,3 +1,12 @@
+2007-06-21  Roman Kennke  <roman@kennke.org>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoGraphics2D.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphicsCopy.c,
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkFileDialogPeer.c:
+	Fix some type signatures.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphicsEnvironment.c:
+	Fix intendation.
+
 2007-06-21  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/io/ObjectStreamClass.java (getClassUID): Return 0L for

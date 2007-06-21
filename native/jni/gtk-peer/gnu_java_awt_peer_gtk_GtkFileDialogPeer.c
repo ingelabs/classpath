@@ -90,7 +90,7 @@ cp_gtk_filedialog_init_jni (void)
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_create 
-  (JNIEnv *env, jobject obj, jobject parent, int mode)
+  (JNIEnv *env, jobject obj, jobject parent, jint mode)
 {
   void *parentp;
   gpointer widget;

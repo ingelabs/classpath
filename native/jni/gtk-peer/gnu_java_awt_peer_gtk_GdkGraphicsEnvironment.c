@@ -207,15 +207,12 @@ Java_gnu_java_awt_peer_gtk_GdkGraphicsEnvironment_nativeGetDefaultScreenDevice
     gdkScreenGraphicsDevice_ctor = (*env)->GetMethodID 
     (env, gdkScreenGraphicsDevice_class, "<init>",
      "(Lgnu/java/awt/peer/gtk/GdkGraphicsEnvironment;)V");
-    
     gdkScreenGraphicsDevice_init = (*env)->GetMethodID 
     (env, gdkScreenGraphicsDevice_class, "init", "()V");
     
     /* Create the GdkScreenGraphicsDevice instance. */
-    defaultDevice = (*env)->NewObject (env, 
-									   gdkScreenGraphicsDevice_class,
-									   gdkScreenGraphicsDevice_ctor,
-									   obj);
+    defaultDevice = (*env)->NewObject(env, gdkScreenGraphicsDevice_class,
+                                      gdkScreenGraphicsDevice_ctor, obj);
 									   
     gdk_threads_enter();
 	

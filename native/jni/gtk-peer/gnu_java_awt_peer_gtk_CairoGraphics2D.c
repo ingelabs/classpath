@@ -507,7 +507,7 @@ Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoSetFillRule
 JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_CairoGraphics2D_cairoSetLine
 (JNIEnv *env __attribute__((unused)), jobject obj __attribute__((unused)),
- jlong pointer, jdouble width, int cap, int join, double miterLimit)
+ jlong pointer, jdouble width, jint cap, jint join, jdouble miterLimit)
 {
   struct cairographics2d *gr = JLONG_TO_PTR(struct cairographics2d, pointer);
   g_assert (gr != NULL);
