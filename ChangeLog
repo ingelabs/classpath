@@ -1,3 +1,9 @@
+2007-06-21  Jeroen Frijters  <jeroen@frijters.net>
+
+	* gnu/java/security/Engine.java
+	(getInstance(String,String,Provider,Object[]): Use correctly cased
+	property name.
+
 2007-07-19  Keith Seitz  <keiths@redhat.com>
 
 	* classpath/gnu/classpath/jdwp/value/StringValue.java
