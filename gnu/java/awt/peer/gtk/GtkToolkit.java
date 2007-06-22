@@ -745,4 +745,17 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
 
   public native int getMouseNumberOfButtons();
 
+  @Override
+  public boolean isModalExclusionTypeSupported
+  (Dialog.ModalExclusionType modalExclusionType)
+  {
+    return false;
+  }
+
+  @Override
+  public boolean isModalityTypeSupported(Dialog.ModalityType modalityType)
+  {
+    return false;
+  }
+
 } // class GtkToolkit

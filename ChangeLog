@@ -1,3 +1,75 @@
+2007-06-22  Roman Kennke  <roman@kennke.org>
+
+	* sun/awt/CausedFocusEvent.java: New class. Needed for compatibility
+	in java.awt.peer.
+	* java/awt/Dialog.java
+	(ModalExclusionType): New enum.
+	(ModalityType): New enum.
+	* java/awt/Toolkit.java
+	(isModalExclusionTypeSupported): New abstract method.
+	(isModalityTypeSupported): New abstract method.
+	* java/awt/peer/ComponentPeer.java
+	(requestFocus): New method.
+	* java/awt/peer/FramePeer.java
+	(getBoundsPrivate): New method.
+	* java/awt/peer/RobotPeer.java
+	(dispose): New method.
+	* java/awt/peer/WindowPeer.java
+	(setAlwaysOnTop): New method.
+	(updateFocusableWindowState): New method.
+	(setModalBlocked): New method.
+	(updateMinimumSize): New method.
+	(updateIconImages): New method.
+	* gnu/java/awt/peer/GLightweightPeer.java
+	(requestFocus): New method.
+	* gnu/java/awt/peer/gtk/GdkRobotPeer.java
+	(dispose): New method.
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
+	(requestFocus): New method.
+	* gnu/java/awt/peer/gtk/GtkFramePeer.java
+	(getBoundsPrivate): New method.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java
+	(isModalExclusionTypeSupported): New method.
+	(isModalityTypeSupported): New method.
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java
+	(updateIconImages): New method.
+	(updateMinimumSize): New method.
+	(setModalBlocked): New method.
+	(updateFocusableWindowState): New method.
+	(setAlwaysOnTop): New method.
+	* gnu/java/awt/peer/headless/HeadlessToolkit.java
+	(isModalExclusionTypeSupported): New method.
+	(isModalityTypeSupported): New method.
+	* gnu/java/awt/peer/qt/QtComponentPeer.java
+	(requestFocus): New method.
+	* gnu/java/awt/peer/qt/QtFramePeer.java
+	(getBoundsPrivate): New method.
+	* gnu/java/awt/peer/qt/QtToolkit.java
+	(isModalExclusionTypeSupported): New method.
+	(isModalityTypeSupported): New method.
+	* gnu/java/awt/peer/qt/QtWindowPeer.java
+	(updateIconImages): New method.
+	(updateMinimumSize): New method.
+	(setModalBlocked): New method.
+	(updateFocusableWindowState): New method.
+	(setAlwaysOnTop): New method.
+	* gnu/java/awt/peer/swing/SwingComponentPeer.java
+	(requestFocus): New method.
+	* gnu/java/awt/peer/swing/SwingToolkit.java
+	(isModalExclusionTypeSupported): New method.
+	(isModalityTypeSupported): New method.
+	* gnu/java/awt/peer/swing/SwingWindowPeer.java
+	(updateIconImages): New method.
+	(updateMinimumSize): New method.
+	(setModalBlocked): New method.
+	(updateFocusableWindowState): New method.
+	(setAlwaysOnTop): New method.
+	* gnu/java/awt/peer/x/XFramePeer.java
+	(getBoundsPrivate): New method.
+	* gnu/java/awt/peer/x/XToolkit.java
+	(isModalExclusionTypeSupported): New method.
+	(isModalityTypeSupported): New method.
+
 2007-06-21  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* tools/Makefile.am:

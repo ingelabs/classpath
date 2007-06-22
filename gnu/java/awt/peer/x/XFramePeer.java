@@ -137,4 +137,11 @@ public class XFramePeer
     throw new UnsupportedOperationException("Not yet implemented.");
   }
 
+  @Override
+  public Rectangle getBoundsPrivate()
+  {
+    // TODO: Implement this properly.
+    throw new InternalError("Not yet implemented");
+  }
+
 }

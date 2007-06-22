@@ -65,16 +65,48 @@ public class QtWindowPeer extends QtContainerPeer implements WindowPeer
    */
   public native void setTitle(String title);
 
+  @Override
   public void updateAlwaysOnTop()
   {
     // TODO Auto-generated method stub
     
   }
 
+  @Override
   public boolean requestWindowFocus()
   {
     // TODO Auto-generated method stub
     return false;
+  }
+
+  @Override
+  public void updateIconImages()
+  {
+    // TODO: Implement properly.
+  }
+
+  @Override
+  public void updateMinimumSize()
+  {
+    // TODO: Implement properly.
+  }
+
+  @Override
+  public void setModalBlocked(java.awt.Dialog d, boolean b)
+  {
+    // TODO: Implement properly.
+  }
+
+  @Override
+  public void updateFocusableWindowState()
+  {
+    // TODO: Implement properly.
+  }
+
+  @Override
+  public void setAlwaysOnTop(boolean b)
+  {
+    // TODO: Implement properly.
   }
 
 }

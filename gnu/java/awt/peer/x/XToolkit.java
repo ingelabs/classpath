@@ -68,6 +68,8 @@ import java.awt.TextArea;
 import java.awt.TextField;
 import java.awt.Transparency;
 import java.awt.Window;
+import java.awt.Dialog.ModalExclusionType;
+import java.awt.Dialog.ModalityType;
 import java.awt.datatransfer.Clipboard;
 import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.peer.DragSourceContextPeer;
@@ -598,5 +600,21 @@ public class XToolkit
       XGraphicsEnvironment.getLocalGraphicsEnvironment();
     return (XGraphicsDevice) env.getDefaultScreenDevice();
   }
+
+  @Override
+  public boolean isModalExclusionTypeSupported
+                 (Dialog.ModalExclusionType modalExclusionType)
+  {
+    // TODO: Implement properly.
+    return false;
+  }
+
+  @Override
+  public boolean isModalityTypeSupported(Dialog.ModalityType modalityType)
+  {
+    // TODO: Implement properly.
+    return false;
+  }
+
 
 }

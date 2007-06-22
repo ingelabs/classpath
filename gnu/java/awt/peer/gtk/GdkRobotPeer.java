@@ -91,4 +91,10 @@ public class GdkRobotPeer implements RobotPeer
 
     return pixels;
   }
+
+  @Override
+  public void dispose()
+  {
+    // Nothing to do here yet.
+  }
 }

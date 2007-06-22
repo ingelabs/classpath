@@ -1,5 +1,5 @@
-/* SwingWindowPeer.java -- An abstract base for Swing based window peers
-   Copyright (C)  2006  Free Software Foundation, Inc.
+/* CausedFocusEvent.java -- A special focus event for peers.
+   Copyright (C) 2007  Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -35,70 +35,55 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package gnu.java.awt.peer.swing;
+package sun.awt;
 
-import java.awt.Window;
-import java.awt.peer.ComponentPeer;
-import java.awt.peer.WindowPeer;
+import java.awt.Component;
+import java.awt.event.FocusEvent;
 
 /**
- * An abstract base class for Swing based WindowPeer implementation. Concrete
- * implementations of WindowPeers should subclass this class in order to get
- * the correct behaviour.
- *
- * As a minimum, a subclass must implement all the remaining abstract methods
- * as well as the following methods:
- * <ul>
- * <li>{@link ComponentPeer#getLocationOnScreen()}</li>
- * <li>{@link ComponentPeer#getGraphics()}</li>
- * <li>{@link ComponentPeer#createImage(int, int)}</li>
- * </ul>
- *
- * @author Roman Kennke (kennke@aicas.com)
+ * Special FocusEvent for peers. This has additional knowledge about the
+ * cause of the focus change.
  */
-public abstract class SwingWindowPeer
-  extends SwingContainerPeer
-  implements WindowPeer
+public class CausedFocusEvent
+extends FocusEvent
 {
 
+  public enum Cause
+  {
+    UNKNOWN,
+    MOUSE_EVENT,
+    TRAVERSAL,
+    TRAVERSAL_UP,
+    TRAVERSAL_DOWN,
+    TRAVERSAL_FORWARD,
+    TRAVERSAL_BACKWARD,
+    MANUAL_REQUEST,
+    AUTOMATIC_TRAVERSE,
+    ROLLBACK,
+    NATIVE_SYSTEM,
+    ACTIVATION,
+    CLEAR_GLOBAL_FOCUS_OWNER,
+    RETARGETED
+  }
+
   /**
-   * Creates a new instance of WindowPeer.
-   *
-   * @param window the AWT window
+   * The cause of the focus change.
    */
-  public SwingWindowPeer(Window window)
+  private Cause cause;
+
+  public CausedFocusEvent(Component c, int id, boolean temporary,
+                          Component opposite, Cause cause)
   {
-    super(window);
-    init(window, null);
+    super(c, id, temporary, opposite);
+    if (cause == null)
+      {
+        cause = Cause.UNKNOWN;
+      }
+    this.cause = cause;
   }
 
-  @Override
-  public void updateIconImages()
+  public Cause getCause()
   {
-    // TODO: Implement properly.
-  }
-
-  @Override
-  public void updateMinimumSize()
-  {
-    // TODO: Implement properly.
-  }
-
-  @Override
-  public void setModalBlocked(java.awt.Dialog d, boolean b)
-  {
-    // TODO: Implement properly.
-  }
-
-  @Override
-  public void updateFocusableWindowState()
-  {
-    // TODO: Implement properly.
-  }
-
-  @Override
-  public void setAlwaysOnTop(boolean b)
-  {
-    // TODO: Implement properly.
+    return cause;
   }
 }
