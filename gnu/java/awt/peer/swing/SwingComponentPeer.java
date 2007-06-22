@@ -1126,7 +1126,6 @@ public class SwingComponentPeer
     return awtComponent;
   }
 
-  @Override
   public boolean requestFocus(Component lightweightChild, boolean temporary,
                               boolean focusedWindowChangeAllowed,
                               long time, sun.awt.CausedFocusEvent.Cause cause)

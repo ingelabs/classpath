@@ -822,7 +822,6 @@ public class QtComponentPeer extends NativeWrapper implements ComponentPeer
     // TODO Auto-generated method stub
   }
 
-  @Override
   public boolean requestFocus(Component lightweightChild, boolean temporary,
                               boolean focusedWindowChangeAllowed,
                               long time, sun.awt.CausedFocusEvent.Cause cause)

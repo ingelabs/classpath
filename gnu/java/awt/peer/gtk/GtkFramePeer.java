@@ -245,7 +245,6 @@ public class GtkFramePeer extends GtkWindowPeer
     return false;
   }
 
-  @Override
   public Rectangle getBoundsPrivate()
   {
     // TODO: Implement this properly.

@@ -72,31 +72,26 @@ public abstract class SwingWindowPeer
     init(window, null);
   }
 
-  @Override
   public void updateIconImages()
   {
     // TODO: Implement properly.
   }
 
-  @Override
   public void updateMinimumSize()
   {
     // TODO: Implement properly.
   }
 
-  @Override
   public void setModalBlocked(java.awt.Dialog d, boolean b)
   {
     // TODO: Implement properly.
   }
 
-  @Override
   public void updateFocusableWindowState()
   {
     // TODO: Implement properly.
   }
 
-  @Override
   public void setAlwaysOnTop(boolean b)
   {
     // TODO: Implement properly.

@@ -900,7 +900,6 @@ public class GtkComponentPeer extends GtkGenericPeer
  
   }
 
-  @Override
   public boolean requestFocus(Component lightweightChild, boolean temporary,
                               boolean focusedWindowChangeAllowed,
                               long time, sun.awt.CausedFocusEvent.Cause cause)
