@@ -1,3 +1,10 @@
+2007-06-24  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	Fixes bug #30377
+	* native/jni/java-nio/gnu_java_nio_VMChannel.c
+	(Java_gnu_java_nio_VMChannel_available): Retry using fstat if ioctl
+	fails with ENOTTY.
+
 2007-06-22  Tania Bento  <tbento@redhat.com>
 
 	* java/util/Currency.java:  

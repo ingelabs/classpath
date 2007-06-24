@@ -1586,9 +1586,30 @@ Java_gnu_java_nio_VMChannel_available (JNIEnv *env,
 
   jint avail = 0;
 
+#if defined(ENOTTY) && defined(HAVE_FSTAT)
+  struct stat statBuffer;
+  off_t n;
+#endif
+
 /*   NIODBG("fd: %d", fd); */
   if (ioctl (fd, FIONREAD, &avail) == -1)
-    JCL_ThrowException (env, IO_EXCEPTION, strerror (errno));
+    {
+#if defined(ENOTTY) && defined(HAVE_FSTAT)
+      if (errno == ENOTTY)
+        {
+          if ((fstat (fd, &statBuffer) == 0) && S_ISREG (statBuffer.st_mode))
+            {
+              n = lseek (fd, 0, SEEK_CUR);
+              if (n != -1)
+                {
+                  avail = statBuffer.st_size - n;
+                  return avail;
+                }
+            }
+        }
+#endif
+      JCL_ThrowException (env, IO_EXCEPTION, strerror (errno));
+    }
 /*   NIODBG("avail: %d", avail); */
 
   return avail;
