@@ -589,6 +589,17 @@ if test "x${COMPILE_JNI}" = xyes; then
     	      [Define this symbol if you have SO_NOSIGPIPE]) ],
   [ AC_MSG_RESULT(no)]
  )
+  dnl **********************************************************************
+  dnl Check for MSG_WAITALL
+  dnl **********************************************************************
+  AC_MSG_CHECKING(for MSG_WAITALL)
+  AC_TRY_COMPILE([#include <sys/socket.h>],
+   [ int f = MSG_WAITALL; ],
+   [ AC_MSG_RESULT(yes)
+     AC_DEFINE(HAVE_MSG_WAITALL, 1,
+     	       [Define this symbol if you have MSG_WAITALL]) ],
+   [ AC_MSG_RESULT(no)]
+  )
 
   dnl Check for plugin support headers and libraries.
   if test "x${COMPILE_PLUGIN}" = xyes; then

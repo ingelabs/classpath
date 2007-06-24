@@ -1,3 +1,12 @@
+2007-06-25  Dalibor Topic  <robilad@kaffe.org>
+
+	* configure.ac: Check for MSG_WAITALL, since it does not exist on
+	Cygwin.
+
+	* native/jni/java-nio/gnu_java_nio_VMChannel.c 
+	(Java_gnu_java_nio_VMChannel_receive): Define MSG_WAITALL as 0 if 
+	it does not exist.
+
 2007-06-24  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	Fixes bug #30377

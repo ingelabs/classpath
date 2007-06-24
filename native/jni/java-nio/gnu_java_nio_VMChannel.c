@@ -771,6 +771,10 @@ Java_gnu_java_nio_VMChannel_receive (JNIEnv *env,
   if (JCL_init_buffer (env, &buf, dst) == -1)
     JCL_ThrowException (env, IO_EXCEPTION, "loading buffer failed");
 
+#ifndef HAVE_MSG_WAITALL
+#define MSG_WAITALL       0
+#endif
+
   ret = cpnio_recvfrom (fd, &(buf.ptr[buf.position + buf.offset]),
                         buf.limit - buf.position, MSG_WAITALL,
                         sockaddr, &slen);
