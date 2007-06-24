@@ -444,11 +444,7 @@ dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_CHECK_JAVAC],
 [
   if test "x$1" != x; then
-    if test -f "$1"; then
-      JAVAC="$1"
-    else
-      AC_PATH_PROG(JAVAC, "$1")
-    fi
+    JAVAC="$1"
   else
     AC_PATH_PROG(JAVAC, "javac")
   fi

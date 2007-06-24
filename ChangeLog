@@ -1,5 +1,11 @@
 2007-06-25  Dalibor Topic  <robilad@kaffe.org>
 
+	* m4/acinclude.m4 (CLASSPATH_CHECK_JAVAC): If the user passes an
+	explicit argument to configure, just use it, and don't attempt to
+	run AC_CHECK_PROG. This makes --with-javac="javac -J-Xmx512M" work.
+
+2007-06-25  Dalibor Topic  <robilad@kaffe.org>
+
 	* configure.ac: Check for MSG_WAITALL, since it does not exist on
 	Cygwin.
 
