@@ -361,7 +361,7 @@ public class GdkFontPeer extends ClasspathFontPeer
     return NameDecoder.getName(nameTable, name, locale);
   }
 
-  public boolean canDisplay (Font font, char c)
+  public boolean canDisplay (Font font, int c)
   {
     // FIXME: inquire with pango
     return true;

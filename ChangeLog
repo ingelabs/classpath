@@ -1,3 +1,42 @@
+2007-06-25  Roman Kennke  <roman@kennke.org>
+
+	* gnu/java/awt/peer/ClasspathFontPeer.java
+	(canDisplay): Take character as integer codepoint.
+	* gnu/java/awt/peer/gtk/GdkFontPeer.java
+	(canDisplay): Take character as integer codepoint.
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
+	(postMouseEvent): Use MouseEvent constructor with absolute coordinates
+	to avoid deadlock (over getLocationOnScreen()).
+	* gnu/java/awt/peer/gtk/VolatileImageGraphics.java
+	(getDeviceConfiguration): Fall back to the default configuration
+	if the component is not set.
+	* gnu/java/awt/peer/qt/QtFontMetrics.java
+	(canDisplay): Take character as integer codepoint.
+	* gnu/java/awt/peer/qt/QtFontPeer.java
+	(canDisplay): Take character as integer codepoint.
+	* gnu/java/awt/peer/x/XFontPeer2.java
+	(canDisplay): Take character as integer codepoint.
+	* include/gnu_java_awt_peer_qt_QtFontMetrics.h
+	(canDisplay): Take character as integer codepoint.
+	* java/awt/Font.java
+	(DIALOG): New constant.
+	(DIALOG_INPUT): New constant.
+	(MONOSPACED): New constant.
+	(SANS_SERIF): New constant.
+	(SERIF): New constant.
+	(Font(Font)): New constructor.
+	(canDisplay(char)): Use new canDisplay(int) method.
+	(canDisplay(int)): New method.
+	(hasLayoutAttributes): New method.
+	* java/awt/event/MouseEvent.java
+	(absX,absY): New fields.
+	(MouseEvent): New constructor with absolute coordinates.
+	(getLocationOnScreen): New method.
+	(getXOnScreen): New method.
+	(getYOnScreen): New method.
+	* native/jni/qt-peer/qtfontmetrics.cpp
+	(canDisplay): Take character as integer codepoint.
+
 2007-06-25  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/native-lib/cpnet.c
@@ -74,7 +113,7 @@
 
 	* gnu/java/awt/peer/GLightweightPeer.java
 	* gnu/java/awt/peer/gtk/GdkRobotPeer.java
-	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
+	* gnu/java/awt/peer/gtk/GtkCompoonentPeer.java
 	* gnu/java/awt/peer/gtk/GtkFramePeer.java
 	* gnu/java/awt/peer/gtk/GtkWindowPeer.java
 	* gnu/java/awt/peer/qt/QtComponentPeer.java

@@ -270,7 +270,7 @@ public class XFontPeer2
       }
   }
 
-  public boolean canDisplay(Font font, char c)
+  public boolean canDisplay(Font font, int c)
   {
     // FIXME: Implement this.
     throw new UnsupportedOperationException("Not yet implemented");

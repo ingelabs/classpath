@@ -616,11 +616,18 @@ public class GtkComponentPeer extends GtkGenericPeer
     setVisible (true);
   }
 
-  protected void postMouseEvent(int id, long when, int mods, int x, int y, 
+  protected void postMouseEvent(int id, long when, int mods, int x, int y,
                                 int clickCount, boolean popupTrigger) 
   {
-    q().postEvent(new MouseEvent(awtComponent, id, when, mods, x, y, 
-                                 clickCount, popupTrigger));
+    // It is important to do the getLocationOnScreen() here, instead
+    // of using the old MouseEvent constructors, because
+    // Component.getLocationOnScreen() locks on the AWT lock, which can
+    // trigger a deadlock. You don't want this.
+    Point locOnScreen = getLocationOnScreen();
+    q().postEvent(new MouseEvent(awtComponent, id, when, mods, x, y,
+                                 locOnScreen.x + x, locOnScreen.y + y,
+                                 clickCount, popupTrigger,
+                                 MouseEvent.NOBUTTON));
   }
 
   /**
