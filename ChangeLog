@@ -1,5 +1,42 @@
 2007-06-25  Dalibor Topic  <robilad@kaffe.org>
 
+	* native/jni/java-net/gnu_java_net_VMPlainSocketImpl.c
+	(THROW_NO_IPV6): New macro.
+	(Java_gnu_java_net_VMPlainSocketImpl_bind6) Conditionally
+	build code if IPv6 facilities are available, otherwise
+	throw an error.
+	(Java_gnu_java_net_VMPlainSocketImpl_setMulticastInterface6, 
+	Java_gnu_java_net_VMPlainSocketImpl_join6,
+	Java_gnu_java_net_VMPlainSocketImpl_leave6,
+	Java_gnu_java_net_VMPlainSocketImpl_joinGroup6,
+	Java_gnu_java_net_VMPlainSocketImpl_leaveGroup6)
+	Use THROW_NO_IPV6.
+
+	* native/jni/java-net/java_net_VMInetAddress.c
+	(Java_java_net_VMInetAddress_getHostByAddr,
+	Java_java_net_VMInetAddress_getHostByName,
+	Java_java_net_VMInetAddress_aton) Build IPv6 dependant
+	code conditionally on IPv6 facilities being available.
+	Switched if-else blocks where necessary to allow that.
+
+	* native/jni/java-net/javanet.c
+	(_javanet_get_ip_netaddr) Build IPv6 dependant code conditionally 
+	on IPv6 facilities being available.
+
+	* native/jni/native-lib/cpnet.c
+	(cpnet_getHostByName, cpnet_getHostByAddr) Build IPv6 dependant 
+	code conditionally on IPv6 facilities being available.
+	(cpnet_aton) Moved variable declaration of inet6_addr to the scope
+	of its use. Build IPv6 dependant code conditionally 
+        on IPv6 facilities being available.
+
+	* native/jni/native-lib/cpnet.h (cpnet_newIPV6Address, 
+	cpnet_isIPV6Address, cpnet_IPV6AddressToBytes, 
+	cpnet_bytesToIPV6Address): Make IPv6 dependant utility functions 
+	available conditionally on IPv6 facilities being available.
+
+2007-06-25  Dalibor Topic  <robilad@kaffe.org>
+
 	* m4/acinclude.m4 (CLASSPATH_CHECK_JAVAC): If the user passes an
 	explicit argument to configure, just use it, and don't attempt to
 	run AC_CHECK_PROG. This makes --with-javac="javac -J-Xmx512M" work.
