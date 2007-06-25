@@ -767,6 +767,10 @@ jint cpnet_aton (JNIEnv *env, const char *hostname, cpnet_address **addr)
 {
   jbyte *bytes = NULL;
 
+#if defined(HAVE_INET_PTON) && defined(HAVE_INET6)
+  jbyte inet6_addr[16];
+#endif
+
 #ifdef HAVE_INET_ATON
   struct in_addr laddr;
   if (inet_aton (hostname, &laddr))
@@ -793,8 +797,6 @@ jint cpnet_aton (JNIEnv *env, const char *hostname, cpnet_address **addr)
 #if defined(HAVE_INET_PTON) && defined(HAVE_INET6)
   if (inet_pton (AF_INET6, hostname, inet6_addr) > 0)
     {
-      jbyte inet6_addr[16];
-
       *addr = cpnet_newIPV6Address(env);
       cpnet_bytesToIPV6Address(*addr, inet6_addr);
       return 0;

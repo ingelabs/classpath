@@ -1,3 +1,9 @@
+2007-06-25  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/native-lib/cpnet.c
+	(cpnet_aton) Moved variable declaration of inet6_addr so it is
+	actually in the scope of its use.
+
 2007-06-25  Dalibor Topic  <robilad@kaffe.org>
 
 	* native/jni/java-net/gnu_java_net_VMPlainSocketImpl.c
@@ -28,7 +34,7 @@
 	code conditionally on IPv6 facilities being available.
 	(cpnet_aton) Moved variable declaration of inet6_addr to the scope
 	of its use. Build IPv6 dependant code conditionally 
-        on IPv6 facilities being available.
+	on IPv6 facilities being available.
 
 	* native/jni/native-lib/cpnet.h (cpnet_newIPV6Address, 
 	cpnet_isIPV6Address, cpnet_IPV6AddressToBytes, 
