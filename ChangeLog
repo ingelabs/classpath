@@ -1,3 +1,7 @@
+2007-06-28  Tom Tromey  <tromey@redhat.com>
+
+	* include/jni.h: Fixed local variables.
+
 2007-06-26  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	* ChangeLog: Correction of a bug fix number.

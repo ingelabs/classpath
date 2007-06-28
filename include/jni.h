@@ -1,5 +1,5 @@
 /* jni.h
-   Copyright (C) 1998, 1999, 2000, 2001, 2002, 2004, 2005, 2006  Free Software Foundation
+   Copyright (C) 1998, 1999, 2000, 2001, 2002, 2004, 2005, 2006, 2007  Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -1640,13 +1640,15 @@ typedef struct JDK1_1AttachArgs
 
 
 /* Keep c-font-lock-extra-types in alphabetical order. */
-/* Local Variables: */
-/* c-font-lock-extra-types: ("\\sw+_t" 
-   "JNIEnv" "JNINativeMethod" "JavaVM" "JavaVMOption" "jarray"
-   "jboolean" "jbooleanArray" "jbyte" "jbyteArray" "jchar"  "jcharArray" 
-   "jclass" "jdouble" "jdoubleArray" "jfieldID" "jfloat" "jfloatArray"
-   "jint" "jintArray" "jlong" "jlongArray" "jmethodID" "jobject" "jstring" "jthrowable" 
-   "jvalue" "jweak") */
-/* End: */
+/*
+Local Variables:
+c-font-lock-extra-types: ("\\sw+_t" \
+   "JNIEnv" "JNINativeMethod" "JavaVM" "JavaVMOption" "jarray" \
+   "jboolean" "jbooleanArray" "jbyte" "jbyteArray" "jchar"  "jcharArray" \
+   "jclass" "jdouble" "jdoubleArray" "jfieldID" "jfloat" "jfloatArray" \
+   "jint" "jintArray" "jlong" "jlongArray" "jmethodID" "jobject" \
+   "jstring" "jthrowable" "jvalue" "jweak")
+End:
+*/
 
 #endif /* _CLASSPATH_JNI_H */
