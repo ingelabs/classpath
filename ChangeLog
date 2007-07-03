@@ -1,3 +1,9 @@
+2007-07-03  Tania Bento  <tbento@redhat.com>
+
+	* java/lang/Integer.java:
+	(parseInt(String,int,boolean)): Throw NumberFormatException if 
+	String is just "+".
+
 2007-07-01  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/transform/WithParam.java: Handle case where content is
