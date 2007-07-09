@@ -1,3 +1,10 @@
+2007-07-09  Chris Burdess  <dog@gnu.org>
+
+	Fixes #32672
+	* gnu/xml/dom/DomElement.java,
+	* gnu/xml/dom/DomNamedNodeMap.java: don't check owner in
+	  setNamedNode when cloning.
+
 2007-07-08  Mario Torre  <neugens@limasoftware.net>
 
 	* gnu/javax/sound/sampled/gstreamer: new package hierarchy.
