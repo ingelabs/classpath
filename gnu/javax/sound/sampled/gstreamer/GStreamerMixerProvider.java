@@ -1,5 +1,5 @@
-/* Mixer API
-   Copyright (C) 2005 Free Software Foundation, Inc.
+/*GStreamerMixerProvider -- GNU Classpath GStreamer Mixer provider.
+ Copyright (C) 2007 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -35,52 +35,37 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-
-package javax.sound.sampled.spi;
+package gnu.javax.sound.sampled.gstreamer;
 
 import javax.sound.sampled.Mixer;
+import javax.sound.sampled.Mixer.Info;
+import javax.sound.sampled.spi.MixerProvider;
 
 /**
- * This abstract class defines an interface to mixer providers.
- * Concrete subclasses will implement the methods in this class.
- * @since 1.3
+ * Concrete provider class for GStreamerMixer.
+ * 
+ * @author Mario Torre
  */
-public abstract class MixerProvider
+public class GStreamerMixerProvider
+    extends MixerProvider
 {
-  /**
-   * Create a new mixer provider.
-   */
-  public MixerProvider()
+  private static final GStreamerMixer mixer = new GStreamerMixer(); 
+  
+  @Override
+  public Mixer getMixer(Info info)
   {
+    if (info.equals(mixer.getMixerInfo())) 
+      return mixer;
+    
+    throw new
+      IllegalArgumentException("This provider cannot handle a mixer or type: "
+                               + info.getName());
   }
 
-  /**
-   * Return a mixer that matches the given info object.
-   * @param info description of the mixer to match
-   * @return the mixer
-   * @throws IllegalArgumentException if no mixer matches the description
-   */
-  public abstract Mixer getMixer(Mixer.Info info);
-
-  /**
-   * Return an array of info objects describing all the mixers provided by
-   * this provider.
-   */
-  public abstract Mixer.Info[] getMixerInfo();
-
-  /**
-   * Return true if a mixer matching the provided description is supported.
-   * @param info description of the mixer to match
-   * @return true if it is supported by this provider
-   */
-  public boolean isMixerSupported(Mixer.Info info)
+  @Override
+  public Info[] getMixerInfo()
   {
-    Mixer.Info[] infos = getMixerInfo();
-    for (int i = 0; i < infos.length; ++i)
-      {
-        if (info.equals(infos[i]))
-          return true;
-      }
-    return false;
+    Info[] info = { mixer.getMixerInfo() };
+    return info;
   }
 }

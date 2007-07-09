@@ -1,5 +1,5 @@
-/* Mixer API
-   Copyright (C) 2005 Free Software Foundation, Inc.
+/*GstAudioFileWriter -- GNU Classpath GStreamer AudioFileReader.
+ Copyright (C) 2007 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -34,53 +34,47 @@ or based on this library.  If you modify this library, you may extend
 this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
+package gnu.javax.sound.sampled.gstreamer.io;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 
-package javax.sound.sampled.spi;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioFileFormat.Type;
+import javax.sound.sampled.spi.AudioFileWriter;
 
-import javax.sound.sampled.Mixer;
-
-/**
- * This abstract class defines an interface to mixer providers.
- * Concrete subclasses will implement the methods in this class.
- * @since 1.3
- */
-public abstract class MixerProvider
+public class GstAudioFileWriter
+    extends AudioFileWriter
 {
-  /**
-   * Create a new mixer provider.
-   */
-  public MixerProvider()
+  @Override
+  public Type[] getAudioFileTypes()
   {
+    // TODO Auto-generated method stub
+    return null;
   }
 
-  /**
-   * Return a mixer that matches the given info object.
-   * @param info description of the mixer to match
-   * @return the mixer
-   * @throws IllegalArgumentException if no mixer matches the description
-   */
-  public abstract Mixer getMixer(Mixer.Info info);
-
-  /**
-   * Return an array of info objects describing all the mixers provided by
-   * this provider.
-   */
-  public abstract Mixer.Info[] getMixerInfo();
-
-  /**
-   * Return true if a mixer matching the provided description is supported.
-   * @param info description of the mixer to match
-   * @return true if it is supported by this provider
-   */
-  public boolean isMixerSupported(Mixer.Info info)
+  @Override
+  public Type[] getAudioFileTypes(AudioInputStream ais)
   {
-    Mixer.Info[] infos = getMixerInfo();
-    for (int i = 0; i < infos.length; ++i)
-      {
-        if (info.equals(infos[i]))
-          return true;
-      }
-    return false;
+    // TODO Auto-generated method stub
+    return null;
   }
+
+  @Override
+  public int write(AudioInputStream ais, Type type, File out)
+      throws IOException
+  {
+    // TODO Auto-generated method stub
+    return 0;
+  }
+
+  @Override
+  public int write(AudioInputStream ais, Type type, OutputStream os)
+      throws IOException
+  {
+    // TODO Auto-generated method stub
+    return 0;
+  }
+
 }

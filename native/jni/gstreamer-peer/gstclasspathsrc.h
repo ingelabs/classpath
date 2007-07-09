@@ -1,5 +1,5 @@
-/* Mixer API
-   Copyright (C) 2005 Free Software Foundation, Inc.
+/*gstclasspathsrc.h - Header file for the GstClasspathPlugin
+ Copyright (C) 2007 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -35,52 +35,54 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+#ifndef __GST_CLASSPATH_SRC_H__
+#define __GST_CLASSPATH_SRC_H__
 
-package javax.sound.sampled.spi;
+#include <gst/gst.h>
+#include <gst/base/gstpushsrc.h>
 
-import javax.sound.sampled.Mixer;
+#include "gstinputstream.h"
 
-/**
- * This abstract class defines an interface to mixer providers.
- * Concrete subclasses will implement the methods in this class.
- * @since 1.3
- */
-public abstract class MixerProvider
+G_BEGIN_DECLS
+
+/* #defines don't like whitespacey bits */
+#define GST_TYPE_CLASSPATH_SRC (gst_classpath_src_get_type())
+
+#define GST_CLASSPATH_SRC(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj),GST_TYPE_CLASSPATH_SRC,GstClasspathSrc))
+  
+#define GST_CLASSPATH_SRC_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST((klass),GST_TYPE_CLASSPATH_SRC,GstClasspathSrcClass))
+  
+#define GST_IS_CLASSPATH_SRC(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj),GST_TYPE_CLASSPATH_SRC))
+  
+#define GST_IS_CLASSPATH_SRC_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE((klass),GST_TYPE_CLASSPATH_SRC))
+  
+typedef struct _GstClasspathSrc GstClasspathSrc;
+typedef struct _GstClasspathSrcClass GstClasspathSrcClass;
+
+struct _GstClasspathSrc
 {
-  /**
-   * Create a new mixer provider.
-   */
-  public MixerProvider()
-  {
-  }
+  GstPushSrc element;
+  
+  /* TODO: move in a private structure */
+  GstInputStream *istream;
+  int read_position;
+};
 
-  /**
-   * Return a mixer that matches the given info object.
-   * @param info description of the mixer to match
-   * @return the mixer
-   * @throws IllegalArgumentException if no mixer matches the description
-   */
-  public abstract Mixer getMixer(Mixer.Info info);
+struct _GstClasspathSrcClass
+{
+  GstPushSrcClass parent_class;
+};
 
-  /**
-   * Return an array of info objects describing all the mixers provided by
-   * this provider.
-   */
-  public abstract Mixer.Info[] getMixerInfo();
+GType gst_classpath_src_get_type (void);
 
-  /**
-   * Return true if a mixer matching the provided description is supported.
-   * @param info description of the mixer to match
-   * @return true if it is supported by this provider
-   */
-  public boolean isMixerSupported(Mixer.Info info)
-  {
-    Mixer.Info[] infos = getMixerInfo();
-    for (int i = 0; i < infos.length; ++i)
-      {
-        if (info.equals(infos[i]))
-          return true;
-      }
-    return false;
-  }
-}
+/* exported properties */
+
+#define GST_CLASSPATH_SRC_ISTREAM "input-stream"
+
+G_END_DECLS
+
+#endif /* __GST_CLASSPATH_SRC_H__ */

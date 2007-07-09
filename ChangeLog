@@ -1,3 +1,47 @@
+2007-07-08  Mario Torre  <neugens@limasoftware.net>
+
+	* gnu/javax/sound/sampled/gstreamer: new package hierarchy.
+	* gnu/javax/sound/sampled/gstreamer/io/GstAudioFileReader.java: new file.
+	* gnu/javax/sound/sampled/gstreamer/io/GstAudioFileReaderNativePeer.java:
+	likewise.
+	* gnu/javax/sound/sampled/gstreamer/lines/GstDataLine.java: likewise.
+	* gnu/javax/sound/sampled/gstreamer/GStreamerMixer.java: likewise.
+	* gnu/javax/sound/sampled/gstreamer/GStreamerMixerProvider.java: likewise.
+	* gnu/javax/sound/AudioSecurityManager.java: likewise. 
+	* gnu/javax/sound/sampled/gstreamer/lines/GstNativeDataLine.java: likewise.
+	* gnu/javax/sound/sampled/gstreamer/lines/GstSourceDataLine.java: likewise.
+	* gnu/javax/sound/sampled/gstreamer/lines/GstPipeline.java: likewise.
+	* gnu/javax/sound/sampled/gstreamer/io/GstAudioFileWriter.java: likewise. 
+	* resource/META-INF/services/javax.sound.sampled.spi.AudioFileReader.in:
+	likewise.
+	* resource/META-INF/services/javax.sound.sampled.spi.MixerProvider.in:
+	likewise.
+	* resource/META-INF/services/javax.sound.sampled.spi.MixerProvider:
+	likewise.
+	* native/jni/gstreamer-peer/gstclasspathsrc.c: likewise.
+	* native/jni/gstreamer-peer/gstclasspathsrc.h: likewise.
+	* native/jni/gstreamer-peer/gstinputstream.c: likewise.
+	* native/jni/gstreamer-peer/gstinputstream.h: likewise.
+	* native/jni/gstreamer-peer/GStreamerIOPeer.c: likewise.
+	* native/jni/gstreamer-peer/Makefile.am: likewise.
+	* native/jni/gstreamer-peer/.cvsignore: likewise.
+	* include/gnu_javax_sound_sampled_gstreamer_io_GstAudioFileReaderNativePeer.h:
+	likewise.
+	* include/Makefile.am: add gstreamer generated headers.
+	* configure.ac: add gstreamer sound backend configuration.
+	The backend is currently disabled by default.
+	* native/jni/Makefile.am: code to allow compilation of the gstreamer
+	sound backend.
+	* javax/sound/sampled/spi/MixerProvider.java (isMixerSupported):
+	indentation fixes.
+	* javax/sound/sampled/AudioFormat.java (toString): fix method to display
+	informations only when available.
+	* javax/sound/sampled/DataLine.java:
+	(Info.isFormatSupported):  indentation fixes.
+	(Info):  indentation fixes.
+	(Info.toString):  indentation fixes.
+	(Info.matches):  indentation fixes.
+
 2007-07-03  Tania Bento  <tbento@redhat.com>
 
 	* java/lang/Integer.java:
