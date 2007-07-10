@@ -108,10 +108,10 @@ Java_gnu_java_awt_peer_gtk_ComponentGraphicsCopy_copyPixbuf
   gdk_threads_enter();
 
   ptr = gtkpeer_get_widget (env, peer);
-  g_assert (widget != NULL);
+  g_assert (ptr != NULL);
 
   widget = GTK_WIDGET (ptr);
-  g_assert (ptr != NULL);
+  g_assert (widget != NULL);
 
   cp_gtk_grab_current_drawable (widget, &drawable, &win);
   g_assert (drawable != NULL);
