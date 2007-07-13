@@ -1,3 +1,26 @@
+2007-07-13  Roman Kennke  <roman@kennke.org>
+
+	* gnu/java/awt/peer/x/PixmapVolatileImage.java: New class.
+	* gnu/java/awt/peer/x/XGraphicsConfiguration.java
+	(createCompatibleImage(int,int)): Delegate to the 3-int overload.
+	(createCompatibleImage(int,int,int)): Implemented. Using
+	the ZPixmapDataBuffer for OPAQUE images.
+	(createCompatibleVolatileImage(int,int)): Delegate to the 3-int
+	overload.
+	(createCompatibleVolatileImage(int,int,int)): Implemented. Using
+	PixmapVolatileImage.
+	* gnu/java/awt/peer/x/XWindowPeer.java
+	(createImage): Return a PixmapVolatileImage (for now).
+	(createVolatileImage): Implemented, using PixmapVolatileImage.
+	* gnu/java/awt/peer/x/ZPixmapDataBuffer.java
+	New class.
+
+2007-07-10  Roman Kennke  <roman@kennke.org>
+
+	PR 32645
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphicsCopy.c
+	(copyPixbuf): Swap asserts.
+
 2007-07-09  Chris Burdess  <dog@gnu.org>
 
 	Fixes #32672

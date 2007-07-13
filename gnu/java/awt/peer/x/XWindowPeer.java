@@ -43,12 +43,16 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.PaintEvent;
 import java.awt.event.WindowEvent;
+import java.awt.image.VolatileImage;
 
 import gnu.x11.Window;
 import gnu.x11.event.Event;
@@ -140,7 +144,17 @@ public class XWindowPeer
 
   public Image createImage(int w, int h)
   {
-    return new XImage(w, h);
+    // FIXME: Should return a buffered image.
+    return createVolatileImage(w, h);
+  }
+
+  @Override
+  public VolatileImage createVolatileImage(int width, int height)
+  {
+    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    GraphicsDevice gd = ge.getDefaultScreenDevice();
+    GraphicsConfiguration gc = gd.getDefaultConfiguration();
+    return gc.createCompatibleVolatileImage(width, height);
   }
 
   /**
