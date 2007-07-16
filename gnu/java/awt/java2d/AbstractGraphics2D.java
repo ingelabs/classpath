@@ -914,8 +914,8 @@ public abstract class AbstractGraphics2D
   {
     // Initialize clip if not already present.
     if (clip == null)
-      clip = s;
-    
+      setClip(s);
+
     // This is so common, let's optimize this. 
     else if (clip instanceof Rectangle && s instanceof Rectangle)
       {
@@ -1157,7 +1157,9 @@ public abstract class AbstractGraphics2D
   {
     if (isOptimized)
       {
-        rawDrawLine(x1, y1, x2, y2);
+        int tx = (int) transform.getTranslateX();
+        int ty = (int) transform.getTranslateY();
+        rawDrawLine(x1 + tx, y1 + ty, x2 + tx, y2 + ty);
       }
     else
       {
@@ -1197,7 +1199,8 @@ public abstract class AbstractGraphics2D
   {
     if (isOptimized)
       {
-        rawFillRect(x, y, width, height);
+        rawFillRect(x + (int) transform.getTranslateX(),
+                    y + (int) transform.getTranslateY(), width, height);
       }
     else
       {
@@ -1390,7 +1393,10 @@ public abstract class AbstractGraphics2D
   {
     boolean ret;
     if (isOptimized)
-      ret = rawDrawImage(image, x, y, observer);
+      {
+        ret = rawDrawImage(image, x + (int) transform.getTranslateX(),
+                           y + (int) transform.getTranslateY(), observer);
+      }
     else
       {
         AffineTransform t = new AffineTransform();

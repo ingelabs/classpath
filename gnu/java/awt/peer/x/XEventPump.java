@@ -97,8 +97,9 @@ public class XEventPump
     display = d;
     windows = new HashMap();
     drag = -1;
-    Thread t = new Thread(this);
-    t.start();
+    Thread thread = new Thread(this, "X Event Pump");
+    thread.setDaemon(true);
+    thread.start();
   }
 
   /**

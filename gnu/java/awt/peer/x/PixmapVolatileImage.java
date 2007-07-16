@@ -173,4 +173,13 @@ class PixmapVolatileImage
     return getWidth();
   }
 
+  /**
+   * Returns the underlying X pixmap. This is used for the graphics code.
+   *
+   * @return the underlying X pixmap
+   */
+  Pixmap getPixmap()
+  {
+    return pixmap;
+  }
 }

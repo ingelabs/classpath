@@ -1,5 +1,23 @@
 2007-07-13  Roman Kennke  <roman@kennke.org>
 
+	* gnu/java/awt/java2d/AbstractGraphics2D.java
+	(clip(Shape)): Call setClip when the clip changes.
+	(drawImage): Add translation.
+	(drawLine): Add translation.
+	* gnu/java/awt/peer/x/PixmapVolatileImage.java
+	(getPixmap): New method.
+	* gnu/java/awt/peer/x/XEventPump.java
+	(XEventPump): Name thread. Start as daemon thread.
+	* gnu/java/awt/peer/x/XGraphics2D.java
+	(rawDrawImage): Special handling for PixmapVolatileImage.
+	(rawDrawLine): Don't add translation here. This is done in
+	the superclass.
+	(rawFillRect): Don't add translation here. This is done in
+	the superclass.
+	(renderScanline): Added null check.
+
+2007-07-13  Roman Kennke  <roman@kennke.org>
+
 	* gnu/java/awt/peer/x/PixmapVolatileImage.java: New class.
 	* gnu/java/awt/peer/x/XGraphicsConfiguration.java
 	(createCompatibleImage(int,int)): Delegate to the 3-int overload.

@@ -94,15 +94,12 @@ public class XGraphics2D
 
   protected void rawDrawLine(int x0, int y0, int x1, int y1)
   {
-    int tx = (int) transform.getTranslateX();
-    int ty = (int) transform.getTranslateY();
-    xdrawable.segment(xgc, x0 + tx, y0 + ty, x1 + tx, y1 + ty);
+    xdrawable.segment(xgc, x0, y0, x1, y1);
   }
 
   protected void rawFillRect(int x, int y, int w, int h)
   {
-    xdrawable.rectangle(xgc, x + (int) transform.getTranslateX(),
-                             y + (int) transform.getTranslateY(), w, h, true);
+    xdrawable.rectangle(xgc, x, y, w, h, true);
   }
 
   /**
@@ -252,7 +249,8 @@ public class XGraphics2D
             xdrawable.fill_rectangle(xgc, x0, y, l, 1);
           }
       }
-    xgc.set_foreground(old.getRGB());
+    if (old != null)
+      xgc.set_foreground(old.getRGB());
   }
 
   protected void fillScanline(int x0, int x1, int y)
@@ -312,6 +310,13 @@ public class XGraphics2D
         XImage xImage = (XImage) image;
         xdrawable.copy_area(xImage.pixmap, xgc, 0, 0, xImage.getWidth(obs),
                             xImage.getHeight(obs), x, y);
+        ret = true;
+      }
+    else if (image instanceof PixmapVolatileImage)
+      {
+        PixmapVolatileImage pvi = (PixmapVolatileImage) image;
+        xdrawable.copy_area(pvi.getPixmap(), xgc, 0, 0, pvi.getWidth(obs),
+                            pvi.getHeight(obs), x, y);
         ret = true;
       }
     else
