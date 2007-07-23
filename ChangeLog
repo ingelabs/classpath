@@ -1,5 +1,10 @@
 2007-07-23  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
+	* gnu/java/nio/charset/ISO_8859_1.java: Added ISO8859-1 to
+	aliases.
+
+2007-07-23  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
 	* vm/reference/sun/misc/Unsafe.java (unpark): Changed signature to
 	be compatible with OpenJDK.
 
