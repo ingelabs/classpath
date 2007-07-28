@@ -1,3 +1,7 @@
+2007-07-28  Matthias Klose  <doko@ubuntu.com>
+
+	* include/jvmti.h (jniNativeInterface): Rename type.
+
 2007-07-28  Chris Burdess  <dog@gnu.org>
 
 	PR 32539
