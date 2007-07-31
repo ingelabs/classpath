@@ -324,11 +324,11 @@ public class Main
     while (i.hasNext())
       {
 	Map.Entry e = (Map.Entry) i.next();
-	File filename = (File) e.getKey();
+	File file = (File) e.getKey();
         ClassWrapper klass = (ClassWrapper) e.getValue();
         if (verbose)
-          System.err.println("[writing " + klass + " as " + filename + "]");
-        printer.printClass(filename, klass);
+          System.err.println("[writing " + klass + " as " + file + "]");
+        printer.printClass(file, klass);
       }
   }
 

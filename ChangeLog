@@ -1,3 +1,12 @@
+2007-07-31  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* tools/gnu/classpath/tools/javah/Main.java (writeHeaders):
+	Renamed filename to file.
+	* tools/gnu/classpath/tools/javah/CniIncludePrinter.java
+	(printClass): Likewise.
+	* tools/gnu/classpath/tools/javah/JniIncludePrinter.java
+	(printClass): Replace '$' with '_' in filename.
+
 2007-07-31  Dalibor Topic  <robilad@kaffe.org>
 
 	PR 32844
