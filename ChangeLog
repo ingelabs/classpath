@@ -1,5 +1,9 @@
 2007-08-15  Tom Tromey  <tromey@redhat.com>
 
+	* java/util/LinkedHashSet.java (LinkedHashSet): Fix typo.
+
+2007-08-15  Tom Tromey  <tromey@redhat.com>
+
 	* java/lang/Class.java (internalGetFields): Use LinkedHashSet.
 
 2007-08-08  Mario Torre  <neugens@limasoftware.net>
