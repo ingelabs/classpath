@@ -1,4 +1,4 @@
-/* GstNativeDataLine.java -- SourceDataLine implementation.
+/*gst_peer.c - Common utility functions for the native peer.
  Copyright (C) 2007 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -35,43 +35,49 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package gnu.javax.sound.sampled.gstreamer.lines;
+#include <glib.h>
 
-import gnu.classpath.Pointer;
+#include <jni.h>
+#include "jcl.h"
 
-import javax.sound.sampled.LineUnavailableException;
+#include "gst_peer.h"
 
-public class GstNativeDataLine
-{ 
-  public static final GstPipeline createSourcePipeline(int bufferSize)
-    throws LineUnavailableException
-  {
-    GstPipeline pipeline = new GstPipeline(bufferSize);
- 
-    pipeline.createForWrite();
-    
-    if (!setup_sink_pipeline(pipeline.getNativeClass()))
-      throw new LineUnavailableException("Line unavailable");
-    
-    return pipeline;
-  }
+JNIEnv *gst_get_jenv (JavaVM *vm)
+{
+  void *env = NULL;
   
-  /* native methods */
+  if ((*vm)->GetEnv(vm, &env, JNI_VERSION_1_2) != JNI_OK)
+    {
+      if ((*vm)->AttachCurrentThreadAsDaemon(vm, &env, NULL) < 0)
+        {
+          g_warning ("GstNativePipeline:- env not attached");
+          return NULL;
+        }
+    }
   
-  /**
-   * Initialize the native peer and enables the object cache.
-   * It is meant to be used by the static initializer.
-   */
-  native static final private void init_id_cache();
+  return (JNIEnv *) env;
+}
 
-  /**
-   * Setup a new GStreamer Pipeline
-   */
-  native static final private boolean setup_sink_pipeline(Pointer pipeline);
+void *
+get_object_from_pointer (JNIEnv *env, jobject pointer, jfieldID pointerDataFID)
+{
+  void *_object = NULL;
+  
+  if (env == NULL)
+    return NULL;
+    
+  if ((*env)->IsSameObject(env, pointer, NULL) == JNI_TRUE)
+    return NULL;
+  
+#if SIZEOF_VOID_P == 8
+  _object = (void *) (*env)->GetLongField(env, pointer, pointerDataFID);
+#else
+# if SIZEOF_VOID_P == 4
+  _object = (void *) (*env)->GetIntField(env, pointer, pointerDataFID);
+# else
+#   error "Pointer size is not supported."
+# endif /* SIZEOF_VOID_P == 4 */
+#endif /* SIZEOF_VOID_P == 8 */
 
-  static
-  {
-    System.loadLibrary("gstreamerpeer"); //$NON-NLS-1$
-    init_id_cache();
-  }
+  return _object;
 }

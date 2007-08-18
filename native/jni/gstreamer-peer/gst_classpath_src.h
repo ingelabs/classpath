@@ -1,4 +1,4 @@
-/* GstNativeDataLine.java -- SourceDataLine implementation.
+/*gstclasspathsrc.h - Header file for the GstClasspathPlugin
  Copyright (C) 2007 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -35,43 +35,54 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package gnu.javax.sound.sampled.gstreamer.lines;
+#ifndef __GST_CLASSPATH_SRC_H__
+#define __GST_CLASSPATH_SRC_H__
 
-import gnu.classpath.Pointer;
+#include <gst/gst.h>
+#include <gst/base/gstpushsrc.h>
 
-import javax.sound.sampled.LineUnavailableException;
+#include "gst_input_stream.h"
 
-public class GstNativeDataLine
-{ 
-  public static final GstPipeline createSourcePipeline(int bufferSize)
-    throws LineUnavailableException
-  {
-    GstPipeline pipeline = new GstPipeline(bufferSize);
- 
-    pipeline.createForWrite();
-    
-    if (!setup_sink_pipeline(pipeline.getNativeClass()))
-      throw new LineUnavailableException("Line unavailable");
-    
-    return pipeline;
-  }
+G_BEGIN_DECLS
+
+/* #defines don't like whitespacey bits */
+#define GST_TYPE_CLASSPATH_SRC (gst_classpath_src_get_type())
+
+#define GST_CLASSPATH_SRC(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj),GST_TYPE_CLASSPATH_SRC,GstClasspathSrc))
   
-  /* native methods */
+#define GST_CLASSPATH_SRC_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST((klass),GST_TYPE_CLASSPATH_SRC,GstClasspathSrcClass))
   
-  /**
-   * Initialize the native peer and enables the object cache.
-   * It is meant to be used by the static initializer.
-   */
-  native static final private void init_id_cache();
+#define GST_IS_CLASSPATH_SRC(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj),GST_TYPE_CLASSPATH_SRC))
+  
+#define GST_IS_CLASSPATH_SRC_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE((klass),GST_TYPE_CLASSPATH_SRC))
 
-  /**
-   * Setup a new GStreamer Pipeline
-   */
-  native static final private boolean setup_sink_pipeline(Pointer pipeline);
+typedef struct _GstClasspathSrcPrivate GstClasspathSrcPrivate;
+typedef struct _GstClasspathSrc GstClasspathSrc;
+typedef struct _GstClasspathSrcClass GstClasspathSrcClass;
 
-  static
-  {
-    System.loadLibrary("gstreamerpeer"); //$NON-NLS-1$
-    init_id_cache();
-  }
-}
+struct _GstClasspathSrc
+{
+  GstPushSrc element;
+  
+  /* instance members */
+  GstClasspathSrcPrivate *priv;
+};
+
+struct _GstClasspathSrcClass
+{
+  GstPushSrcClass parent_class;
+};
+
+GType gst_classpath_src_get_type (void);
+
+/* exported properties */
+
+#define GST_CLASSPATH_SRC_ISTREAM "input-stream"
+
+G_END_DECLS
+
+#endif /* __GST_CLASSPATH_SRC_H__ */

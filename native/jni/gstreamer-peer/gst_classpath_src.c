@@ -59,8 +59,8 @@ exception statement from your version. */
 
 #include <gdk/gdk.h>
 
-#include "gstclasspathsrc.h"
-#include "gstinputstream.h"
+#include "gst_classpath_src.h"
+#include "gst_input_stream.h"
 
 GST_DEBUG_CATEGORY_STATIC (gst_classpath_src_debug);
 #define GST_CAT_DEFAULT gst_classpath_src_debug
@@ -69,6 +69,12 @@ enum
 {
   ARG_0,
   ARG_INPUTSTREAM
+};
+
+struct _GstClasspathSrcPrivate
+{
+  GstInputStream *istream;
+  GstCaps *caps;
 };
 
 static const GstElementDetails gst_classpath_src_details =
@@ -107,7 +113,7 @@ GST_PLUGIN_DEFINE_STATIC (GST_VERSION_MAJOR,
   "classpathsrc",
   "Java InputStream Reader",
   plugin_init, CLASSPATH_GST_PLUGIN_VERSION,
-  GST_LICENSE_UNKNOWN,
+  GST_LICENSE_UNKNOWN, /* GPL + Exception */
   "Classpath", "http://www.classpath.org/")
         
 /* ***** public class methods ***** */
@@ -124,12 +130,21 @@ static void gst_classpath_src_get_property (GObject *object,
 
 static void gst_classpath_src_finalize (GObject *object);
 
+static GstCaps *gst_classpath_src_getcaps (GstBaseSrc *basesrc);
+
 static gboolean gst_classpath_src_start (GstBaseSrc *basesrc);
 
 static gboolean gst_classpath_src_stop (GstBaseSrc *basesrc);
 
 static GstFlowReturn gst_classpath_src_create (GstPushSrc *src,
                                                GstBuffer **buffer);
+
+static GstFlowReturn
+gst_classpath_src_create_stream (GstClasspathSrc *src, GstBuffer **buffer);
+
+static GstFlowReturn
+check_read (GstClasspathSrc *src, int read, int buffer_size,
+            GstBuffer **buffer);
 
 /* ***** public class methods: end ***** */
 
@@ -159,6 +174,8 @@ gst_classpath_src_class_init (GstClasspathSrcClass *klass)
   gstbasesrc_class = GST_BASE_SRC_CLASS (klass);
   gstpushsrc_class = GST_PUSH_SRC_CLASS (klass);
   
+  g_type_class_add_private (klass, sizeof (GstClasspathSrcPrivate));
+  
   /* getter and setters */
 
   gobject_class->set_property = gst_classpath_src_set_property;
@@ -174,6 +191,7 @@ gst_classpath_src_class_init (GstClasspathSrcClass *klass)
   /* register callbacks */
   gobject_class->finalize = GST_DEBUG_FUNCPTR (gst_classpath_src_finalize);
 
+  gstbasesrc_class->get_caps = GST_DEBUG_FUNCPTR (gst_classpath_src_getcaps);
   gstbasesrc_class->start = GST_DEBUG_FUNCPTR (gst_classpath_src_start);
   gstbasesrc_class->stop = GST_DEBUG_FUNCPTR (gst_classpath_src_stop);
 
@@ -186,8 +204,11 @@ static void
 gst_classpath_src_init (GstClasspathSrc *src,
                         GstClasspathSrcClass * g_class __attribute__ ((unused)))
 {
-  src->istream = NULL;
-  src->read_position = 0;
+  src->priv = G_TYPE_INSTANCE_GET_PRIVATE (src, GST_TYPE_CLASSPATH_SRC,
+                                           GstClasspathSrcPrivate);
+  
+  src->priv->istream = NULL;
+  src->priv->caps = NULL;
 }
 
 static void
@@ -222,21 +243,15 @@ gst_classpath_src_set_property (GObject *object,
               
               if (state != GST_STATE_READY && state != GST_STATE_NULL)
                 {
-                  GST_DEBUG_OBJECT (src, "setting location in wrong state");
+                  GST_DEBUG_OBJECT (src, "setting reader in wrong state");
                   GST_STATE_UNLOCK (src);
                   break;
                 }
             }
           GST_STATE_UNLOCK (src);
           
-          if (GST_IS_INPUT_STREAM (g_value_get_pointer (value)))
-            {
-              src->istream = g_value_get_pointer (value);
-            }
-          else
-            {
-              GST_INFO_OBJECT (src, "invalid instance of GstInputStream"); 
-            }
+          /* FIXME: check if this is a valid instance of GstInputStream */
+          src->priv->istream = g_value_get_pointer (value);
         }
         break;
         
@@ -254,53 +269,102 @@ gst_classpath_src_get_property (GObject *object,
                                 GParamSpec *pspec __attribute__ ((unused)))
 {
   /* TODO */
-  G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 /* ************************************************************************** */
 
-static GstFlowReturn
-gst_classpath_src_create (GstPushSrc *basesrc,
-                          GstBuffer **buffer)
+static GstCaps *gst_classpath_src_getcaps (GstBaseSrc *basesrc)
 {
   GstClasspathSrc *src;
-  int read = -1;
-  
+  GstCaps *caps = NULL;
+
   src = GST_CLASSPATH_SRC (basesrc);
+
+  if (src->priv->caps)
+    caps = gst_caps_copy (src->priv->caps);
+  else
+    caps = gst_caps_new_any ();
   
-  /* create the buffer */
-  *buffer = gst_buffer_new_and_alloc (2048);
+  GST_DEBUG_OBJECT (src, "returning caps %" GST_PTR_FORMAT, caps);
+  g_assert (GST_IS_CAPS (caps));
+  
+  return caps;
+}
+
+static GstFlowReturn
+gst_classpath_src_create_stream (GstClasspathSrc *src, GstBuffer **buffer)
+{
+  int buffer_size = 2048;
+  int read = -1; 
+  
+  buffer_size = gst_input_stream_available (src->priv->istream);
+  if (buffer_size < 0)
+    return GST_FLOW_ERROR;
+  else if (buffer_size == 0)
+    return GST_FLOW_WRONG_STATE;
+  
+  *buffer = gst_buffer_new_and_alloc (buffer_size);
   if (*buffer == NULL)
     {
       return GST_FLOW_ERROR;
     }
   
-  GST_BUFFER_SIZE (*buffer) = 0;
+  read = gst_input_stream_read (src->priv->istream,
+                                (int *) GST_BUFFER_DATA (*buffer),
+                                0,
+                                buffer_size);
   
-  GST_OBJECT_LOCK (src);
-  read = gst_input_stream_read (src->istream, (int *) GST_BUFFER_DATA (*buffer), 0,
-                                2048);
-  GST_OBJECT_UNLOCK (src);
-  
+  return check_read (src, read, buffer_size, buffer);
+}
+
+GstFlowReturn
+check_read (GstClasspathSrc *src, int read, int buffer_size, GstBuffer **buffer)
+{
   if (G_UNLIKELY (read < 0))
     {
+      g_warning("GST_FLOW_UNEXPECTED (read < 0)");
+      
       gst_buffer_unref (*buffer);
-      return GST_FLOW_UNEXPECTED;
+      *buffer = NULL;
+      
+      return GST_FLOW_ERROR;
     }
-    
-  GST_OBJECT_LOCK (src);
-  
+  else if (G_UNLIKELY (read == 0))
+    {
+      g_warning("GST_FLOW_WRONG_STATE (read == 0)");
+      
+      gst_buffer_unref (*buffer);
+      *buffer = NULL;
+      
+      return GST_FLOW_WRONG_STATE;
+    }
+  else if (G_UNLIKELY (read < buffer_size))
+    {
+      g_warning("shorter read");
+      gst_buffer_unref (*buffer);
+      *buffer = NULL;
+      
+      return GST_FLOW_ERROR;
+    }
+
   GST_BUFFER_SIZE (*buffer) = read;
-  GST_BUFFER_OFFSET (*buffer) = src->read_position;
-  GST_BUFFER_OFFSET_END (*buffer) = src->read_position + read;
-  
-  src->read_position += read;
-  
-  GST_OBJECT_UNLOCK (src);
-  
-  gst_buffer_set_caps (*buffer, GST_PAD_CAPS (GST_BASE_SRC_PAD (src)));
+  gst_buffer_set_caps (*buffer, src->priv->caps);
   
   return GST_FLOW_OK;
+}
+
+static GstFlowReturn
+gst_classpath_src_create (GstPushSrc *basesrc, GstBuffer **buffer)
+{
+  GstClasspathSrc *src = NULL;
+  GstFlowReturn ret = GST_FLOW_OK;
+  
+  src = GST_CLASSPATH_SRC (basesrc);
+   
+  /* create the buffer */
+  ret = gst_classpath_src_create_stream (src, buffer);
+  
+  return ret;
 }
 
 static gboolean
@@ -310,23 +374,35 @@ gst_classpath_src_start (GstBaseSrc *basesrc)
 
   src = GST_CLASSPATH_SRC (basesrc);
    
-  if (src->istream == NULL)
+  if (src->priv->istream == NULL)
     {
+      g_warning("GstInputStream is still null. You need to " \
+                "pass a valid InputStream object");
+          
       GST_ELEMENT_ERROR (src, RESOURCE, OPEN_READ, (NULL),
-        ("GstInputStream is still null. you need to pass a valid InputStream"));
-      
+                         ("GstInputStream is still null. You need to " \
+                          "pass a valid InputStream"));
       return FALSE;
     }
-  GST_OBJECT_LOCK (src);
-  src->read_position = 0;
-  GST_OBJECT_UNLOCK (src);
-  
+          
   return TRUE;
 }
 
 static gboolean
-gst_classpath_src_stop (GstBaseSrc *basesrc __attribute__ ((unused)))
+gst_classpath_src_stop (GstBaseSrc *basesrc)
 {
-  /* nothing to do */
+  GstClasspathSrc *src;
+
+  src = GST_CLASSPATH_SRC (basesrc);
+  
+  /* clean the stream */
+  if (src->priv->istream != NULL)
+    gst_input_stream_clean (src->priv->istream);
+
+  if (src->priv->caps) {
+    gst_caps_unref (src->priv->caps);
+    src->priv->caps = NULL;
+  }
+
   return TRUE;
 }

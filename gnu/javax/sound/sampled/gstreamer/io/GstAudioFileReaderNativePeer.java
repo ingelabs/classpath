@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package gnu.javax.sound.sampled.gstreamer.io;
 
+import gnu.classpath.Pointer;
 import gnu.javax.sound.sampled.gstreamer.GStreamerMixer;
 
 import java.io.BufferedInputStream;
@@ -90,8 +91,11 @@ final class GstAudioFileReaderNativePeer
     public String isSigned = null;
     
     public String layer = null;
+    
     public String bitrate = null;
+    
     public String framed = null;
+    
     public String type = null;
   }
   
@@ -108,18 +112,7 @@ final class GstAudioFileReaderNativePeer
   
   public static AudioFormat getAudioFormat(InputStream is) throws Exception
   {
-    GstHeader header = new GstHeader();
-    
-    BufferedInputStream stream = new BufferedInputStream(is);
-    if(!stream.markSupported()) 
-      throw new IOException("Stream must support marking."); 
-    
-    stream.mark(0);
-    
-    if (!gstreamer_get_audio_format_stream(header, stream))
-      return null;
-    
-    return getAudioFormat(header);
+    return getAudioFormat(is, new GstHeader());
   }
   
   public static AudioFormat getAudioFormat(URL url) throws Exception
@@ -127,13 +120,20 @@ final class GstAudioFileReaderNativePeer
     GstHeader header = new GstHeader();
     header.file = url.toExternalForm();
     
-    BufferedInputStream stream = new BufferedInputStream(url.openStream());
+    return getAudioFormat(url.openStream(), header);
+  }
+  
+  private static AudioFormat getAudioFormat(InputStream is, GstHeader header)
+      throws Exception
+  {
+    BufferedInputStream stream = new BufferedInputStream(is);
     if(!stream.markSupported()) 
       throw new IOException("Stream must support marking."); 
     
     stream.mark(0);
     
-    if (!gstreamer_get_audio_format_stream(header, stream))
+    if (!gstreamer_get_audio_format_stream(header, new GstInputStream(stream).
+                                           getNativeClass()))
       return null;
     
     return getAudioFormat(header);
@@ -206,8 +206,7 @@ final class GstAudioFileReaderNativePeer
     
     // FIXME: frameRate = sampleRate in these cases under all the tests so far
     // but I'm not sure if this is always correct...
-    if (lowerCase.contains("law") || lowerCase.contains("au") ||
-        lowerCase.contains("x-au"))
+    if (lowerCase.contains("law") || lowerCase.contains("au"))
       {
         frameSize = (sampleSizeInBits >> 3) * channels;
         frameRate = sampleRate;
@@ -251,14 +250,14 @@ final class GstAudioFileReaderNativePeer
   /* ***** native methods ***** */
   
   /**
-   * Retrieve header information about the file being played.
+   * Retrieve header information about the stream being played.
    * 
    * @param info
    * @return
    */
   native static final
   protected boolean gstreamer_get_audio_format_stream(GstHeader info,
-                                               BufferedInputStream istream);
+                                                      Pointer pointer);
   
   /**
    * Retrieve header information about the file being played.
@@ -269,8 +268,15 @@ final class GstAudioFileReaderNativePeer
   native static final
   protected boolean gstreamer_get_audio_format_file(GstHeader info);
   
+  /**
+   * Initialize the native peer and enables the object cache.
+   * It is meant to be used by the static initializer.
+   */
+  native private static final void init_id_cache();
+  
   static
   {
     System.loadLibrary("gstreamerpeer"); //$NON-NLS-1$
+    init_id_cache();
   }
 }

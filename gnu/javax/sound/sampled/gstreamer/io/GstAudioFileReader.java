@@ -59,7 +59,7 @@ import javax.sound.sampled.spi.AudioFileReader;
  */
 public class GstAudioFileReader
     extends AudioFileReader
-{
+{ 
   @Override
   public AudioFileFormat getAudioFileFormat(File file)
       throws UnsupportedAudioFileException, IOException

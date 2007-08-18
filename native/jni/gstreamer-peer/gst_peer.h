@@ -1,4 +1,4 @@
-/*gstclasspathsrc.h - Header file for the GstClasspathPlugin
+/*gst_peer.h - Common utility functions for the native peer.
  Copyright (C) 2007 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -35,54 +35,16 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-#ifndef __GST_CLASSPATH_SRC_H__
-#define __GST_CLASSPATH_SRC_H__
+#include <jni.h>
+#include "jcl.h"
 
-#include <gst/gst.h>
-#include <gst/base/gstpushsrc.h>
+/**
+ * Return a reference to the object stored in this Pointer.
+ */
+void *
+get_object_from_pointer (JNIEnv *env, jobject pointer, jfieldID pointerDataFID);
 
-#include "gstinputstream.h"
-
-G_BEGIN_DECLS
-
-/* #defines don't like whitespacey bits */
-#define GST_TYPE_CLASSPATH_SRC (gst_classpath_src_get_type())
-
-#define GST_CLASSPATH_SRC(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST((obj),GST_TYPE_CLASSPATH_SRC,GstClasspathSrc))
-  
-#define GST_CLASSPATH_SRC_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST((klass),GST_TYPE_CLASSPATH_SRC,GstClasspathSrcClass))
-  
-#define GST_IS_CLASSPATH_SRC(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE((obj),GST_TYPE_CLASSPATH_SRC))
-  
-#define GST_IS_CLASSPATH_SRC_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE((klass),GST_TYPE_CLASSPATH_SRC))
-  
-typedef struct _GstClasspathSrc GstClasspathSrc;
-typedef struct _GstClasspathSrcClass GstClasspathSrcClass;
-
-struct _GstClasspathSrc
-{
-  GstPushSrc element;
-  
-  /* TODO: move in a private structure */
-  GstInputStream *istream;
-  int read_position;
-};
-
-struct _GstClasspathSrcClass
-{
-  GstPushSrcClass parent_class;
-};
-
-GType gst_classpath_src_get_type (void);
-
-/* exported properties */
-
-#define GST_CLASSPATH_SRC_ISTREAM "input-stream"
-
-G_END_DECLS
-
-#endif /* __GST_CLASSPATH_SRC_H__ */
+/**
+ * Return the JNIEnv valid under the current thread context.
+ */
+JNIEnv *gst_get_jenv (JavaVM *vm);

@@ -37,8 +37,6 @@ exception statement from your version. */
 
 package gnu.javax.sound.sampled.gstreamer;
 
-import java.awt.AWTPermission;
-
 import gnu.javax.sound.sampled.gstreamer.lines.GstSourceDataLine;
 
 import javax.sound.sampled.AudioFormat;
@@ -106,7 +104,7 @@ public class GStreamerMixer
   
   /** Mixer Info */
   private static final Mixer.Info INFO = new GStreamerMixer.GstInfo();
-
+  
   public Line getLine(Line.Info info)
       throws LineUnavailableException
   {

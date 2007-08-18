@@ -1,3 +1,94 @@
+2007-08-18  Mario Torre  <neugens@limasoftware.net>
+
+	* examples/gnu/classpath/examples/sound/AudioPlayerSample.java: new file.
+	* gnu/javax/sound/sampled/gstreamer/GStreamerMixer.java: removed
+	unused import.
+	* gnu/javax/sound/sampled/gstreamer/io/GstAudioFileWriter.java: likewise.
+	* gnu/javax/sound/sampled/gstreamer/io/GstAudioFileReaderNativePeer.java: 
+	(gstreamer_get_audio_format_stream): changed signature tu accept a Pointer
+	object instead of a BufferedInputStream.
+	(GstHeader): 
+	(getAudioFormat(InputStream, GstHeader)): new private method.
+	(getAudioFormat(public)): refactored to use the private getAudioFormat
+	with shared functionality.
+	(getAudioFormat(GstHeader header)): removed a redundant check.
+	(init_id_cache): new native method.
+	* gnu/javax/sound/sampled/gstreamer/io/GstInputStream.java: new file.
+	* gnu/javax/sound/sampled/gstreamer/lines/GstDataLine.java:
+	(GstDataLine.State): removed enum.
+	(state): removed local variable.
+	(isRunning): removed method.
+	(open): likewise.
+	(setFormat): new methods.
+	(setOpen): likewise.
+	(setBufferSize): likewise.
+	* gnu/javax/sound/sampled/gstreamer/lines/GstNativeDataLine.java: 
+	(createSourcePipeline): new method.
+	(setup_sink_pipeline): likewise.
+	(init_id_cache): likewise. Added to the static initializer.
+	* gnu/javax/sound/sampled/gstreamer/lines/GstPipeline.java: 
+	(GstPipeline.State): new enum.
+	(state): new local variable.
+	(name): likewise.
+	(output): likewise.
+	(source): likewise.
+	(ready): likewise.
+	(getState): new method.
+	(closePipe): likewise.
+	(create_named_pipe): likewise.
+	(set_state): likewise.
+	(available): likewise.
+	(drain): likewise.
+	(GstPipeline): likewise.
+	(close): likewise.
+	(prepareWrite): likewise.
+	(flush): likewise.
+	(write): likewise.
+	(init_instance): likewise.
+	(read): likewise.
+	(createForWrite): likewise.
+	(setState): likewise.
+	(getNativeClass): likewise.
+	(init_id_cache): likewise.
+	* gnu/javax/sound/sampled/gstreamer/lines/GstSourceDataLine.java:
+	(pipeline): new local variable.
+	(opne): likewise.
+	(isActive): method implemented.
+	(stop): likewise.
+	(open): likewise.
+	(flush): likewise.
+	(isRunning): likewise.
+	(start): likewise.
+	(write): likewise.
+	(available): likewise.
+	(drain): likewise.
+	(close): likewise.
+	* include/Makefile.am: added entry to generate new header file.
+	* include/gnu_javax_sound_sampled_gstreamer_io_GstAudioFileReaderNativePeer.h:
+	regenerated.
+	* include/gnu_javax_sound_sampled_gstreamer_io_GstInputStream.h: likewise.
+	* include/gnu_javax_sound_sampled_gstreamer_lines_GstNativeDataLine.h:
+	likewise.
+	* include/gnu_javax_sound_sampled_gstreamer_lines_GstPipeline.h:
+	likewise.
+	* native/jni/gstreamer-peer/gstclasspathsrc.c: removed.
+	* native/jni/gstreamer-peer/gstinputstream.c: likewise.
+	* native/jni/gstreamer-peer/GStreamerIOPeer.c: likewise.
+	* native/jni/gstreamer-peer/gstinputstream.h: likewise.
+	* native/jni/gstreamer-peer/gstclasspathsrc.h: likewise.
+	* native/jni/gstreamer-peer/Makefile.am: new file added for compilation.
+	code reformat to keep the 80 columns constraint.
+	* native/jni/gstreamer-peer/gst_native_pipeline.h: new file.
+	* native/jni/gstreamer-peer/gst_input_stream.c: likewise.
+	* native/jni/gstreamer-peer/gst_input_stream.h: likewise.
+	* native/jni/gstreamer-peer/gst_classpath_src.c: likewise.
+	* native/jni/gstreamer-peer/gst_native_pipeline.c: likewise.
+	* native/jni/gstreamer-peer/gst_native_data_line.c: likewise.
+	* native/jni/gstreamer-peer/gst_classpath_src.h: likewise.
+	* native/jni/gstreamer-peer/gstreamer_io_peer.c: likewise.
+	* native/jni/gstreamer-peer/gst_peer.c: likewise.
+	* native/jni/gstreamer-peer/gst_peer.h: likewise.
+	
 2007-08-16  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* NEWS: Update with info on VM changes.

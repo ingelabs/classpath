@@ -1,4 +1,4 @@
-/*gstinputstream.h - Header file for the GstClasspathPlugin
+/*gst_native_pipeline.h - Header file for the GstClasspathPlugin
  Copyright (C) 2007 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -35,65 +35,29 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-#ifndef __GST_INPUT_STREAM_H__
-#define __GST_INPUT_STREAM_H__
+#ifndef __GST_NATIVE_PIPELINE_H__
+#define __GST_NATIVE_PIPELINE_H__
 
-#include <glib-object.h>
+#include <glib.h>
 
-/* TODO: is a gobject overkill for that? */
+#include <gst/gst.h>
 
-G_BEGIN_DECLS
+typedef struct _GstNativePipeline GstNativePipeline;
+typedef struct _GstNativePipelinePrivate GstNativePipelinePrivate;
 
-/* #defines don't like whitespacey bits */
-#define GST_TYPE_INPUT_STREAM (gst_input_stream_get_type())
-
-#define GST_INPUT_STREAM(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST((obj),GST_TYPE_INPUT_STREAM,GstInputStream))
-  
-#define GST_INPUT_STREAM_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST((klass),GST_TYPE_INPUT_STREAM,GstInputStreamClass))
-  
-#define GST_IS_INPUT_STREAM(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE((obj),GST_TYPE_INPUT_STREAM))
-  
-#define GST_IS_INPUT_STREAM_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE((klass),GST_TYPE_INPUT_STREAM))
-  
-typedef struct _GstInputStream GstInputStream;
-typedef struct _GstInputStreamClass GstInputStreamClass;
-typedef struct _GstInputStreamPrivate GstInputStreamPrivate;
-
-struct _GstInputStream
+struct _GstNativePipeline
 {
-  GObject parent;
-  
   /* instance members */
-  GstInputStreamPrivate *priv;
+  GstNativePipelinePrivate *priv;
 };
 
-struct _GstInputStreamClass
-{
-  GObjectClass parent_class;
-};
+void gst_native_pipeline_clean (GstNativePipeline *self);
 
-GType gst_input_stream_get_type (void);
+void gst_native_pipeline_set_pipeline (GstNativePipeline *self,
+                                       GstElement *pipeline);
 
-int gst_input_stream_read (GstInputStream *self, int *data, int offset,
-                           int length);
-                           
-gboolean gst_input_stream_available (GstInputStream *self, guint64 *size);
+GstElement *gst_native_pipeline_get_pipeline (GstNativePipeline *self);
 
-gboolean gst_input_stream_can_seek (GstInputStream *self);
+char *gst_native_pipeline_get_pipeline_name (GstNativePipeline *self);
 
-long gst_input_stream_skip (GstInputStream *self, long size);
-
-void gst_input_stream_reset (GstInputStream *self);
-
-/* exported properties */
-
-#define GST_ISTREAM_JVM "vm"
-#define GST_ISTREAM_READER "reader"
-
-G_END_DECLS
-
-#endif /* __GST_INPUT_STREAM_H__ */
+#endif /* __GST_NATIVE_PIPELINE_H__ */

@@ -1,4 +1,5 @@
-/* GStreamerIOPeer.c -- Implements native methods for class GStreamerNativePeer
+/* gstreamer_io_peer.c -- Implements native methods for class
+   GStreamerNativePeer
    Copyright (C) 2007 Free Software Foundation, Inc.
    
    This file is part of GNU Classpath.
@@ -49,12 +50,31 @@
 
 #include "jcl.h"
 
+#include "gst_peer.h"
+
 #include "gnu_javax_sound_sampled_gstreamer_io_GstAudioFileReaderNativePeer.h"
 
-#include "gstclasspathsrc.h"
-#include "gstinputstream.h"
+#include "gst_classpath_src.h"
+#include "gst_input_stream.h"
 
 #define _GST_MALLOC_SIZE_ 256
+
+/* for caching */
+static jfieldID fileFID = NULL;
+static jfieldID pointerDataID = NULL;
+
+static jfieldID mimetypeFID = NULL;
+static jfieldID endiannessFID = NULL;
+static jfieldID channelsFID = NULL;
+static jfieldID rateFID = NULL;
+static jfieldID widthFID = NULL;
+static jfieldID depthFID = NULL;
+static jfieldID isSignedFID = NULL;
+static jfieldID nameFID = NULL;
+static jfieldID layerFID = NULL;
+static jfieldID bitrateFID = NULL;
+static jfieldID framedFID = NULL;
+static jfieldID typeFID = NULL;
 
 typedef struct _AudioProperties AudioProperties;
 struct _AudioProperties
@@ -116,14 +136,12 @@ struct _AudioProperties
   const char *type;
   
   gboolean done;
-  
 };
 
 /* ***** PRIVATE FUNCTIONS DECLARATION ***** */
 
 static gboolean
-set_strings (JNIEnv *env, const jclass GstHeader,
-             const AudioProperties *properties, jobject header);
+set_strings (JNIEnv *env, const AudioProperties *properties, jobject header);
 
 static gboolean
 typefind_callback(GstElement *typefind, guint probability, const GstCaps *caps,
@@ -134,7 +152,7 @@ element_added (GstBin *bin, GstElement *element, gpointer data);
 
 static void
 new_decoded_pad (GstElement *decoder, GstPad *pad,
-                 gboolean last, GstElement *pipeline);
+                 gboolean last, gpointer data);
                  
 static gboolean
 fill_info (GstElement *decoder, AudioProperties *properties);
@@ -146,8 +164,8 @@ static gchar *
 get_boolean_property (const GstStructure *structure, const gchar *property);
                                          
 static gboolean
-set_string (JNIEnv *env, const jclass GstHeader, jobject header,
-            const char *field, const gchar *property);
+set_string (JNIEnv *env, jobject header, jfieldID fieldID,
+            const gchar *property);
 
 static void
 free_properties (AudioProperties *properties);
@@ -155,136 +173,97 @@ free_properties (AudioProperties *properties);
 static void
 reset_properties (AudioProperties *properties);
 
+static jboolean process_audio (GstElement *source, JNIEnv *env, jobject header);
+
 /* ***** END: PRIVATE FUNCTIONS DECLARATION ***** */
 
 /* ***** NATIVE FUNCTIONS ***** */
 
+JNIEXPORT void JNICALL
+Java_gnu_javax_sound_sampled_gstreamer_io_GstAudioFileReaderNativePeer_init_1id_1cache
+  (JNIEnv *env, jclass clazz  __attribute__ ((unused)))
+{
+  jclass pointerClass = NULL;
+  jclass GstHeader = NULL;
+  
+  GstHeader = JCL_FindClass(env, "gnu/javax/sound/sampled/gstreamer/io/GstAudioFileReaderNativePeer$GstHeader");
+  fileFID = (*env)->GetFieldID(env, GstHeader, "file", "Ljava/lang/String;");
+
+  mimetypeFID = (*env)->GetFieldID(env, GstHeader, "mimetype",
+                                   "Ljava/lang/String;");
+  endiannessFID = (*env)->GetFieldID(env, GstHeader, "endianness",
+                                     "Ljava/lang/String;");
+  channelsFID = (*env)->GetFieldID(env, GstHeader, "channels",
+                                   "Ljava/lang/String;");
+  rateFID = (*env)->GetFieldID(env, GstHeader, "rate", "Ljava/lang/String;");
+  widthFID = (*env)->GetFieldID(env, GstHeader, "width", "Ljava/lang/String;");
+  depthFID = (*env)->GetFieldID(env, GstHeader, "depth", "Ljava/lang/String;");
+  isSignedFID = (*env)->GetFieldID(env, GstHeader, "isSigned",
+                                   "Ljava/lang/String;");
+  nameFID = (*env)->GetFieldID(env, GstHeader, "name", "Ljava/lang/String;");
+  layerFID = (*env)->GetFieldID(env, GstHeader, "layer", "Ljava/lang/String;");
+  bitrateFID = (*env)->GetFieldID(env, GstHeader, "bitrate",
+                                  "Ljava/lang/String;");
+  framedFID = (*env)->GetFieldID(env, GstHeader, "framed",
+                                 "Ljava/lang/String;");
+  typeFID = (*env)->GetFieldID(env, GstHeader, "type", "Ljava/lang/String;");
+
+#if SIZEOF_VOID_P == 8
+  pointerClass = JCL_FindClass (env, "gnu/classpath/Pointer64");
+  if (pointerClass != NULL)
+    {
+      pointerDataID = (*env)->GetFieldID (env, pointerClass, "data", "J");
+    }
+#else
+# if SIZEOF_VOID_P == 4
+  pointerClass = JCL_FindClass (env, "gnu/classpath/Pointer32"); 
+  if (pointerClass != NULL)
+    { 
+      pointerDataID = (*env)->GetFieldID(env, pointerClass, "data", "I");
+    }
+# else
+#   error "Pointer size is not supported."
+# endif /* SIZEOF_VOID_P == 4 */
+#endif /* SIZEOF_VOID_P == 8 */
+
+}
+
 JNIEXPORT jboolean JNICALL
 Java_gnu_javax_sound_sampled_gstreamer_io_GstAudioFileReaderNativePeer_gstreamer_1get_1audio_1format_1stream
-  (JNIEnv *env, jclass clazz __attribute__ ((unused)), jobject header __attribute__ ((unused)),
-                                                       jobject jstream __attribute__ ((unused)))
+  (JNIEnv *env, jclass clazz __attribute__ ((unused)), jobject header,
+                                                       jobject pointer)
 {
   GstInputStream *istream = NULL;
-  JavaVM *vm = NULL;
-  jclass GstHeader = NULL;
-
-  GstElement *pipeline = NULL;
-
-  GstElement *typefind = NULL;
-  GstElement *decodebin = NULL;
   GstElement *source = NULL;
-  
-  AudioProperties *properties = NULL;
-  
-  jboolean result = JNI_FALSE;
-  
-  GstHeader = (*env)->GetObjectClass(env, header);
-  
+  gboolean result = JNI_FALSE;
+ 
+  if (header == NULL)
+    return JNI_FALSE;
+ 
+  if (pointer == NULL)
+    return JNI_FALSE;
+ 
+  gst_init (NULL, NULL);  
+   
+  istream = (GstInputStream *) get_object_from_pointer (env, pointer,
+                                                        pointerDataID);
+  if (istream == NULL)
+    return JNI_FALSE;
+    
+  /* init gstreamer */
   gst_init (NULL, NULL);
 
-  properties = (AudioProperties *) g_malloc0 (sizeof (AudioProperties));
-  if (properties == NULL)
-    {
-      g_warning ("unable to allocate memory for properties");
-      return JNI_FALSE;
-    }
-
-  /* create the GstInputStream object */
-  istream = g_object_new (GST_TYPE_INPUT_STREAM, NULL);
-  if (istream == NULL)
-    {
-      free_properties (properties);
-      
-      g_warning ("unable to create an istream");
-      return JNI_FALSE;
-    }
- 
+  /* SOURCE */
   source = gst_element_factory_make ("classpathsrc", "source");
   if (source == NULL)
     {
-      free_properties (properties);
-      g_free ((gpointer) istream);
-      
       g_warning ("unable to create a source");
       return JNI_FALSE;
     }
-   
-  /* store the vm and the input stream in the gstinputstream class */  
-  (*env)->GetJavaVM(env, &vm);
-  g_object_set (G_OBJECT (istream), GST_ISTREAM_JVM, vm,
-                                    GST_ISTREAM_READER, jstream,
-                NULL);
   g_object_set (G_OBJECT (source), GST_CLASSPATH_SRC_ISTREAM, istream, NULL);
-  
-  pipeline = gst_pipeline_new ("pipe");
-  if (pipeline == NULL)
-    {
-      gst_object_unref (GST_OBJECT (source));
-      g_free ((gpointer) istream);
-      free_properties (properties);
-      
-      g_warning ("unable to create the pipeline");
-      return JNI_FALSE;
-    }
 
-  decodebin = gst_element_factory_make ("decodebin", "decodebin");
-  if (decodebin == NULL)
-    {
-      gst_object_unref (GST_OBJECT (source));
-      
-      g_free ((gpointer) istream);
-      free_properties(properties);
-      
-      gst_object_unref(GST_OBJECT(pipeline));
+  result = process_audio (source, env, header);
     
-      g_warning ("unable to create decodebin");
-      return JNI_FALSE;
-    }
-  
-  g_signal_connect (decodebin, "new-decoded-pad", G_CALLBACK (new_decoded_pad),
-                    pipeline);
-  
-  gst_bin_add_many (GST_BIN (pipeline), source, decodebin, NULL);
-  gst_element_link (source, decodebin);
-  
-  typefind = gst_bin_get_by_name (GST_BIN (decodebin), "typefind");
-  if (typefind == NULL)
-    {
-      g_free ((gpointer) istream);
-      free_properties(properties);
-      
-      gst_object_unref(GST_OBJECT(pipeline));
-    
-      g_warning ("unable to create decodebin");
-      return JNI_FALSE;
-    }
-    
-  g_signal_connect (G_OBJECT (typefind), "have-type",
-                    G_CALLBACK (typefind_callback), properties);
-  
-  gst_element_set_state (GST_ELEMENT(pipeline), GST_STATE_PLAYING);
-  if (gst_element_get_state (pipeline, NULL, NULL, 100000) ==
-      GST_STATE_CHANGE_FAILURE)
-    {
-      g_free ((gpointer) istream);
-      free_properties(properties);
-      gst_object_unref(GST_OBJECT(pipeline));
-      
-      g_warning ("Failed to go into PLAYING state");
-      return JNI_FALSE;
-    }
-
-  result = JNI_FALSE;
-  if (fill_info (decodebin, properties))
-    {
-      result = set_strings (env, GstHeader, properties, header);
-    }
-    
-  gst_element_set_state (GST_ELEMENT (pipeline), GST_STATE_NULL);
-  
-  gst_object_unref (GST_OBJECT(pipeline));
-  free_properties (properties);
-  
   return result;
 }
 
@@ -292,15 +271,56 @@ JNIEXPORT jboolean JNICALL
 Java_gnu_javax_sound_sampled_gstreamer_io_GstAudioFileReaderNativePeer_gstreamer_1get_1audio_1format_1file
 	(JNIEnv *env, jclass clazz __attribute__ ((unused)), jobject header)
 {
-  /* will contain the properties we need to put into the given GstHeader */
-  AudioProperties *properties = NULL;
-  
   /* source file */
   const char *file = NULL;
     
   /* GStreamer elements */
-  GstElement *pipeline = NULL;
   GstElement *source = NULL;
+
+  jboolean result = JNI_FALSE;
+  
+  /* java fields */
+  jstring _file = NULL;
+
+  _file = (*env)->GetObjectField(env, header, fileFID);
+  file = JCL_jstring_to_cstring (env, _file);
+  if (file == NULL)
+    {
+      return JNI_FALSE;
+    }
+
+  gst_init (NULL, NULL);
+ 
+  /* create the source element, will be used to read the file */
+  source = gst_element_factory_make ("filesrc", "source");
+  if (source == NULL)
+    {
+      JCL_free_cstring (env, _file, file);
+      return JNI_FALSE;
+    }
+  
+  /* set the file name */
+  g_object_set (G_OBJECT (source), "location", file, NULL);
+
+  result = process_audio (source, env, header);
+
+  /* free stuff */
+  JCL_free_cstring (env, _file, file);
+  
+  return result;
+}
+
+/* ***** END: NATIVE FUNCTIONS ***** */
+
+/* ***** PRIVATE FUNCTIONS IMPLEMENTATION ***** */
+
+static jboolean process_audio (GstElement *source, JNIEnv *env, jobject header)
+{
+  /* will contain the properties we need to put into the given GstHeader */
+  AudioProperties *properties = NULL;
+  
+  /* GStreamer elements */
+  GstElement *pipeline = NULL;
   GstElement *decoder = NULL;
   
   GstElement *typefind = NULL;
@@ -309,50 +329,13 @@ Java_gnu_javax_sound_sampled_gstreamer_io_GstAudioFileReaderNativePeer_gstreamer
 
   jboolean result = JNI_FALSE;
   
-  /* java fields */
-  jfieldID _fid = NULL;
-  jclass GstHeader = NULL;
-  jstring _file = NULL;
-
-  GstHeader = (*env)->GetObjectClass(env, header);
-  _fid = (*env)->GetFieldID(env, GstHeader, "file", "Ljava/lang/String;");
-  if (_fid == NULL)
-    {
-      return JNI_FALSE; /* failed to find the field */
-    }
-
-  _file = (*env)->GetObjectField(env, header, _fid);
-  file = JCL_jstring_to_cstring (env, _file);
-  if (file == NULL)
-    {
-      return JNI_FALSE;
-    }
- 
-  gst_init (NULL, NULL);
-  
   properties = (AudioProperties *) g_malloc0 (sizeof (AudioProperties));
   if (properties == NULL)
     {
-      free_properties (properties);
-      JCL_free_cstring (env, _file, file);
-      return JNI_FALSE;
+      return result;
     }
-
-  /* this is not really needed */  
   reset_properties(properties);
 
-  /* create the source element, will be used to read the file */
-  source = gst_element_factory_make ("filesrc", "source");
-  if (source == NULL)
-    {
-      free_properties (properties);
-      JCL_free_cstring (env, _file, file);
-      return JNI_FALSE;
-    }
-  
-  /* set the file name */
-  g_object_set (G_OBJECT (source), "location", file, NULL);
-  
   /* 
    * create the decoder element, this will decode the stream and retrieve
    * its properties.
@@ -363,30 +346,23 @@ Java_gnu_javax_sound_sampled_gstreamer_io_GstAudioFileReaderNativePeer_gstreamer
   decoder = gst_element_factory_make ("decodebin", "decoder");
   if (decoder == NULL)
     {
-      gst_object_unref (GST_OBJECT (source));
       free_properties(properties);
-      
-      JCL_free_cstring (env, _file, file);
-      return JNI_FALSE;
+      return result;
     }
   
-  g_signal_connect (decoder, "new-decoded-pad", G_CALLBACK (new_decoded_pad),
-                    pipeline);
-  g_signal_connect (G_OBJECT (decoder), "element-added",
-                    G_CALLBACK (element_added), properties);
- 
   /* now, we create a pipeline and fill it with the other elements */
   pipeline = gst_pipeline_new ("pipeline");
   if (pipeline == NULL)
     {
-      gst_object_unref (GST_OBJECT (source));
       gst_object_unref (GST_OBJECT (decoder));
-      
-      free_properties(properties);
-      
-      JCL_free_cstring (env, _file, file);
-      return JNI_FALSE;
+      free_properties(properties);   
+      return result;
     }
+ 
+  g_signal_connect (decoder, "new-decoded-pad", G_CALLBACK (new_decoded_pad),
+                    pipeline);
+  g_signal_connect (G_OBJECT (decoder), "element-added",
+                    G_CALLBACK (element_added), properties);
   
   /*
    * we get the typefind from the decodebin to catch the additional properties
@@ -412,58 +388,51 @@ Java_gnu_javax_sound_sampled_gstreamer_io_GstAudioFileReaderNativePeer_gstreamer
    * now, we set the pipeline playing state to pause and traverse it
    * to get the info we need.
    */
-  
+   
   res = gst_element_set_state (pipeline, GST_STATE_PAUSED);
   if (res == GST_STATE_CHANGE_FAILURE)
     {
-      JCL_free_cstring (env, _file, file);
       gst_element_set_state (pipeline, GST_STATE_NULL);
       gst_object_unref (GST_OBJECT (pipeline));
       
       free_properties(properties);
       
-      return JNI_FALSE;
+      return result;
     }
   
-  /* (GstClockTime) 300000000 ? */
   res = gst_element_get_state (pipeline, NULL, NULL, GST_CLOCK_TIME_NONE);
   if (res != GST_STATE_CHANGE_SUCCESS)
     {
-      JCL_free_cstring (env, _file, file);
       gst_element_set_state (pipeline, GST_STATE_NULL);
       gst_object_unref (GST_OBJECT (pipeline));
       
       free_properties(properties);
       
-      return JNI_FALSE;
+      return result;
     }
   
-  result = JNI_FALSE;
   if (fill_info (decoder, properties))
     {
-      result = set_strings (env, GstHeader, properties, header);
+      result = set_strings (env, properties, header);
     }
-   
+ 
   /* free stuff */
-  JCL_free_cstring (env, _file, file);
   gst_element_set_state (pipeline, GST_STATE_NULL);
+
+  free_properties (properties);
   
   gst_object_unref (GST_OBJECT (pipeline));
-  
-  free_properties (properties);
 
   return result;
 }
 
-/* ***** END: NATIVE FUNCTIONS ***** */
 
-/* ***** PRIVATE FUNCTIONS IMPLEMENTATION ***** */
 static gboolean typefind_callback(GstElement *typefind __attribute__ ((unused)),
                                   guint probability __attribute__ ((unused)),
                                   const GstCaps *caps,
                                   gpointer data)
 {
-  GstStructure *structure = NULL;  
+  GstStructure *structure = NULL;
   AudioProperties *properties = NULL;
   
   const char *mpeg = NULL;
@@ -494,14 +463,21 @@ static void
 new_decoded_pad (GstElement *decoder  __attribute__ ((unused)),
                  GstPad *pad,
                  gboolean last        __attribute__ ((unused)),
-                 GstElement *pipeline)
+                 gpointer data)
 {
+  GstElement *pipeline = NULL;
   GstElement *fakesink = NULL;
   GstPad *sinkpad = NULL;
   
+  pipeline = (GstElement *) data;
+  if (pipeline == NULL)
+    return;
+  
   fakesink = gst_element_factory_make ("fakesink", NULL);
+  if (fakesink == NULL)
+    return;
+    
   gst_bin_add (GST_BIN (pipeline), fakesink);
-
   sinkpad = gst_element_get_pad (fakesink, "sink");
   if (GST_PAD_LINK_FAILED (gst_pad_link (pad, sinkpad)))
     {
@@ -514,8 +490,7 @@ new_decoded_pad (GstElement *decoder  __attribute__ ((unused)),
 }
 
 static gboolean
-set_strings (JNIEnv *env, const jclass GstHeader,
-             const AudioProperties *properties, jobject header)
+set_strings (JNIEnv *env, const AudioProperties *properties, jobject header)
 {
   gboolean result = FALSE;
   
@@ -525,34 +500,34 @@ set_strings (JNIEnv *env, const jclass GstHeader,
    */
       
   /* now, map our properties to the java class */
-  set_string (env, GstHeader, header, "mimetype", properties->mimetype);
+  set_string (env, header, mimetypeFID, properties->mimetype);
                       
-  if (set_string (env, GstHeader, header, "endianness",
-                  properties->endianness)) result = JNI_TRUE;
+  if (set_string (env, header, endiannessFID, properties->endianness))
+    result = JNI_TRUE;
                       
-  if (set_string (env, GstHeader, header, "channels",
-                  properties->channels)) result = JNI_TRUE;
+  if (set_string (env, header, channelsFID, properties->channels))
+    result = JNI_TRUE;
       
-  if (set_string (env, GstHeader, header, "rate",
-                  properties->rate)) result = JNI_TRUE;
+  if (set_string (env, header, rateFID, properties->rate))
+    result = JNI_TRUE;
       
-  if (set_string (env, GstHeader, header, "width",
-                  properties->width)) result = JNI_TRUE;
+  if (set_string (env, header, widthFID, properties->width))
+    result = JNI_TRUE;
       
-  if (set_string (env, GstHeader, header, "depth",
-                  properties->depth)) result = JNI_TRUE;
+  if (set_string (env, header, depthFID, properties->depth))
+    result = JNI_TRUE;
       
-  if (set_string (env, GstHeader, header, "isSigned",
-                  properties->signess)) result = JNI_TRUE;
+  if (set_string (env, header, isSignedFID, properties->signess))
+    result = JNI_TRUE;
      
-  if (set_string (env, GstHeader, header, "name",
-                  properties->name)) result = JNI_TRUE;
+  if (set_string (env, header, nameFID, properties->name))
+    result = JNI_TRUE;
      
   /* non primary properties */
-  set_string (env, GstHeader, header, "layer", properties->layer);
-  set_string (env, GstHeader, header, "bitrate", properties->bitrate);
-  set_string (env, GstHeader, header, "framed", properties->framed);
-  set_string (env, GstHeader, header, "type", properties->type);
+  set_string (env, header, layerFID, properties->layer);
+  set_string (env, header, bitrateFID, properties->bitrate);
+  set_string (env, header, framedFID, properties->framed);
+  set_string (env, header, typeFID, properties->type);
  
   return result;    
 }
@@ -562,7 +537,7 @@ static gboolean fill_info (GstElement *decoder, AudioProperties *properties)
   GstIterator *it = NULL;
   gpointer data = NULL;
   gboolean result = FALSE;
- 
+  
   it = gst_element_iterate_src_pads (decoder);
   while (gst_iterator_next (it, &data) == GST_ITERATOR_OK)
     {
@@ -638,12 +613,15 @@ static gboolean fill_info (GstElement *decoder, AudioProperties *properties)
       gst_caps_unref (caps);
       gst_object_unref (pad);
     }
-    
+     
     return result;
 }
 
-static void free_properties (AudioProperties *properties)
+static void
+free_properties (AudioProperties *properties __attribute__ ((unused)))
 {
+  /* FIXME this causes a segfault, a string not allocated by us? double free? */
+  /*
   if (properties->name != NULL) g_free((gpointer) properties->name);
   if (properties->endianness != NULL) g_free((gpointer) properties->endianness);
   if (properties->channels != NULL) g_free((gpointer) properties->channels);
@@ -655,6 +633,7 @@ static void free_properties (AudioProperties *properties)
   if (properties->framed != NULL) g_free((gpointer) properties->framed);
   
   if (properties != NULL) g_free ((gpointer) properties);
+  */
 }
 
 static void reset_properties (AudioProperties *properties)
@@ -730,23 +709,14 @@ static gchar *get_boolean_property (const GstStructure *structure,
   return result;
 }
 
-static gboolean set_string (JNIEnv *env, const jclass GstHeader,
-                            jobject header,
-                            const char *field,
+static gboolean set_string (JNIEnv *env, jobject header, jfieldID fieldID,
                             const gchar *property)
-{
-  jfieldID _fid = NULL; 
+{ 
   jstring property_string_field = NULL; 
   
-  if (property == NULL || field == NULL || header == NULL || GstHeader == NULL)
+  if (property == NULL || header == NULL)
     {
       return JNI_FALSE;
-    }
-  
-  _fid = (*env)->GetFieldID(env, GstHeader, field, "Ljava/lang/String;");
-  if (_fid == NULL)
-    {
-      return JNI_FALSE; /* failed to find the field */
     }
   
   property_string_field = (*env)->NewStringUTF(env, property);
@@ -755,13 +725,12 @@ static gboolean set_string (JNIEnv *env, const jclass GstHeader,
       return JNI_FALSE;
     }
     
-  (*env)->SetObjectField(env, header, _fid, property_string_field);
+  (*env)->SetObjectField(env, header, fieldID, property_string_field);
 
   return JNI_TRUE;
 }
 
-static void
-element_added (GstBin *bin, GstElement *element, gpointer data)
+static void element_added (GstBin *bin, GstElement *element, gpointer data)
 {
   GstElementFactory *factory;
   

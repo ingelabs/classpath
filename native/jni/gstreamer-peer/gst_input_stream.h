@@ -1,4 +1,4 @@
-/* GstNativeDataLine.java -- SourceDataLine implementation.
+/*gstinputstream.h - Header file for the GstClasspathPlugin
  Copyright (C) 2007 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -35,43 +35,37 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package gnu.javax.sound.sampled.gstreamer.lines;
+#ifndef __GST_INPUT_STREAM_H__
+#define __GST_INPUT_STREAM_H__
 
-import gnu.classpath.Pointer;
+typedef struct _GstInputStream GstInputStream;
+typedef struct _GstInputStreamPrivate GstInputStreamPrivate;
 
-import javax.sound.sampled.LineUnavailableException;
+struct _GstInputStream
+{
+  /* instance members */
+  GstInputStreamPrivate *priv;
+};
 
-public class GstNativeDataLine
-{ 
-  public static final GstPipeline createSourcePipeline(int bufferSize)
-    throws LineUnavailableException
-  {
-    GstPipeline pipeline = new GstPipeline(bufferSize);
- 
-    pipeline.createForWrite();
-    
-    if (!setup_sink_pipeline(pipeline.getNativeClass()))
-      throw new LineUnavailableException("Line unavailable");
-    
-    return pipeline;
-  }
-  
-  /* native methods */
-  
-  /**
-   * Initialize the native peer and enables the object cache.
-   * It is meant to be used by the static initializer.
-   */
-  native static final private void init_id_cache();
+/**
+ * Clean the given instance of GstInputStream so that the garbage
+ * collector can collect the cached Java classes.
+ * Call this fuction when you don't need anymore to use this instance of
+ * GstInputStream. Note that failure to call this routine will result in
+ * memroy leaks.
+ */
+void gst_input_stream_clean (GstInputStream *self);
 
-  /**
-   * Setup a new GStreamer Pipeline
-   */
-  native static final private boolean setup_sink_pipeline(Pointer pipeline);
+/**
+ * Perform the "read" operation on this GstInputStream.
+ */
+int gst_input_stream_read (GstInputStream *self, int *data, int offset,
+                           int length);
 
-  static
-  {
-    System.loadLibrary("gstreamerpeer"); //$NON-NLS-1$
-    init_id_cache();
-  }
-}
+/**
+ * Returns the number of byte currently available for read in this
+ * GstInputStream.
+ */
+int gst_input_stream_available (GstInputStream *self);
+
+#endif /* __GST_INPUT_STREAM_H__ */
