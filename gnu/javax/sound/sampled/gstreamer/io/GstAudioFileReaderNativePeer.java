@@ -200,6 +200,8 @@ final class GstAudioFileReaderNativePeer
           bigEndian = true;
       }
     
+    String ext = null;
+    
     int frameSize = na;
     float frameRate = na;
     String lowerCase = header.name.toLowerCase();
@@ -210,16 +212,19 @@ final class GstAudioFileReaderNativePeer
       {
         frameSize = (sampleSizeInBits >> 3) * channels;
         frameRate = sampleRate;
+        ext = "au";
       }
     else if (lowerCase.contains("wav"))
       {
         frameSize = ((sampleSizeInBits + 7) / 8) * channels;
         frameRate = sampleRate;
+        ext = "wav";
       }
     else if (lowerCase.contains("iff"))
       {
         frameSize = (sampleSizeInBits * channels) / 8;
         frameRate = sampleRate;
+        ext = "aiff";
       }
     
     // write all the additional properties we got to identify
@@ -227,6 +232,9 @@ final class GstAudioFileReaderNativePeer
     Map<String, Object> properties = new HashMap<String, Object>();
     properties.put(GStreamerMixer.GST_BACKEND, true);
     properties.put(GStreamerMixer.GST_DECODER, header.name);
+    properties.put(GStreamerMixer.GST_TYPE_NAME, encoding.toString());
+    if (ext != null)
+      properties.put(GStreamerMixer.GST_FILE_EXTENSION, ext);
     
     /* now we put in some of the additional properties if we have them */
     if (header.type != null) properties.put("type", header.type);

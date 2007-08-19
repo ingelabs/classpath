@@ -79,28 +79,11 @@ public class GStreamerMixer
       super(name, vendor, desc, vers);
     }
   }
-  
+    
   public static final String GST_BACKEND = GstInfo.name;
   public static final String GST_DECODER = "decoder";
-  
-  private static AudioFormat[] BASIC_FORMATS =
-  {
-     new AudioFormat(AudioFormat.Encoding.PCM_UNSIGNED,
-                     AudioSystem.NOT_SPECIFIED,
-                     AudioSystem.NOT_SPECIFIED,
-                     AudioSystem.NOT_SPECIFIED,
-                     AudioSystem.NOT_SPECIFIED,
-                     AudioSystem.NOT_SPECIFIED,
-                     true),
-
-     new AudioFormat(AudioFormat.Encoding.PCM_UNSIGNED,
-                     AudioSystem.NOT_SPECIFIED,
-                     AudioSystem.NOT_SPECIFIED,
-                     AudioSystem.NOT_SPECIFIED,
-                     AudioSystem.NOT_SPECIFIED,
-                     AudioSystem.NOT_SPECIFIED,
-                     false),
-  };
+  public static final String GST_TYPE_NAME = "type";
+  public static final String GST_FILE_EXTENSION = "ext";
   
   /** Mixer Info */
   private static final Mixer.Info INFO = new GStreamerMixer.GstInfo();

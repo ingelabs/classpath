@@ -1,3 +1,14 @@
+2007-08-19  Mario Torre  <neugens@limasoftware.net>
+
+	* gnu/javax/sound/sampled/gstreamer/io/GstAudioFileReader.java: 
+	(getAudioFileFormat (File)): method implemented.
+	(getAudioFileFormat (InputStream)): likewise.
+	(getAudioFileFormat(InputStream, String)): new method.
+	(getAudioInputStream): better exception handling.
+	* gnu/javax/sound/sampled/gstreamer/io/GstAudioFileReaderNativePeer.java
+	(getAudioFormat): added basic extension detection for known files.
+	* gnu/javax/sound/sampled/gstreamer/GStreamerMixer.java: 
+
 2007-08-19  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* resource/META-INF/services/javax.sound.sampled.spi.AudioFileReader:
