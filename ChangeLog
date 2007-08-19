@@ -1,3 +1,10 @@
+2007-08-19  Mario Torre  <neugens@limasoftware.net>
+
+	* resource/META-INF/services/javax.sound.sampled.spi.MixerProvider:
+	regenerated to avoid listing by default of the
+	gnu.javax.sound.sampled.gstreamer.GStreamerMixerProvider class, as the
+	GStreamer Sound peer is not enabled unless specified at configure time.
+
 2007-08-18  Mario Torre  <neugens@limasoftware.net>
 
 	* examples/gnu/classpath/examples/sound/AudioPlayerSample.java: new file.
