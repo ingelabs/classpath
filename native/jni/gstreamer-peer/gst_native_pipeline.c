@@ -327,8 +327,8 @@ static void init_pointer_IDs (JNIEnv* env)
   PointerClass = JCL_FindClass (env, "gnu/classpath/Pointer64");
   if (PointerClass != NULL)
     {
-      PointerDataID = (*env)->GetFieldID (env, PointerClass, "data", "J");
-      PointerConstructorID = (*env)->GetMethodID (env, PointerClass, "<init>",
+      pointerDataFID = (*env)->GetFieldID (env, PointerClass, "data", "J");
+      pointerConstructorMID = (*env)->GetMethodID (env, PointerClass, "<init>",
                                                    "(J)V");
     }
 #else

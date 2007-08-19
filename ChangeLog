@@ -1,5 +1,10 @@
 2007-08-19  Mario Torre  <neugens@limasoftware.net>
 
+	* native/jni/gstreamer-peer/gst_native_pipeline.c:
+	(init_pointer_IDs):	fix typo that prevents compilation on 64 bit systems.
+
+2007-08-19  Mario Torre  <neugens@limasoftware.net>
+
 	* resource/META-INF/services/javax.sound.sampled.spi.MixerProvider:
 	regenerated to avoid listing by default of the
 	gnu.javax.sound.sampled.gstreamer.GStreamerMixerProvider class, as the
