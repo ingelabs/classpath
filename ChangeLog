@@ -1,3 +1,19 @@
+2007-08-23  Francis Kung  <fkung@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java:
+	(getLocationOnScreen): Check for GTK main thread.
+	(gtkWidgetGetLocationOnScreenUnlocked): New native method.
+	(gtkWindowGetLocationOnScreenUnlocked): New native method.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c:
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWindowGetLocationOnScreen):
+	Delegate to unlocked function.
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWindowGetLocationOnScreenUnlocked):
+	New function.
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetLocationOnScreen):
+	Delegate to unlocked function.
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetLocationOnScreenUnlocked):
+	New function.
+
 2007-08-22  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/util/EnumSet.java:
