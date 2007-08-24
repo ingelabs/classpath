@@ -1,3 +1,7 @@
+2007-08-24  Mark Wielaard  <mark@klomp.org>
+
+	* include/gnu_java_awt_peer_gtk_GtkComponentPeer.h: Regenerated.
+
 2007-08-23  Francis Kung  <fkung@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkComponentPeer.java:
