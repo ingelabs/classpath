@@ -1,3 +1,9 @@
+2007-08-28  John X  <johnx@dodgit.com>
+
+	PR classpath/33206:
+	* java/math/BigInteger.java (isProbablePrime): Handle case of
+	large 'b'.
+
 2007-08-24  Mark Wielaard  <mark@klomp.org>
 
 	* include/gnu_java_awt_peer_gtk_GtkComponentPeer.h: Regenerated.
