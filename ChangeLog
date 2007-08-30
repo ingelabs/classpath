@@ -1,3 +1,10 @@
+2007-08-30  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* include/jni.h (jobjectRefType): New type.
+	(JNI_VERSION_1_6): Added.
+	(JNINativeInterface_): Added GetObjectRefType.
+	(_Jv_JNIEnv): Likewise.
+
 2007-08-28  John X  <johnx@dodgit.com>
 
 	PR classpath/33206:
