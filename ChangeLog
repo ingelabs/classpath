@@ -1,3 +1,8 @@
+2007-09-05  Andrew Haley  <aph@redhat.com>
+
+	* gnu/javax/crypto/jce/DiffieHellmanImpl.java (engineDoPhase):
+	Don't check the length of q.
+
 2007-08-30  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	* include/jni.h (jobjectRefType): New type.
