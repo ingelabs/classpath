@@ -1,3 +1,8 @@
+2007-09-08  Michael Koch  <konqueror@gmx.de>
+
+	* native/jni/midi-alsa/Makefile.am (AM_CFLAGS):
+	Removed @ERROR_CFLAGS@ to not fail build with GCC 4.2.
+
 2007-09-05  Andrew Haley  <aph@redhat.com>
 
 	* gnu/javax/crypto/jce/DiffieHellmanImpl.java (engineDoPhase):
