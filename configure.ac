@@ -485,11 +485,13 @@ if test "x${COMPILE_JNI}" = xyes; then
     if test "$no_x" = yes; then
         AC_MSG_ERROR([GTK+ peers requested but no X library available])
     fi
-    dnl We explicitly want the XTest Extension for Robot support.
+    dnl Check if we can link against the XTest library and set
+    dnl HAVE_XTEST accordingly.
     AC_CHECK_LIB([Xtst], [XTestQueryExtension],
-    		 [XTEST_LIBS="$XTEST_LIBS -lX11 -lXtst"],
-		 [AC_MSG_ERROR([libXtst NOT found, required for GdkRobot])],
-		 [${X_LIBS}])
+                 [AC_DEFINE(HAVE_XTEST, 1, [Define to 1 if you have libXtst.])[XTEST_LIBS="$XTEST_LIBS -X11 -lXtst"]],
+                 [true],
+                 [${X_LIBS}])
+
 
     PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.8 gthread-2.0 >= 2.2 gdk-pixbuf-2.0)
     PKG_CHECK_MODULES(FREETYPE2, freetype2)
