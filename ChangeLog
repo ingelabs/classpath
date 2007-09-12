@@ -1,3 +1,11 @@
+2007-09-12  Dalibor Topic  <robilad@kaffe.org>
+
+	* examples/Makefile.am, tools/Makefile.am 
+	(GLIBJ_CLASSPATH): Removed unnecessary paths to avoid 
+	using unix path separators on windows. 
+	(JCOMPILER) Don't add '.' to classpath for javac.
+	Fixes the build on Cygwin.
+
 2007-09-08  Michael Koch  <konqueror@gmx.de>
 
 	* native/jni/midi-alsa/Makefile.am (AM_CFLAGS):
