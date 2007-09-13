@@ -4,6 +4,11 @@
 	* native/fdlibm/fdlibm.h [_AIX]: Define _ALL_SOURCE
 	rather than _XOPEN_SOURCE to fix build on AIX 5.
 
+2007-09-12  Robert Schuster  <robertschuster@fsfe.org>
+
+	* native/jni/java-net/gnu_java_net_local_LocalSocketImpl.c:
+	Add #ifndef guard around definition of _GNU_SOURCE.
+
 2007-09-12  Dalibor Topic  <robilad@kaffe.org>
 
 	* examples/Makefile.am, tools/Makefile.am 
