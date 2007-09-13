@@ -1,3 +1,7 @@
+2007-09-14  Roman Kennke  <roman@kennke.org>
+
+	* .classpath: Include javah in Eclipse build.
+
 2007-09-13  David P Grove  <groved@us.ibm.com>
 
 	PR 30275
@@ -16,6 +20,42 @@
 	using unix path separators on windows. 
 	(JCOMPILER) Don't add '.' to classpath for javac.
 	Fixes the build on Cygwin.
+
+2007-09-11  Roman Kennke  <roman@kennke.org>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoGraphics2D.c
+	Removed unused includes.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_CairoSurface.c
+	Removed unused includes.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphics.c
+	Removed unusued excludes. Put Xrender includes in HAVE_XRENDER
+	conditional.
+	(flush): Use gdk_display_flush() instead of XFlush().
+	(initState): Use GDK/Cairo functions to get cairo_t object.
+	(initFromVolatile): Likewise.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphicsCopy.c
+	Removed unused includes.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkRobotPeer.c
+	Use HAVE_XTEST conditionals for code that uses XTest.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c
+	Removed unused includes.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkToolkit.c
+	Removed unused includes.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkVolatileImage.c
+	Removed unused includes.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
+	Removed unused includes. Rewrote frame-extents code to use
+	gdk_window_get_frame_extents() rather than the X window properties
+	directly.
+	* include/gnu_java_awt_peer_gtk_ComponentGraphics.h
+	(initFromVolatile): Removed width and height parameters.
+	* gnu/java/awt/peer/gtk/ComponentGraphics.java
+	(initFromVolatile): Remove width and height parameters.
+	* gnu/java/awt/peer/gtk/VolatileImageGraphics.java
+	(VolatileImageGraphics): Use initFromVolatile without width and
+	height.
+	* configure.ac: Check for presence of XTest, and define HAVE_XTEST
+	accordingly.
 
 2007-09-08  Michael Koch  <konqueror@gmx.de>
 
