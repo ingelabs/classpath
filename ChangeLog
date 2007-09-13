@@ -1,3 +1,9 @@
+2007-09-13  David P Grove  <groved@us.ibm.com>
+
+	PR 30275
+	* native/fdlibm/fdlibm.h [_AIX]: Define _ALL_SOURCE
+	rather than _XOPEN_SOURCE to fix build on AIX 5.
+
 2007-09-12  Dalibor Topic  <robilad@kaffe.org>
 
 	* examples/Makefile.am, tools/Makefile.am 
