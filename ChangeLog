@@ -1,3 +1,8 @@
+2007-09-18  Dalibor Topic  <robilad@kaffe.org>
+
+	* .classpath: Reverted escher-specific changes that break 
+	the build under Eclipse.
+
 2007-09-16  Mark Wielaard  <mark@klomp.org>
 
 	* examples/Makefile.am (JCOMPILER): Add tools.zip for ecj.
