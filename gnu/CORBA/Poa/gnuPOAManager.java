@@ -41,7 +41,6 @@ package gnu.CORBA.Poa;
 import org.omg.CORBA.BAD_INV_ORDER;
 import org.omg.CORBA.LocalObject;
 import org.omg.PortableInterceptor.NON_EXISTENT;
-import org.omg.PortableInterceptor.ObjectReferenceTemplate;
 import org.omg.PortableServer.POAManager;
 import org.omg.PortableServer.POAManagerPackage.AdapterInactive;
 import org.omg.PortableServer.POAManagerPackage.State;

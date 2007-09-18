@@ -37,8 +37,6 @@ exception statement from your version. */
 
 package java.security;
 
-import java.util.WeakHashMap;
-
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 

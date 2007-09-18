@@ -36,7 +36,6 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 package gnu.java.awt.peer.swing;
 
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;

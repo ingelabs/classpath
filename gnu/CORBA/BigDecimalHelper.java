@@ -45,7 +45,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import org.omg.CORBA.TypeCode;
 import org.omg.CORBA.TypeCodePackage.BadKind;
 
 /**

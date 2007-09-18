@@ -38,8 +38,6 @@ exception statement from your version. */
 
 package java.beans.beancontext;
 
-import gnu.classpath.NotImplementedException;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

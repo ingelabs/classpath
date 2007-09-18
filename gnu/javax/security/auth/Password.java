@@ -40,8 +40,6 @@ package gnu.javax.security.auth;
 
 import gnu.java.security.util.ExpirableObject;
 
-import javax.security.auth.DestroyFailedException;
-
 /**
  * Immutible, though destroyable, password class.
  *

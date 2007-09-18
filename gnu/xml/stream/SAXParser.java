@@ -66,7 +66,6 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.ext.Attributes2;
 import org.xml.sax.ext.DeclHandler;
-import org.xml.sax.ext.EntityResolver2;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.ext.Locator2;
 

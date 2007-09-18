@@ -36,8 +36,6 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 package gnu.javax.sound.sampled.gstreamer.io;
 
-import gnu.javax.sound.sampled.gstreamer.GStreamerMixer;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;

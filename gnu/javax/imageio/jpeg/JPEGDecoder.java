@@ -40,16 +40,12 @@ package gnu.javax.imageio.jpeg;
 import java.io.IOException;
 import java.nio.ByteOrder;
 
-import javax.imageio.*;
 import javax.imageio.plugins.jpeg.JPEGHuffmanTable;
 import javax.imageio.plugins.jpeg.JPEGQTable;
-import javax.imageio.spi.*;
-import javax.imageio.metadata.*;
 import javax.imageio.stream.ImageInputStream;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.awt.Point;
 import java.awt.Transparency;
 import java.awt.color.ColorSpace;
