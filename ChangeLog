@@ -1,5 +1,13 @@
 2007-09-18  Dalibor Topic  <robilad@kaffe.org>
 
+	* examples/gnu/classpath/examples/CORBA/SimpleCommunication/communication/StructureToPassHelper.java,
+	examples/gnu/classpath/examples/CORBA/SimpleCommunication/communication/StructureToReturnHelper.java, 
+	examples/gnu/classpath/examples/CORBA/SimpleCommunication/communication/TreeNodeHelper.java,
+	examples/gnu/classpath/examples/CORBA/SimpleCommunication/communication/WeThrowThisExceptionHelper.java,
+	examples/gnu/classpath/examples/awt/AnimationApplet.java: Removed unused imports.
+
+2007-09-18  Dalibor Topic  <robilad@kaffe.org>
+
 	* .classpath: Reverted escher-specific changes that break 
 	the build under Eclipse.
 
