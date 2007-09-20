@@ -1,3 +1,113 @@
+2007-09-20  Roman Kennke  <roman.kennke@aicas.com>
+
+	* gnu/java/awt/font/GNUGlyphVector.java
+	(cleanOutline): New field, caches the untransformed outline.
+	(getOutline()): No need to validate here. Already done in
+	getOutline(float,float).
+	(getOutline(float,float)): Cache untransformed outlines. Protect
+	returned shape from modification by wrapping in ShapeWrapper
+	object.
+	* gnu/java/awt/font/OpenTypeFontPeer.java: New class. Implements
+	ClasspathFontPeer for OpenType fonts.
+	* gnu/java/awt/java2d/AbstractGraphics2D.java
+	(DEFAULT_TEXT_AA): New constant/property for controlling
+	default anti-aliasing for text.
+	(GC_CACHE_SIZE): New constant for the size of the glyph vector
+	cache.
+	(shapeCache): Don't make shapeCache thread local. This wouldn't
+	gain much, because the event dispatch thread is restarted quite
+	often.
+	(scanlineConverters): Don't make scanlineConverters thread local,
+	but instead pool them into a list.
+	(gvCache): New cache for glyph vectors.
+	(searchTextKey): New static field, a shared key used for GV caching.
+	(drawString): Cache glyph vectors.
+	(getFontRenderContext): Protect the current transform from beeing
+	changed.
+	(clone): Check clip for null when cloning.
+	(drawLine): Use shared shape cache. No need for calling a method here.
+	(drawRect): Likewise. Add translation to rectangle coordinates.
+	(fillRect): Use shared shape cache. No need for calling a method here.
+	(drawRoundRect): Likewise.
+	(fillRoundRect): Likewise.
+	(drawOval): Likewise.
+	(fillOval): Likewise.
+	(drawArc): Likewise.
+	(fillArc): Likewise.
+	(drawPolyline): Likewise.
+	(drawPolygon): Likewise.
+	(fillPolygon): Likewise.
+	(fillShape): Check property for default text AA. Set Y resolution.
+	(rawDrawLine): Use shared shape cache. No need for calling a method
+	here.
+	(rawDrawRect): Likewise.
+	(rawFillRect): Likewise.
+	(rawDrawString): Removed. Subclasses override drawString() instead.
+	(getShapeCache): Removed. No longer needed.
+	(getScanlineConverter): New helper method for pooling
+	scanline converters.
+	(freeScanlineConverter): New helper method for pooling
+	scanline converters.
+	* gnu/java/awt/java2d/PixelCoverage.java: New class. Used by the
+	reworked scanline converter.
+	* gnu/java/awt/java2d/ScanlineConverter.java
+	(Y_RESOLUTION): Removed. The Y resolution is now specified
+	by the caller.
+	(yResolution): New field. Stores the Y resolution.
+	(renderShape): Take y resolution as argument.
+	(setResolution): Take y resolution as argument.
+	* gnu/java/awt/java2d/ShapeWrapper.java: New class. Protects
+	shape objects from modification by application code.
+	* gnu/java/awt/java2d/TextCacheKey.java: New class. Used for
+	caching GlyphVectors.
+	* gnu/java/awt/peer/x/XFontPeer2.java: Removed. This is now
+	implemented in OpenTypeFontPeer now.
+	* gnu/java/awt/peer/x/XEventPump.java
+	(handleEvent): Check insets.
+	* gnu/java/awt/peer/x/XFontPeer.java
+	Changed class and method names for changed Escher API.
+	(clinit): Use font properties from xfonts.properties.
+	(canDisplay): Changed to take int argument.
+	* gnu/java/awt/peer/x/XFramePeer.java
+	(XFramePeer): Set the title of the frame on creation time.
+	(setTitle): Implemented.
+	* gnu/java/awt/peer/x/XGraphics2D.java
+	(imageCache): New field. Caches native representations for
+	images.
+	(drawString): New method. Optimized version for X fonts.
+	(fillScanline): Removed.
+	(fillScanlineAA): Removed.
+	(rawDrawImage): Optimized drawing for ZPixmap-backed images.
+	(rawDrawRect): Optimized rectangle drawing.
+	(renderScanline): Added compositing code.
+	(setFont): Overridden for X font support.
+	(setPaint): Added TODO.
+	* gnu/java/awt/peer/x/XGraphicsConfiguration.java
+	(getSize): New helper method for XToolkit.
+	(getResolution): New helper method for XToolkit.
+	* gnu/java/awt/peer/x/XGraphicsEnvironment.java
+	(getAvailableFontFamilyNames): Implemented.
+	* gnu/java/awt/peer/x/XToolkit.java
+	(fontCache): New field for caching fonts.
+	(getClasspathFontPeer): Cache fonts.
+	(getScreenSize): Implemented.
+	(getScreenResolution): Implemented.
+	(getFontList): Implemented.
+	(isModalExclusionTypeSupported): New method.
+	(isModalityTypeSupported): New method.
+	* gnu/java/awt/peer/x/XWindowPeer.java
+	(insets): New field for storing the insets of the frame.
+	(XWindowPeer): Set correct decoration.
+	(getGraphics): Set foreground, background and font.
+	(show): Determine the correct frame extents.
+	(reshape): Only resize when not inside callback.
+	(insets): Implemented correctly.
+	(getFontMetrics): Use OpenTypeFontPeer.
+	* gnu/java/awt/peer/x/ZPixmapDataBuffer.java
+	(getZPixmap): New method. This is used in XGraphics2D for drawing
+	the buffer.
+	* gnu/java/util/LRUCache.java: New class. Implements an LRU cache.
+
 2007-09-19  Dalibor Topic  <robilad@kaffe.org>
 
         * native/jni/native-lib/Makefile.am 

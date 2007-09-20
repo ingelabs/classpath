@@ -51,6 +51,7 @@ import java.awt.FileDialog;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Frame;
+import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
@@ -117,6 +118,7 @@ import javax.imageio.ImageIO;
 import gnu.classpath.SystemProperties;
 import gnu.java.awt.ClasspathToolkit;
 import gnu.java.awt.EmbeddedWindow;
+import gnu.java.awt.font.OpenTypeFontPeer;
 import gnu.java.awt.peer.ClasspathFontPeer;
 import gnu.java.awt.peer.EmbeddedWindowPeer;
 import gnu.java.awt.peer.swing.SwingCanvasPeer;
@@ -155,7 +157,8 @@ public class XToolkit
   /**
    * The cached fonts.
    */
-  private WeakHashMap fontCache = new WeakHashMap();
+  private WeakHashMap<String,ClasspathFontPeer> fontCache =
+    new WeakHashMap<String,ClasspathFontPeer>();
 
   public XToolkit()
   {
@@ -179,21 +182,32 @@ public class XToolkit
    */
   public ClasspathFontPeer getClasspathFontPeer(String name, Map attrs)
   {
-    String canonical = XFontPeer2.encodeFont(name, attrs);
     ClasspathFontPeer font;
-    if (!fontCache.containsKey(canonical))
+    if ("true".equals(System.getProperty("escherpeer.usexfonts")))
       {
-        String graphics2d =
-          SystemProperties.getProperty("gnu.xawt.graphics2d");
-        //if (graphics2d != null && graphics2d.equals("gl"))
-          font = new XFontPeer2(name, attrs);
-//        else
-//          font = new XFontPeer(name, attrs);
-        fontCache.put(canonical, font);
+        String canonical = XFontPeer.encodeFont(name, attrs);
+        if (!fontCache.containsKey(canonical))
+          {
+            font = new XFontPeer(name, attrs);
+            fontCache.put(canonical, font);
+          }
+        else
+          {
+            font = fontCache.get(canonical);
+          }
       }
     else
       {
-        font = (ClasspathFontPeer) fontCache.get(canonical);
+        String canonical = OpenTypeFontPeer.encodeFont(name, attrs);
+        if (!fontCache.containsKey(canonical))
+          {
+            font = new OpenTypeFontPeer(name, attrs);
+            fontCache.put(canonical, font);
+          }
+        else
+          {
+            font = fontCache.get(canonical);
+          }
       }
     return font;
   }
@@ -338,14 +352,22 @@ public class XToolkit
 
   public Dimension getScreenSize()
   {
-    // FIXME: This is only a hack to get some apps working.
-    return new Dimension(1024, 768);
+    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    GraphicsDevice gd = ge.getDefaultScreenDevice();
+    GraphicsConfiguration gc = gd.getDefaultConfiguration();
+    XGraphicsConfiguration xgc = (XGraphicsConfiguration) gc;
+
+    return xgc.getSize();
   }
 
   public int getScreenResolution()
   {
-    // TODO: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented.");
+    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    GraphicsDevice gd = ge.getDefaultScreenDevice();
+    GraphicsConfiguration gc = gd.getDefaultConfiguration();
+    XGraphicsConfiguration xgc = (XGraphicsConfiguration) gc;
+
+    return xgc.getResolution();
   }
 
   /**
@@ -363,8 +385,8 @@ public class XToolkit
 
   public String[] getFontList()
   {
-    // TODO: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented.");
+    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    return ge.getAvailableFontFamilyNames();
   }
 
   public FontMetrics getFontMetrics(Font name)
@@ -602,19 +624,17 @@ public class XToolkit
   }
 
   @Override
-  public boolean isModalExclusionTypeSupported
-                 (Dialog.ModalExclusionType modalExclusionType)
+  public boolean isModalExclusionTypeSupported(ModalExclusionType modalExclusionType)
   {
-    // TODO: Implement properly.
+    // TODO Auto-generated method stub
     return false;
   }
 
   @Override
-  public boolean isModalityTypeSupported(Dialog.ModalityType modalityType)
+  public boolean isModalityTypeSupported(ModalityType modalityType)
   {
-    // TODO: Implement properly.
+    // TODO Auto-generated method stub
     return false;
   }
-
 
 }

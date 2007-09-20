@@ -35,7 +35,7 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package gnu.java.awt.peer.x;
+package gnu.java.awt.font;
 
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -54,15 +54,16 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
-import gnu.java.awt.font.FontDelegate;
-import gnu.java.awt.font.FontFactory;
 import gnu.java.awt.peer.ClasspathFontPeer;
 
-public class XFontPeer2
+public class OpenTypeFontPeer
   extends ClasspathFontPeer
 {
 
@@ -70,10 +71,21 @@ public class XFontPeer2
    * The font mapping as specified in the file fonts.properties.
    */
   private static Properties fontProperties;
+
+  /**
+   * The available font family names.
+   */
+  private static Set<String> availableFontNames;
+
+  /**
+   * Font spec to file mapping.
+   */
+  private static Map<String,Map<String,String>> fontToFileMap;
+
   static
   {
     fontProperties = new Properties();
-    InputStream in = XFontPeer2.class.getResourceAsStream("fonts.properties");
+    InputStream in = OpenTypeFontPeer.class.getResourceAsStream("fonts.properties");
     try
       {
         fontProperties.load(in);
@@ -234,12 +246,14 @@ public class XFontPeer2
 
   private FontDelegate fontDelegate;
 
-  XFontPeer2(String name, int style, int size)
+  public OpenTypeFontPeer(String name, int style, int size)
   {
     super(name, style, size);
     try
       {
-        File fontfile = new File("/usr/share/fonts/truetype/freefont/FreeSans.ttf");
+        String fontSpec = encodeFont(name, style);
+        String filename = mapFontToFilename(fontSpec);
+        File fontfile = new File(filename);
         FileInputStream in = new FileInputStream(fontfile);
         FileChannel ch = in.getChannel();
         ByteBuffer buffer = ch.map(FileChannel.MapMode.READ_ONLY, 0,
@@ -252,12 +266,14 @@ public class XFontPeer2
       }
   }
 
-  XFontPeer2(String name, Map atts)
+  public OpenTypeFontPeer(String name, Map atts)
   {
     super(name, atts);
     try
       {
-        File fontfile = new File("/usr/share/fonts/truetype/freefont/FreeSans.ttf");
+        String fontSpec = encodeFont(name, atts);
+        String filename = mapFontToFilename(fontSpec);
+        File fontfile = new File(filename);
         FileInputStream in = new FileInputStream(fontfile);
         FileChannel ch = in.getChannel();
         ByteBuffer buffer = ch.map(FileChannel.MapMode.READ_ONLY, 0,
@@ -371,18 +387,13 @@ public class XFontPeer2
    *
    * @return the encoded font description
    */
-  static String encodeFont(String name, Map atts)
+  public static String encodeFont(String name, Map atts)
   {
     String family = name;
     if (family == null || family.equals(""))
       family = (String) atts.get(TextAttribute.FAMILY);
     if (family == null)
       family = "SansSerif";
-
-    int size = 12;
-    Float sizeFl = (Float) atts.get(TextAttribute.SIZE);
-    if (sizeFl != null)
-      size = sizeFl.intValue();
 
     int style = 0;
     // Detect italic attribute.
@@ -395,49 +406,43 @@ public class XFontPeer2
     if (weight != null && weight.compareTo(TextAttribute.WEIGHT_REGULAR) > 0)
       style |= Font.BOLD;
 
-    return encodeFont(name, style, size);
+    return encodeFont(name, style);
   }
 
   /**
-   * Encodes a font name + style + size specification into a X logical font
-   * description (XLFD) as described here:
-   *
-   * http://www.meretrx.com/e93/docs/xlfd.html
+   * Encodes a font name + style into a combined string.
    *
    * This is implemented to look up the font description in the
    * fonts.properties of this package.
    *
    * @param name the font name
    * @param style the font style
-   * @param size the font size
    *
    * @return the encoded font description
    */
-  static String encodeFont(String name, int style, int size)
+  static String encodeFont(String name, int style)
   {
     StringBuilder key = new StringBuilder();
     key.append(validName(name));
-    key.append('.');
+    key.append('/');
     switch (style)
     {
       case Font.BOLD:
-        key.append("bold");
+        key.append("b");
         break;
       case Font.ITALIC:
-        key.append("italic");
+        key.append("i");
         break;
       case (Font.BOLD | Font.ITALIC):
-        key.append("bolditalic");
+        key.append("bi");
         break;
       case Font.PLAIN:
       default:
-        key.append("plain");
+        key.append("p");
       
     }
 
-    String protoType = fontProperties.getProperty(key.toString());
-    int s = size;
-    return protoType.replaceFirst("%d", String.valueOf(s * 10));
+    return key.toString();
   }
 
   /**
@@ -451,18 +456,108 @@ public class XFontPeer2
   static String validName(String name)
   {
     String retVal;
-    if (name.equalsIgnoreCase("sansserif")
-        || name.equalsIgnoreCase("serif")
-        || name.equalsIgnoreCase("monospaced")
-        || name.equalsIgnoreCase("dialog")
-        || name.equalsIgnoreCase("dialoginput"))
+    Set<String> fontNames = getFontNames();
+    if (fontNames.contains(name))
       {
-        retVal = name.toLowerCase();
+        retVal = name;
       }
     else
       {
-        retVal = "sansserif";
+        retVal = "SansSerif";
       }
     return retVal;
+  }
+
+  public static String[] getAvailableFontFamilyNames(Locale l)
+  {
+    Set<String> fontNames = getFontNames();
+    int numNames = fontNames.size();
+    String[] ret = fontNames.toArray(new String[numNames]);
+    return ret;
+  }
+
+  private static synchronized Set<String> getFontNames()
+  {
+    if (availableFontNames == null)
+      {
+        HashSet<String> familyNames = new HashSet<String>();
+        for (Object o : fontProperties.keySet())
+          {
+            if (o instanceof String)
+              {
+                String key = (String) o;
+                int slashIndex = key.indexOf('/');
+                String name = key.substring(0, slashIndex);
+                familyNames.add(name);
+              }
+          }
+        availableFontNames = familyNames;
+      }
+    return availableFontNames;
+  }
+
+  /**
+   * Takes a font spec as returned by {@link #encodeFont(String, int)},
+   * and returns the corresponding font file, or <code>null</code> if no such
+   * font mapping exists.
+   *
+   * @param fontSpec font name and style as returned by
+   *        {@link #encodeFont(String, int)}
+   *
+   * @return filename of the corresponding font file
+   */
+  private synchronized String mapFontToFilename(String fontSpec)
+  {
+    if (fontToFileMap == null)
+      {
+        fontToFileMap = new HashMap<String,Map<String,String>>();
+
+        // Initialize font spec to file mapping according to the
+        // font.properties.
+        for (Object o : fontProperties.keySet())
+          {
+            if (o instanceof String)
+              {
+                String key = (String) o;
+                int slashIndex = key.indexOf('/');
+                String name = key.substring(0, slashIndex);
+                String spec = key.substring(slashIndex + 1);
+                // Handle aliases in the 2nd pass below.
+                if (! spec.equals("a"))
+                  {
+                    Map<String,String> specToFileMap = fontToFileMap.get(name);
+                    if (specToFileMap == null)
+                      {
+                        specToFileMap = new HashMap<String,String>();
+                        fontToFileMap.put(name, specToFileMap);
+                      }
+                    specToFileMap.put(spec, fontProperties.getProperty(key));
+                  }
+              }
+          }
+        // 2nd pass for handling aliases.
+        for (Object o : fontProperties.keySet())
+          {
+            if (o instanceof String)
+              {
+                String key = (String) o;
+                int slashIndex = key.indexOf('/');
+                String name = key.substring(0, slashIndex);
+                String spec = key.substring(slashIndex + 1);
+                // Handle aliases in the 2nd pass below.
+                if (spec.equals("a"))
+                  {
+                    String alias = fontProperties.getProperty(key);
+                    Map<String,String> specToFileMap = fontToFileMap.get(alias);
+                    fontToFileMap.put(name, specToFileMap);
+                  }
+              }
+          }
+      }
+    // Look up font file.
+    int slashIndex = fontSpec.indexOf('/');
+    String name = fontSpec.substring(0, slashIndex);
+    String spec = fontSpec.substring(slashIndex + 1);
+    return fontToFileMap.get(name).get(spec);
   }
 }
