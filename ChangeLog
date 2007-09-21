@@ -1,3 +1,18 @@
+2007-09-21  Dalibor Topic  <robilad@kaffe.org>
+
+	* gnu/CORBA/CDR/AbstractCdrInput.java,
+	gnu/CORBA/CDR/Vio.java,
+	gnu/CORBA/DynAn/gnuDynUnion.java,
+	gnu/CORBA/GIOP/MessageHeader.java,
+	gnu/CORBA/IorDelegate.java,
+	gnu/java/security/key/dss/FIPS186.java,
+	gnu/javax/crypto/key/dh/RFC2631.java,
+	gnu/javax/swing/text/html/parser/support/Parser.java,
+	gnu/javax/swing/text/html/parser/support/low/ReaderTokenizer.java,
+	gnu/xml/aelfred2/XmlParser.java,
+	java/awt/im/InputContext.java:
+	Removed unused labels.
+
 2007-09-21  Roman Kennke  <roman.kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicGraphicsUtils.java

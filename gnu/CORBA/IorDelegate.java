@@ -173,7 +173,7 @@ public class IorDelegate extends SimpleDelegate
     throws ApplicationException, RemarshalException
   {
     StreamBasedRequest request = (StreamBasedRequest) output;
-    Forwardings: while (true)
+    while (true)
       {
         try
           {

@@ -654,7 +654,7 @@ public abstract class AbstractCdrInput
 
         byte[] r = new byte[l];
         int n = 0;
-        reading: while (n < r.length)
+        while (n < r.length)
           {
             n += read(r, n, r.length - n);
           }

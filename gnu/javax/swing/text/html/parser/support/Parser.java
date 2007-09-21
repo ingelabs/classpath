@@ -523,8 +523,7 @@ public class Parser
     restOfTag(false, name, start);
 
     buffer.setLength(0);
-
-    script: 
+ 
     while (!SCRIPT_CLOSE.matches(this))
       {
         append(getNextToken());
@@ -606,8 +605,7 @@ public class Parser
     restOfTag(false, name, start);
 
     buffer.setLength(0);
-
-    style: 
+ 
     while (!STYLE_CLOSE.matches(this))
       {
         append(getNextToken());

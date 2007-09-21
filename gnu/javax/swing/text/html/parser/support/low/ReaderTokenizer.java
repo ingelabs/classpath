@@ -247,8 +247,7 @@ public class ReaderTokenizer
   {
     if (numberOfTokens <= 0)
       return;
-
-    reading: 
+ 
     for (int i = 0; i < numberOfTokens; i++)
       readToken();
   }

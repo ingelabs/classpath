@@ -217,7 +217,6 @@ public class InputContext
         return true;
       }
     InputMethod next = (InputMethod) recent.get(locale);
-  outer:
     if (next != null)
       for (int i = 0, limit = descriptors.size(); i < limit; i++)
         {

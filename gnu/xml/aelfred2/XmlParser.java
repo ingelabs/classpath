@@ -3095,7 +3095,6 @@ loop:
     nameBufferPos = 0;
 
     // Read the first character.
-loop:
     while (true)
       {
         c = readCh();
