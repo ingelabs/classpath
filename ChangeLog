@@ -1,3 +1,10 @@
+2007-09-21  Roman Kennke  <roman.kennke@aicas.com>
+
+	* java/awt/Font.java
+	(hashCode): New field. Stores a cached hash code.
+	(hashCode()): Re-implemented. Don't create new string here, instead
+	make hashcode of name, style, size and transform. Cache hashcode.
+
 2007-09-20  Roman Kennke  <roman.kennke@aicas.com>
 
 	* gnu/java/awt/font/GNUGlyphVector.java
