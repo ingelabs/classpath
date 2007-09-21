@@ -112,7 +112,15 @@ final class LightweightDispatcher
     if (event instanceof MouseEvent)
       {
         MouseEvent mouseEvent = (MouseEvent) event;
-        return handleMouseEvent(mouseEvent);
+        /**
+         * The lightweight dispatching relies on the integrity of the
+         * component tree (e.g. isShowing(), getLocationOnScreen(), etc),
+         * therefore we must synchronize on the tree lock here.
+         */
+        synchronized (mouseEvent.getComponent().getTreeLock())
+          {
+            return handleMouseEvent(mouseEvent);
+          }
       }
     return false;
   }
@@ -286,7 +294,8 @@ final class LightweightDispatcher
   private void redispatch(MouseEvent ev, Component target, int id)
   {
     Component source = ev.getComponent();
-    if (target != null)
+    assert target != null;
+    if (target.isShowing())
       {
         // Translate coordinates.
         int x = ev.getX();
