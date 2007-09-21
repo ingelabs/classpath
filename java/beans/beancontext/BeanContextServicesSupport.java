@@ -86,11 +86,6 @@ public class BeanContextServicesSupport
 
     private BeanContextServiceProvider provider;
 
-    private BCSSProxyServiceProvider(BeanContextServiceProvider p)
-    {
-      provider = p;
-    }
-
     public Iterator getCurrentServiceSelectors (BeanContextServices bcs,
                                                 Class serviceClass)
     {

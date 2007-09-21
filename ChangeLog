@@ -1,5 +1,12 @@
 2007-09-21  Dalibor Topic  <robilad@kaffe.org>
 
+	* gnu/java/rmi/server/RMIClassLoaderImpl.java,
+	java/beans/beancontext/BeanContextServicesSupport.java,
+	java/lang/management/ThreadInfo.java:
+	Removed unused private constructors.
+
+2007-09-21  Dalibor Topic  <robilad@kaffe.org>
+
 	* gnu/CORBA/CDR/AbstractCdrInput.java,
 	gnu/CORBA/CDR/Vio.java,
 	gnu/CORBA/DynAn/gnuDynUnion.java,
