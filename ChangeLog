@@ -1,5 +1,10 @@
 2007-09-21  Roman Kennke  <roman.kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicGraphicsUtils.java
+	(drawStringUnderlineCharAt): Fix Y location of underline.
+
+2007-09-21  Roman Kennke  <roman.kennke@aicas.com>
+
 	* java/awt/LightweightDispatcher.java
 	(dispatchEvent): Lock the component's tree to avoid threading
 	problems.
