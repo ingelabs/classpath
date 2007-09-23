@@ -1,3 +1,8 @@
+2007-09-23  Mark Wielaard  <mark@klomp.org>
+
+	* doc/www.gnu.org/include/layout.wml: Fix Planet Classpath link.
+	* doc/www.gnu.org/faq/faq.wml: Fix typo prorietary.
+
 2007-09-22  Paul Jenner  <psj@harker.dyndns.org>
 
 	* doc/www.gnu.org/include/layout.wml: Added link to Wiki.

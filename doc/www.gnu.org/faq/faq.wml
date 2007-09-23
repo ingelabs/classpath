@@ -503,7 +503,7 @@ The file <code>lib/standard.omit</code> controls which files are omitted from th
 
 </faq>
 
-<faq question="Is it possible to use Classpath in a prorietary VM?">
+<faq question="Is it possible to use Classpath in a proprietary VM?">
 
 <p>Only the proprietary VM's vendor can make it work with GNU Classpath, by the nature of the VM being proprietary. GNU Classpath provides well documented and widely used interfaces for interfacing with runtimes. It's up to proprietary VM vendors to make their products work with GNU Classpath, if they wish to do so. If you, as a customer, want the runtime to use GNU Classpath, please talk to your proprietary software vendor. 
 

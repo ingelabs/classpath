@@ -96,7 +96,7 @@
 <menuitem><createlink name="FAQ" url="faq/faq.html"></menuitem>
 <menuitem><createlink name="News" url="home.html#news"></menuitem>
 <menuitem><createlink name="Events" url="events/events.html"></menuitem>
-<menuitem><createlink name="Planet Classpath" url="http://classpath.wildebeest.org/planet/"></menuitem>
+<menuitem><createlink name="Planet Classpath" url="http://planet.classpath.org/"></menuitem>
 <menuitem><createlink name="Classpath Wiki" url="http://developer.classpath.org/mediation/"></menuitem>
 
 <menutitle>Success Stories</menutitle>
