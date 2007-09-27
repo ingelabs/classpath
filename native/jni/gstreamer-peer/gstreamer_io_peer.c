@@ -57,8 +57,6 @@
 #include "gst_classpath_src.h"
 #include "gst_input_stream.h"
 
-#define _GST_MALLOC_SIZE_ 256
-
 /* for caching */
 static jfieldID fileFID = NULL;
 static jfieldID pointerDataID = NULL;
@@ -418,11 +416,11 @@ static jboolean process_audio (GstElement *source, JNIEnv *env, jobject header)
  
   /* free stuff */
   gst_element_set_state (pipeline, GST_STATE_NULL);
-
+   
   free_properties (properties);
   
   gst_object_unref (GST_OBJECT (pipeline));
-
+ 
   return result;
 }
 

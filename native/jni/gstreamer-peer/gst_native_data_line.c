@@ -50,7 +50,7 @@ static jfieldID pointerDataFID = NULL;
 
 /* ************************************************************************** */
 
-static GstElement *setup_pipeline (GstNativePipeline *jpipeline, char *file);
+static GstElement *setup_pipeline (GstNativePipeline *jpipeline, int fd);
 static void
 gst_newpad (GstElement *decodebin, GstPad *pad, gboolean last, gpointer data);
 
@@ -106,13 +106,13 @@ Java_gnu_javax_sound_sampled_gstreamer_lines_GstNativeDataLine_setup_1sink_1pipe
     return JNI_FALSE;
  
   pipeline = setup_pipeline (jpipeline,
-                             gst_native_pipeline_get_pipeline_name (jpipeline));
+                             gst_native_pipeline_get_pipeline_fd (jpipeline));
   if (pipeline == NULL)
     return JNI_FALSE;
    
   /* add the audio sink to the pipeline */
   /* TODO: hardcoded values */
-  sink = gst_element_factory_make ("alsasink", "alsa-output");
+  sink = gst_element_factory_make ("autoaudiosink", "alsa-output");
   if (sink == NULL)
     {
       gst_object_unref(GST_OBJECT(pipeline));
@@ -176,14 +176,14 @@ Java_gnu_javax_sound_sampled_gstreamer_lines_GstNativeDataLine_setup_1sink_1pipe
 
 /* ************************************************************************** */
 
-static GstElement *setup_pipeline (GstNativePipeline *jpipeline, char *file)
+static GstElement *setup_pipeline (GstNativePipeline *jpipeline, int fd)
 {
   GstElement *decodebin = NULL;
   GstElement *source = NULL;
   
   GstElement *pipeline = NULL;
   
-  if (file == NULL)
+  if (fd < 0)
     return NULL;
   
   pipeline = gst_pipeline_new ("java sound pipeline");
@@ -200,7 +200,7 @@ static GstElement *setup_pipeline (GstNativePipeline *jpipeline, char *file)
       return NULL;
     }
     
-  source = gst_element_factory_make ("filesrc", "source");
+  source = gst_element_factory_make ("fdsrc", "source");
   if (source == NULL)
     {
       gst_object_unref(GST_OBJECT(pipeline));
@@ -210,7 +210,7 @@ static GstElement *setup_pipeline (GstNativePipeline *jpipeline, char *file)
       g_warning ("unable to create a source");
       return JNI_FALSE;
     }
-  g_object_set (G_OBJECT (source), "location", file, NULL);
+  g_object_set (G_OBJECT (source), "fd", fd, NULL);
   
   gst_bin_add_many (GST_BIN (pipeline), source, decodebin, NULL);
   gst_element_link (source, decodebin);
@@ -229,19 +229,21 @@ gst_newpad (GstElement *decodebin, GstPad *pad, gboolean last, gpointer data)
 
   /* only link once */
   audiopad = gst_element_get_pad (audio, "sink");
-  if (GST_PAD_IS_LINKED (audiopad)) {
-    g_object_unref (audiopad);
-    return;
-  } 
+  if (GST_PAD_IS_LINKED (audiopad))
+    {
+      g_object_unref (audiopad);
+      return;
+    } 
   
   /* check media type */
   caps = gst_pad_get_caps (pad);
   str = gst_caps_get_structure (caps, 0);
-  if (!g_strrstr (gst_structure_get_name (str), "audio")) {
-    gst_caps_unref (caps);
-    gst_object_unref (audiopad);
-    return;
-  } 
+  if (!g_strrstr (gst_structure_get_name (str), "audio"))
+    {
+      gst_caps_unref (caps);
+      gst_object_unref (audiopad);
+      return;
+    } 
   gst_caps_unref (caps);
   
   /* link'n'play */

@@ -41,6 +41,24 @@ exception statement from your version. */
 #include <string.h>
 #include <stdlib.h>
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/wait.h>
+
+#include <unistd.h>
+
+#ifdef HAVE_FCNTL_H
+#include <fcntl.h>
+#endif /* HAVE_FCNTL_H */
+
+#if defined(HAVE_SYS_IOCTL_H)
+#define BSD_COMP /* Get FIONREAD on Solaris2 */
+#include <sys/ioctl.h>
+#endif
+#if defined(HAVE_SYS_FILIO_H) /* Get FIONREAD on Solaris 2.5 */
+#include <sys/filio.h>
+#endif
+
 #include <gdk/gdk.h>
 #include <glib.h>
 
@@ -57,12 +75,34 @@ static jmethodID pointerConstructorMID = NULL;
 static jfieldID pipelineFID = NULL;
 static jfieldID pointerDataFID = NULL;
 static jfieldID nameFID = NULL;
+static jfieldID capacityFID = NULL;
 
+/*
+ * Needed to compute the size of the data still available for processing in the
+ * pipeline. We give a default here but this will be overwritten by the
+ * detection routines.
+ */
+static long GST_DETECTED_PIPE_CAPACITY = 65536;
+
+/*
+ * Note: the Java code uses enum classes, these are not mapped into constants
+ * by the javah tool, changes to these values should be reflected in the Java
+ * side.
+ */
 enum
 {
   PLAY,
   PAUSE,
   STOP
+};
+
+/*
+ * Defined as constants in the Java code, hence mapped by javah.
+ */
+enum
+{
+  READ = gnu_javax_sound_sampled_gstreamer_lines_GstPipeline_READ,
+  WRITE = gnu_javax_sound_sampled_gstreamer_lines_GstPipeline_WRITE
 };
 
 struct _GstNativePipelinePrivate
@@ -72,13 +112,20 @@ struct _GstNativePipelinePrivate
   jclass PointerClass;
   
   jobject jni_pipeline;
+
   char *name;
+  int fd;
+ 
   GstElement *pipeline;
 };
 
 /* ************************************************************************** */
-
+/*
+static void gst_native_pipeline_clean (GstNativePipeline *self);*/
+static char *create_name (void);
 static void init_pointer_IDs (JNIEnv* env);
+static jint get_free_space (int fd);
+static void detect_pipe_max (void);
 
 /* ************************************************************************** */
 
@@ -91,8 +138,9 @@ Java_gnu_javax_sound_sampled_gstreamer_lines_GstPipeline_init_1id_1cache
   pipelineFID = (*env)->GetFieldID (env, clazz, "pipeline",
                                     "Lgnu/classpath/Pointer;");
   nameFID = (*env)->GetFieldID (env, clazz, "name", "Ljava/lang/String;");
+  capacityFID = (*env)->GetFieldID (env, clazz, "capacity", "J");
 
-  init_pointer_IDs(env);
+  init_pointer_IDs (env);
 }
 
 JNIEXPORT void JNICALL
@@ -138,6 +186,9 @@ Java_gnu_javax_sound_sampled_gstreamer_lines_GstPipeline_init_1instance
       return;
     }
 
+  GST_DETECTED_PIPE_CAPACITY = (long) (*env)->GetLongField(env, pipeline,
+                                                           capacityFID);
+  
   /* fill the object */
   (*env)->GetJavaVM(env, &_pipeline->priv->vm);
   _pipeline->priv->jni_pipeline = (*env)->NewGlobalRef(env, pipeline);
@@ -173,8 +224,7 @@ Java_gnu_javax_sound_sampled_gstreamer_lines_GstPipeline_init_1instance
 
 JNIEXPORT jboolean JNICALL
 Java_gnu_javax_sound_sampled_gstreamer_lines_GstPipeline_set_1state
-  (JNIEnv *env, jclass clazz __attribute__ ((unused)), 
-   jobject pointer, jint state)
+  (JNIEnv *env, jclass clazz, jobject pointer, jint state)
 {
   GstNativePipeline *jpipeline = NULL;
   jboolean result = JNI_FALSE;
@@ -213,6 +263,7 @@ Java_gnu_javax_sound_sampled_gstreamer_lines_GstPipeline_set_1state
           {
             cpio_removeFile (jpipeline->priv->name);
             g_free (jpipeline->priv->name);
+            jpipeline->priv->name = NULL;
           }
 #endif /* WITHOUT_FILESYSTEM */
   
@@ -228,6 +279,45 @@ Java_gnu_javax_sound_sampled_gstreamer_lines_GstPipeline_set_1state
     }
     
   return result;
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_javax_sound_sampled_gstreamer_lines_GstPipeline_open_1native_1pipe
+  (JNIEnv *env, jclass clazz, jobject pointer, jint mode)
+{
+  GstNativePipeline *jpipeline = NULL;
+  
+  jpipeline = (GstNativePipeline *) get_object_from_pointer (env, pointer,
+                                                             pointerDataFID);
+  switch (mode)
+    {
+      case (READ):
+        jpipeline->priv->fd =
+            open (jpipeline->priv->name, O_RDONLY | O_NONBLOCK);
+        break;
+      
+      case (WRITE):
+        /* TODO: no-op currently */
+        break;
+    }
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_javax_sound_sampled_gstreamer_lines_GstPipeline_close_1native_1pipe
+  (JNIEnv *env, jclass clazz, jobject pointer)
+{
+#ifndef WITHOUT_FILESYSTEM
+  GstNativePipeline *jpipeline = NULL;
+  jpipeline = (GstNativePipeline *) get_object_from_pointer (env, pointer,
+                                                             pointerDataFID);
+  /* kill the named pipe */
+  if (jpipeline->priv->name)
+    {
+      cpio_removeFile (jpipeline->priv->name);
+      g_free (jpipeline->priv->name);
+      jpipeline->priv->name = NULL;
+    }
+#endif /* WITHOUT_FILESYSTEM */
 }
 
 JNIEXPORT jboolean JNICALL
@@ -247,10 +337,10 @@ Java_gnu_javax_sound_sampled_gstreamer_lines_GstPipeline_create_1named_1pipe
   if (jpipeline == NULL)
     return JNI_FALSE;                                                        
   
-  jpipeline->priv->name = tempnam (NULL, "cpgst");
+  jpipeline->priv->name = create_name ();
   if (jpipeline->priv->name == NULL)
     return JNI_FALSE;
-    
+   
   if (mkfifo (jpipeline->priv->name, 0600) < 0)
     {
       if (jpipeline->priv->name != NULL)
@@ -270,18 +360,59 @@ Java_gnu_javax_sound_sampled_gstreamer_lines_GstPipeline_create_1named_1pipe
     }
   
   (*env)->SetObjectField(env, GstPipeline, nameFID, name);
-  
+    
   return JNI_TRUE;
   
 #else /* not WITHOUT_FILESYSTEM */
   return JNI_FALSE;
 #endif /* not WITHOUT_FILESYSTEM */
+}
 
+JNIEXPORT jint JNICALL
+Java_gnu_javax_sound_sampled_gstreamer_lines_GstPipeline_available
+  (JNIEnv *env, jclass clazz, jobject pointer, jint mode)
+{
+  jint result = -1;
+ 
+#ifndef WITHOUT_FILESYSTEM
+  
+  GstNativePipeline *jpipeline = NULL;
+  jpipeline = (GstNativePipeline *) get_object_from_pointer (env, pointer,
+                                                             pointerDataFID);
+                                                                                                         
+  if (mode == READ)
+    {
+      result = get_free_space (jpipeline->priv->fd);
+    }
+  else
+    {
+# if defined (FIONREAD)      
+      if (ioctl (jpipeline->priv->fd, FIONREAD, &result) == -1)
+        g_warning("IMPLEMENT ME: ioctl failed");
+        
+# else /* not defined (FIONREAD) */
+      g_warning("IMPLEMENT ME: !defined (FIONREAD");
+# endif /* defined (FIONREAD) */
+    
+    } /* if (mode == READ) */
+    
+#endif  /* not WITHOUT_FILESYSTEM */
+
+  return result;
+}
+
+JNIEXPORT jlong JNICALL
+Java_gnu_javax_sound_sampled_gstreamer_lines_GstPipeline_detect_1pipe_1size
+  (JNIEnv *env, jobject GstPipeline)
+{
+  detect_pipe_max ();
+  
+  return GST_DETECTED_PIPE_CAPACITY;
 }
 
 /* exported library functions */
-
-void gst_native_pipeline_clean (GstNativePipeline *self)
+/*
+static void gst_native_pipeline_clean (GstNativePipeline *self)
 {
   JNIEnv *env = NULL;
   
@@ -294,10 +425,17 @@ void gst_native_pipeline_clean (GstNativePipeline *self)
   if (self->priv->pipeline != NULL)
     gst_object_unref (GST_OBJECT (self->priv->pipeline));
   
+  if (self->priv->name)
+    {
+      cpio_removeFile (self->priv->name);
+      g_free (self->priv->name);
+      self->priv->name = NULL;
+    }
+    
   JCL_free (env, self->priv);
   JCL_free (env, self);
 }
-
+*/
 void gst_native_pipeline_set_pipeline (GstNativePipeline *self,
                                        GstElement *pipeline)
 {
@@ -315,6 +453,11 @@ GstElement *gst_native_pipeline_get_pipeline (GstNativePipeline *self)
 char *gst_native_pipeline_get_pipeline_name (GstNativePipeline *self)
 {
   return self->priv->name;
+}
+
+int gst_native_pipeline_get_pipeline_fd (GstNativePipeline *self)
+{
+  return self->priv->fd;
 }
 
 /* private functions */
@@ -346,3 +489,123 @@ static void init_pointer_IDs (JNIEnv* env)
 #endif /* SIZEOF_VOID_P == 8 */
 }
 
+static jint get_free_space (int fd)
+{
+  jint result = -1;
+  
+#if defined (FIONSPACE)
+
+  if (ioctl (fd, FIONSPACE, &result) == -1)
+    {
+      g_warning("IMPLEMENT ME: ioctl failed");
+    }
+    
+#elif defined (FIONREAD)
+
+  if (ioctl (fd, FIONREAD, &result) == -1)
+    {
+      g_warning("IMPLEMENT ME: ioctl failed");
+    }
+
+  result = GST_DETECTED_PIPE_CAPACITY - result;
+  
+#elif
+   g_warning("IMPLEMENT ME!!! - !defined (FIONSPACE), !defined (FIONREAD");
+ 
+#endif
+
+  return result;
+}
+
+static char *create_name (void)
+{
+  char *buffer = NULL;
+  char *tmp = NULL;
+  
+  buffer = (char *) g_malloc0 (_GST_MALLOC_SIZE_);
+  if (buffer == NULL)
+    {
+      /* huston, we have a problem... */
+      return NULL;
+    }
+    
+  tmp = tempnam (NULL, _GST_PIPELINE_PREFIX_);
+  if (tmp == NULL)
+    {
+      g_free (buffer);
+      return NULL;
+    }
+  
+  g_snprintf (buffer, _GST_MALLOC_SIZE_, "%s%s", tmp, _GST_PIPELINE_SUFFIX_);
+  g_free (tmp);
+  
+  return buffer;
+}
+
+static void detect_pipe_max (void)
+{
+  int read_fd;
+  int write_fd;
+  
+  /* can be anything! */
+  char *character = "a";
+  char *pipe = NULL;
+  
+  gboolean available = TRUE;
+  int w = 0;
+  long wrote = 0;
+  
+  pipe = create_name ();
+  if (pipe == NULL)
+    {
+      g_warning ("can't create test pipe name");
+      return;
+    }
+ 
+  if (mkfifo (pipe, 0600) < 0)
+    {
+      g_warning ("unable to create test pipe...");
+      g_free (pipe);
+      
+      return;
+    }
+ 
+  /* open both end of the pipe */
+  read_fd = open (pipe, O_RDONLY | O_NONBLOCK);
+  if (read_fd < 0)
+    {
+      cpio_removeFile (pipe);
+      g_free (pipe);
+      
+      return;
+    }
+    
+  write_fd = open (pipe, O_WRONLY | O_NONBLOCK);
+  if (write_fd < 0)
+    {
+      cpio_closeFile (write_fd);
+      cpio_removeFile (pipe);
+      g_free (pipe);
+      
+      return;
+    }
+
+  while (available)
+    {
+      w = 0;
+          
+      cpio_write (write_fd, character, 1, &w);
+      if (w < 0)
+        available = FALSE;
+      else
+        wrote += w;
+    }
+    
+  GST_DETECTED_PIPE_CAPACITY = wrote;
+    
+  cpio_closeFile (write_fd);    
+  cpio_closeFile (read_fd);
+  cpio_removeFile (pipe);
+      
+  g_free (pipe);  
+}

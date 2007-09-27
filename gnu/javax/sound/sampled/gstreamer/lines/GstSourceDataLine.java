@@ -108,19 +108,19 @@ public class GstSourceDataLine
 
   public int getFramePosition()
   {
-    // TODO Auto-generated method stub
+    System.out.println("getFramePosition -: IMPLEMENT ME!!");
     return 0;
   }
 
   public long getLongFramePosition()
   {
-    // TODO Auto-generated method stub
+    System.out.println("getLongFramePosition -: IMPLEMENT ME!!");
     return 0;
   }
 
   public long getMicrosecondPosition()
   {
-    // TODO Auto-generated method stub
+    System.out.println("getMicrosecondPosition -: IMPLEMENT ME!!");
     return 0;
   }
 

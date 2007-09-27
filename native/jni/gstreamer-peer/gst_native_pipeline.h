@@ -51,13 +51,13 @@ struct _GstNativePipeline
   GstNativePipelinePrivate *priv;
 };
 
-void gst_native_pipeline_clean (GstNativePipeline *self);
-
 void gst_native_pipeline_set_pipeline (GstNativePipeline *self,
                                        GstElement *pipeline);
 
 GstElement *gst_native_pipeline_get_pipeline (GstNativePipeline *self);
 
 char *gst_native_pipeline_get_pipeline_name (GstNativePipeline *self);
+
+int gst_native_pipeline_get_pipeline_fd (GstNativePipeline *self);
 
 #endif /* __GST_NATIVE_PIPELINE_H__ */

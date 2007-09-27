@@ -38,6 +38,15 @@ exception statement from your version. */
 #include <jni.h>
 #include "jcl.h"
 
+#ifdef MAXPATHLEN
+# define _GST_MALLOC_SIZE_ MAXPATHLEN
+#else
+# define _GST_MALLOC_SIZE_ 1024
+#endif
+
+#define _GST_PIPELINE_PREFIX_ "cp-"
+#define _GST_PIPELINE_SUFFIX_ "-classpath-gst-audio"
+
 /**
  * Return a reference to the object stored in this Pointer.
  */

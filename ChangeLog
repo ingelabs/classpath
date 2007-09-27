@@ -1,3 +1,78 @@
+2007-09-27  Mario Torre  <neugens@limasoftware.net>
+
+	* gnu/javax/sound/sampled/gstreamer/io/GstAudioFileReaderNativePeer.java:
+	(gstreamer_get_audio_format_stream): Removed parameter from javadoc.
+	(gstreamer_get_audio_format_file): likewise.
+	* gnu/javax/sound/sampled/gstreamer/lines/GstPipeline.java:
+	Added class javadoc and implementation notes.
+	(READ): new constant.
+	(WRITE): likewise.
+	(QUEUED): likewise.
+	(CAPACITY_KEY): likewise.
+	(lock): likewise.
+	(prefs): new variable.
+	(GstPipeline constructor): added OS independent rutines to detect
+	filesystem pipes size plus save and restores this information via
+	preferences. Now closes open pipe on user abort at VM exit.
+	(open_native_pipe): new native method.
+	(close_native_pipe): likewise.
+	(detect_pipe_size): likewise.
+	(createForWrite): update to use new native methods.
+	(setState): removed hack to synchronize reading and writing of the
+	filesystme named pipe.
+	(available): implemented.
+	(drain): new implementation, now correctly waits for data to be consumed
+	in the pipeline.
+	(prepareWrite): removed hack to synchronize reading and writing of the
+	filesystme named pipe.
+	(CleanPipeline): new inner class, used for cleaning of native pipelines
+	still opened at VM exit.
+	* gnu/javax/sound/sampled/gstreamer/lines/GstSourceDataLine:
+	(getFramePosition): method still stubbed, now output "implement me"
+	note when called (used for testing).
+	(getLongFramePosition): likewise.
+	(getMicrosecondPosition): likewise.
+	* include/gnu_javax_sound_sampled_gstreamer_lines_GstPipeline.h:
+	regenerated.
+	* native/jni/gstreamer-peer/gst_native_data_line.c:
+	(setup_pipeline): Changed signature, now uses a file descriptor instead of
+	char with the name of the native pipeline. Also changed to use "fdsrc"
+	when creating the GStreamer pipeline.
+	(Java_gnu_javax_sound_sampled_gstreamer_lines_GstNativeDataLine_setup_1sink_1pipeline):
+	now uses gst_native_pipeline_get_pipeline_fd to get the file descriptor
+	of the native pipeline, instead of gst_native_pipeline_get_pipeline_name.
+	Chaged to use "autoaudiosink" as GStreamer audio sink.
+	(gst_newpad): fix indentation.
+	* native/jni/gstreamer-peer/gst_native_pipeline.c: include new headers for
+	compilation.
+	(capacityFID): new filed for caching.
+	(GST_DETECTED_PIPE_CAPACITY): new field.
+	(enum): maps READ and WRITE in GstPipeline class.
+	(_GstNativePipelinePrivate.fd): new field.
+	(create_name): new function.
+	(init_pointer_IDs): likewise.
+	(get_free_space): likewise.
+	(Java_gnu_javax_sound_sampled_gstreamer_lines_GstPipeline_init_1id_1cache):
+	cache capacityFID.
+	(Java_gnu_javax_sound_sampled_gstreamer_lines_GstPipeline_init_1instance):
+	get value for GST_DETECTED_PIPE_CAPACITY from mapped class.
+	(Java_gnu_javax_sound_sampled_gstreamer_lines_GstPipeline_set_1state):
+	removed "unused" attribute from parameters, clean pipeline name on exit.
+	(Java_gnu_javax_sound_sampled_gstreamer_lines_GstPipeline_open_1native_1pipe):
+	new function.
+	(Java_gnu_javax_sound_sampled_gstreamer_lines_GstPipeline_close_1native_1pipe):
+	likewise.
+	(Java_gnu_javax_sound_sampled_gstreamer_lines_GstPipeline_create_1named_1pipe):
+	pipe name created with a dedicated function.
+	(Java_gnu_javax_sound_sampled_gstreamer_lines_GstPipeline_available): new
+	function.
+	* native/jni/gstreamer-peer/gst_native_pipeline.h:
+	(gst_native_pipeline_clean): removed.
+	(gst_native_pipeline_get_pipeline_fd): new function.
+	* native/jni/gstreamer-peer/gst_peer.h: new defines used by the peer.
+	* native/jni/gstreamer-peer/gstreamer_io_peer.c: (_GST_MALLOC_SIZE_): moved
+	in gst_peer.h.
+
 2007-09-27  Dalibor Topic  <robilad@kaffe.org>
 
 	* native/fdlibm/dtoa.c: Include mprec.h after system includes.

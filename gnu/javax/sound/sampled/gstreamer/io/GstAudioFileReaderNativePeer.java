@@ -259,9 +259,6 @@ final class GstAudioFileReaderNativePeer
   
   /**
    * Retrieve header information about the stream being played.
-   * 
-   * @param info
-   * @return
    */
   native static final
   protected boolean gstreamer_get_audio_format_stream(GstHeader info,
@@ -269,9 +266,6 @@ final class GstAudioFileReaderNativePeer
   
   /**
    * Retrieve header information about the file being played.
-   * 
-   * @param info
-   * @return
    */
   native static final
   protected boolean gstreamer_get_audio_format_file(GstHeader info);
