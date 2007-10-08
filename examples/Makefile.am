@@ -14,7 +14,7 @@ else
 if FOUND_JAVAC
 JCOMPILER = $(JAVAC) -encoding UTF-8 -bootclasspath $(GLIBJ_CLASSPATH) -classpath '$(top_builddir)/tools/tools.zip'
 else
-error dunno how to setup the JCOMPILER and compile
+JCOMPILER = echo "No compiler found" 1>&2; exit 1 
 #endif
 #endif
 endif
