@@ -1,3 +1,9 @@
+2007-10-10  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	Recommitting patch by Dalibor Topic from 2007-09-21.
+	* java/lang/management/ThreadInfo.java:
+	Removed unused private constructors.
+
 2007-10-09  Mario Torre  <neugens@limasoftware.net>
 
 	* README.gstreamer: new file.
