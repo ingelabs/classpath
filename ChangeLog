@@ -1,3 +1,8 @@
+2007-10-11  Roman Kennke  <roman.kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(EDIT): Removed obsolete constant.
+
 2007-10-10  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	Recommitting patch by Dalibor Topic from 2007-09-21.
