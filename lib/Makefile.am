@@ -12,7 +12,7 @@ if FOUND_ECJ
 JCOMPILER = $(ECJ) -1.5 -warn:-deprecation,serial,typeHiding,unchecked,unused,varargsCast -proceedOnError -bootclasspath '' -classpath $(compile_classpath) -d . @classes
 else
 if FOUND_JAVAC
-JCOMPILER = $(JAVAC) -bootclasspath '' -classpath $(compile_classpath) -d . @classes
+JCOMPILER = $(JAVAC) -J-Xmx512M -bootclasspath '' -classpath $(compile_classpath) -d . @classes
 #else
 #if FOUND_GCJ
 ## This should never be used when gcj is the compiler.
