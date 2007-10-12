@@ -183,10 +183,6 @@ Java_gnu_java_awt_peer_gtk_GtkToolkit_gtkInit (JNIEnv *env,
 
   gtk_widget_set_default_colormap (gdk_rgb_get_colormap ());
 
-  /* Make sure queued calls don't get sent to GTK/GDK while 
-     we're shutting down. */
-  atexit (gdk_threads_enter);
-
   if ((homedir = getenv ("HOME")))
     {
       rcpath = (char *) g_malloc (strlen (homedir) + strlen (RC_FILE) + 2);

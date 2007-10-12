@@ -1,4 +1,10 @@
 2007-10-12  Ian Rogers  <ian.rogers@manchester.ac.uk>
+
+	PR classpath/33746:
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkToolkit.c:
+	Remove atexit call that makes JikesRVM deadlock.
+	
+2007-10-12  Ian Rogers  <ian.rogers@manchester.ac.uk>
 2007-10-12  Andrew Haley  <aph@redhat.com>
 
 	PR classpath/33741:
