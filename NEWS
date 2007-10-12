@@ -4,6 +4,7 @@ New in release 0.96
 * The JNI interface has been updated to 1.6
 * Better support for the OpenJDK javac compiler
 * Support for using javah via tools.zip and com.sun.tools.javah.Main
+* Much improved Escher AWT peers
 * Many bug fixes including improvements to AWT and Swing support
 
 Runtime interface changes:
