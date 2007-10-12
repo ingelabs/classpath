@@ -444,6 +444,7 @@ AC_DEFUN([CLASSPATH_WITH_JAVAC],
     CLASSPATH_CHECK_JAVAC
   ])
   AC_SUBST(JAVAC)
+  AC_SUBST(JAVAC_OPTS)
 ])
 
 dnl -----------------------------------------------------------
@@ -453,5 +454,29 @@ AC_DEFUN([CLASSPATH_CHECK_JAVAC],
     JAVAC="$1"
   else
     AC_PATH_PROG(JAVAC, "javac")
+  fi
+  dnl Test the given javac
+  AC_MSG_CHECKING([if javac is 1.5-capable])
+  cat > conftest.java << EOF
+public class conftest {
+public static void main(String[] args) {
+java.util.List<String> l;
+}}
+EOF
+  $JAVAC conftest.java 
+  javac_result=$?
+  if test "x$javac_result" = "x0"; then
+    AC_MSG_RESULT([yes])
+  else
+    AC_MSG_WARN([1.5 capable javac required])
+  fi
+  AC_MSG_CHECKING([whether javac supports -J])
+  $JAVAC -J-Xmx512M conftest.java
+  javac_result=$?
+  if test "x$javac_result" = "x0"; then
+    AC_MSG_RESULT([yes])
+    JAVAC_OPTS="-J-Xmx512M"
+  else
+    AC_MSG_RESULT([javac doesn't support -J])
   fi
 ])
