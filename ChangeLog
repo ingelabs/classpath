@@ -1,3 +1,13 @@
+2007-10-12  Ian Rogers  <ian.rogers@manchester.ac.uk>
+2007-10-12  Andrew Haley  <aph@redhat.com>
+
+	PR classpath/33741:
+	* java/lang/Double.java:
+	(compare(double,double)): Increase performance
+	of this method.
+	* java/lang/Float.java:
+	(compare(float,float)): Likewise.
+	
 2007-10-12  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/33623:
