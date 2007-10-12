@@ -15,7 +15,7 @@ dnl  CLASSPATH_WITH_KJC
   if test "x${user_specified_ecj}" = x; then
     AM_CONDITIONAL(FOUND_ECJ, test "x${ECJ}" != x)
   else
-    AM_CONDITIONAL(FOUND_ECJ, test "x${user_specified_javac}" = xecj && test "x${ECJ}" != x)
+    AM_CONDITIONAL(FOUND_ECJ, test "x${user_specified_ecj}" = xecj && test "x${ECJ}" != x)
   fi
 
   if test "x${user_specified_javac}" = x; then
