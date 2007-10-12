@@ -1,3 +1,10 @@
+2007-10-12  Robin Garner  <robin.garner@anu.edu.au>
+
+	PR classpath/32541:
+	* java/io/OutputStreamWriter.java:
+	Provide buffering when not converting to improve
+	performance.
+	
 2007-10-12  Ian Rogers  <ian.rogers@manchester.ac.uk>
 
 	PR classpath/33746:

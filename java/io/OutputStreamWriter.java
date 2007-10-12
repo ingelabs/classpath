@@ -121,6 +121,8 @@ public class OutputStreamWriter extends Writer
     throws UnsupportedEncodingException
   {
     this.out = out;
+	outputBuffer = CharBuffer.allocate(BUFFER_SIZE);
+
     try 
       {
 	// Don't use NIO if avoidable
@@ -132,7 +134,7 @@ public class OutputStreamWriter extends Writer
 	  }
 
 	/*
-	 * Workraround for encodings with a byte-order-mark.
+	 * Workaround for encodings with a byte-order-mark.
 	 * We only want to write it once per stream.
 	 */
 	try 
@@ -155,8 +157,6 @@ public class OutputStreamWriter extends Writer
 	  {
 	  }
       
-	outputBuffer = CharBuffer.allocate(BUFFER_SIZE);
-
 	Charset cs = EncodingHelper.getCharset(encoding_scheme);
 	if(cs == null)
 	  throw new UnsupportedEncodingException("Encoding "+encoding_scheme+
@@ -185,7 +185,7 @@ public class OutputStreamWriter extends Writer
   public OutputStreamWriter (OutputStream out)
   {
     this.out = out;
-    outputBuffer = null;
+	outputBuffer = CharBuffer.allocate(BUFFER_SIZE);
     try 
       {
 	String encoding = System.getProperty("file.encoding");
@@ -203,7 +203,6 @@ public class OutputStreamWriter extends Writer
       {
 	encoder.onMalformedInput(CodingErrorAction.REPLACE);
 	encoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
-	outputBuffer = CharBuffer.allocate(BUFFER_SIZE);
       }
   }
 
@@ -345,7 +344,7 @@ public class OutputStreamWriter extends Writer
     {
       byte[] b = new byte[count];
       for(int i=0;i<count;i++)
-	b[i] = (byte)((buf[offset+i] <= 0xFF)?buf[offset+i]:'?');
+	b[i] = nullConversion(buf[offset+i]);
       out.write(b);
     } else {
       try  {
@@ -367,6 +366,10 @@ public class OutputStreamWriter extends Writer
 	throw new IOException("Unmappable character.");
       }
     }
+  }
+
+  private byte nullConversion(char c) {
+	  return (byte)((c <= 0xFF)?c:'?');
   }
 
   /**
@@ -398,7 +401,20 @@ public class OutputStreamWriter extends Writer
    */
   public void write (int ch) throws IOException
   {
-    write(new char[]{ (char)ch }, 0, 1);
+	  // No buffering, no encoding ... just pass through
+	  if (encoder == null && outputBuffer == null) {
+		  out.write(nullConversion((char)ch));
+	  } else {
+		  if (outputBuffer != null) {
+			  if (outputBuffer.remaining() == 0) {
+				  writeConvert(outputBuffer.array(), 0, BUFFER_SIZE);
+				  outputBuffer.clear();
+			  }
+			  outputBuffer.put((char)ch);
+		  } else {
+		      writeConvert(new char[]{ (char)ch }, 0, 1);
+		  }
+	  }
   }
 } // class OutputStreamWriter
 
