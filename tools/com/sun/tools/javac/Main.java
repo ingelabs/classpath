@@ -139,8 +139,13 @@ public class Main
           new PrintWriter(System.err),
           Boolean.FALSE
         });
+    String[] runArgs = new String[args.length + 3];
+    runArgs[0] = "-1.5";
+    runArgs[1] = "-bootclasspath";
+    runArgs[2] = (String) System.getProperties().get("java.boot.class.path");
+    System.arraycopy(args, 0, runArgs, 3, args.length);
     return ((Boolean) ecjMethod.invoke(ecjInstance, new Object[]
-        { args })).booleanValue() ? 0 : -1;
+        { runArgs })).booleanValue() ? 0 : -1;
   }
 
   public static int compile(String[] args) throws Exception
