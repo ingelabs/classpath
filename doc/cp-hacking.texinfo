@@ -559,9 +559,22 @@ library headers:
 
 @table @b
 @item GConf
-@uref{http://www.gnome.org/projects/gconf/,GConf} version 2.11.2
+@uref{http://www.gnome.org/projects/gconf/,GConf} version 2.6.0
 (or higher). GConf is used for storing dektop and application
 configuration settings in GNOME.
+
+@end table
+
+The GStreamer backend for javax.sound.sampled (The Java Sound API, not
+including the MIDI portion) needs the following library headers:
+
+@table @b
+@item GStreamer
+@uref{http://gstreamer.freedesktop.org/,GStreamer} version 0.10.10
+(or higher). You will also need at least gstreamer-base and
+gstreamer-plugins-base. More plugins can be used to allow streaming of
+different sound types but are not a compile time requirement. See
+README.gstreamer in the source distribution for more informations.
 
 @end table
 
