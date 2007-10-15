@@ -1,3 +1,8 @@
+2007-10-15  Mario Torre  <neugens@limasoftware.net>
+
+	* javax/swing/text/DefaultStyledDocument.java (ElementBuffer.insertElement):
+	Added check for empty stack to avoid EmptyStackException. 
+
 2007-10-15  Roman Kennke  <roman.kennke@aicas.com>
 
 	* java/awt/LightweightDispatcher.java
