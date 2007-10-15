@@ -112,15 +112,7 @@ final class LightweightDispatcher
     if (event instanceof MouseEvent)
       {
         MouseEvent mouseEvent = (MouseEvent) event;
-        /**
-         * The lightweight dispatching relies on the integrity of the
-         * component tree (e.g. isShowing(), getLocationOnScreen(), etc),
-         * therefore we must synchronize on the tree lock here.
-         */
-        synchronized (mouseEvent.getComponent().getTreeLock())
-          {
-            return handleMouseEvent(mouseEvent);
-          }
+        return handleMouseEvent(mouseEvent);
       }
     return false;
   }
