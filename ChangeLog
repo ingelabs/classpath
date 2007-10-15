@@ -1,5 +1,10 @@
 2007-10-15  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	* NEWS: Kickoff updates for 0.97.
+	* configure.ac: Set version to 0.97-pre.
+
+2007-10-15  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* NEWS: Add date of 0.96 release.
 	* configure.ac: Set version to 0.96.
 
