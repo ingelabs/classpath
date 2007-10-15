@@ -1,4 +1,4 @@
-New in release 0.96
+New in release 0.96 (Oct 15, 2007)
 
 * New experimental GStreamer javax.sound peer (see README.gstreamer)
 * The JNI interface has been updated to 1.6
