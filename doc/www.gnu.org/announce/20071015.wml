@@ -29,7 +29,7 @@ have  focused on bringing together Classpath and OpenJDK code under the umbrella
 IcedTea (<createlink url="http://icedtea.classpath.org">) and on using the new
 OpenJDK code  within existing Free runtime environments such as cacao 
 (<createlink url="http://www.cacaojvm.org/">) and IKVM
-(<createlink url="http://www.ikvm.net/").  We hope to 
+(<createlink url="http://www.ikvm.net/">).  We hope to 
 extend support and work together with the OpenJDK community over time.
 <p>
 This release switches fully towards the 1.5 generics work that we
@@ -46,11 +46,12 @@ has been made in this release.
 <p>
 That said, the main feature of this release is our new experimental GStreamer 
 peer arising from the work of Mario Torre on his Google Summer of Code 
-project (http://code.google.com/soc/2007).  This provides support for the 
-javax.sound API using the GStreamer library (gstreamer.freedesktop.org), 
-allowing any sound file supported by GStreamer to be played from Java.  Full 
-details are provided in the included README.gstreamer file.  The peer is not 
-yet ready for production use, but please try it and give us your feedback.
+project (<createlink url="http://code.google.com/soc/2007">).  This provides
+support for the  javax.sound API using the GStreamer library
+(<createlink url="http://gstreamer.freedesktop.org">), allowing any sound file
+supported by GStreamer to be played from Java.  Full  details are provided in
+the included README.gstreamer file.  The peer is not yet ready for production
+use, but please try it and give us your feedback.
 <p>
 We've also improved our support for interacting with the outside world.  Our 
 JNI header has been updated to 1.6, we now better support choosing a compiler 
@@ -62,7 +63,7 @@ AWT and Swing have seen a host of bug fixes and updates, including much
 improved Escher peers.  Our thanks to Roman Kennke and others working on 
 Classpath's GUI support.  Screenshots of applications (eclipse, jedit, 
 jfreechart, "jgecko", statcvs and more) working out of the box with GNU 
-Classpath can be found at http://developer.classpath.org/screenshots/
+Classpath can be found at <createlink url="http://developer.classpath.org/screenshots/">.
 <p>
 With our last release, 0.95, we switched fully towards the 1.5 generics work 
 that we previously released separately as classpath-generics. All this work 
