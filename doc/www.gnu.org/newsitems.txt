@@ -1,3 +1,8 @@
+<newsitem date="15 Oct 2007">
+<createlink name="GNU Classpath 0.96"
+            url="announce/20071015.html">
+</newsitem>
+
 <newsitem date="23 Apr 2007">
 <createlink name="GNU Classpath 0.95"
             url="announce/20070423.html">
