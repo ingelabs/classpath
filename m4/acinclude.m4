@@ -463,7 +463,7 @@ public static void main(String[] args) {
 java.util.List<String> l;
 }}
 EOF
-  $JAVAC conftest.java 
+  $JAVAC -sourcepath '' conftest.java 
   javac_result=$?
   if test "x$javac_result" = "x0"; then
     AC_MSG_RESULT([yes])
@@ -471,7 +471,7 @@ EOF
     AC_MSG_WARN([1.5 capable javac required])
   fi
   AC_MSG_CHECKING([whether javac supports -J])
-  $JAVAC -J-Xmx512M conftest.java
+  $JAVAC -J-Xmx512M -sourcepath '' conftest.java
   javac_result=$?
   if test "x$javac_result" = "x0"; then
     AC_MSG_RESULT([yes])
