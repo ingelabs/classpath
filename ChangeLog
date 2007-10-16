@@ -1,3 +1,8 @@
+2007-10-16  Mark Wielaard  <mark@klomp.org>
+
+	* NEWS: Mention small compile/configure/build fixes.
+	* configure.ac: Set version to 0.96.1
+
 2007-10-16  from  Alexandre Oliva  <aoliva@redhat.com>
 
 	* scripts/check_jni_methods.sh: Don't depend on diff -b ignoring
