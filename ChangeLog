@@ -1,3 +1,8 @@
+2007-10-22  Dalibor Topic  <robilad@kaffe.org>
+
+	* native/jni/java-nio/gnu_java_nio_EpollSelectorImpl.c:
+	Include config-int.h for uint32_t.
+
 2007-10-16  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* NEWS: Kickoff updates for 0.97.
