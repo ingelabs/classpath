@@ -812,7 +812,7 @@ outer:
           }
 
         if (loadedByBootOrApplicationClassLoader(cl))
-          uidCache.put(cl,new Long(result));
+          uidCache.put(cl,Long.valueOf(result));
       }
     return result;
   }

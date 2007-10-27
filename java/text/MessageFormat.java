@@ -498,7 +498,7 @@ public class MessageFormat extends Format
 	    int position = output_iterator.getEndIndex();
 	    
 	    hash_argument.put (MessageFormat.Field.ARGUMENT,
-			       new Integer(elements[i].argNumber));
+			       Integer.valueOf(elements[i].argNumber));
 
 	    
 	    if (iterator != null)
