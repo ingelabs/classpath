@@ -1,5 +1,22 @@
 2007-10-27  Ian Rogers  <ian.rogers@manchester.ac.uk>
 
+	* java/beans/PropertyChangeSupport.java,
+	* java/beans/VetoableChangeSupport.java,
+	* java/io/ObjectStreamClass.java,
+	* java/lang/reflect/Array.java, 
+	* java/net/DatagramSocket.java,
+	* java/net/ServerSocket.java,
+	* java/net/Socket.java,
+	* java/nio/charset/CoderResult.java, 
+	* java/security/Security.java,
+	* java/security/spec/RSAKeyGenParameterSpec.java, 
+	* java/text/ChoiceFormat.java, 
+	* java/text/DecimalFormat.java, 
+	* java/text/MessageFormat.java:
+	Make use of new valueOf methods.
+	
+2007-10-27  Ian Rogers  <ian.rogers@manchester.ac.uk>
+
 	* java/io/OutputStreamWriter.java:
 	Make fields of this class that can be final, final.
 
