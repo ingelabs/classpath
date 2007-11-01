@@ -229,8 +229,8 @@ public class Server
 	  if (name != null)
 	    {
 	      Object bean = getBean(name);
-	      Method method = bean.getClass().getMethod("getMBeanInfo", null);
-	      info = (MBeanInfo) method.invoke(bean, null);
+	      Method method = bean.getClass().getMethod("getMBeanInfo");
+	      info = (MBeanInfo) method.invoke(bean);
 	    }
 	  sm.checkPermission(new MBeanPermission((info == null) ? 
 						 null : info.getClassName(),
@@ -1031,8 +1031,8 @@ public class Server
     checkSecurity(name, null, "getMBeanInfo");
     try
       {
-	Method method = bean.getClass().getMethod("getMBeanInfo", null);
-	return (MBeanInfo) method.invoke(bean, null);
+	Method method = bean.getClass().getMethod("getMBeanInfo");
+	return (MBeanInfo) method.invoke(bean);
       }
     catch (NoSuchMethodException e)
       {

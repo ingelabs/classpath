@@ -272,7 +272,7 @@ public class BeanImpl
 	Method getter = null;
 	try 
 	  {
-	    getter = vClass.getMethod("get" + field, null);
+	    getter = vClass.getMethod("get" + field);
 	  }
 	catch (NoSuchMethodException e)
 	  {
@@ -280,7 +280,7 @@ public class BeanImpl
 	  }
 	try
 	  {
-	    values.add(getter.invoke(value, null));
+	    values.add(getter.invoke(value));
 	  }
 	catch (IllegalAccessException e)
 	  {

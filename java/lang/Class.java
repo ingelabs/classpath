@@ -1151,7 +1151,7 @@ public final class Class<T>
       }
     try
       {
-        return constructor.newInstance(null);
+        return constructor.newInstance();
       }
     catch (InvocationTargetException e)
       {

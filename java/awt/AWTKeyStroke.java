@@ -260,7 +260,7 @@ public class AWTKeyStroke implements Serializable
                 c.setAccessible(true);
                 // Create a new instance, to make sure that we can, and
                 // to cause any ClassCastException.
-                AWTKeyStroke dummy = (AWTKeyStroke) c.newInstance(null);
+                AWTKeyStroke dummy = (AWTKeyStroke) c.newInstance();
                 return c;
               }
             });
@@ -632,7 +632,7 @@ public class AWTKeyStroke implements Serializable
     else
       try
         {
-          stroke = (AWTKeyStroke) c.newInstance(null);
+          stroke = (AWTKeyStroke) c.newInstance();
           stroke.keyChar = keyChar;
           stroke.keyCode = keyCode;
           stroke.modifiers = modifiers;

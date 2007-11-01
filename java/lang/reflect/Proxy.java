@@ -471,9 +471,9 @@ public class Proxy implements Serializable
                                  .getMethod("equals",
                                             new Class[] {Object.class}));
           coreMethods.put(sig, sig);
-          sig = new ProxySignature(Object.class.getMethod("hashCode", null));
+          sig = new ProxySignature(Object.class.getMethod("hashCode"));
           coreMethods.put(sig, sig);
-          sig = new ProxySignature(Object.class.getMethod("toString", null));
+          sig = new ProxySignature(Object.class.getMethod("toString"));
           coreMethods.put(sig, sig);
         }
       catch (Exception e)

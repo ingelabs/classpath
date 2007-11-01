@@ -1056,7 +1056,7 @@ outer:
 
     try
     {
-	return (Externalizable)constructor.newInstance(null);
+	return (Externalizable)constructor.newInstance();
     }
     catch(Exception x)
     {

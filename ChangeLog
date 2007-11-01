@@ -1,3 +1,22 @@
+2007-11-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* gnu/java/awt/java2d/ScanlineCoverage.java,
+	* gnu/javax/net/ssl/provider/ServerHandshake.java:
+	Fix non-ASCII characters in the Javadoc comments.
+	* gnu/java/lang/management/BeanImpl.java,
+	* gnu/javax/management/Server.java,
+	* gnu/xml/pipeline/EventFilter.java,
+	* java/awt/AWTKeyStroke.java,
+	* java/beans/DefaultPersistenceDelegate.java,
+	* java/beans/EventHandler.java,
+	* java/io/ObjectStreamClass.java,
+	* java/lang/Class.java,
+	* java/lang/reflect/Proxy.java,
+	* javax/management/NotificationBroadcasterSupport.java,
+	* javax/management/StandardMBean.java,
+	* javax/swing/TransferHandler.java:
+	Fix warnings from use of varargs methods.
+
 2007-10-27  Ian Rogers  <ian.rogers@manchester.ac.uk>
 
 	* java/beans/PropertyChangeSupport.java,
