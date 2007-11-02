@@ -534,7 +534,7 @@ if test "x${COMPILE_JNI}" = xyes; then
     dnl compiled in
     USE_GCONF_PREFS_PEER=$enable_default_preferences_peer
     if test "$USE_GCONF_PREFS_PEER" = ""; then
-   	DEFAULT_PREFS_PEER=gnu.java.util.prefs.GConfBasedFactory
+      DEFAULT_PREFS_PEER=gnu.java.util.prefs.GConfBasedFactory
     fi
   fi
 
@@ -562,6 +562,10 @@ if test "x${COMPILE_JNI}" = xyes; then
 
 	GST_PLUGIN_LDFLAGS='-module -avoid-version -Wno-unused-parameter -no-undefined'
 	AC_SUBST(GST_PLUGIN_LDFLAGS)
+
+    PKG_CHECK_MODULES(GDK, gdk-2.0 >= 2.8)
+    AC_SUBST(GDK_CFLAGS)
+    AC_SUBST(GDK_LIBS)
 	
 	dnl set the gstreamer based file reader, writer and mixer
 	GSTREAMER_FILE_READER=gnu.javax.sound.sampled.gstreamer.io.GstAudioFileReader
