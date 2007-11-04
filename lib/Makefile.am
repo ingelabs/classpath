@@ -9,7 +9,7 @@ compile_classpath = $(vm_classes):$(top_srcdir):$(top_srcdir)/external/w3c_dom:$
 
 # handling source to bytecode compiler programs like gcj, jikes  and kjc
 if FOUND_ECJ
-JCOMPILER = $(ECJ) -1.5 -warn:-deprecation,serial,typeHiding,unchecked,unused,varargsCast -proceedOnError -bootclasspath '' -classpath $(compile_classpath) -d . @classes
+JCOMPILER = $(ECJ) -1.5 -warn:-deprecation,serial,typeHiding,unchecked,unused -proceedOnError -bootclasspath '' -classpath $(compile_classpath) -d . @classes
 else
 if FOUND_JAVAC
 JCOMPILER = $(JAVAC) $(JAVAC_OPTS) -bootclasspath '' -classpath $(compile_classpath) -d . @classes
