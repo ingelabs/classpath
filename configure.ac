@@ -394,6 +394,7 @@ if test "x${COMPILE_JNI}" = xyes; then
 		  gethostbyname_r localtime_r \
 		  strerror_r \
                   fcntl \
+		  statvfs \  
 		  mmap munmap mincore msync madvise getpagesize sysconf \
 		  lstat readlink \
  		  inet_aton inet_addr inet_pton \

@@ -1,3 +1,22 @@
+2007-11-06  Mario Torre  <neugens@limasoftware.net>
+
+	* vm/reference/java/io/VMFile.java: 
+	(getTotalSpace): new method.
+	(getUsableSpace): likewise.
+	(getFreeSpace): likewise.
+	* java/io/File.java: (getTotalSpace): new method. 
+	(getUsableSpace): likewise.
+	(getFreeSpace): likewise.
+	* native/jni/java-io/java_io_VMFile.c:
+	(Java_java_io_VMFile_getTotalSpace): new function.
+	(Java_java_io_VMFile_getFreeSpace): likewise.
+	(Java_java_io_VMFile_getUsableSpace): likewise.
+	* native/jni/native-lib/cpio.h: (cpio_df): new function.
+	(CPFILE_DF_TYPE): enum type for cpio_df.
+	* native/jni/native-lib/cpio.c: (cpio_df): new function.
+	* include/java_io_VMFile.h: regenerated.
+	* configure.ac: added check for statvfs.
+
 2007-11-04  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
         PR classpath/33385:

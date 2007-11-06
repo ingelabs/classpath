@@ -71,6 +71,10 @@ exception statement from your version. */
 #include <sys/select.h>
 #endif
 
+#if defined(HAVE_STATVFS)
+#include <sys/statvfs.h>
+#endif
+
 #include <utime.h>
 
 #include "cpnative.h"
@@ -395,6 +399,43 @@ int cpio_chmod (const char *filename, int permissions)
   return 0;
 }
 
+JNIEXPORT long long
+cpio_df (const char *path, CPFILE_DF_TYPE type)
+{
+  long long result = 0L;
+  
+#if defined(HAVE_STATVFS)
+
+  long long scale_factor = 0L;
+  struct statvfs buf;
+  
+  if (statvfs (path, &buf) < 0)
+    return 0L;
+  
+  /* f_blocks, f_bfree and f_bavail are defined in terms of f_frsize */
+  scale_factor = (long long) (buf.f_frsize);
+
+  switch (type)
+    {
+      case TOTAL:
+        result = (long long) (buf.f_blocks * scale_factor);
+        break;
+      case FREE:
+        result = (long long) (buf.f_bfree * scale_factor);
+        break;
+      case USABLE:
+        result = (long long) (buf.f_bavail * scale_factor);
+        break;
+      default:
+        result = 0L;
+        break;  
+    }
+    
+#endif
+
+  return result;
+}
+
 int cpio_checkAccess (const char *filename, unsigned int flag)
 {
   struct stat statbuf;
@@ -543,7 +584,6 @@ int cpio_readDir (void *handle, char *filename)
   strncpy (filename, dBuf->d_name, FILENAME_MAX);
   return 0;
 }
-
 
 int
 cpio_closeOnExec(int fd)

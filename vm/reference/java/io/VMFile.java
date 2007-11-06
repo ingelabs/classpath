@@ -117,6 +117,21 @@ final class VMFile
   static native boolean mkdir(String dirpath);
 
   /**
+   * Gets the total bytes of the filesystem named by path.
+   */
+  public static native long getTotalSpace(String path);
+  
+  /**
+   * Gets the total free bytes of the filesystem named by path.
+   */
+  public static native long getFreeSpace(String path);
+  
+  /**
+   * Gets the available bytes of the filesystem named by path.
+   */
+  public static native long getUsableSpace(String path);
+  
+  /**
    * Set the read permission of the file.
    */
   public static synchronized native boolean setReadable(String path,
