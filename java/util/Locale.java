@@ -324,13 +324,12 @@ public final class Locale implements Serializable, Cloneable
     // default locale.
     if (defaultLocale != null)
       {
-        language = convertLanguage(language).intern();
-        country = country.toUpperCase().intern();
-        variant = variant.intern();
+        language = convertLanguage(language);
+        country = country.toUpperCase();
       }
-    this.language = language;
-    this.country = country;
-    this.variant = variant;
+    this.language = language.intern();
+    this.country = country.intern();
+    this.variant = variant.intern();
     hashcode = language.hashCode() ^ country.hashCode() ^ variant.hashCode();
   }
 
