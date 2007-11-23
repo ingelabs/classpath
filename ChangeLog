@@ -1,3 +1,17 @@
+2007-11-23  Mario Torre  <neugens@limasoftware.net>
+
+    * java/util/concurrent/CopyOnWriteArrayList.java: 
+    Added javadoc.
+    (serialVersionUID): new field. 
+    (iterator): new method, override from base class.
+    (remove): likewise.
+    (listIterator): likewise.
+    (removeAll): likewise.
+    (retainAll): likewise.
+    (contains): fixed typo in javadoc.
+    (addIfAbsent): added javadoc.
+    (addAllAbsent): Rewrite to improve performance. Also add javadoc.
+
 2007-11-23  Ian Rogers  <ian.rogers@manchester.ac.uk>
 
 	* java/io/FileOutputStream.java,

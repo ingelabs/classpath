@@ -46,12 +46,60 @@ import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.RandomAccess;
 
-/** @since 1.5 */
+/**
+ * A thread-safe implementation of an ArrayList. A CopyOnWriteArrayList is
+ * as special ArrayList which performs copies of the underlying storage
+ * each time a write (<code>remove</code>, <code>add</code> etc..) operation
+ * is performed.<br />
+ * <br />
+ * The update operation in this class run usually in <code>O(n)</code> or worse,
+ * but traversal operations are fast and efficient, especially when running in
+ * a multi-thread environment without the need to design complex synchronize
+ * mechanisms.<br />
+ * <br />
+ * <code>Iterator</code>s in this class work on a snapshot of the backing store
+ * at the moment the iterator itself was created, hence the iterator will not
+ * reflect changes in the underlying storage. Thus, update operation on the
+ * <code>Iterator</code>s are not supported, but as interferences from other
+ * threads are impossible, no <code>ConcurrentModificationException</code>
+ * will be ever thrown from within the <code>Iterator</code>.
+ * <br /><br />
+ * This class is especially useful when used with event handling, like the
+ * following code demonstrates:<br />
+ * <code><pre>
+ * 
+ * CopyOnWriteArrayList<EventListener> listeners =
+ *   new CopyOnWriteArrayList<EventListener>();
+ * 
+ * [...]
+ * 
+ * for (final EventListener listener : listeners)
+ *   {
+ *     Runnable dispatcher = new Runnable() {
+ *       public void run()
+ *       {
+ *         listener.preferenceChange(event);
+ *       }
+ *     };
+ *         
+ *     Executor executor = Executors.newSingleThreadExecutor();
+ *     executor.execute(dispatcher);
+ *   }
+ * </pre></code>
+ * 
+ * @since 1.5
+ */
 public class CopyOnWriteArrayList<E> extends AbstractList<E> implements
     List<E>, RandomAccess, Cloneable, Serializable
 {
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 8673264195747942595L;
+  
   /**
    * Where the data is stored.
    */
@@ -118,7 +166,7 @@ public class CopyOnWriteArrayList<E> extends AbstractList<E> implements
   }
 
   /**
-   * Returns true iff element is in this ArrayList.
+   * Returns true if element is in this ArrayList.
    * 
    * @param e
    *          the element whose inclusion in the List is being tested
@@ -359,6 +407,134 @@ public class CopyOnWriteArrayList<E> extends AbstractList<E> implements
   }
 
   /**
+   * Remove the first occurrence, if any, of the given object from this list,
+   * returning <code>true</code> if the object was removed, <code>false</code>
+   * otherwise.
+   * 
+   * @param element the object to be removed.
+   * @return true if element was removed, false otherwise. false means also that
+   * the underlying storage was unchanged after this operation concluded.
+   */
+  public synchronized boolean remove(Object element)
+  {
+    E[] data = this.data;
+    E[] newData = (E[]) new Object[data.length - 1];
+    
+    // search the element to remove while filling the backup array
+    // this way we can run this method in O(n)
+    int elementIndex = -1;
+    for (int i = 0; i < this.data.length; i++)
+      {
+        if (equals(element, this.data[i]))
+          {
+            elementIndex = i;
+            break;
+          }
+        
+        if (i < newData.length)
+          newData[i] = this.data[i];
+      }
+    
+    if (elementIndex < 0)
+      return false;
+    
+    System.arraycopy(this.data, elementIndex + 1, newData, elementIndex,
+                     this.data.length - elementIndex - 1);
+    this.data = newData;
+    
+    return false;
+  }
+  
+  /**
+   * Removes all the elements contained in the given collection.
+   * This method removes the elements that are contained in both
+   * this list and in the given collection.
+   * 
+   * @param c the collection containing the elements to be removed from this
+   * list.
+   * @return true if at least one element was removed, indicating that
+   * the list internal storage changed as a result, false otherwise. 
+   */
+  public synchronized boolean removeAll(Collection<?> c)
+  {
+    if (c.size() == 0)
+      return false;
+    
+    E [] snapshot = this.data;
+    E [] storage = (E[]) new Object[this.data.length]; 
+    boolean changed = false;
+    
+    int length = 0;
+    for (E element : snapshot)
+      {
+        // copy all the elements, including null values
+        // if the collection can hold it
+        // FIXME: slow operation
+        if (c.contains(element))
+          changed = true;
+        else
+          storage[length++] = element;
+      }
+    
+    if (!changed)
+      return false;
+    
+    E[] newData = (E[]) new Object[length];
+    System.arraycopy(storage, 0, newData, 0, length);
+    
+    this.data = newData;
+    
+    return true;
+  }
+  
+  /**
+   * Removes all the elements that are not in the passed collection.
+   * If the collection is void, this method has the same effect of
+   * <code>clear()</code>.
+   * Please, note that this method is extremely slow (unless the argument has
+   * <code>size == 0</code>) and has bad performance is both space and time
+   * usage.
+   * 
+   * @param c the collection containing the elements to be retained by this
+   * list.
+   * @return true the list internal storage changed as a result of this
+   * operation, false otherwise.
+   */
+  public synchronized boolean retainAll(Collection<?> c)
+  {
+    // if the given collection does not contain elements
+    // we remove all the elements from our storage
+    if (c.size() == 0)
+      {
+        this.clear();
+        return true;
+      }
+    
+    E [] snapshot = this.data;
+    E [] storage = (E[]) new Object[this.data.length]; 
+    
+    int length = 0;
+    for (E element : snapshot)
+      {
+        if (c.contains(element))
+          storage[length++] = element;
+      }
+    
+    // means we retained all the elements previously in our storage
+    // we are running already slow here, but at least we avoid copying
+    // another array and changing the internal storage
+    if (length == snapshot.length)
+      return false;
+    
+    E[] newData = (E[]) new Object[length];
+    System.arraycopy(storage, 0, newData, 0, length);
+    
+    this.data = newData;
+    
+    return true;
+  }
+  
+  /**
    * Removes all elements from this List
    */
   public synchronized void clear()
@@ -414,6 +590,12 @@ public class CopyOnWriteArrayList<E> extends AbstractList<E> implements
     return true;
   }
   
+  /**
+   * Adds an element if the list does not contains it already.
+   * 
+   * @param val the element to add to the list.
+   * @return true if the element was added, false otherwise.
+   */
   public synchronized boolean addIfAbsent(E val)
   {
     if (contains(val))
@@ -422,17 +604,157 @@ public class CopyOnWriteArrayList<E> extends AbstractList<E> implements
     return true;
   }
 
+  /**
+   * Adds all the element from the given collection that are not already
+   * in this list.
+   * 
+   * @param c the Collection containing the elements to be inserted
+   * @return true the list internal storage changed as a result of this
+   * operation, false otherwise.
+   */
   public synchronized int addAllAbsent(Collection<? extends E> c)
   {
-    int result = 0;
+    int size = c.size();
+    if (size == 0)
+      return 0;
+    
+    E [] snapshot = this.data;
+    E [] storage = (E[]) new Object[size];
+    
+    size = 0;
     for (E val : c)
       {
-        if (addIfAbsent(val))
-          ++result;
+        if (this.contains(val))
+          storage[size++] = val;
       }
-    return result;
+    
+    if (size == 0)
+      return 0;
+    
+    // append storage to data
+    E [] newData = (E[]) new Object[snapshot.length + size];
+    
+    System.arraycopy(snapshot, 0, newData, 0, snapshot.length);
+    System.arraycopy(storage, 0, newData, snapshot.length + 1, storage.length);
+    
+    return size;
   }
 
+  /**
+   * Return an Iterator containing the elements of this list.
+   * The Iterator uses a snapshot of the state of the internal storage
+   * at the moment this method is called and does <strong>not</strong> support
+   * update operations, so no synchronization is needed to traverse the
+   * iterator.
+   * 
+   * @return an Iterator containing the elements of this list in sequence.
+   */
+  public Iterator<E> iterator()
+  {
+    return new Iterator<E>()
+    {
+      E [] iteratorData = CopyOnWriteArrayList.this.data;
+      int currentElement = 0;
+      
+      public boolean hasNext()
+      {
+        return (currentElement < iteratorData.length);
+      }
+
+      public E next()
+      {
+        return iteratorData[currentElement++];
+      }
+
+      public void remove()
+      {
+        throw new UnsupportedOperationException("updating of elements in " +
+                                                "iterators is not supported " +
+                                                "by this class");
+      }
+    };
+  }
+  
+  /**
+   * Return a ListIterator containing the elements of this list.
+   * The Iterator uses a snapshot of the state of the internal storage
+   * at the moment this method is called and does <strong>not</strong> support
+   * update operations, so no synchronization is needed to traverse the
+   * iterator.
+   * 
+   * @return a ListIterator containing the elements of this list in sequence.
+   */
+  public ListIterator<E> listIterator(final int index)
+  {
+    if (index < 0 || index > size())
+      throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
+                                          + size());
+
+    return new ListIterator<E>()
+    {
+      E [] iteratorData = CopyOnWriteArrayList.this.data;
+      int currentElement = 0;
+      
+      public void add(E o)
+      {
+        throw new UnsupportedOperationException("updating of elements in " +
+                                                "iterators is not supported " +
+                                                "by this class");
+      }
+
+      public boolean hasNext()
+      {
+        return (currentElement < iteratorData.length);
+      }
+
+      public boolean hasPrevious()
+      {
+        return (currentElement > 0);
+      }
+
+      public E next()
+      {
+        if (hasNext() == false)
+          throw new java.util.NoSuchElementException();
+        
+        return iteratorData[currentElement++];
+      }
+
+      public int nextIndex()
+      {
+        return (currentElement + 1);
+      }
+
+      public E previous()
+      {
+        if (hasPrevious() == false)
+          throw new java.util.NoSuchElementException();
+        
+        return iteratorData[currentElement++];
+      }
+
+      public int previousIndex()
+      {
+        return (currentElement - 1);
+      }
+
+      public void remove()
+      {
+        throw new UnsupportedOperationException("updating of elements in " +
+                                                "iterators is not supported " +
+                                                "by this class");
+      }
+
+      public void set(E o)
+      {
+        throw new UnsupportedOperationException("updating of elements in " +
+                                                "iterators is not supported " +
+                                                "by this class");
+      }
+      
+    };
+  }
+  
   /**
    * Serializes this object to the given stream.
    * 
