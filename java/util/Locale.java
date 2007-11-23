@@ -178,21 +178,21 @@ public final class Locale implements Serializable, Cloneable
    *
    * @serial the languange, possibly ""
    */
-  private String language;
+  private final String language;
 
   /**
    * The country code, as returned by getCountry().
    *
    * @serial the country, possibly ""
    */
-  private String country;
+  private final String country;
 
   /**
    * The variant code, as returned by getVariant().
    *
    * @serial the variant, possibly ""
    */
-  private String variant;
+  private final String variant;
 
   /**
    * This is the cached hashcode. When writing to stream, we write -1.
@@ -1021,9 +1021,6 @@ public final class Locale implements Serializable, Cloneable
     throws IOException, ClassNotFoundException
   {
     s.defaultReadObject();
-    language = language.intern();
-    country = country.intern();
-    variant = variant.intern();
     hashcode = language.hashCode() ^ country.hashCode() ^ variant.hashCode();
   }
 } // class Locale
