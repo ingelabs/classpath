@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package java.util.prefs;
 
-import gnu.java.util.prefs.EventDispatcher;
+import gnu.classpath.toolkit.DefaultDaemonThreadFactory;
 import gnu.java.util.prefs.NodeWriter;
 
 import java.io.ByteArrayOutputStream;
@@ -49,6 +49,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeSet;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Partial implementation of a Preference node.
@@ -1236,17 +1238,18 @@ public abstract class AbstractPreferences extends Preferences {
      */
     private void fire(final PreferenceChangeEvent event)
     {
-      Iterator it = preferenceListeners.iterator();
-      while (it.hasNext())
+      for (final PreferenceChangeListener listener : preferenceListeners)
         {
-          final PreferenceChangeListener l = (PreferenceChangeListener) it.next();
-          EventDispatcher.dispatch(new Runnable()
-                                   {
-                                     public void run()
-                                     {
-                                       l.preferenceChange(event);
-                                     }
-                                   });
+          Runnable dispatcher = new Runnable() {
+            public void run()
+            {
+              listener.preferenceChange(event);
+            }
+          };
+          
+          Executor executor =
+            Executors.newSingleThreadExecutor(new DefaultDaemonThreadFactory());
+          executor.execute(dispatcher);
         }
     }
 
@@ -1258,20 +1261,21 @@ public abstract class AbstractPreferences extends Preferences {
      */
     private void fire(final NodeChangeEvent event, final boolean added)
     {
-      Iterator it = nodeListeners.iterator();
-      while (it.hasNext())
+      for (final NodeChangeListener listener : nodeListeners)
         {
-          final NodeChangeListener l = (NodeChangeListener) it.next();
-          EventDispatcher.dispatch(new Runnable()
-                                   {
-                                     public void run()
-                                     {
-                                       if (added)
-                                         l.childAdded(event);
-                                       else
-                                         l.childRemoved(event);
-                                     }
-                                   });
+          Runnable dispatcher = new Runnable() {
+            public void run()
+            {
+              if (added)
+                listener.childAdded(event);
+              else
+                listener.childRemoved(event);
+            }
+          };
+          
+          Executor executor =
+            Executors.newSingleThreadExecutor(new DefaultDaemonThreadFactory());
+          executor.execute(dispatcher);
         }
     }
 
