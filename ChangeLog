@@ -1,3 +1,76 @@
+2007-11-23  Ian Rogers  <ian.rogers@manchester.ac.uk>
+
+	* java/io/FileOutputStream.java,
+	* java/io/PrintStream.java,
+	* java/util/Locale.java:
+	Make fields that can be final, final.
+	* gnu/java/nio/charset/ByteCharset.java,
+	* gnu/java/nio/charset/Cp424.java,
+	* gnu/java/nio/charset/Cp437.java,
+	* gnu/java/nio/charset/Cp737.java,
+	* gnu/java/nio/charset/Cp775.java,
+	* gnu/java/nio/charset/Cp850.java,
+	* gnu/java/nio/charset/Cp852.java,
+	* gnu/java/nio/charset/Cp855.java,
+	* gnu/java/nio/charset/Cp857.java,
+	* gnu/java/nio/charset/Cp860.java,
+	* gnu/java/nio/charset/Cp861.java,
+	* gnu/java/nio/charset/Cp862.java,
+	* gnu/java/nio/charset/Cp863.java,
+	* gnu/java/nio/charset/Cp864.java,
+	* gnu/java/nio/charset/Cp865.java,
+	* gnu/java/nio/charset/Cp866.java,
+	* gnu/java/nio/charset/Cp869.java,
+	* gnu/java/nio/charset/Cp874.java,
+	* gnu/java/nio/charset/EncodingHelper.java,
+	* gnu/java/nio/charset/ISO_8859_13.java,
+	* gnu/java/nio/charset/ISO_8859_15.java,
+	* gnu/java/nio/charset/ISO_8859_1.java,
+	* gnu/java/nio/charset/ISO_8859_2.java,
+	* gnu/java/nio/charset/ISO_8859_3.java,
+	* gnu/java/nio/charset/ISO_8859_4.java,
+	* gnu/java/nio/charset/ISO_8859_5.java,
+	* gnu/java/nio/charset/ISO_8859_6.java,
+	* gnu/java/nio/charset/ISO_8859_7.java,
+	* gnu/java/nio/charset/ISO_8859_8.java,
+	* gnu/java/nio/charset/ISO_8859_9.java,
+	* gnu/java/nio/charset/KOI_8.java,
+	* gnu/java/nio/charset/MacCentralEurope.java,
+	* gnu/java/nio/charset/MacCroatian.java,
+	* gnu/java/nio/charset/MacCyrillic.java,
+	* gnu/java/nio/charset/MacDingbat.java,
+	* gnu/java/nio/charset/MacGreek.java,
+	* gnu/java/nio/charset/MacIceland.java,
+	* gnu/java/nio/charset/MacRomania.java,
+	* gnu/java/nio/charset/MacRoman.java,
+	* gnu/java/nio/charset/MacSymbol.java,
+	* gnu/java/nio/charset/MacThai.java,
+	* gnu/java/nio/charset/MacTurkish.java,
+	* gnu/java/nio/charset/MS874.java,
+	* gnu/java/nio/charset/Provider.java,
+	* gnu/java/nio/charset/US_ASCII.java,
+	* gnu/java/nio/charset/Windows1250.java,
+	* gnu/java/nio/charset/Windows1251.java,
+	* gnu/java/nio/charset/Windows1252.java,
+	* gnu/java/nio/charset/Windows1253.java,
+	* gnu/java/nio/charset/Windows1254.java,
+	* gnu/java/nio/charset/Windows1255.java,
+	* gnu/java/nio/charset/Windows1256.java,
+	* gnu/java/nio/charset/Windows1257.java,
+	* gnu/java/nio/charset/Windows1258.java,
+	* gnu/java/nio/charset/ByteDecodeLoopHelper.java,
+        * gnu/java/nio/charset/ByteEncodeLoopHelper.java:
+	Optimize for array based buffers.
+        * native/jni/gtk-peer/gtkpeer.c:
+	Make 32bit pointer a global JNI reference.
+	* java/lang/String:
+	(toLowerCaseTurkish): new method.
+	(toUpperCaseTurkish): new method.
+	(toLowerCase): special case Turkish
+	(toUpperCase): likewise.
+	* java/lang/Long:
+	(valueOf): remove unnecessary synchronized.
+
 2007-11-08  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/util/Locale.java
