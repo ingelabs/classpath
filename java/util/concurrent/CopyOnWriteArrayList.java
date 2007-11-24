@@ -41,7 +41,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+
 import java.lang.reflect.Array;
+
 import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -395,15 +397,23 @@ public class CopyOnWriteArrayList<E> extends AbstractList<E> implements
    */
   public synchronized E remove(int index)
   {
-    E[] data = this.data;
-    E[] newData = (E[]) new Object[data.length - 1];
+    if (index < 0 || index >= this.size())
+      throw new IndexOutOfBoundsException("index = " +  index);
+    
+    E[] snapshot = this.data;
+    E[] newData = (E[]) new Object[snapshot.length - 1];
+    
+    E result = snapshot[index];
+    
     if (index > 0)
-      System.arraycopy(data, 0, newData, 0, index - 1);
-    System.arraycopy(data, index + 1, newData, index,
-                     data.length - index - 1);
-    E r = data[index];
+      System.arraycopy(snapshot, 0, newData, 0, index);
+    
+    System.arraycopy(snapshot, index + 1, newData, index,
+                     snapshot.length - index - 1);
+    
     this.data = newData;
-    return r;
+    
+    return result;
   }
 
   /**
@@ -417,32 +427,32 @@ public class CopyOnWriteArrayList<E> extends AbstractList<E> implements
    */
   public synchronized boolean remove(Object element)
   {
-    E[] data = this.data;
-    E[] newData = (E[]) new Object[data.length - 1];
+    E[] snapshot = this.data;
+    E[] newData = (E[]) new Object[snapshot.length - 1];
     
     // search the element to remove while filling the backup array
     // this way we can run this method in O(n)
     int elementIndex = -1;
-    for (int i = 0; i < this.data.length; i++)
+    for (int i = 0; i < snapshot.length; i++)
       {
-        if (equals(element, this.data[i]))
+        if (equals(element, snapshot[i]))
           {
             elementIndex = i;
             break;
           }
         
         if (i < newData.length)
-          newData[i] = this.data[i];
+          newData[i] = snapshot[i];
       }
     
     if (elementIndex < 0)
       return false;
-    
-    System.arraycopy(this.data, elementIndex + 1, newData, elementIndex,
-                     this.data.length - elementIndex - 1);
+     
+    System.arraycopy(snapshot, elementIndex + 1, newData, elementIndex,
+                     snapshot.length - elementIndex - 1);
     this.data = newData;
     
-    return false;
+    return true;
   }
   
   /**
@@ -575,18 +585,33 @@ public class CopyOnWriteArrayList<E> extends AbstractList<E> implements
    */
   public synchronized boolean addAll(int index, Collection< ? extends E> c)
   {
-    E[] data = this.data;
-    Iterator<? extends E> itr = c.iterator();
+    if (index < 0 || index > this.size())
+      throw new IndexOutOfBoundsException("index = " +  index);
+    
     int csize = c.size();
     if (csize == 0)
       return false;
-
+    
+    E[] data = this.data;
+    Iterator<? extends E> itr = c.iterator();
+    
     E[] newData = (E[]) new Object[data.length + csize];
-    System.arraycopy(data, 0, newData, 0, data.length);
-    int end = data.length;
+    
+    // avoid this call at all if we were asked to put the elements at the
+    // beginning of our storage
+    if (index != 0)
+      System.arraycopy(data, 0, newData, 0, index);
+    
+    int itemsLeft = index;
+    
     for (E value : c)
-      newData[end++] = value;
+      newData[index++] = value;
+    
+    // now copy the remaining elements
+    System.arraycopy(data, itemsLeft, newData, 0, data.length - itemsLeft);
+    
     this.data = newData;
+    
     return true;
   }
   
@@ -624,7 +649,7 @@ public class CopyOnWriteArrayList<E> extends AbstractList<E> implements
     size = 0;
     for (E val : c)
       {
-        if (this.contains(val))
+        if (!this.contains(val))
           storage[size++] = val;
       }
     
@@ -635,7 +660,9 @@ public class CopyOnWriteArrayList<E> extends AbstractList<E> implements
     E [] newData = (E[]) new Object[snapshot.length + size];
     
     System.arraycopy(snapshot, 0, newData, 0, snapshot.length);
-    System.arraycopy(storage, 0, newData, snapshot.length + 1, storage.length);
+    System.arraycopy(storage, 0, newData, snapshot.length, size);
+    
+    this.data = newData;
     
     return size;
   }
@@ -693,7 +720,7 @@ public class CopyOnWriteArrayList<E> extends AbstractList<E> implements
     return new ListIterator<E>()
     {
       E [] iteratorData = CopyOnWriteArrayList.this.data;
-      int currentElement = 0;
+      int currentElement = index;
       
       public void add(E o)
       {
@@ -730,7 +757,7 @@ public class CopyOnWriteArrayList<E> extends AbstractList<E> implements
         if (hasPrevious() == false)
           throw new java.util.NoSuchElementException();
         
-        return iteratorData[currentElement++];
+        return iteratorData[--currentElement];
       }
 
       public int previousIndex()

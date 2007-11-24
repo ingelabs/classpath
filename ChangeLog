@@ -1,3 +1,16 @@
+2007-11-24  Mario Torre  <neugens@limasoftware.net>
+
+	* java/util/concurrent/CopyOnWriteArrayList.java: 
+	(addAll): fix implementation, now add elements in the correct position.
+	(addAllAbsent): fixed typos (whoops!).
+	(remove(int)): fixed range in arraycopy that was causing for incorrect
+	values to be inserted in the list. Refactored to give variables better
+	names.
+	(remove(Object)): refactored to give better names to variable.
+	(listIterator): fix to set the starting index.
+    (listIterator.previous): fix to decrement element position before
+    returning the previous element in the iterator.  
+
 2007-11-23  Mario Torre  <neugens@limasoftware.net>
 
     * gnu/java/util/prefs/EventDispatcher.java: class removed.
