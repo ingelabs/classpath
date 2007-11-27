@@ -40,6 +40,8 @@ exception statement from your version. */
 #include "gtkpeer.h"
 #include "gnu_java_awt_peer_gtk_GtkWindowPeer.h"
 #include <gdk/gdkprivate.h>
+#include <gdk/gdkx.h>
+#include <X11/Xatom.h>
 #include <gdk/gdkkeysyms.h>
 
 #define AWT_WINDOW_CLOSING 201
@@ -1037,6 +1039,12 @@ static void window_get_frame_extents (GtkWidget *window,
                                       int *top, int *left,
                                       int *bottom, int *right);
 
+static void request_frame_extents (GtkWidget *window);
+
+static Bool property_notify_predicate (Display *display,
+                                       XEvent  *xevent,
+                                       XPointer arg);
+
 static gboolean window_delete_cb (GtkWidget *widget, GdkEvent *event,
 			      jobject peer);
 static void window_destroy_cb (GtkWidget *widget, GdkEvent *event,
@@ -1140,6 +1148,12 @@ union extents_union
 {
   guchar **gu_extents;
   unsigned long **extents;
+};
+
+union atom_list_union
+{
+  guchar **gu_extents;
+  Atom **atom_list;
 };
 
 JNIEXPORT void JNICALL
@@ -1503,22 +1517,118 @@ static void
 window_get_frame_extents (GtkWidget *window,
                           int *top, int *left, int *bottom, int *right)
 {
-  GdkRectangle extents;
-  GdkWindow* gdkWindow;
+  unsigned long *extents = NULL;
+  union extents_union gu_ex;
 
-  gint x, y, w, h;
+  /* Guess frame extents in case _NET_FRAME_EXTENTS is not
+     supported. */
+  if (!gtk_window_get_decorated (GTK_WINDOW (window)))
+    {
+      *top = 0;
+      *left = 0;
+      *bottom = 0;
+      *right = 0;
 
-  gdkWindow = window->window;
+      return;
+    }
 
-  gdk_window_get_frame_extents(gdkWindow, &extents);
-  gdk_drawable_get_size(gdkWindow, &w, &h);
-  gdk_window_get_origin(gdkWindow, &x, &y);
+  *top = 23;
+  *left = 6;
+  *bottom = 6;
+  *right = 6;
 
-  *left = extents.x - x;
-  *top = extents.y - y;
-  *right = extents.width - w - *left;
-  *bottom = extents.height - h - *top;
+  /* Request that the window manager set window's
+     _NET_FRAME_EXTENTS property. */
+  request_frame_extents (window);
 
+  /* Attempt to retrieve window's frame extents. */
+  gu_ex.extents = &extents;
+  if (gdk_property_get (window->window,
+                        gdk_atom_intern ("_NET_FRAME_EXTENTS", FALSE),
+                        gdk_atom_intern ("CARDINAL", FALSE),
+                        0,
+                        sizeof (unsigned long) * 4,
+                        FALSE,
+                        NULL,
+                        NULL,
+                        NULL,
+                        gu_ex.gu_extents))
+    {
+      *left = extents [0];
+      *right = extents [1];
+      *top = extents [2];
+      *bottom = extents [3];
+    }
+}
+
+static Atom extents_atom = 0;
+
+/* Requests that the window manager set window's
+   _NET_FRAME_EXTENTS property. */
+static void
+request_frame_extents (GtkWidget *window)
+{
+  const char *request_str = "_NET_REQUEST_FRAME_EXTENTS";
+  GdkAtom request_extents = gdk_atom_intern (request_str, FALSE);
+
+  /* Check if the current window manager supports
+     _NET_REQUEST_FRAME_EXTENTS. */
+  if (gdk_net_wm_supports (request_extents))
+    {
+      GdkDisplay *display = gtk_widget_get_display (window);
+      Display *xdisplay = GDK_DISPLAY_XDISPLAY (display);
+
+      GdkWindow *root_window = gdk_get_default_root_window ();
+      Window xroot_window = GDK_WINDOW_XID (root_window);
+
+      Atom extents_request_atom =
+	gdk_x11_get_xatom_by_name_for_display (display, request_str);
+
+      XEvent xevent;
+      XEvent notify_xevent;
+
+      unsigned long window_id = GDK_WINDOW_XID (GDK_DRAWABLE(window->window));
+
+      if (!extents_atom)
+	{
+	  const char *extents_str = "_NET_FRAME_EXTENTS";
+	  extents_atom =
+	    gdk_x11_get_xatom_by_name_for_display (display, extents_str);
+	}
+
+      xevent.xclient.type = ClientMessage;
+      xevent.xclient.message_type = extents_request_atom;
+      xevent.xclient.display = xdisplay;
+      xevent.xclient.window = window_id;
+      xevent.xclient.format = 32;
+      xevent.xclient.data.l[0] = 0;
+      xevent.xclient.data.l[1] = 0;
+      xevent.xclient.data.l[2] = 0;
+      xevent.xclient.data.l[3] = 0;
+      xevent.xclient.data.l[4] = 0;
+
+      XSendEvent (xdisplay, xroot_window, False,
+		  (SubstructureRedirectMask | SubstructureNotifyMask),
+                  &xevent);
+
+      XIfEvent(xdisplay, &notify_xevent,
+	       property_notify_predicate, (XPointer) &window_id);
+    }
+}
+
+static Bool
+property_notify_predicate (Display *xdisplay __attribute__((unused)),
+                           XEvent  *event,
+                           XPointer window_id)
+{
+  unsigned long *window = (unsigned long *) window_id;
+
+  if (event->xany.type == PropertyNotify
+      && event->xany.window == *window
+      && event->xproperty.atom == extents_atom)
+    return True;
+  else
+    return False;
 }
 
 static gboolean
