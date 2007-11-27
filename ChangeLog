@@ -1,3 +1,8 @@
+2007-11-27  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/management/package.html: Added.
+	* javax/management/remote/package.html: Likewise.
+	
 2007-11-24  Mario Torre  <neugens@limasoftware.net>
 
 	* java/util/concurrent/CopyOnWriteArrayList.java: 
@@ -8,67 +13,67 @@
 	names.
 	(remove(Object)): refactored to give better names to variable.
 	(listIterator): fix to set the starting index.
-    (listIterator.previous): fix to decrement element position before
-    returning the previous element in the iterator.  
+	(listIterator.previous): fix to decrement element position before
+	returning the previous element in the iterator.  
 
 2007-11-23  Mario Torre  <neugens@limasoftware.net>
 
-    * gnu/java/util/prefs/EventDispatcher.java: class removed.
-    * gnu/classpath/toolkit/DefaultDaemonThreadFactory.java: new file.
-    * java/util/prefs/AbstractPreferences.java: (fire(PreferenceChangeEvent)):
-    Use DefaultDaemonThreadFactory and Executors.newSingleThreadExecutor
-    instead of EventDispatcher. Import statement refactored accordingly.
-    Also refactored to use 1.5 enhanced for loop and generics.
-    (fire(NodeChangeEvent, boolean)): likewise.
-    * gnu/java/util/prefs/GConfBasedPreferences.java (childSpi):
-    removed startWatchingNode call.
-    * gnu/java/util/prefs/gconf/GConfNativePeer.java:
-    (GConfNativePeer): removed use of semaphore. 
-    (gconf_all_nodes): method name shortened, renamed from
-    gconf_client_all_nodes (removed client_ from method signature) and
-    declared synchronized. 
-    (gconf_suggest_sync): likewise.
-    (gconf_get_string): likewise.
-    (gconf_unescape_key): likewise.
-    (gconf_set_string): likewise.
-    (gconf_escape_key):  likewise.
-    (gconf_all_keys): likewise.
-    (gconf_dir_exists): likewise.
-    (getKeys): refactored to use new native method name.
-    (getKey): likewise.
-    (setString): likewise.
-    (getChildrenNodes): likewise.
-    (unset): likewise.
-    (suggestSync): likewise.
-    (finalize): likewise.
-    (nodeExist): likewise.
-    (gconf_client_add_dir): removed, not needed anymore.
-    (gconf_client_remove_dir): likewise.
-    (startWatchingNode): likewise.
-    (stopWatchingNode): likewise.
-    * native/jni/conf-peer/GConfNativePeer.c:
-    All native methods renamed to match changes in GConfNativePeer.java
-    Now use GConfEngine instead of GConfClient.
-    Removed gdk_thread_enter/leave locking from all methods.
-    (Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1add_1dir):
-    removed.
-    (Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1dir_1exists):
-    likewise.
-    * include/gnu_java_util_prefs_gconf_GConfNativePeer.h: regenerated.
+	* gnu/java/util/prefs/EventDispatcher.java: class removed.
+	* gnu/classpath/toolkit/DefaultDaemonThreadFactory.java: new file.
+	* java/util/prefs/AbstractPreferences.java: (fire(PreferenceChangeEvent)):
+	Use DefaultDaemonThreadFactory and Executors.newSingleThreadExecutor
+	instead of EventDispatcher. Import statement refactored accordingly.
+	Also refactored to use 1.5 enhanced for loop and generics.
+	(fire(NodeChangeEvent, boolean)): likewise.
+	* gnu/java/util/prefs/GConfBasedPreferences.java (childSpi):
+	removed startWatchingNode call.
+	* gnu/java/util/prefs/gconf/GConfNativePeer.java:
+	(GConfNativePeer): removed use of semaphore. 
+	(gconf_all_nodes): method name shortened, renamed from
+	gconf_client_all_nodes (removed client_ from method signature) and
+	declared synchronized. 
+	(gconf_suggest_sync): likewise.
+	(gconf_get_string): likewise.
+	(gconf_unescape_key): likewise.
+	(gconf_set_string): likewise.
+	(gconf_escape_key):  likewise.
+	(gconf_all_keys): likewise.
+	(gconf_dir_exists): likewise.
+	(getKeys): refactored to use new native method name.
+	(getKey): likewise.
+	(setString): likewise.
+	(getChildrenNodes): likewise.
+	(unset): likewise.
+	(suggestSync): likewise.
+	(finalize): likewise.
+	(nodeExist): likewise.
+	(gconf_client_add_dir): removed, not needed anymore.
+	(gconf_client_remove_dir): likewise.
+	(startWatchingNode): likewise.
+	(stopWatchingNode): likewise.
+	* native/jni/conf-peer/GConfNativePeer.c:
+	All native methods renamed to match changes in GConfNativePeer.java
+	Now use GConfEngine instead of GConfClient.
+	Removed gdk_thread_enter/leave locking from all methods.
+	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1add_1dir):
+	removed.
+	(Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1client_1dir_1exists):
+	likewise.
+	* include/gnu_java_util_prefs_gconf_GConfNativePeer.h: regenerated.
 
 2007-11-23  Mario Torre  <neugens@limasoftware.net>
 
-    * java/util/concurrent/CopyOnWriteArrayList.java: 
-    Added javadoc.
-    (serialVersionUID): new field. 
-    (iterator): new method, override from base class.
-    (remove): likewise.
-    (listIterator): likewise.
-    (removeAll): likewise.
-    (retainAll): likewise.
-    (contains): fixed typo in javadoc.
-    (addIfAbsent): added javadoc.
-    (addAllAbsent): Rewrite to improve performance. Also add javadoc.
+	* java/util/concurrent/CopyOnWriteArrayList.java: 
+	Added javadoc.
+	(serialVersionUID): new field. 
+	(iterator): new method, override from base class.
+	(remove): likewise.
+	(listIterator): likewise.
+	(removeAll): likewise.
+	(retainAll): likewise.
+	(contains): fixed typo in javadoc.
+	(addIfAbsent): added javadoc.
+	(addAllAbsent): Rewrite to improve performance. Also add javadoc.
 
 2007-11-23  Ian Rogers  <ian.rogers@manchester.ac.uk>
 
