@@ -1,3 +1,19 @@
+2007-11-30  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+        PR classpath/34276:
+	* gnu/java/lang/management/BeanImpl.java:
+	(getDescription(MBeanConstructorInfo,MBeanParameterInfo,int)):
+	Added to provide a default description if the current one is null.
+	(getDescription(MBeanOperationInfo,MBeanParameterInfo,int)):
+	Likewise.
+	(getParameterName(MBeanConstructorInfo,MBeanParameterInfo,int)):
+	Likewise for the name.
+	(getParameterName(MBeanOperationInfo,MBeanParameterInfo,int)):
+	Likewise.
+	* gnu/javax/management/Server.java:
+	(getMBeanInfo()): Try using a StandardMBean wrapper if reflection
+	fails to find getMBeanInfo().
+	
 2007-11-28  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* examples/gnu/classpath/examples/management/TestBeans.java:

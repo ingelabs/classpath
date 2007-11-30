@@ -318,6 +318,90 @@ public class BeanImpl
     return (MBeanInfo) openInfo;
   }
 
+  /**
+   * Override this method so as to prevent the description of a constructor's
+   * parameter being @code{null}.  Open MBeans can not have @code{null} descriptions,
+   * but one will occur as the names of parameters aren't stored for reflection.
+   * 
+   * @param constructor the constructor whose parameter needs describing.
+   * @param parameter the parameter to be described.
+   * @param sequenceNo the number of the parameter to describe.
+   * @return a description of the constructor's parameter.
+   */
+  protected String getDescription(MBeanConstructorInfo constructor,
+				  MBeanParameterInfo parameter,
+				  int sequenceNo)
+  {
+    String desc = parameter.getDescription();
+    if (desc == null)
+      return "param" + sequenceNo;
+    else
+      return desc;
+  }
+
+  /**
+   * Override this method so as to prevent the description of an operation's
+   * parameter being @code{null}.  Open MBeans can not have @code{null} descriptions,
+   * but one will occur as the names of parameters aren't stored for reflection.
+   * 
+   * @param operation the operation whose parameter needs describing.
+   * @param parameter the parameter to be described.
+   * @param sequenceNo the number of the parameter to describe.
+   * @return a description of the operation's parameter.
+   */
+  protected String getDescription(MBeanOperationInfo operation,
+				  MBeanParameterInfo parameter,
+				  int sequenceNo)
+  {
+    String desc = parameter.getDescription();
+    if (desc == null)
+      return "param" + sequenceNo;
+    else
+      return desc;
+  }
+
+  /**
+   * Override this method so as to prevent the name of a constructor's
+   * parameter being @code{null}.  Open MBeans can not have @code{null} names,
+   * but one will occur as the names of parameters aren't stored for reflection.
+   * 
+   * @param constructor the constructor whose parameter needs a name.
+   * @param parameter the parameter to be named.
+   * @param sequenceNo the number of the parameter to name.
+   * @return a description of the constructor's parameter.
+   */
+  protected String getParameterName(MBeanConstructorInfo constructor,
+				    MBeanParameterInfo parameter,
+				    int sequenceNo)
+  {
+    String name = parameter.getName();
+    if (name == null)
+      return "param" + sequenceNo;
+    else
+      return name;
+  }
+
+  /**
+   * Override this method so as to prevent the name of an operation's
+   * parameter being @code{null}.  Open MBeans can not have @code{null} names,
+   * but one will occur as the names of parameters aren't stored for reflection.
+   * 
+   * @param operation the operation whose parameter needs a name.
+   * @param parameter the parameter to be named.
+   * @param sequenceNo the number of the parameter to name.
+   * @return a description of the operation's parameter.
+   */
+  protected String getParameterName(MBeanOperationInfo operation,
+				    MBeanParameterInfo parameter,
+				    int sequenceNo)
+  {
+    String name = parameter.getName();
+    if (name == null)
+      return "param" + sequenceNo;
+    else
+      return name;
+  }
+
   public MBeanInfo getMBeanInfo()
   {
     super.getMBeanInfo();

@@ -1036,8 +1036,15 @@ public class Server
       }
     catch (NoSuchMethodException e)
       {
-	throw new IntrospectionException("The getMBeanInfo method " + 
-					 "could not be found.");
+	try
+	  {
+	    return new StandardMBean(bean, null).getMBeanInfo();
+	  }
+	catch (NotCompliantMBeanException ex)
+	  {
+	    throw new IntrospectionException("An error occurred in executing " +
+					     "getMBeanInfo on the bean: " + ex + ".");
+	  }
       }
     catch (IllegalAccessException e)
       {
