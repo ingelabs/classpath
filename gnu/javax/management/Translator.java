@@ -39,6 +39,7 @@ package gnu.javax.management;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 
@@ -440,33 +441,6 @@ public final class Translator
 						 SimpleType.STRING,
 						 null, names);
       }
-    try
-      {
-	c.getMethod("from", new Class[] { CompositeData.class });
-	Method[] methods = c.getDeclaredMethods();
-	List<String> names = new ArrayList<String>();
-	List<OpenType> types = new ArrayList<OpenType>();
-	for (int a = 0; a < methods.length; ++a)
-	  {
-	    String name = methods[a].getName();
-	    if (name.startsWith("get"))
-	      {
-		names.add(name.substring(3));
-		types.add(getTypeFromClass(methods[a].getReturnType()));
-	      }
-	  }
-	String[] fields = names.toArray(new String[names.size()]);
-	CompositeType ctype = new CompositeType(c.getName(), c.getName(),
-						fields, fields,
-						types.toArray(new OpenType[types.size()]));
-	return new OpenMBeanParameterInfoSupport("TransParam",
-						 "Translated parameter",
-						 ctype);
-      }
-    catch (NoSuchMethodException e)
-      {
-	/* Ignored; we expect this if this isn't a from(CompositeData) class */
-      }
     if (c.isArray())
       {
 	int depth;
@@ -478,7 +452,35 @@ public final class Translator
 						 new ArrayType(depth, ot)
 						 );
       }
-    throw new InternalError("The type used does not have an open type translation.");
+    Method[] methods = c.getDeclaredMethods();
+    List<String> names = new ArrayList<String>();
+    List<OpenType> types = new ArrayList<OpenType>();
+    for (int a = 0; a < methods.length; ++a)
+      {
+	String name = methods[a].getName();
+	if (Modifier.isPublic(methods[a].getModifiers()))
+	  {
+	    if (name.startsWith("get"))
+	      {
+		names.add(name.substring(3));
+		types.add(getTypeFromClass(methods[a].getReturnType()));
+	      }
+	    else if (name.startsWith("is"))
+	      {
+		names.add(name.substring(2));
+		types.add(getTypeFromClass(methods[a].getReturnType()));
+	      }
+	  }
+      }
+    if (names.isEmpty())
+      throw new OpenDataException("The type used does not have an open type translation.");
+    String[] fields = names.toArray(new String[names.size()]);
+    CompositeType ctype = new CompositeType(c.getName(), c.getName(),
+					    fields, fields,
+					    types.toArray(new OpenType[types.size()]));
+    return new OpenMBeanParameterInfoSupport("TransParam",
+					     "Translated parameter",
+					     ctype);
   }
 
   /**
