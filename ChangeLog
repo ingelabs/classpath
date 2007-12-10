@@ -1,5 +1,9 @@
 2007-12-10  Robert Schuster  <robertschuster@fsfe.org>
 
+  * THANKYOU: Added my name to the list.
+
+2007-12-10  Robert Schuster  <robertschuster@fsfe.org>
+
         PR classpath/32516:
   * tools/gnu/classpath/tools/jar/Entry.java:
   (Entry(File, String)): Added loop to remove all dot-file separator
