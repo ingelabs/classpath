@@ -1,5 +1,10 @@
 2007-12-10  Robert Schuster  <robertschuster@fsfe.org>
 
+  * native/jni/native-lib/cpio.c:
+  (cpio_df): Mark arguments as possibly unused.
+
+2007-12-10  Robert Schuster  <robertschuster@fsfe.org>
+
   * javax/swing/text/GlyphView.java:
   (paint): Removed debug output.
 

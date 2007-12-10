@@ -400,7 +400,8 @@ int cpio_chmod (const char *filename, int permissions)
 }
 
 JNIEXPORT long long
-cpio_df (const char *path, CPFILE_DF_TYPE type)
+cpio_df (__attribute__((unused)) const char *path,
+         __attribute__((unused)) CPFILE_DF_TYPE type)
 {
   long long result = 0L;
   
