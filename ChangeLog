@@ -1,5 +1,11 @@
 2007-12-25  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+        PR classpath/34580:
+	* java/awt/Desktop.java:
+	(isDesktopSupported()): Made public.
+	
+2007-12-25  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
         PR classpath/34577:
 	* javax/swing/JFrame.java:
 	(addImpl(Component,Object,int)): Add a similar
