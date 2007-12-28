@@ -1,3 +1,15 @@
+2007-12-28  Dalibor Topic  <robilad@kaffe.org>
+
+	* m4/acinclude.m4 (CLASSPATH_WITH_GLIBJ): Use
+	AC_PATH_PROGS instead of AC_PATH_PROG to check
+	for FASTJAR as fastjar, gjar or jar. Add braces
+	to AC_PATH_PROGS arguments.
+
+	* tools/Makefile.am (TOOLS_ZIP),
+	lib/Makefile.am (collections.jar, glibj.zip): 
+	Quote FASTJAR in case it's in a path with 
+	whitespace.
+
 2007-12-25  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
         PR classpath/34580:

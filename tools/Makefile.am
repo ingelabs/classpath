@@ -181,12 +181,12 @@ $(TOOLS_ZIP): $(TOOLS_JAVA_FILES)
 ## First add classpath tools stuff.
 	(cd classes; \
 	if test "$(ZIP)" != ""; then $(ZIP) -r ../$(TOOLS_ZIP) .; fi; \
-	if test "$(FASTJAR)" != ""; then $(FASTJAR) cf ../$(TOOLS_ZIP) .; fi; \
+	if test "$(FASTJAR)" != ""; then "$(FASTJAR)" cf ../$(TOOLS_ZIP) .; fi; \
 	cd ..)
 ## Now add ASM classes.
 	(cd asm; \
 	if test "$(ZIP)" != ""; then $(ZIP) -u -r ../$(TOOLS_ZIP) .; fi; \
-	if test "$(FASTJAR)" != ""; then $(FASTJAR) uf ../$(TOOLS_ZIP) .; fi; \
+	if test "$(FASTJAR)" != ""; then "$(FASTJAR)" uf ../$(TOOLS_ZIP) .; fi; \
 	cd ..)
 	rm -rf classes
 

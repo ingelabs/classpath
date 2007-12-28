@@ -45,7 +45,7 @@ collections.jar: mkcollections.pl
 	$(JCOMPILER) `$(FIND) $(COLLECTIONS_PREFIX) -name '*.java' -type f -print`
 #endif
 	if test "$(FASTJAR)" != ""; then \
-	  $(FASTJAR) cf $@ $(COLLECTIONS_PREFIX); \
+	  "$(FASTJAR)" cf $@ $(COLLECTIONS_PREFIX); \
 	else \
 	  echo "fastjar not found" > collections.jar; \
 	fi
@@ -94,7 +94,7 @@ else
 
 glibj.zip: classes compile-classes resources
 	if test "$(ZIP)" != ""; then $(ZIP) -r -D glibj.zip gnu java javax org sun META-INF > /dev/null; fi
-	if test "$(FASTJAR)" != ""; then $(FASTJAR) cf glibj.zip gnu java javax org sun META-INF; fi
+	if test "$(FASTJAR)" != ""; then "$(FASTJAR)" cf glibj.zip gnu java javax org sun META-INF; fi
 
 endif # USE_PREBUILT_GLIBJ_ZIP
 

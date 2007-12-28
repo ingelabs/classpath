@@ -275,7 +275,7 @@ AC_DEFUN([CLASSPATH_WITH_GLIBJ],
 		FASTJAR=${withval}
 		AC_MSG_RESULT([${FASTJAR}])
 	      ],
-	      [AC_PATH_PROG(FASTJAR, fastjar)])
+	      [AC_PATH_PROGS([FASTJAR], [fastjar gjar jar])])
 dnl We disable ZIP by default if we find fastjar.
   if test x"${FASTJAR}" != x; then
     ZIP=""
