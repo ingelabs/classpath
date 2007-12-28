@@ -1,5 +1,35 @@
 2007-12-28  Dalibor Topic  <robilad@kaffe.org>
 
+	* configure.ac (AC_CHECK_HEADERS): Check for
+	netinet/in_systm.h, netinet/ip.h and net/if.h 
+	for Windows CE.
+
+	* native/jni/java-net/gnu_java_net_VMPlainSocketImpl.c:
+	Guard net/if.h include statement. Use unsigned int 
+	instead of u_int.
+
+	* native/jni/java-nio/gnu_java_nio_VMChannel.c:
+	Guard sys/mman.h include statement.
+
+	* native/jni/java-nio/gnu_java_nio_VMSelector.c:
+	Guard sys/select.h include statement.
+
+	* native/jni/java-nio/javanio.c:
+	Guard sys/select.h include statement.
+
+	* native/jni/java-nio/javanio.h:
+	Include sys/time.h.
+
+	* native/jni/native-lib/cpio.c: 
+	Guard chmod call by S_IWRITE, since it's not 
+	defined in the arm-wince toolchain.
+
+	* native/jni/native-lib/cpnet.h:
+	Guard netinet/in_systm.h and netinet/ip.h 
+	include statements.
+	
+2007-12-28  Dalibor Topic  <robilad@kaffe.org>
+
 	* m4/acinclude.m4 (CLASSPATH_WITH_GLIBJ): Use
 	AC_PATH_PROGS instead of AC_PATH_PROG to check
 	for FASTJAR as fastjar, gjar or jar. Add braces
