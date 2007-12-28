@@ -349,9 +349,11 @@ int cpio_setFileReadonly (const char *filename)
 
   if (stat(filename, &statbuf) < 0)
     return errno;
- 
+
+#ifdef S_IWRITE 
   if (chmod(filename, statbuf.st_mode & ~(S_IWRITE | S_IWGRP | S_IWOTH)) < 0)
     return errno;
+#endif
 
   return 0;
 }

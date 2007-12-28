@@ -368,6 +368,7 @@ if test "x${COMPILE_JNI}" = xyes; then
   dnl On that system, sys/ioctl.h will not include sys/filio.h unless
   dnl BSD_COMP is defined; just including sys/filio.h is simpler.
   dnl Check for crt_externs.h on Darwin.
+  dnl Check for netinet/in_systm.h, netinet/ip.h and net/if.h for Windows CE.
   AC_CHECK_HEADERS([unistd.h sys/types.h sys/config.h sys/ioctl.h \
 		    asm/ioctls.h \
 		    inttypes.h stdint.h utime.h sys/utime.h sys/filio.h \
@@ -378,7 +379,8 @@ if test "x${COMPILE_JNI}" = xyes; then
 		    sys/mman.h \
 		    magic.h \
                     sys/event.h sys/epoll.h \
-		    ifaddrs.h])
+		    ifaddrs.h \
+		    netinet/in_systm.h netinet/ip.h net/if.h])
 
   AC_EGREP_HEADER(uint32_t, stdint.h, AC_DEFINE(HAVE_INT32_DEFINED, 1, [Define to 1 if you have uint32_t]))
   AC_EGREP_HEADER(uint32_t, inttypes.h, AC_DEFINE(HAVE_INT32_DEFINED, 1, [Define to 1 if you have uint32_t]))
