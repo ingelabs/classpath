@@ -457,13 +457,12 @@ AC_DEFUN([CLASSPATH_CHECK_JAVAC],
   fi
   dnl Test the given javac
   AC_MSG_CHECKING([if javac is 1.5-capable])
-  cat > conftest.java << EOF
-public class conftest {
-public static void main(String[] args) {
-java.util.List<String> l;
-}}
+  cat > Colour.java << EOF
+public enum Colour {
+RED, ORANGE, YELLOW, GREEN, BLUE, INDIGO, VIOLET;
+}
 EOF
-  $JAVAC -sourcepath '' conftest.java 
+  $JAVAC -sourcepath '' -bootclasspath '' Colour.java 
   javac_result=$?
   if test "x$javac_result" = "x0"; then
     AC_MSG_RESULT([yes])
@@ -471,7 +470,7 @@ EOF
     AC_MSG_WARN([1.5 capable javac required])
   fi
   AC_MSG_CHECKING([whether javac supports -J])
-  $JAVAC -J-Xmx512M -sourcepath '' conftest.java
+  $JAVAC -J-Xmx512M -sourcepath '' -bootclasspath '' Colour.java
   javac_result=$?
   if test "x$javac_result" = "x0"; then
     AC_MSG_RESULT([yes])
