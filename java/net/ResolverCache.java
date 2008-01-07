@@ -107,7 +107,7 @@ class ResolverCache
   /**
    * Return the hostname for the specified IP address.
    *
-   * @param ip The IP address as a byte array
+   * @param addr The IP address as a byte array
    *
    * @return The hostname
    *

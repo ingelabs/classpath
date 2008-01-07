@@ -100,7 +100,8 @@ public class CairoSurface extends WritableRaster
                                                           0x000000FF);
   /**
    * Allocates and clears the buffer and creates the cairo surface.
-   * @param width, height - the image size
+   * @param width - the image size
+   * @param height - the image size
    * @param stride - the buffer row stride. (in ints)
    */
   private native void create(int width, int height, int stride, int[] buf);

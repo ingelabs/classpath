@@ -1266,7 +1266,7 @@ public abstract class Calendar
 
   /**
    * Compares the time of two calendar instances.
-   * @param calendar the calendar to which the time should be compared.
+   * @param cal the calendar to which the time should be compared.
    * @return 0 if the two calendars are set to the same time, 
    * less than 0 if the time of this calendar is before that of 
    * <code>cal</code>, or more than 0 if the time of this calendar is after

@@ -222,7 +222,7 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   /**
    * Sets up the default values and allocates the native cairographics2d structure
-   * @param cairo_t_pointer, a native pointer to a cairo_t of the context.
+   * @param cairo_t_pointer a native pointer to a cairo_t of the context.
    */
   public void setup(long cairo_t_pointer)
   { 
@@ -341,7 +341,8 @@ public abstract class CairoGraphics2D extends Graphics2D
 
   /**
    * Draw pixels as an RGBA int matrix
-   * @param w, h - width and height
+   * @param w - width
+   * @param h - height
    * @param stride - stride of the array width
    * @param i2u - affine transform array
    */

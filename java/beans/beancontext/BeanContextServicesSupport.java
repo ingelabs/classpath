@@ -420,7 +420,7 @@ public class BeanContextServicesSupport
    * Subclasses may envelope its behaviour in order to read further
    * serialized data to the stream.
    *
-   * @param oos the stream from which data is being deserialized.
+   * @param ois the stream from which data is being deserialized.
    * @throws IOException if an I/O error occurs.
    * @throws ClassNotFoundException if the class of a deserialized object
    *                                can not be found.

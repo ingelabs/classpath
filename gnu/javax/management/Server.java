@@ -169,7 +169,7 @@ public class Server
    * Constructs a new management server using the specified
    * default domain, delegate bean and outer server.
    *
-   * @param domain the default domain to use for beans constructed
+   * @param defaultDomain the default domain to use for beans constructed
    *               with no specified domain.
    * @param outer an {@link javax.management.MBeanServer} to pass
    *              to beans implementing the {@link MBeanRegistration}

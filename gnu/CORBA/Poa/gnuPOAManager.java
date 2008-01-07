@@ -88,9 +88,9 @@ public class gnuPOAManager
    * Turns the associated POAs into active state, allowing them to receive
    * and process requests.
    *
-   * @throws if the POAs are in the inactive state. If once inactivated,
-   * the POA cannot be activated again. This method can only be called
-   * to leave the holding or discarding state.
+   * @throws AdapterInactive if the POAs are in the inactive state.
+   * If once inactivated, the POA cannot be activated again. This
+   * method can only be called to leave the holding or discarding state.
    */
   public void activate()
                 throws AdapterInactive

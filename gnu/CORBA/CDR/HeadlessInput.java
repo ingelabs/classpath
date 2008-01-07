@@ -104,7 +104,7 @@ public class HeadlessInput
   /**
    * Create an instance, reading from the given buffer.
    * 
-   * @param a_stram a stream from where the data will be read.
+   * @param a_stream a stream from where the data will be read.
    * @param inheritSettings a stream from that endian and other settings are
    * inherited.
    */

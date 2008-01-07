@@ -85,8 +85,6 @@ public class IorDelegate extends SimpleDelegate
    * @param operation the method name
    * @param parameters the method parameters
    * @param returns the return value holder
-   * @param exceptions the exceptions that can be thrown by the method
-   * @param ctx_list the context list (null allowed)
    *
    * @return the created request.
    */
