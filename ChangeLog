@@ -1,5 +1,11 @@
 2006-01-09  Roman Kennke  <kennke@aicas.com>
 
+	* javax/tools/Diagnostic.java,
+	* javax/tools/DiagnosticListener.java:
+	New interfaces.
+
+2006-01-09  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/java/awt/peer/x/XWindowPeer.java
 	(getFontMetrics): Re-enable that for X fonts.
 
