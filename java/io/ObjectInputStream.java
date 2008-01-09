@@ -915,7 +915,7 @@ public class ObjectInputStream extends InputStream
       return null;
 
     ObjectStreamClass oclazz;
-    oclazz = (ObjectStreamClass)classLookupTable.get(clazz);
+    oclazz = classLookupTable.get(clazz);
     if (oclazz == null)
       return ObjectStreamClass.lookup(clazz);
     else

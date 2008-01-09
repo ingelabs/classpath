@@ -866,7 +866,7 @@ public class Parser
   {
     Object value = HTML.NULL_ATTRIBUTE_VALUE;
 
-    Element e = (Element) dtd.elementHash.get(element.toLowerCase());
+    Element e = dtd.elementHash.get(element.toLowerCase());
     if (e != null)
       {
         AttributeList attr = e.getAttribute(attribute);
@@ -1326,7 +1326,7 @@ public class Parser
 
   private TagElement makeTagElement(String name, boolean isSupposed)
   {
-    Element e = (Element) dtd.elementHash.get(name.toLowerCase());
+    Element e = dtd.elementHash.get(name.toLowerCase());
     if (e == null)
       {
         error("Unknown tag <" + name + ">");

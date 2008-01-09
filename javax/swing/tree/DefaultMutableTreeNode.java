@@ -202,7 +202,7 @@ public class DefaultMutableTreeNode
    */
   public void remove(int index)
   {
-    MutableTreeNode child = (MutableTreeNode) children.remove(index);
+    MutableTreeNode child = children.remove(index);
     child.setParent(null);
   }
 
@@ -553,7 +553,7 @@ public class DefaultMutableTreeNode
               {
                 node = node.getParent();
                 size = node.getChildCount();
-                index = ((Integer) stack.pop()).intValue() + 1;
+                index = stack.pop().intValue() + 1;
                 current--;
               }
             while (index >= size

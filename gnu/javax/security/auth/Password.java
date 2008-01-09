@@ -143,7 +143,7 @@ public final class Password extends ExpirableObject
 
     for(i = 0, j = offset; i < length; i++, j++)
       {
-        this.password[i] = (char) password[j];
+        this.password[i] = password[j];
         // XXX this should use character encodings, other than ASCII.
         bPassword[i] = (byte) (password[j] & 0x7F);
       }

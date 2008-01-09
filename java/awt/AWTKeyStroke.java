@@ -643,7 +643,7 @@ public class AWTKeyStroke implements Serializable
           throw (Error) new InternalError().initCause(e);
         }
     // Check level 1 cache.
-    AWTKeyStroke cached = (AWTKeyStroke) cache.get(stroke);
+    AWTKeyStroke cached = cache.get(stroke);
     if (cached == null)
       cache.put(stroke, stroke);
     else

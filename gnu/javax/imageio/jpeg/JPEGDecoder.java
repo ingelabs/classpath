@@ -387,7 +387,7 @@ public class JPEGDecoder
                     // read in how much they need
                     for (int compIndex = 0; compIndex < numberOfComponents; compIndex++)
                       {
-                        JPEGComponent comp = (JPEGComponent) frame.components.getComponentByID(componentSelector[compIndex]);
+                        JPEGComponent comp = frame.components.getComponentByID(componentSelector[compIndex]);
                         comp.readComponentMCU(jpegStream);
                       }
                     mcuIndex++;
@@ -416,7 +416,7 @@ public class JPEGDecoder
                       {
                         for (int compIndex = 0; compIndex < numberOfComponents; compIndex++)
                           {
-                            JPEGComponent comp = (JPEGComponent) frame.components.getComponentByID(componentSelector[compIndex]);
+                            JPEGComponent comp = frame.components.getComponentByID(componentSelector[compIndex]);
                             if (compIndex > 1)
                               comp.padMCU(mcuTotalIndex, resetInterval - mcuIndex);
                             comp.resetInterval();
@@ -481,8 +481,7 @@ public class JPEGDecoder
                 // Unencode the data.
                 for (int i = 0; i < frame.getComponentCount(); i++)
                   {
-                    JPEGComponent comp =
-                      (JPEGComponent) frame.components.get(i);
+                    JPEGComponent comp = frame.components.get(i);
                     comp.setQuantizationTable(qTables[comp.quant_id].getTable());
                     comp.quantitizeData();
                     comp.idctData(myDCT);
@@ -490,7 +489,7 @@ public class JPEGDecoder
                 // Scale the image and write the data to the raster.
                 for (int i = 0; i < frame.getComponentCount(); i++)
                   {
-                    JPEGComponent comp = (JPEGComponent) frame.components.get(i);
+                    JPEGComponent comp = frame.components.get(i);
                     comp.scaleByFactors();
                     comp.writeData(raster, i);
                     // Ensure garbage collection.

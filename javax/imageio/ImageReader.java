@@ -1734,7 +1734,7 @@ public abstract class ImageReader
   public ImageTypeSpecifier getRawImageType (int imageIndex)
     throws IOException
   {
-    return (ImageTypeSpecifier) getImageTypes(imageIndex).next();
+    return getImageTypes(imageIndex).next();
   }
 
   /**

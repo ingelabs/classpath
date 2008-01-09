@@ -106,7 +106,7 @@ public class ObjectStreamClass implements Serializable
     if (cl == null)
       return null;
 
-    ObjectStreamClass osc = (ObjectStreamClass) classLookupTable.get(cl);
+    ObjectStreamClass osc = classLookupTable.get(cl);
 
     if (osc != null)
       return osc;

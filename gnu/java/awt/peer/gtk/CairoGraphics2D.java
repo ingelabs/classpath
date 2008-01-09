@@ -2114,10 +2114,10 @@ public abstract class CairoGraphics2D extends Graphics2D
   private static Rectangle computeIntersection(int x, int y, int w, int h,
                                                Rectangle rect)
   {
-    int x2 = (int) rect.x;
-    int y2 = (int) rect.y;
-    int w2 = (int) rect.width;
-    int h2 = (int) rect.height;
+    int x2 = rect.x;
+    int y2 = rect.y;
+    int w2 = rect.width;
+    int h2 = rect.height;
 
     int dx = (x > x2) ? x : x2;
     int dy = (y > y2) ? y : y2;
