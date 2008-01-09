@@ -61,6 +61,7 @@ import gnu.x11.Window;
 import gnu.x11.event.Event;
 
 import gnu.java.awt.font.OpenTypeFontPeer;
+import gnu.java.awt.peer.ClasspathFontPeer;
 import gnu.java.awt.peer.swing.SwingWindowPeer;
 
 public class XWindowPeer
@@ -290,8 +291,7 @@ public class XWindowPeer
    */
   public FontMetrics getFontMetrics(Font font)
   {
-    // FIXME: Fix this for X fonts.
-    OpenTypeFontPeer fontPeer = (OpenTypeFontPeer) font.getPeer();
+    ClasspathFontPeer fontPeer = (ClasspathFontPeer) font.getPeer();
     return fontPeer.getFontMetrics(font);
   }
 
