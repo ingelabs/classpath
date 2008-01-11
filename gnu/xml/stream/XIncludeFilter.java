@@ -499,7 +499,7 @@ class XIncludeFilter
             return event;
           case XPathResult.NUMBER_TYPE:
             double nval = result.getNumberValue();
-            String ntext = new Double(nval).toString();
+            String ntext = Double.toString(nval);
             buf = ntext.toCharArray();
             len = buf.length;
             result = null;

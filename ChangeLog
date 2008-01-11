@@ -1,3 +1,15 @@
+2008-01-09  Stefan Huehner <stefan@huehner.org>
+
+	* gnu/classpath/jdwp/event/ExceptionEvent.java,
+	* gnu/java/awt/peer/gtk/GtkMainThread.java:
+	Use Boolean.TRUE|FALSE instead of new Boolean(true|false)
+	* gnu/java/rmi/server/ConnectionRunnerPool.java,
+	* gnu/xml/aelfred2/XmlParser.java,
+	* gnu/xml/libxmlj/dom/GnomeXPathResult.java,
+	* gnu/xml/stream/XIncludeFilter.java:
+	Use Integer|Double|Charater.toString(var) instead of
+	new Integer|Double|Character(var).toString()
+
 2006-01-09  Roman Kennke  <kennke@aicas.com>
 
 	* javax/tools/Diagnostic.java,
