@@ -1,4 +1,12 @@
 2008-01-09  Stefan Huehner <stefan@huehner.org>
+       
+	* native/jni/java-io/java_io_VMObjectStreamClass.c,
+	* native/jni/java-lang/java_lang_VMDouble.c,
+	* native/jni/java-net/java_net_VMInetAddress.c:
+	Don't discard const by casting (const char *) to
+	(char *) when it's not needed.
+
+2008-01-09  Stefan Huehner <stefan@huehner.org>
 
 	* gnu/classpath/jdwp/event/ExceptionEvent.java,
 	* gnu/java/awt/peer/gtk/GtkMainThread.java:

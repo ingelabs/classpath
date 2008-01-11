@@ -468,7 +468,7 @@ Java_java_lang_VMDouble_parseDouble
       return val;
     }
 
-  buf = (char *) (*env)->GetStringUTFChars (env, str, &isCopy);
+  buf = (*env)->GetStringUTFChars (env, str, &isCopy);
   if (buf == NULL)
     {
       /* OutOfMemoryError already thrown */
