@@ -1,3 +1,7 @@
+2008-01-13  2007-12-18  Leen Toelen  <toelen@gmail.com>
+
+	* native/fdlibm/ieeefp.h: Added avr32 support.
+
 2008-01-09  Stefan Huehner <stefan@huehner.org>
        
 	* native/jni/java-io/java_io_VMObjectStreamClass.c,
