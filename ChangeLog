@@ -1,3 +1,9 @@
+2008-01-21  Luciano Chavez  <lnx1138@us.ibm.com>
+
+	PR libgcj/34369:
+	* java/net/URI.java (relativize): Check initial segment for
+	trailing "/".
+
 2008-01-14  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* m4/acinclude.m4:
