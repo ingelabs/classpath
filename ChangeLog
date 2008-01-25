@@ -1,3 +1,14 @@
+2008-01-25  Dalibor Topic  <robilad@kaffe.org>
+
+	* tools/gnu/classpath/tools/native2ascii/Native2ASCII.java 
+	(createParser): Removed unused "reversed" misspelling. Use 
+	Native2ASCII.ReverseHelp instead of Native2ASCII.ReversedHelp.
+
+	* resource/gnu/classpath/tools/native2ascii/messages.properties
+	(Native2ASCII.ReverseHelp): New, renamed from ... 
+	(Native2ASCII.ReversedHelp): Removed.
+	(Native2ASCII.ReversedHelpCompat): Removed.
+
 2008-01-24  Tom Tromey  <tromey@redhat.com>
 
 	* resource/gnu/classpath/tools/native2ascii/messages.properties

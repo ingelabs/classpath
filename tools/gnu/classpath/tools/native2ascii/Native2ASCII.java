@@ -101,17 +101,7 @@ public class Native2ASCII
         encoding = argument;
       }
     });
-    result.add(new Option("reverse", Messages.getString("Native2ASCII.ReversedHelp")) //$NON-NLS-1$ //$NON-NLS-2$
-    {
-      public void parsed(String argument) throws OptionException
-      {
-        reversed = true;
-      }
-    });
-
-    // We mistakenly added the extra "d" in "reversed"; now we don't
-    // want to remove it, for backward compatibility.
-    result.add(new Option("reversed", Messages.getString("Native2ASCII.ReversedHelpCompat")) //$NON-NLS-1$ //$NON-NLS-2$
+    result.add(new Option("reverse", Messages.getString("Native2ASCII.ReverseHelp")) //$NON-NLS-1$ //$NON-NLS-2$
     {
       public void parsed(String argument) throws OptionException
       {
