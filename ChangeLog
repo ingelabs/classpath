@@ -1,3 +1,19 @@
+2008-01-29  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	Fixes bug #22941
+	* java/io/DataInputStream.java(readUTFLong): New method.
+	(readUTF): New private method.
+	* java/io/DataOutputStream.java(getUTFlength): Made package-private,
+	Return type changed to long.
+	(writeUTF): Use the new method writeUTFShort.
+	(writeUTFShort): New package-private method.
+	(writeUTFLong): New package-private method.
+	(writeUTFBytes): New private method.
+	* java/io/ObjectInputStream.java(parseContent): Separate the
+	handling of TC_LONGSTRING from TC_STRING.
+	* java/io/ObjectOutputStream.java(writeObject): When to write a
+	String, use writeUTFShort or writeUTFLong depending on the byte length.
+
 2008-01-27  Bernhard Fischer  <rep.dot.nop@gmail.com>
 
 	* java/util/SimpleTimeZone.java (SimpleTimeZone): Fix typo in comment.
