@@ -350,7 +350,7 @@ public class DataInputStream extends FilterInputStream implements DataInput
    */
   public final String readLine() throws IOException
   {
-    StringBuffer strb = new StringBuffer();
+    StringBuilder strb = new StringBuilder();
 
     while (true)
       {
@@ -747,7 +747,7 @@ public class DataInputStream extends FilterInputStream implements DataInput
   {
     // Give StringBuffer an initial estimated size to avoid 
     // enlarge buffer frequently
-    StringBuffer strbuf = new StringBuffer (buf.length / 2 + 2);
+    StringBuilder strbuf = new StringBuilder (buf.length / 2 + 2);
 
     for (int i = 0; i < buf.length; )
       {
