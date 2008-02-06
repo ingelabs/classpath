@@ -1,3 +1,29 @@
+2008-02-05  Ian Rogers  <ian.rogers@manchester.ac.uk>
+
+	* gnu/java/lang/reflect/TypeSignature.java
+	* java/io/BufferedReader.java
+	* java/io/DataInputStream.java
+	* java/lang/StackTraceElement.java
+	* java/lang/Throwable.java
+	* java/lang/reflect/Proxy.java
+	* java/net/URI.java
+	* java/net/URLClassLoader.java
+	* java/net/URLEncoder.java
+	* java/text/SimpleDateFormat.java
+	* java/util/AbstractMap.java
+	* java/util/Calendar.java
+	* java/util/Date.java
+	* java/util/Hashtable.java
+	Use StringBuilder in preference to StringBuffer
+	* java/util/Calendar.java
+	* java/util/Hashtable.java
+	Make private fields that can be final, final
+	* java/net/URI.java
+	Avoid creating Integer objects for the sake of comparison
+	* java/lang/reflect/Proxy.java
+	* java/text/SimpleDateFormat.java
+	Swap use of "new Character/Integer" to use of valueOf methods
+
 2008-01-29  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	Fixes bug #22941
