@@ -1,3 +1,14 @@
+2008-02-07  Ian Rogers  <ian.rogers@manchester.ac.uk>
+
+	* java/lang/String.java
+	(replace): Only copy "live" portion of String. Use array copies in preference
+        to clone.
+	(toLowerCaseTurkish): likewise
+        (toLowerCase): likewise
+	(toUpperCaseTurkish): likewise
+	(toUpperCase): likewise
+	(toCharArray): Use array copies in preference to clone.
+
 2008-02-05  Ian Rogers  <ian.rogers@manchester.ac.uk>
 
 	* gnu/java/lang/reflect/TypeSignature.java
