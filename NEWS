@@ -1,5 +1,9 @@
 New in release 0.97
 
+Runtime interface changes:
+
+* Removed VMFloat.floatToIntBits amd VMDouble.doubleToLongBits.
+
 New in release 0.96.1 (Oct 16, 2007)
 
 * Small compile, configure and build fixes.

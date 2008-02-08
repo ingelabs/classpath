@@ -1,5 +1,10 @@
 2008-02-08  Dalibor Topic  <robilad@kaffe.org>
 
+	* NEWS: Documented removal of floatToIntBits and doubleToLongBits from
+	VM interface.
+
+2008-02-08  Dalibor Topic  <robilad@kaffe.org>
+
 	* vm/reference/java/lang/VMFloat.java (floatToIntBits): Removed unused
 	method.
 
