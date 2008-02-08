@@ -39,6 +39,8 @@ exception statement from your version. */
 
 package gnu.java.awt.peer.gtk;
 
+import gnu.classpath.Configuration;
+
 import gnu.java.awt.AWTUtilities;
 import gnu.java.awt.EmbeddedWindow;
 import gnu.java.awt.dnd.GtkMouseDragGestureRecognizer;
@@ -65,6 +67,7 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.awt.Image;
+import java.awt.KeyboardFocusManager;
 import java.awt.Label;
 import java.awt.List;
 import java.awt.Menu;
@@ -102,6 +105,7 @@ import java.awt.peer.DialogPeer;
 import java.awt.peer.FileDialogPeer;
 import java.awt.peer.FontPeer;
 import java.awt.peer.FramePeer;
+import java.awt.peer.KeyboardFocusManagerPeer;
 import java.awt.peer.LabelPeer;
 import java.awt.peer.ListPeer;
 import java.awt.peer.MenuBarPeer;
@@ -125,6 +129,8 @@ import java.util.Properties;
 
 import javax.imageio.spi.IIORegistry;
 
+import sun.awt.KeyboardFocusManagerPeerProvider;
+
 /* This class uses a deprecated method java.awt.peer.ComponentPeer.getPeer().
    This merits comment.  We are basically calling Sun's bluff on this one.
    We think Sun has deprecated it simply to discourage its use as it is
@@ -133,6 +139,7 @@ import javax.imageio.spi.IIORegistry;
    that will keep up with every window's peer, but for now this is faster. */
 
 public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
+  implements KeyboardFocusManagerPeerProvider
 {
   static final Object GTK_LOCK;
 
@@ -170,7 +177,10 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
 
   static
   {
-    System.loadLibrary("gtkpeer");
+    if (Configuration.INIT_LOAD_LIBRARY)
+      {
+        System.loadLibrary("gtkpeer");
+      }
 
     /**
      * Gotta do that first.
@@ -756,6 +766,11 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
   public boolean isModalityTypeSupported(Dialog.ModalityType modalityType)
   {
     return false;
+  }
+
+  public KeyboardFocusManagerPeer createKeyboardFocusManagerPeer(KeyboardFocusManager manager)
+  {
+    return null;
   }
 
 } // class GtkToolkit

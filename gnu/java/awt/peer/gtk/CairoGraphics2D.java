@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package gnu.java.awt.peer.gtk;
 
+import gnu.classpath.Configuration;
+
 import gnu.java.awt.ClasspathToolkit;
 
 import java.awt.AWTPermission;
@@ -120,7 +122,10 @@ public abstract class CairoGraphics2D extends Graphics2D
 {
   static 
   {
-    System.loadLibrary("gtkpeer");
+    if (Configuration.INIT_LOAD_LIBRARY)
+      {
+        System.loadLibrary("gtkpeer");
+      }
   }
 
   /**

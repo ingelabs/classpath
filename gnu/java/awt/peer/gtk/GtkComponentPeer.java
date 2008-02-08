@@ -80,6 +80,8 @@ import java.awt.peer.WindowPeer;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import sun.java2d.pipe.Region;
+
 public class GtkComponentPeer extends GtkGenericPeer
   implements ComponentPeer
 {
@@ -918,4 +920,8 @@ public class GtkComponentPeer extends GtkGenericPeer
     return true;
   }
 
+  public void applyShape(Region shape)
+  {
+    // TODO: Implement properly.
+  }
 }

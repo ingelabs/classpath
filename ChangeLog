@@ -1,3 +1,14 @@
+2008-02-08  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/gtk/CairoGraphics2D.java,
+	* gnu/java/awt/peer/gtk/GdkFontPeer.java,
+	* gnu/java/awt/peer/gtk/GdkGraphicsEnvironment.java,
+	* gnu/java/awt/peer/gtk/GdkPixbufDecoder.java,
+	* gnu/java/awt/peer/gtk/GdkScreenGraphicsDevice.java,
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java,
+	* gnu/java/awt/peer/gtk/GtkToolkit.java: Only call
+	System.loadLibrary() when configured so.
+
 2008-02-08  Dalibor Topic  <robilad@kaffe.org>
 
 	* NEWS: Documented removal of floatToIntBits and doubleToLongBits from
