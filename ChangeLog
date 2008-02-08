@@ -1,5 +1,18 @@
 2008-02-08  Dalibor Topic  <robilad@kaffe.org>
 
+	* vm/reference/java/lang/VMFloat.java (floatToIntBits): Removed unused
+	method.
+
+	* native/jni/java-lang/java_lang_VMFloat.c (Java_java_lang_VMFloat_floatToIntBits): Removed unused function.
+
+	* include/java_lang_VMDouble.h: Regenerated.
+	
+	* doc/cp-vmintegration.texinfo (java.lang.VMFloat): Removed
+	unused method floatToIntBits. (java.lang.VMDouble): Use similar
+	text to text used for floatToRawIntBits for doubleToLongBits.
+
+2008-02-08  Dalibor Topic  <robilad@kaffe.org>
+
 	* java/lang/Float.java (floatToIntBits): Simplified. 
 
 2008-02-08  Dalibor Topic  <robilad@kaffe.org>
