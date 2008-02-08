@@ -518,7 +518,10 @@ public final class Double extends Number implements Comparable<Double>
    */
   public static long doubleToLongBits(double value)
   {
-    return VMDouble.doubleToLongBits(value);
+    if (isNaN(value))
+      return 0x7ff8000000000000L;
+    else
+      return VMDouble.doubleToRawLongBits(value);
   }
 
   /**
