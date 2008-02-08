@@ -526,8 +526,6 @@ compiler, and is specific to the compiler implementation.
 of doubles.
 
 @itemize @bullet
-@item @code{doubleToLongBits(double)} -- Converts the double to the IEEE 754
-bit layout, collapsing NaNs to @code{0x7ff8000000000000L}.
 @item @code{doubleToRawLongBits(double)} -- Same as the above, but preserves
 NaNs.
 @item @code{longBitsToDouble(long)} -- This is the inverse of the last method,
