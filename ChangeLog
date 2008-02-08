@@ -1,5 +1,9 @@
 2008-02-08  Dalibor Topic  <robilad@kaffe.org>
 
+	* java/lang/Float.java (floatToIntBits): Simplified. 
+
+2008-02-08  Dalibor Topic  <robilad@kaffe.org>
+
 	* m4/acinclude.m4 (CLASSPATH_CHECK_JAVAH) [USER_JAVAH]: Check for gjavah-4.2
 	and gjavah-4.1.
 

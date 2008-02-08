@@ -526,7 +526,10 @@ public final class Float extends Number implements Comparable<Float>
    */
   public static int floatToIntBits(float value)
   {
-    return VMFloat.floatToIntBits(value);
+    if (isNaN(value))
+      return 0x7fc00000;
+    else
+      return VMFloat.floatToRawIntBits(value);
   }
 
   /**
