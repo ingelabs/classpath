@@ -291,13 +291,13 @@ dnl -----------------------------------------------------------
 dnl Regenerate headers at build time (disabled by default)
 dnl -----------------------------------------------------------
 AC_ARG_ENABLE([regen-headers],
-              [AS_HELP_STRING(--enable-regen-headers,automatically regenerate JNI headers [default=no])],
+              [AS_HELP_STRING(--enable-regen-headers,automatically regenerate JNI headers [default=yes])],
               [case "${enableval}" in
                 yes) REGENERATE_JNI_HEADERS=yes ;;
                 no) REGENERATE_JNI_HEADERS=no ;;
-                *) REGENERATE_JNI_HEADERS=no ;;
+                *) REGENERATE_JNI_HEADERS=yes ;;
               esac],
-              [REGENERATE_JNI_HEADERS=no])
+              [REGENERATE_JNI_HEADERS=yes])
 AM_CONDITIONAL(CREATE_JNI_HEADERS, test "x${REGENERATE_JNI_HEADERS}" = xyes)
 
 dnl -----------------------------------------------------------
