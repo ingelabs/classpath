@@ -478,5 +478,5 @@ EOF
   else
     AC_MSG_RESULT([javac doesn't support -J])
   fi
-  rm -f Colour.java
+  rm -f Colour.java Colour.class
 ])

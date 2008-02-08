@@ -1,3 +1,10 @@
+2008-02-08  Mark Wielaard  <mark@klomp.org>
+
+	* m4/acinclude.m4 (CLASSPATH_CHECK_JAVAC): Delete
+	Colour.class.
+
+	* include/.cvsignore: Add java_* and gnu_*.h.
+
 2008-02-08  Mario Torre  <neugens@limasoftware.net>
 
     * configure.ac: --enable-regen-header option now enabled by default.
