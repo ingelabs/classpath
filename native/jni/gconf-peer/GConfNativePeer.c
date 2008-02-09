@@ -55,8 +55,8 @@
 /** Reference count */
 static int reference_count = 0;
 
-/** GConfEngine backend */
-static GConfEngine *engine = NULL;
+/** GConfClient backend */
+static GConfClient *client = NULL;
 
 /** java.util.ArrayList class */
 static jclass jlist_class = NULL;
@@ -70,7 +70,7 @@ static jmethodID jlist_add_id = NULL;
 /* ***** PRIVATE FUNCTIONS DELCARATION ***** */
 
 /**
- * Gets the reference of the default GConfEngine..
+ * Gets the reference of the default GConfClient..
  * The client reference should be released with g_object_unref after use.
  */
 static void init_gconf (void);
@@ -133,12 +133,12 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_init_1id_1cache
 
   init_gconf ();
 
-  /* if engine is null, there is probably an out of memory */
-  if (engine == NULL)
+  /* if client is null, there is probably an out of memory */
+  if (client == NULL)
     {
       /* release the string and throw a runtime exception */
       throw_exception (env,
-      		"Unable to initialize GConfEngine in native code\n");
+      		"Unable to initialize GConfClient in native code\n");
       return;
     }
 
@@ -179,7 +179,7 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1all_1keys
       return NULL;
     }
 
-  entries = gconf_engine_all_entries (engine, dir, &err);
+  entries = gconf_client_all_entries (client, dir, &err);
   if (err != NULL)
     {
       throw_exception_by_name (env, "java/util/prefs/BackingStoreException",
@@ -253,7 +253,7 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1all_1nodes
       return NULL;
     }
 
-  entries = gconf_engine_all_dirs (engine, dir, &err);
+  entries = gconf_client_all_dirs (client, dir, &err);
   if (err != NULL)
     {
       throw_exception_by_name (env, "java/util/prefs/BackingStoreException",
@@ -312,7 +312,7 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1suggest_1sync
 {
   GError *err = NULL;
 
-  gconf_engine_suggest_sync (engine, &err);
+  gconf_client_suggest_sync (client, &err);
   if (err != NULL)
     {
       throw_exception_by_name (env, "java/util/prefs/BackingStoreException",
@@ -341,7 +341,7 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1unset
       return JNI_FALSE;
     }
 
-  result = gconf_engine_unset (engine, _key, &err);
+  result = gconf_client_unset (client, _key, &err);
   if (err != NULL)
     {
       result = JNI_FALSE;
@@ -374,7 +374,7 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1get_1string
       return NULL;
     }
 
-  _value = gconf_engine_get_string (engine, _key, &err);
+  _value = gconf_client_get_string (client, _key, &err);
   JCL_free_cstring (env, key, _key);
   if (err != NULL)
     {
@@ -394,7 +394,7 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1get_1string
       g_free ((gpointer) _value);
     }
   
-  gconf_engine_suggest_sync (engine, NULL);
+  gconf_client_suggest_sync (client, NULL);
   
   return result;
 }
@@ -423,7 +423,7 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1set_1string
       return JNI_FALSE;
     }
 
-  result = gconf_engine_set_string (engine, _key, _value, &err);
+  result = gconf_client_set_string (client, _key, _value, &err);
   if (err != NULL)
   	{
       g_error_free (err);
@@ -455,7 +455,7 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_gconf_1dir_1exists
     return value;
 
   /* on error return false */
-  value = gconf_engine_dir_exists (engine, dir, &err);
+  value = gconf_client_dir_exists (client, dir, &err);
   if (err != NULL)
     value = JNI_FALSE;
 
@@ -476,7 +476,7 @@ Java_gnu_java_util_prefs_gconf_GConfNativePeer_finalize_1class
   if (reference_count == 0)
     {
       /* last reference, free all resources and return */
-      g_object_unref (G_OBJECT (engine));
+      g_object_unref (G_OBJECT (client));
       
       (*env)->DeleteGlobalRef (env, jlist_class);
 
@@ -571,7 +571,7 @@ throw_exception_by_name (JNIEnv *env, const char *name, const char *msg)
 
 static void init_gconf (void)
 {
-  engine = gconf_engine_get_default ();
+  client = gconf_client_get_default ();
 }
 
 static gboolean set_jlist_class (JNIEnv *env)

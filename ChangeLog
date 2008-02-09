@@ -1,3 +1,9 @@
+2008-02-09  Mario Torre  <neugens@limasoftware.net>
+
+	* include/java_util_VMTimeZone.h: Removed.
+	* native/jni/gconf-peer/GConfNativePeer.c: all native methods, replaced
+	GConfEngine with GConfClient and use GConfClient API instead.
+
 2008-02-08  Mark Wielaard  <mark@klomp.org>
 
 	* m4/acinclude.m4 (CLASSPATH_CHECK_JAVAC): Delete
