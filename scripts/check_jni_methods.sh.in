@@ -9,20 +9,20 @@ TMPFILE3=/tmp/check-jni-methods.$$.3
 
 # Find all methods defined in the header files generated
 # from the java source files.
-grep -h '^JNIEXPORT .* Java_' include/*.h | \
+grep -h '^JNIEXPORT .* Java_' @top_builddir@/include/*.h | \
         LC_ALL=C sed -e 's,.*JNICALL \(Java_[a-z_A-Z0-9]*\).*$,\1,' | \
 	sort > $TMPFILE
 
 # Find all methods in the JNI C source files.
-find native/jni -name \*.c | \
+find @top_srcdir@/native/jni -name \*.c | \
 	xargs grep -h '^Java_' | \
         LC_ALL=C sed -e 's,^\(Java_[a-z_A-Z0-9]*\).*$,\1,' > $TMPFILE2
 # Or in the the C++ files. (Note that cpp doesn't follow gnu conventions atm)
 # So we try to match both GNU style and some other style.
-find native/jni -name \*.cpp | \
+find @top_srcdir@/native/jni -name \*.cpp | \
 	xargs grep -h '^Java_' | \
         LC_ALL=C sed -e 's,^\(Java_[a-z_A-Z0-9]*\).*$,\1,' >> $TMPFILE2
-find native/jni -name \*.cpp | \
+find @top_srcdir@/native/jni -name \*.cpp | \
 	xargs egrep -h '^(JNIEXPORT .* JNICALL )?Java_' | \
 	cut -f4 -d\  | \
         LC_ALL=C sed -e 's,^\JNIEXPORT .* JNICALL \(Java_[a-z_A-Z0-9]*\).*$,\1,' >> $TMPFILE2

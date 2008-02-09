@@ -1,3 +1,23 @@
+2008-02-09  Dalibor Topic  <robilad@kaffe.org>
+
+	* native/jni/Makefile.am (all-local): Call check_jni_methods.sh
+	directly.
+
+	* scripts/Makefile.am (EXTRA_DIST): Removed check_jni_methods.sh.
+
+	* include/Makefile.am (SOUND_H_FILES, GST_PEER_H_FILES)
+	(XMLJ_H_FILES, GTKPEER_H_FILES, QTPEER_H_FILES)
+	(GCONF_PREFS_FILES, H_FILES): Don't generate header files
+	in the source directory, as it may not be writeable.
+	(DISTCLEANFILES) Added H_FILES.
+
+	* configure.ac (AC_CONFIG_FILES): Added 
+	scripts/check_jni_methods.sh.
+
+	* scripts/check_jni_methods.sh: Removed. Moved over to ..
+	* scripts/check_jni_methods.sh.in: New file. Added 
+	top_srcdir and top_builddir where necessary.
+	
 2008-02-09  Mario Torre  <neugens@limasoftware.net>
 
 	* include/java_util_VMTimeZone.h: Removed.

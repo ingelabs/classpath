@@ -976,6 +976,7 @@ scripts/classpath.spec
 lib/Makefile
 lib/gen-classlist.sh
 lib/copy-vmresources.sh
+scripts/check_jni_methods.sh
 tools/Makefile
 examples/Makefile
 examples/Makefile.jawt
