@@ -234,28 +234,6 @@ dnl CLASSPATH_WITH_CLASSLIB - checks for user specified classpath additions
 dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_CLASSLIB],
 [
-  AC_ARG_WITH([classpath],
-	      [AS_HELP_STRING(--with-classpath,specify path to a classes.zip like file)],
-  [
-    if test "x${withval}" = xyes; then
-      # set user classpath to CLASSPATH from env
-      AC_MSG_CHECKING(for classlib)
-      USER_CLASSLIB=${CLASSPATH}
-      AC_SUBST(USER_CLASSLIB)
-      AC_MSG_RESULT(${USER_CLASSLIB})
-      conditional_with_classlib=true      
-    elif test "x${withval}" != x && test "x${withval}" != xno; then
-      # set user classpath to specified value
-      AC_MSG_CHECKING(for classlib)
-      USER_CLASSLIB=${withval}
-      AC_SUBST(USER_CLASSLIB)
-      AC_MSG_RESULT(${withval})
-      conditional_with_classlib=true
-    fi
-  ],
-  [ conditional_with_classlib=false ])
-  AM_CONDITIONAL(USER_SPECIFIED_CLASSLIB, test "x${conditional_with_classlib}" = xtrue)
-
   AC_ARG_WITH([vm-classes],
 	      [AS_HELP_STRING(--with-vm-classes,specify path to VM override source files)], [vm_classes="$with_vm_classes"],
 	      [vm_classes='${top_srcdir}/vm/reference'])

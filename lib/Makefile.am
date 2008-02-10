@@ -5,7 +5,7 @@ JAVA_DEPEND = java.dep
 ## this file and restart the make process again
 sinclude $(JAVA_DEPEND)
 
-compile_classpath = $(vm_classes):$(top_srcdir):$(top_srcdir)/external/w3c_dom:$(top_srcdir)/external/sax:$(top_srcdir)/external/relaxngDatatype:$(top_srcdir)/external/jsr166:.:$(USER_CLASSLIB):$(PATH_TO_ESCHER)
+compile_classpath = $(vm_classes):$(top_srcdir):$(top_srcdir)/external/w3c_dom:$(top_srcdir)/external/sax:$(top_srcdir)/external/relaxngDatatype:$(top_srcdir)/external/jsr166:.:$(PATH_TO_GLIBJ_ZIP):$(PATH_TO_ESCHER)
 
 # handling source to bytecode compiler programs like gcj, jikes  and kjc
 if FOUND_ECJ
