@@ -43,8 +43,22 @@ import java.io.IOException;
 import java.rmi.MarshalledObject;
 import java.rmi.Remote;
 
+import java.util.Set;
+
+import javax.management.AttributeList;
+import javax.management.AttributeNotFoundException;
+import javax.management.InstanceAlreadyExistsException;
 import javax.management.InstanceNotFoundException;
+import javax.management.IntrospectionException;
+import javax.management.InvalidAttributeValueException;
+import javax.management.ListenerNotFoundException;
+import javax.management.MBeanInfo;
+import javax.management.MBeanException;
+import javax.management.MBeanRegistrationException;
+import javax.management.NotCompliantMBeanException;
+import javax.management.ObjectInstance;
 import javax.management.ObjectName;
+import javax.management.ReflectionException;
 
 import javax.security.auth.Subject;
 
@@ -207,7 +221,873 @@ public interface RMIConnection
    *                                                      NotificationFilter,
    *                                                      Object)
    */
-  void addNotificationListeners(ObjectName[] names, MarshalledObject[] filters,
-				Subject[] delegationSubjects)
+  Integer[] addNotificationListeners(ObjectName[] names, MarshalledObject[] filters,
+				     Subject[] delegationSubjects)
     throws InstanceNotFoundException, IOException;
+
+  /**
+   * Closes the connection and unexports the RMI object implementing this
+   * interface.  Following this call, future method calls to this instance
+   * will fail.
+   *
+   * @throws IOException if there is an I/O error in transmitting the close
+   *                     request via RMI, closing the connection, or unexporting
+   *                     the RMI object.
+   */
+  void close()
+    throws IOException;
+
+  /**
+   * <p>
+   * Handles {@link
+   * MBeanServerConnection#createMBean(String, ObjectName,
+   * Object[], String[])}.  The array of parameters is wrapped in
+   * a {@link MarshalledObject} so that it is deserialised using the
+   * bean's classloader.
+   * </p>
+   * <p>
+   * Instantiates a new instance of the specified management bean
+   * using the given constructor and registers it with the server
+   * under the supplied name.  The class is loaded using the
+   * {@link javax.management.loading.ClassLoaderRepository default
+   * loader repository} of the server. 
+   * </p>
+   * <p>
+   * If the name supplied is <code>null</code>, then the bean is
+   * expected to implement the {@link MBeanRegistration} interface.
+   * The {@link MBeanRegistration#preRegister preRegister} method
+   * of this interface will be used to obtain the name in this case.
+   * </p>
+   * 
+   * @param className the class of the management bean, of which
+   *                  an instance should be created.
+   * @param name the name to register the new bean with.  This may
+   *             be <code>null</code>.
+   * @param params the parameters for the bean's constructor, encapsulated
+   *               in a {@link MarshalledObject}.  If this parameter is
+   *               <code>null</code>, it will be judged equivalent to an
+   *               empty array.
+   * @param sig the signature of the constructor to use.  If this parameter
+   *            is <code>null</code>, it will be judged equivalent to an
+   *            empty array.
+   * @param delegationSubject an instance of {@link javax.security.auth.Subject}
+   *                          containing the delegation principles.  This may be
+   *                          {@code null} is authentication is used instead.
+   * @return an {@link ObjectInstance} containing the {@link ObjectName}
+   *         and Java class name of the created instance.
+   * @throws ReflectionException if an exception occurs in creating
+   *                             an instance of the bean.
+   * @throws InstanceAlreadyExistsException if a matching instance
+   *                                        already exists.
+   * @throws MBeanRegistrationException if an exception occurs in
+   *                                    calling the preRegister
+   *                                    method.
+   * @throws MBeanException if the bean's constructor throws an exception.
+   * @throws NotCompliantMBeanException if the created bean is not
+   *                                    compliant with the JMX specification.
+   * @throws RuntimeOperationsException if an {@link IllegalArgumentException}
+   *                                    is thrown by the server due to a
+   *                                    <code>null</code> class name or object
+   *                                    name or if the object name is a pattern.
+   * @throws SecurityException if the client or delegated subject (if any) does
+   *                           not have permission to invoke this operation.
+   * @throws IOException if an I/O error occurred in communicating with
+   *                     the bean server.
+   */  
+  ObjectInstance createMBean(String className, ObjectName name,
+			     MarshalledObject params, String[] sig,
+			     Subject delegationSubject)
+    throws ReflectionException, InstanceAlreadyExistsException,
+	   MBeanRegistrationException, MBeanException,
+	   NotCompliantMBeanException, IOException;
+
+  /**
+   * <p>
+   * Handles {@link
+   * MBeanServerConnection#createMBean(String, ObjectName,
+   * ObjectName, Object[], String[])}.  The array of parameters is
+   * wrapped in a {@link MarshalledObject} so that it is deserialised
+   * using the bean's classloader.
+   * </p>
+   * <p>
+   * Instantiates a new instance of the specified management bean
+   * using the given constructor and registers it with the server
+   * under the supplied name.  The class is loaded using the
+   * given class loader.  If this argument is <code>null</code>,
+   * then the same class loader as was used to load the server
+   * is used. 
+   * </p>
+   * <p>
+   * If the name supplied is <code>null</code>, then the bean is
+   * expected to implement the {@link MBeanRegistration} interface.
+   * The {@link MBeanRegistration#preRegister preRegister} method
+   * of this interface will be used to obtain the name in this case.
+   * </p>
+   * 
+   * @param className the class of the management bean, of which
+   *                  an instance should be created.
+   * @param name the name to register the new bean with.  This may
+   *             be <code>null</code>.
+   * @param loaderName the name of the class loader.
+   * @param params the parameters for the bean's constructor, encapsulated
+   *               in a {@link MarshalledObject}.  If this parameter is
+   *               <code>null</code>, it will be judged equivalent to an
+   *               empty array.
+   * @param sig the signature of the constructor to use.  If this parameter
+   *            is <code>null</code>, it will be judged equivalent to an
+   *            empty array.
+   * @param delegationSubject an instance of {@link javax.security.auth.Subject}
+   *                          containing the delegation principles.  This may be
+   *                          {@code null} is authentication is used instead.
+   * @return an {@link ObjectInstance} containing the {@link ObjectName}
+   *         and Java class name of the created instance.
+   * @throws ReflectionException if an exception occurs in creating
+   *                             an instance of the bean.
+   * @throws InstanceAlreadyExistsException if a matching instance
+   *                                        already exists.
+   * @throws MBeanRegistrationException if an exception occurs in
+   *                                    calling the preRegister
+   *                                    method.
+   * @throws MBeanException if the bean's constructor throws an exception.
+   * @throws NotCompliantMBeanException if the created bean is not
+   *                                    compliant with the JMX specification.
+   * @throws InstanceNotFoundException if the specified class loader is not
+   *                                   registered with the server.
+   * @throws RuntimeOperationsException if an {@link IllegalArgumentException}
+   *                                    is thrown by the server due to a
+   *                                    <code>null</code> class name or object
+   *                                    name or if the object name is a pattern.
+   * @throws SecurityException if the client or delegated subject (if any) does
+   *                           not have permission to invoke this operation.
+   * @throws IOException if an I/O error occurred in communicating with
+   *                     the bean server.
+   */
+  ObjectInstance createMBean(String className, ObjectName name,
+			     ObjectName loaderName, MarshalledObject params,
+			     String[] sig, Subject delegationSubject)
+    throws ReflectionException, InstanceAlreadyExistsException,
+	   MBeanRegistrationException, MBeanException,
+	   NotCompliantMBeanException, InstanceNotFoundException,
+	   IOException;
+
+  /**
+   * <p>
+   * Handles {@link
+   * MBeanServerConnection#createMBean(String, ObjectName,
+   * ObjectName)} by instantiating a new instance of the specified
+   * management bean using the default constructor and registering
+   * it with the server under the supplied name.  The class is loaded
+   * using the given class loader.  If this argument is <code>null</code>,
+   * then the same class loader as was used to load the server
+   * is used.
+   * </p>
+   * <p>
+   * If the name supplied is <code>null</code>, then the bean is
+   * expected to implement the {@link MBeanRegistration} interface.
+   * The {@link MBeanRegistration#preRegister preRegister} method
+   * of this interface will be used to obtain the name in this case.
+   * </p>
+   * <p>
+   * This method is equivalent to calling {@link 
+   * #createMBean(String, ObjectName, ObjectName, Object[], String)
+   * <code>createMBean(className, name, loaderName, (Object[]) null,
+   * (String) null)</code>} with <code>null</code> parameters
+   * and signature.
+   * </p>
+   *
+   * @param className the class of the management bean, of which
+   *                  an instance should be created.
+   * @param name the name to register the new bean with.  This may
+   *             be <code>null</code>.
+   * @param loaderName the name of the class loader.
+   * @param delegationSubject an instance of {@link javax.security.auth.Subject}
+   *                          containing the delegation principles.  This may be
+   *                          {@code null} is authentication is used instead.
+   * @return an {@link ObjectInstance} containing the {@link ObjectName}
+   *         and Java class name of the created instance.
+   * @throws ReflectionException if an exception occurs in creating
+   *                             an instance of the bean.
+   * @throws InstanceAlreadyExistsException if a matching instance
+   *                                        already exists.
+   * @throws MBeanRegistrationException if an exception occurs in
+   *                                    calling the preRegister
+   *                                    method.
+   * @throws MBeanException if the bean's constructor throws an exception.
+   * @throws NotCompliantMBeanException if the created bean is not
+   *                                    compliant with the JMX specification.
+   * @throws InstanceNotFoundException if the specified class loader is not
+   *                                   registered with the server.
+   * @throws RuntimeOperationsException if an {@link IllegalArgumentException}
+   *                                    is thrown by the server due to a
+   *                                    <code>null</code> class name or object
+   *                                    name or if the object name is a pattern.
+   * @throws SecurityException if the client or delegated subject (if any) does
+   *                           not have permission to invoke this operation.
+   * @throws IOException if an I/O error occurred in communicating with
+   *                     the bean server.
+   * @see #createMBean(String, ObjectName, ObjectName, MarshalledObject,
+   *                   String[], Subject)
+   */
+  ObjectInstance createMBean(String className, ObjectName name, 
+			     ObjectName loaderName, Subject delegationSubject)
+    throws ReflectionException, InstanceAlreadyExistsException,
+	   MBeanRegistrationException, MBeanException,
+	   NotCompliantMBeanException, InstanceNotFoundException,
+	   IOException;
+
+  /**
+   * <p>
+   * Handles {@link
+   * MBeanServerConnection#createMBean(String, ObjectName)} by
+   * instantiating a new instance of the specified management bean
+   * using the default constructor and registering it with the server
+   * under the supplied name.  The class is loaded using the
+   * {@link javax.management.loading.ClassLoaderRepository default
+   * loader repository} of the server. 
+   * </p>
+   * <p>
+   * If the name supplied is <code>null</code>, then the bean is
+   * expected to implement the {@link MBeanRegistration} interface.
+   * The {@link MBeanRegistration#preRegister preRegister} method
+   * of this interface will be used to obtain the name in this case.
+   * </p>
+   * <p>
+   * This method is equivalent to calling {@link 
+   * #createMBean(String, ObjectName, Object[], String[])
+   * <code>createMBean(className, name, (Object[]) null,
+   * (String[]) null)</code>} with <code>null</code> parameters
+   * and signature.
+   * </p>
+   *
+   * @param className the class of the management bean, of which
+   *                  an instance should be created.
+   * @param name the name to register the new bean with.  This may
+   *             be <code>null</code>.
+   * @param delegationSubject an instance of {@link javax.security.auth.Subject}
+   *                          containing the delegation principles.  This may be
+   *                          {@code null} is authentication is used instead.
+   * @return an {@link ObjectInstance} containing the {@link ObjectName}
+   *         and Java class name of the created instance.
+   * @throws ReflectionException if an exception occurs in creating
+   *                             an instance of the bean.
+   * @throws InstanceAlreadyExistsException if a matching instance
+   *                                        already exists.
+   * @throws MBeanRegistrationException if an exception occurs in
+   *                                    calling the preRegister
+   *                                    method.
+   * @throws MBeanException if the bean's constructor throws an exception.
+   * @throws NotCompliantMBeanException if the created bean is not
+   *                                    compliant with the JMX specification.
+   * @throws RuntimeOperationsException if an {@link IllegalArgumentException}
+   *                                    is thrown by the server due to a
+   *                                    <code>null</code> class name or object
+   *                                    name or if the object name is a pattern.
+   * @throws SecurityException if the client or delegated subject (if any) does
+   *                           not have permission to invoke this operation.
+   * @throws IOException if an I/O error occurred in communicating with
+   *                     the bean server.
+   * @see #createMBean(String, ObjectName, MarshalledObject, String[], Subject)
+   */
+  ObjectInstance createMBean(String className, ObjectName name,
+			     Subject delegationSubject)
+    throws ReflectionException, InstanceAlreadyExistsException,
+	   MBeanRegistrationException, MBeanException,
+	   NotCompliantMBeanException, IOException;
+
+  /**
+   * Handles {@link
+   * MBeanServerConnection#getAttribute(ObjectName, String)},
+   * returning the value of the supplied attribute from the specified
+   * management bean.
+   *
+   * @param bean the bean to retrieve the value from.
+   * @param name the name of the attribute to retrieve.
+   * @param delegationSubject an instance of {@link javax.security.auth.Subject}
+   *                          containing the delegation principles.  This may be
+   *                          {@code null} is authentication is used instead.
+   * @return the value of the attribute.
+   * @throws AttributeNotFoundException if the attribute could not be
+   *                                    accessed from the bean.
+   * @throws MBeanException if the management bean's accessor throws
+   *                        an exception.
+   * @throws InstanceNotFoundException if the bean can not be found.
+   * @throws ReflectionException if an exception was thrown in trying
+   *                             to invoke the bean's accessor.
+   * @throws RuntimeOperationsException if an {@link IllegalArgumentException}
+   *                                    is thrown by the server due to a
+   *                                    <code>null</code> bean or attribute
+   *                                    name.
+   * @throws SecurityException if the client or delegated subject (if any) does
+   *                           not have permission to invoke this operation.
+   * @throws IOException if an I/O error occurred in communicating with
+   *                     the bean server.
+   * @see DynamicMBean#getAttribute(String)
+   */
+  Object getAttribute(ObjectName bean, String name, Subject delegationSubject)
+    throws MBeanException, AttributeNotFoundException,
+	   InstanceNotFoundException, ReflectionException,
+	   IOException;
+
+  /**
+   * Handles {@link
+   * MBeanServerConnection#getAttribute(ObjectName, String)},
+   * returning the values of the named attributes from the specified
+   * management bean.
+   *
+   * @param bean the bean to retrieve the value from.
+   * @param names the names of the attributes to retrieve.
+   * @param delegationSubject an instance of {@link javax.security.auth.Subject}
+   *                          containing the delegation principles.  This may be
+   *                          {@code null} is authentication is used instead.
+   * @return the values of the attributes.
+   * @throws InstanceNotFoundException if the bean can not be found.
+   * @throws ReflectionException if an exception was thrown in trying
+   *                             to invoke the bean's accessor.
+   * @throws RuntimeOperationsException if an {@link IllegalArgumentException}
+   *                                    is thrown by the server due to a
+   *                                    <code>null</code> bean or attribute
+   *                                    name.
+   * @throws SecurityException if the client or delegated subject (if any) does
+   *                           not have permission to invoke this operation.
+   * @throws IOException if an I/O error occurred in communicating with
+   *                     the bean server.
+   * @see DynamicMBean#getAttributes(String[])
+   */
+  AttributeList getAttributes(ObjectName bean, String[] names,
+			      Subject delegationSubject)
+    throws InstanceNotFoundException, ReflectionException,
+	   IOException;
+
+  /**
+   * Returns the unique identifier for this connection to the RMI
+   * server.  
+   *
+   * @return the connection ID.
+   * @throws IOException if an I/O error occurred.
+   */
+  String getConnectionId()
+    throws IOException;
+
+  /**
+   * Handles {@link
+   * MBeanServerConnection#getDefaultDomain()} by returning the default
+   * domain this server applies to beans that have no specified domain.
+   *
+   * @param delegationSubject an instance of {@link javax.security.auth.Subject}
+   *                          containing the delegation principles.  This may be
+   *                          {@code null} is authentication is used instead.
+   * @return the default domain.
+   * @throws SecurityException if the client or delegated subject (if any) does
+   *                           not have permission to invoke this operation.
+   * @throws IOException if an I/O error occurred in communicating with
+   *                     the bean server.
+   */
+  String getDefaultDomain(Subject delegationSubject)
+    throws IOException;
+
+  /**
+   * Handles {@link
+   * MBeanServerConnection#getDomains()} by returning an array
+   * containing all the domains used by beans registered with
+   * this server.  The ordering of the array is undefined.
+   *
+   * @param delegationSubject an instance of {@link javax.security.auth.Subject}
+   *                          containing the delegation principles.  This may be
+   *                          {@code null} is authentication is used instead.
+   * @return the list of domains.
+   * @throws SecurityException if the client or delegated subject (if any) does
+   *                           not have permission to invoke this operation.
+   * @throws IOException if an I/O error occurred in communicating with
+   *                     the bean server.
+   * @see ObjectName#getDomain()
+   */
+  String[] getDomains(Subject delegationSubject)
+    throws IOException;
+
+  /**
+   * Handles {@link
+   * MBeanServerConnection#getMBeanCount()} by returning the number of
+   * management beans registered with this server.
+   *
+   * @param delegationSubject an instance of {@link javax.security.auth.Subject}
+   *                          containing the delegation principles.  This may be
+   *                          {@code null} is authentication is used instead.
+   * @return the number of registered beans.
+   * @throws SecurityException if the client or delegated subject (if any) does
+   *                           not have permission to invoke this operation.
+   * @throws IOException if an I/O error occurred in communicating with
+   *                     the bean server.
+   */
+  Integer getMBeanCount(Subject delegationSubject)
+    throws IOException;
+
+  /**
+   * Handles {@link
+   * MBeanServerConnection#getMBeanInfo(ObjectName)} by returning
+   * information on the given management bean.
+   *
+   * @param name the name of the management bean.
+   * @param delegationSubject an instance of {@link javax.security.auth.Subject}
+   *                          containing the delegation principles.  This may be
+   *                          {@code null} is authentication is used instead.
+   * @return an instance of {@link MBeanInfo} for the bean.
+   * @throws IntrospectionException if an exception occurs in examining
+   *                                the bean.
+   * @throws InstanceNotFoundException if the bean can not be found.
+   * @throws ReflectionException if an exception occurs when trying
+   *                             to invoke {@link DynamicMBean#getMBeanInfo()}
+   *                             on the bean.
+   * @throws SecurityException if the client or delegated subject (if any) does
+   *                           not have permission to invoke this operation.
+   * @throws IOException if an I/O error occurred in communicating with
+   *                     the bean server.
+   * @see DynamicMBean#getMBeanInfo()
+   */
+  MBeanInfo getMBeanInfo(ObjectName name, Subject delegationSubject)
+    throws InstanceNotFoundException, IntrospectionException,
+	   ReflectionException, IOException;
+
+  /**
+   * Handles {@link
+   * MBeanServerConnection#getObjectInstance(ObjectName)} by returning
+   * the {@link ObjectInstance} created for the specified management
+   * bean on registration.
+   *
+   * @param name the name of the bean.
+   * @param delegationSubject an instance of {@link javax.security.auth.Subject}
+   *                          containing the delegation principles.  This may be
+   *                          {@code null} is authentication is used instead.
+   * @return the corresponding {@link ObjectInstance} instance.
+   * @throws InstanceNotFoundException if the bean can not be found.
+   * @throws SecurityException if the client or delegated subject (if any) does
+   *                           not have permission to invoke this operation.
+   * @throws IOException if an I/O error occurred in communicating with
+   *                     the bean server.
+   * @see #createMBean(String, ObjectName, Subject)
+   */
+  ObjectInstance getObjectInstance(ObjectName name, Subject delegationSubject)
+    throws InstanceNotFoundException, IOException;
+
+  /**
+   * <p>
+   * Handles {@link
+   * MBeanServerConnection#invoke(ObjectName, String, Object[],
+   * String[])}.  The array of parameters is wrapped in a
+   * {@link MarshalledObject} so that it is deserialised
+   * using the bean's classloader.
+   * </p>
+   * <p>
+   * Invokes the supplied operation on the specified management
+   * bean.  The class objects specified in the signature are loaded
+   * using the same class loader as was used for the management bean.
+   *
+   * @param bean the management bean whose operation should be invoked.
+   * @param name the name of the operation to invoke.
+   * @param params the parameters for the bean's constructor, encapsulated
+   *               in a {@link MarshalledObject}.  If this parameter is
+   *               <code>null</code>, it will be judged equivalent to an
+   *               empty array.
+   * @param sig the signature of the constructor to use.  If this parameter
+   *            is <code>null</code>, it will be judged equivalent to an
+   *            empty array.  The class objects will be loaded using the
+   *            bean's classloader.
+   * @param delegationSubject an instance of {@link javax.security.auth.Subject}
+   *                          containing the delegation principles.  This may be
+   *                          {@code null} is authentication is used instead.
+   * @return the return value of the method.
+   * @throws InstanceNotFoundException if the bean can not be found.
+   * @throws MBeanException if the method invoked throws an exception.
+   * @throws ReflectionException if an exception is thrown in invoking the
+   *                             method.
+   * @throws SecurityException if the client or delegated subject (if any) does
+   *                           not have permission to invoke this operation.
+   * @throws IOException if an I/O error occurred in communicating with
+   *                     the bean server.
+   * @see DynamicMBean#invoke(String, Object[], String[])
+   */
+  Object invoke(ObjectName bean, String name, MarshalledObject params,
+		String[] sig, Subject delegationSubject)
+    throws InstanceNotFoundException, MBeanException,
+	   ReflectionException, IOException;
+
+  /**
+   * <p>
+   * Handles {@link
+   * MBeanServerConnection#isInstanceOf(ObjectName, String) by
+   * returning true if the specified management bean is an instance
+   * of the supplied class.
+   * </p>
+   * <p>
+   * A bean, B, is an instance of a class, C, if either of the following
+   * conditions holds:
+   * </p>
+   * <ul>
+   * <li>The class name in B's {@link MBeanInfo} is equal to the supplied
+   * name.</li>
+   * <li>Both the class of B and C were loaded by the same class loader,
+   * and B is assignable to C.</li>
+   * </ul>
+   * 
+   * @param name the name of the management bean.
+   * @param className the name of the class to test if <code>name</code> is
+   *                  an instance of.
+   * @param delegationSubject an instance of {@link javax.security.auth.Subject}
+   *                          containing the delegation principles.  This may be
+   *                          {@code null} is authentication is used instead.
+   * @return true if either B is directly an instance of the named class,
+   *         or B is assignable to the class, given that both it and B's
+   *         current class were loaded using the same class loader.
+   * @throws InstanceNotFoundException if the bean can not be found.
+   * @throws SecurityException if the client or delegated subject (if any) does
+   *                           not have permission to invoke this operation.
+   * @throws IOException if an I/O error occurred in communicating with
+   *                     the bean server.
+   */
+  boolean isInstanceOf(ObjectName name, String className,
+		       Subject delegationSubject)
+    throws InstanceNotFoundException, IOException;
+
+  /**
+   * Handles {@link
+   * MBeanServerConnection#isRegistered(ObjectName) by returning
+   * true if the specified management bean is registered with
+   * the server.
+   *
+   * @param name the name of the management bean.
+   * @param delegationSubject an instance of {@link javax.security.auth.Subject}
+   *                          containing the delegation principles.  This may be
+   *                          {@code null} is authentication is used instead.
+   * @return true if the bean is registered.
+   * @throws RuntimeOperationsException if an {@link IllegalArgumentException}
+   *                                    is thrown by the server due to a
+   *                                    <code>null</code> bean name.
+   * @throws SecurityException if the client or delegated subject (if any) does
+   *                           not have permission to invoke this operation.
+   * @throws IOException if an I/O error occurred in communicating with
+   *                     the bean server.
+   */
+  boolean isRegistered(ObjectName name, Subject delegationSubject)
+    throws IOException;
+
+  /**
+   * <p>
+   * Handles {@link
+   * MBeanServerConnection#queryMBeans(ObjectName, QueryExp)}.
+   * The query expression is wrapped in a {@link MarshalledObject}
+   * so that it is deserialised using the bean's classloader.
+   * </p>
+   * <p>
+   * Returns a set of {@link ObjectInstance}s matching the specified
+   * criteria.  The full set of beans registered with the server
+   * are passed through two filters:
+   * </p>
+   * <ol>
+   * <li>Pattern matching is performed using the supplied
+   * {@link ObjectName}.</li>
+   * <li>The supplied query expression is applied.</li>
+   * </ol>
+   * <p>
+   * If both the object name and the query expression are <code>null</code>,
+   * or the object name has no domain and no key properties,
+   * no filtering will be performed and all beans are returned. 
+   * </p>
+   *
+   * @param name an {@link ObjectName} to use as a filter.
+   * @param query a query expression to apply to each of the beans that match
+   *              the given object name, encapsulated in a
+   *              {@link MarshalledObject}.  If a <code>null</code> value is
+   *              encapsulated, then the beans will only be filtered using
+   *              pattern matching on the supplied {@link ObjectName}.
+   * @param delegationSubject an instance of {@link javax.security.auth.Subject}
+   *                          containing the delegation principles.  This may be
+   *                          {@code null} is authentication is used instead.
+   * @return a set of {@link ObjectInstance}s matching the filtered beans.
+   *         This is empty if no beans survived the filters.
+   * @throws IOException if an I/O error occurred in communicating with
+   *                     the bean server.
+   * @throws SecurityException if the client or delegated subject (if any) does
+   *                           not have permission to invoke this operation.
+   */
+  Set<ObjectInstance> queryMBeans(ObjectName name, MarshalledObject query,
+				  Subject delegationSubject)
+    throws IOException;
+  
+  /**
+   * <p>
+   * Handles {@link
+   * MBeanServerConnection#queryNames(ObjectName, QueryExp)}.
+   * The query expression is wrapped in a {@link MarshalledObject}
+   * so that it is deserialised using the bean's classloader.
+   * </p>
+   * <p>
+   * Returns a set of {@link ObjectName}s matching the specified
+   * criteria.  The full set of beans registered with the server
+   * are passed through two filters:
+   * </p>
+   * <ol>
+   * <li>Pattern matching is performed using the supplied
+   * {@link ObjectName}.</li>
+   * <li>The supplied query expression is applied.</li>
+   * </ol>
+   * <p>
+   * If both the object name and the query expression are <code>null</code>,
+   * or the object name has no domain and no key properties,
+   * no filtering will be performed and all beans are returned. 
+   * </p>
+   *
+   * @param name an {@link ObjectName} to use as a filter.
+   * @param query a query expression to apply to each of the beans that match
+   *              the given object name, encapsulated in a
+   *              {@link MarshalledObject}.  If a <code>null</code> value is
+   *              encapsulated, then the beans will only be filtered using
+   *              pattern matching on the supplied {@link ObjectName}.
+   * @param delegationSubject an instance of {@link javax.security.auth.Subject}
+   *                          containing the delegation principles.  This may be
+   *                          {@code null} is authentication is used instead.
+   * @return a set of {@link ObjectName}s matching the filtered beans.
+   * @throws SecurityException if the client or delegated subject (if any) does
+   *                           not have permission to invoke this operation.
+   * @throws IOException if an I/O error occurred in communicating with
+   *                     the bean server.
+   */
+  Set<ObjectName> queryNames(ObjectName name, MarshalledObject query,
+			     Subject delegationSubject)
+    throws IOException;
+
+  /**
+   * <p>
+   * Handles {@link
+   * MBeanServerConnection#removeNotificationListener(ObjectName,
+   * ObjectName, NotificationFilter, Object)}. Both the filter and
+   * the handback object are wrapped in a {@link MarshalledObject}
+   * so that they are deserialised using the bean's classloader.
+   * </p>
+   * <p>
+   * Removes the specified listener from the list of recipients
+   * of notifications from the supplied bean.  Only the first instance with
+   * the supplied filter and passback object is removed.
+   * <code>null</code> is used as a valid value for these parameters,
+   * rather than as a way to remove all registration instances for
+   * the specified listener; for this behaviour instead, see
+   * {@link #removeNotificationListener(ObjectName, NotificationListener)}.
+   * </p>
+   *
+   * @param name the name of the management bean from which the
+   *             listener should be removed.
+   * @param listener the listener to remove.
+   * @param filter a wrapper containing the filter of the listener
+   *               to remove.
+   * @param passback a wrapper containing the handback object of the
+   *                 listener to remove.
+   * @param delegationSubject a {@link javax.security.auth.Subject} instance
+   *                          containing the delegation principles or
+   *                          {@code null} if authentication is used.
+   * @throws InstanceNotFoundException if the bean can not be found.
+   * @throws ListenerNotFoundException if the specified listener
+   *                                   is not registered with the bean.
+   * @throws SecurityException if the client or delegated subject (if any) does
+   *                           not have permission to invoke this operation.
+   * @throws IOException if an I/O error occurred in communicating with
+   *                     the bean server.
+   * @see #addNotificationListener(ObjectName, NotificationListener,
+   *                               MarshalledObject, MarshalledObject, Subject)
+   * @see NotificationEmitter#removeNotificationListener(NotificationListener,
+   *                                                     NotificationFilter,
+   *                                                     Object)
+   */
+  void removeNotificationListener(ObjectName name,
+				  ObjectName listener,
+				  MarshalledObject filter,
+				  MarshalledObject passback,
+				  Subject delegationSubject)
+    throws InstanceNotFoundException, ListenerNotFoundException,
+	   IOException;
+
+  /**
+   * Handles {@link
+   * MBeanServerConnection#removeNotificationListener(ObjectName,
+   * ObjectName)} by removing the specified listener from the list
+   * of recipients of notifications from the supplied bean.  This
+   * includes all combinations of filters and passback objects
+   * registered for this listener.  For more specific removal of
+   * listeners, see {@link #removeNotificationListener(ObjectName,
+   * ObjectName,MarshalledObject,MarshalledObject,Subject)}
+   *
+   * @param name the name of the management bean from which the
+   *             listener should be removed.
+   * @param listener the name of the listener to remove.
+   * @param delegationSubject a {@link javax.security.auth.Subject} instance
+   *                          containing the delegation principles or
+   *                          {@code null} if authentication is used.
+   * @throws InstanceNotFoundException if a name doesn't match a registered
+   *                                   bean.
+   * @throws ListenerNotFoundException if the specified listener
+   *                                   is not registered with the bean.
+   * @throws SecurityException if the client or delegated subject (if any) does
+   *                           not have permission to invoke this operation.
+   * @throws IOException if an I/O error occurred in communicating with
+   *                     the bean server.
+   * @see #addNotificationListener(ObjectName, NotificationListener,
+   *                               MarshalledObject, MarshalledObject, Subject)
+   * @see NotificationBroadcaster#removeNotificationListener(NotificationListener)
+   */
+  void removeNotificationListener(ObjectName name, ObjectName listener,
+				  Subject delegationSubject)
+    throws InstanceNotFoundException, ListenerNotFoundException,
+	   IOException;
+
+  /**
+   * Removes one or more {@link NotificationListener}s from the specified
+   * management bean.  This method corresponds to
+   * {@link #addNotificationListeners(ObjectName[], MarshalledObject[],
+   * Subject)} and provides a different way of handling
+   * MBeanServerConnection#removeNotificationListener(ObjectName,
+   * ObjectName)} and
+   * {@link MBeanServerConnection#removeNotificationListener(ObjectName,
+   * ObjectName, NotificationFilter, Object)} by using the integer
+   * identifiers provided by the
+   * {@link #addNotificationListeners(ObjectName[], MarshalledObject[],
+   * Subject)} method to select the listeners to remove.
+   * 
+   * @param name the name of the management bean from which the
+   *             listeners should be removed.
+   * @param listenerIds the identifiers of the listeners to remove.
+   * @param delegationSubject a {@link javax.security.auth.Subject} instance
+   *                          containing the delegation principles or
+   *                          {@code null} if authentication is used.
+   * @throws InstanceNotFoundException if a name doesn't match a registered
+   *                                   bean.
+   * @throws ListenerNotFoundException if the specified listener
+   *                                   is not registered with the bean.
+   * @throws SecurityException if the client or delegated subject (if any) does
+   *                           not have permission to invoke this operation.
+   * @throws IOException if an I/O error occurred in communicating with
+   *                     the bean server.
+   * @throws IllegalArgumentException if either <code>name</code>,
+   *                                  <code>listenerIds</code> or an element
+   *                                  of <code>listenerIds</code>
+   *                                  is <code>null</code>.
+   * @see #addNotificationListeners(ObjectName[], MarshalledObject[], Subject)
+   */
+  void removeNotificationListeners(ObjectName name, Integer[] listenerIds,
+				   Subject delegationSubject)
+    throws InstanceNotFoundException, ListenerNotFoundException,
+	   IOException;
+
+  /**
+   * Handles {@link
+   * MBeanServerConnection#setAttribute(ObjectName, Attribute)}
+   * by setting the value of the specified attribute of the supplied
+   * management bean.  The attribute is wrapped in a
+   * {@link MarshalledObject} so that it is deserialised using the
+   * bean's classloader.
+   *
+   * @param name the name of the management bean.
+   * @param attribute the attribute to set, encapsulated in a
+   *                  {@link MarshalledObject}.
+   * @param delegationSubject a {@link javax.security.auth.Subject} instance
+   *                          containing the delegation principles or
+   *                          {@code null} if authentication is used.
+   * @throws InstanceNotFoundException if the bean can not be found.
+   * @throws AttributeNotFoundException if the attribute does not
+   *                                    correspond to an attribute
+   *                                    of the bean.
+   * @throws InvalidAttributeValueException if the value is invalid
+   *                                        for this particular
+   *                                        attribute of the bean.
+   * @throws MBeanException if setting the attribute causes
+   *                        the bean to throw an exception (which
+   *                        becomes the cause of this exception).
+   * @throws ReflectionException if an exception occurred in trying
+   *                             to use the reflection interface
+   *                             to lookup the attribute.  The
+   *                             thrown exception is the cause of
+   *                             this exception.
+   * @throws RuntimeOperationsException if an {@link IllegalArgumentException}
+   *                                    is thrown by the server due to a
+   *                                    <code>null</code> bean or attribute
+   *                                    name.
+   * @throws SecurityException if the client or delegated subject (if any) does
+   *                           not have permission to invoke this operation.
+   * @throws IOException if an I/O error occurred in communicating with
+   *                     the bean server.
+   * @see #getAttribute(ObjectName, String, Subject)
+   * @see javax.management.DynamicMBean#setAttribute(Attribute)
+   */
+  void setAttribute(ObjectName name, MarshalledObject attribute,
+		    Subject delegationSubject)
+    throws InstanceNotFoundException, AttributeNotFoundException,
+	   InvalidAttributeValueException, MBeanException,
+	   ReflectionException, IOException;
+
+  /**
+   * Handles {@link
+   * MBeanServerConnection#setAttributes(ObjectName, AttributeList)}
+   * by setting the value of each of the specified attributes
+   * of the supplied management bean to that specified by
+   * the {@link Attribute} object.  The returned list contains
+   * the attributes that were set and their new values.
+   * The attribute list is wrapped in a {@link MarshalledObject} so
+   * that it is deserialised using the bean's classloader.
+   *
+   * @param name the name of the management bean.
+   * @param attributes the attributes to set, encapsulated in a
+   *                   {@link MarshalledObject}.
+   * @param delegationSubject a {@link javax.security.auth.Subject} instance
+   *                          containing the delegation principles or
+   *                          {@code null} if authentication is used.
+   * @return a list of the changed attributes.
+   * @throws InstanceNotFoundException if the bean can not be found.
+   * @throws ReflectionException if an exception occurred in trying
+   *                             to use the reflection interface
+   *                             to lookup the attribute.  The
+   *                             thrown exception is the cause of
+   *                             this exception.
+   * @throws RuntimeOperationsException if an {@link IllegalArgumentException}
+   *                                    is thrown by the server due to a
+   *                                    <code>null</code> bean or attribute
+   *                                    list.
+   * @throws SecurityException if the client or delegated subject (if any) does
+   *                           not have permission to invoke this operation.
+   * @throws IOException if an I/O error occurred in communicating with
+   *                     the bean server.
+   * @see #getAttributes(ObjectName, String[])
+   * @see DynamicMBean#setAttributes(AttributeList)
+   */
+  AttributeList setAttributes(ObjectName name, MarshalledObject attributes,
+			      Subject delegationSubject)
+    throws InstanceNotFoundException, ReflectionException,
+	   IOException;
+
+  /**
+   * Handles {@link
+   * MBeanServerConnection#unregisterMBean(ObjectName)} by unregistering
+   * the specified management bean.  Following this operation,
+   * the bean instance is no longer accessible from the server via this
+   * name.  Prior to unregistering the bean, the
+   * {@link MBeanRegistration#preDeregister()} method will be called if
+   * the bean implements the {@link MBeanRegistration} interface.
+   *
+   * @param name the name of the management bean.
+   * @param delegationSubject a {@link javax.security.auth.Subject} instance
+   *                          containing the delegation principles or
+   *                          {@code null} if authentication is used.
+   * @throws InstanceNotFoundException if the bean can not be found.
+   * @throws MBeanRegistrationException if an exception occurs in
+   *                                    calling the preDeregister
+   *                                    method.
+   * @throws RuntimeOperationsException if an {@link IllegalArgumentException}
+   *                                    is thrown by the server due to a
+   *                                    <code>null</code> bean name or a
+   *                                    request being made to unregister the
+   *                                    {@link MBeanServerDelegate} bean.
+   * @throws SecurityException if the client or delegated subject (if any) does
+   *                           not have permission to invoke this operation.
+   * @throws IOException if an I/O error occurred in communicating with
+   *                     the bean server.
+   */ 
+  void unregisterMBean(ObjectName name, Subject delegationSubject)
+    throws InstanceNotFoundException, MBeanRegistrationException,
+	   IOException;
+
 }

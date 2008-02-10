@@ -1,3 +1,40 @@
+2008-02-10  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/management/remote/rmi/RMIConnection.java:
+	(addNotificationListeners(ObjectName[],
+	MarshalledObject[], Subject[])): Fixed return type.
+	(close()): Added.
+	(createMBean(String,ObjectName,MarshalledObject,
+	String[], Subject)): Likewise.
+	(createMBean(String,ObjectName,ObjectName,
+	MarshalledObject, String[], Subject)): Likewise.
+	(createMBean(String,ObjectName,ObjectName,
+	Subject)): Likewise.
+	(createMBean(String,ObjectName,Subject)): Likewise.
+	(getAttribute(ObjectName,String,Subject)): Likewise.
+	(getAttributes(ObjectName,String[],Subject)): Likewise.
+	(getConnectionId()): Likewise.
+	(getDefaultDomain(Subject)): Likewise.
+	(getDomains(Subject)): Likewise.
+	(getMBeanCount(Subject)): Likewise.
+	(getMBeanInfo(ObjectName,Subject)): Likewise.
+	(getObjectInstance(ObjectName,Subject)): Likewise.
+	(invoke(ObjectName,String,MarshalledObject,String[],
+	Subject)): Likewise.
+	(isInstanceOf(ObjectName,String,Subject)): Likewise.
+	(isRegistered(ObjectName,Subject)): Likewise.
+	(queryMBeans(ObjectName,MarshalledObject,Subject)): Likewise.
+	(queryNames(ObjectName,MarshalledObject,Subject)): Likewise.
+	(removeNotificationListener(ObjectName,ObjectName,MarshalledObject,
+	MarshalledObject,Subject)): Likewise.
+	(removeNotificationListener(ObjectName,ObjectName,Subject)):
+	Likewise.
+	(removeNotificationListeners(ObjectName,Integer[],Subject)):
+	Likewise.
+	(setAttribute(ObjectName,MarshalledObject,Subject)): Likewise.
+	(setAttributes(ObjectName,MarshalledObject,Subject)): Likewise.
+	(unregisterMBean(ObjectName,Subject)): Likewise.
+
 2008-02-09  Dalibor Topic  <robilad@kaffe.org>
 
 	* native/jni/Makefile.am (all-local): Call check_jni_methods.sh
