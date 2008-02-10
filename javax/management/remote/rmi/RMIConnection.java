@@ -1,5 +1,5 @@
 /* RMIConnection.java -- RMI object representing a MBean server connection.
-   Copyright (C) 2007 Free Software Foundation, Inc.
+   Copyright (C) 2007, 2008 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -59,6 +59,8 @@ import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectInstance;
 import javax.management.ObjectName;
 import javax.management.ReflectionException;
+
+import javax.management.remote.NotificationResult;
 
 import javax.security.auth.Subject;
 
@@ -493,6 +495,62 @@ public interface RMIConnection
     throws ReflectionException, InstanceAlreadyExistsException,
 	   MBeanRegistrationException, MBeanException,
 	   NotCompliantMBeanException, IOException;
+
+  /**
+   * <p>
+   * Retrieves any waiting notifications from the server.  When notifications
+   * are requested using the {@link #addNotificationListeners(ObjectName[],
+   * MarshalledObject[], Subject[])} method, the server sets up an internal
+   * listener to receive notifications from the bean and buffer them.  When
+   * this method is called, these buffered notifications can be retrieved.
+   * </p>
+   * <p>
+   * The blocking behaviour of this method depends on the timeout value specified.
+   * If there are no waiting notifications in the buffer, a value of 0 will cause
+   * the method to return immediately.  Conversely, if the value is
+   * {@link Long#MAX_VALUE}, then it will wait indefinitely until a notification
+   * arrives. For any other value, it waits until a notification arrives or the
+   * number of milliseconds specified by the timeout value is exceeded.  The
+   * behaviour for a negative timeout value is undefined.
+   * </p>
+   * <p>
+   * For a notification to be returned, the following criteria must be fulfilled:
+   * </p>
+   * <ul>
+   * <li>the client must have previously requested notifications from at least
+   * one bean</li>
+   * <li>a bean from which notifications have been requested must have emitted
+   * a notification since the last call to this method</li>
+   * <li>the emitted notification must pass through any filters established
+   * when notifications were requested</li>
+   * <li>the sequence number of the notification must be greater than or equal
+   * to the specified sequence number (if non-negative)</li>
+   * </ul>
+   *
+   * @param sequenceNumber the sequence number of each notification returned
+   *                       must be greater than or equal to this value.  If
+   *                       the number is negative, this is interpreted as
+   *                       meaning the sequence number of the next notification
+   *                       and so all notifications are allowed through.
+   * @param maxNotifications the maximum number of notifications to return.
+   *                         This does not include any duplicates so the
+   *                         number of actual notifications returned may
+   *                         be larger.
+   * @param timeout the number of milliseconds to wait for a notification
+   *                if the buffer is empty.  <code>0</code> causes the
+   *                method to return immediately even if there are no
+   *                notifications available (non-blocking behaviour) while
+   *                a value of {@link Long#MAX_VALUE} causes it to wait
+   *                indefinitely (blocking behaviour).  The response to
+   *                a negative value is undefined.
+   * @return a {@link NotificationResult} object containing the buffered
+   *         notifications.
+   * @throws IOException if an I/O error occurs.
+   */
+  NotificationResult fetchNotifications(long sequenceNumber,
+					int maxNotifications,
+					long timeout)
+    throws IOException;
 
   /**
    * Handles {@link

@@ -1,3 +1,12 @@
+2008-02-10  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/management/remote/NotificationResult.java:
+	New file.
+	* javax/management/remote/TargetedNotification.java:
+	Likewise.
+	* javax/management/remote/rmi/RMIConnection.java:
+	(fetchNotifications(long,int,long)): Added.
+	
 2008-02-10  Dalibor Topic  <robilad@kaffe.org>
 
 	* lib/Makefile.am (compile_classpath), include/Makefile.am (JAVAH): 
