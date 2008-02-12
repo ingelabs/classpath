@@ -8,31 +8,7 @@ sinclude $(JAVA_DEPEND)
 compile_classpath = $(vm_classes):$(top_srcdir):$(top_srcdir)/external/w3c_dom:$(top_srcdir)/external/sax:$(top_srcdir)/external/relaxngDatatype:$(top_srcdir)/external/jsr166:.:$(PATH_TO_GLIBJ_ZIP):$(PATH_TO_ESCHER)
 
 # handling source to bytecode compiler programs like gcj, jikes  and kjc
-if FOUND_ECJ
-JCOMPILER = $(ECJ) -1.5 -warn:-deprecation,serial,typeHiding,unchecked,unused -proceedOnError -bootclasspath '' -classpath $(compile_classpath) -d . @classes
-else
-if FOUND_JAVAC
-JCOMPILER = $(JAVAC) $(JAVAC_OPTS) -bootclasspath '' -classpath $(compile_classpath) -d . @classes
-#else
-#if FOUND_GCJ
-## This should never be used when gcj is the compiler.
-## See the compile-classes target.
-#JCOMPILER = exit 1
-#else
-#if FOUND_JIKES
-#JCOMPILER = $(JIKES) $(JIKESWARNINGS) +F $(JIKESENCODING) -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(compile_classpath) -d . @classes
-#else
-#if FOUND_KJC
-### FIXME: from what I can tell, kjc does not support a -encoding option.
-#JCOMPILER = $(KJC) -classpath .:$(USER_CLASSLIB) -d . @classes
-else
-JCOMPILER = echo "No compiler found" 1>&2; exit 1 
-#endif
-#endif # FOUND_KJC
-#endif # FOUND_GCJ
-#endif # FOUND_JIKES
-endif # FOUND_JAVAC
-endif # FOUND_ECJ
+JCOMPILER = $(JAVAC) $(JAVACFLAGS) $(JAVAC_MEM_OPT) -source 1.5 -target 1.5 -bootclasspath '' -classpath $(compile_classpath) -d . @classes
 
 if CREATE_COLLECTIONS
 COLLECTIONS = collections.jar

@@ -1,197 +1,6 @@
 dnl Used by aclocal to generate configure
 
 dnl -----------------------------------------------------------
-AC_DEFUN([CLASSPATH_FIND_JAVAC],
-[
-  user_specified_ecj=
-  user_specified_javac=
-
-dnl  CLASSPATH_WITH_GCJ
-dnl  CLASSPATH_WITH_JIKES
-dnl  CLASSPATH_WITH_KJC
-  CLASSPATH_WITH_ECJ
-  CLASSPATH_WITH_JAVAC
-
-  if test "x${user_specified_ecj}" = x; then
-    AM_CONDITIONAL(FOUND_ECJ, test "x${ECJ}" != x)
-  else
-    AM_CONDITIONAL(FOUND_ECJ, test "x${user_specified_ecj}" = xecj && test "x${ECJ}" != x)
-  fi
-
-  if test "x${user_specified_javac}" = x; then
-dnl    AM_CONDITIONAL(FOUND_GCJ, test "x${GCJ}" != x)
-dnl    AM_CONDITIONAL(FOUND_JIKES, test "x${JIKES}" != x)
-    AM_CONDITIONAL(FOUND_JAVAC, test "x${JAVAC}" != x)
-  else
-dnl    AM_CONDITIONAL(FOUND_GCJ, test "x${user_specified_javac}" = xgcj)
-dnl    AM_CONDITIONAL(FOUND_JIKES, test "x${user_specified_javac}" = xjikes)
-    AM_CONDITIONAL(FOUND_JAVAC, test "x${user_specified_javac}" = xjavac && test "x${JAVAC}" != x)
-  fi
-
-dnl  AM_CONDITIONAL(FOUND_KJC, test "x${user_specified_javac}" = xkjc)
-
-dnl  if test "x${GCJ}" = x && test "x${JIKES}" = x && test "x${user_specified_javac}" != xkjc; then
-  if test "x${ECJ}" = x && test "x${JAVAC}" = x && test "x${user_specified_ecj}" != xecj && test "x${user_specified_javac}" != xjavac; then
-      AC_MSG_ERROR([cannot find javac, try --with-ecj or --with-javac])
-  fi
-])
-
-dnl -----------------------------------------------------------
-AC_DEFUN([CLASSPATH_WITH_GCJ],
-[
-  AC_ARG_WITH([gcj],
-	      [AS_HELP_STRING(--with-gcj,bytecode compilation with gcj)],
-  [
-    if test "x${withval}" != x && test "x${withval}" != xyes && test "x${withval}" != xno; then
-      CLASSPATH_CHECK_GCJ(${withval})
-    else
-      if test "x${withval}" != xno; then
-        CLASSPATH_CHECK_GCJ
-      fi
-    fi
-    user_specified_javac=gcj
-  ],
-  [
-    CLASSPATH_CHECK_GCJ
-  ])
-  AC_SUBST(GCJ)
-])
-
-dnl -----------------------------------------------------------
-AC_DEFUN([CLASSPATH_CHECK_GCJ],
-[
-  if test "x$1" != x; then
-    if test -f "$1"; then
-      GCJ="$1"
-    else
-      AC_PATH_PROG(GCJ, "$1")
-    fi
-  else
-    AC_PATH_PROG(GCJ, "gcj")
-  fi  
-  dnl Test the given GCJ, but use it as C (!) compiler to check version
-  if test "x$GCJ" != x; then
-    AC_MSG_CHECKING([gcj version 4.0])
-    AC_LANG_PUSH([C])
-    AC_LANG_CONFTEST(
-    [[#if __GNUC__ <= 3
-    #error GCJ 4.0.0 or higher is required
-    #endif
-    ]])
-    $GCJ -E conftest.c > /dev/null
-    gcj_4_result=$?
-    if test "x$gcj_4_result" = "x0"; then
-      AC_MSG_RESULT([4.0 or higher found])
-    else
-      AC_MSG_WARN([4.0 or higher required])
-    fi
-    AC_LANG_POP
-  fi 
-])
-
-dnl -----------------------------------------------------------
-AC_DEFUN([CLASSPATH_WITH_JIKES],
-[
-  AC_ARG_WITH([jikes],
-	      [AS_HELP_STRING(--with-jikes,bytecode compilation with jikes)],
-  [
-    if test "x${withval}" != x && test "x${withval}" != xyes && test "x${withval}" != xno; then
-      CLASSPATH_CHECK_JIKES(${withval})
-    else
-      if test "x${withval}" != xno; then
-        CLASSPATH_CHECK_JIKES
-      fi
-    fi
-    user_specified_javac=jikes
-  ],
-  [ 
-    CLASSPATH_CHECK_JIKES
-  ])
-  AC_SUBST(JIKES)
-])
-
-dnl -----------------------------------------------------------
-AC_DEFUN([CLASSPATH_CHECK_JIKES],
-[
-  if test "x$1" != x; then
-    if test -f "$1"; then
-      JIKES="$1"
-    else
-      AC_PATH_PROG(JIKES, "$1")
-    fi
-  else
-    AC_PATH_PROG(JIKES, "jikes")
-  fi
-  if test "x$JIKES" != "x"; then
-    dnl Require at least version 1.19
-    AC_MSG_CHECKING(jikes version)
-    JIKES_VERSION=`$JIKES --version | awk '/^Jikes Compiler/' | cut -d ' ' -f 5`
-    JIKES_VERSION_MAJOR=`echo "$JIKES_VERSION" | cut -d '.' -f 1`
-    JIKES_VERSION_MINOR=`echo "$JIKES_VERSION" | cut -d '.' -f 2`
-    if expr "$JIKES_VERSION_MAJOR" = 1 > /dev/null; then
-      if expr "$JIKES_VERSION_MINOR" \< 19 > /dev/null; then
-        JIKES=""
-      fi
-    fi
-    if test "x$JIKES" != "x"; then
-      AC_MSG_RESULT($JIKES_VERSION)
-    else
-      AC_MSG_WARN($JIKES_VERSION: jikes 1.19 or higher required)
-    fi
-
-    JIKESENCODING=
-    if test -n "`$JIKES --help 2>&1 | grep encoding`"; then
-      JIKESENCODING='-encoding UTF-8'
-    fi
-    AC_SUBST(JIKESENCODING)
-
-    JIKESWARNINGS="+Pno-switchcheck"
-    if test "x$JIKES_VERSION_MAJOR" = x"1" ; then
-      if ! test "x$JIKES_VERSION_MINOR" = x"19"; then
-        JIKESWARNINGS="$JIKESWARNINGS +Pno-shadow"
-      fi
-    fi
-    AC_SUBST(JIKESWARNINGS)
-
-  fi
-])
-
-dnl -----------------------------------------------------------
-AC_DEFUN([CLASSPATH_WITH_KJC],
-[
-  AC_ARG_WITH([kjc], 
-  	      [AS_HELP_STRING(--with-kjc,bytecode compilation with kjc)],
-  [
-    if test "x${withval}" != x && test "x${withval}" != xyes && test "x${withval}" != xno; then
-      CLASSPATH_CHECK_KJC(${withval})
-    else
-      if test "x${withval}" != xno; then
-        CLASSPATH_CHECK_KJC
-      fi
-    fi
-    user_specified_javac=kjc
-  ],
-  [ 
-    CLASSPATH_CHECK_KJC
-  ])
-  AC_SUBST(KJC)
-])
-
-dnl -----------------------------------------------------------
-AC_DEFUN([CLASSPATH_CHECK_KJC],
-[
-  if test "x$1" != x; then
-    if test -f "$1"; then
-      KJC="$1"
-    else
-      AC_PATH_PROG(KJC, "$1")
-    fi
-  else
-    AC_PATH_PROG(KJC, "kJC")
-  fi
-])
-
-dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_JAVAH],
 [
   AC_ARG_WITH([javah],
@@ -369,92 +178,29 @@ AC_DEFUN([REGEN_WITH_JAY],
 ])
 
 dnl -----------------------------------------------------------
-AC_DEFUN([CLASSPATH_WITH_ECJ],
+AC_DEFUN([CLASSPATH_JAVAC_MEM_CHECK],
 [
-  AC_ARG_WITH([ecj],
-	      [AS_HELP_STRING(--with-ecj,bytecode compilation with ecj)],
-  [
-    if test "x${withval}" != x && test "x${withval}" != xyes && test "x${withval}" != xno; then
-      CLASSPATH_CHECK_ECJ(${withval})
-    else
-      if test "x${withval}" != xno; then
-        CLASSPATH_CHECK_ECJ
-      fi
-    fi
-    user_specified_ecj=ecj
-  ],
-  [ 
-    CLASSPATH_CHECK_ECJ
-  ])
-  AC_SUBST(ECJ)
-])
-
-dnl -----------------------------------------------------------
-AC_DEFUN([CLASSPATH_CHECK_ECJ],
-[
-  if test "x$1" != x; then
-    if test -f "$1"; then
-      ECJ="$1"
-    else
-      AC_PATH_PROG(ECJ, "$1")
-    fi
-  else
-    AC_PATH_PROG(ECJ, "ecj")
-  fi
-])
-
-dnl -----------------------------------------------------------
-AC_DEFUN([CLASSPATH_WITH_JAVAC],
-[
-  AC_ARG_WITH([javac],
-	      [AS_HELP_STRING(--with-javac,bytecode compilation with javac)],
-  [
-    if test "x${withval}" != x && test "x${withval}" != xyes && test "x${withval}" != xno; then
-      CLASSPATH_CHECK_JAVAC(${withval})
-    else
-      if test "x${withval}" != xno; then
-        CLASSPATH_CHECK_JAVAC
-      fi
-    fi
-    user_specified_javac=javac
-  ],
-  [ 
-    CLASSPATH_CHECK_JAVAC
-  ])
-  AC_SUBST(JAVAC)
-  AC_SUBST(JAVAC_OPTS)
-])
-
-dnl -----------------------------------------------------------
-AC_DEFUN([CLASSPATH_CHECK_JAVAC],
-[
-  if test "x$1" != x; then
-    JAVAC="$1"
-  else
-    AC_PATH_PROG(JAVAC, "javac")
-  fi
-  dnl Test the given javac
-  AC_MSG_CHECKING([if javac is 1.5-capable])
-  cat > Colour.java << EOF
-public enum Colour {
-RED, ORANGE, YELLOW, GREEN, BLUE, INDIGO, VIOLET;
-}
+  JAVA_TEST=Test.java
+  CLASS_TEST=Test.class
+  cat << \EOF > $JAVA_TEST
+  /* [#]line __oline__ "configure" */
+  public class Test 
+  {
+    public static void main(String[] args)
+    {
+      System.out.println("Hello World");
+    }
+  }
 EOF
-  $JAVAC -sourcepath '' Colour.java 
-  javac_result=$?
-  if test "x$javac_result" = "x0"; then
-    AC_MSG_RESULT([yes])
-  else
-    AC_MSG_WARN([1.5 capable javac required])
-  fi
   AC_MSG_CHECKING([whether javac supports -J])
-  $JAVAC -J-Xmx512M -sourcepath '' Colour.java
+  $JAVAC $JAVACFLAGS -J-Xmx512M -sourcepath '' $JAVA_TEST
   javac_result=$?
   if test "x$javac_result" = "x0"; then
     AC_MSG_RESULT([yes])
-    JAVAC_OPTS="-J-Xmx512M"
+    JAVAC_MEM_OPT="-J-Xmx512M"
   else
-    AC_MSG_RESULT([javac doesn't support -J])
+    AC_MSG_RESULT([no])
   fi
-  rm -f Colour.java Colour.class
+  rm -f $JAVA_TEST $CLASS_TEST
+  AC_SUBST(JAVAC_MEM_OPT)
 ])

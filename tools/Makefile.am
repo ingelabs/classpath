@@ -4,15 +4,7 @@ GLIBJ_BOOTCLASSPATH='$(top_builddir)/lib/glibj.zip'
 GLIBJ_CLASSPATH=asm
 
 # Setup the compiler to use the GNU Classpath library we just built.
-if FOUND_ECJ
-JCOMPILER = $(ECJ) -1.5 -encoding UTF-8 -warn:-deprecation,serial,typeHiding,unchecked,unused,varargsCast -bootclasspath $(GLIBJ_BOOTCLASSPATH) -classpath .:$(GLIBJ_CLASSPATH)
-else
-if FOUND_JAVAC
-JCOMPILER = $(JAVAC) -encoding UTF-8 -bootclasspath $(GLIBJ_BOOTCLASSPATH) -classpath $(GLIBJ_CLASSPATH)
-else
-error dunno how to setup the JCOMPILER and compile
-endif
-endif
+JCOMPILER = $(JAVAC) $(JAVACFLAGS) -source 1.5 -target 1.5 -encoding UTF-8 -bootclasspath $(GLIBJ_BOOTCLASSPATH) -classpath $(GLIBJ_CLASSPATH)
 
 if CREATE_WRAPPERS
 bin_SCRIPTS =

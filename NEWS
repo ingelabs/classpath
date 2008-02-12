@@ -1,5 +1,13 @@
 New in release 0.97
 
+Build changes:
+
+* A copy of javah (to produce C header files from Java source code)
+is now required to generate the files in include.
+* The javac check has been changed so that it attempts to find ecj,
+javac and gcj (in that order).  You may override this by using
+JAVAC=<preferred javac>
+
 Runtime interface changes:
 
 * Removed VMFloat.floatToIntBits amd VMDouble.doubleToLongBits.

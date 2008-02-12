@@ -1,3 +1,30 @@
+2008-02-11  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+        PR classpath/34578:
+	* NEWS: Mention javah and javac build changes.
+	* configure.ac: Call AC_PROG_JAVAC and
+	CLASSPATH_JAVAC_MEM_CHECK instead of CLASSPATH_FIND_JAVAC.
+	* examples/Makefile.am: Simplify compiler choice
+	to just use JAVAC.
+	* lib/Makefile.am: Likewise, but with JAVAC_MEM_OPT too.
+	* m4/ac_prog_javac.m4: New file.
+	* m4/ac_prog_javac_works.m4: Likewise.
+	* m4/acinclude.m4:
+	(CLASSPATH_FIND_JAVAC): Removed.
+	(CLASSPATH_WITH_GCJ): Removed.
+	(CLASSPATH_CHECK_GCJ): Removed.
+	(CLASSPATH_WITH_JIKES): Removed.
+	(CLASSPATH_CHECK_JIKES): Removed.
+	(CLASSPATH_WITH_KJC): Removed.
+	(CLASSPATH_CHECK_KJC): Removed.
+	(CLASSPATH_WITH_ECJ): Removed.
+	(CLASSPATH_CHECK_ECJ): Removed.
+	(CLASSPATH_WITH_JAVAC): Removed.
+	(CLASSPATH_CHECK_JAVAC): Removed.
+	(CLASSPATH_JAVAC_MEM_CHECK): Added.
+	* tools/Makefile.am: Simplify compiler choice
+	to just javac.
+
 2008-02-12  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/color/ICC_Profile.java
