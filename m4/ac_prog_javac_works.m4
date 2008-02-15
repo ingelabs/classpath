@@ -18,13 +18,17 @@ dnl Modified to test for 1.5 by Andrew John Hughes on 2008-02-11
 
 AC_DEFUN([AC_PROG_JAVAC_WORKS],[
 AC_CACHE_CHECK([if $JAVAC works], ac_cv_prog_javac_works, [
-JAVA_TEST=Colour.java
-CLASS_TEST=Colour.class
+JAVA_TEST=Object.java
+CLASS_TEST=Object.class
 cat << \EOF > $JAVA_TEST
 /* [#]line __oline__ "configure" */
-public enum Colour 
+package java.lang;
+
+public class Object
 {
-RED, ORANGE, YELLOW, GREEN, BLUE, INDIGO, VIOLET;
+  static <T> void doStuff()
+  {
+  }
 }
 EOF
 if AC_TRY_COMMAND($JAVAC $JAVACFLAGS -source 1.5 -target 1.5 $JAVA_TEST) >/dev/null 2>&1; then
