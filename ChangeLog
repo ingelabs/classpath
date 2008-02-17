@@ -1,3 +1,12 @@
+2008-02-17  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* org/omg/CORBA/PolicyErrorHelper.java,
+	* org/omg/CORBA/UnknownUserExceptionHelper.java,
+	* org/omg/PortableInterceptor/ORBInitInfoPackage/DuplicateNameHelper.java,
+	* org/omg/PortableServer/ForwardRequestHelper.java,
+	* org/omg/PortableServer/POAPackage/InvalidPolicyHelper.java:
+	Remove unused variable.
+
 2008-02-16  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* gnu/classpath/ServiceFactory.java:
