@@ -11,6 +11,7 @@ JAVAC=<preferred javac>
 Runtime interface changes:
 
 * Removed VMFloat.floatToIntBits amd VMDouble.doubleToLongBits.
+* Added new getParameterAnnotations() methods in Constructor and Method.
 
 New in release 0.96.1 (Oct 16, 2007)
 
