@@ -511,7 +511,6 @@ public class DefaultTreeCellRenderer
     int xOffset = -1;
     if (bgColor != null)
       {
-        Icon i = getIcon();
 	xOffset = getXOffset();
 	g.setColor(bgColor);
 	g.fillRect(xOffset, 0, getWidth() - xOffset, getHeight());
