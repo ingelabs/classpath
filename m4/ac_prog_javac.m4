@@ -39,7 +39,7 @@ AC_REQUIRE([AC_EXEEXT])dnl
 if test "x$JAVAPREFIX" = x; then
         test "x$JAVAC" = x && AC_CHECK_PROGS(JAVAC, ecj$EXEEXT javac$EXEEXT "gcj$EXEEXT -C")
 else
-        test "x$JAVAC" = x && AC_CHECK_PROGS(JAVAC, ecj$EXEEXT javac$EXEEXT "gcj$EXEEXT -C", $JAVAPREFIX)
+        test "x$JAVAC" = x && AC_CHECK_PROGS(JAVAC, ["ecj$EXEEXT -warn:deprecation,serial,unusedImport"] javac$EXEEXT "gcj$EXEEXT -C", $JAVAPREFIX)
 fi
 test "x$JAVAC" = x && AC_MSG_ERROR([no acceptable Java compiler found in \$PATH])
 AC_PROG_JAVAC_WORKS
