@@ -1,5 +1,24 @@
 2008-02-18  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/image/RGBImageFilter.java
+	(setPixels): Don't mask the source pixel.
+
+2008-02-18  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/image/AsyncImage.java: New file. Implements
+	asynchronous image loading.
+	* gnu/java/awt/image/ImageConverter.java: New file.
+	An image consumer that creates a concrete image with
+	asynchronous behaviour.
+	* gnu/java/awt/peer/x/ImageConverter.java: Removed.
+	* gnu/java/awt/peer/x/XToolkit.java:
+	(createImage(ImageProducer)): Use new ImageConverter.
+	* gnu/java/awt/peer/x/XGraphics2D.java:
+	(rawDrawImage): Unwrap AsyncImages before painting.
+	(unwrap): New helper method.
+
+2008-02-18  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/java/awt/peer/x/XGraphics2D.java
 	(rawDrawImage): Update the rgb variable correctly. Don't
 	cache translucent images.
