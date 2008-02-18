@@ -413,6 +413,7 @@ public class XGraphics2D
                             blue = blue * alpha
                                     + (255 - alpha) * zpixmap.get_blue(xx, yy);
                             blue = blue / 255;
+                            rgb = red << 16 | green << 8 | blue;
                           }
                         // else keep rgb value from source image.
 
@@ -420,7 +421,8 @@ public class XGraphics2D
                       }
                   }
                 xdrawable.put_image(xgc, zpixmap, x, y);
-                imageCache.put(image, zpixmap);
+                // We can't cache prerendered translucent images, because
+                // we never know how the background changes.
               }
             ret = true;
           }
