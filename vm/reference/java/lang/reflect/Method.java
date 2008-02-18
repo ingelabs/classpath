@@ -42,6 +42,7 @@ import gnu.java.lang.ClassHelper;
 
 import gnu.java.lang.reflect.MethodSignatureParser;
 
+import java.lang.annotation.Annotation;
 import java.util.Arrays;
 
 /**
