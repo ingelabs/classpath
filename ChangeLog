@@ -1,5 +1,13 @@
 2008-02-18  Roman Kennke  <kennke@aicas.com>
 
+	* gnu/java/awt/peer/x/XGraphics2D.java
+	(RENDER_OPAQUE): New constant with system property to
+	turn on opaque image rendering.
+	(rawDrawImage): Render images opaque when system property
+	is set. This is for demonstration and debugging purposes only.
+
+2008-02-18  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/java/awt/image/AsyncImage.java: New file. Implements
 	asynchronous image loading.
 	* gnu/java/awt/image/ImageConverter.java: New file.

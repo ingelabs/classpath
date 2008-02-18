@@ -70,6 +70,14 @@ public class XGraphics2D
 {
 
   /**
+   * When this property is set to true, then images are always rendered as
+   * opaque images, ignoring their translucence. This is intended for
+   * debugging and demonstration purposes.
+   */
+  private static final boolean RENDER_OPAQUE =
+    Boolean.getBoolean("escherpeer.renderopaque");
+
+  /**
    * The X Drawable to draw on.
    */
   private Drawable xdrawable;
@@ -369,7 +377,7 @@ public class XGraphics2D
                 ZPixmap zpixmap = imageCache.get(image);
                 xdrawable.put_image(xgc, zpixmap, x, y);
               }
-            else if (transparency == Transparency.OPAQUE)
+            else if (transparency == Transparency.OPAQUE || RENDER_OPAQUE)
               {
                 XGraphicsDevice gd = XToolkit.getDefaultDevice();
                 ZPixmap zpixmap = new ZPixmap(gd.getDisplay(), w, h);
