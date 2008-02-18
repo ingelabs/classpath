@@ -1,14 +1,3 @@
-2008-02-18  Jakub Jelinek  <jakub@redhat.com>
-
-	* doc/cp-tools.texinfo (@direntry): Prefix info name with cp-.
-	* doc/cp-hacking.texinfo (@direntry): Likewise.
-	* doc/cp-vmintegration.texinfo (@direntry): Likewise.
-
-2008-02-18  Roman Kennke  <kennke@aicas.com>
-
-	* java/awt/image/RGBImageFilter.java
-	(setPixels): Don't mask the source pixel.
-
 2008-02-18  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/image/AsyncImage.java: New file. Implements
@@ -22,6 +11,17 @@
 	* gnu/java/awt/peer/x/XGraphics2D.java:
 	(rawDrawImage): Unwrap AsyncImages before painting.
 	(unwrap): New helper method.
+
+2008-02-18  Jakub Jelinek  <jakub@redhat.com>
+
+	* doc/cp-tools.texinfo (@direntry): Prefix info name with cp-.
+	* doc/cp-hacking.texinfo (@direntry): Likewise.
+	* doc/cp-vmintegration.texinfo (@direntry): Likewise.
+
+2008-02-18  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/image/RGBImageFilter.java
+	(setPixels): Don't mask the source pixel.
 
 2008-02-18  Roman Kennke  <kennke@aicas.com>
 

@@ -57,6 +57,7 @@ import java.awt.peer.FontPeer;
 import java.util.HashMap;
 import java.util.WeakHashMap;
 
+import gnu.java.awt.image.AsyncImage;
 import gnu.java.awt.java2d.AbstractGraphics2D;
 import gnu.java.awt.java2d.ScanlineCoverage;
 import gnu.x11.Colormap;
@@ -331,6 +332,7 @@ public class XGraphics2D
 
   protected boolean rawDrawImage(Image image, int x, int y, ImageObserver obs)
   {
+    image = unwrap(image);
     boolean ret;
     if (image instanceof XImage)
       {
@@ -459,5 +461,25 @@ public class XGraphics2D
         super.drawString(s, x, y);
       }
   }
+
+  /**
+   * Extracts an image instance out of an AsyncImage. If the image isn't
+   * an AsyncImage, then the original instance is returned.
+   *
+   * @param im the image
+   *
+   * @return the image to render
+   */
+  private Image unwrap(Image im)
+  {
+    Image image = im;
+    if (image instanceof AsyncImage)
+      {
+        AsyncImage aIm = (AsyncImage) image;
+        image = aIm.getRealImage();
+      }
+    return image;
+  }
+
 }
 

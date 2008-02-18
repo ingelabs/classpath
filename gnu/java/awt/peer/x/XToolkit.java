@@ -119,6 +119,7 @@ import gnu.classpath.SystemProperties;
 import gnu.java.awt.ClasspathToolkit;
 import gnu.java.awt.EmbeddedWindow;
 import gnu.java.awt.font.OpenTypeFontPeer;
+import gnu.java.awt.image.ImageConverter;
 import gnu.java.awt.peer.ClasspathFontPeer;
 import gnu.java.awt.peer.EmbeddedWindowPeer;
 import gnu.java.awt.peer.swing.SwingCanvasPeer;
@@ -527,7 +528,7 @@ public class XToolkit
   {
     ImageConverter conv = new ImageConverter();
     producer.startProduction(conv);
-    Image image = conv.getXImage();
+    Image image = conv.getImage();
     return image;
   }
 
