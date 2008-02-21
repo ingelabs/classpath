@@ -193,11 +193,11 @@ AC_DEFUN([CLASSPATH_JAVAC_MEM_CHECK],
   }
 EOF
   AC_MSG_CHECKING([whether javac supports -J])
-  $JAVAC $JAVACFLAGS -J-Xmx512M -sourcepath '' $JAVA_TEST
+  $JAVAC $JAVACFLAGS -J-Xmx768M -sourcepath '' $JAVA_TEST
   javac_result=$?
   if test "x$javac_result" = "x0"; then
     AC_MSG_RESULT([yes])
-    JAVAC_MEM_OPT="-J-Xmx512M"
+    JAVAC_MEM_OPT="-J-Xmx768M"
   else
     AC_MSG_RESULT([no])
   fi
