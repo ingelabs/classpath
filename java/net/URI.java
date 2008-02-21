@@ -1322,7 +1322,7 @@ public final class URI
 	    if (hCompare != 0)
 	      return hCompare;
 	    int uriPort = uri.getPort();
-	    return (uriPort == port) ? 0 : (uriPort < port) ? -1 : 1;
+	    return (uriPort == port) ? 0 : (uriPort > port) ? -1 : 1;
 	  }
       }
     if (rawPath == null && uri.getRawPath() != null)
