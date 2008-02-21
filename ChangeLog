@@ -1,3 +1,63 @@
+2008-02-21  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+        PR classpath/35111:
+	* resource/com/sun/tools/javac/messages.properties,
+	* resource/gnu/classpath/tools/appletviewer/messages.properties,
+	* resource/gnu/classpath/tools/common/Messages.properties,
+	* resource/gnu/classpath/tools/getopt/Messages.properties,
+	* resource/gnu/classpath/tools/jar/messages.properties,
+	* resource/gnu/classpath/tools/jarsigner/messages.properties,
+	* resource/gnu/classpath/tools/keytool/messages.properties,
+	* resource/gnu/classpath/tools/native2ascii/messages.properties,
+	* resource/gnu/classpath/tools/orbd/messages.properties,
+	* resource/gnu/classpath/tools/rmic/messages.properties,
+	* resource/gnu/classpath/tools/rmid/messages.properties,
+	* resource/gnu/classpath/tools/rmiregistry/messages.properties,
+	* resource/gnu/classpath/tools/serialver/messages.properties,
+	* resource/gnu/classpath/tools/tnameserv/messages.properties,
+	* resource/sun/rmi/rmic/messages.properties:
+	Removed.
+	* tools/Makefile.am:
+	Copy .jav template files and use resource subdirectory
+	of tools.
+	* tools/gnu/classpath/tools/rmic/templates/ImplTie.jav,
+	* tools/gnu/classpath/tools/rmic/templates/Stub.jav,
+	* tools/gnu/classpath/tools/rmic/templates/StubMethod.jav,
+	* tools/gnu/classpath/tools/rmic/templates/StubMethodVoid.jav,
+	* tools/gnu/classpath/tools/rmic/templates/Stub_12.jav,
+	* tools/gnu/classpath/tools/rmic/templates/Stub_12Method.jav,
+	* tools/gnu/classpath/tools/rmic/templates/Stub_12MethodVoid.jav,
+	* tools/gnu/classpath/tools/rmic/templates/Tie.jav,
+	* tools/gnu/classpath/tools/rmic/templates/TieMethod.jav,
+	* tools/gnu/classpath/tools/rmic/templates/TieMethodVoid.jav:
+	Removed.
+	* tools/resource/com/sun/tools/javac/messages.properties,
+	* tools/resource/gnu/classpath/tools/appletviewer/messages.properties,
+	* tools/resource/gnu/classpath/tools/common/Messages.properties,
+	* tools/resource/gnu/classpath/tools/getopt/Messages.properties,
+	* tools/resource/gnu/classpath/tools/jar/messages.properties,
+	* tools/resource/gnu/classpath/tools/jarsigner/messages.properties,
+	* tools/resource/gnu/classpath/tools/keytool/messages.properties,
+	* tools/resource/gnu/classpath/tools/native2ascii/messages.properties,
+	* tools/resource/gnu/classpath/tools/orbd/messages.properties,
+	* tools/resource/gnu/classpath/tools/rmic/messages.properties,
+	* tools/resource/gnu/classpath/tools/rmic/templates/ImplTie.jav,
+	* tools/resource/gnu/classpath/tools/rmic/templates/Stub.jav,
+	* tools/resource/gnu/classpath/tools/rmic/templates/StubMethod.jav,
+	* tools/resource/gnu/classpath/tools/rmic/templates/StubMethodVoid.jav,
+	* tools/resource/gnu/classpath/tools/rmic/templates/Stub_12.jav,
+	* tools/resource/gnu/classpath/tools/rmic/templates/Stub_12Method.jav,
+	* tools/resource/gnu/classpath/tools/rmic/templates/Stub_12MethodVoid.jav,
+	* tools/resource/gnu/classpath/tools/rmic/templates/Tie.jav,
+	* tools/resource/gnu/classpath/tools/rmic/templates/TieMethod.jav,
+	* tools/resource/gnu/classpath/tools/rmic/templates/TieMethodVoid.jav,
+	* tools/resource/gnu/classpath/tools/rmid/messages.properties,
+	* tools/resource/gnu/classpath/tools/rmiregistry/messages.properties,
+	* tools/resource/gnu/classpath/tools/serialver/messages.properties,
+	* tools/resource/gnu/classpath/tools/tnameserv/messages.properties,
+	* tools/resource/sun/rmi/rmic/messages.properties:
+	Added.
+	
 2008-02-18  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/peer/x/XGraphics2D.java

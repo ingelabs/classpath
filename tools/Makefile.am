@@ -115,7 +115,7 @@ TOOLS_ZIP = tools.zip
 BUILT_SOURCES = $(TOOLS_ZIP)
 
 # RMIC templates that must be included in the generated zip file.
-RMIC_TEMPLATES = $(srcdir)/gnu/classpath/tools/rmic/templates/*.jav
+RMIC_TEMPLATES = $(srcdir)/resource/gnu/classpath/tools/rmic/templates/*.jav
 
 # All the files we find "interesting"
 ALL_TOOLS_FILES = $(TOOLS_JAVA_FILES) $(RMIC_TEMPLATES)
@@ -161,14 +161,13 @@ $(TOOLS_ZIP): $(TOOLS_JAVA_FILES)
 	$(JCOMPILER) -g -d classes @classes.lst
 	cat classes.lst asm.lst > all-classes.lst
 ## Copy over tools resource files.
-	@list=`cd $(top_srcdir)/resource && find gnu/classpath/tools \
-	       com/sun/javadoc com/sun/tools/doclets com/sun/tools/javac \
-	       sun/rmi/rmic -name \*.properties -print`; \
+	@list=`cd $(srcdir)/resource && find gnu/classpath/tools com/sun/tools/javac \
+	       sun/rmi/rmic -name \*.properties -print -o -name \*.jav -print`; \
 	for p in $$list; do \
 	  dirname=classes/`dirname $$p`; \
 	  if ! test -d "$$dirname"; then mkdir -p "$$dirname"; fi; \
-	  echo "  cp $(top_srcdir)/resource/$$p classes/$$p"; \
-	  cp $(top_srcdir)/resource/$$p classes/$$p; \
+	  echo "  cp $(srcdir)resource/$$p classes/$$p"; \
+	  cp $(srcdir)/resource/$$p classes/$$p; \
 	done
 ## First add classpath tools stuff.
 	(cd classes; \
