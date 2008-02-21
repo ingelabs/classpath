@@ -30,7 +30,7 @@ AC_DEFUN([CLASSPATH_CHECK_JAVAH],
       AC_PATH_PROG(USER_JAVAH, "$1")
     fi
   else
-    AC_PATH_PROGS([USER_JAVAH],[gjavah gjavah-4.3 gjavah-4.2 gjavah-4.1 gcjh-wrapper-4.1 gcjh-4.1 gcjh javah])
+    AC_PATH_PROGS([USER_JAVAH],[gjavah gjavah-4.3 gjavah-4.2 gjavah-4.1 gcjh-wrapper-4.1 gcjh-4.1 javah])
   fi
   
   if test "x${USER_JAVAH}" = x; then
