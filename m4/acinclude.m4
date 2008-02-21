@@ -153,25 +153,41 @@ dnl -----------------------------------------------------------
 AC_DEFUN([REGEN_WITH_JAY],
 [
   AC_ARG_WITH([jay],
-              [AS_HELP_STRING(--with-jay,Regenerate the parsers with jay must be given the path to the jay executable)],
+              [AS_HELP_STRING(--with-jay[=DIR|PATH],Regenerate the parsers with jay)],
   [
-    if test -d "${withval}"; then
+    AC_MSG_CHECKING([whether to regenerate parsers with jay])
+    JAY_FOUND=no
+    JAY_DIR_PATH=
+    if test "x${withval}" = xno; then
+      AC_MSG_RESULT(no)
+    elif test "x${withval}" = xyes; then
+      AC_MSG_RESULT(yes)
+      JAY_DIR_PATH="/usr/share/jay"
+    elif test -d "${withval}"; then
+      AC_MSG_RESULT(yes)
       JAY_DIR_PATH="${withval}"
-      AC_PATH_PROG(JAY, jay, "no", ${JAY_DIR_PATH})
-      if test "x${JAY}" = xno; then
-        AC_MSG_ERROR("jay executable not found");
-      fi
-    else
+    elif test -f "${withval}"; then
+      AC_MSG_RESULT(yes)
       JAY_DIR_PATH=`dirname "${withval}"`
       JAY="${withval}"
-      AC_SUBST(JAY)
+    else
+        AC_MSG_ERROR(jay not found at ${withval})
     fi
-    JAY_SKELETON="${JAY_DIR_PATH}/skeleton"
-    AC_CHECK_FILE(${JAY_SKELETON}, AC_SUBST(JAY_SKELETON),
-	AC_MSG_ERROR("Expected skeleton file in `dirname ${withval}`"))
-    JAY_FOUND=yes
+
+    if test "x${JAY_DIR_PATH}" != x; then
+      AC_PATH_PROG(JAY, jay, "no", ${JAY_DIR_PATH}:${PATH})
+      if test "x${JAY}" = xno; then
+        AC_MSG_ERROR(jay executable not found);
+      fi
+      JAY_SKELETON="${JAY_DIR_PATH}/skeleton"
+      AC_CHECK_FILE(${JAY_SKELETON}, AC_SUBST(JAY_SKELETON),
+          AC_MSG_ERROR(Expected skeleton file in ${JAY_DIR_PATH}))
+      JAY_FOUND=yes
+    fi
   ],
   [
+    AC_MSG_CHECKING([whether to regenerate parsers with jay])
+    AC_MSG_RESULT(no)
     JAY_FOUND=no
   ])
   AM_CONDITIONAL(REGEN_PARSERS, test "x${JAY_FOUND}" = xyes)
