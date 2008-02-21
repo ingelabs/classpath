@@ -40,11 +40,14 @@ package gnu.javax.management;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -93,7 +96,7 @@ public final class Translator
     Type[] gtypes = method.getGenericParameterTypes();
     Object[] otypes = new Object[jtypes.length];
     for (int a = 0; a < jtypes.length; ++a)
-      otypes[a] = fromJava(jtypes[a], (Class<?>) gtypes[a]);
+      otypes[a] = fromJava(jtypes[a], gtypes[a]);
     return otypes;
   }
 
@@ -132,11 +135,10 @@ public final class Translator
     if (jtype instanceof List || jtype instanceof Set ||
 	jtype instanceof SortedSet)
       {
-	String elemType = tName.substring(tName.indexOf("<") + 1,
-					  tName.indexOf(">")).trim();
 	if (jtype instanceof SortedSet)
 	  {
-	    Class<?> elemClass = Class.forName(elemType);
+	    ParameterizedType ptype = (ParameterizedType) type;
+	    Class<?> elemClass = (Class<?>) ptype.getActualTypeArguments()[0];
 	    if (!Comparable.class.isAssignableFrom(elemClass))
 	      throw new IllegalArgumentException(jtype + " has a " +
 						 "non-comparable element " +
@@ -145,11 +147,13 @@ public final class Translator
 	      throw new IllegalArgumentException(jtype + " does not " +
 						 "use natural ordering.");
 	  }
-	List elems = (List) jtype;
-	Object[] celems = new Object[elems.size()];
-	for (int a = 0; a < elems.size(); ++a)
+	Collection<Object> elems = (Collection<Object>) jtype;
+	int numElems = elems.size();
+	Object[] celems = new Object[numElems];
+	Iterator<Object> i = elems.iterator();
+	for (int a = 0; a < numElems; ++a)
 	  {
-	    Object elem = elems.get(a);
+	    Object elem = i.next();
 	    celems[a] = fromJava(elem, elem.getClass());
 	  }
 	return makeArraySpecific(celems);
