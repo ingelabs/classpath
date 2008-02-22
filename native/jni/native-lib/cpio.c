@@ -564,16 +564,10 @@ int cpio_closeDir (void *handle)
 
 int cpio_readDir (void *handle, char *filename)
 {
-#ifdef HAVE_READDIR_R
-  struct dirent dent;
-#endif /* HAVE_READDIR_R */
   struct dirent *dBuf;
 
-#ifdef HAVE_READDIR_R
-  readdir_r ((DIR *) handle, &dent, &dBuf);
-#else
+  errno = 0;
   dBuf = readdir((DIR *)handle);
-#endif /* HAVE_READDIR_R */
 
   if (dBuf == NULL)
     {
@@ -584,7 +578,7 @@ int cpio_readDir (void *handle, char *filename)
       return errno;
     }
 
-  strncpy (filename, dBuf->d_name, FILENAME_MAX);
+  strncpy (filename, dBuf->d_name, FILENAME_MAX - 1);
   return 0;
 }
 

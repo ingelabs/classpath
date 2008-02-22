@@ -1,3 +1,15 @@
+2008-02-22  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	PR classpath/33751:
+	* configure.ac:
+	Don't check for readdir_r.
+	* native/jni/native-lib/cpio.c:
+	(cpio_readDir): Remove use of readdir_r, zero errno
+	before starting and always leave a \0 at the end after
+	strncpy.
+	* vm/reference/java/io/VMFile.java:
+	(list(String)): Make synchronized.
+	
 2008-02-21  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* gnu/java/util/prefs/EventDispatcher.java:

@@ -401,7 +401,7 @@ if test "x${COMPILE_JNI}" = xyes; then
 		  lstat readlink \
  		  inet_aton inet_addr inet_pton \
 		  getifaddrs kqueue kevent epoll_create \
-                  readdir_r getloadavg])
+                  getloadavg])
 
   LIBMAGIC=
   AC_CHECK_LIB(magic, magic_open, LIBMAGIC=-lmagic)
