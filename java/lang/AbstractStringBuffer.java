@@ -1,4 +1,4 @@
-/* StringBuffer.java -- Growable strings
+/* AbstractStringBuffer.java -- Growable strings
    Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2008
    Free Software Foundation, Inc.
 
@@ -40,66 +40,38 @@ package java.lang;
 
 import java.io.Serializable;
 
-/**
- * <code>StringBuffer</code> represents a changeable <code>String</code>.
- * It provides the operations required to modify the
- * <code>StringBuffer</code>, including insert, replace, delete, append,
- * and reverse. It is thread-safe; meaning that all modifications to a buffer
- * are in synchronized methods.
- *
- * <p><code>StringBuffer</code>s are variable-length in nature, so even if
- * you initialize them to a certain size, they can still grow larger than
- * that. <em>Capacity</em> indicates the number of characters the
- * <code>StringBuffer</code> can have in it before it has to grow (growing
- * the char array is an expensive operation involving <code>new</code>).
- *
- * <p>Incidentally, compilers often implement the String operator "+"
- * by using a <code>StringBuffer</code> operation:<br>
- * <code>a + b</code><br>
- * is the same as<br>
- * <code>new StringBuffer().append(a).append(b).toString()</code>.
- *
- * <p>Classpath's StringBuffer is capable of sharing memory with Strings for
- * efficiency.  This will help when a StringBuffer is converted to a String
- * and the StringBuffer is not changed after that (quite common when performing
- * string concatenation).
- *
- * @author Paul Fisher
- * @author John Keiser
- * @author Tom Tromey
- * @author Eric Blake (ebb9@email.byu.edu)
- * @see String
- * @since 1.0
- * @status updated to 1.4
- */
-public final class StringBuffer
-  extends AbstractStringBuffer
+abstract class AbstractStringBuffer
   implements Serializable, CharSequence, Appendable
 {
-  // Implementation note: if you change this class, you usually will
-  // want to change StringBuilder as well.
 
   /**
-   * Compatible with JDK 1.0+.
-   */
-  private static final long serialVersionUID = 3388685877147921107L;
-
-  /**
-   * True if the buffer is shared with another object (StringBuffer or
-   * String); this means the buffer must be copied before writing to it again.
-   * Note that this has permissions set this way so that String can get the
-   * value.
+   * Index of next available character (and thus the size of the current
+   * string contents).  Note that this has permissions set this way so that
+   * String can get the value.
    *
-   * @serial whether the buffer is shared
+   * @serial the number of characters in the buffer
    */
-  boolean shared;
+  int count;
 
   /**
-   * Create a new StringBuffer with default capacity 16.
+   * The buffer.  Note that this has permissions set this way so that String
+   * can get the value.
+   *
+   * @serial the buffer
    */
-  public StringBuffer()
+  char[] value;
+
+  /**
+   * The default capacity of a buffer.
+   */
+  private static final int DEFAULT_CAPACITY = 16;
+
+  /**
+   * Create a new AbstractStringBuffer with default capacity 16.
+   */
+  AbstractStringBuffer()
   {
-    super();
+    this(DEFAULT_CAPACITY);
   }
 
   /**
@@ -109,9 +81,9 @@ public final class StringBuffer
    * @param capacity the initial capacity
    * @throws NegativeArraySizeException if capacity is negative
    */
-  public StringBuffer(int capacity)
+  AbstractStringBuffer(int capacity)
   {
-    super(capacity);
+    value = new char[capacity];
   }
 
   /**
@@ -122,10 +94,11 @@ public final class StringBuffer
    * @param str the <code>String</code> to convert
    * @throws NullPointerException if str is null
    */
-  public StringBuffer(String str)
+  AbstractStringBuffer(String str)
   {
-    // Unfortunately, because the size is 16 larger, we cannot share.
-    super(str);
+    count = str.count;
+    value = new char[count + DEFAULT_CAPACITY];
+    str.getChars(0, count, value, 0);
   }
 
   /**
@@ -138,36 +111,13 @@ public final class StringBuffer
    * @throws NullPointerException if str is null
    * @since 1.5
    */
-  public StringBuffer(CharSequence seq)
+  AbstractStringBuffer(CharSequence seq)
   {
-    super(seq);
-  }
-
-  /**
-   * Get the length of the <code>String</code> this <code>StringBuffer</code>
-   * would create. Not to be confused with the <em>capacity</em> of the
-   * <code>StringBuffer</code>.
-   *
-   * @return the length of this <code>StringBuffer</code>
-   * @see #capacity()
-   * @see #setLength(int)
-   */
-  public synchronized int length()
-  {
-    return count;
-  }
-
-  /**
-   * Get the total number of characters this <code>StringBuffer</code> can
-   * support before it must be grown.  Not to be confused with <em>length</em>.
-   *
-   * @return the capacity of this <code>StringBuffer</code>
-   * @see #length()
-   * @see #ensureCapacity(int)
-   */
-  public synchronized int capacity()
-  {
-    return value.length;
+    int len = seq.length();
+    count = len <= 0 ? 0 : len;
+    value = new char[count + DEFAULT_CAPACITY];
+    for (int i = 0; i < len; ++i)
+      value[i] = seq.charAt(i);
   }
 
   /**
@@ -180,7 +130,7 @@ public final class StringBuffer
    * @param minimumCapacity the new capacity
    * @see #capacity()
    */
-  public synchronized void ensureCapacity(int minimumCapacity)
+  public void ensureCapacity(int minimumCapacity)
   {
     ensureCapacity_unsynchronized(minimumCapacity);
   }
@@ -197,9 +147,31 @@ public final class StringBuffer
    *         (while unspecified, this is a StringIndexOutOfBoundsException)
    * @see #length()
    */
-  public synchronized void setLength(int newLength)
+  public void setLength(int newLength)
   {
-    super.setLength(newLength);
+    if (newLength < 0)
+      throw new StringIndexOutOfBoundsException(newLength);
+
+    int valueLength = value.length;
+
+    /* Always call ensureCapacity_unsynchronized in order to preserve
+       copy-on-write semantics.  */
+    ensureCapacity_unsynchronized(newLength);
+
+    if (newLength < valueLength)
+      {
+        /* If the StringBuffer's value just grew, then we know that
+           value is newly allocated and the region between count and
+           newLength is filled with '\0'.  */
+	count = newLength;
+      }
+    else
+      {
+	/* The StringBuffer's value doesn't need to grow.  However,
+	   we should clear out any cruft that may exist.  */
+	while (count < newLength)
+          value[count++] = '\0';
+      }
   }
 
   /**
@@ -210,9 +182,11 @@ public final class StringBuffer
    * @throws IndexOutOfBoundsException if index is negative or &gt;= length()
    *         (while unspecified, this is a StringIndexOutOfBoundsException)
    */
-  public synchronized char charAt(int index)
+  public char charAt(int index)
   {
-    return super.charAt(index);
+    if (index < 0 || index >= count)
+      throw new StringIndexOutOfBoundsException(index);
+    return value[index];
   }
 
   /**
@@ -225,9 +199,9 @@ public final class StringBuffer
    * @throws IndexOutOfBoundsException if index is negative or &gt;= length()
    * @since 1.5
    */
-  public synchronized int codePointAt(int index)
+  public int codePointAt(int index)
   {
-    return super.codePointAt(index);
+    return Character.codePointAt(value, index, count);
   }
 
   /**
@@ -239,9 +213,13 @@ public final class StringBuffer
    * @throws IndexOutOfBoundsException if index is negative or &gt;= length()
    * @since 1.5
    */
-  public synchronized int codePointBefore(int index)
+  public int codePointBefore(int index)
   {
-    return super.codePointBefore(index);
+    // Character.codePointBefore() doesn't perform this check.  We
+    // could use the CharSequence overload, but this is just as easy.
+    if (index >= count)
+      throw new IndexOutOfBoundsException();
+    return Character.codePointBefore(value, index, 1);
   }
 
   /**
@@ -259,10 +237,12 @@ public final class StringBuffer
    *         ArrayIndexOutOfBoundsException)
    * @see System#arraycopy(Object, int, Object, int, int)
    */
-  public synchronized void getChars(int srcOffset, int srcEnd,
-                                    char[] dst, int dstOffset)
+  public void getChars(int srcOffset, int srcEnd,
+		       char[] dst, int dstOffset)
   {
-    super.getChars(srcOffset, srcEnd, dst, dstOffset);
+    if (srcOffset < 0 || srcEnd > count || srcEnd < srcOffset)
+      throw new StringIndexOutOfBoundsException();
+    VMSystem.arraycopy(value, srcOffset, dst, dstOffset, srcEnd - srcOffset);
   }
 
   /**
@@ -273,9 +253,13 @@ public final class StringBuffer
    * @throws IndexOutOfBoundsException if index is negative or &gt;= length()
    *         (while unspecified, this is a StringIndexOutOfBoundsException)
    */
-  public synchronized void setCharAt(int index, char ch)
+  public void setCharAt(int index, char ch)
   {
-    super.setCharAt(index, ch);
+    if (index < 0 || index >= count)
+      throw new StringIndexOutOfBoundsException(index);
+    // Call ensureCapacity to enforce copy-on-write.
+    ensureCapacity_unsynchronized(count);
+    value[index] = ch;
   }
 
   /**
@@ -288,10 +272,9 @@ public final class StringBuffer
    * @see String#valueOf(Object)
    * @see #append(String)
    */
-  public synchronized StringBuffer append(Object obj)
+  public AbstractStringBuffer append(Object obj)
   {
-    super.append(obj);
-    return this;
+    return append(String.valueOf(obj));
   }
 
   /**
@@ -301,25 +284,37 @@ public final class StringBuffer
    * @param str the <code>String</code> to append
    * @return this <code>StringBuffer</code>
    */
-  public synchronized StringBuffer append(String str)
+  public AbstractStringBuffer append(String str)
   {
-    super.append(str);
+    if (str == null)
+      str = "null";
+    int len = str.count;
+    ensureCapacity_unsynchronized(count + len);
+    str.getChars(0, len, value, count);
+    count += len;
     return this;
   }
 
   /**
-   * Append the <code>StringBuffer</code> value of the argument to this
-   * <code>StringBuffer</code>. This behaves the same as
+   * Append the <code>StringBuilder</code> value of the argument to this
+   * <code>StringBuilder</code>. This behaves the same as
    * <code>append((Object) stringBuffer)</code>, except it is more efficient.
    *
-   * @param stringBuffer the <code>StringBuffer</code> to convert and append
-   * @return this <code>StringBuffer</code>
+   * @param stringBuffer the <code>StringBuilder</code> to convert and append
+   * @return this <code>StringBuilder</code>
    * @see #append(Object)
-   * @since 1.4
    */
-  public synchronized StringBuffer append(StringBuffer stringBuffer)
+  public AbstractStringBuffer append(StringBuffer stringBuffer)
   {
-    super.append(stringBuffer);
+    if (stringBuffer == null)
+      return append("null");
+    synchronized (stringBuffer)
+      {
+	int len = stringBuffer.count;
+	ensureCapacity(count + len);
+	VMSystem.arraycopy(stringBuffer.value, 0, value, count, len);
+	count += len;
+      }
     return this;
   }
 
@@ -333,10 +328,9 @@ public final class StringBuffer
    * @throws NullPointerException if <code>str</code> is <code>null</code>
    * @see #append(char[], int, int)
    */
-  public synchronized StringBuffer append(char[] data)
+  public AbstractStringBuffer append(char[] data)
   {
-    super.append(data, 0, data.length);
-    return this;
+    return append(data, 0, data.length);
   }
 
   /**
@@ -353,9 +347,13 @@ public final class StringBuffer
    * @throws IndexOutOfBoundsException if offset or count is out of range
    *         (while unspecified, this is a StringIndexOutOfBoundsException)
    */
-  public synchronized StringBuffer append(char[] data, int offset, int count)
+  public AbstractStringBuffer append(char[] data, int offset, int count)
   {
-    super.append(data, offset, count);
+    if (offset < 0 || count < 0 || offset > data.length - count)
+      throw new StringIndexOutOfBoundsException();
+    ensureCapacity_unsynchronized(this.count + count);
+    VMSystem.arraycopy(data, offset, value, this.count, count);
+    this.count += count;
     return this;
   }
 
@@ -368,10 +366,9 @@ public final class StringBuffer
    * @return this <code>StringBuffer</code>
    * @see String#valueOf(boolean)
    */
-  public synchronized StringBuffer append(boolean bool)
+  public AbstractStringBuffer append(boolean bool)
   {
-    super.append(bool);
-    return this;
+    return append(bool ? "true" : "false");
   }
 
   /**
@@ -380,9 +377,10 @@ public final class StringBuffer
    * @param ch the <code>char</code> to append
    * @return this <code>StringBuffer</code>
    */
-  public synchronized StringBuffer append(char ch)
+  public AbstractStringBuffer append(char ch)
   {
-    super.append(ch);
+    ensureCapacity_unsynchronized(count + 1);
+    value[count++] = ch;
     return this;
   }
 
@@ -394,10 +392,9 @@ public final class StringBuffer
    * @return this <code>StringBuffer</code>
    * @since 1.5
    */
-  public synchronized StringBuffer append(CharSequence seq)
+  public AbstractStringBuffer append(CharSequence seq)
   {
-    super.append(seq, 0, seq.length());
-    return this;
+    return append(seq, 0, seq.length());
   }
 
   /**
@@ -411,9 +408,16 @@ public final class StringBuffer
    * @return this <code>StringBuffer</code>
    * @since 1.5
    */
-  public synchronized StringBuffer append(CharSequence seq, int start, int end)
+  public AbstractStringBuffer append(CharSequence seq, int start, int end)
   {
-    super.append(seq, start, end);
+    if (seq == null)
+      return append("null");
+    if (end - start > 0)
+      {
+	ensureCapacity_unsynchronized(count + end - start);
+	for (; start < end; ++start)
+	  value[count++] = seq.charAt(start);
+      }
     return this;
   }
 
@@ -427,10 +431,9 @@ public final class StringBuffer
    * @see String#valueOf(int)
    */
   // This is native in libgcj, for efficiency.
-  public synchronized StringBuffer append(int inum)
+  public AbstractStringBuffer append(int inum)
   {
-    super.append(inum);
-    return this;
+    return append(String.valueOf(inum));
   }
 
   /**
@@ -442,10 +445,9 @@ public final class StringBuffer
    * @return this <code>StringBuffer</code>
    * @see String#valueOf(long)
    */
-  public synchronized StringBuffer append(long lnum)
+  public AbstractStringBuffer append(long lnum)
   {
-    super.append(lnum);
-    return this;
+    return append(Long.toString(lnum, 10));
   }
 
   /**
@@ -457,10 +459,9 @@ public final class StringBuffer
    * @return this <code>StringBuffer</code>
    * @see String#valueOf(float)
    */
-  public synchronized StringBuffer append(float fnum)
+  public AbstractStringBuffer append(float fnum)
   {
-    super.append(fnum);
-    return this;
+    return append(Float.toString(fnum));
   }
 
   /**
@@ -472,10 +473,9 @@ public final class StringBuffer
    * @return this <code>StringBuffer</code>
    * @see String#valueOf(double)
    */
-  public synchronized StringBuffer append(double dnum)
+  public AbstractStringBuffer append(double dnum)
   {
-    super.append(dnum);
-    return this;
+    return append(Double.toString(dnum));
   }
 
   /**
@@ -488,9 +488,12 @@ public final class StringBuffer
    * @see Character#toChars(int, char[], int)
    * @since 1.5
    */
-  public synchronized StringBuffer appendCodePoint(int code)
+  public AbstractStringBuffer appendCodePoint(int code)
   {
-    super.appendCodePoint(code);
+    int len = Character.charCount(code);
+    ensureCapacity_unsynchronized(count + len);
+    Character.toChars(code, value, count);
+    count += len;
     return this;
   }
 
@@ -505,10 +508,16 @@ public final class StringBuffer
    * @throws StringIndexOutOfBoundsException if start or end are out of bounds
    * @since 1.2
    */
-  public synchronized StringBuffer delete(int start, int end)
+  public AbstractStringBuffer delete(int start, int end)
   {
-    // This will unshare if required.
-    super.delete(start, end);
+    if (start < 0 || start > count || start > end)
+      throw new StringIndexOutOfBoundsException(start);
+    if (end > count)
+      end = count;
+    ensureCapacity_unsynchronized(count);
+    if (count - end != 0)
+      VMSystem.arraycopy(value, end, value, start, count - end);
+    count -= end - start;
     return this;
   }
 
@@ -520,10 +529,9 @@ public final class StringBuffer
    * @throws StringIndexOutOfBoundsException if index is out of bounds
    * @since 1.2
    */
-  public synchronized StringBuffer deleteCharAt(int index)
+  public AbstractStringBuffer deleteCharAt(int index)
   {
-    super.deleteCharAt(index);
-    return this;
+    return delete(index, index + 1);
   }
 
   /**
@@ -540,70 +548,22 @@ public final class StringBuffer
    * @throws NullPointerException if str is null
    * @since 1.2
    */
-  public synchronized StringBuffer replace(int start, int end, String str)
+  public AbstractStringBuffer replace(int start, int end, String str)
   {
-    super.replace(start, end, str);
+    if (start < 0 || start > count || start > end)
+      throw new StringIndexOutOfBoundsException(start);
+
+    int len = str.count;
+    // Calculate the difference in 'count' after the replace.
+    int delta = len - (end > count ? count : end) + start;
+    ensureCapacity_unsynchronized(count + delta);
+
+    if (delta != 0 && end < count)
+      VMSystem.arraycopy(value, end, value, end + delta, count - end);
+
+    str.getChars(0, len, value, start);
+    count += delta;
     return this;
-  }
-
-  /**
-   * Creates a substring of this StringBuffer, starting at a specified index
-   * and ending at the end of this StringBuffer.
-   *
-   * @param beginIndex index to start substring (base 0)
-   * @return new String which is a substring of this StringBuffer
-   * @throws StringIndexOutOfBoundsException if beginIndex is out of bounds
-   * @see #substring(int, int)
-   * @since 1.2
-   */
-  public String substring(int beginIndex)
-  {
-    return substring(beginIndex, count);
-  }
-
-  /**
-   * Creates a substring of this StringBuffer, starting at a specified index
-   * and ending at one character before a specified index. This is implemented
-   * the same as <code>substring(beginIndex, endIndex)</code>, to satisfy
-   * the CharSequence interface.
-   *
-   * @param beginIndex index to start at (inclusive, base 0)
-   * @param endIndex index to end at (exclusive)
-   * @return new String which is a substring of this StringBuffer
-   * @throws IndexOutOfBoundsException if beginIndex or endIndex is out of
-   *         bounds
-   * @see #substring(int, int)
-   * @since 1.4
-   */
-  public CharSequence subSequence(int beginIndex, int endIndex)
-  {
-    return substring(beginIndex, endIndex);
-  }
-
-  /**
-   * Creates a substring of this StringBuffer, starting at a specified index
-   * and ending at one character before a specified index.
-   *
-   * @param beginIndex index to start at (inclusive, base 0)
-   * @param endIndex index to end at (exclusive)
-   * @return new String which is a substring of this StringBuffer
-   * @throws StringIndexOutOfBoundsException if beginIndex or endIndex is out
-   *         of bounds
-   * @since 1.2
-   */
-  public synchronized String substring(int beginIndex, int endIndex)
-  {
-    int len = endIndex - beginIndex;
-    if (beginIndex < 0 || endIndex > count || endIndex < beginIndex)
-      throw new StringIndexOutOfBoundsException();
-    if (len == 0)
-      return "";
-    // Don't copy unless substring is smaller than 1/4 of the buffer.
-    boolean share_buffer = ((len << 2) >= value.length);
-    if (share_buffer)
-      this.shared = true;
-    // Package constructor avoids an array copy.
-    return new String(value, beginIndex, len, share_buffer);
   }
 
   /**
@@ -619,10 +579,15 @@ public final class StringBuffer
    * @throws StringIndexOutOfBoundsException if any index is out of bounds
    * @since 1.2
    */
-  public synchronized StringBuffer insert(int offset,
-                                          char[] str, int str_offset, int len)
+  public AbstractStringBuffer insert(int offset, char[] str, int str_offset, int len)
   {
-    super.insert(offset, str, str_offset, len);
+    if (offset < 0 || offset > count || len < 0
+        || str_offset < 0 || str_offset > str.length - len)
+      throw new StringIndexOutOfBoundsException();
+    ensureCapacity_unsynchronized(count + len);
+    VMSystem.arraycopy(value, offset, value, offset + len, count - offset);
+    VMSystem.arraycopy(str, str_offset, value, offset, len);
+    count += len;
     return this;
   }
 
@@ -637,10 +602,9 @@ public final class StringBuffer
    * @exception StringIndexOutOfBoundsException if offset is out of bounds
    * @see String#valueOf(Object)
    */
-  public synchronized StringBuffer insert(int offset, Object obj)
+  public AbstractStringBuffer insert(int offset, Object obj)
   {
-    super.insert(offset, obj);
-    return this;
+    return insert(offset, obj == null ? "null" : obj.toString());
   }
 
   /**
@@ -653,9 +617,17 @@ public final class StringBuffer
    * @return this <code>StringBuffer</code>
    * @throws StringIndexOutOfBoundsException if offset is out of bounds
    */
-  public synchronized StringBuffer insert(int offset, String str)
+  public AbstractStringBuffer insert(int offset, String str)
   {
-    super.insert(offset, str);
+    if (offset < 0 || offset > count)
+      throw new StringIndexOutOfBoundsException(offset);
+    if (str == null)
+      str = "null";
+    int len = str.count;
+    ensureCapacity_unsynchronized(count + len);
+    VMSystem.arraycopy(value, offset, value, offset + len, count - offset);
+    str.getChars(0, len, value, offset);
+    count += len;
     return this;
   }
 
@@ -670,10 +642,11 @@ public final class StringBuffer
    * @throws IndexOutOfBoundsException if offset is out of bounds
    * @since 1.5
    */
-  public synchronized StringBuffer insert(int offset, CharSequence sequence)
+  public AbstractStringBuffer insert(int offset, CharSequence sequence)
   {
-    super.insert(offset, sequence);
-    return this;
+    if (sequence == null)
+      sequence = "null";
+    return insert(offset, sequence, 0, sequence.length());
   }
 
   /**
@@ -690,10 +663,18 @@ public final class StringBuffer
    * or end are out of bounds
    * @since 1.5
    */
-  public synchronized StringBuffer insert(int offset, CharSequence sequence,
-					  int start, int end)
+  public AbstractStringBuffer insert(int offset, CharSequence sequence, int start, int end)
   {
-    super.insert(offset, sequence, start, end);
+    if (sequence == null)
+      sequence = "null";
+    if (start < 0 || end < 0 || start > end || end > sequence.length())
+      throw new IndexOutOfBoundsException();
+    int len = end - start;
+    ensureCapacity_unsynchronized(count + len);
+    VMSystem.arraycopy(value, offset, value, offset + len, count - offset);
+    for (int i = start; i < end; ++i)
+      value[offset++] = sequence.charAt(i);
+    count += len;
     return this;
   }
 
@@ -708,10 +689,9 @@ public final class StringBuffer
    * @throws StringIndexOutOfBoundsException if offset is out of bounds
    * @see #insert(int, char[], int, int)
    */
-  public synchronized StringBuffer insert(int offset, char[] data)
+  public AbstractStringBuffer insert(int offset, char[] data)
   {
-    super.insert(offset, data, 0, data.length);
-    return this;
+    return insert(offset, data, 0, data.length);
   }
 
   /**
@@ -725,10 +705,9 @@ public final class StringBuffer
    * @throws StringIndexOutOfBoundsException if offset is out of bounds
    * @see String#valueOf(boolean)
    */
-  public synchronized StringBuffer insert(int offset, boolean bool)
+  public AbstractStringBuffer insert(int offset, boolean bool)
   {
-    super.insert(offset, bool);
-    return this;
+    return insert(offset, bool ? "true" : "false");
   }
 
   /**
@@ -739,9 +718,14 @@ public final class StringBuffer
    * @return this <code>StringBuffer</code>
    * @throws StringIndexOutOfBoundsException if offset is out of bounds
    */
-  public synchronized StringBuffer insert(int offset, char ch)
+  public AbstractStringBuffer insert(int offset, char ch)
   {
-    super.insert(offset, ch);
+    if (offset < 0 || offset > count)
+      throw new StringIndexOutOfBoundsException(offset);
+    ensureCapacity_unsynchronized(count + 1);
+    VMSystem.arraycopy(value, offset, value, offset + 1, count - offset);
+    value[offset] = ch;
+    count++;
     return this;
   }
 
@@ -756,10 +740,9 @@ public final class StringBuffer
    * @throws StringIndexOutOfBoundsException if offset is out of bounds
    * @see String#valueOf(int)
    */
-  public synchronized StringBuffer insert(int offset, int inum)
+  public AbstractStringBuffer insert(int offset, int inum)
   {
-    super.insert(offset, inum);
-    return this;
+    return insert(offset, String.valueOf(inum));
   }
 
   /**
@@ -773,10 +756,9 @@ public final class StringBuffer
    * @throws StringIndexOutOfBoundsException if offset is out of bounds
    * @see String#valueOf(long)
    */
-  public synchronized StringBuffer insert(int offset, long lnum)
+  public AbstractStringBuffer insert(int offset, long lnum)
   {
-    super.insert(offset, lnum);
-    return this;
+    return insert(offset, Long.toString(lnum, 10));
   }
 
   /**
@@ -790,10 +772,9 @@ public final class StringBuffer
    * @throws StringIndexOutOfBoundsException if offset is out of bounds
    * @see String#valueOf(float)
    */
-  public synchronized StringBuffer insert(int offset, float fnum)
+  public AbstractStringBuffer insert(int offset, float fnum)
   {
-    super.insert(offset, fnum);
-    return this;
+    return insert(offset, Float.toString(fnum));
   }
 
   /**
@@ -807,24 +788,22 @@ public final class StringBuffer
    * @throws StringIndexOutOfBoundsException if offset is out of bounds
    * @see String#valueOf(double)
    */
-  public synchronized StringBuffer insert(int offset, double dnum)
+  public AbstractStringBuffer insert(int offset, double dnum)
   {
-    super.insert(offset, dnum);
-    return this;
+    return insert(offset, Double.toString(dnum));
   }
 
   /**
-   * Finds the first instance of a substring in this StringBuffer.
+   * Finds the first instance of a substring in this StringBuilder.
    *
    * @param str String to find
    * @return location (base 0) of the String, or -1 if not found
    * @throws NullPointerException if str is null
    * @see #indexOf(String, int)
-   * @since 1.4
    */
-  public synchronized int indexOf(String str)
+  public int indexOf(String str)
   {
-    return super.indexOf(str, 0);
+    return indexOf(str, 0);
   }
 
   /**
@@ -839,9 +818,15 @@ public final class StringBuffer
    * @throws NullPointerException if str is null
    * @since 1.4
    */
-  public synchronized int indexOf(String str, int fromIndex)
+  public int indexOf(String str, int fromIndex)
   {
-    return super.indexOf(str, fromIndex);
+    if (fromIndex < 0)
+      fromIndex = 0;
+    int limit = count - str.count;
+    for ( ; fromIndex <= limit; fromIndex++)
+      if (regionMatches(fromIndex, str))
+        return fromIndex;
+    return -1;
   }
 
   /**
@@ -853,9 +838,9 @@ public final class StringBuffer
    * @see #lastIndexOf(String, int)
    * @since 1.4
    */
-  public synchronized int lastIndexOf(String str)
+  public int lastIndexOf(String str)
   {
-    return super.lastIndexOf(str, count - str.count);
+    return lastIndexOf(str, count - str.count);
   }
 
   /**
@@ -870,9 +855,13 @@ public final class StringBuffer
    * @throws NullPointerException if str is null
    * @since 1.4
    */
-  public synchronized int lastIndexOf(String str, int fromIndex)
+  public int lastIndexOf(String str, int fromIndex)
   {
-    return super.lastIndexOf(str, fromIndex);
+    fromIndex = Math.min(fromIndex, count - str.count);
+    for ( ; fromIndex >= 0; fromIndex--)
+      if (regionMatches(fromIndex, str))
+        return fromIndex;
+    return -1;
   }
 
   /**
@@ -881,24 +870,17 @@ public final class StringBuffer
    *
    * @return this <code>StringBuffer</code>
    */
-  public synchronized StringBuffer reverse()
+  public AbstractStringBuffer reverse()
   {
-    super.reverse();
+    // Call ensureCapacity to enforce copy-on-write.
+    ensureCapacity_unsynchronized(count);
+    for (int i = count >> 1, j = count - i; --i >= 0; ++j)
+      {
+        char c = value[i];
+        value[i] = value[j];
+        value[j] = c;
+      }
     return this;
-  }
-
-  /**
-   * Convert this <code>StringBuffer</code> to a <code>String</code>. The
-   * String is composed of the characters currently in this StringBuffer. Note
-   * that the result is a copy, and that future modifications to this buffer
-   * do not affect the String.
-   *
-   * @return the characters in this StringBuffer
-   */
-  public String toString()
-  {
-    // The string will set this.shared = true.
-    return new String(this);
   }
 
   /**
@@ -908,9 +890,21 @@ public final class StringBuffer
    * be relied upon.
    * @since 1.5
    */
-  public synchronized void trimToSize()
+  public void trimToSize()
   {
-    super.trimToSize();
+    int wouldSave = value.length - count;
+    // Some random heuristics: if we save less than 20 characters, who
+    // cares.
+    if (wouldSave < 20)
+      return;
+    // If we save more than 200 characters, shrink.
+    // If we save more than 1/4 of the buffer, shrink.
+    if (wouldSave > 200 || wouldSave * 4 > value.length)
+      {
+	char[] newValue = new char[count];
+	VMSystem.arraycopy(value, 0, newValue, 0, count);
+	value = newValue;
+      }
   }
 
   /**
@@ -925,9 +919,33 @@ public final class StringBuffer
    * @return the number of code points
    * @since 1.5
    */
-  public synchronized int codePointCount(int start, int end)
+  public int codePointCount(int start, int end)
   {
-    return super.codePointCount(start, end);
+    if (start < 0 || end >= count || start > end)
+      throw new StringIndexOutOfBoundsException();
+
+    int count = 0;
+    while (start < end)
+      {
+	char base = value[start];
+	if (base < Character.MIN_HIGH_SURROGATE
+	    || base > Character.MAX_HIGH_SURROGATE
+	    || start == end
+	    || start == count
+	    || value[start + 1] < Character.MIN_LOW_SURROGATE
+	    || value[start + 1] > Character.MAX_LOW_SURROGATE)
+	  {
+	    // Nothing.
+	  }
+	else
+	  {
+	    // Surrogate pair.
+	    ++start;
+	  }
+	++start;
+	++count;
+      }
+    return count;
   }
 
   /**
@@ -941,36 +959,73 @@ public final class StringBuffer
    * @return the resulting index
    * @since 1.5
    */
-  public synchronized int offsetByCodePoints(int start, int codePoints)
+  public int offsetByCodePoints(int start, int codePoints)
   {
-    return super.offsetByCodePoints(start, codePoints);
+    while (codePoints > 0)
+      {
+	char base = value[start];
+	if (base < Character.MIN_HIGH_SURROGATE
+	    || base > Character.MAX_HIGH_SURROGATE
+	    || start == count
+	    || value[start + 1] < Character.MIN_LOW_SURROGATE
+	    || value[start + 1] > Character.MAX_LOW_SURROGATE)
+	  {
+	    // Nothing.
+	  }
+	else
+	  {
+	    // Surrogate pair.
+	    ++start;
+	  }
+	++start;
+	--codePoints;
+      }
+    return start;
   }
 
   /**
-   * An unsynchronized version of ensureCapacity, used internally to avoid
-   * the cost of a second lock on the same object. This also has the side
-   * effect of duplicating the array, if it was shared (to form copy-on-write
-   * semantics).
+   * Increase the capacity of this <code>StringBuilder</code>. This will
+   * ensure that an expensive growing operation will not occur until
+   * <code>minimumCapacity</code> is reached. The buffer is grown to the
+   * larger of <code>minimumCapacity</code> and
+   * <code>capacity() * 2 + 2</code>, if it is not already large enough.
    *
-   * @param minimumCapacity the minimum capacity
-   * @see #ensureCapacity(int)
+   * @param minimumCapacity the new capacity
+   * @see #capacity()
    */
   protected void ensureCapacity_unsynchronized(int minimumCapacity)
   {
-    if (shared || minimumCapacity > value.length)
+    if (minimumCapacity > value.length)
       {
-        // We don't want to make a larger vector when `shared' is
-        // set.  If we do, then setLength becomes very inefficient
-        // when repeatedly reusing a StringBuffer in a loop.
-        int max = (minimumCapacity > value.length
-                   ? value.length * 2 + 2
-                   : value.length);
+        int max = value.length * 2 + 2;
         minimumCapacity = (minimumCapacity < max ? max : minimumCapacity);
         char[] nb = new char[minimumCapacity];
         VMSystem.arraycopy(value, 0, nb, 0, count);
         value = nb;
-        shared = false;
       }
+  }
+
+  /**
+   * Predicate which determines if a substring of this matches another String
+   * starting at a specified offset for each String and continuing for a
+   * specified length. This is more efficient than creating a String to call
+   * indexOf on.
+   *
+   * @param toffset index to start comparison at for this String
+   * @param other non-null String to compare to region of this
+   * @return true if regions match, false otherwise
+   * @see #indexOf(String, int)
+   * @see #lastIndexOf(String, int)
+   * @see String#regionMatches(boolean, int, String, int, int)
+   */
+  private boolean regionMatches(int toffset, String other)
+  {
+    int len = other.count;
+    int index = other.offset;
+    while (--len >= 0)
+      if (value[toffset++] != other.value[index++])
+        return false;
+    return true;
   }
 
 }
