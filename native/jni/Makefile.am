@@ -1,7 +1,7 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
 if CREATE_CORE_JNI_LIBRARIES
-  JNIDIRS = native-lib java-io java-lang java-net java-nio java-util
+  JNIDIRS = native-lib java-io java-lang java-math java-net java-nio java-util
 endif
 
 if CREATE_ALSA_LIBRARIES

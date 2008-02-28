@@ -1,3 +1,28 @@
+2008-02-28  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+        PR classpath/28664
+	* include/Makefile.am:
+	Add generation of header file java_math_VMBigInteger.h
+	* java/math/BigInteger.java: Separate NativeMPI into
+	VMBigInteger.
+	* native/jni/Makefile.am: Add java-math.
+	* native/jni/java-math/java_math_VMBigInteger.c:
+	Renamed from java_math_BigInteger.c.
+	* vm/reference/java/math/VMBigInteger.java:
+	Former NativeMPI class from java.math.BigInteger.
+
+2006-11-28  Raif S. Naffah  <classpath@naffah-raif.name>
+            Jeroen Frijters <jeroen@sumatra.nl>
+
+        PR classpath/28664
+        * configure.ac: Add support for configuring GNU MP.
+        * native/jni/Makefile.am: Include java-math directory if required.
+        * native/jni/java-math/.cvsignore: New file.
+        * native/jni/java-math/Makefile.am: Likewise.
+        * native/jni/java-math/java_math_BigInteger.c: Likewise.
+        * java/math/BigInteger.java: Added support for native methods.
+        * gnu/classpath/Configuration.java.in (WANT_NATIVE_BIG_INTEGER): New field.
+
 2008-02-27  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* configure.ac:
