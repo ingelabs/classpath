@@ -1,5 +1,19 @@
 2008-02-28  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	* gnu/java/util/EmptyEnumeration.java:
+	Add generic type parameter.
+	* java/lang/ClassLoader.java:
+	Use EmptyEnumeration with type parameter.
+	* java/util/zip/ZipFile.java:
+	Likewise.
+	* javax/swing/text/html/StyleSheet.java,
+	* javax/swing/text/html/ViewAttributeSet.java:
+	Add generics.
+	* javax/swing/tree/DefaultMutableTreeNode.java:
+	Use EmptyEnumeration with type parameter.
+
+2008-02-28  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
         PR classpath/28664
 	* include/Makefile.am:
 	Add generation of header file java_math_VMBigInteger.h
