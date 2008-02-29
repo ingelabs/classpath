@@ -1,4 +1,4 @@
-/* AbstractStringBuffer.java -- Growable strings
+/* ClasspathStringBuffer.java -- Growable strings without locking or copying
    Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2008
    Free Software Foundation, Inc.
 
@@ -36,17 +36,21 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package java.lang;
+package gnu.classpath;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 import java.io.Serializable;
 
 /**
- * This class is based on gnu.classpath.ClasspathStringBuffer but
- * is package-private to java.lang so it can be used as the basis
- * for StringBuffer and StringBuilder.
+ * This class is based on java.lang.AbstractStringBuffer but
+ * without the copying of the string by toString.
  * If you modify this, please consider also modifying that code.
+ * This code is not thread-safe; limit its use to internal use within
+ * methods.
  */
-abstract class AbstractStringBuffer
+public final class CPStringBuffer
   implements Serializable, CharSequence, Appendable
 {
 
@@ -57,7 +61,7 @@ abstract class AbstractStringBuffer
    *
    * @serial the number of characters in the buffer
    */
-  int count;
+  private int count;
 
   /**
    * The buffer.  Note that this has permissions set this way so that String
@@ -65,17 +69,36 @@ abstract class AbstractStringBuffer
    *
    * @serial the buffer
    */
-  char[] value;
+  private char[] value;
+
+  /**
+   * The package-private constructor for String objects without copying.
+   */
+  private static final Constructor<String> cons;
 
   /**
    * The default capacity of a buffer.
    */
   private static final int DEFAULT_CAPACITY = 16;
 
+  static
+  {
+    try
+      {
+	cons = String.class.getDeclaredConstructor(char[].class, Integer.TYPE,
+						   Integer.TYPE, Boolean.TYPE);
+      }
+    catch (NoSuchMethodException e)
+      {
+	throw (Error) 
+	  new InternalError("Could not get no-copy String constructor").initCause(e);
+      }
+  }
+
   /**
-   * Create a new AbstractStringBuffer with default capacity 16.
+   * Create a new CPStringBuffer with default capacity 16.
    */
-  AbstractStringBuffer()
+  CPStringBuffer()
   {
     this(DEFAULT_CAPACITY);
   }
@@ -87,7 +110,7 @@ abstract class AbstractStringBuffer
    * @param capacity the initial capacity
    * @throws NegativeArraySizeException if capacity is negative
    */
-  AbstractStringBuffer(int capacity)
+  CPStringBuffer(int capacity)
   {
     value = new char[capacity];
   }
@@ -100,7 +123,7 @@ abstract class AbstractStringBuffer
    * @param str the <code>String</code> to convert
    * @throws NullPointerException if str is null
    */
-  AbstractStringBuffer(String str)
+  CPStringBuffer(String str)
   {
     count = str.count;
     value = new char[count + DEFAULT_CAPACITY];
@@ -117,7 +140,7 @@ abstract class AbstractStringBuffer
    * @throws NullPointerException if str is null
    * @since 1.5
    */
-  AbstractStringBuffer(CharSequence seq)
+  CPStringBuffer(CharSequence seq)
   {
     int len = seq.length();
     count = len <= 0 ? 0 : len;
@@ -278,7 +301,7 @@ abstract class AbstractStringBuffer
    * @see String#valueOf(Object)
    * @see #append(String)
    */
-  public AbstractStringBuffer append(Object obj)
+  public CPStringBuffer append(Object obj)
   {
     return append(String.valueOf(obj));
   }
@@ -290,7 +313,7 @@ abstract class AbstractStringBuffer
    * @param str the <code>String</code> to append
    * @return this <code>StringBuffer</code>
    */
-  public AbstractStringBuffer append(String str)
+  public CPStringBuffer append(String str)
   {
     if (str == null)
       str = "null";
@@ -310,7 +333,7 @@ abstract class AbstractStringBuffer
    * @return this <code>StringBuilder</code>
    * @see #append(Object)
    */
-  public AbstractStringBuffer append(StringBuffer stringBuffer)
+  public CPStringBuffer append(StringBuffer stringBuffer)
   {
     if (stringBuffer == null)
       return append("null");
@@ -334,7 +357,7 @@ abstract class AbstractStringBuffer
    * @throws NullPointerException if <code>str</code> is <code>null</code>
    * @see #append(char[], int, int)
    */
-  public AbstractStringBuffer append(char[] data)
+  public CPStringBuffer append(char[] data)
   {
     return append(data, 0, data.length);
   }
@@ -353,7 +376,7 @@ abstract class AbstractStringBuffer
    * @throws IndexOutOfBoundsException if offset or count is out of range
    *         (while unspecified, this is a StringIndexOutOfBoundsException)
    */
-  public AbstractStringBuffer append(char[] data, int offset, int count)
+  public CPStringBuffer append(char[] data, int offset, int count)
   {
     if (offset < 0 || count < 0 || offset > data.length - count)
       throw new StringIndexOutOfBoundsException();
@@ -372,7 +395,7 @@ abstract class AbstractStringBuffer
    * @return this <code>StringBuffer</code>
    * @see String#valueOf(boolean)
    */
-  public AbstractStringBuffer append(boolean bool)
+  public CPStringBuffer append(boolean bool)
   {
     return append(bool ? "true" : "false");
   }
@@ -383,7 +406,7 @@ abstract class AbstractStringBuffer
    * @param ch the <code>char</code> to append
    * @return this <code>StringBuffer</code>
    */
-  public AbstractStringBuffer append(char ch)
+  public CPStringBuffer append(char ch)
   {
     ensureCapacity_unsynchronized(count + 1);
     value[count++] = ch;
@@ -398,7 +421,7 @@ abstract class AbstractStringBuffer
    * @return this <code>StringBuffer</code>
    * @since 1.5
    */
-  public AbstractStringBuffer append(CharSequence seq)
+  public CPStringBuffer append(CharSequence seq)
   {
     return append(seq, 0, seq.length());
   }
@@ -414,7 +437,7 @@ abstract class AbstractStringBuffer
    * @return this <code>StringBuffer</code>
    * @since 1.5
    */
-  public AbstractStringBuffer append(CharSequence seq, int start, int end)
+  public CPStringBuffer append(CharSequence seq, int start, int end)
   {
     if (seq == null)
       return append("null");
@@ -437,7 +460,7 @@ abstract class AbstractStringBuffer
    * @see String#valueOf(int)
    */
   // This is native in libgcj, for efficiency.
-  public AbstractStringBuffer append(int inum)
+  public CPStringBuffer append(int inum)
   {
     return append(String.valueOf(inum));
   }
@@ -451,7 +474,7 @@ abstract class AbstractStringBuffer
    * @return this <code>StringBuffer</code>
    * @see String#valueOf(long)
    */
-  public AbstractStringBuffer append(long lnum)
+  public CPStringBuffer append(long lnum)
   {
     return append(Long.toString(lnum, 10));
   }
@@ -465,7 +488,7 @@ abstract class AbstractStringBuffer
    * @return this <code>StringBuffer</code>
    * @see String#valueOf(float)
    */
-  public AbstractStringBuffer append(float fnum)
+  public CPStringBuffer append(float fnum)
   {
     return append(Float.toString(fnum));
   }
@@ -479,7 +502,7 @@ abstract class AbstractStringBuffer
    * @return this <code>StringBuffer</code>
    * @see String#valueOf(double)
    */
-  public AbstractStringBuffer append(double dnum)
+  public CPStringBuffer append(double dnum)
   {
     return append(Double.toString(dnum));
   }
@@ -494,7 +517,7 @@ abstract class AbstractStringBuffer
    * @see Character#toChars(int, char[], int)
    * @since 1.5
    */
-  public AbstractStringBuffer appendCodePoint(int code)
+  public CPStringBuffer appendCodePoint(int code)
   {
     int len = Character.charCount(code);
     ensureCapacity_unsynchronized(count + len);
@@ -514,7 +537,7 @@ abstract class AbstractStringBuffer
    * @throws StringIndexOutOfBoundsException if start or end are out of bounds
    * @since 1.2
    */
-  public AbstractStringBuffer delete(int start, int end)
+  public CPStringBuffer delete(int start, int end)
   {
     if (start < 0 || start > count || start > end)
       throw new StringIndexOutOfBoundsException(start);
@@ -535,7 +558,7 @@ abstract class AbstractStringBuffer
    * @throws StringIndexOutOfBoundsException if index is out of bounds
    * @since 1.2
    */
-  public AbstractStringBuffer deleteCharAt(int index)
+  public CPStringBuffer deleteCharAt(int index)
   {
     return delete(index, index + 1);
   }
@@ -554,7 +577,7 @@ abstract class AbstractStringBuffer
    * @throws NullPointerException if str is null
    * @since 1.2
    */
-  public AbstractStringBuffer replace(int start, int end, String str)
+  public CPStringBuffer replace(int start, int end, String str)
   {
     if (start < 0 || start > count || start > end)
       throw new StringIndexOutOfBoundsException(start);
@@ -585,7 +608,7 @@ abstract class AbstractStringBuffer
    * @throws StringIndexOutOfBoundsException if any index is out of bounds
    * @since 1.2
    */
-  public AbstractStringBuffer insert(int offset, char[] str, int str_offset, int len)
+  public CPStringBuffer insert(int offset, char[] str, int str_offset, int len)
   {
     if (offset < 0 || offset > count || len < 0
         || str_offset < 0 || str_offset > str.length - len)
@@ -608,7 +631,7 @@ abstract class AbstractStringBuffer
    * @exception StringIndexOutOfBoundsException if offset is out of bounds
    * @see String#valueOf(Object)
    */
-  public AbstractStringBuffer insert(int offset, Object obj)
+  public CPStringBuffer insert(int offset, Object obj)
   {
     return insert(offset, obj == null ? "null" : obj.toString());
   }
@@ -623,7 +646,7 @@ abstract class AbstractStringBuffer
    * @return this <code>StringBuffer</code>
    * @throws StringIndexOutOfBoundsException if offset is out of bounds
    */
-  public AbstractStringBuffer insert(int offset, String str)
+  public CPStringBuffer insert(int offset, String str)
   {
     if (offset < 0 || offset > count)
       throw new StringIndexOutOfBoundsException(offset);
@@ -648,7 +671,7 @@ abstract class AbstractStringBuffer
    * @throws IndexOutOfBoundsException if offset is out of bounds
    * @since 1.5
    */
-  public AbstractStringBuffer insert(int offset, CharSequence sequence)
+  public CPStringBuffer insert(int offset, CharSequence sequence)
   {
     if (sequence == null)
       sequence = "null";
@@ -669,7 +692,7 @@ abstract class AbstractStringBuffer
    * or end are out of bounds
    * @since 1.5
    */
-  public AbstractStringBuffer insert(int offset, CharSequence sequence, int start, int end)
+  public CPStringBuffer insert(int offset, CharSequence sequence, int start, int end)
   {
     if (sequence == null)
       sequence = "null";
@@ -695,7 +718,7 @@ abstract class AbstractStringBuffer
    * @throws StringIndexOutOfBoundsException if offset is out of bounds
    * @see #insert(int, char[], int, int)
    */
-  public AbstractStringBuffer insert(int offset, char[] data)
+  public CPStringBuffer insert(int offset, char[] data)
   {
     return insert(offset, data, 0, data.length);
   }
@@ -711,7 +734,7 @@ abstract class AbstractStringBuffer
    * @throws StringIndexOutOfBoundsException if offset is out of bounds
    * @see String#valueOf(boolean)
    */
-  public AbstractStringBuffer insert(int offset, boolean bool)
+  public CPStringBuffer insert(int offset, boolean bool)
   {
     return insert(offset, bool ? "true" : "false");
   }
@@ -724,7 +747,7 @@ abstract class AbstractStringBuffer
    * @return this <code>StringBuffer</code>
    * @throws StringIndexOutOfBoundsException if offset is out of bounds
    */
-  public AbstractStringBuffer insert(int offset, char ch)
+  public CPStringBuffer insert(int offset, char ch)
   {
     if (offset < 0 || offset > count)
       throw new StringIndexOutOfBoundsException(offset);
@@ -746,7 +769,7 @@ abstract class AbstractStringBuffer
    * @throws StringIndexOutOfBoundsException if offset is out of bounds
    * @see String#valueOf(int)
    */
-  public AbstractStringBuffer insert(int offset, int inum)
+  public CPStringBuffer insert(int offset, int inum)
   {
     return insert(offset, String.valueOf(inum));
   }
@@ -762,7 +785,7 @@ abstract class AbstractStringBuffer
    * @throws StringIndexOutOfBoundsException if offset is out of bounds
    * @see String#valueOf(long)
    */
-  public AbstractStringBuffer insert(int offset, long lnum)
+  public CPStringBuffer insert(int offset, long lnum)
   {
     return insert(offset, Long.toString(lnum, 10));
   }
@@ -778,7 +801,7 @@ abstract class AbstractStringBuffer
    * @throws StringIndexOutOfBoundsException if offset is out of bounds
    * @see String#valueOf(float)
    */
-  public AbstractStringBuffer insert(int offset, float fnum)
+  public CPStringBuffer insert(int offset, float fnum)
   {
     return insert(offset, Float.toString(fnum));
   }
@@ -794,7 +817,7 @@ abstract class AbstractStringBuffer
    * @throws StringIndexOutOfBoundsException if offset is out of bounds
    * @see String#valueOf(double)
    */
-  public AbstractStringBuffer insert(int offset, double dnum)
+  public CPStringBuffer insert(int offset, double dnum)
   {
     return insert(offset, Double.toString(dnum));
   }
@@ -876,7 +899,7 @@ abstract class AbstractStringBuffer
    *
    * @return this <code>StringBuffer</code>
    */
-  public AbstractStringBuffer reverse()
+  public CPStringBuffer reverse()
   {
     // Call ensureCapacity to enforce copy-on-write.
     ensureCapacity_unsynchronized(count);
@@ -1032,6 +1055,107 @@ abstract class AbstractStringBuffer
       if (value[toffset++] != other.value[index++])
         return false;
     return true;
+  }
+
+  /**
+   * Get the length of the <code>String</code> this <code>StringBuilder</code>
+   * would create. Not to be confused with the <em>capacity</em> of the
+   * <code>StringBuilder</code>.
+   *
+   * @return the length of this <code>StringBuilder</code>
+   * @see #capacity()
+   * @see #setLength(int)
+   */
+  public int length()
+  {
+    return count;
+  }
+
+  /**
+   * Creates a substring of this StringBuilder, starting at a specified index
+   * and ending at one character before a specified index. This is implemented
+   * the same as <code>substring(beginIndex, endIndex)</code>, to satisfy
+   * the CharSequence interface.
+   *
+   * @param beginIndex index to start at (inclusive, base 0)
+   * @param endIndex index to end at (exclusive)
+   * @return new String which is a substring of this StringBuilder
+   * @throws IndexOutOfBoundsException if beginIndex or endIndex is out of
+   *         bounds
+   * @see #substring(int, int)
+   */
+  public CharSequence subSequence(int beginIndex, int endIndex)
+  {
+    return substring(beginIndex, endIndex);
+  }
+
+  /**
+   * Creates a substring of this StringBuilder, starting at a specified index
+   * and ending at one character before a specified index.
+   *
+   * @param beginIndex index to start at (inclusive, base 0)
+   * @param endIndex index to end at (exclusive)
+   * @return new String which is a substring of this StringBuilder
+   * @throws StringIndexOutOfBoundsException if beginIndex or endIndex is out
+   *         of bounds
+   */
+  public String substring(int beginIndex, int endIndex)
+  {
+    int len = endIndex - beginIndex;
+    if (beginIndex < 0 || endIndex > count || endIndex < beginIndex)
+      throw new StringIndexOutOfBoundsException();
+    if (len == 0)
+      return "";
+    try
+      {
+	return cons.newInstance(value, beginIndex, len, true);
+      }
+    catch (InstantiationException e)
+      {
+	throw (Error) 
+	  new InternalError("Could not instantiate no-copy String constructor").initCause(e);
+      }
+    catch (IllegalAccessException e)
+      {
+	throw (Error) 
+	  new InternalError("Could not access no-copy String constructor").initCause(e);
+      }
+    catch (InvocationTargetException e)
+      {
+	throw (Error) 
+	  new InternalError("Error calling no-copy String constructor").initCause(e);
+      }
+  }
+
+  /**
+   * Convert this <code>StringBuilder</code> to a <code>String</code>. The
+   * String is composed of the characters currently in this StringBuilder. Note
+   * that the result is not a copy, so future modifications to this buffer
+   * do affect the String.
+   *
+   * @return the characters in this StringBuilder
+   */
+  public String toString()
+  {
+    try
+      {
+	return cons.newInstance(value, 0, count, true);
+      }
+    catch (InstantiationException e)
+      {
+	throw (Error) 
+	  new InternalError("Could not instantiate no-copy String constructor").initCause(e);
+      }
+    catch (IllegalAccessException e)
+      {
+	throw (Error) 
+	  new InternalError("Could not access no-copy String constructor").initCause(e);
+      }
+    catch (InvocationTargetException e)
+      {
+	throw (Error) 
+	  new InternalError("Error calling no-copy String constructor").initCause(e);
+      }
   }
 
 }
