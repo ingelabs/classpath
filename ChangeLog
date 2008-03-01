@@ -1,5 +1,40 @@
 2008-02-30  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	* gnu/classpath/CPStringBuilder.java:
+	Removed.
+	* gnu/java/awt/font/OpenTypeFontPeer.java,
+	* gnu/java/awt/font/autofit/Edge.java,
+	* gnu/java/awt/font/autofit/LatinBlue.java,
+	* gnu/java/awt/font/autofit/Segment.java,
+	* gnu/java/awt/font/autofit/Width.java,
+	* gnu/java/awt/font/opentype/truetype/Point.java,
+	* gnu/java/awt/java2d/ActiveEdges.java,
+	* gnu/java/awt/peer/GnomeDesktopPeer.java,
+	* gnu/java/awt/peer/KDEDesktopPeer.java,
+	* gnu/java/awt/peer/x/XFontPeer.java:
+	Use CPStringBuilder.
+	* gnu/java/lang/CPStringBuilder.java:
+	Moved from gnu.classpath.
+	* gnu/java/lang/ClassHelper.java,
+	* gnu/java/lang/reflect/GenericSignatureParser.java,
+	* gnu/java/lang/reflect/TypeSignature.java,
+	* gnu/java/net/protocol/http/ChunkedInputStream.java,
+	* gnu/java/net/protocol/http/Cookie.java,
+	* gnu/java/net/protocol/http/HTTPConnection.java,
+	* gnu/java/net/protocol/http/Headers.java,
+	* gnu/java/net/protocol/http/Request.java:
+	Use CPStringBuilder.
+	* java/lang/reflect/Modifier.java:
+	Corrected import to point to correct package.
+	* java/util/Formatter.java:
+	Use CPStringBuilder.
+	* vm/reference/java/lang/reflect/Constructor.java,
+	* vm/reference/java/lang/reflect/Field.java,
+	* vm/reference/java/lang/reflect/Method.java:
+	Corrected import to point to correct package.
+
+2008-02-30  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* gnu/classpath/CPStringBuffer.java,
 	* gnu/classpath/CPStringBuilder.java:
 	Rename class to CPStringBuilder.

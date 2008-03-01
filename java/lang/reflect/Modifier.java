@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package java.lang.reflect;
 
-import gnu.classpath.CPStringBuilder;
+import gnu.java.lang.CPStringBuilder;
 
 /**
  * Modifier is a helper class with static methods to determine whether an

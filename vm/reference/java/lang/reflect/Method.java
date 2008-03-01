@@ -38,9 +38,8 @@ exception statement from your version. */
 
 package java.lang.reflect;
 
-import gnu.classpath.CPStringBuilder;
-
 import gnu.java.lang.ClassHelper;
+import gnu.java.lang.CPStringBuilder;
 
 import gnu.java.lang.reflect.MethodSignatureParser;
 
