@@ -1,5 +1,5 @@
 /* java.lang.reflect.Method - reflection of Java methods
-   Copyright (C) 1998, 2001, 2002, 2005, 2007 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2001, 2002, 2005, 2007, 2008 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -37,6 +37,8 @@ exception statement from your version. */
 
 
 package java.lang.reflect;
+
+import gnu.classpath.CPStringBuilder;
 
 import gnu.java.lang.ClassHelper;
 
@@ -259,7 +261,7 @@ extends AccessibleObject implements Member, GenericDeclaration
   public String toString()
   {
     // 128 is a reasonable buffer initial size for constructor
-    StringBuilder sb = new StringBuilder(128);
+    CPStringBuilder sb = new CPStringBuilder(128);
     Modifier.toString(getModifiers(), sb).append(' ');
     sb.append(ClassHelper.getUserName(getReturnType())).append(' ');
     sb.append(getDeclaringClass().getName()).append('.');
@@ -285,7 +287,7 @@ extends AccessibleObject implements Member, GenericDeclaration
   public String toGenericString()
   {
     // 128 is a reasonable buffer initial size for constructor
-    StringBuilder sb = new StringBuilder(128);
+    CPStringBuilder sb = new CPStringBuilder(128);
     Modifier.toString(getModifiers(), sb).append(' ');
     Constructor.addTypeParameters(sb, getTypeParameters());
     sb.append(getGenericReturnType()).append(' ');

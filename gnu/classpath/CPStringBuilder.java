@@ -50,7 +50,7 @@ import java.io.Serializable;
  * This code is not thread-safe; limit its use to internal use within
  * methods.
  */
-public final class CPStringBuffer
+public final class CPStringBuilder
   implements Serializable, CharSequence, Appendable
 {
 
@@ -61,7 +61,7 @@ public final class CPStringBuffer
    *
    * @serial the number of characters in the buffer
    */
-  private int count;
+  int count;
 
   /**
    * The buffer.  Note that this has permissions set this way so that String
@@ -69,7 +69,7 @@ public final class CPStringBuffer
    *
    * @serial the buffer
    */
-  private char[] value;
+  char[] value;
 
   /**
    * The package-private constructor for String objects without copying.
@@ -96,9 +96,9 @@ public final class CPStringBuffer
   }
 
   /**
-   * Create a new CPStringBuffer with default capacity 16.
+   * Create a new CPStringBuilder with default capacity 16.
    */
-  CPStringBuffer()
+  public CPStringBuilder()
   {
     this(DEFAULT_CAPACITY);
   }
@@ -110,7 +110,7 @@ public final class CPStringBuffer
    * @param capacity the initial capacity
    * @throws NegativeArraySizeException if capacity is negative
    */
-  CPStringBuffer(int capacity)
+  public CPStringBuilder(int capacity)
   {
     value = new char[capacity];
   }
@@ -123,9 +123,9 @@ public final class CPStringBuffer
    * @param str the <code>String</code> to convert
    * @throws NullPointerException if str is null
    */
-  CPStringBuffer(String str)
+  public CPStringBuilder(String str)
   {
-    count = str.count;
+    count = str.length();
     value = new char[count + DEFAULT_CAPACITY];
     str.getChars(0, count, value, 0);
   }
@@ -140,7 +140,7 @@ public final class CPStringBuffer
    * @throws NullPointerException if str is null
    * @since 1.5
    */
-  CPStringBuffer(CharSequence seq)
+  public CPStringBuilder(CharSequence seq)
   {
     int len = seq.length();
     count = len <= 0 ? 0 : len;
@@ -271,7 +271,7 @@ public final class CPStringBuffer
   {
     if (srcOffset < 0 || srcEnd > count || srcEnd < srcOffset)
       throw new StringIndexOutOfBoundsException();
-    VMSystem.arraycopy(value, srcOffset, dst, dstOffset, srcEnd - srcOffset);
+    System.arraycopy(value, srcOffset, dst, dstOffset, srcEnd - srcOffset);
   }
 
   /**
@@ -301,7 +301,7 @@ public final class CPStringBuffer
    * @see String#valueOf(Object)
    * @see #append(String)
    */
-  public CPStringBuffer append(Object obj)
+  public CPStringBuilder append(Object obj)
   {
     return append(String.valueOf(obj));
   }
@@ -313,11 +313,11 @@ public final class CPStringBuffer
    * @param str the <code>String</code> to append
    * @return this <code>StringBuffer</code>
    */
-  public CPStringBuffer append(String str)
+  public CPStringBuilder append(String str)
   {
     if (str == null)
       str = "null";
-    int len = str.count;
+    int len = str.length();
     ensureCapacity_unsynchronized(count + len);
     str.getChars(0, len, value, count);
     count += len;
@@ -333,15 +333,15 @@ public final class CPStringBuffer
    * @return this <code>StringBuilder</code>
    * @see #append(Object)
    */
-  public CPStringBuffer append(StringBuffer stringBuffer)
+  public CPStringBuilder append(StringBuffer stringBuffer)
   {
     if (stringBuffer == null)
       return append("null");
     synchronized (stringBuffer)
       {
-	int len = stringBuffer.count;
+	int len = stringBuffer.length();
 	ensureCapacity(count + len);
-	VMSystem.arraycopy(stringBuffer.value, 0, value, count, len);
+	stringBuffer.getChars(0, len, value, count);
 	count += len;
       }
     return this;
@@ -357,7 +357,7 @@ public final class CPStringBuffer
    * @throws NullPointerException if <code>str</code> is <code>null</code>
    * @see #append(char[], int, int)
    */
-  public CPStringBuffer append(char[] data)
+  public CPStringBuilder append(char[] data)
   {
     return append(data, 0, data.length);
   }
@@ -376,12 +376,12 @@ public final class CPStringBuffer
    * @throws IndexOutOfBoundsException if offset or count is out of range
    *         (while unspecified, this is a StringIndexOutOfBoundsException)
    */
-  public CPStringBuffer append(char[] data, int offset, int count)
+  public CPStringBuilder append(char[] data, int offset, int count)
   {
     if (offset < 0 || count < 0 || offset > data.length - count)
       throw new StringIndexOutOfBoundsException();
     ensureCapacity_unsynchronized(this.count + count);
-    VMSystem.arraycopy(data, offset, value, this.count, count);
+    System.arraycopy(data, offset, value, this.count, count);
     this.count += count;
     return this;
   }
@@ -395,7 +395,7 @@ public final class CPStringBuffer
    * @return this <code>StringBuffer</code>
    * @see String#valueOf(boolean)
    */
-  public CPStringBuffer append(boolean bool)
+  public CPStringBuilder append(boolean bool)
   {
     return append(bool ? "true" : "false");
   }
@@ -406,7 +406,7 @@ public final class CPStringBuffer
    * @param ch the <code>char</code> to append
    * @return this <code>StringBuffer</code>
    */
-  public CPStringBuffer append(char ch)
+  public CPStringBuilder append(char ch)
   {
     ensureCapacity_unsynchronized(count + 1);
     value[count++] = ch;
@@ -421,7 +421,7 @@ public final class CPStringBuffer
    * @return this <code>StringBuffer</code>
    * @since 1.5
    */
-  public CPStringBuffer append(CharSequence seq)
+  public CPStringBuilder append(CharSequence seq)
   {
     return append(seq, 0, seq.length());
   }
@@ -437,7 +437,7 @@ public final class CPStringBuffer
    * @return this <code>StringBuffer</code>
    * @since 1.5
    */
-  public CPStringBuffer append(CharSequence seq, int start, int end)
+  public CPStringBuilder append(CharSequence seq, int start, int end)
   {
     if (seq == null)
       return append("null");
@@ -460,7 +460,7 @@ public final class CPStringBuffer
    * @see String#valueOf(int)
    */
   // This is native in libgcj, for efficiency.
-  public CPStringBuffer append(int inum)
+  public CPStringBuilder append(int inum)
   {
     return append(String.valueOf(inum));
   }
@@ -474,7 +474,7 @@ public final class CPStringBuffer
    * @return this <code>StringBuffer</code>
    * @see String#valueOf(long)
    */
-  public CPStringBuffer append(long lnum)
+  public CPStringBuilder append(long lnum)
   {
     return append(Long.toString(lnum, 10));
   }
@@ -488,7 +488,7 @@ public final class CPStringBuffer
    * @return this <code>StringBuffer</code>
    * @see String#valueOf(float)
    */
-  public CPStringBuffer append(float fnum)
+  public CPStringBuilder append(float fnum)
   {
     return append(Float.toString(fnum));
   }
@@ -502,7 +502,7 @@ public final class CPStringBuffer
    * @return this <code>StringBuffer</code>
    * @see String#valueOf(double)
    */
-  public CPStringBuffer append(double dnum)
+  public CPStringBuilder append(double dnum)
   {
     return append(Double.toString(dnum));
   }
@@ -517,7 +517,7 @@ public final class CPStringBuffer
    * @see Character#toChars(int, char[], int)
    * @since 1.5
    */
-  public CPStringBuffer appendCodePoint(int code)
+  public CPStringBuilder appendCodePoint(int code)
   {
     int len = Character.charCount(code);
     ensureCapacity_unsynchronized(count + len);
@@ -537,7 +537,7 @@ public final class CPStringBuffer
    * @throws StringIndexOutOfBoundsException if start or end are out of bounds
    * @since 1.2
    */
-  public CPStringBuffer delete(int start, int end)
+  public CPStringBuilder delete(int start, int end)
   {
     if (start < 0 || start > count || start > end)
       throw new StringIndexOutOfBoundsException(start);
@@ -545,7 +545,7 @@ public final class CPStringBuffer
       end = count;
     ensureCapacity_unsynchronized(count);
     if (count - end != 0)
-      VMSystem.arraycopy(value, end, value, start, count - end);
+      System.arraycopy(value, end, value, start, count - end);
     count -= end - start;
     return this;
   }
@@ -558,7 +558,7 @@ public final class CPStringBuffer
    * @throws StringIndexOutOfBoundsException if index is out of bounds
    * @since 1.2
    */
-  public CPStringBuffer deleteCharAt(int index)
+  public CPStringBuilder deleteCharAt(int index)
   {
     return delete(index, index + 1);
   }
@@ -577,18 +577,18 @@ public final class CPStringBuffer
    * @throws NullPointerException if str is null
    * @since 1.2
    */
-  public CPStringBuffer replace(int start, int end, String str)
+  public CPStringBuilder replace(int start, int end, String str)
   {
     if (start < 0 || start > count || start > end)
       throw new StringIndexOutOfBoundsException(start);
 
-    int len = str.count;
+    int len = str.length();
     // Calculate the difference in 'count' after the replace.
     int delta = len - (end > count ? count : end) + start;
     ensureCapacity_unsynchronized(count + delta);
 
     if (delta != 0 && end < count)
-      VMSystem.arraycopy(value, end, value, end + delta, count - end);
+      System.arraycopy(value, end, value, end + delta, count - end);
 
     str.getChars(0, len, value, start);
     count += delta;
@@ -608,14 +608,14 @@ public final class CPStringBuffer
    * @throws StringIndexOutOfBoundsException if any index is out of bounds
    * @since 1.2
    */
-  public CPStringBuffer insert(int offset, char[] str, int str_offset, int len)
+  public CPStringBuilder insert(int offset, char[] str, int str_offset, int len)
   {
     if (offset < 0 || offset > count || len < 0
         || str_offset < 0 || str_offset > str.length - len)
       throw new StringIndexOutOfBoundsException();
     ensureCapacity_unsynchronized(count + len);
-    VMSystem.arraycopy(value, offset, value, offset + len, count - offset);
-    VMSystem.arraycopy(str, str_offset, value, offset, len);
+    System.arraycopy(value, offset, value, offset + len, count - offset);
+    System.arraycopy(str, str_offset, value, offset, len);
     count += len;
     return this;
   }
@@ -631,7 +631,7 @@ public final class CPStringBuffer
    * @exception StringIndexOutOfBoundsException if offset is out of bounds
    * @see String#valueOf(Object)
    */
-  public CPStringBuffer insert(int offset, Object obj)
+  public CPStringBuilder insert(int offset, Object obj)
   {
     return insert(offset, obj == null ? "null" : obj.toString());
   }
@@ -646,15 +646,15 @@ public final class CPStringBuffer
    * @return this <code>StringBuffer</code>
    * @throws StringIndexOutOfBoundsException if offset is out of bounds
    */
-  public CPStringBuffer insert(int offset, String str)
+  public CPStringBuilder insert(int offset, String str)
   {
     if (offset < 0 || offset > count)
       throw new StringIndexOutOfBoundsException(offset);
     if (str == null)
       str = "null";
-    int len = str.count;
+    int len = str.length();
     ensureCapacity_unsynchronized(count + len);
-    VMSystem.arraycopy(value, offset, value, offset + len, count - offset);
+    System.arraycopy(value, offset, value, offset + len, count - offset);
     str.getChars(0, len, value, offset);
     count += len;
     return this;
@@ -671,7 +671,7 @@ public final class CPStringBuffer
    * @throws IndexOutOfBoundsException if offset is out of bounds
    * @since 1.5
    */
-  public CPStringBuffer insert(int offset, CharSequence sequence)
+  public CPStringBuilder insert(int offset, CharSequence sequence)
   {
     if (sequence == null)
       sequence = "null";
@@ -692,7 +692,7 @@ public final class CPStringBuffer
    * or end are out of bounds
    * @since 1.5
    */
-  public CPStringBuffer insert(int offset, CharSequence sequence, int start, int end)
+  public CPStringBuilder insert(int offset, CharSequence sequence, int start, int end)
   {
     if (sequence == null)
       sequence = "null";
@@ -700,7 +700,7 @@ public final class CPStringBuffer
       throw new IndexOutOfBoundsException();
     int len = end - start;
     ensureCapacity_unsynchronized(count + len);
-    VMSystem.arraycopy(value, offset, value, offset + len, count - offset);
+    System.arraycopy(value, offset, value, offset + len, count - offset);
     for (int i = start; i < end; ++i)
       value[offset++] = sequence.charAt(i);
     count += len;
@@ -718,7 +718,7 @@ public final class CPStringBuffer
    * @throws StringIndexOutOfBoundsException if offset is out of bounds
    * @see #insert(int, char[], int, int)
    */
-  public CPStringBuffer insert(int offset, char[] data)
+  public CPStringBuilder insert(int offset, char[] data)
   {
     return insert(offset, data, 0, data.length);
   }
@@ -734,7 +734,7 @@ public final class CPStringBuffer
    * @throws StringIndexOutOfBoundsException if offset is out of bounds
    * @see String#valueOf(boolean)
    */
-  public CPStringBuffer insert(int offset, boolean bool)
+  public CPStringBuilder insert(int offset, boolean bool)
   {
     return insert(offset, bool ? "true" : "false");
   }
@@ -747,12 +747,12 @@ public final class CPStringBuffer
    * @return this <code>StringBuffer</code>
    * @throws StringIndexOutOfBoundsException if offset is out of bounds
    */
-  public CPStringBuffer insert(int offset, char ch)
+  public CPStringBuilder insert(int offset, char ch)
   {
     if (offset < 0 || offset > count)
       throw new StringIndexOutOfBoundsException(offset);
     ensureCapacity_unsynchronized(count + 1);
-    VMSystem.arraycopy(value, offset, value, offset + 1, count - offset);
+    System.arraycopy(value, offset, value, offset + 1, count - offset);
     value[offset] = ch;
     count++;
     return this;
@@ -769,7 +769,7 @@ public final class CPStringBuffer
    * @throws StringIndexOutOfBoundsException if offset is out of bounds
    * @see String#valueOf(int)
    */
-  public CPStringBuffer insert(int offset, int inum)
+  public CPStringBuilder insert(int offset, int inum)
   {
     return insert(offset, String.valueOf(inum));
   }
@@ -785,7 +785,7 @@ public final class CPStringBuffer
    * @throws StringIndexOutOfBoundsException if offset is out of bounds
    * @see String#valueOf(long)
    */
-  public CPStringBuffer insert(int offset, long lnum)
+  public CPStringBuilder insert(int offset, long lnum)
   {
     return insert(offset, Long.toString(lnum, 10));
   }
@@ -801,7 +801,7 @@ public final class CPStringBuffer
    * @throws StringIndexOutOfBoundsException if offset is out of bounds
    * @see String#valueOf(float)
    */
-  public CPStringBuffer insert(int offset, float fnum)
+  public CPStringBuilder insert(int offset, float fnum)
   {
     return insert(offset, Float.toString(fnum));
   }
@@ -817,7 +817,7 @@ public final class CPStringBuffer
    * @throws StringIndexOutOfBoundsException if offset is out of bounds
    * @see String#valueOf(double)
    */
-  public CPStringBuffer insert(int offset, double dnum)
+  public CPStringBuilder insert(int offset, double dnum)
   {
     return insert(offset, Double.toString(dnum));
   }
@@ -851,7 +851,7 @@ public final class CPStringBuffer
   {
     if (fromIndex < 0)
       fromIndex = 0;
-    int limit = count - str.count;
+    int limit = count - str.length();
     for ( ; fromIndex <= limit; fromIndex++)
       if (regionMatches(fromIndex, str))
         return fromIndex;
@@ -869,7 +869,7 @@ public final class CPStringBuffer
    */
   public int lastIndexOf(String str)
   {
-    return lastIndexOf(str, count - str.count);
+    return lastIndexOf(str, count - str.length());
   }
 
   /**
@@ -886,7 +886,7 @@ public final class CPStringBuffer
    */
   public int lastIndexOf(String str, int fromIndex)
   {
-    fromIndex = Math.min(fromIndex, count - str.count);
+    fromIndex = Math.min(fromIndex, count - str.length());
     for ( ; fromIndex >= 0; fromIndex--)
       if (regionMatches(fromIndex, str))
         return fromIndex;
@@ -899,7 +899,7 @@ public final class CPStringBuffer
    *
    * @return this <code>StringBuffer</code>
    */
-  public CPStringBuffer reverse()
+  public CPStringBuilder reverse()
   {
     // Call ensureCapacity to enforce copy-on-write.
     ensureCapacity_unsynchronized(count);
@@ -931,7 +931,7 @@ public final class CPStringBuffer
     if (wouldSave > 200 || wouldSave * 4 > value.length)
       {
 	char[] newValue = new char[count];
-	VMSystem.arraycopy(value, 0, newValue, 0, count);
+	System.arraycopy(value, 0, newValue, 0, count);
 	value = newValue;
       }
   }
@@ -1029,7 +1029,7 @@ public final class CPStringBuffer
         int max = value.length * 2 + 2;
         minimumCapacity = (minimumCapacity < max ? max : minimumCapacity);
         char[] nb = new char[minimumCapacity];
-        VMSystem.arraycopy(value, 0, nb, 0, count);
+        System.arraycopy(value, 0, nb, 0, count);
         value = nb;
       }
   }
@@ -1049,12 +1049,7 @@ public final class CPStringBuffer
    */
   private boolean regionMatches(int toffset, String other)
   {
-    int len = other.count;
-    int index = other.offset;
-    while (--len >= 0)
-      if (value[toffset++] != other.value[index++])
-        return false;
-    return true;
+    return new String().regionMatches(toffset, other, 0, other.length());
   }
 
   /**

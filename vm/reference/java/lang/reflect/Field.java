@@ -1,5 +1,5 @@
 /* java.lang.reflect.Field - reflection of Java fields
-   Copyright (C) 1998, 2001, 2005 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2001, 2005, 2008 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -37,6 +37,8 @@ exception statement from your version. */
 
 
 package java.lang.reflect;
+
+import gnu.classpath.CPStringBuilder;
 
 import gnu.java.lang.ClassHelper;
 
@@ -206,7 +208,7 @@ extends AccessibleObject implements Member
   public String toString()
   {
     // 64 is a reasonable buffer initial size for field
-    StringBuilder sb = new StringBuilder(64);
+    CPStringBuilder sb = new CPStringBuilder(64);
     Modifier.toString(getModifiers(), sb).append(' ');
     sb.append(ClassHelper.getUserName(getType())).append(' ');
     sb.append(getDeclaringClass().getName()).append('.');
@@ -216,7 +218,7 @@ extends AccessibleObject implements Member
 
   public String toGenericString()
   {
-    StringBuilder sb = new StringBuilder(64);
+    CPStringBuilder sb = new CPStringBuilder(64);
     Modifier.toString(getModifiers(), sb).append(' ');
     sb.append(getGenericType()).append(' ');
     sb.append(getDeclaringClass().getName()).append('.');
