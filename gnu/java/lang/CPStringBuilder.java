@@ -87,6 +87,7 @@ public final class CPStringBuilder
       {
 	cons = String.class.getDeclaredConstructor(char[].class, Integer.TYPE,
 						   Integer.TYPE, Boolean.TYPE);
+	cons.setAccessible(true);
       }
     catch (NoSuchMethodException e)
       {
