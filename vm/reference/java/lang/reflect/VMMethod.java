@@ -40,51 +40,61 @@ package java.lang.reflect;
 
 import java.lang.annotation.Annotation;
 
+import java.util.Arrays;
+
 final class VMMethod
 {
+  Class declaringClass;
+  String name;
+  int slot;
+
+  public Class getDeclaringClass()
+  {
+    return declaringClass;
+  }
+
+  public String getName()
+  {
+    return name;
+  }
+
   /**
    * Return the raw modifiers for this method.
-   * @param m the method concerned.
    * @return the method's modifiers
    */
-  static native int getModifiersInternal(Method m);
+  native int getModifiersInternal();
 
   /**
    * Gets the return type of this method.
-   * @param m the method concerned.
    * @return the type of this method
    */
-  static native Class getReturnType(Method m);
+  native Class getReturnType();
 
   /**
    * Get the parameter list for this method, in declaration order. If the
    * method takes no parameters, returns a 0-length array (not null).
    *
-   * @param m the method concerned.
    * @return a list of the types of the method's parameters
    */
-  static native Class[] getParameterTypes(Method m);
+  native Class[] getParameterTypes();
 
   /**
    * Get the exception types this method says it throws, in no particular
    * order. If the method has no throws clause, returns a 0-length array
    * (not null).
    *
-   * @param m the method concerned.
    * @return a list of the types in the method's throws clause
    */
-  static native Class[] getExceptionTypes(Method m);
+  native Class[] getExceptionTypes();
 
-  static native Object invokeNative(Object o, Object[] args,
-				    Class declaringClass, int slot)
+  native Object invoke(Object o, Object[] args)
     throws IllegalAccessException, InvocationTargetException;
 
   /**
    * Return the String in the Signature attribute for this method. If there
    * is no Signature attribute, return null.
-   * @param m the method concerned.
    */
-  static native String getSignature(Method m);
+  native String getSignature();
 
   /**
    * If this method is an annotation method, returns the default
@@ -92,13 +102,12 @@ final class VMMethod
    * method is not a member of an annotation type, returns null.
    * Primitive types are wrapped.
    *
-   * @param m the method concerned.
    * @throws TypeNotPresentException if the method returns a Class,
    * and the class cannot be found
    *
    * @since 1.5
    */
-  static native Object getDefaultValue(Method m);
+  native Object getDefaultValue();
 
   /**
    * <p>
@@ -115,13 +124,56 @@ final class VMMethod
    * no affect on the return value of future calls to this method.
    * </p>
    * 
-   * @param m the method concerned.
    * @return an array of arrays which represents the annotations used on the
    *         parameters of this method.  The order of the array elements
    *         matches the declaration order of the parameters.
    * @since 1.5
    */
-  static native Annotation[][] getParameterAnnotations(Method m);
+  native Annotation[][] getParameterAnnotations();
+
+  /**
+   * Compare two objects to see if they are semantically equivalent.
+   * Two Methods are semantically equivalent if they have the same declaring
+   * class, name, parameter list, and return type.
+   *
+   * @param o the object to compare to
+   * @return <code>true</code> if they are equal; <code>false</code> if not
+   */
+  public boolean equals(Object o)
+  {
+      // Implementation note:
+      // The following is a correct but possibly slow implementation.
+      //
+      // This class has a private field 'slot' that could be used by
+      // the VM implementation to "link" a particular method to a Class.
+      // In that case equals could be simply implemented as:
+      //
+      // if (o instanceof Method)
+      // {
+      //    Method m = (Method)o;
+      //    return m.declaringClass == this.declaringClass
+      //           && m.slot == this.slot;
+      // }
+      // return false;
+      //
+      // If a VM uses the Method class as their native/internal representation
+      // then just using the following would be optimal:
+      //
+      // return this == o;
+      //
+    if (!(o instanceof Method))
+      return false;
+    Method that = (Method)o;
+    if (declaringClass != that.getDeclaringClass())
+      return false;
+    if (!name.equals(that.getName()))
+      return false;
+    if (getReturnType() != that.getReturnType())
+      return false;
+    if (!Arrays.equals(getParameterTypes(), that.getParameterTypes()))
+      return false;
+    return true;
+  }
 
 }
 

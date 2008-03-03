@@ -40,46 +40,57 @@ package java.lang.reflect;
 
 import java.lang.annotation.Annotation;
 
+import java.util.Arrays;
+
 final class VMConstructor
 {
+  Class clazz;
+  int slot;
+
+  VMConstructor(Class clazz, int slot)
+  {
+    this.clazz = clazz;
+    this.slot = slot;
+  }
+
+  public Class getDeclaringClass()
+  {
+    return clazz;
+  }
+
   /**
    * Return the raw modifiers for this constructor.  In particular
    * this will include the synthetic and varargs bits.
-   * @param c the constructor concerned.
    * @return the constructor's modifiers
    */
-  static native int getModifiersInternal(Constructor c);
+  native int getModifiersInternal();
 
   /**
    * Get the parameter list for this constructor, in declaration order. If the
    * constructor takes no parameters, returns a 0-length array (not null).
    *
-   * @param c the constructor concerned.
    * @return a list of the types of the constructor's parameters
    */
-  static native Class[] getParameterTypes(Constructor c);
+  native Class[] getParameterTypes();
 
   /**
    * Get the exception types this constructor says it throws, in no particular
    * order. If the constructor has no throws clause, returns a 0-length array
    * (not null).
    *
-   * @param c the constructor concerned.
    * @return a list of the types in the constructor's throws clause
    */
-  static native Class[] getExceptionTypes(Constructor c);
+  native Class[] getExceptionTypes();
 
-  static native Object constructNative(Object[] args, Class declaringClass,
-				       int slot)
+  native Object construct(Object[] args)
     throws InstantiationException, IllegalAccessException,
     InvocationTargetException;
 
   /**
    * Return the String in the Signature attribute for this constructor. If there
    * is no Signature attribute, return null.
-   * @param c the constructor concerned.
    */
-  static native String getSignature(Constructor c);
+  native String getSignature();
   
   /**
    * <p>
@@ -96,12 +107,33 @@ final class VMConstructor
    * no affect on the return value of future calls to this method.
    * </p>
    * 
-   * @param c the constructor concerned.
    * @return an array of arrays which represents the annotations used on the
    *         parameters of this constructor.  The order of the array elements
    *         matches the declaration order of the parameters.
    * @since 1.5
    */
-  static native Annotation[][] getParameterAnnotations(Constructor c);
+  native Annotation[][] getParameterAnnotations();
+
+  /**
+   * Compare two objects to see if they are semantically equivalent.
+   * Two Constructors are semantically equivalent if they have the same
+   * declaring class and the same parameter list.  This ignores different
+   * exception clauses, but since you can't create a Method except through the
+   * VM, this is just the == relation.
+   *
+   * @param o the object to compare to
+   * @return <code>true</code> if they are equal; <code>false</code> if not.
+   */
+  public boolean equals(Object o)
+  {
+    if (!(o instanceof Constructor))
+      return false;
+    Constructor that = (Constructor)o; 
+    if (clazz != that.getDeclaringClass())
+      return false;
+    if (!Arrays.equals(getParameterTypes(), that.getParameterTypes()))
+      return false;
+    return true;
+  }
 
 }

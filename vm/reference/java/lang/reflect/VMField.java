@@ -40,20 +40,38 @@ package java.lang.reflect;
 
 final class VMField
 {
+  Class declaringClass;
+  String name;
+  int slot;
+
+  VMField(Class declaringClass, String name, int slot)
+  {
+    this.declaringClass = declaringClass;
+    this.name = name;
+    this.slot = slot;
+  }
+
+  public Class getDeclaringClass()
+  {
+    return declaringClass;
+  }
+
+  public String getName()
+  {
+    return name;
+  }
 
   /**
    * Return the raw modifiers for this field.
-   * @param f the field concerned.
    * @return the field's modifiers
    */
-  static native int getModifiersInternal(Field f);
+  native int getModifiersInternal();
 
   /**
    * Gets the type of this field.
-   * @param f the field concerned.
    * @return the type of this field
    */
-  static native Class getType(Field f);
+  native Class getType();
 
   /**
    * Get the value of this Field.  If it is primitive, it will be wrapped
@@ -76,7 +94,6 @@ final class VMField
    * declaring class, even if the instance passed in belongs to a subclass
    * which declares another field to hide this one.
    *
-   * @param f the field concerned.
    * @param o the object to get the value of this Field from
    * @return the value of the Field
    * @throws IllegalAccessException if you could not normally access this field
@@ -96,14 +113,13 @@ final class VMField
    * @see #getFloat(Object)
    * @see #getDouble(Object)
    */
-  static native Object get(Field f, Object o)
+  native Object get(Object o)
     throws IllegalAccessException;
 
   /**
    * Get the value of this boolean Field. If the field is static,
    * <code>o</code> will be ignored.
    *
-   * @param f the field concerned.
    * @param o the object to get the value of this Field from
    * @return the value of the Field
    * @throws IllegalAccessException if you could not normally access this field
@@ -117,14 +133,13 @@ final class VMField
    *         class initialization, which then failed
    * @see #get(Object)
    */
-  static native boolean getBoolean(Field f, Object o)
+  native boolean getBoolean(Object o)
     throws IllegalAccessException;
 
   /**
    * Get the value of this byte Field. If the field is static,
    * <code>o</code> will be ignored.
    *
-   * @param f the field concerned.
    * @param o the object to get the value of this Field from
    * @return the value of the Field
    * @throws IllegalAccessException if you could not normally access this field
@@ -138,14 +153,13 @@ final class VMField
    *         class initialization, which then failed
    * @see #get(Object)
    */
-  static native byte getByte(Field f, Object o)
+  native byte getByte(Object o)
     throws IllegalAccessException;
 
   /**
    * Get the value of this Field as a char. If the field is static,
    * <code>o</code> will be ignored.
    *
-   * @param f the field concerned.
    * @param o the object to get the value of this Field from
    * @throws IllegalAccessException if you could not normally access this field
    *         (i.e. it is not public)
@@ -158,14 +172,13 @@ final class VMField
    *         class initialization, which then failed
    * @see #get(Object)
    */
-  static native char getChar(Field f, Object o)
+  native char getChar(Object o)
     throws IllegalAccessException;
 
   /**
    * Get the value of this Field as a short. If the field is static,
    * <code>o</code> will be ignored.
    *
-   * @param f the field concerned.
    * @param o the object to get the value of this Field from
    * @return the value of the Field
    * @throws IllegalAccessException if you could not normally access this field
@@ -179,14 +192,13 @@ final class VMField
    *         class initialization, which then failed
    * @see #get(Object)
    */
-  static native short getShort(Field f, Object o)
+  native short getShort(Object o)
     throws IllegalAccessException;
 
   /**
    * Get the value of this Field as an int. If the field is static,
    * <code>o</code> will be ignored.
    *
-   * @param f the field concerned.
    * @param o the object to get the value of this Field from
    * @return the value of the Field
    * @throws IllegalAccessException if you could not normally access this field
@@ -200,14 +212,13 @@ final class VMField
    *         class initialization, which then failed
    * @see #get(Object)
    */
-  static native int getInt(Field f, Object o)
+  native int getInt(Object o)
     throws IllegalAccessException;
 
   /**
    * Get the value of this Field as a long. If the field is static,
    * <code>o</code> will be ignored.
    *
-   * @param f the field concerned.
    * @param o the object to get the value of this Field from
    * @return the value of the Field
    * @throws IllegalAccessException if you could not normally access this field
@@ -221,14 +232,13 @@ final class VMField
    *         class initialization, which then failed
    * @see #get(Object)
    */
-  static native long getLong(Field f, Object o)
+  native long getLong(Object o)
     throws IllegalAccessException;
 
   /**
    * Get the value of this Field as a float. If the field is static,
    * <code>o</code> will be ignored.
    *
-   * @param f the field concerned.
    * @param o the object to get the value of this Field from
    * @return the value of the Field
    * @throws IllegalAccessException if you could not normally access this field
@@ -242,14 +252,13 @@ final class VMField
    *         class initialization, which then failed
    * @see #get(Object)
    */
-  static native float getFloat(Field f, Object o)
+  native float getFloat(Object o)
     throws IllegalAccessException;
 
   /**
    * Get the value of this Field as a double. If the field is static,
    * <code>o</code> will be ignored.
    *
-   * @param f the field concerned.
    * @param o the object to get the value of this Field from
    * @return the value of the Field
    * @throws IllegalAccessException if you could not normally access this field
@@ -264,7 +273,7 @@ final class VMField
    *         class initialization, which then failed
    * @see #get(Object)
    */
-  static native double getDouble(Field f, Object o)
+  native double getDouble(Object o)
     throws IllegalAccessException;
 
   /**
@@ -291,7 +300,6 @@ final class VMField
    * the field of the declaring class, even if the instance passed in belongs
    * to a subclass which declares another field to hide this one.
    *
-   * @param f the field concerned.
    * @param o the object to set this Field on
    * @param value the value to set this Field to
    * @throws IllegalAccessException if you could not normally access this field
@@ -313,14 +321,13 @@ final class VMField
    * @see #setFloat(Object, float)
    * @see #setDouble(Object, double)
    */
-  static native void set(Field f, Object o, Object value)
+  native void set(Object o, Object value)
     throws IllegalAccessException;
 
   /**
    * Set this boolean Field. If the field is static, <code>o</code> will be
    * ignored.
    *
-   * @param f the field concerned.
    * @param o the object to set this Field on
    * @param value the value to set this Field to
    * @throws IllegalAccessException if you could not normally access this field
@@ -334,14 +341,13 @@ final class VMField
    *         class initialization, which then failed
    * @see #set(Object, Object)
    */
-  static native void setBoolean(Field f, Object o, boolean value)
+  native void setBoolean(Object o, boolean value)
     throws IllegalAccessException;
 
   /**
    * Set this byte Field. If the field is static, <code>o</code> will be
    * ignored.
    *
-   * @param f the field concerned.
    * @param o the object to set this Field on
    * @param value the value to set this Field to
    * @throws IllegalAccessException if you could not normally access this field
@@ -355,14 +361,13 @@ final class VMField
    *         class initialization, which then failed
    * @see #set(Object, Object)
    */
-  static native void setByte(Field f, Object o, byte value)
+  native void setByte(Object o, byte value)
     throws IllegalAccessException;
 
   /**
    * Set this char Field. If the field is static, <code>o</code> will be
    * ignored.
    *
-   * @param f the field concerned.
    * @param o the object to set this Field on
    * @param value the value to set this Field to
    * @throws IllegalAccessException if you could not normally access this field
@@ -376,14 +381,13 @@ final class VMField
    *         class initialization, which then failed
    * @see #set(Object, Object)
    */
-  static native void setChar(Field f, Object o, char value)
+  native void setChar(Object o, char value)
     throws IllegalAccessException;
 
   /**
    * Set this short Field. If the field is static, <code>o</code> will be
    * ignored.
    *
-   * @param f the field concerned.
    * @param o the object to set this Field on
    * @param value the value to set this Field to
    * @throws IllegalAccessException if you could not normally access this field
@@ -397,14 +401,13 @@ final class VMField
    *         class initialization, which then failed
    * @see #set(Object, Object)
    */
-  static native void setShort(Field f, Object o, short value)
+  native void setShort(Object o, short value)
     throws IllegalAccessException;
 
   /**
    * Set this int Field. If the field is static, <code>o</code> will be
    * ignored.
    *
-   * @param f the field concerned.
    * @param o the object to set this Field on
    * @param value the value to set this Field to
    * @throws IllegalAccessException if you could not normally access this field
@@ -418,14 +421,13 @@ final class VMField
    *         class initialization, which then failed
    * @see #set(Object, Object)
    */
-  static native void setInt(Field f, Object o, int value)
+  native void setInt(Object o, int value)
     throws IllegalAccessException;
 
   /**
    * Set this long Field. If the field is static, <code>o</code> will be
    * ignored.
    *
-   * @param f the field concerned.
    * @param o the object to set this Field on
    * @param value the value to set this Field to
    * @throws IllegalAccessException if you could not normally access this field
@@ -439,14 +441,13 @@ final class VMField
    *         class initialization, which then failed
    * @see #set(Object, Object)
    */
-  static native void setLong(Field f, Object o, long value)
+  native void setLong(Object o, long value)
     throws IllegalAccessException;
 
   /**
    * Set this float Field. If the field is static, <code>o</code> will be
    * ignored.
    *
-   * @param f the field concerned.
    * @param o the object to set this Field on
    * @param value the value to set this Field to
    * @throws IllegalAccessException if you could not normally access this field
@@ -460,14 +461,13 @@ final class VMField
    *         class initialization, which then failed
    * @see #set(Object, Object)
    */
-  static native void setFloat(Field f, Object o, float value)
+  native void setFloat(Object o, float value)
     throws IllegalAccessException;
 
   /**
    * Set this double Field. If the field is static, <code>o</code> will be
    * ignored.
    *
-   * @param f the field concerned.
    * @param o the object to set this Field on
    * @param value the value to set this Field to
    * @throws IllegalAccessException if you could not normally access this field
@@ -481,15 +481,37 @@ final class VMField
    *         class initialization, which then failed
    * @see #set(Object, Object)
    */
-  static native void setDouble(Field f, Object o, double value)
+  native void setDouble(Object o, double value)
     throws IllegalAccessException;
 
   /**
    * Return the String in the Signature attribute for this field. If there
    * is no Signature attribute, return null.
    *
-   * @param f the field concerned.
    */
-  static native String getSignature(Field f);
+  native String getSignature();
+
+  /**
+   * Compare two objects to see if they are semantically equivalent.
+   * Two Fields are semantically equivalent if they have the same declaring
+   * class, name, and type. Since you can't create a Field except through
+   * the VM, this is just the == relation.
+   *
+   * @param o the object to compare to
+   * @return <code>true</code> if they are equal; <code>false</code> if not
+   */
+  public boolean equals(Object o)
+  {
+    if (!(o instanceof Field))
+      return false;
+    Field that = (Field)o; 
+    if (declaringClass != that.getDeclaringClass())
+      return false;
+    if (!name.equals(that.getName()))
+      return false;
+    if (getType() != that.getType())
+      return false;
+    return true;
+  }
 
 }

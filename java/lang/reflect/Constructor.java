@@ -44,7 +44,6 @@ import gnu.java.lang.CPStringBuilder;
 import gnu.java.lang.reflect.MethodSignatureParser;
 
 import java.lang.annotation.Annotation;
-import java.util.Arrays;
 
 /**
  * The Constructor class represents a constructor of a class. It also allows
@@ -82,22 +81,20 @@ import java.util.Arrays;
 public final class Constructor<T>
   extends AccessibleObject
   implements GenericDeclaration, Member
-{
-  Class<T> clazz;
-  int slot;
-  
-  static final int CONSTRUCTOR_MODIFIERS
+{  
+  private static final int CONSTRUCTOR_MODIFIERS
     = Modifier.PRIVATE | Modifier.PROTECTED | Modifier.PUBLIC;
 
   private MethodSignatureParser p;
 
+  private VMConstructor cons;
+
   /**
    * This class is uninstantiable outside this package.
    */
-  Constructor(Class<T> declaringClass,int slot)
+  Constructor(VMConstructor cons)
   {
-    this.clazz = declaringClass;
-    this.slot = slot;
+    this.cons = cons;
   }
 
   private Constructor()
@@ -108,9 +105,10 @@ public final class Constructor<T>
    * Gets the class that declared this constructor.
    * @return the class that declared this member
    */
+  @SuppressWarnings("unchecked")
   public Class<T> getDeclaringClass()
   {
-    return clazz;
+    return (Class<T>) cons.getDeclaringClass();
   }
 
   /**
@@ -120,7 +118,7 @@ public final class Constructor<T>
    */
   public String getName()
   {
-    return getDeclaringClass().getName();
+    return cons.getDeclaringClass().getName();
   }
 
   /**
@@ -133,7 +131,7 @@ public final class Constructor<T>
    */
   public int getModifiers()
   {
-    return VMConstructor.getModifiersInternal(this) & CONSTRUCTOR_MODIFIERS;
+    return cons.getModifiersInternal() & CONSTRUCTOR_MODIFIERS;
   }
 
   /**
@@ -144,7 +142,7 @@ public final class Constructor<T>
    */
   public boolean isSynthetic()
   {
-    return (VMConstructor.getModifiersInternal(this) & Modifier.SYNTHETIC) != 0;
+    return (cons.getModifiersInternal() & Modifier.SYNTHETIC) != 0;
   }
 
   /**
@@ -154,7 +152,7 @@ public final class Constructor<T>
    */
   public boolean isVarArgs()
   {
-    return (VMConstructor.getModifiersInternal(this) & Modifier.VARARGS) != 0;
+    return (cons.getModifiersInternal() & Modifier.VARARGS) != 0;
   }
 
   /**
@@ -166,7 +164,7 @@ public final class Constructor<T>
   @SuppressWarnings("unchecked")
   public Class<?>[] getParameterTypes()
   {
-    return (Class<?>[]) VMConstructor.getParameterTypes(this);
+    return (Class<?>[]) cons.getParameterTypes();
   }
 
   /**
@@ -179,7 +177,7 @@ public final class Constructor<T>
   @SuppressWarnings("unchecked")
   public Class<?>[] getExceptionTypes()
   {
-    return (Class<?>[]) VMConstructor.getExceptionTypes(this);
+    return (Class<?>[]) cons.getExceptionTypes();
   }
 
   /**
@@ -194,14 +192,7 @@ public final class Constructor<T>
    */
   public boolean equals(Object o)
   {
-    if (!(o instanceof Constructor))
-      return false;
-    Constructor that = (Constructor)o; 
-    if (this.getDeclaringClass() != that.getDeclaringClass())
-      return false;
-    if (!Arrays.equals(this.getParameterTypes(), that.getParameterTypes()))
-      return false;
-    return true;
+    return cons.equals(o);
   }
 
   /**
@@ -212,7 +203,7 @@ public final class Constructor<T>
    */
   public int hashCode()
   {
-    return getDeclaringClass().getName().hashCode();
+    return getName().hashCode();
   }
 
   /**
@@ -323,7 +314,7 @@ public final class Constructor<T>
     throws InstantiationException, IllegalAccessException,
            InvocationTargetException
   {
-    return (T) VMConstructor.constructNative(args, clazz, slot);
+    return (T) cons.construct(args);
   }
 
   /**
@@ -342,7 +333,7 @@ public final class Constructor<T>
   {
     if (p == null)
       {
-	String sig = VMConstructor.getSignature(this);
+	String sig = cons.getSignature();
 	if (sig == null)
 	  return new TypeVariable[0];
 	p = new MethodSignatureParser(this, sig);
@@ -366,7 +357,7 @@ public final class Constructor<T>
   {
     if (p == null)
       {
-	String sig = VMConstructor.getSignature(this);
+	String sig = cons.getSignature();
 	if (sig == null)
 	  return getExceptionTypes();
 	p = new MethodSignatureParser(this, sig);
@@ -390,7 +381,7 @@ public final class Constructor<T>
   {
     if (p == null)
       {
-	String sig = VMConstructor.getSignature(this);
+	String sig = cons.getSignature();
 	if (sig == null)
 	  return getParameterTypes();
 	p = new MethodSignatureParser(this, sig);
@@ -420,7 +411,7 @@ public final class Constructor<T>
    */
   public Annotation[][] getParameterAnnotations()
   {
-    return VMConstructor.getParameterAnnotations(this);
+    return cons.getParameterAnnotations();
   }
 
 }

@@ -79,10 +79,6 @@ import gnu.java.lang.reflect.FieldSignatureParser;
 public final class Field
 extends AccessibleObject implements Member
 {
-  Class declaringClass;
-  String name;
-  int slot;
-
   static final int FIELD_MODIFIERS
     = Modifier.FINAL | Modifier.PRIVATE | Modifier.PROTECTED
       | Modifier.PUBLIC | Modifier.STATIC | Modifier.TRANSIENT
@@ -90,14 +86,14 @@ extends AccessibleObject implements Member
 
   private FieldSignatureParser p;
 
+  private VMField f;
+
   /**
    * This class is uninstantiable outside the package.
    */
-  Field(Class declaringClass, String name, int slot)
+  Field(VMField f)
   {
-    this.declaringClass = declaringClass;
-    this.name = name;
-    this.slot = slot;
+    this.f = f;
   }
 
   /**
@@ -105,9 +101,10 @@ extends AccessibleObject implements Member
    * is a non-inherited member.
    * @return the class that declared this member
    */
+  @SuppressWarnings("unchecked")
   public Class<?> getDeclaringClass()
   {
-    return declaringClass;
+    return (Class<?>) f.getDeclaringClass();
   }
 
   /**
@@ -116,7 +113,7 @@ extends AccessibleObject implements Member
    */
   public String getName()
   {
-    return name;
+    return f.getName();
   }
 
   /**
@@ -130,7 +127,7 @@ extends AccessibleObject implements Member
    */
   public int getModifiers()
   {
-    return VMField.getModifiersInternal(this) & FIELD_MODIFIERS;
+    return f.getModifiersInternal() & FIELD_MODIFIERS;
   }
 
   /**
@@ -139,7 +136,7 @@ extends AccessibleObject implements Member
    */
   public boolean isSynthetic()
   {
-    return (VMField.getModifiersInternal(this) & Modifier.SYNTHETIC) != 0;
+    return (f.getModifiersInternal() & Modifier.SYNTHETIC) != 0;
   }
 
   /**
@@ -149,7 +146,7 @@ extends AccessibleObject implements Member
    */
   public boolean isEnumConstant()
   {
-    return (VMField.getModifiersInternal(this) & Modifier.ENUM) != 0;
+    return (f.getModifiersInternal() & Modifier.ENUM) != 0;
   }
 
   /**
@@ -158,7 +155,7 @@ extends AccessibleObject implements Member
    */
   public Class<?> getType()
   {
-    return VMField.getType(this);
+    return f.getType();
   }
 
   /**
@@ -172,16 +169,7 @@ extends AccessibleObject implements Member
    */
   public boolean equals(Object o)
   {
-    if (!(o instanceof Field))
-      return false;
-    Field that = (Field)o; 
-    if (this.getDeclaringClass() != that.getDeclaringClass())
-      return false;
-    if (!this.getName().equals(that.getName()))
-      return false;
-    if (this.getType() != that.getType())
-      return false;
-    return true;
+    return f.equals(o);
   }
 
   /**
@@ -192,7 +180,7 @@ extends AccessibleObject implements Member
    */
   public int hashCode()
   {
-    return getDeclaringClass().getName().hashCode() ^ getName().hashCode();
+    return f.getDeclaringClass().getName().hashCode() ^ f.getName().hashCode();
   }
 
   /**
@@ -267,7 +255,7 @@ extends AccessibleObject implements Member
   public Object get(Object o)
     throws IllegalAccessException
   {
-    return VMField.get(this, o);
+    return f.get(o);
   }
 
   /**
@@ -290,7 +278,7 @@ extends AccessibleObject implements Member
   public boolean getBoolean(Object o)
     throws IllegalAccessException
   {
-    return VMField.getBoolean(this, o);
+    return f.getBoolean(o);
   }
 
   /**
@@ -313,7 +301,7 @@ extends AccessibleObject implements Member
   public byte getByte(Object o)
     throws IllegalAccessException
   {
-    return VMField.getByte(this, o);
+    return f.getByte(o);
   }
 
   /**
@@ -334,7 +322,7 @@ extends AccessibleObject implements Member
   public char getChar(Object o)
     throws IllegalAccessException
   {
-    return VMField.getChar(this, o);
+    return f.getChar(o);
   }
 
   /**
@@ -357,7 +345,7 @@ extends AccessibleObject implements Member
   public short getShort(Object o)
     throws IllegalAccessException
   {
-    return VMField.getShort(this, o);
+    return f.getShort(o);
   }
 
   /**
@@ -380,7 +368,7 @@ extends AccessibleObject implements Member
   public int getInt(Object o)
     throws IllegalAccessException
   {
-    return VMField.getInt(this, o);
+    return f.getInt(o);
   }
 
   /**
@@ -403,7 +391,7 @@ extends AccessibleObject implements Member
   public long getLong(Object o)
     throws IllegalAccessException
   {
-    return VMField.getLong(this, o);
+    return f.getLong(o);
   }
 
   /**
@@ -426,7 +414,7 @@ extends AccessibleObject implements Member
   public float getFloat(Object o)
     throws IllegalAccessException
   {
-    return VMField.getFloat(this, o);
+    return f.getFloat(o);
   }
 
   /**
@@ -450,7 +438,7 @@ extends AccessibleObject implements Member
   public double getDouble(Object o)
     throws IllegalAccessException
   {
-    return VMField.getDouble(this, o);
+    return f.getDouble(o);
   }
 
   /**
@@ -501,7 +489,7 @@ extends AccessibleObject implements Member
   public void set(Object o, Object value)
     throws IllegalAccessException
   {
-    VMField.set(this, o, value);
+    f.set(o, value);
   }
 
   /**
@@ -524,7 +512,7 @@ extends AccessibleObject implements Member
   public void setBoolean(Object o, boolean value)
     throws IllegalAccessException
   {
-    VMField.setBoolean(this, o, value);
+    f.setBoolean(o, value);
   }
 
   /**
@@ -547,7 +535,7 @@ extends AccessibleObject implements Member
   public void setByte(Object o, byte value)
     throws IllegalAccessException
   {
-    VMField.setByte(this, o, value);
+    f.setByte(o, value);
   }
 
   /**
@@ -570,7 +558,7 @@ extends AccessibleObject implements Member
   public void setChar(Object o, char value)
     throws IllegalAccessException
   {
-    VMField.setChar(this, o, value);
+    f.setChar(o, value);
   }
 
   /**
@@ -593,7 +581,7 @@ extends AccessibleObject implements Member
   public void setShort(Object o, short value)
     throws IllegalAccessException
   {
-    VMField.setShort(this, o, value);
+    f.setShort(o, value);
   }
 
   /**
@@ -616,7 +604,7 @@ extends AccessibleObject implements Member
   public void setInt(Object o, int value)
     throws IllegalAccessException
   {
-    VMField.setInt(this, o, value);
+    f.setInt(o, value);
   }
 
   /**
@@ -639,7 +627,7 @@ extends AccessibleObject implements Member
   public void setLong(Object o, long value)
     throws IllegalAccessException
   {
-    VMField.setLong(this, o, value);
+    f.setLong(o, value);
   }
 
   /**
@@ -662,7 +650,7 @@ extends AccessibleObject implements Member
   public void setFloat(Object o, float value)
     throws IllegalAccessException
   {
-    VMField.setFloat(this, o, value);
+    f.setFloat(o, value);
   }
 
   /**
@@ -685,7 +673,7 @@ extends AccessibleObject implements Member
   public void setDouble(Object o, double value)
     throws IllegalAccessException
   {
-    VMField.setDouble(this, o, value);
+    f.setDouble(o, value);
   }
 
   /**
@@ -701,7 +689,7 @@ extends AccessibleObject implements Member
   {
     if (p == null)
       {
-	String signature = VMField.getSignature(this);
+	String signature = f.getSignature();
 	if (signature == null)
 	  return getType();
 	p = new FieldSignatureParser(getDeclaringClass(),
