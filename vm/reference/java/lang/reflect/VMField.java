@@ -1,4 +1,4 @@
-/* java.lang.reflect.Field - reflection of Java fields
+/* java.lang.reflect.Field - VM interface for reflection of Java fields
    Copyright (C) 1998, 2001, 2005, 2008 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,192 +38,22 @@ exception statement from your version. */
 
 package java.lang.reflect;
 
-import gnu.java.lang.ClassHelper;
-import gnu.java.lang.CPStringBuilder;
-
-import gnu.java.lang.reflect.FieldSignatureParser;
-
-/**
- * The Field class represents a member variable of a class. It also allows
- * dynamic access to a member, via reflection. This works for both
- * static and instance fields. Operations on Field objects know how to
- * do widening conversions, but throw {@link IllegalArgumentException} if
- * a narrowing conversion would be necessary. You can query for information
- * on this Field regardless of location, but get and set access may be limited
- * by Java language access controls. If you can't do it in the compiler, you
- * can't normally do it here either.<p>
- *
- * <B>Note:</B> This class returns and accepts types as Classes, even
- * primitive types; there are Class types defined that represent each
- * different primitive type.  They are <code>java.lang.Boolean.TYPE,
- * java.lang.Byte.TYPE,</code>, also available as <code>boolean.class,
- * byte.class</code>, etc.  These are not to be confused with the
- * classes <code>java.lang.Boolean, java.lang.Byte</code>, etc., which are
- * real classes.<p>
- *
- * Also note that this is not a serializable class.  It is entirely feasible
- * to make it serializable using the Externalizable interface, but this is
- * on Sun, not me.
- *
- * @author John Keiser
- * @author Eric Blake <ebb9@email.byu.edu>
- * @see Member
- * @see Class
- * @see Class#getField(String)
- * @see Class#getDeclaredField(String)
- * @see Class#getFields()
- * @see Class#getDeclaredFields()
- * @since 1.1
- * @status updated to 1.4
- */
-public final class Field
-extends AccessibleObject implements Member
+final class VMField
 {
-  private Class declaringClass;
-  private String name;
-  private int slot;
-
-  private static final int FIELD_MODIFIERS
-    = Modifier.FINAL | Modifier.PRIVATE | Modifier.PROTECTED
-      | Modifier.PUBLIC | Modifier.STATIC | Modifier.TRANSIENT
-      | Modifier.VOLATILE;
-
-  /**
-   * This class is uninstantiable except natively.
-   */
-  private Field(Class declaringClass, String name, int slot)
-  {
-    this.declaringClass = declaringClass;
-    this.name = name;
-    this.slot = slot;
-  }
-
-  /**
-   * Gets the class that declared this field, or the class where this field
-   * is a non-inherited member.
-   * @return the class that declared this member
-   */
-  public Class<?> getDeclaringClass()
-  {
-    return declaringClass;
-  }
-
-  /**
-   * Gets the name of this field.
-   * @return the name of this field
-   */
-  public String getName()
-  {
-    return name;
-  }
 
   /**
    * Return the raw modifiers for this field.
+   * @param f the field concerned.
    * @return the field's modifiers
    */
-  private native int getModifiersInternal();
-
-  /**
-   * Gets the modifiers this field uses.  Use the <code>Modifier</code>
-   * class to interpret the values.  A field can only have a subset of the
-   * following modifiers: public, private, protected, static, final,
-   * transient, and volatile.
-   *
-   * @return an integer representing the modifiers to this Member
-   * @see Modifier
-   */
-  public int getModifiers()
-  {
-    return getModifiersInternal() & FIELD_MODIFIERS;
-  }
-
-  /**
-   * Return true if this field is synthetic, false otherwise.
-   * @since 1.5
-   */
-  public boolean isSynthetic()
-  {
-    return (getModifiersInternal() & Modifier.SYNTHETIC) != 0;
-  }
-
-  /**
-   * Return true if this field represents an enum constant,
-   * false otherwise.
-   * @since 1.5
-   */
-  public boolean isEnumConstant()
-  {
-    return (getModifiersInternal() & Modifier.ENUM) != 0;
-  }
+  static native int getModifiersInternal(Field f);
 
   /**
    * Gets the type of this field.
+   * @param f the field concerned.
    * @return the type of this field
    */
-  public native Class<?> getType();
-
-  /**
-   * Compare two objects to see if they are semantically equivalent.
-   * Two Fields are semantically equivalent if they have the same declaring
-   * class, name, and type. Since you can't creat a Field except through
-   * the VM, this is just the == relation.
-   *
-   * @param o the object to compare to
-   * @return <code>true</code> if they are equal; <code>false</code> if not
-   */
-  public boolean equals(Object o)
-  {
-    if (!(o instanceof Field))
-      return false;
-    Field that = (Field)o; 
-    if (this.getDeclaringClass() != that.getDeclaringClass())
-      return false;
-    if (!this.getName().equals(that.getName()))
-      return false;
-    if (this.getType() != that.getType())
-      return false;
-    return true;
-  }
-
-  /**
-   * Get the hash code for the Field. The Field hash code is the hash code
-   * of its name XOR'd with the hash code of its class name.
-   *
-   * @return the hash code for the object.
-   */
-  public int hashCode()
-  {
-    return getDeclaringClass().getName().hashCode() ^ getName().hashCode();
-  }
-
-  /**
-   * Get a String representation of the Field. A Field's String
-   * representation is "&lt;modifiers&gt; &lt;type&gt;
-   * &lt;class&gt;.&lt;fieldname&gt;".<br> Example:
-   * <code>public transient boolean gnu.parse.Parser.parseComplete</code>
-   *
-   * @return the String representation of the Field
-   */
-  public String toString()
-  {
-    // 64 is a reasonable buffer initial size for field
-    CPStringBuilder sb = new CPStringBuilder(64);
-    Modifier.toString(getModifiers(), sb).append(' ');
-    sb.append(ClassHelper.getUserName(getType())).append(' ');
-    sb.append(getDeclaringClass().getName()).append('.');
-    sb.append(getName());
-    return sb.toString();
-  }
-
-  public String toGenericString()
-  {
-    CPStringBuilder sb = new CPStringBuilder(64);
-    Modifier.toString(getModifiers(), sb).append(' ');
-    sb.append(getGenericType()).append(' ');
-    sb.append(getDeclaringClass().getName()).append('.');
-    sb.append(getName());
-    return sb.toString();
-  }
+  static native Class getType(Field f);
 
   /**
    * Get the value of this Field.  If it is primitive, it will be wrapped
@@ -246,6 +76,7 @@ extends AccessibleObject implements Member
    * declaring class, even if the instance passed in belongs to a subclass
    * which declares another field to hide this one.
    *
+   * @param f the field concerned.
    * @param o the object to get the value of this Field from
    * @return the value of the Field
    * @throws IllegalAccessException if you could not normally access this field
@@ -265,13 +96,14 @@ extends AccessibleObject implements Member
    * @see #getFloat(Object)
    * @see #getDouble(Object)
    */
-  public native Object get(Object o)
+  static native Object get(Field f, Object o)
     throws IllegalAccessException;
 
   /**
    * Get the value of this boolean Field. If the field is static,
    * <code>o</code> will be ignored.
    *
+   * @param f the field concerned.
    * @param o the object to get the value of this Field from
    * @return the value of the Field
    * @throws IllegalAccessException if you could not normally access this field
@@ -285,13 +117,14 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #get(Object)
    */
-  public native boolean getBoolean(Object o)
+  static native boolean getBoolean(Field f, Object o)
     throws IllegalAccessException;
 
   /**
    * Get the value of this byte Field. If the field is static,
    * <code>o</code> will be ignored.
    *
+   * @param f the field concerned.
    * @param o the object to get the value of this Field from
    * @return the value of the Field
    * @throws IllegalAccessException if you could not normally access this field
@@ -305,13 +138,15 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #get(Object)
    */
-  public native byte getByte(Object o)
+  static native byte getByte(Field f, Object o)
     throws IllegalAccessException;
 
   /**
    * Get the value of this Field as a char. If the field is static,
    * <code>o</code> will be ignored.
    *
+   * @param f the field concerned.
+   * @param o the object to get the value of this Field from
    * @throws IllegalAccessException if you could not normally access this field
    *         (i.e. it is not public)
    * @throws IllegalArgumentException if this is not a char field of
@@ -323,13 +158,14 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #get(Object)
    */
-  public native char getChar(Object o)
+  static native char getChar(Field f, Object o)
     throws IllegalAccessException;
 
   /**
    * Get the value of this Field as a short. If the field is static,
    * <code>o</code> will be ignored.
    *
+   * @param f the field concerned.
    * @param o the object to get the value of this Field from
    * @return the value of the Field
    * @throws IllegalAccessException if you could not normally access this field
@@ -343,13 +179,14 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #get(Object)
    */
-  public native short getShort(Object o)
+  static native short getShort(Field f, Object o)
     throws IllegalAccessException;
 
   /**
    * Get the value of this Field as an int. If the field is static,
    * <code>o</code> will be ignored.
    *
+   * @param f the field concerned.
    * @param o the object to get the value of this Field from
    * @return the value of the Field
    * @throws IllegalAccessException if you could not normally access this field
@@ -363,13 +200,14 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #get(Object)
    */
-  public native int getInt(Object o)
+  static native int getInt(Field f, Object o)
     throws IllegalAccessException;
 
   /**
    * Get the value of this Field as a long. If the field is static,
    * <code>o</code> will be ignored.
    *
+   * @param f the field concerned.
    * @param o the object to get the value of this Field from
    * @return the value of the Field
    * @throws IllegalAccessException if you could not normally access this field
@@ -383,13 +221,14 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #get(Object)
    */
-  public native long getLong(Object o)
+  static native long getLong(Field f, Object o)
     throws IllegalAccessException;
 
   /**
    * Get the value of this Field as a float. If the field is static,
    * <code>o</code> will be ignored.
    *
+   * @param f the field concerned.
    * @param o the object to get the value of this Field from
    * @return the value of the Field
    * @throws IllegalAccessException if you could not normally access this field
@@ -403,13 +242,14 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #get(Object)
    */
-  public native float getFloat(Object o)
+  static native float getFloat(Field f, Object o)
     throws IllegalAccessException;
 
   /**
    * Get the value of this Field as a double. If the field is static,
    * <code>o</code> will be ignored.
    *
+   * @param f the field concerned.
    * @param o the object to get the value of this Field from
    * @return the value of the Field
    * @throws IllegalAccessException if you could not normally access this field
@@ -424,7 +264,7 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #get(Object)
    */
-  public native double getDouble(Object o)
+  static native double getDouble(Field f, Object o)
     throws IllegalAccessException;
 
   /**
@@ -451,6 +291,7 @@ extends AccessibleObject implements Member
    * the field of the declaring class, even if the instance passed in belongs
    * to a subclass which declares another field to hide this one.
    *
+   * @param f the field concerned.
    * @param o the object to set this Field on
    * @param value the value to set this Field to
    * @throws IllegalAccessException if you could not normally access this field
@@ -472,13 +313,14 @@ extends AccessibleObject implements Member
    * @see #setFloat(Object, float)
    * @see #setDouble(Object, double)
    */
-  public native void set(Object o, Object value)
+  static native void set(Field f, Object o, Object value)
     throws IllegalAccessException;
 
   /**
    * Set this boolean Field. If the field is static, <code>o</code> will be
    * ignored.
    *
+   * @param f the field concerned.
    * @param o the object to set this Field on
    * @param value the value to set this Field to
    * @throws IllegalAccessException if you could not normally access this field
@@ -492,13 +334,14 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #set(Object, Object)
    */
-  public native void setBoolean(Object o, boolean value)
+  static native void setBoolean(Field f, Object o, boolean value)
     throws IllegalAccessException;
 
   /**
    * Set this byte Field. If the field is static, <code>o</code> will be
    * ignored.
    *
+   * @param f the field concerned.
    * @param o the object to set this Field on
    * @param value the value to set this Field to
    * @throws IllegalAccessException if you could not normally access this field
@@ -512,13 +355,14 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #set(Object, Object)
    */
-  public native void setByte(Object o, byte value)
+  static native void setByte(Field f, Object o, byte value)
     throws IllegalAccessException;
 
   /**
    * Set this char Field. If the field is static, <code>o</code> will be
    * ignored.
    *
+   * @param f the field concerned.
    * @param o the object to set this Field on
    * @param value the value to set this Field to
    * @throws IllegalAccessException if you could not normally access this field
@@ -532,13 +376,14 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #set(Object, Object)
    */
-  public native void setChar(Object o, char value)
+  static native void setChar(Field f, Object o, char value)
     throws IllegalAccessException;
 
   /**
    * Set this short Field. If the field is static, <code>o</code> will be
    * ignored.
    *
+   * @param f the field concerned.
    * @param o the object to set this Field on
    * @param value the value to set this Field to
    * @throws IllegalAccessException if you could not normally access this field
@@ -552,13 +397,14 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #set(Object, Object)
    */
-  public native void setShort(Object o, short value)
+  static native void setShort(Field f, Object o, short value)
     throws IllegalAccessException;
 
   /**
    * Set this int Field. If the field is static, <code>o</code> will be
    * ignored.
    *
+   * @param f the field concerned.
    * @param o the object to set this Field on
    * @param value the value to set this Field to
    * @throws IllegalAccessException if you could not normally access this field
@@ -572,13 +418,14 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #set(Object, Object)
    */
-  public native void setInt(Object o, int value)
+  static native void setInt(Field f, Object o, int value)
     throws IllegalAccessException;
 
   /**
    * Set this long Field. If the field is static, <code>o</code> will be
    * ignored.
    *
+   * @param f the field concerned.
    * @param o the object to set this Field on
    * @param value the value to set this Field to
    * @throws IllegalAccessException if you could not normally access this field
@@ -592,13 +439,14 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #set(Object, Object)
    */
-  public native void setLong(Object o, long value)
+  static native void setLong(Field f, Object o, long value)
     throws IllegalAccessException;
 
   /**
    * Set this float Field. If the field is static, <code>o</code> will be
    * ignored.
    *
+   * @param f the field concerned.
    * @param o the object to set this Field on
    * @param value the value to set this Field to
    * @throws IllegalAccessException if you could not normally access this field
@@ -612,13 +460,14 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #set(Object, Object)
    */
-  public native void setFloat(Object o, float value)
+  static native void setFloat(Field f, Object o, float value)
     throws IllegalAccessException;
 
   /**
    * Set this double Field. If the field is static, <code>o</code> will be
    * ignored.
    *
+   * @param f the field concerned.
    * @param o the object to set this Field on
    * @param value the value to set this Field to
    * @throws IllegalAccessException if you could not normally access this field
@@ -632,31 +481,15 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #set(Object, Object)
    */
-  public native void setDouble(Object o, double value)
+  static native void setDouble(Field f, Object o, double value)
     throws IllegalAccessException;
-
-  /**
-   * Return the generic type of the field. If the field type is not a generic
-   * type, the method returns the same as <code>getType()</code>.
-   *
-   * @throws GenericSignatureFormatError if the generic signature does
-   *         not conform to the format specified in the Virtual Machine
-   *         specification, version 3.
-   * @since 1.5
-   */
-  public Type getGenericType()
-  {
-    String signature = getSignature();
-    if (signature == null)
-      return getType();
-    FieldSignatureParser p = new FieldSignatureParser(getDeclaringClass(),
-                                                      signature);
-    return p.getFieldType();
-  }
 
   /**
    * Return the String in the Signature attribute for this field. If there
    * is no Signature attribute, return null.
+   *
+   * @param f the field concerned.
    */
-  private native String getSignature();
+  static native String getSignature(Field f);
+
 }

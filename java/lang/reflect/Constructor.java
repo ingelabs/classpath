@@ -83,16 +83,18 @@ public final class Constructor<T>
   extends AccessibleObject
   implements GenericDeclaration, Member
 {
-  private Class<T> clazz;
-  private int slot;
+  Class<T> clazz;
+  int slot;
   
-  private static final int CONSTRUCTOR_MODIFIERS
+  static final int CONSTRUCTOR_MODIFIERS
     = Modifier.PRIVATE | Modifier.PROTECTED | Modifier.PUBLIC;
 
+  private MethodSignatureParser p;
+
   /**
-   * This class is uninstantiable except from native code.
+   * This class is uninstantiable outside this package.
    */
-  private Constructor(Class declaringClass,int slot)
+  Constructor(Class<T> declaringClass,int slot)
   {
     this.clazz = declaringClass;
     this.slot = slot;
@@ -122,13 +124,6 @@ public final class Constructor<T>
   }
 
   /**
-   * Return the raw modifiers for this constructor.  In particular
-   * this will include the synthetic and varargs bits.
-   * @return the constructor's modifiers
-   */
-  private native int getModifiersInternal();
-
-  /**
    * Gets the modifiers this constructor uses.  Use the <code>Modifier</code>
    * class to interpret the values. A constructor can only have a subset of the
    * following modifiers: public, private, protected.
@@ -138,7 +133,7 @@ public final class Constructor<T>
    */
   public int getModifiers()
   {
-    return getModifiersInternal() & CONSTRUCTOR_MODIFIERS;
+    return VMConstructor.getModifiersInternal(this) & CONSTRUCTOR_MODIFIERS;
   }
 
   /**
@@ -149,7 +144,7 @@ public final class Constructor<T>
    */
   public boolean isSynthetic()
   {
-    return (getModifiersInternal() & Modifier.SYNTHETIC) != 0;
+    return (VMConstructor.getModifiersInternal(this) & Modifier.SYNTHETIC) != 0;
   }
 
   /**
@@ -159,7 +154,7 @@ public final class Constructor<T>
    */
   public boolean isVarArgs()
   {
-    return (getModifiersInternal() & Modifier.VARARGS) != 0;
+    return (VMConstructor.getModifiersInternal(this) & Modifier.VARARGS) != 0;
   }
 
   /**
@@ -168,7 +163,11 @@ public final class Constructor<T>
    *
    * @return a list of the types of the constructor's parameters
    */
-  public native Class<?>[] getParameterTypes();
+  @SuppressWarnings("unchecked")
+  public Class<?>[] getParameterTypes()
+  {
+    return (Class<?>[]) VMConstructor.getParameterTypes(this);
+  }
 
   /**
    * Get the exception types this constructor says it throws, in no particular
@@ -177,7 +176,11 @@ public final class Constructor<T>
    *
    * @return a list of the types in the constructor's throws clause
    */
-  public native Class<?>[] getExceptionTypes();
+  @SuppressWarnings("unchecked")
+  public Class<?>[] getExceptionTypes()
+  {
+    return (Class<?>[]) VMConstructor.getExceptionTypes(this);
+  }
 
   /**
    * Compare two objects to see if they are semantically equivalent.
@@ -315,17 +318,13 @@ public final class Constructor<T>
    * @throws ExceptionInInitializerError if construction triggered class
    *         initialization, which then failed
    */
+  @SuppressWarnings("unchecked")
   public T newInstance(Object... args)
     throws InstantiationException, IllegalAccessException,
            InvocationTargetException
   {
-    return constructNative(args, clazz, slot);
+    return (T) VMConstructor.constructNative(args, clazz, slot);
   }
-
-  private native T constructNative(Object[] args, Class declaringClass,
-				   int slot)
-    throws InstantiationException, IllegalAccessException,
-           InvocationTargetException;
 
   /**
    * Returns an array of <code>TypeVariable</code> objects that represents
@@ -341,18 +340,15 @@ public final class Constructor<T>
    */
   public TypeVariable<Constructor<T>>[] getTypeParameters()
   {
-    String sig = getSignature();
-    if (sig == null)
-      return new TypeVariable[0];
-    MethodSignatureParser p = new MethodSignatureParser(this, sig);
+    if (p == null)
+      {
+	String sig = VMConstructor.getSignature(this);
+	if (sig == null)
+	  return new TypeVariable[0];
+	p = new MethodSignatureParser(this, sig);
+      }
     return p.getTypeParameters();
   }
-
-  /**
-   * Return the String in the Signature attribute for this constructor. If there
-   * is no Signature attribute, return null.
-   */
-  private native String getSignature();
 
   /**
    * Returns an array of <code>Type</code> objects that represents
@@ -368,10 +364,13 @@ public final class Constructor<T>
    */
   public Type[] getGenericExceptionTypes()
   {
-    String sig = getSignature();
-    if (sig == null)
-      return getExceptionTypes();
-    MethodSignatureParser p = new MethodSignatureParser(this, sig);
+    if (p == null)
+      {
+	String sig = VMConstructor.getSignature(this);
+	if (sig == null)
+	  return getExceptionTypes();
+	p = new MethodSignatureParser(this, sig);
+      }
     return p.getGenericExceptionTypes();
   }
 
@@ -389,10 +388,13 @@ public final class Constructor<T>
    */
   public Type[] getGenericParameterTypes()
   {
-    String sig = getSignature();
-    if (sig == null)
-      return getParameterTypes();
-    MethodSignatureParser p = new MethodSignatureParser(this, sig);
+    if (p == null)
+      {
+	String sig = VMConstructor.getSignature(this);
+	if (sig == null)
+	  return getParameterTypes();
+	p = new MethodSignatureParser(this, sig);
+      }
     return p.getGenericParameterTypes();
   }
 
@@ -416,6 +418,9 @@ public final class Constructor<T>
    *         matches the declaration order of the parameters.
    * @since 1.5
    */
-  public native Annotation[][] getParameterAnnotations();
+  public Annotation[][] getParameterAnnotations()
+  {
+    return VMConstructor.getParameterAnnotations(this);
+  }
 
 }

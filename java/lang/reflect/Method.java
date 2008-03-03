@@ -86,15 +86,17 @@ extends AccessibleObject implements Member, GenericDeclaration
   String name;
   int slot;
 
-  private static final int METHOD_MODIFIERS
+  static final int METHOD_MODIFIERS
     = Modifier.ABSTRACT | Modifier.FINAL | Modifier.NATIVE
       | Modifier.PRIVATE | Modifier.PROTECTED | Modifier.PUBLIC
       | Modifier.STATIC | Modifier.STRICT | Modifier.SYNCHRONIZED;
 
+  private MethodSignatureParser p;
+
   /**
-   * This class is uninstantiable.
+   * This class is uninstantiable outside this package.
    */
-  private Method(Class declaringClass, String name, int slot)
+  Method(Class declaringClass, String name, int slot)
   {
     this.declaringClass = declaringClass;
     this.name = name;
@@ -121,12 +123,6 @@ extends AccessibleObject implements Member, GenericDeclaration
   }
 
   /**
-   * Return the raw modifiers for this method.
-   * @return the method's modifiers
-   */
-  private native int getModifiersInternal();
-
-  /**
    * Gets the modifiers this method uses.  Use the <code>Modifier</code>
    * class to interpret the values.  A method can only have a subset of the
    * following modifiers: public, private, protected, abstract, static,
@@ -137,7 +133,7 @@ extends AccessibleObject implements Member, GenericDeclaration
    */
   public int getModifiers()
   {
-    return getModifiersInternal() & METHOD_MODIFIERS;
+    return VMMethod.getModifiersInternal(this) & METHOD_MODIFIERS;
   }
 
   /**
@@ -148,7 +144,7 @@ extends AccessibleObject implements Member, GenericDeclaration
    */
   public boolean isBridge()
   {
-    return (getModifiersInternal() & Modifier.BRIDGE) != 0;
+    return (VMMethod.getModifiersInternal(this) & Modifier.BRIDGE) != 0;
   }
 
   /**
@@ -157,7 +153,7 @@ extends AccessibleObject implements Member, GenericDeclaration
    */
   public boolean isSynthetic()
   {
-    return (getModifiersInternal() & Modifier.SYNTHETIC) != 0;
+    return (VMMethod.getModifiersInternal(this) & Modifier.SYNTHETIC) != 0;
   }
 
   /**
@@ -167,14 +163,18 @@ extends AccessibleObject implements Member, GenericDeclaration
    */
   public boolean isVarArgs()
   {
-    return (getModifiersInternal() & Modifier.VARARGS) != 0;
+    return (VMMethod.getModifiersInternal(this) & Modifier.VARARGS) != 0;
   }
 
   /**
    * Gets the return type of this method.
    * @return the type of this method
    */
-  public native Class<?> getReturnType();
+  @SuppressWarnings("unchecked")
+  public Class<?> getReturnType()
+  {
+    return (Class<?>) VMMethod.getReturnType(this);
+  }
 
   /**
    * Get the parameter list for this method, in declaration order. If the
@@ -182,7 +182,11 @@ extends AccessibleObject implements Member, GenericDeclaration
    *
    * @return a list of the types of the method's parameters
    */
-  public native Class<?>[] getParameterTypes();
+  @SuppressWarnings("unchecked")
+  public Class<?>[] getParameterTypes()
+  {
+    return (Class<?>[]) VMMethod.getParameterTypes(this);
+  }
 
   /**
    * Get the exception types this method says it throws, in no particular
@@ -191,7 +195,11 @@ extends AccessibleObject implements Member, GenericDeclaration
    *
    * @return a list of the types in the method's throws clause
    */
-  public native Class<?>[] getExceptionTypes();
+  @SuppressWarnings("unchecked")
+  public Class<?>[] getExceptionTypes()
+  {
+    return (Class<?>[]) VMMethod.getExceptionTypes(this);
+  }
 
   /**
    * Compare two objects to see if they are semantically equivalent.
@@ -354,16 +362,8 @@ extends AccessibleObject implements Member, GenericDeclaration
   public Object invoke(Object o, Object... args)
     throws IllegalAccessException, InvocationTargetException
   {
-    return invokeNative(o, args, declaringClass, slot);
+    return VMMethod.invokeNative(o, args, declaringClass, slot);
   }
-
-  /*
-   * NATIVE HELPERS
-   */
-
-  private native Object invokeNative(Object o, Object[] args,
-                                     Class declaringClass, int slot)
-    throws IllegalAccessException, InvocationTargetException;
 
   /**
    * Returns an array of <code>TypeVariable</code> objects that represents
@@ -379,18 +379,15 @@ extends AccessibleObject implements Member, GenericDeclaration
    */
   public TypeVariable<Method>[] getTypeParameters()
   {
-    String sig = getSignature();
-    if (sig == null)
-      return new TypeVariable[0];
-    MethodSignatureParser p = new MethodSignatureParser(this, sig);
+    if (p == null)
+      {
+	String sig = VMMethod.getSignature(this);
+	if (sig == null)
+	  return (TypeVariable<Method>[]) new TypeVariable[0];
+	p = new MethodSignatureParser(this, sig);
+      }
     return p.getTypeParameters();
   }
-
-  /**
-   * Return the String in the Signature attribute for this method. If there
-   * is no Signature attribute, return null.
-   */
-  private native String getSignature();
 
   /**
    * Returns an array of <code>Type</code> objects that represents
@@ -406,10 +403,13 @@ extends AccessibleObject implements Member, GenericDeclaration
    */
   public Type[] getGenericExceptionTypes()
   {
-    String sig = getSignature();
-    if (sig == null)
-      return getExceptionTypes();
-    MethodSignatureParser p = new MethodSignatureParser(this, sig);
+    if (p == null)
+      {
+	String sig = VMMethod.getSignature(this);
+	if (sig == null)
+	  return getExceptionTypes();
+	p = new MethodSignatureParser(this, sig);
+      }
     return p.getGenericExceptionTypes();
   }
 
@@ -427,10 +427,13 @@ extends AccessibleObject implements Member, GenericDeclaration
    */
   public Type[] getGenericParameterTypes()
   {
-    String sig = getSignature();
-    if (sig == null)
-      return getParameterTypes();
-    MethodSignatureParser p = new MethodSignatureParser(this, sig);
+    if (p == null)
+      {
+	String sig = VMMethod.getSignature(this);
+	if (sig == null)
+	  return getParameterTypes();
+	p = new MethodSignatureParser(this, sig);
+      }
     return p.getGenericParameterTypes();
   }
 
@@ -445,10 +448,13 @@ extends AccessibleObject implements Member, GenericDeclaration
    */
   public Type getGenericReturnType()
   {
-    String sig = getSignature();
-    if (sig == null)
-      return getReturnType();
-    MethodSignatureParser p = new MethodSignatureParser(this, sig);
+    if (p == null)
+      {
+	String sig = VMMethod.getSignature(this);
+	if (sig == null)
+	  return getReturnType();
+	p = new MethodSignatureParser(this, sig);
+      }
     return p.getGenericReturnType();
   }
 
@@ -463,7 +469,10 @@ extends AccessibleObject implements Member, GenericDeclaration
    *
    * @since 1.5
    */
-  public native Object getDefaultValue();
+  public Object getDefaultValue()
+  {
+    return VMMethod.getDefaultValue(this);
+  }
 
   /**
    * <p>
@@ -485,6 +494,9 @@ extends AccessibleObject implements Member, GenericDeclaration
    *         matches the declaration order of the parameters.
    * @since 1.5
    */
-  public native Annotation[][] getParameterAnnotations();
+  public Annotation[][] getParameterAnnotations()
+  {
+    return VMMethod.getParameterAnnotations(this);
+  }
 
 }
