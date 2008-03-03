@@ -1,7 +1,7 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
 if CREATE_CORE_JNI_LIBRARIES
-  JNIDIRS = native-lib java-io java-lang java-math java-net java-nio java-util
+  JNIDIRS = native-lib java-io java-lang java-net java-nio java-util
 endif
 
 if CREATE_ALSA_LIBRARIES
@@ -32,11 +32,14 @@ if CREATE_XMLJ_LIBRARY
   XMLJDIR = xmlj
 endif
 
+if CREATE_GMPBI_LIBRARY
+  GMPDIR = java-math
+endif
+
 SUBDIRS = classpath $(JNIDIRS) \
   $(ALSADIR) $(DSSIDIR) $(GTKDIR) $(CLASSPATH_QT_PEER_DIR) $(XMLJDIR) \
-  $(CLASSPATH_GCONF_PEER_DIR) $(CLASSPATH_GSTREAMER_PEER_DIR)
-DIST_SUBDIRS = classpath java-io java-lang java-net java-nio java-util \
-               java-math \
+  $(CLASSPATH_GCONF_PEER_DIR) $(CLASSPATH_GSTREAMER_PEER_DIR) $(GMPDIR)
+DIST_SUBDIRS = classpath java-io java-lang java-math java-net java-nio java-util \
                gtk-peer gconf-peer gstreamer-peer qt-peer xmlj midi-alsa \
                midi-dssi native-lib
 
