@@ -108,17 +108,35 @@ TOOLS_JAVA_FILES = $(srcdir)/gnu/classpath/tools/*/*.java \
 	$(srcdir)/external/asm/org/objectweb/asm/util/attrs/*.java \
 	$(srcdir)/external/asm/org/objectweb/asm/xml/*.java
 
+# Properties files that must be included in the generated zip file.
+PROPERTY_FILES = $(srcdir)/external/asm/org/objectweb/asm/optimizer/shrink.properties \
+	$(srcdir)/resource/com/sun/tools/javac/messages.properties \
+	$(srcdir)/resource/gnu/classpath/tools/jar/messages.properties \
+	$(srcdir)/resource/gnu/classpath/tools/orbd/messages.properties \
+	$(srcdir)/resource/gnu/classpath/tools/rmic/messages.properties \
+	$(srcdir)/resource/gnu/classpath/tools/rmid/messages.properties \
+	$(srcdir)/resource/gnu/classpath/tools/serialver/messages.properties \
+	$(srcdir)/resource/gnu/classpath/tools/keytool/messages.properties \
+	$(srcdir)/resource/gnu/classpath/tools/native2ascii/messages.properties \
+	$(srcdir)/resource/gnu/classpath/tools/appletviewer/messages.properties \
+	$(srcdir)/resource/gnu/classpath/tools/common/Messages.properties \
+	$(srcdir)/resource/gnu/classpath/tools/getopt/Messages.properties \
+	$(srcdir)/resource/gnu/classpath/tools/tnameserv/messages.properties \
+	$(srcdir)/resource/gnu/classpath/tools/jarsigner/messages.properties \
+	$(srcdir)/resource/gnu/classpath/tools/rmiregistry/messages.properties \
+	$(srcdir)/resource/sun/rmi/rmic/messages.properties
+
+# RMIC templates that must be included in the generated zip file.
+RMIC_TEMPLATES = $(srcdir)/resource/gnu/classpath/tools/rmic/templates/*.jav
+
 # The zip files with classes we want to produce.
 TOOLS_ZIP = tools.zip
 
 # Extra objects that will not exist until configure-time
 BUILT_SOURCES = $(TOOLS_ZIP)
 
-# RMIC templates that must be included in the generated zip file.
-RMIC_TEMPLATES = $(srcdir)/resource/gnu/classpath/tools/rmic/templates/*.jav
-
 # All the files we find "interesting"
-ALL_TOOLS_FILES = $(TOOLS_JAVA_FILES) $(RMIC_TEMPLATES)
+ALL_TOOLS_FILES = $(TOOLS_JAVA_FILES) $(RMIC_TEMPLATES) $(PROPERTY_FILES)
 
 # Some architecture independent data to be installed.
 TOOLS_DATA = $(TOOLS_ZIP)
@@ -144,7 +162,7 @@ dist-hook:
 # the class files. Always regenerate all .class files and remove them
 # immediately.  And copy the template files we use to the classes dir
 # so they get also included.
-$(TOOLS_ZIP): $(TOOLS_JAVA_FILES)
+$(TOOLS_ZIP): $(ALL_TOOLS_FILES)
 	@rm -rf classes asm
 	mkdir classes asm
 ## Compile ASM separately as it is latin-1 encoded.
