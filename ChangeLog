@@ -1,3 +1,17 @@
+2008-03-04  Robert Schuster  <robertschuster@fsfe.org>
+
+  * gnu/xml/stream/AttributeImpl.java: Changed type field to String.
+  (getDTDType): Changed return type to String.
+  * gnu/xml/stream/XMLEventAllocatorImpl.java:
+  (allocate): Removed wrapping of string in QName object.
+  * gnu/xml/stream/XMLEventFactoryImpl.java:
+  (createAttribute(String, String)): Removed wrapping of string in
+  QName object.
+  (createAttribute(QName, String)): Dito.
+  (createAttribute(String, String, String, String)): Dito.
+  * javax/xml/stream/events/Attribute.java:
+  (getDTDType): Changed return type to String.
+
 2008-03-03  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/lang/reflect/Constructor.java,
