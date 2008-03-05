@@ -43,6 +43,8 @@ import gnu.java.lang.CPStringBuilder;
 
 import gnu.java.lang.reflect.FieldSignatureParser;
 
+import java.lang.annotation.Annotation;
+
 /**
  * The Field class represents a member variable of a class. It also allows
  * dynamic access to a member, via reflection. This works for both
@@ -696,6 +698,37 @@ extends AccessibleObject implements Member
 				     signature);
       }
     return p.getFieldType();
+  }
+
+  /**
+   * Returns the element's annotation for the specified annotation type,
+   * or <code>null</code> if no such annotation exists.
+   *
+   * @param annotationClass the type of annotation to look for.
+   * @return this element's annotation for the specified type, or
+   *         <code>null</code> if no such annotation exists.
+   * @throws NullPointerException if the annotation class is <code>null</code>.
+   */
+  @SuppressWarnings("unchecked")
+  public <T extends Annotation> T getAnnotation(Class<T> annotationClass)
+  {
+    return (T) f.getAnnotation(annotationClass);
+  }
+
+  /**
+   * Returns all annotations directly defined by the element.  If there are
+   * no annotations directly associated with the element, then a zero-length
+   * array will be returned.  The returned array may be modified by the client
+   * code, but this will have no effect on the annotation content of this
+   * class, and hence no effect on the return value of this method for
+   * future callers.
+   *
+   * @return the annotations directly defined by the element.
+   * @since 1.5
+   */
+  public Annotation[] getDeclaredAnnotations()
+  {
+    return f.getDeclaredAnnotations();
   }
 
 }
