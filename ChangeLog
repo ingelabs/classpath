@@ -1,3 +1,22 @@
+2008-03-05  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/lang/reflect/Constructor.java:
+	(cons): Make package-private.
+	(Constructor(VMConstructor)): Set cons in
+	VM interface.
+	* java/lang/reflect/Field.java:
+	(f): Make package-private.
+	(Field(VMField)): Set f in VM interface.
+	* java/lang/reflect/Method.java:
+	(m): Make package-private.
+	(Method(VMMethod)): Set m in VM interface.
+	* vm/reference/java/lang/reflect/VMConstructor.java:
+	(cons): Added reference to Constructor instance.
+	* vm/reference/java/lang/reflect/VMField.java:
+	(f): Added reference to Field instance.
+	* vm/reference/java/lang/reflect/VMMethod.java,
+	(m): Added reference to Method instance.
+
 2008-03-04  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/lang/reflect/AccessibleObject.java:

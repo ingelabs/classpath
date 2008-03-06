@@ -47,6 +47,12 @@ final class VMConstructor
   Class clazz;
   int slot;
 
+  /** 
+   * This field allows us to refer back to the main constructor instance.
+   *  It is set by the constructor of Constructor.
+   */
+  Constructor cons;
+
   VMConstructor(Class clazz, int slot)
   {
     this.clazz = clazz;

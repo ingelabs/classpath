@@ -88,7 +88,7 @@ extends AccessibleObject implements Member, GenericDeclaration
 
   private MethodSignatureParser p;
 
-  private VMMethod m;
+  VMMethod m;
 
   /**
    * This class is uninstantiable outside this package.
@@ -96,6 +96,7 @@ extends AccessibleObject implements Member, GenericDeclaration
   Method(VMMethod m)
   {
     this.m = m;
+    m.m = this;
   }
 
   /**

@@ -87,7 +87,7 @@ public final class Constructor<T>
 
   private MethodSignatureParser p;
 
-  private VMConstructor cons;
+  VMConstructor cons;
 
   /**
    * This class is uninstantiable outside this package.
@@ -95,6 +95,7 @@ public final class Constructor<T>
   Constructor(VMConstructor cons)
   {
     this.cons = cons;
+    cons.cons = this;
   }
 
   private Constructor()

@@ -48,6 +48,12 @@ final class VMMethod
   String name;
   int slot;
 
+  /** 
+   * This field allows us to refer back to the main constructor instance.
+   *  It is set by the constructor of Field.
+   */
+  Method m;
+
   public Class getDeclaringClass()
   {
     return declaringClass;

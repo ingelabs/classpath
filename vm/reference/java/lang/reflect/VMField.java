@@ -45,6 +45,12 @@ final class VMField
   Class declaringClass;
   String name;
   int slot;
+  
+  /** 
+   * This field allows us to refer back to the main constructor instance.
+   *  It is set by the constructor of Field.
+   */
+  Field f;
 
   VMField(Class declaringClass, String name, int slot)
   {

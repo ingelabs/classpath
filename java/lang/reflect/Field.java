@@ -88,7 +88,7 @@ extends AccessibleObject implements Member
 
   private FieldSignatureParser p;
 
-  private VMField f;
+  VMField f;
 
   /**
    * This class is uninstantiable outside the package.
@@ -96,6 +96,7 @@ extends AccessibleObject implements Member
   Field(VMField f)
   {
     this.f = f;
+    f.f = this;
   }
 
   /**
