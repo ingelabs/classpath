@@ -1,3 +1,15 @@
+2008-03-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+        * doc/cp-hacking.texinfo: Fix some typos.
+        * doc/cp-tools.texinfo: Likewise.
+        * doc/cp-vmintegration.texinfo: Likewise.
+
+2008-03-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+        * doc/cp-hacking.texinfo: Fix spacing after periods.
+        * doc/cp-tools.texinfo: Likewise.
+        * doc/cp-vmintegration.texinfo: Likewise.
+
 2008-03-05  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/lang/reflect/Constructor.java:
