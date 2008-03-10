@@ -4,7 +4,7 @@ libjavamath_la_SOURCES = java_math_VMBigInteger.c
 
 libjavamath_la_LIBADD = $(top_builddir)/native/jni/classpath/jcl.lo
 
-libjavamath_la_LDFLAGS = -avoid-version
+libjavamath_la_LDFLAGS = $(AM_LDFLAGS) -avoid-version
 
 AM_LDFLAGS = @CLASSPATH_MODULE@ @GMP_LIBS@
 AM_CPPFLAGS = @CLASSPATH_INCLUDES@
