@@ -999,7 +999,7 @@ abstract class AbstractStringBuffer
    * @param minimumCapacity the new capacity
    * @see #capacity()
    */
-  protected void ensureCapacity_unsynchronized(int minimumCapacity)
+  void ensureCapacity_unsynchronized(int minimumCapacity)
   {
     if (minimumCapacity > value.length)
       {
