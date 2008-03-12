@@ -1,5 +1,59 @@
 2008-03-11  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	* java/beans/beancontext/BeanContextServicesSupport.java:
+	(BCSSProxyServiceProvider(BeanContextServiceProvider)):
+	Add package-private constructor.
+	* java/lang/StringBuffer.java:
+	(ensureCapacity_unsynchronized(int)): Make package-private.
+	* java/rmi/activation/Activatable.java:
+	(export(ActivationID, Remote, int, RMIServerSocketFactory)):
+	Make private.
+	(makeId(ActivationID)): Likewise.
+	* java/security/MessageDigest.java:
+	(update(ByteBuffer)): Make final.
+	* java/security/cert/PolicyQualifierInfo.java:
+	(getPolicyQualifierId()): Likewise.
+	(getEncoded()): Likewise.
+	(getPolicyQualifier()): Likewise.
+	* java/text/DateFormat.java:
+	(ISO_YEAR_FIELD): Removed.
+	(LOCALIZED_DAY_OF_WEEK_FIELD): Likewise.
+	(EXTENDED_YEAR_FIELD): Likewise.
+	(MODIFIED_JULIAN_DAY_FIELD): Likewise.
+	(MILLISECOND_IN_DAY_FIELD): Likewise.
+	(RFC822_TIMEZONE_FIELD): Likewise.
+	(Field.ISO_YEAR_FIELD): Likewise.
+	(Field.LOCALIZED_DAY_OF_WEEK_FIELD): Likewise.
+	(Field.EXTENDED_YEAR_FIELD): Likewise.
+	(Field.MODIFIED_JULIAN_DAY_FIELD): Likewise.
+	(Field.MILLISECOND_IN_DAY_FIELD): Likewise.
+	(Field.RFC822_TIMEZONE_FIELD): Likewise.	
+	* java/text/DecimalFormat.java:
+	(format(Object,StringBuffer,FieldPosition)): Make final.
+	* java/text/Format.java:
+	(Format()): Make protected.
+	* java/text/NumberFormat.java:
+	(NumberFormat()): Likewise.
+	* java/text/SimpleDateFormat.java:
+	Remove code using RFC822_TIMEZONE_FIELD.
+	* java/util/Stack.java:
+	Use array of Objects rather than instances of T.
+	* java/util/Vector.java:
+	Likewise.
+	* java/util/concurrent/CopyOnWriteArrayList.java:
+	Don't extend AbstractList.
+	(containsAll(Collection)): Implemented.
+	(listIterator()): Likewise.
+	(subList(int,int)): Likewise.
+	* java/util/zip/Deflater.java:
+	(getTotalIn()): Remove deprecation.
+	(getTotalOut()): Likewise.
+	* java/util/zip/Inflater.java,
+	(getTotalIn()): Likewise.
+	(getTotalOut()): Likewise.
+
+2008-03-11  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* java/awt/MouseInfo.java:
 	(MouseInfo()): Private constructor to prevent
 	instance creation.

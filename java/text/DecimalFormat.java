@@ -310,7 +310,7 @@ public class DecimalFormat extends NumberFormat
    * field. If used on output defines the offsets of the alignment field.
    * @return The String representation of this long.
    */
-  public StringBuffer format(Object obj, StringBuffer sbuf, FieldPosition pos)
+  public final StringBuffer format(Object obj, StringBuffer sbuf, FieldPosition pos)
   {
     if (obj instanceof BigInteger)
       {

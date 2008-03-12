@@ -46,9 +46,11 @@ import java.lang.reflect.Array;
 
 import java.util.AbstractList;
 import java.util.Collection;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 import java.util.RandomAccess;
 
 /**
@@ -94,8 +96,8 @@ import java.util.RandomAccess;
  * 
  * @since 1.5
  */
-public class CopyOnWriteArrayList<E> extends AbstractList<E> implements
-    List<E>, RandomAccess, Cloneable, Serializable
+public class CopyOnWriteArrayList<E> 
+  implements List<E>, RandomAccess, Cloneable, Serializable
 {
   /**
    * 
@@ -177,6 +179,28 @@ public class CopyOnWriteArrayList<E> extends AbstractList<E> implements
   public boolean contains(Object e)
   {
     return indexOf(e) != -1;
+  }
+
+  /**
+   * Tests whether this collection contains all the elements in a given
+   * collection. This implementation iterates over the given collection,
+   * testing whether each element is contained in this collection. If any one
+   * is not, false is returned. Otherwise true is returned.
+   *
+   * @param c the collection to test against
+   * @return true if this collection contains all the elements in the given
+   *         collection
+   * @throws NullPointerException if the given collection is null
+   * @see #contains(Object)
+   */
+  public boolean containsAll(Collection<?> c)
+  {
+    Iterator<?> itr = c.iterator();
+    int pos = c.size();
+    while (--pos >= 0)
+      if (!contains(itr.next()))
+        return false;
+    return true;
   }
 
   /**
@@ -711,6 +735,24 @@ public class CopyOnWriteArrayList<E> extends AbstractList<E> implements
    * 
    * @return a ListIterator containing the elements of this list in sequence.
    */
+  public ListIterator<E> listIterator()
+  {
+    return listIterator(0);
+  }
+
+  /**
+   * Return a ListIterator over the elements of this list starting at
+   * the specified index.  An initial call to {@code next()} will thus
+   * return the element at {@code index}, while an initial call to
+   * {@code previous()} will return the element at {@code index-1}.  The
+   * Iterator uses a snapshot of the state of the internal storage
+   * at the moment this method is called and does <strong>not</strong> support
+   * update operations, so no synchronization is needed to traverse the
+   * iterator.
+   * 
+   * @param index the index at which to start iterating.
+   * @return a ListIterator containing the elements of this list in sequence.
+   */
   public ListIterator<E> listIterator(final int index)
   {
     if (index < 0 || index > size())
@@ -782,6 +824,483 @@ public class CopyOnWriteArrayList<E> extends AbstractList<E> implements
     };
   }
   
+  /**
+   * Obtain a List view of a subsection of this list, from fromIndex
+   * (inclusive) to toIndex (exclusive). If the two indices are equal, the
+   * sublist is empty. The returned list should be modifiable if and only
+   * if this list is modifiable. Changes to the returned list should be
+   * reflected in this list. If this list is structurally modified in
+   * any way other than through the returned list, the result of any subsequent
+   * operations on the returned list is undefined.
+   * <p>
+   *
+   * This implementation returns a subclass of AbstractList. It stores, in
+   * private fields, the offset and size of the sublist, and the expected
+   * modCount of the backing list. If the backing list implements RandomAccess,
+   * the sublist will also.
+   * <p>
+   *
+   * The subclass's <code>set(int, Object)</code>, <code>get(int)</code>,
+   * <code>add(int, Object)</code>, <code>remove(int)</code>,
+   * <code>addAll(int, Collection)</code> and
+   * <code>removeRange(int, int)</code> methods all delegate to the
+   * corresponding methods on the backing abstract list, after
+   * bounds-checking the index and adjusting for the offset. The
+   * <code>addAll(Collection c)</code> method merely returns addAll(size, c).
+   * The <code>listIterator(int)</code> method returns a "wrapper object"
+   * over a list iterator on the backing list, which is created with the
+   * corresponding method on the backing list. The <code>iterator()</code>
+   * method merely returns listIterator(), and the <code>size()</code> method
+   * merely returns the subclass's size field.
+   * <p>
+   *
+   * All methods first check to see if the actual modCount of the backing
+   * list is equal to its expected value, and throw a
+   * ConcurrentModificationException if it is not. 
+   *
+   * @param fromIndex the index that the returned list should start from
+   *        (inclusive)
+   * @param toIndex the index that the returned list should go to (exclusive)
+   * @return a List backed by a subsection of this list
+   * @throws IndexOutOfBoundsException if fromIndex &lt; 0
+   *         || toIndex &gt; size()
+   * @throws IllegalArgumentException if fromIndex &gt; toIndex
+   * @see ConcurrentModificationException
+   * @see RandomAccess
+   */
+  public List<E> subList(int fromIndex, int toIndex)
+  {
+    // This follows the specification of AbstractList, but is inconsistent
+    // with the one in List. Don't you love Sun's inconsistencies?
+    if (fromIndex > toIndex)
+      throw new IllegalArgumentException(fromIndex + " > " + toIndex);
+    if (fromIndex < 0 || toIndex > size())
+      throw new IndexOutOfBoundsException();
+
+    if (this instanceof RandomAccess)
+      return new RandomAccessSubList<E>(this, fromIndex, toIndex);
+    return new SubList<E>(this, fromIndex, toIndex);
+  }
+
+  /**
+   * This class follows the implementation requirements set forth in
+   * {@link AbstractList#subList(int, int)}. It matches Sun's implementation
+   * by using a non-public top-level class in the same package.
+   *
+   * @author Original author unknown
+   * @author Eric Blake (ebb9@email.byu.edu)
+   */
+  private static class SubList<E> 
+    extends AbstractList<E>
+  {
+    // Package visible, for use by iterator.
+    /** The original list. */
+    final CopyOnWriteArrayList<E> backingList;
+    /** The index of the first element of the sublist. */
+    final int offset;
+    /** The size of the sublist. */
+    int size;
+    /** The backing data */
+    E[] data;
+
+    /**
+     * Construct the sublist.
+     *
+     * @param backing the list this comes from
+     * @param fromIndex the lower bound, inclusive
+     * @param toIndex the upper bound, exclusive
+     */
+    SubList(CopyOnWriteArrayList<E> backing, int fromIndex, int toIndex)
+    {
+      backingList = backing;
+      data = backing.data;
+      offset = fromIndex;
+      size = toIndex - fromIndex;
+    }
+    
+    /**
+     * This method checks the two modCount fields to ensure that there has
+     * not been a concurrent modification, returning if all is okay.
+     *
+     * @throws ConcurrentModificationException if the backing list has been
+     *         modified externally to this sublist
+     */
+    // This can be inlined. Package visible, for use by iterator.
+    void checkMod()
+    {
+      if (data != backingList.data)
+	throw new ConcurrentModificationException();
+    }
+    
+    /**
+     * This method checks that a value is between 0 and size (inclusive). If
+     * it is not, an exception is thrown.
+     *
+     * @param index the value to check
+     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+     */
+    // This will get inlined, since it is private.
+    private void checkBoundsInclusive(int index)
+    {
+      if (index < 0 || index > size)
+	throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
+					    + size);
+    }
+    
+    /**
+     * This method checks that a value is between 0 (inclusive) and size
+     * (exclusive). If it is not, an exception is thrown.
+     *
+     * @param index the value to check
+     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+     */
+    // This will get inlined, since it is private.
+    private void checkBoundsExclusive(int index)
+    {
+      if (index < 0 || index >= size)
+	throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
+					    + size);
+    }
+    
+    /**
+     * Specified by AbstractList.subList to return the private field size.
+     *
+     * @return the sublist size
+     * @throws ConcurrentModificationException if the backing list has been
+     *         modified externally to this sublist
+     */
+    public int size()
+    {
+      checkMod();
+      return size;
+    }
+    
+    /**
+     * Specified by AbstractList.subList to delegate to the backing list.
+     *
+     * @param index the location to modify
+     * @param o the new value
+     * @return the old value
+     * @throws ConcurrentModificationException if the backing list has been
+     *         modified externally to this sublist
+     * @throws UnsupportedOperationException if the backing list does not
+     *         support the set operation
+     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+     * @throws ClassCastException if o cannot be added to the backing list due
+     *         to its type
+     * @throws IllegalArgumentException if o cannot be added to the backing list
+     *         for some other reason
+     */
+    public E set(int index, E o)
+    {
+      checkMod();
+      checkBoundsExclusive(index);
+      return backingList.set(index + offset, o);
+    }
+    
+    /**
+     * Specified by AbstractList.subList to delegate to the backing list.
+     *
+     * @param index the location to get from
+     * @return the object at that location
+     * @throws ConcurrentModificationException if the backing list has been
+     *         modified externally to this sublist
+     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+     */
+    public E get(int index)
+    {
+      checkMod();
+      checkBoundsExclusive(index);
+      return backingList.get(index + offset);
+    }
+    
+    /**
+     * Specified by AbstractList.subList to delegate to the backing list.
+     *
+     * @param index the index to insert at
+     * @param o the object to add
+     * @throws ConcurrentModificationException if the backing list has been
+     *         modified externally to this sublist
+     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+     * @throws UnsupportedOperationException if the backing list does not
+     *         support the add operation.
+     * @throws ClassCastException if o cannot be added to the backing list due
+     *         to its type.
+     * @throws IllegalArgumentException if o cannot be added to the backing
+     *         list for some other reason.
+     */
+    public void add(int index, E o)
+    {
+      checkMod();
+      checkBoundsInclusive(index);
+      backingList.add(index + offset, o);
+      size++;
+    }
+    
+    /**
+     * Specified by AbstractList.subList to delegate to the backing list.
+     *
+     * @param index the index to remove
+     * @return the removed object
+     * @throws ConcurrentModificationException if the backing list has been
+     *         modified externally to this sublist
+     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+     * @throws UnsupportedOperationException if the backing list does not
+     *         support the remove operation
+     */
+    public E remove(int index)
+    {
+      checkMod();
+      checkBoundsExclusive(index);
+      E o = backingList.remove(index + offset);
+      size--;
+      return o;
+    }
+        
+    /**
+     * Specified by AbstractList.subList to delegate to the backing list.
+     *
+     * @param index the location to insert at
+     * @param c the collection to insert
+     * @return true if this list was modified, in other words, c is non-empty
+     * @throws ConcurrentModificationException if the backing list has been
+     *         modified externally to this sublist
+     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+     * @throws UnsupportedOperationException if this list does not support the
+     *         addAll operation
+     * @throws ClassCastException if some element of c cannot be added to this
+     *         list due to its type
+     * @throws IllegalArgumentException if some element of c cannot be added
+     *         to this list for some other reason
+     * @throws NullPointerException if the specified collection is null
+     */
+    public boolean addAll(int index, Collection<? extends E> c)
+    {
+      checkMod();
+      checkBoundsInclusive(index);
+      int csize = c.size();
+      boolean result = backingList.addAll(offset + index, c);
+      size += csize;
+      return result;
+    }
+    
+    /**
+     * Specified by AbstractList.subList to return addAll(size, c).
+     *
+     * @param c the collection to insert
+     * @return true if this list was modified, in other words, c is non-empty
+     * @throws ConcurrentModificationException if the backing list has been
+     *         modified externally to this sublist
+     * @throws UnsupportedOperationException if this list does not support the
+     *         addAll operation
+     * @throws ClassCastException if some element of c cannot be added to this
+     *         list due to its type
+     * @throws IllegalArgumentException if some element of c cannot be added
+     *         to this list for some other reason
+     * @throws NullPointerException if the specified collection is null
+     */
+    public boolean addAll(Collection<? extends E> c)
+    {
+      return addAll(size, c);
+    }
+    
+    /**
+     * Specified by AbstractList.subList to return listIterator().
+     *
+     * @return an iterator over the sublist
+     */
+    public Iterator<E> iterator()
+    {
+      return listIterator();
+    }
+    
+    /**
+     * Specified by AbstractList.subList to return a wrapper around the
+     * backing list's iterator.
+     *
+     * @param index the start location of the iterator
+     * @return a list iterator over the sublist
+     * @throws ConcurrentModificationException if the backing list has been
+     *         modified externally to this sublist
+     * @throws IndexOutOfBoundsException if the value is out of range
+     */
+    public ListIterator<E> listIterator(final int index)
+    {
+      checkMod();
+      checkBoundsInclusive(index);
+      
+      return new ListIterator<E>()
+	{
+	  private final ListIterator<E> i
+	    = backingList.listIterator(index + offset);
+	  private int position = index;
+	  
+	  /**
+	   * Tests to see if there are any more objects to
+	   * return.
+	   *
+	   * @return True if the end of the list has not yet been
+	   *         reached.
+	   */
+	  public boolean hasNext()
+	  {
+	      return position < size;
+	  }
+	  
+	  /**
+	   * Tests to see if there are objects prior to the
+	   * current position in the list.
+	   *
+	   * @return True if objects exist prior to the current
+	   *         position of the iterator.
+	   */
+	  public boolean hasPrevious()
+	  {
+	      return position > 0;
+	  }
+	  
+	  /**
+	   * Retrieves the next object from the list.
+	   *
+	   * @return The next object.
+	   * @throws NoSuchElementException if there are no
+	   *         more objects to retrieve.
+	   * @throws ConcurrentModificationException if the
+	   *         list has been modified elsewhere.
+	   */
+	  public E next()
+	  {
+	      if (position == size)
+		throw new NoSuchElementException();
+	      position++;
+	      return i.next();
+	  }
+
+	  /**
+	   * Retrieves the previous object from the list.
+	   *
+	   * @return The next object.
+	   * @throws NoSuchElementException if there are no
+	   *         previous objects to retrieve.
+	   * @throws ConcurrentModificationException if the
+	   *         list has been modified elsewhere.
+	   */
+	  public E previous()
+	  {
+	      if (position == 0)
+		throw new NoSuchElementException();
+	      position--;
+	      return i.previous();
+	  }
+	  
+	  /**
+	   * Returns the index of the next element in the
+	   * list, which will be retrieved by <code>next()</code>
+	   *
+	   * @return The index of the next element.
+	   */
+	  public int nextIndex()
+	  {
+	      return i.nextIndex() - offset;
+	  }
+	  
+	  /**
+	   * Returns the index of the previous element in the
+	   * list, which will be retrieved by <code>previous()</code>
+	   *
+	   * @return The index of the previous element.
+	   */
+	  public int previousIndex()
+	  {
+	      return i.previousIndex() - offset;
+	  }
+	  
+	  /**
+	   * Removes the last object retrieved by <code>next()</code>
+	   * from the list, if the list supports object removal.
+	   *
+	   * @throws IllegalStateException if the iterator is positioned
+	   *         before the start of the list or the last object has already
+	   *         been removed.
+	   * @throws UnsupportedOperationException if the list does
+	   *         not support removing elements.
+	   */
+	  public void remove()
+	  {
+	    throw new UnsupportedOperationException("Modification not supported " +
+						    "on CopyOnWriteArrayList iterators");
+	  }
+	  
+	  
+	  /**
+	   * Replaces the last object retrieved by <code>next()</code>
+	   * or <code>previous</code> with o, if the list supports object
+	   * replacement and an add or remove operation has not already
+	   * been performed.
+	   *
+	   * @throws IllegalStateException if the iterator is positioned
+	   *         before the start of the list or the last object has already
+	   *         been removed.
+	   * @throws UnsupportedOperationException if the list doesn't support
+	   *         the addition or removal of elements.
+	   * @throws ClassCastException if the type of o is not a valid type
+	   *         for this list.
+	   * @throws IllegalArgumentException if something else related to o
+	   *         prevents its addition.
+	   * @throws ConcurrentModificationException if the list
+	   *         has been modified elsewhere.
+	   */
+	  public void set(E o)
+	  {
+	    throw new UnsupportedOperationException("Modification not supported " +
+						    "on CopyOnWriteArrayList iterators");
+	  }
+	  
+	  /**
+	   * Adds the supplied object before the element that would be returned
+	   * by a call to <code>next()</code>, if the list supports addition.
+	   * 
+	   * @param o The object to add to the list.
+	   * @throws UnsupportedOperationException if the list doesn't support
+	   *         the addition of new elements.
+	   * @throws ClassCastException if the type of o is not a valid type
+	   *         for this list.
+	   * @throws IllegalArgumentException if something else related to o
+	   *         prevents its addition.
+	   * @throws ConcurrentModificationException if the list
+	   *         has been modified elsewhere.
+	   */
+	  public void add(E o)
+	  {
+	    throw new UnsupportedOperationException("Modification not supported " +
+						    "on CopyOnWriteArrayList iterators");
+	  } 
+	};
+    }
+  } // class SubList
+
+  /**
+   * This class is a RandomAccess version of SubList, as required by
+   * {@link AbstractList#subList(int, int)}.
+   *
+   * @author Eric Blake (ebb9@email.byu.edu)
+   */
+  private static final class RandomAccessSubList<E> extends SubList<E>
+    implements RandomAccess
+  {
+    /**
+     * Construct the sublist.
+     *
+     * @param backing the list this comes from
+     * @param fromIndex the lower bound, inclusive
+     * @param toIndex the upper bound, exclusive
+     */
+    RandomAccessSubList(CopyOnWriteArrayList<E> backing, int fromIndex, int toIndex)
+    {
+      super(backing, fromIndex, toIndex);
+    }
+  } // class RandomAccessSubList
+
   /**
    * Serializes this object to the given stream.
    * 

@@ -235,7 +235,7 @@ public abstract class MessageDigest extends MessageDigestSpi
    * @param input The input byte buffer.
    * @since 1.5
    */
-  public void update (ByteBuffer input)
+  public final void update (ByteBuffer input)
   {
     engineUpdate (input);
   }

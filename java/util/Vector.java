@@ -95,7 +95,7 @@ public class Vector<T> extends AbstractList<T>
    * in positions 0 through elementCount - 1, and all remaining slots are null.
    * @serial the elements
    */
-  protected T[] elementData;
+  protected Object[] elementData;
 
   /**
    * The number of elements currently in the vector, also returned by
@@ -133,7 +133,7 @@ public class Vector<T> extends AbstractList<T>
   public Vector(Collection<? extends T> c)
   {
     elementCount = c.size();
-    elementData = c.toArray((T[]) new Object[elementCount]);
+    elementData = c.toArray(new Object[elementCount]);
   }
 
   /**
@@ -149,7 +149,7 @@ public class Vector<T> extends AbstractList<T>
   {
     if (initialCapacity < 0)
       throw new IllegalArgumentException();
-    elementData = (T[]) new Object[initialCapacity];
+    elementData = new Object[initialCapacity];
     this.capacityIncrement = capacityIncrement;
   }
 
@@ -295,11 +295,12 @@ public class Vector<T> extends AbstractList<T>
         return i < elementCount;
       }
 
+      @SuppressWarnings("unchecked")
       public T nextElement()
       {
         if (i >= elementCount)
           throw new NoSuchElementException();
-        return elementData[i++];
+        return (T) elementData[i++];
       }
     };
   }
@@ -385,10 +386,11 @@ public class Vector<T> extends AbstractList<T>
    * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt;= size()
    * @see #get(int)
    */
+  @SuppressWarnings("unchecked")
   public synchronized T elementAt(int index)
   {
     checkBoundExclusive(index);
-    return elementData[index];
+    return (T) elementData[index];
   }
 
   /**
@@ -397,12 +399,13 @@ public class Vector<T> extends AbstractList<T>
    * @return the first Object in the Vector
    * @throws NoSuchElementException the Vector is empty
    */
+  @SuppressWarnings("unchecked")
   public synchronized T firstElement()
   {
     if (elementCount == 0)
       throw new NoSuchElementException();
 
-    return elementData[0];
+    return (T) elementData[0];
   }
 
   /**
@@ -411,12 +414,13 @@ public class Vector<T> extends AbstractList<T>
    * @return the last Object in the Vector
    * @throws NoSuchElementException the Vector is empty
    */
+  @SuppressWarnings("unchecked")
   public synchronized T lastElement()
   {
     if (elementCount == 0)
       throw new NoSuchElementException();
 
-    return elementData[elementCount - 1];
+    return (T) elementData[elementCount - 1];
   }
 
   /**
@@ -604,10 +608,11 @@ public class Vector<T> extends AbstractList<T>
    * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt;= size()
    * @since 1.2
    */
+  @SuppressWarnings("unchecked")
   public synchronized T set(int index, T element)
   {
     checkBoundExclusive(index);
-    T temp = elementData[index];
+    T temp = (T) elementData[index];
     elementData[index] = element;
     return temp;
   }
@@ -660,10 +665,11 @@ public class Vector<T> extends AbstractList<T>
    * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt;= size()
    * @since 1.2
    */
+  @SuppressWarnings("unchecked")
   public synchronized T remove(int index)
   {
     checkBoundExclusive(index);
-    T temp = elementData[index];
+    T temp = (T) elementData[index];
     modCount++;
     elementCount--;
     if (index < elementCount)

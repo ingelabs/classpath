@@ -955,7 +955,7 @@ public final class StringBuffer
    * @param minimumCapacity the minimum capacity
    * @see #ensureCapacity(int)
    */
-  protected void ensureCapacity_unsynchronized(int minimumCapacity)
+  void ensureCapacity_unsynchronized(int minimumCapacity)
   {
     if (shared || minimumCapacity > value.length)
       {
