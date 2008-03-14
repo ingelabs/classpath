@@ -405,8 +405,8 @@ abstract class AbstractStringBuffer
 
   /**
    * Append some characters from the <code>CharSequence</code> to this
-   * buffer.  If the argument is null, the four characters "null" are
-   * appended.
+   * buffer.  If the argument is null, the <code>seq</code> is assumed
+   * to be equal to the string <code>"null"</code>.
    *
    * @param seq the <code>CharSequence</code> providing the characters
    * @param start the starting index
@@ -417,7 +417,7 @@ abstract class AbstractStringBuffer
   public AbstractStringBuffer append(CharSequence seq, int start, int end)
   {
     if (seq == null)
-      return append("null");
+      seq = "null";
     if (end - start > 0)
       {
 	ensureCapacity_unsynchronized(count + end - start);
