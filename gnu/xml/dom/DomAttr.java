@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package gnu.xml.dom;
 
+import gnu.java.lang.CPStringBuilder;
+
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
@@ -147,7 +149,7 @@ public class DomAttr
         return (value == null) ? "" : value;
       }
     // Otherwise collect child node-values
-    StringBuffer buf = new StringBuffer();
+    CPStringBuilder buf = new CPStringBuilder();
     for (DomNode ctx = first; ctx != null; ctx = ctx.next)
       {
         switch (ctx.nodeType)
