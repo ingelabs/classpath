@@ -44,7 +44,7 @@ import java.util.Arrays;
 
 final class VMMethod
 {
-  Class declaringClass;
+  Class clazz;
   String name;
   int slot;
 
@@ -56,7 +56,7 @@ final class VMMethod
 
   public Class getDeclaringClass()
   {
-    return declaringClass;
+    return clazz;
   }
 
   public String getName()
@@ -170,7 +170,7 @@ final class VMMethod
     if (!(o instanceof Method))
       return false;
     Method that = (Method)o;
-    if (declaringClass != that.getDeclaringClass())
+    if (clazz != that.getDeclaringClass())
       return false;
     if (!name.equals(that.getName()))
       return false;

@@ -42,7 +42,7 @@ import java.lang.annotation.Annotation;
 
 final class VMField
 {
-  Class declaringClass;
+  Class clazz;
   String name;
   int slot;
   
@@ -52,16 +52,16 @@ final class VMField
    */
   Field f;
 
-  VMField(Class declaringClass, String name, int slot)
+  VMField(Class clazz, String name, int slot)
   {
-    this.declaringClass = declaringClass;
+    this.clazz = clazz;
     this.name = name;
     this.slot = slot;
   }
 
   public Class getDeclaringClass()
   {
-    return declaringClass;
+    return clazz;
   }
 
   public String getName()
@@ -513,7 +513,7 @@ final class VMField
     if (!(o instanceof Field))
       return false;
     Field that = (Field)o; 
-    if (declaringClass != that.getDeclaringClass())
+    if (clazz != that.getDeclaringClass())
       return false;
     if (!name.equals(that.getName()))
       return false;
