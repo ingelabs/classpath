@@ -922,7 +922,7 @@ public final class Formatter
    * @param conversion the formatting character to specify the type of data.
    * @param syms the date formatting symbols.
    */
-  private void singleDateTimeConversion(StringBuilder builder, Calendar cal,
+  private void singleDateTimeConversion(CPStringBuilder builder, Calendar cal,
 					char conversion,
 					DateFormatSymbols syms)
   {
@@ -1153,7 +1153,7 @@ public final class Formatter
     else
       syms = new DateFormatSymbols(fmtLocale);
 
-    StringBuilder result = new StringBuilder();
+    CPStringBuilder result = new CPStringBuilder();
     singleDateTimeConversion(result, cal, subConversion, syms);
 
     genericFormat(result.toString(), flags, width, precision);

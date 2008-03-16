@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package java.util.regex;
 
+import gnu.java.lang.CPStringBuilder;
+
 import gnu.java.util.regex.CharIndexed;
 import gnu.java.util.regex.RE;
 import gnu.java.util.regex.REMatch;
@@ -323,7 +325,7 @@ public final class Matcher implements MatchResult
    */
   public String toString()
   {
-    StringBuilder sb = new StringBuilder();
+    CPStringBuilder sb = new CPStringBuilder();
     sb.append(this.getClass().getName())
       .append("[pattern=").append(pattern.pattern())
       .append(" region=").append("0").append(",").append(input.length())

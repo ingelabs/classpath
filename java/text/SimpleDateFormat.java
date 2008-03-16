@@ -40,6 +40,8 @@ exception statement from your version. */
 
 package java.text;
 
+import gnu.java.lang.CPStringBuilder;
+
 import gnu.java.text.AttributedFormatBuffer;
 import gnu.java.text.FormatBuffer;
 import gnu.java.text.FormatCharacterIterator;
@@ -139,9 +141,9 @@ public class SimpleDateFormat extends DateFormat
      */
     public String toString()
     {
-      StringBuilder builder;
+      CPStringBuilder builder;
 
-      builder = new StringBuilder(getClass().getName());
+      builder = new CPStringBuilder(getClass().getName());
       builder.append("[field=");
       builder.append(field);
       builder.append(", size=");
@@ -322,7 +324,7 @@ public class SimpleDateFormat extends DateFormat
 		    // Look for the terminating quote.  However, if we
 		    // see a '', that represents a literal quote and
 		    // we must iterate.
-		    StringBuilder buf = new StringBuilder();
+		    CPStringBuilder buf = new CPStringBuilder();
 		    int oldPos = i + 1;
 		    do
 		      {
@@ -372,7 +374,7 @@ public class SimpleDateFormat extends DateFormat
    */
   public String toString() 
   {
-    StringBuilder output = new StringBuilder(getClass().getName());
+    CPStringBuilder output = new CPStringBuilder(getClass().getName());
     output.append("[tokens=");
     output.append(tokens);
     output.append(", formatData=");
@@ -554,7 +556,7 @@ public class SimpleDateFormat extends DateFormat
 					   String oldChars, String newChars)
   {
     int len = pattern.length();
-    StringBuilder buf = new StringBuilder(len);
+    CPStringBuilder buf = new CPStringBuilder(len);
     boolean quoted = false;
     for (int i = 0;  i < len;  i++)
       {

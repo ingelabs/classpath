@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package java.util;
 
+import gnu.java.lang.CPStringBuilder;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -217,7 +219,7 @@ label   = Name:\\u0020</pre>
 	// Try to short-circuit when there is no escape char.
 	int start = pos;
 	boolean needsEscape = line.indexOf('\\', pos) != -1;
-        StringBuilder key = needsEscape ? new StringBuilder() : null;
+        CPStringBuilder key = needsEscape ? new CPStringBuilder() : null;
         while (pos < line.length()
                && ! Character.isWhitespace(c = line.charAt(pos++))
                && c != '=' && c != ':')
@@ -421,7 +423,7 @@ label   = Name:\\u0020</pre>
     
     Iterator iter = entrySet ().iterator ();
     int i = size ();
-    StringBuilder s = new StringBuilder (); // Reuse the same buffer.
+    CPStringBuilder s = new CPStringBuilder (); // Reuse the same buffer.
     while (--i >= 0)
       {
         Map.Entry entry = (Map.Entry) iter.next ();
@@ -564,7 +566,7 @@ label   = Name:\\u0020</pre>
    *        leading spaces must be escaped for the value
    * @see #store(OutputStream, String)
    */
-  private void formatForOutput(String str, StringBuilder buffer, boolean key)
+  private void formatForOutput(String str, CPStringBuilder buffer, boolean key)
   {
     if (key)
       {
@@ -745,7 +747,7 @@ label   = Name:\\u0020</pre>
                             Boolean.FALSE);
         XMLStreamReader reader = factory.createXMLStreamReader(in);
         String name, key = null;
-        StringBuffer buf = null;
+        CPStringBuilder buf = null;
         while (reader.hasNext())
           {
             switch (reader.next())
@@ -760,7 +762,7 @@ label   = Name:\\u0020</pre>
                         String msg = "missing 'key' attribute";
                         throw new InvalidPropertiesFormatException(msg);
                       }
-                    buf = new StringBuffer();
+                    buf = new CPStringBuilder();
                   }
                 else if (!"properties".equals(name) && !"comment".equals(name))
                   {

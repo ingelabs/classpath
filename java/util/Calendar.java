@@ -39,6 +39,8 @@ exception statement from your version. */
 
 package java.util;
 
+import gnu.java.lang.CPStringBuilder;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -1328,7 +1330,7 @@ public abstract class Calendar
    */
   public String toString()
   {
-    StringBuilder sb = new StringBuilder(getClass().getName());
+    CPStringBuilder sb = new CPStringBuilder(getClass().getName());
     sb.append('[');
     sb.append("time=");
     if (isTimeSet)

@@ -1,6 +1,31 @@
 2008-03-16  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/21869
+	* java/security/AlgorithmParameterGenerator.java,
+	* java/security/AlgorithmParameters.java,
+	* java/security/KeyFactory.java,
+	* java/security/KeyPairGenerator.java,
+	* java/security/MessageDigest.java,
+	* java/security/SecureRandom.java,
+	* java/security/Signature.java,
+	* java/security/cert/CertPathBuilder.java,
+	* java/security/cert/CertPathValidator.java,
+	* java/security/cert/CertStore.java,
+	* java/text/SimpleDateFormat.java,
+	* java/util/AbstractMap.java,
+	* java/util/Arrays.java,
+	* java/util/Calendar.java,
+	* java/util/Date.java,
+	* java/util/Formatter.java,
+	* java/util/Hashtable.java,
+	* java/util/Properties.java,
+	* java/util/TreeMap.java,
+	* java/util/regex/Matcher.java:
+	Use CPStringBuilder in preference to StringBuilder.
+
+2008-03-16  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	PR classpath/21869
 	* gnu/java/security/Engine.java,
 	* gnu/java/security/hash/Whirlpool.java,
 	* gnu/java/security/key/dss/DSSKey.java,
