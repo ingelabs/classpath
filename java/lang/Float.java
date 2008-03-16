@@ -39,6 +39,8 @@ exception statement from your version. */
 
 package java.lang;
 
+import gnu.java.lang.CPStringBuilder;
+
 /**
  * Instances of class <code>Float</code> represent primitive
  * <code>float</code> values.
@@ -211,7 +213,7 @@ public final class Float extends Number implements Comparable<Float>
       return f < 0 ? "-Infinity" : "Infinity";
 
     int bits = floatToIntBits(f);
-    StringBuilder result = new StringBuilder();
+    CPStringBuilder result = new CPStringBuilder();
     
     if (bits < 0)
       result.append('-');

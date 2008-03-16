@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package java.lang;
 
+import gnu.java.lang.CPStringBuilder;
 
 /**
  * Instances of class <code>Double</code> represent primitive
@@ -201,7 +202,7 @@ public final class Double extends Number implements Comparable<Double>
       return d < 0 ? "-Infinity" : "Infinity";
 
     long bits = doubleToLongBits(d);
-    StringBuilder result = new StringBuilder();
+    CPStringBuilder result = new CPStringBuilder();
     
     if (bits < 0)
       result.append('-');
