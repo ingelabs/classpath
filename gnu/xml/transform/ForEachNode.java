@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package gnu.xml.transform;
 
+import gnu.java.lang.CPStringBuilder;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -146,7 +148,7 @@ final class ForEachNode
   
   public String toString()
   {
-    StringBuffer buf = new StringBuffer("for-each");
+    CPStringBuilder buf = new CPStringBuilder("for-each");
     buf.append('[');
     buf.append("select=");
     buf.append(select);

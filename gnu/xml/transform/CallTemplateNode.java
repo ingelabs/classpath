@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package gnu.xml.transform;
 
+import gnu.java.lang.CPStringBuilder;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -146,7 +148,7 @@ final class CallTemplateNode
   
   public String toString()
   {
-    StringBuffer buf = new StringBuffer("call-template");
+    CPStringBuilder buf = new CPStringBuilder("call-template");
     buf.append('[');
     buf.append("name=");
     buf.append(name);

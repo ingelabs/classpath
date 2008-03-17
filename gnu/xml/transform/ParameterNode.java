@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package gnu.xml.transform;
 
+import gnu.java.lang.CPStringBuilder;
+
 import java.util.Collections;
 import javax.xml.namespace.QName;
 import javax.xml.transform.TransformerException;
@@ -148,7 +150,7 @@ final class ParameterNode
   
   public String toString()
   {
-    StringBuffer buf = new StringBuffer();
+    CPStringBuilder buf = new CPStringBuilder();
     switch (type)
       {
       case Bindings.VARIABLE:

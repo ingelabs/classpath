@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package gnu.xml.transform;
 
+import gnu.java.lang.CPStringBuilder;
+
 import java.util.Collection;
 import java.util.Iterator;
 import javax.xml.namespace.QName;
@@ -84,7 +86,7 @@ final class ValueOfNode
     String value;
     if (ret instanceof Collection)
       {
-        StringBuffer buf = new StringBuffer();
+        CPStringBuilder buf = new CPStringBuilder();
         for (Iterator i = ((Collection) ret).iterator(); i.hasNext(); )
           {
             Node node = (Node) i.next();
@@ -126,7 +128,7 @@ final class ValueOfNode
   
   public String toString()
   {
-    StringBuffer buf = new StringBuffer("value-of");
+    CPStringBuilder buf = new CPStringBuilder("value-of");
     buf.append('[');
     buf.append("select=");
     buf.append(select);
