@@ -1,5 +1,16 @@
 2008-03-17  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	PR classpath/21869
+	* gnu/java/lang/CPStringBuilder.java:
+	(indexOf(String,int)): Use regionMatches from String.
+	(lastIndexOf(String,int)): Likewise.
+	(regionMatches(int,String)): Removed broken code.
+	(substring(int,int)): Rearrange index computation so
+	it is only computed if valid.
+	
+2008-03-17  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	PR classpath/21869
 	* gnu/xml/transform/AbstractNumberNode.java,
 	* gnu/xml/transform/ApplyTemplatesNode.java,
 	* gnu/xml/transform/AttributeNode.java,
@@ -25,6 +36,7 @@
 
 2008-03-17  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	PR classpath/21869
 	* gnu/java/lang/CPStringBuilder.java:
 	Replace reflection code with calls to
 	VMCPStringBuilder.
@@ -34,6 +46,7 @@
 	
 2008-03-16  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	PR classpath/21869
 	* gnu/xml/dom/DomAttr.java,
 	* gnu/xml/dom/DomEvent.java,
 	* gnu/xml/dom/DomNode.java,
