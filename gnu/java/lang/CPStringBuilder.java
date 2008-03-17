@@ -38,9 +38,6 @@ exception statement from your version. */
 
 package gnu.java.lang;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import java.io.Serializable;
 
 /**
@@ -72,29 +69,9 @@ public final class CPStringBuilder
   char[] value;
 
   /**
-   * The package-private constructor for String objects without copying.
-   */
-  private static final Constructor<String> cons;
-
-  /**
    * The default capacity of a buffer.
    */
   private static final int DEFAULT_CAPACITY = 16;
-
-  static
-  {
-    try
-      {
-	cons = String.class.getDeclaredConstructor(char[].class, Integer.TYPE,
-						   Integer.TYPE, Boolean.TYPE);
-	cons.setAccessible(true);
-      }
-    catch (NoSuchMethodException e)
-      {
-	throw (Error) 
-	  new InternalError("Could not get no-copy String constructor").initCause(e);
-      }
-  }
 
   /**
    * Create a new CPStringBuilder with default capacity 16.
@@ -1102,25 +1079,7 @@ public final class CPStringBuilder
       throw new StringIndexOutOfBoundsException();
     if (len == 0)
       return "";
-    try
-      {
-	return cons.newInstance(value, beginIndex, len, true);
-      }
-    catch (InstantiationException e)
-      {
-	throw (Error) 
-	  new InternalError("Could not instantiate no-copy String constructor").initCause(e);
-      }
-    catch (IllegalAccessException e)
-      {
-	throw (Error) 
-	  new InternalError("Could not access no-copy String constructor").initCause(e);
-      }
-    catch (InvocationTargetException e)
-      {
-	throw (Error) 
-	  new InternalError("Error calling no-copy String constructor").initCause(e);
-      }
+    return VMCPStringBuilder.toString(value, beginIndex, len);
   }
 
   /**
@@ -1133,25 +1092,7 @@ public final class CPStringBuilder
    */
   public String toString()
   {
-    try
-      {
-	return cons.newInstance(value, 0, count, true);
-      }
-    catch (InstantiationException e)
-      {
-	throw (Error) 
-	  new InternalError("Could not instantiate no-copy String constructor").initCause(e);
-      }
-    catch (IllegalAccessException e)
-      {
-	throw (Error) 
-	  new InternalError("Could not access no-copy String constructor").initCause(e);
-      }
-    catch (InvocationTargetException e)
-      {
-	throw (Error) 
-	  new InternalError("Error calling no-copy String constructor").initCause(e);
-      }
+    return VMCPStringBuilder.toString(value, 0, count);
   }
 
 }
