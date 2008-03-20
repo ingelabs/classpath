@@ -1,3 +1,12 @@
+2008-03-20  Tom Tromey  <tromey@redhat.com>
+
+	* tools/gnu/classpath/tools/getopt/Parser.java (options): Don't
+	initialize.
+	(add, addFinal): Don't update options.
+	(requireOptions): New method.
+	(printHelp): Synchronize.  Call requireOptions.
+	(parse): Call requireOptions.
+
 2008-03-17  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/21869
