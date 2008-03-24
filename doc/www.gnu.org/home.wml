@@ -20,7 +20,7 @@
 project to create free core class libraries for use with virtual
 machines and compilers for the java programming language.  </p>
 <p>Development of GNU Classpath is always in progress. There have been
-various public 0.x > releases, slowly working towards the first major
+various public 0.x releases, slowly working towards the first major
 1.0 release. The current development source code is available via
 GNU's anonymous <a
 href="https://savannah.gnu.org/cvs/?group=classpath"> CVS server</a> ,

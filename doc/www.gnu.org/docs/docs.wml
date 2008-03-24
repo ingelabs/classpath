@@ -18,7 +18,8 @@
 <boxtitle>Classpath::API & Language Documentation</boxtitle>
 <boxitem>
 <blockquote>
-  <createlink url="http://developer.classpath.org/doc/" name="GNU Classpath API Specification"> 
+  <createlink url="http://developer.classpath.org/doc/" name="GNU Classpath API Specification"><br /> 
+  <createlink url="docs/cp-tools.html" name="GNU Classpath Tools"><br />
 </blockquote>
 
 </boxitem>
@@ -27,8 +28,8 @@
 
 <boxitem>
 <blockquote>
-  <createlink url="docs/hacking.html" name="GNU Classpath Hacker's Guide"><br/>
-  <createlink url="docs/vmintegration.html" name="Virtual Machine Integration Guide"><br/>
+  <createlink url="docs/cp-hacking.html" name="GNU Classpath Hacker's Guide"><br/>
+  <createlink url="docs/cp-vmintegration.html" name="Virtual Machine Integration Guide"><br/>
   <createlink url="http://developer.classpath.org/mediation/" name="GNU Classpath Wiki"><br/>
 </blockquote>
 </boxitem>
