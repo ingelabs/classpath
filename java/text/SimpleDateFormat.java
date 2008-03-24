@@ -233,10 +233,16 @@ public class SimpleDateFormat extends DateFormat
    */
   private static final long serialVersionUID = 4774881970558875024L;
 
-  // This string is specified in the root of the CLDR.  We set it here
-  // rather than doing a DateFormatSymbols(Locale.US).getLocalPatternChars()
-  // since someone could theoretically change those values (though unlikely).
-  private static final String standardChars = "GyMdkHmsSEDFwWahKzYeugAZ";
+  // This string is specified in the Java class libraries.
+  private static final String standardChars = "GyMdkHmsSEDFwWahKzZ";
+
+  /**  
+   * Represents the position of the RFC822 timezone pattern character
+   * in the array of localized pattern characters.  In the
+   * U.S. locale, this is 'Z'.  The value is the offset of the current
+   * time from GMT e.g. -0500 would be five hours prior to GMT.
+   */  
+  private static final int RFC822_TIMEZONE_FIELD = 18;
 
   /**
    * Reads the serialized version of this object.
@@ -802,6 +808,18 @@ public class SimpleDateFormat extends DateFormat
 		String zoneID = zone.getDisplayName
 		  (isDST, cf.getSize() > 3 ? TimeZone.LONG : TimeZone.SHORT);
 		buffer.append (zoneID);
+		break;
+	      case RFC822_TIMEZONE_FIELD:
+		buffer.setDefaultAttribute(DateFormat.Field.TIME_ZONE);
+		int pureMinutes = (calendar.get(Calendar.ZONE_OFFSET) +
+				   calendar.get(Calendar.DST_OFFSET)) / (1000 * 60);
+		String sign = (pureMinutes < 0) ? "-" : "+";
+                pureMinutes = Math.abs(pureMinutes);
+		int hours = pureMinutes / 60;
+		int minutes = pureMinutes % 60;
+		buffer.append(sign);
+		withLeadingZeros(hours, 2, buffer);
+		withLeadingZeros(minutes, 2, buffer);
 		break;
 	      default:
 		throw new IllegalArgumentException ("Illegal pattern character " +
