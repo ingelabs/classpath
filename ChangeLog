@@ -1,3 +1,14 @@
+2008-03-25  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/awt/image/ColorModel.java:
+	(coerceDataWorker(WritableRaster,boolean)):
+	Make package-private, not protected.
+	* java/awt/image/ComponentColorModel.java:
+	Call coerceDataWorker directly.
+	* java/awt/image/DirectColorModel.java:
+	Likewise.
+	(coerceData(WritableRaster,boolean)): Made final.
+	
 2008-03-24  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/22883
