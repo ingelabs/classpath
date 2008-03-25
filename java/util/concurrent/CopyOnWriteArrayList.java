@@ -45,6 +45,7 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 
 import java.util.AbstractList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
@@ -52,6 +53,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.RandomAccess;
+import java.util.concurrent.ConcurrentSkipListMap.Iter;
 
 /**
  * A thread-safe implementation of an ArrayList. A CopyOnWriteArrayList is
@@ -286,7 +288,6 @@ public class CopyOnWriteArrayList<E>
     try
       {
         clone = (CopyOnWriteArrayList<E>) super.clone();
-        clone.data = (E[]) data.clone();
       }
     catch (CloneNotSupportedException e)
       {
@@ -691,6 +692,43 @@ public class CopyOnWriteArrayList<E>
     return size;
   }
 
+  public String toString()
+  {
+    return Arrays.toString(this.data);
+  }
+
+  public boolean equals(Object o)
+  {
+    if (o == null)
+      return false;
+    
+    if (this == o)
+      return true;
+    
+    boolean _equals = false;
+    
+    // let's see if 'o' is a list, if so, we need to compare the elements
+    // as returned by the iterator
+    if (o instanceof List)
+      {
+        List<?> source = (List<?>) o;
+        
+        if (source.size() != this.size())
+          return false;
+        
+        Iterator<?> sourceIterator = source.iterator();
+        for (E element : this)
+          {
+            if (!element.equals(sourceIterator.next()))
+              return false;
+          }
+
+        _equals = true;
+      }
+     
+    return _equals;
+  }
+  
   /**
    * Return an Iterator containing the elements of this list.
    * The Iterator uses a snapshot of the state of the internal storage
@@ -1056,7 +1094,7 @@ public class CopyOnWriteArrayList<E>
       size--;
       return o;
     }
-        
+    
     /**
      * Specified by AbstractList.subList to delegate to the backing list.
      *
