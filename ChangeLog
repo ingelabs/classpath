@@ -1,5 +1,24 @@
 2008-03-26  Mario Torre  <neugens@aicas.com>
 
+    * java/util/concurrent/CopyOnWriteArrayList.java (SubList.set): 
+    (SubList.clear): new method.
+    (SubList.checkMod): fix indentation.
+    (SubList.checkBoundsInclusive):  likewise. 
+    (SubList.checkBoundsExclusive): likewise.
+    (SubList): added synchronization. Now throw
+    IndexOutOfBoundsException instead of IllegalArgumentException
+    when index are out of range.
+    (SubList.size): added synchronization.
+    (SubList.get): likewise.
+    (SubList.listIterator): fixed indentation.
+    (SubList.set): added synchronization. Update the state of the storage
+    after modification.
+    (SubList.add): likewise.
+    (SubList.remove): likewise.
+    (SubList.addAll): likewise.
+
+2008-03-26  Mario Torre  <neugens@aicas.com>
+
 	* java/util/concurrent/CopyOnWriteArrayList.java (equals): removed
 	useless local variable. 
 	(hashCode): new method.

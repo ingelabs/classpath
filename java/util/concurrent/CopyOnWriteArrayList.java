@@ -53,7 +53,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.RandomAccess;
-import java.util.concurrent.ConcurrentSkipListMap.Iter;
 
 /**
  * A thread-safe implementation of an ArrayList. A CopyOnWriteArrayList is
@@ -911,16 +910,16 @@ public class CopyOnWriteArrayList<E>
    * @return a List backed by a subsection of this list
    * @throws IndexOutOfBoundsException if fromIndex &lt; 0
    *         || toIndex &gt; size()
-   * @throws IllegalArgumentException if fromIndex &gt; toIndex
+   * @throws IndexOutOfBoundsException if fromIndex &gt; toIndex
    * @see ConcurrentModificationException
    * @see RandomAccess
    */
-  public List<E> subList(int fromIndex, int toIndex)
+  public synchronized List<E> subList(int fromIndex, int toIndex)
   {
     // This follows the specification of AbstractList, but is inconsistent
     // with the one in List. Don't you love Sun's inconsistencies?
     if (fromIndex > toIndex)
-      throw new IllegalArgumentException(fromIndex + " > " + toIndex);
+      throw new IndexOutOfBoundsException(fromIndex + " > " + toIndex);
     if (fromIndex < 0 || toIndex > size())
       throw new IndexOutOfBoundsException();
 
@@ -976,7 +975,7 @@ public class CopyOnWriteArrayList<E>
     void checkMod()
     {
       if (data != backingList.data)
-	throw new ConcurrentModificationException();
+        throw new ConcurrentModificationException();
     }
     
     /**
@@ -990,8 +989,8 @@ public class CopyOnWriteArrayList<E>
     private void checkBoundsInclusive(int index)
     {
       if (index < 0 || index > size)
-	throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
-					    + size);
+        throw new IndexOutOfBoundsException("Index: " + index +
+                                            ", Size:" + size);
     }
     
     /**
@@ -1005,8 +1004,8 @@ public class CopyOnWriteArrayList<E>
     private void checkBoundsExclusive(int index)
     {
       if (index < 0 || index >= size)
-	throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
-					    + size);
+        throw new IndexOutOfBoundsException("Index: " + index +
+                                            ", Size:" + size);
     }
     
     /**
@@ -1018,8 +1017,30 @@ public class CopyOnWriteArrayList<E>
      */
     public int size()
     {
-      checkMod();
-      return size;
+      synchronized (backingList)
+        {
+          checkMod();
+          return size;
+        }
+    }
+    
+    public void clear()
+    {
+      synchronized (backingList)
+        {
+          E[] snapshot = backingList.data;
+          E[] newData = (E[]) new Object[snapshot.length - size];
+
+          int toIndex = size + offset;
+          
+          System.arraycopy(snapshot, 0, newData, 0, offset);
+          System.arraycopy(snapshot, toIndex, newData, offset,
+                           snapshot.length - toIndex);
+          
+          backingList.data = newData;
+          this.data = backingList.data;
+          this.size = 0;
+        }
     }
     
     /**
@@ -1040,9 +1061,16 @@ public class CopyOnWriteArrayList<E>
      */
     public E set(int index, E o)
     {
-      checkMod();
-      checkBoundsExclusive(index);
-      return backingList.set(index + offset, o);
+      synchronized (backingList)
+        {
+          checkMod();
+          checkBoundsExclusive(index);
+          
+          E el =  backingList.set(index + offset, o);
+          this.data = backingList.data;
+          
+          return el;
+        }
     }
     
     /**
@@ -1056,9 +1084,13 @@ public class CopyOnWriteArrayList<E>
      */
     public E get(int index)
     {
-      checkMod();
-      checkBoundsExclusive(index);
-      return backingList.get(index + offset);
+      synchronized (backingList)
+      {
+        checkMod();
+        checkBoundsExclusive(index);
+        
+        return backingList.get(index + offset);
+      }
     }
     
     /**
@@ -1078,10 +1110,16 @@ public class CopyOnWriteArrayList<E>
      */
     public void add(int index, E o)
     {
-      checkMod();
-      checkBoundsInclusive(index);
-      backingList.add(index + offset, o);
-      size++;
+      synchronized (backingList)
+      {
+        checkMod();
+        checkBoundsInclusive(index);
+      
+        backingList.add(index + offset, o);
+        
+        this.data = backingList.data;
+        size++;
+      }
     }
     
     /**
@@ -1097,11 +1135,17 @@ public class CopyOnWriteArrayList<E>
      */
     public E remove(int index)
     {
-      checkMod();
-      checkBoundsExclusive(index);
-      E o = backingList.remove(index + offset);
-      size--;
-      return o;
+      synchronized (backingList)
+      {
+        checkMod();
+        checkBoundsExclusive(index);
+        E o = backingList.remove(index + offset);
+        
+        this.data = backingList.data;
+        size--;
+        
+        return o;
+      }
     }
     
     /**
@@ -1123,12 +1167,18 @@ public class CopyOnWriteArrayList<E>
      */
     public boolean addAll(int index, Collection<? extends E> c)
     {
-      checkMod();
-      checkBoundsInclusive(index);
-      int csize = c.size();
-      boolean result = backingList.addAll(offset + index, c);
-      size += csize;
-      return result;
+      synchronized (backingList)
+      {
+        checkMod();
+        checkBoundsInclusive(index);
+        int csize = c.size();
+        boolean result = backingList.addAll(offset + index, c);
+        
+        this.data = backingList.data;
+        size += csize;
+        
+        return result;
+      }
     }
     
     /**
@@ -1148,7 +1198,10 @@ public class CopyOnWriteArrayList<E>
      */
     public boolean addAll(Collection<? extends E> c)
     {
-      return addAll(size, c);
+      synchronized (backingList)
+      {
+        return addAll(size, c);
+      }
     }
     
     /**
@@ -1175,154 +1228,153 @@ public class CopyOnWriteArrayList<E>
     {
       checkMod();
       checkBoundsInclusive(index);
-      
-      return new ListIterator<E>()
-	{
-	  private final ListIterator<E> i
-	    = backingList.listIterator(index + offset);
-	  private int position = index;
-	  
-	  /**
-	   * Tests to see if there are any more objects to
-	   * return.
-	   *
-	   * @return True if the end of the list has not yet been
-	   *         reached.
-	   */
-	  public boolean hasNext()
-	  {
-	      return position < size;
-	  }
-	  
-	  /**
-	   * Tests to see if there are objects prior to the
-	   * current position in the list.
-	   *
-	   * @return True if objects exist prior to the current
-	   *         position of the iterator.
-	   */
-	  public boolean hasPrevious()
-	  {
-	      return position > 0;
-	  }
-	  
-	  /**
-	   * Retrieves the next object from the list.
-	   *
-	   * @return The next object.
-	   * @throws NoSuchElementException if there are no
-	   *         more objects to retrieve.
-	   * @throws ConcurrentModificationException if the
-	   *         list has been modified elsewhere.
-	   */
-	  public E next()
-	  {
-	      if (position == size)
-		throw new NoSuchElementException();
-	      position++;
-	      return i.next();
-	  }
 
-	  /**
-	   * Retrieves the previous object from the list.
-	   *
-	   * @return The next object.
-	   * @throws NoSuchElementException if there are no
-	   *         previous objects to retrieve.
-	   * @throws ConcurrentModificationException if the
-	   *         list has been modified elsewhere.
-	   */
-	  public E previous()
-	  {
-	      if (position == 0)
-		throw new NoSuchElementException();
-	      position--;
-	      return i.previous();
-	  }
-	  
-	  /**
-	   * Returns the index of the next element in the
-	   * list, which will be retrieved by <code>next()</code>
-	   *
-	   * @return The index of the next element.
-	   */
-	  public int nextIndex()
-	  {
-	      return i.nextIndex() - offset;
-	  }
-	  
-	  /**
-	   * Returns the index of the previous element in the
-	   * list, which will be retrieved by <code>previous()</code>
-	   *
-	   * @return The index of the previous element.
-	   */
-	  public int previousIndex()
-	  {
-	      return i.previousIndex() - offset;
-	  }
-	  
-	  /**
-	   * Removes the last object retrieved by <code>next()</code>
-	   * from the list, if the list supports object removal.
-	   *
-	   * @throws IllegalStateException if the iterator is positioned
-	   *         before the start of the list or the last object has already
-	   *         been removed.
-	   * @throws UnsupportedOperationException if the list does
-	   *         not support removing elements.
-	   */
-	  public void remove()
-	  {
-	    throw new UnsupportedOperationException("Modification not supported " +
-						    "on CopyOnWriteArrayList iterators");
-	  }
-	  
-	  
-	  /**
-	   * Replaces the last object retrieved by <code>next()</code>
-	   * or <code>previous</code> with o, if the list supports object
-	   * replacement and an add or remove operation has not already
-	   * been performed.
-	   *
-	   * @throws IllegalStateException if the iterator is positioned
-	   *         before the start of the list or the last object has already
-	   *         been removed.
-	   * @throws UnsupportedOperationException if the list doesn't support
-	   *         the addition or removal of elements.
-	   * @throws ClassCastException if the type of o is not a valid type
-	   *         for this list.
-	   * @throws IllegalArgumentException if something else related to o
-	   *         prevents its addition.
-	   * @throws ConcurrentModificationException if the list
-	   *         has been modified elsewhere.
-	   */
-	  public void set(E o)
-	  {
-	    throw new UnsupportedOperationException("Modification not supported " +
-						    "on CopyOnWriteArrayList iterators");
-	  }
-	  
-	  /**
-	   * Adds the supplied object before the element that would be returned
-	   * by a call to <code>next()</code>, if the list supports addition.
-	   * 
-	   * @param o The object to add to the list.
-	   * @throws UnsupportedOperationException if the list doesn't support
-	   *         the addition of new elements.
-	   * @throws ClassCastException if the type of o is not a valid type
-	   *         for this list.
-	   * @throws IllegalArgumentException if something else related to o
-	   *         prevents its addition.
-	   * @throws ConcurrentModificationException if the list
-	   *         has been modified elsewhere.
-	   */
-	  public void add(E o)
-	  {
-	    throw new UnsupportedOperationException("Modification not supported " +
-						    "on CopyOnWriteArrayList iterators");
-	  } 
-	};
+      return new ListIterator<E>()
+      {
+        private final ListIterator<E> i =
+          backingList.listIterator(index + offset);
+        private int position = index;
+
+        /**
+         * Tests to see if there are any more objects to
+         * return.
+         *
+         * @return True if the end of the list has not yet been
+         *         reached.
+         */
+        public boolean hasNext()
+        {
+          return position < size;
+        }
+
+        /**
+         * Tests to see if there are objects prior to the
+         * current position in the list.
+         *
+         * @return True if objects exist prior to the current
+         *         position of the iterator.
+         */
+        public boolean hasPrevious()
+        {
+          return position > 0;
+        }
+
+        /**
+         * Retrieves the next object from the list.
+         *
+         * @return The next object.
+         * @throws NoSuchElementException if there are no
+         *         more objects to retrieve.
+         * @throws ConcurrentModificationException if the
+         *         list has been modified elsewhere.
+         */
+        public E next()
+        {
+          if (position == size)
+            throw new NoSuchElementException();
+          position++;
+          return i.next();
+        }
+
+        /**
+         * Retrieves the previous object from the list.
+         *
+         * @return The next object.
+         * @throws NoSuchElementException if there are no
+         *         previous objects to retrieve.
+         * @throws ConcurrentModificationException if the
+         *         list has been modified elsewhere.
+         */
+        public E previous()
+        {
+          if (position == 0)
+            throw new NoSuchElementException();
+          position--;
+          return i.previous();
+        }
+
+        /**
+         * Returns the index of the next element in the
+         * list, which will be retrieved by <code>next()</code>
+         *
+         * @return The index of the next element.
+         */
+        public int nextIndex()
+        {
+          return i.nextIndex() - offset;
+        }
+
+        /**
+         * Returns the index of the previous element in the
+         * list, which will be retrieved by <code>previous()</code>
+         *
+         * @return The index of the previous element.
+         */
+        public int previousIndex()
+        {
+          return i.previousIndex() - offset;
+        }
+
+        /**
+         * Removes the last object retrieved by <code>next()</code>
+         * from the list, if the list supports object removal.
+         *
+         * @throws IllegalStateException if the iterator is positioned
+         *         before the start of the list or the last object has already
+         *         been removed.
+         * @throws UnsupportedOperationException if the list does
+         *         not support removing elements.
+         */
+        public void remove()
+        {
+          throw new UnsupportedOperationException("Modification not supported " +
+              "on CopyOnWriteArrayList iterators");
+        }
+
+        /**
+         * Replaces the last object retrieved by <code>next()</code>
+         * or <code>previous</code> with o, if the list supports object
+         * replacement and an add or remove operation has not already
+         * been performed.
+         *
+         * @throws IllegalStateException if the iterator is positioned
+         *         before the start of the list or the last object has already
+         *         been removed.
+         * @throws UnsupportedOperationException if the list doesn't support
+         *         the addition or removal of elements.
+         * @throws ClassCastException if the type of o is not a valid type
+         *         for this list.
+         * @throws IllegalArgumentException if something else related to o
+         *         prevents its addition.
+         * @throws ConcurrentModificationException if the list
+         *         has been modified elsewhere.
+         */
+        public void set(E o)
+        {
+          throw new UnsupportedOperationException("Modification not supported " +
+              "on CopyOnWriteArrayList iterators");
+        }
+
+        /**
+         * Adds the supplied object before the element that would be returned
+         * by a call to <code>next()</code>, if the list supports addition.
+         * 
+         * @param o The object to add to the list.
+         * @throws UnsupportedOperationException if the list doesn't support
+         *         the addition of new elements.
+         * @throws ClassCastException if the type of o is not a valid type
+         *         for this list.
+         * @throws IllegalArgumentException if something else related to o
+         *         prevents its addition.
+         * @throws ConcurrentModificationException if the list
+         *         has been modified elsewhere.
+         */
+        public void add(E o)
+        {
+          throw new UnsupportedOperationException("Modification not supported " +
+              "on CopyOnWriteArrayList iterators");
+        } 
+      };
     }
   } // class SubList
 
