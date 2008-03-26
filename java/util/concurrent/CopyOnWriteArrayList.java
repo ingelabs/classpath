@@ -705,8 +705,6 @@ public class CopyOnWriteArrayList<E>
     if (this == o)
       return true;
     
-    boolean _equals = false;
-    
     // let's see if 'o' is a list, if so, we need to compare the elements
     // as returned by the iterator
     if (o instanceof List)
@@ -723,10 +721,21 @@ public class CopyOnWriteArrayList<E>
               return false;
           }
 
-        _equals = true;
+        return true;
       }
-     
-    return _equals;
+    
+    return false;
+  }
+  
+  public int hashCode()
+  {
+    // see http://java.sun.com/6/docs/api/java/util/List.html#hashcode()
+    int hashcode = 1;
+    for (E element : this)
+      {
+        hashcode = 31 * hashcode + (element == null ? 0 : element.hashCode());
+      }
+    return hashcode;
   }
   
   /**

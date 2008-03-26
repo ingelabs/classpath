@@ -1,3 +1,9 @@
+2008-03-26  Mario Torre  <neugens@aicas.com>
+
+	* java/util/concurrent/CopyOnWriteArrayList.java (equals): removed
+	useless local variable. 
+	(hashCode): new method.
+
 2008-03-25  Mario Torre  <neugens@aicas.com>
 
 	* java/util/concurrent/CopyOnWriteArrayList.java (clone): clone method
