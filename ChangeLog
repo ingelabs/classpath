@@ -1,3 +1,14 @@
+2008-03-27  Mario Torre  <neugens@aicas.com>
+
+	* gnu/xml/stream/SAXParser.java (getProperty): throw
+	SAXNotRecognizedException instead of SAXNotSupportedException
+	after fall through all known properties.
+	* javax/xml/namespace/QName.java (valueOf): throw
+	IllegalArgumentException if string is null.
+	* java/util/concurrent/CopyOnWriteArrayList.java (lastIndexOf):
+	fixed indentation.
+	(indexOf): likewise. 
+
 2008-03-26  Mario Torre  <neugens@aicas.com>
 
     * java/util/concurrent/CopyOnWriteArrayList.java (SubList.set): 

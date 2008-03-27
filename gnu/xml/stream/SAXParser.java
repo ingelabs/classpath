@@ -233,7 +233,7 @@ public class SAXParser
       return baseAware ? Boolean.TRUE : Boolean.FALSE;
     if ((GNU_PROPERTIES + "document-xml-encoding").equals(name))
       return xmlEncoding;
-    throw new SAXNotSupportedException(name);
+    throw new SAXNotRecognizedException(name);
   }
 
   public boolean isXIncludeAware()

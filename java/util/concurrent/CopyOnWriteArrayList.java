@@ -236,7 +236,7 @@ public class CopyOnWriteArrayList<E>
 
     for (int i = index; i < data.length; i++)
       if (equals(e, data[i]))
-	return i;
+        return i;
     return -1;
   }
 
@@ -272,7 +272,7 @@ public class CopyOnWriteArrayList<E>
 
     for (int i = index; i >= 0; i--)
       if (equals(e, data[i]))
-	return i;
+        return i;
     return -1;
   }
 
