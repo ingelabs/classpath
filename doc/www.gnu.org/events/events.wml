@@ -2,33 +2,20 @@
 
 #include "include/layout.wml"
 
-<set-var last-modified-author="prk">
+<set-var last-modified-author="gnu_andrew">
 <subject "GNU Classpath Events">
 
 <box>
 <boxitem>
 <strong>Upcoming Events:</strong><br>
-<ul>
-<li>[26 May - 18 Aug 2008] Google Summer of Code 2008. [createlink name="GNU Classpath Ideas" url="http://developer.classpath.org/mediation/GoogleSoC2008">]</li>
-</ul>
+<li>[26 May - 18 Aug 2008] Google Summer of Code 2008. [<createlink name="GNU Classpath Ideas" url="http://developer.classpath.org/mediation/GoogleSoC2008">]</li>
 </boxitem>
 
 <boxitem>
 <strong>Past Events:</strong><br>
-<ul>
-
-<ul>
-<li>[23+24 Feb. 2006] FOSDEM'08 in Brussels, Belgium. [<createlink name="Free Java" url="http://fosdem.org/2008/schedule/devroom/freejava">]</li>
-</ul>
-
-<ul>
+<li>[23+24 Feb. 2008] FOSDEM'08 in Brussels, Belgium. [<createlink name="Free Java" url="http://fosdem.org/2008/schedule/devroom/freejava">]</li>
 <li>[24+25 Feb. 2007] FOSDEM'07 in Brussels, Belgium. [<createlink name="GNU Classpath+OpenJDK DevJam" url="http://archive.fosdem.org/2007/schedule/devroom/gnuclasspathopenjdkdevjam">]</li>
-</ul>
-
-<ul>
 <li>[25+26 Feb. 2006] FOSDEM'06 in Brussels, Belgium. [<createlink name="GNU Classpath and friends" url="events/fosdem06.html">]</li>
-</ul>
-
 <li>
 [1-5 Aug 2005] <a href="http://conferences.oreillynet.com/os2005/">OSCON</a>, Portland, Oregon - USA
 <ul>
