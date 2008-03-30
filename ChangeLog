@@ -1,3 +1,16 @@
+2008-03-30  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* doc/www.gnu.org/external.wml:
+	Corrected Jalopy tag name.
+	* doc/www.gnu.org/home.wml:
+	Update link to tasks.
+	* doc/www.gnu.org/announce/20080222.wml:
+	Correct IcedTea and builder links.
+	* doc/www.gnu.org/downloads/downloads.wml:
+	Add 0.97 and 0.97.1.
+	* doc/www.gnu.org/events/events.wml:
+	Fix links and add FOSDEMs/GSoC.
+
 2008-03-27  Mario Torre  <neugens@aicas.com>
 
 	* gnu/xml/stream/SAXParser.java (getProperty): throw
@@ -11,22 +24,22 @@
 
 2008-03-26  Mario Torre  <neugens@aicas.com>
 
-    * java/util/concurrent/CopyOnWriteArrayList.java (SubList.set): 
-    (SubList.clear): new method.
-    (SubList.checkMod): fix indentation.
-    (SubList.checkBoundsInclusive):  likewise. 
-    (SubList.checkBoundsExclusive): likewise.
-    (SubList): added synchronization. Now throw
-    IndexOutOfBoundsException instead of IllegalArgumentException
-    when index are out of range.
-    (SubList.size): added synchronization.
-    (SubList.get): likewise.
-    (SubList.listIterator): fixed indentation.
-    (SubList.set): added synchronization. Update the state of the storage
-    after modification.
-    (SubList.add): likewise.
-    (SubList.remove): likewise.
-    (SubList.addAll): likewise.
+	* java/util/concurrent/CopyOnWriteArrayList.java (SubList.set): 
+	(SubList.clear): new method.
+	(SubList.checkMod): fix indentation.
+	(SubList.checkBoundsInclusive):  likewise. 
+	(SubList.checkBoundsExclusive): likewise.
+	(SubList): added synchronization. Now throw
+	IndexOutOfBoundsException instead of IllegalArgumentException
+	when index are out of range.
+	(SubList.size): added synchronization.
+	(SubList.get): likewise.
+	(SubList.listIterator): fixed indentation.
+	(SubList.set): added synchronization. Update the state of the storage
+	after modification.
+	(SubList.add): likewise.
+	(SubList.remove): likewise.
+	(SubList.addAll): likewise.
 
 2008-03-26  Mario Torre  <neugens@aicas.com>
 

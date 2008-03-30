@@ -75,7 +75,7 @@
 </boxitem>
 
 <tool
-	name="Jalopy"
+	name="jalopy"
 	maintainer="Tom Tromey"
 	url="ftp://sources.redhat.com/pub/java/jalopy-console-1.0.4.tar.gz"
 >

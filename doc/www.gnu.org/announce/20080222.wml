@@ -26,7 +26,7 @@ majority of Sun's class library as Free Software on May the 8th, 2007, under the
 auspices of the OpenJDK project (<createlink url="http://openjdk.java.net">)
 has changed the position of GNU Classpath within the community and recent efforts
 have  focused on bringing together Classpath and OpenJDK code under the umbrella of 
-IcedTea (<createlink url="http://icedtea.classpath.org">) and
+IcedTea (<createlink url="http://icedtea.classpath.org/wiki/Main_Page">) and
 BrandWeg (<createlink url="http://icedtea.classpath.org/wiki/BrandWeg">).  We hope to 
 extend support and work together with the OpenJDK community over time.
 <p>
@@ -87,7 +87,7 @@ For more information about the project see also:
 
 <li>GNU Classpath promotion banners: <createlink url="http://developer.classpath.org/mediation/ClasspathBanners">
 </ul>
-GNU Classpath 0.97 can be downloaded from <createlink url="ftp://ftp.gnu.org/pub/gnu/classpath/"> or one of the ftp.gnu.org mirrors <createlink url="http://www.gnu.org/order/ftp.html"> or the Classpath continuous integration system <createlink url="http://builder.classpath.org/dist">
+GNU Classpath 0.97 can be downloaded from <createlink url="ftp://ftp.gnu.org/pub/gnu/classpath/"> or one of the ftp.gnu.org mirrors <createlink url="http://www.gnu.org/order/ftp.html"> or the Classpath continuous integration system <createlink url="http://builder.classpath.org/dist/">
 <p><pre>
 File: classpath-0.97.tar.gz
 MD5sum: 73c36efc5dc265cf8950fe43247541de

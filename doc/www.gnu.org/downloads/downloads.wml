@@ -77,10 +77,10 @@ sub mylink {
 <download-block>
 
 <download
-	date="16 Oct 2007"
-	version="0.96.1"
-	url="ftp://ftp.gnu.org/gnu/classpath/classpath-0.96.1.tar.gz"
-	notes="http://www.gnu.org/software/classpath/announce/20071016.html"
+	date="11 Mar 2008"
+	version="0.97.1"
+	url="ftp://ftp.gnu.org/gnu/classpath/classpath-0.97.1.tar.gz"
+	notes="http://www.gnu.org/software/classpath/announce/20080311.html"
 >
 
 <!-- download
@@ -99,6 +99,18 @@ sub mylink {
 <boxitem>
 
 <download-block>
+<download
+	date="22 Feb 2008"
+	version="0.97"
+	url="ftp://ftp.gnu.org/gnu/classpath/classpath-0.97.tar.gz"
+	notes="http://www.gnu.org/software/classpath/announce/20080222.html"
+>
+<download
+	date="16 Oct 2007"
+	version="0.96.1"
+	url="ftp://ftp.gnu.org/gnu/classpath/classpath-0.96.1.tar.gz"
+	notes="http://www.gnu.org/software/classpath/announce/20071016.html"
+>
 <download
 	date="15 Oct 2007"
 	version="0.96"
