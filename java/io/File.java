@@ -158,7 +158,7 @@ public class File implements Serializable, Comparable<File>
       return false;
 
     if (VMFile.isDirectory(path))
-      return VMFile.canWriteDirectory(this);
+      return VMFile.canWriteDirectory(path);
     else
       return VMFile.canWrite(path);
   }
