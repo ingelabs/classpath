@@ -1,3 +1,12 @@
+2008-04-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* m4/gcc_attribute.m4 (GCC_ATTRIBUTE): Fix cache variable name.
+	* tools/Makefile.am (gappletviewer, gjarsigner, gkeytool, gjar)
+	(gnative2ascii, gserialver, gjavah, grmiregistry, gtnameserv)
+	(gorbd, grmid, grmic) [!CREATE_WRAPPERS]: Add stub dependencies
+	for these scripts, to trick automake into hiding the respective
+	rules for the programs below the CREATE_WRAPPERS conditional.
+
 2008-04-09  Mario Torre  <neugens@aicas.com>
  
 	* java/io/File.java (canWrite): use canWriteDirectory(String). 
