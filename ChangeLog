@@ -1,3 +1,9 @@
+2008-04-16  Tom Tromey  <tromey@redhat.com>
+
+	* tools/gnu/classpath/tools/orbd/Main.java: Bump copyright year.
+	* tools/resource/gnu/classpath/tools/common/Messages.properties
+	(ClasspathToolParser.VersionFormat): Bump copyright year.
+
 2008-04-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/gcc_attribute.m4 (GCC_ATTRIBUTE): Fix cache variable name.
