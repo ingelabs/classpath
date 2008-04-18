@@ -1,3 +1,58 @@
+2008-04-18  Ian Rogers  <ian.rogers@manchester.ac.uk>
+
+	* java/lang/Byte.java (static): initialize byteCache.
+	(valueOf(String,int)): use valueOf(byte) rather than new.
+	(valueOf(String)): likewise.
+	(valueOf(byte)): Switch from lazy initialization of cached values to
+	initialization at class initialization time. This removes the need for
+	synchronization in the common case.
+	(decode): use valueOf(byte) rather than new.
+	* java/lang/Character.java (static): initialize charCache.
+	(valueOf): Switch from lazy initialization of cached values to
+	initialization at class initialization time. This removes the need for
+	synchronization in the common case.
+	* java/lang/Double.java (ZERO): new private field.
+	(ONE): likewise.
+	(valueOf(double)): don't create new doubles for the case of 0 and 1.
+	(valueOf(String)): use valueOf(double) rather than new.
+	(equals): use raw bits for comparison to avoid division.
+	* java/lang/Float.java (ZERO): new private field.
+	(ONE): likewise.
+	(valueOf(float)): don't create new floats for the case of 0 and 1.
+	(valueOf(String)): use valueOf(float) rather than new.
+	(equals): use raw bits for comparison to avoid division.
+	* java/lang/Integer.java (static): initialize intCache.
+	(stringSize): new private method to estimate size of string for an int.
+	(toString): reuse digits for single character strings, for multiple
+	character strings estimate their length using string size method.
+	(valueOf(String,int)): use valueOf(int) rather than new.
+	(valueOf(String)): likewise.
+	(valueOf(int)): Switch from lazy initialization of cached values to
+	initialization at class initialization time. This removes the need for
+	synchronization in the common case.
+	(getInteger): use valueOf(int) rather than new.
+	(decode): use valueOf(int) rather than new.
+	(signum): use shift and subtract to compute value.
+	(toUnsignedString): calculate string size rather than using 32 chars.
+	* java/lang/Long.java (longCache): new private field.
+	(stringSize): new private method to estimate size of string for a long.
+	(toString): reuse digits for single character strings, for multiple
+	character strings estimate their length using string size method.
+	(valueOf(String,int)): use valueOf(long) rather than new.
+	(valueOf(String)): likewise.
+	(valueOf(long)): use cache of values.
+	(decode): use valueOf(long) rather than new.
+	(getLong): likewise.
+	(signum): use shift and subtract to compute value.
+	(toUnsignedString): calculate string size rather than using 64 chars.
+	* java/lang/Short.java (static): initialize shortCache.
+	(valueOf(String,int)): use valueOf(short) rather than new.
+	(valueOf(String)): likewise.
+	(valueOf(short)): Switch from lazy initialization of cached values to
+	initialization at class initialization time. This removes the need for
+	synchronization in the common case.
+	(decode): use valueOf(short) rather than new.
+
 2008-04-18  Mario Torre  <neugens@aicas.com>
 
 	PR classpath/35974
