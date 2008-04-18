@@ -1,3 +1,8 @@
+2008-04-18  Tom Tromey  <tromey@redhat.com>
+
+	* lib/gen-classlist.sh.in: Skip 'sed' steps if no vm_omitlist
+	found.
+
 2008-04-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* lib/gen-classlist.sh.in: Avoid grepping each omission, by
