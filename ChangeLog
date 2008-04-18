@@ -1,3 +1,10 @@
+2008-04-18  Mario Torre  <neugens@aicas.com>
+
+	PR classpath/35974
+	* java/util/logging/Logger.java: fix a deadlock and reformat code.
+	Now all the methods of the class get a lock on a static lock, this
+	avoids a lock when getLogger and log are used concurrently.
+
 2008-04-18  Tom Tromey  <tromey@redhat.com>
 
 	* lib/gen-classlist.sh.in: Skip 'sed' steps if no vm_omitlist
