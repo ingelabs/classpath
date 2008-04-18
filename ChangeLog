@@ -1,5 +1,110 @@
 2008-04-18  Ian Rogers  <ian.rogers@manchester.ac.uk>
 
+	* java/nio/Buffer.java (cap): make field private and final.
+	(address): make field final.
+	(Buffer): add address argument to package protected constructor thereby
+	allowing it to be made final.
+	* java/nio/ByteBuffer.java (backing_buffer): make field final.
+	(array_offset): make field final.
+	(ByteBuffer): add address, backing_buffer and array_offset to
+	constructor, allowing fields to be made final.
+	* java/nio/ByteBufferImpl.java (readOnly): make field final.
+	(ByteBufferImpl): modify call to super class constructor to pass
+	backing_buffer and array_offset.
+	* java/nio/CharBuffer.java (array_offset): make field final.
+	(backing_buffer): make field final.
+	(CharBuffer): add address, backing_buffer and array_offset to
+	constructor, allowing fields to be made final.
+	* java/nio/CharBufferImpl.java (readOnly): make field final.
+	(CharBufferImpl): modify call to super class constructor to pass
+	backing_buffer and array_offset.
+	(CharBufferImpl(CharBufferImpl)): likewise.
+	* java/nio/CharSequenceBuffer.java (charSequence): make field final.
+	(CharSequenceBuffer): modify call to super class constructor, allowing
+	fields to be made final.
+	(duplicate): use capacity call rather than cap, to allow better
+	encapsulation.
+	* java/nio/CharViewBufferImpl.java (offset): make field final.
+	(bb): likewise.
+	(readOnly): likewise.
+	(endian): likewise.
+	(CharViewBufferImpl): modify call to super class constructor, allowing
+	fields to be made final.
+	* java/nio/DirectByteBufferImpl.java: modify calls to super class
+	constructors, allowing fields to be made final.
+	* java/nio/DoubleBuffer.java (array_offset): make field final.
+	(backing_buffer): make field final.
+	(DoubleBuffer): add address, backing_buffer and array_offset to
+	constructor, allowing fields to be made final.
+	* java/nio/DoubleBufferImpl.java (readOnly): make field final.
+	(DoubleBufferImpl): modify call to super class constructor, allowing
+	fields to be made final.
+	* java/nio/DoubleViewBufferImpl.java (offset): make field final.
+	(bb): likewise.
+	(readOnly): likewise.
+	(endian): likewise.
+	(DoubleViewBufferImpl): modify call to super class constructor, allowing
+	fields to be made final.
+	* java/nio/FloatBuffer.java (array_offset): make field final.
+	(backing_buffer): make field final.
+	(FloatBuffer): add address, backing_buffer and array_offset to
+	constructor, allowing fields to be made final.
+	* java/nio/FloatBufferImpl.java (readOnly): make field final.
+	(FloatBufferImpl): modify call to super class constructor, allowing
+	fields to be made final.
+	* java/nio/FloatViewBufferImpl.java (offset): make field final.
+	(bb): likewise.
+	(readOnly): likewise.
+	(endian): likewise.
+	(FloatViewBufferImpl): modify call to super class constructor, allowing
+	fields to be made final.
+	* java/nio/IntBuffer.java (array_offset): make field final.
+	(backing_buffer): make field final.
+	(IntBuffer): add address, backing_buffer and array_offset to
+	constructor, allowing fields to be made final.
+	* java/nio/IntBufferImpl.java (readOnly): make field final.
+	(IntBufferImpl): modify call to super class constructor, allowing
+	fields to be made final.
+	* java/nio/IntViewBufferImpl.java (offset): make field final.
+	(bb): likewise.
+	(readOnly): likewise.
+	(endian): likewise.
+	(IntViewBufferImpl): modify call to super class constructor, allowing
+	fields to be made final.
+	* java/nio/LongBuffer.java (array_offset): make field final.
+	(backing_buffer): make field final.
+	(LongBuffer): add address, backing_buffer and array_offset to
+	constructor, allowing fields to be made final.
+	* java/nio/LongBufferImpl.java (readOnly): make field final.
+	(LongBufferImpl): modify call to super class constructor, allowing
+	fields to be made final.
+	* java/nio/LongViewBufferImpl.java (offset): make field final.
+	(bb): likewise.
+	(readOnly): likewise.
+	(endian): likewise.
+	(LongViewBufferImpl): modify call to super class constructor, allowing
+	fields to be made final.
+	* java/nio/MappedByteBuffer.java (MappedByteBuffer): modify arguments
+	add call to constructor, allowing fields to be final.
+	* java/nio/MappedByteBufferImpl.java (readOnly): make field final.
+	(MappedByteBufferImpl): modify call to super class constructor, allowing
+	fields to be made final.
+	* java/nio/ShortBuffer.java (array_offset): make field final.
+	(backing_buffer): make field final.
+	(ShortBuffer): add address, backing_buffer and array_offset to
+	constructor, allowing fields to be made final.
+	* java/nio/ShortBufferImpl.java (readOnly): make field final.
+	(ShortBufferImpl): modify call to super class constructor, allowing
+	fields to be made final.
+	* java/nio/ShortViewBufferImpl.java (offset): make field final.
+	(bb): likewise.
+	(readOnly): likewise.
+	(endian): likewise.
+	(ShortViewBufferImpl): modify call to super class constructor, allowing
+	fields to be made final.
+
+2008-04-18  Ian Rogers  <ian.rogers@manchester.ac.uk>
+
 	* java/lang/Byte.java (static): initialize byteCache.
 	(valueOf(String,int)): use valueOf(byte) rather than new.
 	(valueOf(String)): likewise.

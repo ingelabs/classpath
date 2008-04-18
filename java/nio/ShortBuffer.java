@@ -38,19 +38,22 @@ exception statement from your version. */
 
 package java.nio;
 
+import gnu.classpath.Pointer;
+
 /**
  * @since 1.4
  */
 public abstract class ShortBuffer extends Buffer
   implements Comparable<ShortBuffer>
 {
-  int array_offset;
-  short[] backing_buffer;
+  final int array_offset;
+  final short[] backing_buffer;
 
-  ShortBuffer (int capacity, int limit, int position, int mark)
+  ShortBuffer (int capacity, int limit, int position, int mark, Pointer address, short[] backing_buffer, int array_offset)
   {
-    super (capacity, limit, position, mark);
-    array_offset = 0;
+    super (capacity, limit, position, mark, address);
+    this.backing_buffer = backing_buffer;
+    this.array_offset = array_offset;
   }
 
   /**

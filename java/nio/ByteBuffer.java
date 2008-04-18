@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package java.nio;
 
+import gnu.classpath.Pointer;
+
 /**
  * @since 1.4
  */
@@ -45,13 +47,14 @@ public abstract class ByteBuffer extends Buffer
   implements Comparable<ByteBuffer>
 {
   ByteOrder endian = ByteOrder.BIG_ENDIAN;
+  final byte[] backing_buffer;
+  final int array_offset;
 
-  int array_offset;
-  byte[] backing_buffer;
-
-  ByteBuffer (int capacity, int limit, int position, int mark)
+  ByteBuffer (int capacity, int limit, int position, int mark, Pointer address, byte[] backing_buffer, int array_offset)
   {
-    super (capacity, limit, position, mark);
+    super (capacity, limit, position, mark, address);
+    this.backing_buffer = backing_buffer;
+    this.array_offset = array_offset;
   }
 
   /**

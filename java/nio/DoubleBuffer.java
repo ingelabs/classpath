@@ -38,19 +38,22 @@ exception statement from your version. */
 
 package java.nio;
 
+import gnu.classpath.Pointer;
+
 /**
  * @since 1.4
  */
 public abstract class DoubleBuffer extends Buffer
   implements Comparable<DoubleBuffer>
 {
-  int array_offset;
-  double[] backing_buffer;
+  final int array_offset;
+  final double[] backing_buffer;
 
-  DoubleBuffer (int capacity, int limit, int position, int mark)
+  DoubleBuffer (int capacity, int limit, int position, int mark, Pointer address, double[] backing_buffer, int array_offset)
   {
-    super (capacity, limit, position, mark);
-    array_offset = 0;
+    super (capacity, limit, position, mark, address);
+    this.backing_buffer = backing_buffer;
+    this.array_offset = array_offset;
   }
 
   /**

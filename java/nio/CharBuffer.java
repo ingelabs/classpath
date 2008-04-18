@@ -39,6 +39,7 @@ exception statement from your version. */
 package java.nio;
 
 import java.io.IOException;
+import gnu.classpath.Pointer;
 
 /**
  * @since 1.4
@@ -46,13 +47,14 @@ import java.io.IOException;
 public abstract class CharBuffer extends Buffer
   implements Comparable<CharBuffer>, CharSequence, Readable, Appendable
 {
-  int array_offset;
-  char[] backing_buffer;
+  final int array_offset;
+  final char[] backing_buffer;
 
-  CharBuffer (int capacity, int limit, int position, int mark)
+  CharBuffer (int capacity, int limit, int position, int mark, Pointer address, char[] backing_buffer, int array_offset)
   {
-    super (capacity, limit, position, mark);
-    array_offset = 0;
+    super (capacity, limit, position, mark, address);
+    this.backing_buffer = backing_buffer;
+    this.array_offset = array_offset;
   }
 
   /**

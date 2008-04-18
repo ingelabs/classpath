@@ -38,15 +38,17 @@ exception statement from your version. */
 
 package java.nio;
 
+import gnu.classpath.Pointer;
+
 /**
  * @author Michael Koch (konqueror@gmx.de)
  * @since 1.4
  */
 public abstract class MappedByteBuffer extends ByteBuffer
 {
-  MappedByteBuffer (int capacity, int limit, int position, int mark)
+  MappedByteBuffer (int capacity, int limit, int position, int mark, Pointer address)
   {
-    super (capacity, limit, position, mark);
+    super (capacity, limit, position, mark, address, null, 0);
   }
   
   void forceImpl()

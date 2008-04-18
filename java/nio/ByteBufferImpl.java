@@ -43,13 +43,11 @@ package java.nio;
  */
 final class ByteBufferImpl extends ByteBuffer
 {
-  private boolean readOnly;
+  private final boolean readOnly;
 
   ByteBufferImpl (byte[] buffer, int offset, int capacity, int limit, int position, int mark, boolean readOnly)
   {
-    super (capacity, limit, position, mark);
-    this.backing_buffer = buffer;
-    this.array_offset = offset;
+    super (capacity, limit, position, mark, null, buffer, offset);
     this.readOnly = readOnly;
   }
   
