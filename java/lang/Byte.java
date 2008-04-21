@@ -90,7 +90,7 @@ public final class Byte extends Number implements Comparable<Byte>
   private static Byte[] byteCache = new Byte[MAX_VALUE - MIN_VALUE + 1];
   static
   {
-    for (short i=MIN_VALUE; i <= MAX_VALUE; i++)
+    for (int i=MIN_VALUE; i <= MAX_VALUE; i++)
       byteCache[i - MIN_VALUE] = new Byte((byte) i);
   }
 
