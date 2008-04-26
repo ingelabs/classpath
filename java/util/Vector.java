@@ -909,7 +909,7 @@ public class Vector<T> extends AbstractList<T>
     // use of a negative index will cause an ArrayIndexOutOfBoundsException
     // with no effort on our part.
     if (index > elementCount)
-      throw new ArrayIndexOutOfBoundsException(index + " > " + elementCount);
+      raiseBoundsError(index, " > ");
   }
 
   /**
@@ -924,9 +924,24 @@ public class Vector<T> extends AbstractList<T>
     // use of a negative index will cause an ArrayIndexOutOfBoundsException
     // with no effort on our part.
     if (index >= elementCount)
-      throw new ArrayIndexOutOfBoundsException(index + " >= " + elementCount);
+      raiseBoundsError(index, " >= ");
   }
 
+  /**
+   * Raise the ArrayIndexOfOutBoundsException.
+   *
+   * @param index the index of the access
+   * @param operator the operator to include in the error message
+   * @throws IndexOutOfBoundsException unconditionally
+   */
+  private void raiseBoundsError(int index, String operator)
+  {
+    // Implementaion note: put in a separate method to make the JITs job easier
+    // (separate common from uncommon code at method boundaries when trivial to
+    // do so).
+    throw new ArrayIndexOutOfBoundsException(index + operator + elementCount);
+  }
+  
   /**
    * Serializes this object to the given stream.
    *
