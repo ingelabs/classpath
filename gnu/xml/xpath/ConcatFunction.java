@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package gnu.xml.xpath;
 
+import gnu.java.lang.CPStringBuilder;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -61,7 +63,7 @@ final class ConcatFunction
 
   public Object evaluate(Node context, int pos, int len)
   {
-    StringBuffer buf = new StringBuffer();
+    CPStringBuilder buf = new CPStringBuilder();
     for (Iterator i = args.iterator(); i.hasNext(); )
       {
         Expr arg = (Expr) i.next();
@@ -96,7 +98,7 @@ final class ConcatFunction
 
   public String toString()
   {
-    StringBuffer buf = new StringBuffer("concat(");
+    CPStringBuilder buf = new CPStringBuilder("concat(");
     int len = args.size();
     for (int i = 0; i < len; i++)
       {

@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package gnu.xml.xpath;
 
+import gnu.java.lang.CPStringBuilder;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -431,7 +433,7 @@ public final class Selector
 
   public String toString()
   {
-    StringBuffer buf = new StringBuffer();
+    CPStringBuilder buf = new CPStringBuilder();
     switch (axis)
       {
       case ANCESTOR:

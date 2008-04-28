@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package gnu.xml.xpath;
 
+import gnu.java.lang.CPStringBuilder;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -234,7 +236,7 @@ public final class Steps
 
   public String toString()
   {
-    StringBuffer buf = new StringBuffer();
+    CPStringBuilder buf = new CPStringBuilder();
     Iterator i = path.iterator();
     Expr expr = (Expr) i.next();
     if (!(expr instanceof Root))

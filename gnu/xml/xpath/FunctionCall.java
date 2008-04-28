@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package gnu.xml.xpath;
 
+import gnu.java.lang.CPStringBuilder;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -144,7 +146,7 @@ public final class FunctionCall
 
   public String toString()
   {
-    StringBuffer buf = new StringBuffer();
+    CPStringBuilder buf = new CPStringBuilder();
     buf.append(name);
     buf.append('(');
     int len = args.size();

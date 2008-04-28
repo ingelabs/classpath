@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package gnu.xml.xpath;
 
+import gnu.java.lang.CPStringBuilder;
+
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -471,7 +473,7 @@ public abstract class Expr
    */
   public static String stringValue(Collection nodeSet)
   {
-    StringBuffer buf = new StringBuffer();
+    CPStringBuilder buf = new CPStringBuilder();
     for (Iterator i = nodeSet.iterator(); i.hasNext(); )
       {
         buf.append(stringValue((Node) i.next()));
@@ -494,7 +496,7 @@ public abstract class Expr
       case Node.DOCUMENT_NODE: // 5.1 Root Node
       case Node.DOCUMENT_FRAGMENT_NODE:
       case Node.ELEMENT_NODE: // 5.2 Element Nodes
-        StringBuffer buf = new StringBuffer();
+        CPStringBuilder buf = new CPStringBuilder();
         for (Node ctx = node.getFirstChild(); ctx != null;
              ctx = ctx.getNextSibling())
           {

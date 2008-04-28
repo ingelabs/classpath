@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package gnu.xml.xpath;
 
+import gnu.java.lang.CPStringBuilder;
+
 import java.util.List;
 import java.util.StringTokenizer;
 import javax.xml.namespace.QName;
@@ -74,7 +76,7 @@ final class NormalizeSpaceFunction
     Object val = (arg == null) ? null : arg.evaluate(context, pos, len);
     String s = _string(context, val);
     StringTokenizer st = new StringTokenizer(s, " \t\r\n");
-    StringBuffer buf = new StringBuffer();
+    CPStringBuilder buf = new CPStringBuilder();
     if (st.hasMoreTokens())
       {
         buf.append(st.nextToken()); 
