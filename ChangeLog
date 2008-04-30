@@ -1,17 +1,33 @@
+2008-05-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	PR classpath/21869
+	* gnu/xml/libxmlj/dom/GnomeAttr.java,
+	* gnu/xml/libxmlj/dom/GnomeCharacterData.java,
+	* gnu/xml/libxmlj/dom/GnomeDocument.java,
+	* gnu/xml/libxmlj/dom/GnomeDocumentType.java,
+	* gnu/xml/libxmlj/dom/GnomeElement.java,
+	* gnu/xml/libxmlj/dom/GnomeEntity.java,
+	* gnu/xml/libxmlj/dom/GnomeNode.java,
+	* gnu/xml/libxmlj/dom/GnomeNotation.java,
+	* gnu/xml/libxmlj/dom/GnomeProcessingInstruction.java,
+	* gnu/xml/libxmlj/dom/GnomeText.java,
+	* gnu/xml/libxmlj/dom/GnomeXPathResult.java:
+	Swap use of StringBuffer for CPStringBuilder.
+
 2008-04-28  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/21869
-	* util/XMLWriter.java,
-	* xpath/ArithmeticExpr.java,
-	* xpath/ConcatFunction.java,
-	* xpath/Expr.java,
-	* xpath/FunctionCall.java,
-	* xpath/NormalizeSpaceFunction.java,
-	* xpath/Selector.java,
-	* xpath/Steps.java,
-	* xpath/TranslateFunction.java,
-	* xpath/VariableReference.java,
-	* xpath/XPathTokenizer.java:
+	* gnu/xml/util/XMLWriter.java,
+	* gnu/xml/xpath/ArithmeticExpr.java,
+	* gnu/xml/xpath/ConcatFunction.java,
+	* gnu/xml/xpath/Expr.java,
+	* gnu/xml/xpath/FunctionCall.java,
+	* gnu/xml/xpath/NormalizeSpaceFunction.java,
+	* gnu/xml/xpath/Selector.java,
+	* gnu/xml/xpath/Steps.java,
+	* gnu/xml/xpath/TranslateFunction.java,
+	* gnu/xml/xpath/VariableReference.java,
+	* gnu/xml/xpath/XPathTokenizer.java:
 	Swap use of StringBuffer for CPStringBuilder.
 
 2008-04-26  Ian Rogers  <ian.rogers@manchester.ac.uk>
