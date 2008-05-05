@@ -1,3 +1,12 @@
+2008-05-06  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	PR classpath/21869
+	* gnu/javax/swing/text/html/parser/htmlValidator.java,
+	* gnu/javax/swing/text/html/parser/models/list.java,
+	* gnu/javax/swing/text/html/parser/models/node.java,
+	* gnu/javax/swing/text/html/parser/support/Parser.java:
+	Swap use of StringBuffer for CPStringBuilder,
+
 2008-05-05  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/21869
