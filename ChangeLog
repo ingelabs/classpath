@@ -1,6 +1,25 @@
 2008-05-05  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/21869
+	* gnu/javax/crypto/assembly/TransformerException.java,
+	* gnu/javax/crypto/cipher/BaseCipher.java,
+	* gnu/javax/crypto/jce/sig/DHParameters.java,
+	* gnu/javax/crypto/key/KeyAgreementException.java,
+	* gnu/javax/crypto/mode/BaseMode.java,
+	* gnu/javax/crypto/pad/BasePad.java,
+	* gnu/javax/crypto/sasl/crammd5/CramMD5Util.java,
+	* gnu/javax/crypto/sasl/crammd5/PasswordFile.java,
+	* gnu/javax/crypto/sasl/plain/PasswordFile.java,
+	* gnu/javax/crypto/sasl/plain/PlainClient.java,
+	* gnu/javax/crypto/sasl/srp/PasswordFile.java,
+	* gnu/javax/crypto/sasl/srp/SRPClient.java,
+	* gnu/javax/crypto/sasl/srp/SRPServer.java,
+	* gnu/javax/crypto/sasl/srp/ServerStore.java:
+	Swap use of StringBuffer for CPStringBuilder,
+
+2008-05-05  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	PR classpath/21869
 	* gnu/java/util/Base64.java,
 	* gnu/java/util/prefs/NodeWriter.java,
 	* gnu/java/util/regex/RE.java,
