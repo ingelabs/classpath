@@ -1,6 +1,20 @@
 2008-05-05  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/21869
+	* gnu/java/lang/CPStringBuilder.java:
+	(CPStringBuilder(StringBuffer)): Added.
+	(CPStringBuulder(StringBuilder)): Likewise.
+	* gnu/java/text/AttributedFormatBuffer.java:
+	Swap use of StringBuffer for CPStringBuilder,
+	and make fields final.
+	* gnu/java/text/StringFormatBuffer.java:
+	Make fields final.
+	* java/text/SimpleDateFormat.java:
+	Add thread safety warning.
+
+2008-05-05  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	PR classpath/21869
 	* gnu/java/security/OID.java,
 	* gnu/java/security/PolicyFile.java,
 	* gnu/java/security/der/BitString.java,

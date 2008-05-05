@@ -82,7 +82,7 @@ public final class CPStringBuilder
   }
 
   /**
-   * Create an empty <code>StringBuffer</code> with the specified initial
+   * Create an empty <code>CPStringBuilder</code> with the specified initial
    * capacity.
    *
    * @param capacity the initial capacity
@@ -94,7 +94,7 @@ public final class CPStringBuilder
   }
 
   /**
-   * Create a new <code>StringBuffer</code> with the characters in the
+   * Create a new <code>CPStringBuilder</code> with the characters in the
    * specified <code>String</code>. Initial capacity will be the size of the
    * String plus 16.
    *
@@ -109,7 +109,37 @@ public final class CPStringBuilder
   }
 
   /**
-   * Create a new <code>StringBuffer</code> with the characters in the
+   * Create a new <code>CPStringBuilder</code> with the characters in the
+   * specified <code>StringBuffer</code>. Initial capacity will be the size of the
+   * String plus 16.
+   *
+   * @param str the <code>String</code> to convert
+   * @throws NullPointerException if str is null
+   */
+  public CPStringBuilder(StringBuffer str)
+  {
+    count = str.length();
+    value = new char[count + DEFAULT_CAPACITY];
+    str.getChars(0, count, value, 0);
+  }
+
+  /**
+   * Create a new <code>CPStringBuilder</code> with the characters in the
+   * specified <code>StringBuilder</code>. Initial capacity will be the size of the
+   * String plus 16.
+   *
+   * @param str the <code>String</code> to convert
+   * @throws NullPointerException if str is null
+   */
+  public CPStringBuilder(StringBuilder str)
+  {
+    count = str.length();
+    value = new char[count + DEFAULT_CAPACITY];
+    str.getChars(0, count, value, 0);
+  }
+
+  /**
+   * Create a new <code>CPStringBuilder</code> with the characters in the
    * specified <code>CharSequence</code>. Initial capacity will be the
    * length of the sequence plus 16; if the sequence reports a length
    * less than or equal to 0, then the initial capacity will be 16.
@@ -128,7 +158,7 @@ public final class CPStringBuilder
   }
 
   /**
-   * Increase the capacity of this <code>StringBuffer</code>. This will
+   * Increase the capacity of this <code>CPStringBuilder</code>. This will
    * ensure that an expensive growing operation will not occur until
    * <code>minimumCapacity</code> is reached. The buffer is grown to the
    * larger of <code>minimumCapacity</code> and

@@ -63,6 +63,8 @@ import java.util.regex.Pattern;
 /**
  * SimpleDateFormat provides convenient methods for parsing and formatting
  * dates using Gregorian calendars (see java.util.GregorianCalendar). 
+ * This class is not thread-safe; external synchronisation should be applied
+ * if an instance is to be accessed from multiple threads.
  */
 public class SimpleDateFormat extends DateFormat 
 {
