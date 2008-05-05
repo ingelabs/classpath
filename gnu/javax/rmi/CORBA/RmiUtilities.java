@@ -46,6 +46,8 @@ import gnu.CORBA.CDR.gnuRuntime;
 import gnu.CORBA.CDR.gnuValueStream;
 import gnu.CORBA.CDR.HeadlessInput;
 
+import gnu.java.lang.CPStringBuilder;
+
 import org.omg.CORBA.MARSHAL;
 import org.omg.CORBA.StringValueHelper;
 import org.omg.CORBA.WStringValueHelper;
@@ -393,7 +395,7 @@ public class RmiUtilities
    */
   public static String toHex(long l)
   {
-    StringBuffer b = new StringBuffer();
+    CPStringBuilder b = new CPStringBuilder();
     b.append(Long.toHexString(l).toUpperCase());
     while (b.length() < 16)
       b.insert(0, '0');
@@ -425,7 +427,7 @@ public class RmiUtilities
       return "V";
     else if (type.isArray())
       {
-        StringBuffer l = new StringBuffer("[");
+        CPStringBuilder l = new CPStringBuilder("[");
         Class component = type.getComponentType();
 
         while (component.isArray())

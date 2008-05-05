@@ -1079,7 +1079,21 @@ public final class CPStringBuilder
   }
 
   /**
-   * Creates a substring of this StringBuilder, starting at a specified index
+   * Creates a substring of this CPStringBuilder, starting at a specified index
+   * and ending at the end of this StringBuilder.
+   *
+   * @param beginIndex index to start substring (base 0)
+   * @return new String which is a substring of this StringBuilder
+   * @throws StringIndexOutOfBoundsException if beginIndex is out of bounds
+   * @see #substring(int, int)
+   */
+  public String substring(int beginIndex)
+  {
+    return substring(beginIndex, count);
+  }
+
+  /**
+   * Creates a substring of this CPStringBuilder, starting at a specified index
    * and ending at one character before a specified index.
    *
    * @param beginIndex index to start at (inclusive, base 0)
@@ -1099,7 +1113,7 @@ public final class CPStringBuilder
   }
 
   /**
-   * Convert this <code>StringBuilder</code> to a <code>String</code>. The
+   * Convert this <code>CPStringBuilder</code> to a <code>String</code>. The
    * String is composed of the characters currently in this StringBuilder. Note
    * that the result is not a copy, so future modifications to this buffer
    * do affect the String.
