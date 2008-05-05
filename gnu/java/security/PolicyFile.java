@@ -39,6 +39,8 @@ package gnu.java.security;
 
 import gnu.classpath.debug.Component;
 import gnu.classpath.debug.SystemLogger;
+
+import gnu.java.lang.CPStringBuilder;
 import gnu.java.security.action.GetPropertyAction;
 
 import java.io.File;
@@ -629,8 +631,8 @@ public final class PolicyFile extends Policy
    */
   private static String expand(final String s)
   {
-    final StringBuffer result = new StringBuffer();
-    final StringBuffer prop = new StringBuffer();
+    final CPStringBuilder result = new CPStringBuilder();
+    final CPStringBuilder prop = new CPStringBuilder();
     int state = 0;
     for (int i = 0; i < s.length(); i++)
       {
