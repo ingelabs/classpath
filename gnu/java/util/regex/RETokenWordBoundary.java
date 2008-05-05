@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package gnu.java.util.regex;
 
+import gnu.java.lang.CPStringBuilder;
+
 /**
  * Represents a combination lookahead/lookbehind for POSIX [:alnum:].
  */
@@ -104,7 +106,7 @@ final class RETokenWordBoundary extends REToken {
 	else return 0;
     }
     
-    void dump(StringBuffer os) {
+    void dump(CPStringBuilder os) {
 	if (where == (BEGIN | END)) {
 	    os.append( negated ? "\\B" : "\\b" );
 	} else if (where == BEGIN) {

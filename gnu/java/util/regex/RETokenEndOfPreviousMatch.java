@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package gnu.java.util.regex;
 
+import gnu.java.lang.CPStringBuilder;
+
 class RETokenEndOfPreviousMatch extends RETokenStart {
 
     RETokenEndOfPreviousMatch(int subIndex) {
@@ -66,7 +68,7 @@ class RETokenEndOfPreviousMatch extends RETokenStart {
 	else return 0;
     }
     
-    void dump(StringBuffer os) {
+    void dump(CPStringBuilder os) {
 	os.append("\\G");
     }
 }

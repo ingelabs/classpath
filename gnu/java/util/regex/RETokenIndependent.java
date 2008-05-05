@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package gnu.java.util.regex;
 
+import gnu.java.lang.CPStringBuilder;
+
 /**
  * @author Ito Kazumitsu
  */
@@ -69,7 +71,7 @@ final class RETokenIndependent extends REToken
     return null;
   }
 
-    void dump(StringBuffer os) {
+    void dump(CPStringBuilder os) {
 	os.append("(?>");
 	re.dumpAll(os);
 	os.append(')');

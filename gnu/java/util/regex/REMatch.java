@@ -37,6 +37,9 @@ exception statement from your version. */
 
 
 package gnu.java.util.regex;
+
+import gnu.java.lang.CPStringBuilder;
+
 import java.io.Serializable;
 
 /**
@@ -114,7 +117,7 @@ public final class REMatch implements Serializable, Cloneable {
 
     void finish(CharIndexed text) {
 	start[0] = 0;
-	StringBuffer sb = new StringBuffer();
+	CPStringBuilder sb = new CPStringBuilder();
 	int i;
 	for (i = 0; i < end[0]; i++)
 	    sb.append(text.charAt(i));
@@ -199,7 +202,7 @@ public final class REMatch implements Serializable, Cloneable {
 	    return (matchedText.substring(start[sub],end[sub]));
 	else {
 	// This case occurs with RETokenLookAhead or RETokenLookBehind.
-	    StringBuffer sb = new StringBuffer();
+	    CPStringBuilder sb = new CPStringBuilder();
 	    int s = start[sub];
 	    int e = end[sub];
 	    if (s < 0) s += 1;
@@ -282,7 +285,7 @@ public final class REMatch implements Serializable, Cloneable {
      */
     public String substituteInto(String input) {
 	// a la Perl, $0 is whole thing, $1 - $9 are subexpressions
-	StringBuffer output = new StringBuffer();
+	CPStringBuilder output = new CPStringBuilder();
 	int pos;
 	for (pos = 0; pos < input.length()-1; pos++) {
 	    if ((input.charAt(pos) == '$') && (Character.isDigit(input.charAt(pos+1)))) {

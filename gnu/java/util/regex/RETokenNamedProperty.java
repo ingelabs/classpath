@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package gnu.java.util.regex;
 
+import gnu.java.lang.CPStringBuilder;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -147,7 +149,7 @@ final class RETokenNamedProperty extends REToken {
     return numRepeats;
   }
 
-  void dump(StringBuffer os) {
+  void dump(CPStringBuilder os) {
     os.append("\\")
       .append(negate ? "P" : "p")
       .append("{" + name + "}");

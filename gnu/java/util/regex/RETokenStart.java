@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package gnu.java.util.regex;
 
+import gnu.java.lang.CPStringBuilder;
+
 class RETokenStart extends REToken {
     private String newline; // matches after a newline
     private boolean check_java_line_terminators;
@@ -115,7 +117,7 @@ class RETokenStart extends REToken {
 	else return 0;
     }
     
-    void dump(StringBuffer os) {
+    void dump(CPStringBuilder os) {
 	os.append('^');
     }
 }

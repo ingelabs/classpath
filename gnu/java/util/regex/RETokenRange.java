@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package gnu.java.util.regex;
 
+import gnu.java.lang.CPStringBuilder;
+
 final class RETokenRange extends REToken {
   private char lo, hi;
   private boolean insens;
@@ -93,7 +95,7 @@ final class RETokenRange extends REToken {
         return numRepeats;
     }
     
-  void dump(StringBuffer os) {
+  void dump(CPStringBuilder os) {
     os.append(lo).append('-').append(hi);
   }
 }

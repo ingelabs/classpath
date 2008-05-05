@@ -36,6 +36,9 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 package gnu.java.util.regex;
+
+import gnu.java.lang.CPStringBuilder;
+
 import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
@@ -101,7 +104,7 @@ public class REMatchEnumeration implements Enumeration, Serializable {
    * Saves the text leading up to the match (or to the end of the input)
    * in the specified buffer.
    */
-  public boolean hasMoreMatches(StringBuffer buffer) {
+  public boolean hasMoreMatches(CPStringBuilder buffer) {
     if (more == MAYBE) {
 	match = expr.getMatchImpl(input,index,eflags,buffer);
 	if (match != null) {

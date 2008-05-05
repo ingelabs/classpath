@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package gnu.java.util.regex;
 
+import gnu.java.lang.CPStringBuilder;
+
 final class RETokenBackRef extends REToken {
   private int num;
   private boolean insens;
@@ -78,7 +80,7 @@ final class RETokenBackRef extends REToken {
 	return mymatch;
     }
     
-    void dump(StringBuffer os) {
+    void dump(CPStringBuilder os) {
 	os.append('\\').append(num);
     }
 }

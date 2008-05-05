@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package gnu.java.util.regex;
 
+import gnu.java.lang.CPStringBuilder;
+
 final class RETokenPOSIX extends REToken {
   int type;
   boolean insens;
@@ -160,7 +162,7 @@ final class RETokenPOSIX extends REToken {
       return numRepeats;
   }
 
-  void dump(StringBuffer os) {
+  void dump(CPStringBuilder os) {
     if (negated) os.append('^');
     os.append("[:" + s_nameTable[type] + ":]");
   }

@@ -36,6 +36,9 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 package gnu.java.util.regex;
+
+import gnu.java.lang.CPStringBuilder;
+
 import java.util.Vector;
 import java.util.Stack;
 
@@ -270,7 +273,7 @@ final class RETokenOneOf extends REToken {
       return numRepeats;
   }
 
-  void dump(StringBuffer os) {
+  void dump(CPStringBuilder os) {
     os.append(negative ? "[^" : "(?:");
     for (int i = 0; i < options.size(); i++) {
       if (!negative && (i > 0)) os.append('|');

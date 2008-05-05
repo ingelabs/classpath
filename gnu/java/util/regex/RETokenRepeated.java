@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package gnu.java.util.regex;
 
+import gnu.java.lang.CPStringBuilder;
+
 import java.util.ArrayList;
 
 final class RETokenRepeated extends REToken {
@@ -509,7 +511,7 @@ final class RETokenRepeated extends REToken {
 	}
     }		    
 
-    void dump(StringBuffer os) {
+    void dump(CPStringBuilder os) {
 	os.append("(?:");
 	token.dumpAll(os);
 	os.append(')');

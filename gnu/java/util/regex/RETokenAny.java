@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package gnu.java.util.regex;
 
+import gnu.java.lang.CPStringBuilder;
+
 final class RETokenAny extends REToken {
   /** True if '.' can match a newline (RE_DOT_NEWLINE) */
   private boolean newline; 
@@ -92,7 +94,7 @@ final class RETokenAny extends REToken {
     return numRepeats;
   }
 
-  void dump(StringBuffer os) {
+  void dump(CPStringBuilder os) {
     os.append('.');
   }
 }

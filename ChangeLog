@@ -1,6 +1,34 @@
 2008-05-05  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/21869
+	* gnu/java/util/Base64.java,
+	* gnu/java/util/prefs/NodeWriter.java,
+	* gnu/java/util/regex/RE.java,
+	* gnu/java/util/regex/REException.java,
+	* gnu/java/util/regex/REMatch.java,
+	* gnu/java/util/regex/REMatchEnumeration.java,
+	* gnu/java/util/regex/REToken.java,
+	* gnu/java/util/regex/RETokenAny.java,
+	* gnu/java/util/regex/RETokenBackRef.java,
+	* gnu/java/util/regex/RETokenChar.java,
+	* gnu/java/util/regex/RETokenEnd.java,
+	* gnu/java/util/regex/RETokenEndOfPreviousMatch.java,
+	* gnu/java/util/regex/RETokenEndSub.java,
+	* gnu/java/util/regex/RETokenIndependent.java,
+	* gnu/java/util/regex/RETokenLookAhead.java,
+	* gnu/java/util/regex/RETokenLookBehind.java,
+	* gnu/java/util/regex/RETokenNamedProperty.java,
+	* gnu/java/util/regex/RETokenOneOf.java,
+	* gnu/java/util/regex/RETokenPOSIX.java,
+	* gnu/java/util/regex/RETokenRange.java,
+	* gnu/java/util/regex/RETokenRepeated.java,
+	* gnu/java/util/regex/RETokenStart.java,
+	* gnu/java/util/regex/RETokenWordBoundary.java:
+	Swap use of StringBuffer for CPStringBuilder,
+
+2008-05-05  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	PR classpath/21869
 	* gnu/java/lang/CPStringBuilder.java:
 	(CPStringBuilder(StringBuffer)): Added.
 	(CPStringBuulder(StringBuilder)): Likewise.

@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package gnu.java.util.regex;
 
+import gnu.java.lang.CPStringBuilder;
+
 import java.text.MessageFormat;
 
 /**
@@ -178,7 +180,7 @@ public class REException extends Exception {
    */
   public String getMessage() {
     Object[] args = {new Integer(pos)};
-    StringBuffer sb = new StringBuffer();
+    CPStringBuilder sb = new CPStringBuilder();
     String prefix = RE.getLocalizedMessage("error.prefix");
     sb.append(MessageFormat.format(prefix, args));
     sb.append('\n');

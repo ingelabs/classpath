@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package gnu.java.util.regex;
 
+import gnu.java.lang.CPStringBuilder;
+
 final class RETokenEnd extends REToken {
     /**
      * Indicates whether this token should match on a line break.
@@ -118,7 +120,7 @@ final class RETokenEnd extends REToken {
 	else return 0;
     }
 
-  void dump(StringBuffer os) {
+  void dump(CPStringBuilder os) {
     os.append('$');
   }
 }

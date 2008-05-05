@@ -36,6 +36,9 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 package gnu.java.util.regex;
+
+import gnu.java.lang.CPStringBuilder;
+
 import java.io.Serializable;
 
 abstract class REToken implements Serializable, Cloneable {
@@ -160,15 +163,15 @@ abstract class REToken implements Serializable, Cloneable {
       return true; // Token was accepted
   }
 
-  abstract void dump(StringBuffer os);
+  abstract void dump(CPStringBuilder os);
 
-  void dumpAll(StringBuffer os) {
+  void dumpAll(CPStringBuilder os) {
     dump(os);
     if (next != null) next.dumpAll(os);
   }
 
   public String toString() {
-    StringBuffer os = new StringBuffer();
+    CPStringBuilder os = new CPStringBuilder();
     dump(os);
     return os.toString();
   }

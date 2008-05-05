@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package gnu.java.util.regex;
 
+import gnu.java.lang.CPStringBuilder;
+
 final class RETokenChar extends REToken {
   private char[] ch;
   private boolean insens;
@@ -127,7 +129,7 @@ final class RETokenChar extends REToken {
     } else return super.chain(next);
   }
 
-  void dump(StringBuffer os) {
+  void dump(CPStringBuilder os) {
     os.append(ch);
   }
 }

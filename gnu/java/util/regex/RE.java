@@ -36,6 +36,9 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 package gnu.java.util.regex;
+
+import gnu.java.lang.CPStringBuilder;
+
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Locale;
@@ -348,6 +351,12 @@ public class RE extends REToken {
     } else if (patternObj instanceof StringBuffer) {
       pattern = new char [((StringBuffer) patternObj).length()];
       ((StringBuffer) patternObj).getChars(0,pattern.length,pattern,0);
+    } else if (patternObj instanceof StringBuilder) {
+      pattern = new char [((StringBuilder) patternObj).length()];
+      ((StringBuilder) patternObj).getChars(0,pattern.length,pattern,0);
+    } else if (patternObj instanceof CPStringBuilder) {
+      pattern = new char [((CPStringBuilder) patternObj).length()];
+      ((CPStringBuilder) patternObj).getChars(0,pattern.length,pattern,0);
     } else {
 	pattern = patternObj.toString().toCharArray();
     }
@@ -1237,7 +1246,7 @@ public class RE extends REToken {
 	    }
 	    ++index;
 	  } else if ((ch == '[') && (syntax.get(RESyntax.RE_CHAR_CLASSES)) && (index < pLength) && (pattern[index] == ':')) {
-	    StringBuffer posixSet = new StringBuffer();
+	    CPStringBuilder posixSet = new CPStringBuilder();
 	    index = getPosixSet(pattern,index+1,posixSet);
 	    int posixId = RETokenPOSIX.intValue(posixSet.toString());
 	    if (posixId != -1) {
@@ -1727,11 +1736,11 @@ public class RE extends REToken {
    * @param eflags The logical OR of any execution flags above.
    * @param buffer The StringBuffer to save pre-match text in.
    * @return An REMatch instance referencing the match, or null if none.  */
-  public REMatch getMatch(Object input, int index, int eflags, StringBuffer buffer) {
+  public REMatch getMatch(Object input, int index, int eflags, CPStringBuilder buffer) {
     return getMatchImpl(makeCharIndexed(input,index),index,eflags,buffer);
   }
 
-  REMatch getMatchImpl(CharIndexed input, int anchor, int eflags, StringBuffer buffer) {
+  REMatch getMatchImpl(CharIndexed input, int anchor, int eflags, CPStringBuilder buffer) {
       boolean tryEntireMatch = ((eflags & REG_TRY_ENTIRE_MATCH) != 0);
       boolean doMove = ((eflags & REG_FIX_STARTING_POSITION) == 0);
       RE re = (tryEntireMatch ? (RE) this.clone() : this);
@@ -1880,7 +1889,7 @@ public class RE extends REToken {
   }
 
   private String substituteImpl(CharIndexed input,String replace,int index,int eflags) {
-    StringBuffer buffer = new StringBuffer();
+    CPStringBuilder buffer = new CPStringBuilder();
     REMatch m = getMatchImpl(input,index,eflags,buffer);
     if (m==null) return buffer.toString();
     buffer.append(getReplacement(replace, m, eflags));
@@ -1941,7 +1950,7 @@ public class RE extends REToken {
   }
 
   private String substituteAllImpl(CharIndexed input,String replace,int index,int eflags) {
-    StringBuffer buffer = new StringBuffer();
+    CPStringBuilder buffer = new CPStringBuilder();
     REMatch m;
     while ((m = getMatchImpl(input,index,eflags,buffer)) != null) {
       buffer.append(getReplacement(replace, m, eflags));
@@ -1965,7 +1974,7 @@ public class RE extends REToken {
       return replace;
     else {
       if ((eflags & REG_REPLACE_USE_BACKSLASHESCAPE) > 0) {
-        StringBuffer sb = new StringBuffer();
+        CPStringBuilder sb = new CPStringBuilder();
         int l = replace.length();
         for (int i = 0; i < l; i++) {
 	    char c = replace.charAt(i);
@@ -2019,7 +2028,7 @@ public class RE extends REToken {
     return new RETokenRepeated(current.subIndex,current,min,max);
   }
 
-  private static int getPosixSet(char[] pattern,int index,StringBuffer buf) {
+  private static int getPosixSet(char[] pattern,int index,CPStringBuilder buf) {
     // Precondition: pattern[index-1] == ':'
     // we will return pos of closing ']'.
     int i;
@@ -2045,7 +2054,7 @@ public class RE extends REToken {
     
     int min,max=0;
     CharUnit unit = new CharUnit();
-    StringBuffer buf = new StringBuffer();
+    CPStringBuilder buf = new CPStringBuilder();
     
     // Read string of digits
     do {
@@ -2072,7 +2081,7 @@ public class RE extends REToken {
       else
         return startIndex;
     else if ((unit.ch == ',') && !unit.bk) {
-      buf = new StringBuffer();
+      buf = new CPStringBuilder();
       // Read string of digits
       while (((index = getCharUnit(input,index,unit,false)) != input.length) && Character.isDigit(unit.ch))
 	buf.append(unit.ch);
@@ -2106,12 +2115,12 @@ public class RE extends REToken {
     * useful for debugging.
     */
    public String toString() {
-     StringBuffer sb = new StringBuffer();
+     CPStringBuilder sb = new CPStringBuilder();
      dump(sb);
      return sb.toString();
    }
 
-  void dump(StringBuffer os) {
+  void dump(CPStringBuilder os) {
     os.append("(?#startRE subIndex=" + subIndex + ")");
     if (subIndex == 0)
       os.append("?:");
