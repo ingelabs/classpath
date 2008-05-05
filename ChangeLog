@@ -1,3 +1,21 @@
+2008-05-05  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	PR classpath/21869
+	* gnu/CORBA/BigDecimalHelper.java,
+	* gnu/CORBA/CDR/LittleEndianInputStream.java,
+	* gnu/CORBA/CDR/Vio.java,
+	* gnu/CORBA/CDR/gnuRuntime.java,
+	* gnu/CORBA/GIOP/MessageHeader.java,
+	* gnu/CORBA/GIOP/RequestHeader.java,
+	* gnu/CORBA/GIOP/v1_0/ReplyHeader.java,
+	* gnu/CORBA/GIOP/v1_0/RequestHeader.java,
+	* gnu/CORBA/IOR.java,
+	* gnu/CORBA/NamingService/NameParser.java,
+	* gnu/CORBA/NamingService/NameTransformer.java,
+	* gnu/CORBA/Poa/gnuPOA.java,
+	* gnu/CORBA/Poa/gnuServantObject.java:
+	Swap use of StringBuffer for CPStringBuilder.
+
 2008-05-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/21869
