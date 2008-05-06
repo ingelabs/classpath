@@ -365,7 +365,7 @@ public abstract class MessageDigest extends MessageDigestSpi
     if (digest == null)
       return "incomplete";
 
-    StringBuffer buf = new StringBuffer();
+    CPStringBuilder buf = new CPStringBuilder();
     int len = digest.length;
     for (int i = 0; i < len; ++i)
       {

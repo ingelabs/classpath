@@ -1,6 +1,23 @@
 2008-05-06  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/21869
+	* java/security/CodeSource.java,
+	* java/security/MessageDigest.java,
+	* java/security/Permission.java,
+	* java/security/PermissionCollection.java,
+	* java/security/ProtectionDomain.java,
+	* java/security/cert/CertPath.java,
+	* java/security/cert/PKIXBuilderParameters.java,
+	* java/security/cert/PKIXCertPathBuilderResult.java,
+	* java/security/cert/X509CRLSelector.java,
+	* java/security/cert/X509CertSelector.java,
+	* org/ietf/jgss/Oid.java,
+	* org/omg/CORBA/portable/Delegate.java:
+	Swap use of StringBuffer for CPStringBuilder.
+
+2008-05-06  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	PR classpath/21869
 	* java/beans/Statement.java,
 	* java/io/File.java,
 	* java/io/StreamTokenizer.java,
