@@ -1,5 +1,27 @@
 2008-05-06  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	PR classpath/21869
+	* java/awt/Component.java,
+	* java/awt/Container.java,
+	* java/awt/JobAttributes.java,
+	* java/awt/event/ActionEvent.java,
+	* java/awt/event/ComponentEvent.java,
+	* java/awt/event/HierarchyEvent.java,
+	* java/awt/event/InputEvent.java,
+	* java/awt/event/InputMethodEvent.java,
+	* java/awt/event/KeyEvent.java,
+	* java/awt/event/MouseEvent.java,
+	* java/awt/event/WindowEvent.java,
+	* java/awt/font/TextLayout.java,
+	* java/awt/image/BandedSampleModel.java,
+	* java/awt/image/BufferedImage.java,
+	* java/awt/image/MultiPixelPackedSampleModel.java,
+	* java/awt/image/Raster.java,
+	* java/awt/image/SinglePixelPackedSampleModel.java:
+	Swap use of StringBuffer for CPStringBuilder.
+
+2008-05-06  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	PR classpath/35482
 	* java/lang/String.java:
 	(toLowerCase()): Fix calculation of number

@@ -43,6 +43,8 @@ package java.awt;
 
 import gnu.java.awt.ComponentReshapeEvent;
 
+import gnu.java.lang.CPStringBuilder;
+
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.AdjustmentEvent;
@@ -4991,7 +4993,7 @@ public abstract class Component
    */
   protected String paramString()
   {
-    StringBuffer param = new StringBuffer();
+    CPStringBuilder param = new CPStringBuilder();
     String name = getName();
     if (name != null)
       param.append(name).append(",");
