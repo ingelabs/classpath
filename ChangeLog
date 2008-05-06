@@ -1,6 +1,25 @@
 2008-05-06  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/21869
+	* java/beans/Statement.java,
+	* java/io/File.java,
+	* java/io/StreamTokenizer.java,
+	* java/lang/Throwable.java,
+	* java/math/BigDecimal.java,
+	* java/math/BigInteger.java,
+	* java/net/Inet4Address.java,
+	* java/net/Inet6Address.java,
+	* java/net/NetworkInterface.java,
+	* java/net/SocketPermission.java,
+	* java/net/URLDecoder.java,
+	* java/net/URLStreamHandler.java,
+	* java/nio/channels/FileLock.java,
+	* java/rmi/dgc/VMID.java:
+	Swap use of StringBuffer for CPStringBuilder.
+	
+2008-05-06  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	PR classpath/21869
 	* java/awt/Component.java,
 	* java/awt/Container.java,
 	* java/awt/JobAttributes.java,

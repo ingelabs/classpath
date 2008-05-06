@@ -39,6 +39,8 @@ exception statement from your version. */
 package java.math;
 
 import gnu.classpath.Configuration;
+
+import gnu.java.lang.CPStringBuilder;
 import gnu.java.math.MPN;
 
 import java.io.IOException;
@@ -1756,7 +1758,7 @@ public class BigInteger extends Number implements Comparable<BigInteger>
     return shift(this, -n);
   }
 
-  private void format(int radix, StringBuffer buffer)
+  private void format(int radix, CPStringBuilder buffer)
   {
     if (words == null)
       buffer.append(Integer.toString(ival, radix));
@@ -1833,7 +1835,7 @@ public class BigInteger extends Number implements Comparable<BigInteger>
     if (ival <= 2)
       return Long.toString(longValue(), radix);
     int buf_size = ival * (MPN.chars_per_word(radix) + 1);
-    StringBuffer buffer = new StringBuffer(buf_size);
+    CPStringBuilder buffer = new CPStringBuilder(buf_size);
     format(radix, buffer);
     return buffer.toString();
   }

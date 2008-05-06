@@ -40,6 +40,8 @@ package java.net;
 
 import gnu.classpath.SystemProperties;
 
+import gnu.java.lang.CPStringBuilder;
+
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
@@ -247,10 +249,10 @@ public final class NetworkInterface
   public String toString()
   {
     // FIXME: check if this is correct
-    StringBuffer result;
+    CPStringBuilder result;
     String separator = SystemProperties.getProperty("line.separator");
 
-    result = new StringBuffer();
+    result = new CPStringBuilder();
     
     result.append("name: ");
     result.append(getDisplayName());

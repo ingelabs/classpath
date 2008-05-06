@@ -1244,8 +1244,8 @@ public class BigDecimal extends Number implements Comparable<BigDecimal>
 
     int point = bigStr.length() - scale - (negative ? 1 : 0);
 
-    StringBuffer sb = new StringBuffer(bigStr.length() + 2
-                                       + (point <= 0 ? (-point + 1) : 0));
+    CPStringBuilder sb = new CPStringBuilder(bigStr.length() + 2
+					     + (point <= 0 ? (-point + 1) : 0));
     if (point <= 0)
       {
         // We have to prepend zeros and a decimal point.
