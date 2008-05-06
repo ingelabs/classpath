@@ -1,5 +1,13 @@
 2008-05-06  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	PR classpath/35482
+	* java/lang/String.java:
+	(toLowerCase()): Fix calculation of number
+	of characters to copy.
+	(toLowerCaseTurkish()): Likewise.
+
+2008-05-06  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	PR classpath/21869
 	* gnu/xml/stream/XMLEventImpl.java,
 	* gnu/xml/stream/XMLParser.java,
