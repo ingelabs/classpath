@@ -41,6 +41,8 @@ package java.util;
 
 import gnu.classpath.VMStackWalker;
 
+import gnu.java.lang.CPStringBuilder;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -515,9 +517,9 @@ public abstract class ResourceBundle
     
     int baseLen = baseName.length();
 
-    // Build up a StringBuffer containing the complete bundle name, fully
+    // Build up a CPStringBuilder containing the complete bundle name, fully
     // qualified by locale.
-    StringBuffer sb = new StringBuffer(baseLen + variant.length() + 7);
+    CPStringBuilder sb = new CPStringBuilder(baseLen + variant.length() + 7);
 
     sb.append(baseName);
     

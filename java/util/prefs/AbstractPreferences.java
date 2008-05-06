@@ -39,6 +39,7 @@ exception statement from your version. */
 package java.util.prefs;
 
 import gnu.classpath.toolkit.DefaultDaemonThreadFactory;
+import gnu.java.lang.CPStringBuilder;
 import gnu.java.util.prefs.NodeWriter;
 
 import java.io.ByteArrayOutputStream;
@@ -843,7 +844,7 @@ public abstract class AbstractPreferences extends Preferences {
      * Helper method for encoding an array of bytes as a Base64 String.
      */
     private static String encode64(byte[] b) {
-        StringBuffer sb = new StringBuffer((b.length/3)*4);
+        CPStringBuilder sb = new CPStringBuilder((b.length/3)*4);
 
         int i = 0;
         int remaining = b.length;

@@ -1,6 +1,23 @@
 2008-05-06  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/21869
+	* java/util/AbstractCollection.java,
+	* java/util/BitSet.java,
+	* java/util/Collections.java,
+	* java/util/Locale.java,
+	* java/util/ResourceBundle.java,
+	* java/util/TimeZone.java,
+	* java/util/logging/FileHandler.java,
+	* java/util/logging/Logger.java,
+	* java/util/logging/SimpleFormatter.java,
+	* java/util/logging/XMLFormatter.java,
+	* java/util/prefs/AbstractPreferences.java,
+	* java/util/regex/PatternSyntaxException.java:
+	Swap use of StringBuffer for CPStringBuilder.
+
+2008-05-06  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	PR classpath/21869
 	* java/text/AttributedString.java,
 	* java/text/ChoiceFormat.java,
 	* java/text/CollationElementIterator.java,
