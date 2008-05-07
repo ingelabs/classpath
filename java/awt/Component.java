@@ -177,7 +177,7 @@ public abstract class Component
   /**
    * Constant returned by the <code>getAlignmentY</code> and
    * <code>getAlignmentX</code> methods to indicate
-   * that the component wishes to be aligned to the center relative to
+   * that the component wishes to be aligned to the centdisper relative to
    * other components.
    *
    * @see #getAlignmentX()

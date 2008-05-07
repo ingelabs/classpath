@@ -313,7 +313,7 @@ public class XGraphics2D
       {
         // TODO: Optimize for different standard bit-depths.
         Color c = (Color) p;
-        XToolkit tk = (XToolkit) Toolkit.getDefaultToolkit();
+       /* XToolkit tk = (XToolkit) Toolkit.getDefaultToolkit();
         HashMap colorMap = tk.colorMap;
         gnu.x11.Color col = (gnu.x11.Color) colorMap.get(c);
         if (col == null)
@@ -323,8 +323,10 @@ public class XGraphics2D
                                    c.getGreen() * 256,
                                    c.getBlue() * 256);
             colorMap.put(c, col);
-          }
-        xgc.set_foreground(col);
+          }*/
+        //xgc.set_foreground(col);
+        
+        xgc.set_foreground(c.getRGB());
         foreground = c;
       }
   }

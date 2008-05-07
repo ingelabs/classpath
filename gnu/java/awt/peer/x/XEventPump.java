@@ -47,18 +47,22 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.PaintEvent;
+import java.awt.event.WindowEvent;
 import java.util.HashMap;
 
 import gnu.x11.Display;
 import gnu.x11.event.ButtonPress;
 import gnu.x11.event.ButtonRelease;
+import gnu.x11.event.ClientMessage;
 import gnu.x11.event.ConfigureNotify;
+import gnu.x11.event.DestroyNotify;
 import gnu.x11.event.Event;
 import gnu.x11.event.Expose;
 import gnu.x11.event.Input;
 import gnu.x11.event.KeyPress;
 import gnu.x11.event.KeyRelease;
 import gnu.x11.event.MotionNotify;
+import gnu.x11.event.UnmapNotify;
 
 /**
  * Fetches events from X, translates them to AWT events and pumps them up
@@ -150,13 +154,13 @@ public class XEventPump
 
   private void handleEvent(Event xEvent)
   {
-
     Integer key = null;
     Window awtWindow = null;
-
+    WindowEvent event = null;
+    
     if (XToolkit.DEBUG)
       System.err.println("fetched event: " + xEvent);
-    switch (xEvent.code())
+    switch (xEvent.code() & 0x7f)
     {
     case ButtonPress.CODE:
       ButtonPress bp = (ButtonPress) xEvent;
@@ -263,6 +267,35 @@ public class XEventPump
       key = new Integer(((Input) xEvent).event_window_id);
       awtWindow = (Window) windows.get(key);
       handleKeyEvent(xEvent, awtWindow);
+      break;
+    case UnmapNotify.CODE:
+      if (XToolkit.DEBUG)
+        System.err.println("UnmapNotify event: " + xEvent);
+      key = new Integer(((UnmapNotify) xEvent).event_window_id);
+      awtWindow = (Window) windows.get(key);
+      event = new WindowEvent(awtWindow, WindowEvent.WINDOW_CLOSING);
+      Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(event);
+      break;
+    case DestroyNotify.CODE:
+      if (XToolkit.DEBUG)
+        System.err.println("DestroyNotify event: " + xEvent);
+      key = new Integer(((DestroyNotify) xEvent).event_window_id);
+      awtWindow = (Window) windows.get(key);
+      event = new WindowEvent(awtWindow, WindowEvent.WINDOW_CLOSED);
+      Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(event);
+      break;
+    case ClientMessage.CODE:
+      if (XToolkit.DEBUG)
+        System.err.println("ClientMessage event: " + xEvent);
+      if (((ClientMessage) xEvent).delete_window())
+        {
+          if (XToolkit.DEBUG)
+            System.err.println("ClientMessage is a delete_window event");
+          key = new Integer(((ClientMessage) xEvent).window_id);
+          awtWindow = (Window) windows.get(key);
+          event = new WindowEvent(awtWindow, WindowEvent.WINDOW_CLOSING);
+          Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(event);
+        }
       break;
     default:
       if (XToolkit.DEBUG)

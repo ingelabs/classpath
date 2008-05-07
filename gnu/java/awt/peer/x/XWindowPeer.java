@@ -73,10 +73,12 @@ public class XWindowPeer
                                       | Event.POINTER_MOTION_MASK
                                       //| Event.RESIZE_REDIRECT_MASK
                                       | Event.EXPOSURE_MASK
-                                      //| Event.PROPERTY_CHANGE_MASK
+                                      | Event.PROPERTY_CHANGE_MASK
                                       | Event.STRUCTURE_NOTIFY_MASK
+                                      | Event.SUBSTRUCTURE_NOTIFY_MASK
                                       | Event.KEY_PRESS_MASK
                                       | Event.KEY_RELEASE_MASK
+                                      //| Event.VISIBILITY_CHANGE_MASK
                                       ;
 
   /**
@@ -110,8 +112,10 @@ public class XWindowPeer
     int h = Math.max(window.getHeight(), 1);
     xwindow = new Window(dev.getDisplay().default_root, x, y, w, h, 0, atts);
     xwindow.select_input(standardSelect);
+    
     dev.getEventPump().registerWindow(xwindow, window);
-
+    xwindow.set_wm_delete_window();
+    
     boolean undecorated;
     if (awtComponent instanceof Frame)
       {
@@ -302,5 +306,10 @@ public class XWindowPeer
   {
     XGraphicsDevice dev = XToolkit.getDefaultDevice();
     dev.getEventPump().unregisterWindow(xwindow);
+  }
+  
+  public Window getXwindow()
+  {
+    return xwindow;
   }
 }

@@ -1,3 +1,18 @@
+2008-05-07  Mario Torre  <neugens@aicas.com>
+
+	* gnu/java/awt/peer/x/XEventPump.java (handleEvent): xEvent.code is now
+	masked to identify and react to syntetic events.
+	Added UnmapNotify, DestroyNotify and ClientMessage to the list of event
+	handled.
+	* gnu/java/awt/peer/x/XFramePeer.java (getState): initial implementation.
+	* gnu/java/awt/peer/x/XGraphics2D.java (setPaint): fix NPE, this is a
+	workaround, the code have to be fixed in a better way.
+	* gnu/java/awt/peer/x/XWindowPeer.java (getXwindow): new method to allow
+	access to the underling xwindow.
+	(standardSelect): add more events for notification.
+	(XWindowPeer): call set_wm_delete_window to ask the WM to notify us
+	when a delete event occur.
+
 2008-05-07  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/21869
