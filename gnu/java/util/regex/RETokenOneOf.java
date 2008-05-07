@@ -39,23 +39,25 @@ package gnu.java.util.regex;
 
 import gnu.java.lang.CPStringBuilder;
 
-import java.util.Vector;
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
 
 final class RETokenOneOf extends REToken {
-  private Vector options;
+  private final List<REToken> options;
   private boolean negative;
   // True if this RETokenOneOf is supposed to match only one character,
   // which is typically the case of a character class expression.
   private boolean matchesOneChar;
 
-  private Vector addition;
-  // This Vector addition is used to store nested character classes.
+  private final List<Object> addition;
+  // This ArrayList addition is used to store nested character classes.
   // For example, if the original expression is
   //    [2-7a-c[f-k][m-z]&&[^p-v][st]]
-  // the basic part /2-7a-c/ is stored in the Vector options, and
+  // the basic part /2-7a-c/ is stored in the ArrayList options, and
   // the additional part /[f-k][m-z]&&[^p-v][st]/ is stored in the
-  // Vector addition in the following order (Reverse Polish Notation):
+  // ArrayList addition in the following order (Reverse Polish Notation):
   //           -- The matching result of the basic part is assumed here. 
   //    [f-k]  -- REToken
   //    "|"    -- or
@@ -68,7 +70,7 @@ final class RETokenOneOf extends REToken {
   //    "|"    -- or
   //    "&"    -- and
   //
-  // As it is clear from the explanation above, the Vector addition is
+  // As it is clear from the explanation above, the ArrayList addition is
   // effective only when this REToken originates from a character class
   // expression.
 
@@ -78,21 +80,20 @@ final class RETokenOneOf extends REToken {
 
   RETokenOneOf(int subIndex, String optionsStr, boolean negative, boolean insens) {
     super(subIndex);
-    options = new Vector();
+    options = new ArrayList<REToken>();
     this.negative = negative;
     for (int i = 0; i < optionsStr.length(); i++)
-      options.addElement(new RETokenChar(subIndex,optionsStr.charAt(i),insens));
+      options.add(new RETokenChar(subIndex,optionsStr.charAt(i),insens));
     matchesOneChar = true;
+    addition = null;
   }
 
-  RETokenOneOf(int subIndex, Vector options, boolean negative) {
-    super(subIndex);
-    this.options = options;
-    this.negative = negative;
-    matchesOneChar = negative;
+  RETokenOneOf(int subIndex, List<REToken> options, boolean negative) {
+    this(subIndex, options, null, negative);
   }
 
-  RETokenOneOf(int subIndex, Vector options, Vector addition, boolean negative) {
+  RETokenOneOf(int subIndex, List<REToken> options, List<Object> addition,
+	       boolean negative) {
     super(subIndex);
     this.options = options;
     this.addition = addition;
@@ -104,8 +105,8 @@ final class RETokenOneOf extends REToken {
     if (matchesOneChar) return 1;
     int min = Integer.MAX_VALUE;
     int x;
-    for (int i=0; i < options.size(); i++) {
-      if ((x = ((REToken) options.elementAt(i)).getMinimumLength()) < min)
+    for (REToken t : options) {
+      if ((x = t.getMinimumLength()) < min)
 	min = x;
     }
     return min;
@@ -115,8 +116,8 @@ final class RETokenOneOf extends REToken {
     if (matchesOneChar) return 1;
     int max = 0;
     int x;
-    for (int i=0; i < options.size(); i++) {
-      if ((x = ((REToken) options.elementAt(i)).getMaximumLength()) > max)
+    for (REToken t : options) {
+      if ((x = t.getMaximumLength()) > max)
 	max = x;
     }
     return max;
@@ -144,33 +145,31 @@ final class RETokenOneOf extends REToken {
         matchP(input, tryMatch, tryOnly);
       if (addition == null) return b;
 
-      Stack stack = new Stack();
+      final Deque<Boolean> stack = new ArrayDeque<Boolean>();
       stack.push(new Boolean(b));
-      for (int i=0; i < addition.size(); i++) {
-	Object obj = addition.elementAt(i);
+      for (Object obj : addition) {
 	if (obj instanceof REToken) {
 	  b = ((REToken)obj).match(input, (REMatch)mymatch.clone());
 	  stack.push(new Boolean(b));
 	}
 	else if (obj instanceof Boolean) {
-	  stack.push(obj);
+	  stack.push((Boolean) obj);
 	}
 	else if (obj.equals("|")) {
-	  b = ((Boolean)stack.pop()).booleanValue();
-	  b = ((Boolean)stack.pop()).booleanValue() || b;
+	  b = stack.pop();
+	  b = stack.pop() || b;
 	  stack.push(new Boolean(b));
 	}
 	else if (obj.equals("&")) {
-	  b = ((Boolean)stack.pop()).booleanValue();
-	  b = ((Boolean)stack.pop()).booleanValue() && b;
+	  b = stack.pop();
+	  b = stack.pop() && b;
 	  stack.push(new Boolean(b));
 	}
 	else {
 	  throw new RuntimeException("Invalid object found");
 	}
       }
-      b = ((Boolean)stack.pop()).booleanValue();
-      if (b) {
+      if (stack.pop()) {
         ++mymatch.index;
         return next(input, mymatch);
       }
@@ -181,11 +180,7 @@ final class RETokenOneOf extends REToken {
       if (input.charAt(mymatch.index) == CharIndexed.OUT_OF_BOUNDS) 
         return false;
 
-      REMatch newMatch = null;
-      REMatch last = null;
-      REToken tk;
-      for (int i=0; i < options.size(); i++) {
-	tk = (REToken) options.elementAt(i);
+      for (REToken tk : options) {
 	REMatch tryMatch = (REMatch) mymatch.clone();
 	if (tk.match(input, tryMatch)) { // match was successful
 	    return false;
@@ -198,9 +193,7 @@ final class RETokenOneOf extends REToken {
     }
 
     private boolean matchP(CharIndexed input, REMatch mymatch, boolean tryOnly) {
-      REToken tk;
-      for (int i=0; i < options.size(); i++) {
-	tk = (REToken) options.elementAt(i);
+      for (REToken tk : options) {
 	REMatch tryMatch = (REMatch) mymatch.clone();
 	if (tk.match(input, tryMatch)) { // match was successful
 	  if (tryOnly) return true;
@@ -233,7 +226,7 @@ final class RETokenOneOf extends REToken {
 
   private REMatch findMatch(CharIndexed input, REMatch mymatch, int optionIndex) {
       for (int i = optionIndex; i < options.size(); i++) {
-          REToken tk = (REToken) options.elementAt(i);
+          REToken tk = options.get(i);
 	  tk = (REToken) tk.clone();
 	  tk.chain(getNext());
           REMatch tryMatch = (REMatch) mymatch.clone();
@@ -243,13 +236,13 @@ final class RETokenOneOf extends REToken {
 	  boolean stackPushed = false;
 	  if (i + 1 < options.size()) {
             tryMatch.backtrackStack.push(new BacktrackStack.Backtrack(
-              this, input, mymatch, new Integer(i + 1)));
+              this, input, mymatch, i + 1));
 	    stackPushed = true;
           }
-	  boolean b = tk.match(input, tryMatch);
-	  if (b) {
-	     return tryMatch;
-	  }
+	  if (tk.match(input, tryMatch))
+	    {
+	      return tryMatch;
+	    }
 	  if (stackPushed) tryMatch.backtrackStack.pop();
       }
       return null; 
@@ -277,7 +270,7 @@ final class RETokenOneOf extends REToken {
     os.append(negative ? "[^" : "(?:");
     for (int i = 0; i < options.size(); i++) {
       if (!negative && (i > 0)) os.append('|');
-      ((REToken) options.elementAt(i)).dumpAll(os);
+      options.get(i).dumpAll(os);
     }
     os.append(negative ? ']' : ')');
   }  
