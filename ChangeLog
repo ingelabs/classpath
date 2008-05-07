@@ -1,6 +1,43 @@
 2008-05-07  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/21869
+	* javax/swing/AbstractButton.java,
+	* javax/swing/JButton.java,
+	* javax/swing/JComboBox.java,
+	* javax/swing/JComponent.java,
+	* javax/swing/JDesktopPane.java,
+	* javax/swing/JFileChooser.java,
+	* javax/swing/JFrame.java,
+	* javax/swing/JLabel.java,
+	* javax/swing/JList.java,
+	* javax/swing/JMenuBar.java,
+	* javax/swing/JPopupMenu.java,
+	* javax/swing/JProgressBar.java,
+	* javax/swing/JScrollBar.java,
+	* javax/swing/JSlider.java,
+	* javax/swing/JSplitPane.java,
+	* javax/swing/JTabbedPane.java,
+	* javax/swing/JToolBar.java,
+	* javax/swing/JToolTip.java,
+	* javax/swing/UIManager.java,
+	* javax/swing/event/EventListenerList.java,
+	* javax/swing/table/AbstractTableModel.java,
+	* javax/swing/text/AbstractDocument.java,
+	* javax/swing/text/DefaultEditorKit.java,
+	* javax/swing/text/DefaultStyledDocument.java,
+	* javax/swing/text/JTextComponent.java,
+	* javax/swing/text/MaskFormatter.java,
+	* javax/swing/text/TabSet.java,
+	* javax/swing/text/html/CSSParser.java,
+	* javax/swing/text/html/HTMLWriter.java,
+	* javax/swing/tree/DefaultTreeSelectionModel.java,
+	* javax/xml/namespace/QName.java,
+	* javax/xml/transform/TransformerException.java:
+	Swap use of StringBuffer for CPStringBuilder.
+
+2008-05-07  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	PR classpath/21869
 	* javax/accessibility/AccessibleRelationSet.java,
 	* javax/accessibility/AccessibleStateSet.java,
 	* javax/imageio/plugins/jpeg/JPEGHuffmanTable.java,
