@@ -1,3 +1,8 @@
+2008-05-07  Mario Torre  <neugens@limasoftware.net>
+    
+	* gnu/java/awt/peer/x/XEventPump.java (handleEvent):
+	Fixed mouse dragging and movement in XEventPump. Patch from Roman Kennke.
+
 2008-05-07  Mario Torre  <neugens@aicas.com>
 
 	* gnu/java/awt/peer/x/XEventPump.java (handleEvent): xEvent.code is now
