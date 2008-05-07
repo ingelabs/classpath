@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package javax.management;
 
+import gnu.java.lang.CPStringBuilder;
+
 import java.io.Serializable;
 
 import java.util.Hashtable;
@@ -476,7 +478,7 @@ public class ObjectName
    */
   public String getCanonicalKeyPropertyListString()
   {
-    StringBuilder builder = new StringBuilder();
+    CPStringBuilder builder = new CPStringBuilder();
     Iterator i = properties.entrySet().iterator();
     while (i.hasNext())
       {
@@ -795,7 +797,7 @@ public class ObjectName
    */
   public static String quote(String string)
   {
-    StringBuilder builder = new StringBuilder();
+    CPStringBuilder builder = new CPStringBuilder();
     builder.append('"');
     for (int a = 0; a < string.length(); ++a)
       {
@@ -863,7 +865,7 @@ public class ObjectName
     throws IOException
   {
     out.defaultWriteObject();
-    StringBuffer buffer = new StringBuffer(getDomain());
+    CPStringBuilder buffer = new CPStringBuilder(getDomain());
     buffer.append(':');
     String properties = getKeyPropertyListString();
     buffer.append(properties);
@@ -924,7 +926,7 @@ public class ObjectName
     if (q.charAt(q.length() - 1) != '"')
       throw new IllegalArgumentException("The string does " +
 					 "not end with a quote.");
-    StringBuilder builder = new StringBuilder();
+    CPStringBuilder builder = new CPStringBuilder();
     for (int a = 1; a < (q.length() - 1); ++a)
       {
 	char n = q.charAt(a);

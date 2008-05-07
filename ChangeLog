@@ -1,3 +1,24 @@
+2008-05-07  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	PR classpath/21869
+	* javax/accessibility/AccessibleRelationSet.java,
+	* javax/accessibility/AccessibleStateSet.java,
+	* javax/imageio/plugins/jpeg/JPEGHuffmanTable.java,
+	* javax/imageio/plugins/jpeg/JPEGQTable.java,
+	* javax/imageio/stream/ImageInputStreamImpl.java,
+	* javax/management/ObjectName.java,
+	* javax/naming/BinaryRefAddr.java,
+	* javax/naming/CompositeName.java,
+	* javax/naming/CompoundName.java,
+	* javax/naming/NamingException.java,
+	* javax/naming/spi/NamingManager.java,
+	* javax/security/auth/x500/X500Principal.java,
+	* javax/security/sasl/SaslException.java,
+	* javax/sound/sampled/AudioFormat.java,
+	* javax/sound/sampled/CompoundControl.java,
+	* javax/sound/sampled/DataLine.java:
+	Swap use of StringBuffer for CPStringBuilder.
+
 2008-05-06  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/21869
