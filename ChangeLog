@@ -1,3 +1,12 @@
+2008-05-10  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* gnu/java/util/regex/RE.java:
+	Switch to use generic ArrayLists.
+	* gnu/java/util/regex/REMatchEnumeration.java:
+	Make the enumeration implementation generic.
+	* gnu/java/util/regex/RETokenLookBehind.java:
+	Remove unused variables.
+	
 2008-05-07  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	Add generics to these classes.
