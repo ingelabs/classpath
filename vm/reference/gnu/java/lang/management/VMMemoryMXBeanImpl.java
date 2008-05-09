@@ -42,6 +42,7 @@ import java.lang.management.MemoryPoolMXBean;
 import java.lang.management.MemoryType;
 import java.lang.management.MemoryUsage;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -121,9 +122,11 @@ final class VMMemoryMXBeanImpl
    */
   private static MemoryUsage getUsage(MemoryType type) {
     long init = 0, committed = 0, used = 0, max = 0;
-    List<MemoryPoolMXBean> pools = ManagementFactory.getMemoryPoolMXBeans();
-    for (MemoryPoolMXBean pool: pools)
+    Iterator pools =
+      ManagementFactory.getMemoryPoolMXBeans().iterator();
+    while (pools.hasNext())
       {
+	MemoryPoolMXBean pool = (MemoryPoolMXBean) pools.next();
 	if (pool.getType() == type)
 	  {
 	    MemoryUsage usage = pool.getUsage();

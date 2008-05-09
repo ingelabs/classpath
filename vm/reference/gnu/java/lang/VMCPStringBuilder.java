@@ -53,14 +53,16 @@ final class VMCPStringBuilder
   /**
    * The package-private constructor for String objects without copying.
    */
-  private static final Constructor<String> cons;
+  private static final Constructor cons;
 
   static
   {
     try
       {
-	cons = String.class.getDeclaredConstructor(char[].class, Integer.TYPE,
-						   Integer.TYPE, Boolean.TYPE);
+	cons = String.class.getDeclaredConstructor(new Class[] { char[].class,
+								 Integer.TYPE,
+								 Integer.TYPE,
+								 Boolean.TYPE });
 	cons.setAccessible(true);
       }
     catch (NoSuchMethodException e)
@@ -85,7 +87,10 @@ final class VMCPStringBuilder
   {
     try
       {
-	return cons.newInstance(value, startIndex, count, true);
+	return (String)
+	  cons.newInstance(new Object[] { value, Integer.valueOf(startIndex),
+					  Integer.valueOf(count),
+					  Boolean.valueOf(true) });
       }
     catch (InstantiationException e)
       {
