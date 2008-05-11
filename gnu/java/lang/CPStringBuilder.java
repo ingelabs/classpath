@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package gnu.java.lang;
 
+import gnu.classpath.SystemProperties;
+
 import java.io.Serializable;
 
 /**
@@ -58,7 +60,7 @@ public final class CPStringBuilder
    *
    * @serial the number of characters in the buffer
    */
-  int count;
+  private int count;
 
   /**
    * The buffer.  Note that this has permissions set this way so that String
@@ -66,15 +68,26 @@ public final class CPStringBuilder
    *
    * @serial the buffer
    */
-  char[] value;
+  private char[] value;
 
   /**
    * The default capacity of a buffer.
+   * This can be configured using gnu.classpath.cpstringbuilder.capacity
    */
-  private static final int DEFAULT_CAPACITY = 16;
+  private static final int DEFAULT_CAPACITY;
+
+  static
+  {
+    String cap =
+      SystemProperties.getProperty("gnu.classpath.cpstringbuilder.capacity");
+    if (cap == null)
+      DEFAULT_CAPACITY = 32;
+    else
+      DEFAULT_CAPACITY = Integer.parseInt(cap);
+  }
 
   /**
-   * Create a new CPStringBuilder with default capacity 16.
+   * Create a new CPStringBuilder with the default capacity.
    */
   public CPStringBuilder()
   {
@@ -96,7 +109,7 @@ public final class CPStringBuilder
   /**
    * Create a new <code>CPStringBuilder</code> with the characters in the
    * specified <code>String</code>. Initial capacity will be the size of the
-   * String plus 16.
+   * String plus the default capacity.
    *
    * @param str the <code>String</code> to convert
    * @throws NullPointerException if str is null
@@ -111,7 +124,7 @@ public final class CPStringBuilder
   /**
    * Create a new <code>CPStringBuilder</code> with the characters in the
    * specified <code>StringBuffer</code>. Initial capacity will be the size of the
-   * String plus 16.
+   * String plus the default capacity.
    *
    * @param str the <code>String</code> to convert
    * @throws NullPointerException if str is null
@@ -126,7 +139,7 @@ public final class CPStringBuilder
   /**
    * Create a new <code>CPStringBuilder</code> with the characters in the
    * specified <code>StringBuilder</code>. Initial capacity will be the size of the
-   * String plus 16.
+   * String plus the default capacity.
    *
    * @param str the <code>String</code> to convert
    * @throws NullPointerException if str is null
@@ -141,8 +154,9 @@ public final class CPStringBuilder
   /**
    * Create a new <code>CPStringBuilder</code> with the characters in the
    * specified <code>CharSequence</code>. Initial capacity will be the
-   * length of the sequence plus 16; if the sequence reports a length
-   * less than or equal to 0, then the initial capacity will be 16.
+   * length of the sequence plus the default capacity; if the sequence
+   * reports a length less than or equal to 0, then the initial capacity
+   * will be the default.
    *
    * @param seq the initializing <code>CharSequence</code>
    * @throws NullPointerException if str is null
