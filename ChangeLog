@@ -1,5 +1,20 @@
 2008-05-11  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	PR classpath/36147
+	* gnu/java/lang/CPStringBuilder.java:
+	(allocated): New flag to mark whether or
+	not the array has been allocated to a String object.
+	(ensureCapacity(int)): Removed.
+	(ensureCapacity_unsynchronized(int)): Renamed to
+	ensureCapacity, and creates an array when allocated
+	is true.
+	(allocateArray(int)): Added.
+	(trimToSize()): Use allocateArray method.
+	(toString()): Set allocated to true;
+	(substring(int,int)): Likewise.
+	
+2008-05-11  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* gnu/java/lang/CPStringBuilder.java:
 	Make default capacity configurable.
 	

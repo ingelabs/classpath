@@ -71,6 +71,19 @@ public final class CPStringBuilder
   private char[] value;
 
   /**
+   * A flag to denote whether the string being created has been
+   * allocated to a {@link String} object.  On construction,
+   * the character array, {@link #value} is referenced only
+   * by this class.  Once {@link #toString()},
+   * {@link #substring(int)} or {@link #substring(int,int)}
+   * are called, the array is also referenced by a {@link String}
+   * object and this flag is set.  Subsequent modifications to
+   * this buffer cause a new array to be allocated and the flag
+   * to be reset.
+   */
+  private boolean allocated = false;
+
+  /**
    * The default capacity of a buffer.
    * This can be configured using gnu.classpath.cpstringbuilder.capacity
    */
@@ -172,21 +185,6 @@ public final class CPStringBuilder
   }
 
   /**
-   * Increase the capacity of this <code>CPStringBuilder</code>. This will
-   * ensure that an expensive growing operation will not occur until
-   * <code>minimumCapacity</code> is reached. The buffer is grown to the
-   * larger of <code>minimumCapacity</code> and
-   * <code>capacity() * 2 + 2</code>, if it is not already large enough.
-   *
-   * @param minimumCapacity the new capacity
-   * @see #capacity()
-   */
-  public void ensureCapacity(int minimumCapacity)
-  {
-    ensureCapacity_unsynchronized(minimumCapacity);
-  }
-
-  /**
    * Set the length of this StringBuffer. If the new length is greater than
    * the current length, all the new characters are set to '\0'. If the new
    * length is less than the current length, the first <code>newLength</code>
@@ -205,9 +203,9 @@ public final class CPStringBuilder
 
     int valueLength = value.length;
 
-    /* Always call ensureCapacity_unsynchronized in order to preserve
+    /* Always call ensureCapacity in order to preserve
        copy-on-write semantics.  */
-    ensureCapacity_unsynchronized(newLength);
+    ensureCapacity(newLength);
 
     if (newLength < valueLength)
       {
@@ -309,7 +307,7 @@ public final class CPStringBuilder
     if (index < 0 || index >= count)
       throw new StringIndexOutOfBoundsException(index);
     // Call ensureCapacity to enforce copy-on-write.
-    ensureCapacity_unsynchronized(count);
+    ensureCapacity(count);
     value[index] = ch;
   }
 
@@ -340,7 +338,7 @@ public final class CPStringBuilder
     if (str == null)
       str = "null";
     int len = str.length();
-    ensureCapacity_unsynchronized(count + len);
+    ensureCapacity(count + len);
     str.getChars(0, len, value, count);
     count += len;
     return this;
@@ -402,7 +400,7 @@ public final class CPStringBuilder
   {
     if (offset < 0 || count < 0 || offset > data.length - count)
       throw new StringIndexOutOfBoundsException();
-    ensureCapacity_unsynchronized(this.count + count);
+    ensureCapacity(this.count + count);
     System.arraycopy(data, offset, value, this.count, count);
     this.count += count;
     return this;
@@ -430,7 +428,7 @@ public final class CPStringBuilder
    */
   public CPStringBuilder append(char ch)
   {
-    ensureCapacity_unsynchronized(count + 1);
+    ensureCapacity(count + 1);
     value[count++] = ch;
     return this;
   }
@@ -465,7 +463,7 @@ public final class CPStringBuilder
       return append("null");
     if (end - start > 0)
       {
-	ensureCapacity_unsynchronized(count + end - start);
+	ensureCapacity(count + end - start);
 	for (; start < end; ++start)
 	  value[count++] = seq.charAt(start);
       }
@@ -542,7 +540,7 @@ public final class CPStringBuilder
   public CPStringBuilder appendCodePoint(int code)
   {
     int len = Character.charCount(code);
-    ensureCapacity_unsynchronized(count + len);
+    ensureCapacity(count + len);
     Character.toChars(code, value, count);
     count += len;
     return this;
@@ -565,7 +563,7 @@ public final class CPStringBuilder
       throw new StringIndexOutOfBoundsException(start);
     if (end > count)
       end = count;
-    ensureCapacity_unsynchronized(count);
+    ensureCapacity(count);
     if (count - end != 0)
       System.arraycopy(value, end, value, start, count - end);
     count -= end - start;
@@ -607,7 +605,7 @@ public final class CPStringBuilder
     int len = str.length();
     // Calculate the difference in 'count' after the replace.
     int delta = len - (end > count ? count : end) + start;
-    ensureCapacity_unsynchronized(count + delta);
+    ensureCapacity(count + delta);
 
     if (delta != 0 && end < count)
       System.arraycopy(value, end, value, end + delta, count - end);
@@ -635,7 +633,7 @@ public final class CPStringBuilder
     if (offset < 0 || offset > count || len < 0
         || str_offset < 0 || str_offset > str.length - len)
       throw new StringIndexOutOfBoundsException();
-    ensureCapacity_unsynchronized(count + len);
+    ensureCapacity(count + len);
     System.arraycopy(value, offset, value, offset + len, count - offset);
     System.arraycopy(str, str_offset, value, offset, len);
     count += len;
@@ -675,7 +673,7 @@ public final class CPStringBuilder
     if (str == null)
       str = "null";
     int len = str.length();
-    ensureCapacity_unsynchronized(count + len);
+    ensureCapacity(count + len);
     System.arraycopy(value, offset, value, offset + len, count - offset);
     str.getChars(0, len, value, offset);
     count += len;
@@ -721,7 +719,7 @@ public final class CPStringBuilder
     if (start < 0 || end < 0 || start > end || end > sequence.length())
       throw new IndexOutOfBoundsException();
     int len = end - start;
-    ensureCapacity_unsynchronized(count + len);
+    ensureCapacity(count + len);
     System.arraycopy(value, offset, value, offset + len, count - offset);
     for (int i = start; i < end; ++i)
       value[offset++] = sequence.charAt(i);
@@ -773,7 +771,7 @@ public final class CPStringBuilder
   {
     if (offset < 0 || offset > count)
       throw new StringIndexOutOfBoundsException(offset);
-    ensureCapacity_unsynchronized(count + 1);
+    ensureCapacity(count + 1);
     System.arraycopy(value, offset, value, offset + 1, count - offset);
     value[offset] = ch;
     count++;
@@ -928,7 +926,7 @@ public final class CPStringBuilder
   public CPStringBuilder reverse()
   {
     // Call ensureCapacity to enforce copy-on-write.
-    ensureCapacity_unsynchronized(count);
+    ensureCapacity(count);
     for (int i = count >> 1, j = count - i; --i >= 0; ++j)
       {
         char c = value[i];
@@ -955,11 +953,7 @@ public final class CPStringBuilder
     // If we save more than 200 characters, shrink.
     // If we save more than 1/4 of the buffer, shrink.
     if (wouldSave > 200 || wouldSave * 4 > value.length)
-      {
-	char[] newValue = new char[count];
-	System.arraycopy(value, 0, newValue, 0, count);
-	value = newValue;
-      }
+      allocateArray(count);
   }
 
   /**
@@ -1040,26 +1034,40 @@ public final class CPStringBuilder
 
   /**
    * Increase the capacity of this <code>StringBuilder</code>. This will
-   * ensure that an expensive growing operation will not occur until
-   * <code>minimumCapacity</code> is reached. The buffer is grown to the
-   * larger of <code>minimumCapacity</code> and
+   * ensure that an expensive growing operation will not occur until either
+   * <code>minimumCapacity</code> is reached or the array has been allocated.
+   * The buffer is grown to the larger of <code>minimumCapacity</code> and
    * <code>capacity() * 2 + 2</code>, if it is not already large enough.
    *
    * @param minimumCapacity the new capacity
    * @see #capacity()
    */
-  protected void ensureCapacity_unsynchronized(int minimumCapacity)
+  public void ensureCapacity(int minimumCapacity)
   {
-    if (minimumCapacity > value.length)
+    if (allocated || minimumCapacity > value.length)
       {
         int max = value.length * 2 + 2;
         minimumCapacity = (minimumCapacity < max ? max : minimumCapacity);
-        char[] nb = new char[minimumCapacity];
-        System.arraycopy(value, 0, nb, 0, count);
-        value = nb;
+	allocateArray(minimumCapacity);
       }
   }
 
+  /**
+   * Allocates a new character array.  This method is triggered when
+   * a write is attempted after the array has been passed to a
+   * {@link String} object, so that the builder does not modify
+   * the immutable {@link String}.
+   *
+   * @param capacity the size of the new array.
+   */
+  private void allocateArray(int capacity)
+  {
+    char[] nb = new char[capacity];
+    System.arraycopy(value, 0, nb, 0, count);
+    value = nb;
+    allocated = false;
+  }
+    
   /**
    * Get the length of the <code>String</code> this <code>StringBuilder</code>
    * would create. Not to be confused with the <em>capacity</em> of the
@@ -1123,6 +1131,7 @@ public final class CPStringBuilder
     int len = endIndex - beginIndex;
     if (len == 0)
       return "";
+    allocated = true;
     return VMCPStringBuilder.toString(value, beginIndex, len);
   }
 
@@ -1136,6 +1145,7 @@ public final class CPStringBuilder
    */
   public String toString()
   {
+    allocated = true;
     return VMCPStringBuilder.toString(value, 0, count);
   }
 
