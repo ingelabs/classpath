@@ -75,8 +75,8 @@ final class VMCPStringBuilder
   /**
    * Convert this <code>StringBuilder</code> to a <code>String</code>. The
    * String is composed of the characters currently in this StringBuilder. Note
-   * that the result is not a copy, so future modifications to this buffer
-   * do affect the String.
+   * that the result is not a copy, so the builder will allocate a new array
+   * if a further write operation is attempted.
    *
    * @param value the buffered characters.
    * @param startIndex the index at which to start taking characters from the buffer.

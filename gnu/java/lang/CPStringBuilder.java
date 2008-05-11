@@ -1138,8 +1138,8 @@ public final class CPStringBuilder
   /**
    * Convert this <code>CPStringBuilder</code> to a <code>String</code>. The
    * String is composed of the characters currently in this StringBuilder. Note
-   * that the result is not a copy, so future modifications to this buffer
-   * do affect the String.
+   * that the result is not a copy, so we flag this here and make sure to
+   * allocate a new array on the next write attempt (see {@link #ensureCapacity(int)}).
    *
    * @return the characters in this StringBuilder
    */
