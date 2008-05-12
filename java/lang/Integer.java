@@ -776,15 +776,18 @@ public final class Integer extends Number implements Comparable<Integer>
     if (len == 0)
       throw new NumberFormatException("string length is null");
     int ch = str.charAt(index);
-    if (ch == '-' || ch == '+')
+    if (ch == '-')
       {
         if (len == 1)
-          if (ch == '-')
-            throw new NumberFormatException("pure '-'");
-          else if (ch == '+')
-            throw new NumberFormatException("pure '+'");
+	  throw new NumberFormatException("pure '-'");
         isNeg = true;
         ch = str.charAt(++index);
+      }
+    if (ch == '+')
+      {
+	if (len == 1)
+	  throw new NumberFormatException("pure '+'");
+	ch = str.charAt(++index);
       }
     if (decode)
       {
