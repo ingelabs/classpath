@@ -1,5 +1,28 @@
 2008-05-11  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	* java/util/regex/Matcher.java:
+	(regionStart): New variable.
+	(regionEnd): Likewise.
+	(transparentBounds): Likewise.
+	(anchoringBounds): Likewise.
+	(Matcher()): Initialise new variables.
+	(find()): Alter to use new settings.
+	(find(int)): Likewise.
+	(lookingAt()): Likewise.
+	(matches()): Likewise.
+	(reset()): Reset region.
+	(reset(CharSequence)): Documented.
+	(toString()): Include new variables.
+	(region(int,int)): Implemented.
+	(regionStart()): Likewise.
+	(regionEnd()): Likewise.
+	(hasTransparentBounds()): Likewise.
+	(useTransparentBounds(boolean)): Likewise.
+	(hasAnchoringBounds()): Likewise.
+	(useAnchoringBounds(boolean)): Likewise.
+
+2008-05-11  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* gnu/java/lang/CPStringBuilder.java:
 	(toString()): Fix comments to reflect copying changes.
 	* vm/reference/gnu/java/lang/VMCPStringBuilder.java:
