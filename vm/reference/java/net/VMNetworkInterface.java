@@ -1,5 +1,5 @@
 /* VMNetworkInterface.java --
-   Copyright (C) 2005  Free Software Foundation, Inc.
+   Copyright (C) 2005, 2008  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -119,4 +119,13 @@ final class VMNetworkInterface
     else
       throw new SocketException("invalid interface address");
   }
+
+  static native boolean isUp(String name) throws SocketException;
+
+  static native boolean isLoopback(String name) throws SocketException;
+
+  static native boolean isPointToPoint(String name) throws SocketException;
+
+  static native boolean supportsMulticast(String name) throws SocketException;
+
 }

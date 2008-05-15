@@ -1,5 +1,5 @@
 /* NetworkInterface.java --
-   Copyright (C) 2002, 2003, 2004, 2005, 2006 Free Software Foundation, Inc.
+   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -267,4 +267,50 @@ public final class NetworkInterface
 
     return result.toString();
   }
+
+  /**
+   * Determines whether this interface is ready to transfer data.
+   *
+   * @return whether the interface is up
+  */
+  public boolean isUp()
+    throws SocketException
+  {
+    return VMNetworkInterface.isUp(netif.name);
+  }
+
+  /**
+   * Determines whether this interface does point to point
+   * transmission.
+   *
+   * @return whether the interface does point to point transmission
+  */
+  public boolean isPointToPoint()
+    throws SocketException
+  {
+    return VMNetworkInterface.isPointToPoint(netif.name);
+  }
+
+  /**
+   * Determines whether this interface is the loopback interface.
+   *
+   * @return whether the interface is the loopback interface
+  */
+  public boolean isLoopback()
+    throws SocketException
+  {
+    return VMNetworkInterface.isLoopback(netif.name);
+  }
+
+  /**
+   * Determines whether this interface supports multicast transmission.
+   *
+   * @return whether the interface supports multicast transmission.
+  */
+  public boolean supportsMulticast()
+    throws SocketException
+  {
+    return VMNetworkInterface.supportsMulticast(netif.name);
+  }
+
 }
