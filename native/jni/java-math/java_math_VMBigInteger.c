@@ -1112,7 +1112,7 @@ Java_java_math_VMBigInteger_natSetBitCount(JNIEnv *env,
 #if defined(WITH_GNU_MP)
   mpz_srcptr _this;
   mpz_ptr _bi;
-  unsigned long res;
+  unsigned long res = 0;
 
   TRACE("begin");
   _this = (mpz_srcptr)JCL_GetRawData (env, (*env)->GetObjectField (env, this, native_ptr));
