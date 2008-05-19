@@ -1,3 +1,24 @@
+2008-05-19  Mario Torre  <neugens@aicas.com>
+
+	* gnu/java/awt/peer/x/XEventPump.java (handleExpose): new method. 
+	(handleDestroyNotify): likewise.
+	(handleClientMessage): likewise.
+	(handleButtonRelease): likewise.
+	(handleMotionNotify): likewise.
+	(handleKeyEvent): likewise.
+	(handleButtonPress): likewise.
+	(handleEvent): refactored to use new methods instead of a big switch
+    block. Fixed resizing of windows.
+	* gnu/java/awt/peer/x/XWindowPeer.java (standardSelect): update list
+	of flags for X11 events handling.
+	(callback): removed now unused flag. 
+
+2008-05-16  Mario Torre  <neugens@aicas.com>
+
+	* native/jni/java-math/java_math_VMBigInteger.c
+	(Java_java_math_VMBigInteger_natModInverse): fix variable res not
+	initialized.  
+
 2008-05-15  Robert Schuster  <robertschuster@fsfe.org>
 
 	* java/net/NetworkInterface.java:
