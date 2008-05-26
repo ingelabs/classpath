@@ -1,3 +1,10 @@
+2008-05-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* tools/gnu/classpath/tools/jar/Creator.java:
+	(writeCommandLineEntries(Main,OutputStream)):
+	Add default value for manifest version and
+	include Created-By property.
+	
 2008-05-19  Mario Torre  <neugens@aicas.com>
 
 	* gnu/java/awt/peer/x/XEventPump.java (handleExpose): new method. 
