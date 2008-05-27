@@ -1,5 +1,9 @@
 2008-05-27  Joshua Sumali  <jsumali@redhat.com>
 
+	* AUTHORS: Added Joshua Sumali. 
+
+2008-05-27  Joshua Sumali  <jsumali@redhat.com>
+
 	* configure.ac: Add support for Antlr. This is used for building gjdoc.
 	Also generate tools/gjdoc wrapper with gjdoc.in.
 	* doc/gjdoc.texi: New file.
