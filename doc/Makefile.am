@@ -25,7 +25,8 @@ TOOLS_MANFILES = \
 	grmid.1 \
 	grmiregistry.1 \
 	gserialver.1 \
-	gtnameserv.1
+	gtnameserv.1 \
+	gjdoc.1
 
 POD2MAN = pod2man --center="GNU" --release="$(VERSION)"
 TEXI2POD = perl $(srcdir)/texi2pod.pl
@@ -39,7 +40,7 @@ STAMP = echo timestamp >
 
 .INTERMEDIATE: gappletviewer.pod gjarsigner.pod gjar.pod gjavah.pod \
 	gkeytool.pod gnative2ascii.pod gorbd.pod grmid.pod grmiregistry.pod \
-	gserialver.pod gtnameserv.pod gcjh.pod
+	gserialver.pod gtnameserv.pod gcjh.pod gjdoc.pod
 
 gappletviewer.pod: $(srcdir)/cp-tools.texinfo
 	-$(TEXI2POD) -D gappletviewer < $< > $@
@@ -80,6 +81,9 @@ gserialver.pod: $(srcdir)/cp-tools.texinfo
 
 gtnameserv.pod: $(srcdir)/cp-tools.texinfo
 	-$(TEXI2POD) -D gtnameserv < $< > $@
+
+gjdoc.pod: $(srcdir)/invoke.texi
+	-$(TEXI2POD) -D gjdoc < $< > $@
 
 CLEANFILES = $(TOOLS_MANFILES)
 

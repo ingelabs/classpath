@@ -301,6 +301,18 @@ AC_ARG_WITH([vm],
 AC_SUBST(VM_BINARY)
 
 dnl -----------------------------------------------------------
+dnl Sets the Antlr jar to use for compiling gjdoc
+dnl -----------------------------------------------------------
+AC_ARG_WITH([antlr-jar],
+            [AS_HELP_STRING([--with-antlr-jar=file],[Use ANTLR from the specified jar file])],
+            [
+             ANTLR_JAR=$withval
+            ],
+            [
+             ANTLR_JAR="$ANTLR_JAR"
+            ])
+
+dnl -----------------------------------------------------------
 dnl Regenerate headers at build time (disabled by default)
 dnl -----------------------------------------------------------
 AC_ARG_ENABLE([regen-headers],
@@ -345,6 +357,7 @@ AC_PROG_AWK
 AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_CPP
+AC_PROG_ANTLR(2,7,1)
 
 # Handle -Werror default case.
 if test "$ENABLE_WERROR" = default; then
@@ -1051,7 +1064,8 @@ tools/gtnameserv
 tools/gorbd
 tools/grmid
 tools/grmic
-tools/gjavah])
+tools/gjavah
+tools/gjdoc])
 AC_CONFIG_COMMANDS([gappletviewer],[chmod 755 tools/gappletviewer])
 AC_CONFIG_COMMANDS([gjarsigner],[chmod 755 tools/gjarsigner])
 AC_CONFIG_COMMANDS([gkeytool],[chmod 755 tools/gkeytool])
@@ -1064,6 +1078,7 @@ AC_CONFIG_COMMANDS([gorbd],[chmod 755 tools/gorbd])
 AC_CONFIG_COMMANDS([grmid],[chmod 755 tools/grmid])
 AC_CONFIG_COMMANDS([grmic],[chmod 755 tools/grmic])
 AC_CONFIG_COMMANDS([gjavah], [chmod 755 tools/gjavah])
+AC_CONFIG_COMMANDS([gjdoc], [chmod 755 tools/gjdoc])
 fi
 
 AC_CONFIG_COMMANDS([gen-classlist],[chmod 755 lib/gen-classlist.sh])

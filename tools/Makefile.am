@@ -6,11 +6,13 @@ GLIBJ_CLASSPATH=asm
 # Setup the compiler to use the GNU Classpath library we just built.
 JCOMPILER = $(JAVAC) $(JAVACFLAGS) -source 1.5 -target 1.5 -encoding UTF-8 -bootclasspath $(GLIBJ_BOOTCLASSPATH) -classpath $(GLIBJ_CLASSPATH)
 
+USE_JAVAC_FLAGS = -classpath $(CLASSPATH):$(srcdir):$(ANTLR_JAR):$(srcdir)/generated:. $(JAVAC_FLAGS)
+
 if CREATE_WRAPPERS
 bin_SCRIPTS =
 bin_PROGRAMS = gappletviewer gjarsigner gkeytool \
 	gjar gnative2ascii gserialver gjavah grmiregistry \
-	gtnameserv gorbd grmid grmic
+	gtnameserv gorbd grmid grmic gjdoc
 
 
 AM_CPPFLAGS = -Wall \
@@ -80,10 +82,15 @@ grmic_CFLAGS = \
 	-DTOOLPACKAGE="\"rmic\"" \
 	-DTOOLNAME="\"grmic\""
 
+gjdoc_SOURCES = toolwrapper.c
+gjdoc_CFLAGS = \
+	-DTOOLPACKAGE="\"gjdoc\"" \
+	-DTOOLNAME="\"gjdoc\""
+
 else
 bin_SCRIPTS = gappletviewer gjarsigner gkeytool \
 	gjar gnative2ascii gserialver gjavah grmiregistry \
-	gtnameserv gorbd grmid grmic
+	gtnameserv gorbd grmid grmic gjdoc
 bin_PROGRAMS =
 ## FIXME: revisit this with a newer automake.
 gappletviewer: gappletviewer.in
@@ -98,6 +105,7 @@ gtnameserv: gtnameserv.in
 gorbd: gorbd.in
 grmid: grmid.in
 grmic: grmic.in
+gjdoc: gjdoc.in
 endif
 EXTRA_DIST = toolwrapper.c gappletviewer.in gjarsigner.in gkeytool.in \
 	gjar.in gnative2ascii.in gserialver.in gjavah.in grmiregistry.in \
@@ -105,10 +113,13 @@ EXTRA_DIST = toolwrapper.c gappletviewer.in gjarsigner.in gkeytool.in \
 
 # All our example java source files
 TOOLS_JAVA_FILES = $(srcdir)/gnu/classpath/tools/*/*.java \
+	$(srcdir)/gnu/classpath/tools/*/*/*.java \
+	$(srcdir)/gnu/classpath/tools/*/*/*/*.java \
 	$(srcdir)/com/sun/javadoc/*.java \
 	$(srcdir)/com/sun/tools/doclets/*.java \
 	$(srcdir)/com/sun/tools/javac/*.java \
 	$(srcdir)/com/sun/tools/javah/*.java \
+	$(srcdir)/com/sun/tools/javadoc/*.java \
 	$(srcdir)/sun/rmi/rmic/*.java \
 	$(srcdir)/external/asm/org/objectweb/asm/*.java \
 	$(srcdir)/external/asm/org/objectweb/asm/attrs/*.java \
@@ -141,6 +152,98 @@ PROPERTY_FILES = $(srcdir)/external/asm/org/objectweb/asm/optimizer/shrink.prope
 
 # RMIC templates that must be included in the generated zip file.
 RMIC_TEMPLATES = $(srcdir)/resource/gnu/classpath/tools/rmic/templates/*.jav
+
+# gjdoc resource files.
+gnu_classpath_tools_gjdoc_jar_CSS = \
+	doctranslets/html/res/gjdochtml-clean.css \
+	doctranslets/html/res/gjdochtml-fixed.css \
+	doctranslets/html/res/gjdochtml-sclara.css \
+	doctranslets/html/res/gjdochtml.css \
+	htmldoclet/gjdochtml-vanilla.css \
+	htmldoclet/gjdochtml-clean-layout.css \
+	htmldoclet/gjdochtml-clean-color1.css
+
+gnu_classpath_tools_gjdoc_jar_DTDS = \
+	htmldoclet/xhtml11-target10.dtd \
+	dtd/gjdoc-alphaindex.dtd \
+	dtd/gjdoc.dtd
+
+gnu_classpath_tools_gjdoc_jar_ENTS = \
+	dtd/ent/iso-amsa.ent \
+	dtd/ent/iso-amsb.ent \
+	dtd/ent/iso-amsc.ent \
+	dtd/ent/iso-amsn.ent \
+	dtd/ent/iso-amso.ent \
+	dtd/ent/iso-amsr.ent \
+	dtd/ent/iso-box.ent \
+	dtd/ent/iso-cyr1.ent \
+	dtd/ent/iso-cyr2.ent \
+	dtd/ent/iso-dia.ent \
+	dtd/ent/iso-grk1.ent \
+	dtd/ent/iso-grk2.ent \
+	dtd/ent/iso-grk3.ent \
+	dtd/ent/iso-grk4.ent \
+	dtd/ent/iso-lat1.ent \
+	dtd/ent/iso-lat2.ent \
+	dtd/ent/iso-num.ent \
+	dtd/ent/iso-pub.ent \
+	dtd/ent/iso-tech.ent
+
+gnu_classpath_tools_gjdoc_jar_HTML = doctranslets/html/res/default_help_en.html
+
+gnu_classpath_tools_gjdoc_jar_JS = \
+	doctranslets/html/res/gjdoc.js \
+	htmldoclet/gjdoc.js
+
+gnu_classpath_tools_gjdoc_jar_PNG = \
+	htmldoclet/inherit.png
+
+gnu_classpath_tools_gjdoc_jar_MODS = dtd/dbcentx.mod
+
+gnu_classpath_tools_gjdoc_jar_PROPERTIES = htmldoclet/HtmlDoclet.properties
+
+gnu_classpath_tools_gjdoc_jar_RNGS = \
+	rng/gjdoc-classdoc.rng \
+	rng/gjdoc-common.rng \
+	rng/gjdoc-index.rng
+
+gnu_classpath_tools_gjdoc_jar_TXTS = \
+	java.lang-classes-1.2.txt \
+	java.lang-classes-1.3.txt \
+	java.lang-classes-1.4.txt \
+	java.lang-classes-1.5.txt
+
+gnu_classpath_tools_gjdoc_jar_XHTML = htmldoclet/help.xhtml
+
+gnu_classpath_tools_gjdoc_jar_XSLS = \
+	doctranslets/gjdoc_common.xsl \
+	doctranslets/html/about.xsl \
+	doctranslets/html/allclasses.xsl \
+	doctranslets/html/allpackages.xsl \
+	doctranslets/html/alphaindex.xsl \
+	doctranslets/html/alphaindex_chunked.xsl \
+	doctranslets/html/classdoc-source.xsl \
+	doctranslets/html/classdoc-uses.xsl \
+	doctranslets/html/classdoc.xsl \
+	doctranslets/html/deprecated.xsl \
+	doctranslets/html/descriptor.xsl \
+	doctranslets/html/doctranslet.xsl \
+	doctranslets/html/fulltree.xsl \
+	doctranslets/html/gjdoc.xsl \
+	doctranslets/html/help.xsl \
+	doctranslets/html/html_common.xsl \
+	doctranslets/html/index_noframes.xsl \
+	doctranslets/html/index.xsl \
+	doctranslets/html/packageclasses.xsl \
+	doctranslets/html/packagedoc.xsl
+
+# All our resources.
+gjdoc_resources = $(gnu_classpath_tools_gjdoc_jar_CSS) $(gnu_classpath_tools_gjdoc_jar_DTDS) \
+	$(gnu_classpath_tools_gjdoc_jar_ENTS) $(gnu_classpath_tools_gjdoc_jar_HTML) \
+	$(gnu_classpath_tools_gjdoc_jar_JS) $(gnu_classpath_tools_gjdoc_jar_MODS) \
+	$(gnu_classpath_tools_gjdoc_jar_PNG) $(gnu_classpath_tools_gjdoc_jar_PROPERTIES) \
+	$(gnu_classpath_tools_gjdoc_jar_RNGS) $(gnu_classpath_tools_gjdoc_jar_TXTS) \
+	$(gnu_classpath_tools_gjdoc_jar_XHTML) $(gnu_classpath_tools_gjdoc_jar_XSLS)
 
 # The zip files with classes we want to produce.
 TOOLS_ZIP = tools.zip
@@ -176,8 +279,11 @@ dist-hook:
 # immediately.  And copy the template files we use to the classes dir
 # so they get also included.
 $(TOOLS_ZIP): $(ALL_TOOLS_FILES)
-	@rm -rf classes asm
-	mkdir classes asm
+	@rm -rf classes asm generated
+	mkdir -p classes asm generated/gnu/classpath/tools/gjdoc/expr
+## Generate antlr sources.
+	$(ANTLR) -o $(srcdir)/generated/gnu/classpath/tools/gjdoc/expr \
+	  $(srcdir)/gnu/classpath/tools/gjdoc/expr/java-expression.g
 ## Compile ASM separately as it is latin-1 encoded.
 	find $(srcdir)/external/asm -name '*.java' -print > asm.lst
 	AC=`echo $(JCOMPILER) | sed -e 's/UTF-8/ISO-8859-1/g'`; \
@@ -187,9 +293,10 @@ $(TOOLS_ZIP): $(ALL_TOOLS_FILES)
 	     $(srcdir)/com/sun/tools/doclets \
 	     $(srcdir)/com/sun/tools/javac \
 	     $(srcdir)/com/sun/tools/javah \
+	     $(srcdir)/com/sun/tools/javadoc \
 	     $(srcdir)/sun/rmi/rmic \
 	     -name '*.java' -print > classes.lst
-	$(JCOMPILER) -g -d classes @classes.lst
+	$(JCOMPILER) $(USE_JAVAC_FLAGS) -g -d classes @classes.lst
 	cat classes.lst asm.lst > all-classes.lst
 ## Copy over tools resource files.
 	@list=`cd $(srcdir)/resource && find gnu/classpath/tools com/sun/tools/javac \
@@ -197,9 +304,16 @@ $(TOOLS_ZIP): $(ALL_TOOLS_FILES)
 	for p in $$list; do \
 	  dirname=classes/`dirname $$p`; \
 	  if ! test -d "$$dirname"; then mkdir -p "$$dirname"; fi; \
-	  echo "  cp $(srcdir)resource/$$p classes/$$p"; \
+	  echo "  cp $(srcdir)/resource/$$p classes/$$p"; \
 	  cp $(srcdir)/resource/$$p classes/$$p; \
 	done
+## Copy over gjdoc resource files.
+	for res in $(gjdoc_resources); do \
+	  dir=classes/`dirname $$res`; \
+	  if ! test -d "$$dir"; then mkdir -p "$$dir"; fi; \
+	  echo "  cp $(srcdir)/resource/gnu/classpath/tools/gjdoc/$$res classes/$$res"; \
+	  cp $(srcdir)/resource/gnu/classpath/tools/gjdoc/$$res classes/$$res; \
+	done 
 ## First add classpath tools stuff.
 	(cd classes; \
 	if test "$(ZIP)" != ""; then $(ZIP) -r ../$(TOOLS_ZIP) .; fi; \
@@ -214,7 +328,7 @@ $(TOOLS_ZIP): $(ALL_TOOLS_FILES)
 
 # Zip file be gone! (and make sure the classes are gone too)
 clean-local:
-	rm -rf $(TOOLS_ZIP) classes classes.lst asm asm.lst all-classes.lst
+	rm -rf $(TOOLS_ZIP) classes classes.lst asm asm.lst all-classes.lst generated
 
 # FIXME: remove this when GNU Classpath includes a bootstrap VM.
 installcheck-binSCRIPTS:
