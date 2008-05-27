@@ -1,5 +1,9 @@
 2008-05-27  Joshua Sumali  <jsumali@redhat.com>
 
+	* NEWS: Added building of gjdoc into tools.
+
+2008-05-27  Joshua Sumali  <jsumali@redhat.com>
+
 	* AUTHORS: Added Joshua Sumali. 
 
 2008-05-27  Joshua Sumali  <jsumali@redhat.com>

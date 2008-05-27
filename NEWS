@@ -12,6 +12,7 @@ CPStringBuilder gives away its array when the result is generated
 by toString()/substring() and starts afresh.  The default capacity of
 CPStringBuilder can also be configured using the
 gnu.classpath.cpstringbuilder.capacity property.
+* gjdoc is now built as part of tools.zip.
 
 New in release 0.97 (Feb 22, 2007)
 
