@@ -1,3 +1,31 @@
+2008-05-29  Mario Torre  <neugens@aicas.com>
+
+	* gnu/java/awt/java2d/AbstractGraphics2D.java (setColor): now set directly
+	the foreground color the application wants to use to draw. On null, behave
+	like OpenJDK, drawing black.
+	(renderScanline): fixed NPE, paintContext never initialized. Correctely
+	retrieve destination raster
+	(getColor): Return the correct type.
+	(static initializer): HashMap now typed.
+	(background): now defaults to black and not null.
+	(getPaintContext): new method. Initialize lazily the PaintContext.
+	(foreground): new field.
+	(isForegroundColorNull): likewise.
+	(getDeviceBounds): made abstract.
+	* gnu/java/awt/java2d/RasterGraphics.java (getDeviceBounds): new method.
+	* gnu/java/awt/java2d/ScanlineConverter.java (renderShape): pass correct
+	value of Y to doScanline.
+	* gnu/java/awt/peer/x/GLGraphics.java (getDeviceBounds): new method.
+	(setBackground): synch with new Escher 2.0 API.
+	* gnu/java/awt/peer/x/XGraphicsConfiguration.java (getDefaultTransform):
+	implemented.
+	(getBounds): new method.
+	* java/awt/AlphaComposite.java (derive(int) and derive(float)):
+	new methods.
+	* java/awt/image/WritableRaster.java (createWritableTranslatedChild):
+	now call createWritableChild.
+	(createWritableChild): reformatted.
+
 2008-05-27  Joshua Sumali  <jsumali@redhat.com>
 
 	* NEWS: Added building of gjdoc into tools.

@@ -37,6 +37,7 @@ exception statement from your version. */
 
 package gnu.java.awt.java2d;
 
+import gnu.java.awt.peer.x.XDialogPeer;
 import gnu.java.util.LRUCache;
 
 import java.awt.AWTError;
@@ -210,13 +211,19 @@ public abstract class AbstractGraphics2D
   /**
    * The paint context during rendering.
    */
-  private PaintContext paintContext;
+  private PaintContext paintContext = null;
 
   /**
    * The background.
    */
-  private Color background;
+  private Color background = Color.WHITE;
 
+  /**
+   * Foreground color, as set by setColor.
+   */
+  private Color foreground = Color.BLACK;
+  private boolean isForegroundColorNull = true;
+  
   /**
    * The current font.
    */
@@ -266,15 +273,19 @@ public abstract class AbstractGraphics2D
 
   private static final BasicStroke STANDARD_STROKE = new BasicStroke();
 
-  private static final HashMap STANDARD_HINTS;
-  static {
-    HashMap hints = new HashMap();
-  hints.put(RenderingHints.KEY_TEXT_ANTIALIASING,
-            RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT);
-  hints.put(RenderingHints.KEY_ANTIALIASING,
-            RenderingHints.VALUE_ANTIALIAS_DEFAULT);
-  STANDARD_HINTS = hints;
-  }
+  private static final HashMap<Key, Object> STANDARD_HINTS;
+  static
+    {
+    
+      HashMap<Key, Object> hints = new HashMap<Key, Object>();
+      hints.put(RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT);
+      hints.put(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_DEFAULT);
+    
+      STANDARD_HINTS = hints;
+    }
+  
   /**
    * Creates a new AbstractGraphics2D instance.
    */
@@ -1058,10 +1069,10 @@ public abstract class AbstractGraphics2D
    */
   public Color getColor()
   {
-    Color c = null;
-    if (paint instanceof Color)
-      c = (Color) paint;
-    return c;
+    if (isForegroundColorNull)
+      return null;
+    
+    return this.foreground;
   }
 
   /**
@@ -1071,7 +1082,22 @@ public abstract class AbstractGraphics2D
    */
   public void setColor(Color color)
   {
-    setPaint(color);
+    if (color == null)
+      {
+        this.foreground = Color.BLACK;
+        isForegroundColorNull = true;
+      }
+    else
+      {
+        this.foreground = color;
+        isForegroundColorNull = false;
+      }
+    
+    // free resources if needed, then put the paint context to null
+    if (this.paintContext != null)
+      this.paintContext.dispose();
+    
+    this.paintContext = null;
   }
 
   public void setPaintMode()
@@ -1639,10 +1665,7 @@ public abstract class AbstractGraphics2D
    *
    * @return the bounds of the target
    */
-  protected Rectangle getDeviceBounds()
-  {
-    return destinationRaster.getBounds();
-  }
+  protected abstract Rectangle getDeviceBounds();
 
   /**
    * Draws a line in optimization mode. The implementation should respect the
@@ -1763,7 +1786,8 @@ public abstract class AbstractGraphics2D
    */
   public void renderScanline(int y, ScanlineCoverage c)
   {
-    PaintContext pCtx = paintContext;
+    PaintContext pCtx = getPaintContext();
+    
     int x0 = c.getMinX();
     int x1 = c.getMaxX();
     Raster paintRaster = pCtx.getRaster(x0, y, x1 - x0, 1);
@@ -1797,9 +1821,11 @@ public abstract class AbstractGraphics2D
     CompositeContext cCtx = composite.createContext(paintColorModel,
                                                     getColorModel(),
                                                     renderingHints);
-    WritableRaster targetChild = destinationRaster.createWritableTranslatedChild(-x0,- y);
+    WritableRaster raster = getDestinationRaster();
+    WritableRaster targetChild = raster.createWritableTranslatedChild(-x0, -y);
+    
     cCtx.compose(paintRaster, targetChild, targetChild);
-    updateRaster(destinationRaster, x0, y, x1 - x0, 1);
+    updateRaster(raster, x0, y, x1 - x0, 1);
     cCtx.dispose();
   }
 
@@ -1983,6 +2009,22 @@ public abstract class AbstractGraphics2D
     synchronized (scanlineConverters)
       {
         scanlineConverters.addLast(sc);
+      }
+  }
+
+  private PaintContext getPaintContext()
+  {
+    if (this.paintContext == null)
+      {
+        return this.foreground.createContext(getColorModel(),
+                                             getDeviceBounds(),
+                                             getClipBounds(),
+                                             getTransform(),
+                                             getRenderingHints());
+      }
+    else
+      {
+        return this.paintContext;
       }
   }
 
