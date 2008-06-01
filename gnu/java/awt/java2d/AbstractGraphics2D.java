@@ -37,7 +37,6 @@ exception statement from your version. */
 
 package gnu.java.awt.java2d;
 
-import gnu.java.awt.peer.x.XDialogPeer;
 import gnu.java.util.LRUCache;
 
 import java.awt.AWTError;

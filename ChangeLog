@@ -1,3 +1,8 @@
+2008-06-01  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/awt/java2d/AbstractGraphics2D.java: Removed XDialogPeer
+	import.
+
 2008-05-29  Mario Torre  <neugens@aicas.com>
 
 	* gnu/java/awt/java2d/AbstractGraphics2D.java (setColor): now set directly
