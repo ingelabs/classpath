@@ -47,10 +47,16 @@ import gnu.classpath.tools.getopt.Parser;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
+
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.zip.ZipOutputStream;
 
 public class Main
@@ -67,9 +73,6 @@ public class Main
   /** The zip storage mode.  */
   int storageMode = ZipOutputStream.DEFLATED;
 
-  /** True if we should read file names from stdin.  */
-  boolean readNamesFromStdin = false;
-
   /** True for verbose mode.  */
   boolean verbose = false;
 
@@ -85,6 +88,9 @@ public class Main
   /** Used only while parsing, holds the first argument for -C.  */
   String changedDirectory;
 
+  /** A queue of input streams from which to read lists of files. */
+  private final Queue<InputStream> fileLists = new LinkedList<InputStream>();
+
   void setArchiveFile(String filename) throws OptionException
   {
     if (archiveFile != null)
@@ -99,18 +105,32 @@ public class Main
   class HandleFile
       extends FileArgumentCallback
   {
+    @Override
     public void notifyFile(String fileArgument)
+      throws OptionException
     {
-      Entry entry;
-      if (changedDirectory != null)
-        {
-          entry = new Entry(new File(changedDirectory, fileArgument),
-                            fileArgument);
-          changedDirectory = null;
-        }
+      if (fileArgument.charAt(0) == '@')
+	try 
+	  {
+	    fileLists.offer(new FileInputStream(fileArgument.substring(1)));
+	  }
+	catch (FileNotFoundException e)
+	  {
+	    throw new OptionException("File " + fileArgument + " not found.", e);
+	  }
       else
-        entry = new Entry(new File(fileArgument));
-      entries.add(entry);
+	{
+	  Entry entry;
+	  if (changedDirectory != null)
+	    {
+	      entry = new Entry(new File(changedDirectory, fileArgument),
+				fileArgument);
+	      changedDirectory = null;
+	    }
+	  else
+	    entry = new Entry(new File(fileArgument));
+	  entries.add(entry);
+	}
     }
   }
 
@@ -176,7 +196,7 @@ public class Main
   {
     Parser p = new JarParser("jar"); //$NON-NLS-1$
     p.setHeader(Messages.getString("Main.Usage")); //$NON-NLS-1$
-
+    
     OptionGroup grp = new OptionGroup(Messages.getString("Main.OpMode")); //$NON-NLS-1$
     grp.add(new ModeOption('c', Messages.getString("Main.Create"), Creator.class)); //$NON-NLS-1$
     grp.add(new ModeOption('x', Messages.getString("Main.Extract"), Extractor.class)); //$NON-NLS-1$
@@ -238,7 +258,7 @@ public class Main
     {
       public void parsed(String argument) throws OptionException
       {
-	readNamesFromStdin = true;
+	fileLists.offer(System.in);
       }
     });
     p.add(grp);
@@ -246,19 +266,26 @@ public class Main
     return p;
   }
 
+  /**
+   * Read the names of additional class files from
+   * {@code stdin} and/or files prefixed with {@code '@'}.
+   */
   private void readNames()
   {
-    String line;
-    try
+    for (InputStream is : fileLists)
       {
-	BufferedReader br
-	  = new BufferedReader(new InputStreamReader(System.in));
-	while ((line = br.readLine()) != null)
-	  entries.add(new Entry(new File(line)));
-      }
-    catch (IOException _)
-      {
-	// Ignore.
+	String line;
+	try
+	  {
+	    BufferedReader br
+	      = new BufferedReader(new InputStreamReader(is));
+	    while ((line = br.readLine()) != null)
+	      entries.add(new Entry(new File(line)));
+	  }
+	catch (IOException _)
+	  {
+	    // Ignore.
+	  }
       }
   }
 
@@ -270,8 +297,7 @@ public class Main
     if (args.length > 0 && args[0].charAt(0) != '-')
       args[0] = '-' + args[0];
     p.parse(args, new HandleFile());
-    if (readNamesFromStdin)
-      readNames();
+    readNames();
     Action t = (Action) operationMode.newInstance();
     t.run(this);
   }

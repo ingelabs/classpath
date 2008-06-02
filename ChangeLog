@@ -1,3 +1,15 @@
+2008-06-02  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* tools/gnu/classpath/tools/getopt/OptionException.java:
+	(OptionException(String,Throwable)): New constructor.
+	* tools/gnu/classpath/tools/jar/Main.java:
+	(fileLists): New queue for streams containing lists of files.
+	(HandleFile.NotifyFile(String)): Check for '@' arguments
+	and add to stream queue.
+	(parsed(String)): Add stdin to queue instead of setting flag.
+	(readNames()): Work with the queue rather than just stdin.
+	(run(String[])): Always execute readNames().
+	
 2008-06-01  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/awt/java2d/AbstractGraphics2D.java: Removed XDialogPeer
