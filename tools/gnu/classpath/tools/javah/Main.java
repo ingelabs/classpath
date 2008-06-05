@@ -188,7 +188,7 @@ public class Main
     return "javah";
   }
 
-  protected Parser getParser()
+  protected ClasspathToolParser getParser()
   {
     ClasspathToolParser result = new ClasspathToolParser(getName(), true);
     result.setHeader("usage: javah [OPTIONS] CLASS...");
@@ -339,8 +339,8 @@ public class Main
 
   protected void run(String[] args) throws IOException
   {
-    Parser p = getParser();
-    String[] classNames = p.parse(args);
+    ClasspathToolParser p = getParser();
+    String[] classNames = p.parse(args, true);
     postParse(classNames);
     loader = classpath.getLoader();
 
