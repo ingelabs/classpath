@@ -783,7 +783,7 @@ public final class Integer extends Number implements Comparable<Integer>
         isNeg = true;
         ch = str.charAt(++index);
       }
-    if (ch == '+')
+    else if (ch == '+')
       {
 	if (len == 1)
 	  throw new NumberFormatException("pure '+'");
