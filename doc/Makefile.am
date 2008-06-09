@@ -1,6 +1,6 @@
 SUBDIRS = api
 
-EXTRA_DIST = README.jaxp texi2pod.pl
+EXTRA_DIST = README.jaxp texi2pod.pl invoke.texi
 
 info_TEXINFOS = cp-hacking.texinfo cp-vmintegration.texinfo cp-tools.texinfo
 
