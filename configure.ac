@@ -935,8 +935,9 @@ AC_SUBST(PATH_TO_GLIBJ_ZIP)
 # the examples or the tools
 if test "x${use_glibj_zip}" = xfalse || \
    test "x${EXAMPLESDIR}" != x || \
-   test "x${TOOLSDIR}" != x; then
- 	AC_PROG_JAVAC
+   test "x${TOOLSDIR}" != x && \
+   test "x${build_class_files}" != xno; then 	
+	AC_PROG_JAVAC
   	CLASSPATH_JAVAC_MEM_CHECK
 fi
 
