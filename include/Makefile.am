@@ -158,6 +158,8 @@ java_util_VMTimeZone.h
 
 if CREATE_JNI_HEADERS
 
+EXTRA_DIST=$(H_FILES)
+
 all-local: $(H_FILES)
 
 gnu_xml_libxmlj_dom_GnomeDocument.h: $(top_srcdir)/gnu/xml/libxmlj/dom/GnomeDocument.java

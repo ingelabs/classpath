@@ -14,7 +14,8 @@ EXTRA_DIST = HACKING BUGS THANKYOU mauve-classpath LICENSE ChangeLog-2007 \
              ChangeLog.gnujaxp.1 ChangeLog.gnujaxp.2 ChangeLog.libxmlj \
 	     autogen.sh
 
-#DISTCHECK_CONFIGURE_FLAGS = --enable-gjdoc
+DISTCHECK_CONFIGURE_FLAGS = --with-gjdoc --enable-gstreamer-peer \
+	--enable-xmlj --enable-qt-peer
 
 dist-hook:
 	-$(mkinstalldirs) $(distdir)/include
