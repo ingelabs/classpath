@@ -1,5 +1,10 @@
 2008-06-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	* configure.ac: Only regenerate headers by
+	default if the headers aren't in the source tree.
+
+2008-06-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* configure.ac: Only run javac check
 	if examples, tools and/or class library are
 	being built.

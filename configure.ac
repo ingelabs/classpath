@@ -316,13 +316,17 @@ dnl -----------------------------------------------------------
 dnl Regenerate headers at build time (disabled by default)
 dnl -----------------------------------------------------------
 AC_ARG_ENABLE([regen-headers],
-              [AS_HELP_STRING(--enable-regen-headers,automatically regenerate JNI headers [default=yes])],
+              [AS_HELP_STRING(--enable-regen-headers,automatically regenerate JNI headers [default=yes if headers don't exist])],
               [case "${enableval}" in
                 yes) REGENERATE_JNI_HEADERS=yes ;;
                 no) REGENERATE_JNI_HEADERS=no ;;
                 *) REGENERATE_JNI_HEADERS=yes ;;
               esac],
-              [REGENERATE_JNI_HEADERS=yes])
+              [if test -e include/java_lang_VMSystem.h; then
+			REGENERATE_JNI_HEADERS=no ;
+		   else
+			REGENERATE_JNI_HEADERS=yes ;
+	       fi])
 AM_CONDITIONAL(CREATE_JNI_HEADERS, test "x${REGENERATE_JNI_HEADERS}" = xyes)
 
 dnl -----------------------------------------------------------
