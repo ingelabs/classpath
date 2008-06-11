@@ -1,5 +1,11 @@
 2008-06-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	* scripts/check_jni_methods.sh.in:
+	Search the source directory as well for
+	when headers are in the tarball.
+
+2008-06-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* Makefile.am: Replace tools with
 	$(TOOLSDIR).
 	* m4/acinclude.m4: Include option

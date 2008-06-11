@@ -9,7 +9,7 @@ TMPFILE3=/tmp/check-jni-methods.$$.3
 
 # Find all methods defined in the header files generated
 # from the java source files.
-grep -h '^JNIEXPORT .* Java_' @abs_top_builddir@/include/*.h | \
+grep -h '^JNIEXPORT .* Java_' @abs_top_builddir@/include/*.h @abs_top_srcdir@/include/*.h | \
         LC_ALL=C sed -e 's,.*JNICALL \(Java_[a-z_A-Z0-9]*\).*$,\1,' | \
 	sort > $TMPFILE
 
