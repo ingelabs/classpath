@@ -115,6 +115,19 @@ dnl We disable ZIP by default if we find fastjar.
     EXAMPLESDIR=""
   fi
   AC_SUBST(EXAMPLESDIR)
+
+  AC_ARG_ENABLE([tools],
+		[AS_HELP_STRING(--enable-tools,enable build of the tools [default=yes])],
+		[case "${enableval}" in
+		  yes) TOOLSDIR="tools" ;;
+		  no) TOOLSDIR="" ;;
+		  *) AC_MSG_ERROR(bad value ${enableval} for --enable-tools) ;;
+		esac],
+		[TOOLSDIR="tools"])
+  if test "x${use_zip}" = xno && test "x${install_class_files}" = xno; then
+    TOOLSDIR=""
+  fi
+  AC_SUBST(TOOLSDIR)
 ])
 
 dnl -----------------------------------------------------------
