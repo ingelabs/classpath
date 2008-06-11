@@ -776,9 +776,6 @@ if test "x${COMPILE_JNI}" = xyes; then
   AC_CONFIG_LINKS([$ac_config_links_1])
 fi
 
-AC_PROG_JAVAC
-CLASSPATH_JAVAC_MEM_CHECK
-
 CLASSPATH_WITH_CLASSLIB
 
 dnl -----------------------------------------------------------
@@ -929,6 +926,15 @@ esac;
 
 AM_CONDITIONAL(USE_PREBUILT_GLIBJ_ZIP, test x$use_glibj_zip = xtrue)
 AC_SUBST(PATH_TO_GLIBJ_ZIP)
+
+# Check for javac if we need to build either the class library,
+# the examples or the tools
+if test "x${use_glibj_zip}" = xfalse || \
+   test "x${EXAMPLESDIR}" != x || \
+   test "x${TOOLSDIR}" != x; then
+ 	AC_PROG_JAVAC
+  	CLASSPATH_JAVAC_MEM_CHECK
+fi
 
 dnl -----------------------------------------------------------
 dnl Build with Escher based X peers.
