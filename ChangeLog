@@ -1,5 +1,10 @@
 2008-06-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	* lib/Makefile.am:
+	Replace explicit mkinstalldirs with $(mkinstalldirs).
+
+2008-06-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* scripts/check_jni_methods.sh.in:
 	Search the source directory as well for
 	when headers are in the tarball.

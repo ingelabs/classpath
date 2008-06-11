@@ -40,7 +40,7 @@ endif # BUILD_CLASS_FILES
 if INSTALL_CLASS_FILES
 
 install-data-local: genclasses compile-classes
-	-$(top_srcdir)/mkinstalldirs $(DESTDIR)$(pkgdatadir)
+	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)
 	cp -R gnu $(DESTDIR)$(pkgdatadir)
 	cp -R java $(DESTDIR)$(pkgdatadir)
 	cp -R javax $(DESTDIR)$(pkgdatadir)
