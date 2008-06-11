@@ -14,6 +14,29 @@ CPStringBuilder can also be configured using the
 gnu.classpath.cpstringbuilder.capacity property.
 * gjdoc is now built as part of tools.zip.
 
+Bug fixes in release 0.97.2 (Jun 06, 2007)
+
+* Include headers in the release tarball.
+* Allow the building of tools to be optional.
+* Only check for a Java compiler when required.
+* Allow VMOperatingSystemMXBeanImpl to compile on Solaris.
+* Documentation typo fixes
+* Fix memory leak in native/jni/classpath/jcl.c
+* Web page updates (PR classpath/22883)
+* Fixes to pass the JSR166 TCK
+* Use awk to construct the classlist on building
+* Fix deadlock in Logger (PR classpath/35974)
+* Fix regression in java.lang.String (PR classpath/35482)
+* Allow Classpath tools to handle @file options.
+* Allow parseInt to handle a + prefix correctly.
+* Remove use of 1.5 language constructs in the VM layer.
+
+Bug fixes in release 0.97.1 (Mar 11, 2007)
+
+* Include documentation for JSR166 (java.util.concurrent)
+* Fix STaX API compatability.
+* Include the tools properties file in the release tarball.
+
 New in release 0.97 (Feb 22, 2007)
 
 Build changes:
