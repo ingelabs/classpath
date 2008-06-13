@@ -1,5 +1,10 @@
 2008-06-13  Mark Wielaard  <mark@klomp.org>
 
+	* tools/Makefile.am (USE_JAVAC_FLAGS): Use relative generated dir.
+	(TOOLS_ZIP): Generate antlr output in relative dir.
+
+2008-06-13  Mark Wielaard  <mark@klomp.org>
+
 	* tools/Makefile.am (USE_JAVAC_FLAGS): Use generated in builddir.
 	(TOOLS_JAVA_FILES): Include all .java files in all subdirs.
 	(ALL_TOOLS_FILES): Include gjdoc_resources and antlr input file.

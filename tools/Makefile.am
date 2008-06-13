@@ -6,7 +6,7 @@ GLIBJ_CLASSPATH=asm
 # Setup the compiler to use the GNU Classpath library we just built.
 JCOMPILER = $(JAVAC) $(JAVACFLAGS) -source 1.5 -target 1.5 -encoding UTF-8 -bootclasspath $(GLIBJ_BOOTCLASSPATH) -classpath $(GLIBJ_CLASSPATH)
 
-USE_JAVAC_FLAGS = -classpath $(CLASSPATH):$(srcdir):$(ANTLR_JAR):$(builddir)/generated:. $(JAVAC_FLAGS)
+USE_JAVAC_FLAGS = -classpath $(CLASSPATH):$(srcdir):$(ANTLR_JAR):generated:. $(JAVAC_FLAGS)
 
 if CREATE_WRAPPERS
 bin_SCRIPTS =
@@ -286,7 +286,7 @@ $(TOOLS_ZIP): $(ALL_TOOLS_FILES)
 	@rm -rf classes asm generated
 	mkdir -p classes asm generated/gnu/classpath/tools/gjdoc/expr
 ## Generate antlr sources.
-	$(ANTLR) -o $(builddir)/generated/gnu/classpath/tools/gjdoc/expr \
+	$(ANTLR) -o generated/gnu/classpath/tools/gjdoc/expr \
 	  $(srcdir)/gnu/classpath/tools/gjdoc/expr/java-expression.g
 ## Compile ASM separately as it is latin-1 encoded.
 	find $(srcdir)/external/asm -name '*.java' -print > asm.lst
