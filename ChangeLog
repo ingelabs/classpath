@@ -1,3 +1,16 @@
+2008-06-13  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* configure.ac:
+	Add --enable-gjdoc option and check
+	for mkdir -p.
+	* examples/Makefile.am,
+	* lib/Makefile.am,
+	* lib/copy-vmresources.sh.in:
+	Use @MKDIR_P@.
+	* tools/Makefile.am:
+	Allow building GJDoc to be disabled
+	and use @MKDIR_P@.
+
 2008-06-13  Mark Wielaard  <mark@klomp.org>
 
 	* tools/Makefile.am (USE_JAVAC_FLAGS): Use relative generated dir.

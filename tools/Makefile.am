@@ -6,14 +6,20 @@ GLIBJ_CLASSPATH=asm
 # Setup the compiler to use the GNU Classpath library we just built.
 JCOMPILER = $(JAVAC) $(JAVACFLAGS) -source 1.5 -target 1.5 -encoding UTF-8 -bootclasspath $(GLIBJ_BOOTCLASSPATH) -classpath $(GLIBJ_CLASSPATH)
 
+if CREATE_GJDOC
 USE_JAVAC_FLAGS = -classpath $(CLASSPATH):$(srcdir):$(ANTLR_JAR):generated:. $(JAVAC_FLAGS)
+else
+USE_JAVAC_FLAGS = -classpath $(CLASSPATH):$(srcdir):. $(JAVAC_FLAGS)
+endif
 
 if CREATE_WRAPPERS
 bin_SCRIPTS =
 bin_PROGRAMS = gappletviewer gjarsigner gkeytool \
 	gjar gnative2ascii gserialver gjavah grmiregistry \
-	gtnameserv gorbd grmid grmic gjdoc
-
+	gtnameserv gorbd grmid grmic
+if CREATE_GJDOC
+bin_PROGRAMS += gjdoc
+endif
 
 AM_CPPFLAGS = -Wall \
 	-I$(top_srcdir)/include \
@@ -90,7 +96,10 @@ gjdoc_CFLAGS = \
 else
 bin_SCRIPTS = gappletviewer gjarsigner gkeytool \
 	gjar gnative2ascii gserialver gjavah grmiregistry \
-	gtnameserv gorbd grmid grmic gjdoc
+	gtnameserv gorbd grmid grmic
+if CREATE_GJDOC
+bin_SCRIPTS += gjdoc
+endif
 bin_PROGRAMS =
 ## FIXME: revisit this with a newer automake.
 gappletviewer: gappletviewer.in
@@ -105,11 +114,13 @@ gtnameserv: gtnameserv.in
 gorbd: gorbd.in
 grmid: grmid.in
 grmic: grmic.in
+if CREATE_GJDOC
 gjdoc: gjdoc.in
+endif
 endif
 EXTRA_DIST = toolwrapper.c gappletviewer.in gjarsigner.in gkeytool.in \
 	gjar.in gnative2ascii.in gserialver.in gjavah.in grmiregistry.in \
-	gtnameserv.in gorbd.in grmid.in grmic.in
+	gtnameserv.in gorbd.in grmid.in grmic.in gjdoc.in
 
 # All our example java source files
 TOOLS_JAVA_FILES = $(srcdir)/gnu/classpath/tools/*/*.java \
@@ -247,6 +258,14 @@ gjdoc_resources = $(gnu_classpath_tools_gjdoc_jar_CSS) $(gnu_classpath_tools_gjd
 	$(gnu_classpath_tools_gjdoc_jar_RNGS) $(gnu_classpath_tools_gjdoc_jar_TXTS) \
 	$(gnu_classpath_tools_gjdoc_jar_XHTML) $(gnu_classpath_tools_gjdoc_jar_XSLS)
 
+if !CREATE_GJDOC
+GJDOC_EX = -path '*gnu/classpath/tools/gjdoc' -prune -o \
+	-path '*gnu/classpath/tools/doclets' -prune -o \
+	-path '*com/sun/javadoc' -prune -o \
+	-path '*com/sun/tools/doclets' -prune -o \
+	-path '*com/sun/tools/javadoc' -prune -o
+endif
+
 # The zip files with classes we want to produce.
 TOOLS_ZIP = tools.zip
 
@@ -284,10 +303,13 @@ dist-hook:
 # so they get also included.
 $(TOOLS_ZIP): $(ALL_TOOLS_FILES)
 	@rm -rf classes asm generated
-	mkdir -p classes asm generated/gnu/classpath/tools/gjdoc/expr
+	@MKDIR_P@ classes asm 
+if CREATE_GJDOC
 ## Generate antlr sources.
+	@MKDIR_P@ generated/gnu/classpath/tools/gjdoc/expr
 	$(ANTLR) -o generated/gnu/classpath/tools/gjdoc/expr \
 	  $(srcdir)/gnu/classpath/tools/gjdoc/expr/java-expression.g
+endif
 ## Compile ASM separately as it is latin-1 encoded.
 	find $(srcdir)/external/asm -name '*.java' -print > asm.lst
 	AC=`echo $(JCOMPILER) | sed -e 's/UTF-8/ISO-8859-1/g'`; \
@@ -295,29 +317,32 @@ $(TOOLS_ZIP): $(ALL_TOOLS_FILES)
 	find $(srcdir)/gnu/classpath/tools \
 	     $(srcdir)/com/sun/javadoc \
 	     $(srcdir)/com/sun/tools/doclets \
+	     $(srcdir)/com/sun/tools/javadoc \
 	     $(srcdir)/com/sun/tools/javac \
 	     $(srcdir)/com/sun/tools/javah \
-	     $(srcdir)/com/sun/tools/javadoc \
 	     $(srcdir)/sun/rmi/rmic \
+	     $(GJDOC_EX) \
 	     -name '*.java' -print > classes.lst
 	$(JCOMPILER) $(USE_JAVAC_FLAGS) -g -d classes @classes.lst
 	cat classes.lst asm.lst > all-classes.lst
 ## Copy over tools resource files.
 	@list=`cd $(srcdir)/resource && find gnu/classpath/tools com/sun/tools/javac \
-	       sun/rmi/rmic -name \*.properties -print -o -name \*.jav -print`; \
+	       sun/rmi/rmic $(GJDOC_EX) -name \*.properties -print -o -name \*.jav -print`; \
 	for p in $$list; do \
 	  dirname=classes/`dirname $$p`; \
-	  if ! test -d "$$dirname"; then mkdir -p "$$dirname"; fi; \
+	  if ! test -d "$$dirname"; then @MKDIR_P@ "$$dirname"; fi; \
 	  echo "  cp $(srcdir)/resource/$$p classes/$$p"; \
 	  cp $(srcdir)/resource/$$p classes/$$p; \
 	done
+if CREATE_GJDOC
 ## Copy over gjdoc resource files.
 	for res in $(gjdoc_resources); do \
 	  dir=classes/`dirname $$res`; \
-	  if ! test -d "$$dir"; then mkdir -p "$$dir"; fi; \
+	  if ! test -d "$$dir"; then @MKDIR_P@ "$$dir"; fi; \
 	  echo "  cp $(srcdir)/resource/gnu/classpath/tools/gjdoc/$$res classes/$$res"; \
 	  cp $(srcdir)/resource/gnu/classpath/tools/gjdoc/$$res classes/$$res; \
 	done 
+endif
 ## First add classpath tools stuff.
 	(cd classes; \
 	if test "$(ZIP)" != ""; then $(ZIP) -r ../$(TOOLS_ZIP) .; fi; \

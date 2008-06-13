@@ -259,6 +259,19 @@ AC_ARG_ENABLE([gmp],
               [COMPILE_GMP=yes])
 
 dnl -----------------------------------------------------------
+dnl GJDoc (enabled by default)
+dnl -----------------------------------------------------------
+AC_ARG_ENABLE([gjdoc],
+              [AS_HELP_STRING(--disable-gjdoc,compile GJDoc (disabled by --disable-gjdoc) [default=yes])],
+              [case "${enableval}" in
+                yes) COMPILE_GJDOC=yes ;;
+                no) COMPILE_GJDOC=no ;;
+                *) COMPILE_GJDOC=yes ;;
+              esac],
+              [COMPILE_GJDOC=yes])
+AM_CONDITIONAL(CREATE_GJDOC, test "x${COMPILE_GJDOC}" = xyes)
+
+dnl -----------------------------------------------------------
 dnl Sets the native libraries installation dir
 dnl -----------------------------------------------------------
 AC_ARG_WITH([native-libdir],
@@ -349,6 +362,7 @@ AM_CONDITIONAL(CREATE_WRAPPERS, test "x${COMPILE_WRAPPERS}" = xyes)
 
 AC_PROG_LN_S
 AC_PROG_INSTALL
+AC_PROG_MKDIR_P
 
 dnl -----------------------------------------------------------
 dnl Checks for programs.
@@ -361,7 +375,10 @@ AC_PROG_AWK
 AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_CPP
-AC_PROG_ANTLR(2,7,1)
+
+if test "x${COMPILE_GJDOC}" = xyes; then
+  AC_PROG_ANTLR(2,7,1)
+fi
 
 # Handle -Werror default case.
 if test "$ENABLE_WERROR" = default; then
@@ -1075,8 +1092,7 @@ tools/gtnameserv
 tools/gorbd
 tools/grmid
 tools/grmic
-tools/gjavah
-tools/gjdoc])
+tools/gjavah])
 AC_CONFIG_COMMANDS([gappletviewer],[chmod 755 tools/gappletviewer])
 AC_CONFIG_COMMANDS([gjarsigner],[chmod 755 tools/gjarsigner])
 AC_CONFIG_COMMANDS([gkeytool],[chmod 755 tools/gkeytool])
@@ -1089,7 +1105,11 @@ AC_CONFIG_COMMANDS([gorbd],[chmod 755 tools/gorbd])
 AC_CONFIG_COMMANDS([grmid],[chmod 755 tools/grmid])
 AC_CONFIG_COMMANDS([grmic],[chmod 755 tools/grmic])
 AC_CONFIG_COMMANDS([gjavah], [chmod 755 tools/gjavah])
+if test "x${COMPILE_GJDOC}" = xyes
+then
+AC_CONFIG_FILES([tools/gjdoc])
 AC_CONFIG_COMMANDS([gjdoc], [chmod 755 tools/gjdoc])
+fi
 fi
 
 AC_CONFIG_COMMANDS([gen-classlist],[chmod 755 lib/gen-classlist.sh])
