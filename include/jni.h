@@ -1,5 +1,5 @@
 /* jni.h
-   Copyright (C) 1998, 1999, 2000, 2001, 2002, 2004, 2005, 2006, 2007  Free Software Foundation
+   Copyright (C) 1998, 1999, 2000, 2001, 2002, 2004, 2005, 2006, 2007, 2008  Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -136,16 +136,6 @@ struct _jfieldID;
 struct _jmethodID;
 typedef struct _jfieldID *jfieldID;
 typedef struct _jmethodID *jmethodID;
-
-enum _jobjectRefType
-{
-  JNIInvalidRefType    = 0,
-  JNILocalRefType      = 1,
-  JNIGlobalRefType     = 2,
-  JNIWeakGlobalRefType = 3 
-};
-
-typedef enum _jobjectRefType jobjectRefType;
 #endif 
 
 /* Version numbers.  */
@@ -164,6 +154,15 @@ typedef enum _jobjectRefType jobjectRefType;
 #define JNI_EDETACHED    (-2)
 #define JNI_EVERSION     (-3)
 
+enum _jobjectRefType
+{
+  JNIInvalidRefType    = 0,
+  JNILocalRefType      = 1,
+  JNIGlobalRefType     = 2,
+  JNIWeakGlobalRefType = 3 
+};
+
+typedef enum _jobjectRefType jobjectRefType;
 
 #ifdef __cplusplus
 extern "C"
