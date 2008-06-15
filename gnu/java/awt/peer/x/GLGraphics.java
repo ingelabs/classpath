@@ -72,6 +72,7 @@ public class GLGraphics extends AbstractGraphics2D
   public void setBackground(Color b)
   {
     super.setBackground(b);
+    
     gl.clearColor(b.getRed() / 255.F, b.getGreen() / 255.F,
                    b.getBlue() / 255.F, b.getAlpha() / 255.F);
   }

@@ -39,6 +39,8 @@ exception statement from your version. */
 package gnu.java.awt.peer.x;
 
 import java.awt.AWTEvent;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Rectangle;
@@ -170,7 +172,14 @@ public class XEventPump
       button = 0;
     drag = button;
 
-    MouseEvent mp = new MouseEvent(awtWindow, MouseEvent.MOUSE_PRESSED,
+    Component target =
+      findMouseEventTarget(awtWindow, event.getEventX(), event.getEventY());
+    if(target == null)
+      {
+        target = awtWindow;
+      }
+    
+    MouseEvent mp = new MouseEvent(target, MouseEvent.MOUSE_PRESSED,
                                    System.currentTimeMillis(),
                                    KeyboardMapping.mapModifiers(event.getState())
                                      | buttonToModifier(button),
@@ -191,7 +200,14 @@ public class XEventPump
       button = 0;
     drag = -1;
     
-    MouseEvent mr = new MouseEvent(awtWindow, MouseEvent.MOUSE_RELEASED,
+    Component target =
+      findMouseEventTarget(awtWindow, event.getEventX(), event.getEventY());
+    if(target == null)
+      {
+        target = awtWindow;
+      }
+    
+    MouseEvent mr = new MouseEvent(target, MouseEvent.MOUSE_RELEASED,
                                    System.currentTimeMillis(),
                                    KeyboardMapping.mapModifiers(event.getState())
                                      | buttonToModifier(button),
@@ -199,6 +215,7 @@ public class XEventPump
                                    1, false, button);
     Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(mr);
   }
+  
   
   private void handleMotionNotify(MotionNotify event)
   {
@@ -423,5 +440,47 @@ public class XEventPump
 
     return 0;        
   }
+  
+  /**
+   * Finds the heavyweight mouse event target.
+   *
+   * @param src the original source of the event
+   *
+   * @param pt the event coordinates
+   *
+   * @return the real mouse event target
+   */
+  private Component findMouseEventTarget(Component src, int x, int y)
+  {
+    Component found = null;
+    if (src instanceof Container)
+      {
+        Container cont = (Container) src;
+        int numChildren = cont.getComponentCount();
+        for (int i = 0; i < numChildren && found == null; i++)
+          {
+            Component child = cont.getComponent(i);
+            if (child != null && child.isVisible()
+                && child.contains(x - child.getX(), y - child.getY()))
+              {
+                if (child instanceof Container)
+                  {
+                    Component deeper = findMouseEventTarget(child,
+                                                            x - child.getX(),
+                                                            y - child.getY());
+                    if (deeper != null)
+                      found = deeper;
+                  }
+                else if (! child.isLightweight())
+                  found = child;
+              }
+          }
+      }
 
+    // Consider the source itself.
+    if (found == null && src.contains(x, y) && ! src.isLightweight())
+      found = src;
+
+    return found;
+  }
 }

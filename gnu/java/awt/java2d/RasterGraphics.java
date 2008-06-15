@@ -38,6 +38,9 @@ exception statement from your version. */
 
 package gnu.java.awt.java2d;
 
+import gnu.x11.image.ZPixmap;
+
+import java.awt.Color;
 import java.awt.GraphicsConfiguration;
 import java.awt.Rectangle;
 import java.awt.image.ColorModel;
@@ -72,6 +75,15 @@ public class RasterGraphics
     init();
   }
 
+  @Override
+  public void renderScanline(int y, ScanlineCoverage c)
+  {
+    if (y >= getDeviceBounds().width)
+      return;
+    
+    super.renderScanline(y, c);
+  }
+  
   /**
    * Returns the color model of this Graphics object.
    *

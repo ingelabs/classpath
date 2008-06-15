@@ -394,9 +394,23 @@ public class XGraphics2D
                 xdrawable.put_image(xgc, zpixmap, x, y);
                 imageCache.put(image, zpixmap);
               } else {
-                ZPixmap zpixmap = (ZPixmap) xdrawable.image(x, y, w, h,
-                                                            0xffffffff,
-                                           gnu.x11.image.Image.Format.ZPIXMAP);
+                
+                // TODO optimize reusing the rectangles
+                Rectangle source =
+                  new Rectangle(0, 0, xdrawable.width, xdrawable.height);
+                Rectangle target = new Rectangle(x, y, w, h);
+                
+                Rectangle destination = source.intersection(target); 
+                
+                x = destination.x;
+                y = destination.y;
+                w = destination.width;
+                h = destination.height;
+                
+                ZPixmap zpixmap =
+                  (ZPixmap) xdrawable.image(x, y, w, h,
+                                            0xffffffff,
+                                            gnu.x11.image.Image.Format.ZPIXMAP);
                 for (int yy = 0; yy < h; yy++)
                   {
                     for (int xx = 0; xx < w; xx++)

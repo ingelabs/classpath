@@ -1,3 +1,40 @@
+2008-06-15  Mario Torre  <neugens@aicas.com>
+ 
+    * gnu/java/awt/java2d/AbstractGraphics2D.java (setColor): delegate to
+    setPaint.
+    (setPaint): fix to set paint context and foreground color.
+    (imageCache): new field.
+    (drawImage): new codepath for scaling images.
+    (prepareImage): new method.
+    (getPaintContext): set paintContext appropriately.
+    * gnu/java/awt/java2d/RasterGraphics.java (renderScanline): new method,
+    override from superclass to detect correct value of y while rendering
+    the scanline.
+    * gnu/java/awt/java2d/ScanlineConverter.java (renderShape): revert previous
+    patch. 
+    * gnu/java/awt/peer/x/XEventPump.java (findMouseEventTarget): new method.
+    (handleButtonPress): use of findMouseEventTarget to detect the correct
+    target.
+    (handleButtonRelease):  likewise.
+    * gnu/java/awt/peer/x/XGraphics2D.java (rawDrawImage): clip the target image
+    so that it is completely contained in the destination pixmaps, as per X11
+    specification.
+    * gnu/java/awt/peer/x/XToolkit.java (createTextField): method implemented. 
+    (createButton): likewise.
+    (prepareImage): likewise.
+    (createLabel): likewise.
+    (checkImage): likewise.
+    (createTextArea): likewise.
+    (createCheckbox): likewise.
+    (checkHeadLess): new method.
+    * gnu/javax/imageio/bmp/BMPImageWriter.java (write):
+    don't close the stream.
+    * gnu/javax/imageio/bmp/BMPImageWriterSpi.java (names): added new names to
+    the list of known names for BMP.
+    * java/awt/image/WritableRaster.java (createWritableTranslatedChild): 
+    * javax/imageio/ImageIO.java (write): call dispose on ImageWriter after
+    writing of the image.
+
 2008-06-15  Tom Tromey  <tromey@redhat.com>
 
 	* include/jni.h (_jobjectRefType, jobjectRefType): Always
