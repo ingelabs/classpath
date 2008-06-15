@@ -38,9 +38,6 @@ exception statement from your version. */
 
 package gnu.java.awt.java2d;
 
-import gnu.x11.image.ZPixmap;
-
-import java.awt.Color;
 import java.awt.GraphicsConfiguration;
 import java.awt.Rectangle;
 import java.awt.image.ColorModel;

@@ -1,4 +1,9 @@
 2008-06-15  Mario Torre  <neugens@aicas.com>
+
+	* gnu/java/awt/java2d/RasterGraphics.java: remove unused import that cause
+	compilation to fail when xpeers are not enabled.
+
+2008-06-15  Mario Torre  <neugens@aicas.com>
  
     * gnu/java/awt/java2d/AbstractGraphics2D.java (setColor): delegate to
     setPaint.
