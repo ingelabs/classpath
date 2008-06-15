@@ -204,8 +204,11 @@ public final class CPStringBuilder
     int valueLength = value.length;
 
     /* Always call ensureCapacity in order to preserve
-       copy-on-write semantics.  */
-    ensureCapacity(newLength);
+       copy-on-write semantics, except when the position
+       is simply being reset
+    */
+    if (newLength > 0)
+      ensureCapacity(newLength);
 
     if (newLength < valueLength)
       {
@@ -1036,18 +1039,24 @@ public final class CPStringBuilder
    * Increase the capacity of this <code>StringBuilder</code>. This will
    * ensure that an expensive growing operation will not occur until either
    * <code>minimumCapacity</code> is reached or the array has been allocated.
-   * The buffer is grown to the larger of <code>minimumCapacity</code> and
+   * The buffer is grown to either <code>minimumCapacity * 2</code>, if
+   * the array has been allocated or the larger of <code>minimumCapacity</code> and 
    * <code>capacity() * 2 + 2</code>, if it is not already large enough.
    *
    * @param minimumCapacity the new capacity
-   * @see #capacity()
+   * @see #length()
    */
   public void ensureCapacity(int minimumCapacity)
   {
     if (allocated || minimumCapacity > value.length)
       {
-        int max = value.length * 2 + 2;
-        minimumCapacity = (minimumCapacity < max ? max : minimumCapacity);
+	if (minimumCapacity > value.length)
+	  {
+	    int max = value.length * 2 + 2;
+	    minimumCapacity = (minimumCapacity < max ? max : minimumCapacity);
+	  }
+	else
+	  minimumCapacity *= 2;
 	allocateArray(minimumCapacity);
       }
   }
