@@ -1,5 +1,11 @@
 2008-06-15  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	PR classpath/36522:
+	* gnu/java/security/PolicyFile.java:
+	Correct typo changing seperator to separator.
+
+2008-06-15  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	PR classpath/36477:
 	* gnu/java/lang/CPStringBuilder.java,
 	(setLength(int)): Don't ensure capacity when

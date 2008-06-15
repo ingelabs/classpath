@@ -152,7 +152,7 @@ public final class PolicyFile extends Policy
 
   protected static final Logger logger = SystemLogger.SYSTEM;
   // Added to cut redundant AccessController.doPrivileged calls
-  private static GetPropertyAction prop = new GetPropertyAction("file.seperator");
+  private static GetPropertyAction prop = new GetPropertyAction("file.separator");
   private static final String fs = (String) AccessController.doPrivileged(prop);
   
   private static final String DEFAULT_POLICY =
