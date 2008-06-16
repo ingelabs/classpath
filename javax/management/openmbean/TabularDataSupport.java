@@ -163,6 +163,7 @@ public class TabularDataSupport
    *
    * @return a shallow clone of this {@link TabularDataSupport}.
    */
+  @SuppressWarnings("unchecked")
   public Object clone()
   {
     TabularDataSupport clone = null;
