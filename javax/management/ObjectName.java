@@ -306,17 +306,14 @@ public class ObjectName
 					     "character.");
     char[] keychars = new char[] { '\n', ':', ',', '*', '?', '=' };
     char[] valchars = new char[] { '\n', ':', ',', '=' };
-    Iterator i = properties.entrySet().iterator();
-    while (i.hasNext())
+    for (Map.Entry<String,String> entry : properties.entrySet())
       {
-	Map.Entry entry = (Map.Entry) i.next();
-	String key = (String) entry.getKey();
 	for (int a = 0; a < keychars.length; ++a)
-	  if (key.indexOf(keychars[a]) != -1)
+	  if (entry.getKey().indexOf(keychars[a]) != -1)
 	    throw new MalformedObjectNameException("A key contains a '" +
 						   keychars[a] + "' " +
 						   "character.");
-	String value = (String) entry.getValue();
+	String value = entry.getValue();
 	int quote = value.indexOf('"');
 	if (quote == 0)
 	  {
@@ -389,15 +386,13 @@ public class ObjectName
 
     if (isPropertyPattern())
       {
-	Hashtable oProps = name.getKeyPropertyList();
-	Iterator i = properties.entrySet().iterator();
-	while (i.hasNext())
+	Hashtable<String,String> oProps = name.getKeyPropertyList();
+	for (Map.Entry<String,String> entry : properties.entrySet())
 	  {
-	    Map.Entry entry = (Map.Entry) i.next();
-	    String key = (String) entry.getKey();
+	    String key = entry.getKey();
 	    if (!(oProps.containsKey(key)))
 	      return false;
-	    String val = (String) entry.getValue();
+	    String val = entry.getValue();
 	    if (!(val.equals(oProps.get(key))))
 	      return false;
 	  }
@@ -479,10 +474,10 @@ public class ObjectName
   public String getCanonicalKeyPropertyListString()
   {
     CPStringBuilder builder = new CPStringBuilder();
-    Iterator i = properties.entrySet().iterator();
+    Iterator<Map.Entry<String,String>> i = properties.entrySet().iterator();
     while (i.hasNext())
       {
-	Map.Entry entry = (Map.Entry) i.next();
+	Map.Entry<String,String> entry = i.next();
 	builder.append(entry.getKey() + "=" + entry.getValue());
 	if (i.hasNext())
 	  builder.append(",");
