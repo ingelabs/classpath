@@ -36,10 +36,12 @@ dnl Modified to remove jikes by Andrew John Hughes on 2008-02-11
 
 AC_DEFUN([AC_PROG_JAVAC],[
 AC_REQUIRE([AC_EXEEXT])dnl
+ECJ_OPTS="-warn:-deprecation,serial,unusedImport"
+JAVAC_OPTS="-Xlint:unchecked,cast,divzero,empty,finally,overrides"
 if test "x$JAVAPREFIX" = x; then
-        test "x$JAVAC" = x && AC_CHECK_PROGS(JAVAC, ["ecj$EXEEXT -warn:-deprecation,serial,unusedImport"] ["ecj-3.3$EXEEXT -warn:-deprecation,serial,unusedImport"] ["ecj-3.2$EXEEXT -warn:-deprecation,serial,unusedImport"] ["javac$EXEEXT -Xlint:unchecked"] "gcj$EXEEXT -C")
+        test "x$JAVAC" = x && AC_CHECK_PROGS(JAVAC, ["ecj$EXEEXT $ECJ_OPTS"] ["ecj-3.3$EXEEXT $ECJ_OPTS"] ["ecj-3.2$EXEEXT $ECJ_OPTS"] ["javac$EXEEXT $JAVAC_OPTS"] "gcj$EXEEXT -C")
 else
-        test "x$JAVAC" = x && AC_CHECK_PROGS(JAVAC, ["ecj$EXEEXT -warn:-deprecation,serial,unusedImport"] ["ecj-3.3$EXEEXT -warn:-deprecation,serial,unusedImport"] ["ecj-3.2$EXEEXT -warn:-deprecation,serial,unusedImport"] ["javac$EXEEXT -Xlint:unchecked"] "gcj$EXEEXT -C", $JAVAPREFIX)
+        test "x$JAVAC" = x && AC_CHECK_PROGS(JAVAC, ["ecj$EXEEXT $ECJ_OPTS"] ["ecj-3.3$EXEEXT $ECJ_OPTS"] ["ecj-3.2$EXEEXT $ECJ_OPTS"] ["javac$EXEEXT $JAVAC_OPTS"] "gcj$EXEEXT -C", $JAVAPREFIX)
 fi
 test "x$JAVAC" = x && AC_MSG_ERROR([no acceptable Java compiler found in \$PATH])
 AC_PROG_JAVAC_WORKS
