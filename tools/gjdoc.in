@@ -46,4 +46,4 @@ tools_dir=@datadir@/@PACKAGE@
 tools_cp=${tools_dir}/tools.zip
 antlr_jar=@ANTLR_JAR@
 
-exec @VM_BINARY@ -Xbootclasspath/p:"${tools_cp}:${antlr_jar}" gnu.classpath.tools.gjdoc.Main "$@"
+exec @JAVA@ -classpath "${tools_cp}:${antlr_jar}" gnu.classpath.tools.gjdoc.Main "$@"

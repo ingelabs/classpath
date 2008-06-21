@@ -300,20 +300,6 @@ AC_ARG_WITH([glibj-dir],
 AC_SUBST(glibjdir)
 
 dnl -----------------------------------------------------------
-dnl Sets the VM name for use in tool wrapper scripts
-dnl -----------------------------------------------------------
-AC_ARG_WITH([vm],
-	    [AS_HELP_STRING(--with-vm,sets the VM binary name [default='${prefix}/bin/jamvm'])],
-	    [
-	     VM_BINARY=${withval}
-	    ],
-	    [
-	     VM_BINARY='${prefix}/bin/jamvm'
-	    ])
-
-AC_SUBST(VM_BINARY)
-
-dnl -----------------------------------------------------------
 dnl Sets the Antlr jar to use for compiling gjdoc
 dnl -----------------------------------------------------------
 AC_ARG_WITH([antlr-jar],
@@ -375,10 +361,6 @@ AC_PROG_AWK
 AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_CPP
-
-if test "x${COMPILE_GJDOC}" = xyes; then
-  AC_PROG_ANTLR(2,7,1)
-fi
 
 # Handle -Werror default case.
 if test "$ENABLE_WERROR" = default; then
@@ -947,6 +929,15 @@ esac;
 
 AM_CONDITIONAL(USE_PREBUILT_GLIBJ_ZIP, test x$use_glibj_zip = xtrue)
 AC_SUBST(PATH_TO_GLIBJ_ZIP)
+
+if test "x${TOOLSDIR}" != x; then
+  if test "x${COMPILE_WRAPPERS}" = xno; then
+    AC_PROG_JAVA
+  fi
+  if test "x${COMPILE_GJDOC}" = xyes; then
+    AC_PROG_ANTLR(2,7,1)
+  fi
+fi
 
 # Check for javac if we need to build either the class library,
 # the examples or the tools
