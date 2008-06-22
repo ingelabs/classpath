@@ -84,7 +84,7 @@ public final class Selector
    */
   final Test[] tests;
 
-  public Selector(int axis, List tests)
+  public Selector(int axis, List<? extends Test> tests)
   {
     this.axis = axis;
     int len = tests.size();
@@ -179,29 +179,31 @@ public final class Selector
     return count;
   }
 
+
+  @Override
   public Object evaluate(Node context, int pos, int len)
   {
-    Set acc = new LinkedHashSet();
+    Set<Node> acc = new LinkedHashSet<Node>();
     addCandidates(context, acc);
-    List candidates = new ArrayList(acc);
-    List ret = filterCandidates(candidates, false);
+    List<Node> candidates = new ArrayList<Node>(acc);
+    List<Node> ret = filterCandidates(candidates, false);
     return ret;
   }
 
-  Collection evaluate(Node context, Collection ns)
+  Collection evaluate(Node context, Collection<Node> ns)
   {
-    Set acc = new LinkedHashSet();
-    for (Iterator i = ns.iterator(); i.hasNext(); )
-      addCandidates((Node) i.next(), acc);
-    List candidates = new ArrayList(acc);
-    List ret = filterCandidates(candidates, true);
+    Set<Node> acc = new LinkedHashSet<Node>();
+    for (Iterator<Node> i = ns.iterator(); i.hasNext(); )
+      addCandidates(i.next(), acc);
+    List<Node> candidates = new ArrayList<Node>(acc);
+    List<Node> ret = filterCandidates(candidates, true);
     return ret;
   }
 
   /**
    * Filter the given list of candidates according to the node tests.
    */
-  List filterCandidates(List candidates, boolean cascade)
+  List<Node> filterCandidates(List<Node> candidates, boolean cascade)
   {
     int len = candidates.size();
     int tlen = tests.length;
@@ -211,10 +213,10 @@ public final class Selector
         for (int j = 0; j < tlen && len > 0; j++)
           {
             Test test = tests[j];
-            List successful = new ArrayList(len);
+            List<Node> successful = new ArrayList<Node>(len);
             for (int i = 0; i < len; i++)
               {
-                Node node = (Node) candidates.get(i);
+                Node node = candidates.get(i);
                 if (cascade)
                   {
                     // Documents and DocumentFragments should be considered
@@ -244,7 +246,7 @@ public final class Selector
     return candidates;
   }
 
-  void addCandidates(Node context, Collection candidates)
+  void addCandidates(Node context, Collection<Node> candidates)
   {
     // Build list of candidates
     switch (axis)
@@ -293,7 +295,7 @@ public final class Selector
       }
   }
 
-  void addChildNodes(Node context, Collection acc, boolean recurse)
+  void addChildNodes(Node context, Collection<Node> acc, boolean recurse)
   {
     Node child = context.getFirstChild();
     while (child != null)
@@ -305,7 +307,7 @@ public final class Selector
       }
   }
 
-  void addParentNode(Node context, Collection acc, boolean recurse)
+  void addParentNode(Node context, Collection<Node> acc, boolean recurse)
   {
     Node parent = (context.getNodeType() == Node.ATTRIBUTE_NODE) ?
       ((Attr) context).getOwnerElement() : context.getParentNode();
@@ -317,7 +319,7 @@ public final class Selector
       }
   }
 
-  void addFollowingNodes(Node context, Collection acc, boolean recurse)
+  void addFollowingNodes(Node context, Collection<Node> acc, boolean recurse)
   {
     if (context != null && recurse)
       addChildNodes(context, acc, true);
@@ -351,7 +353,7 @@ public final class Selector
       }
   }
 
-  void addPrecedingNodes(Node context, Collection acc, boolean recurse)
+  void addPrecedingNodes(Node context, Collection<Node> acc, boolean recurse)
   {
     Node cur = (context.getNodeType() == Node.ATTRIBUTE_NODE) ? null :
       context.getPreviousSibling();
@@ -372,7 +374,7 @@ public final class Selector
       }
   }
 
-  void addAttributes(Node context, Collection acc)
+  void addAttributes(Node context, Collection<Node> acc)
   {
     NamedNodeMap attrs = context.getAttributes();
     if (attrs != null)
@@ -389,7 +391,7 @@ public final class Selector
       }
   }
 
-  void addNamespaceAttributes(Node context, Collection acc)
+  void addNamespaceAttributes(Node context, Collection<Node> acc)
   {
     NamedNodeMap attrs = context.getAttributes();
     if (attrs != null)

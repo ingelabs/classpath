@@ -56,9 +56,9 @@ final class SumFunction
 
   final Expr arg;
 
-  SumFunction(List args)
+  SumFunction(List<Expr> args)
   {
-    this((Expr) args.get(0));
+    this(args.get(0));
   }
 
   SumFunction(Expr arg)
@@ -66,15 +66,15 @@ final class SumFunction
     this.arg = arg;
   }
 
+  @Override @SuppressWarnings("unchecked")
   public Object evaluate(Node context, int pos, int len)
   {
     Object val = arg.evaluate(context, pos, len);
     double sum = 0.0d;
     if (val instanceof Collection)
       {
-        for (Iterator i = ((Collection) val).iterator(); i.hasNext(); )
+	for (Node node : ((Collection<Node>) val))
           {
-            Node node = (Node) i.next();
             String s = stringValue(node);
             sum += _number(context, s);
           }

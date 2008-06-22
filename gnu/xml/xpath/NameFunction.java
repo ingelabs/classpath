@@ -67,9 +67,9 @@ final class NameFunction
 
   final Expr arg;
 
-  NameFunction(List args)
+  NameFunction(List<Expr> args)
   {
-    this(args.size() > 0 ? (Expr) args.get(0) : null);
+    this(args.size() > 0 ? args.get(0) : null);
   }
 
   NameFunction(Expr arg)
@@ -77,6 +77,7 @@ final class NameFunction
     this.arg = arg;
   }
 
+  @Override
   public Object evaluate(Node context, int pos, int len)
   {
     Object val = (arg == null) ? Collections.singleton(context) :

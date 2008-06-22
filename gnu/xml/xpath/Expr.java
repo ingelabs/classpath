@@ -75,7 +75,7 @@ public abstract class Expr
   implements XPathExpression
 {
 
-  protected static final Comparator documentOrderComparator =
+  protected static final Comparator<Node> documentOrderComparator =
     new DocumentOrderComparator();
 
   protected static final DecimalFormat decimalFormat =

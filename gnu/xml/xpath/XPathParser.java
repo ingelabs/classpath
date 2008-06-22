@@ -79,7 +79,7 @@ public class XPathParser
     return qName;
   }
 
-  Expr lookupFunction(String name, List args)
+  Expr lookupFunction(String name, List<Expr> args)
   {
     int arity = args.size();
     if ("position".equals(name) && arity == 0)
@@ -391,6 +391,7 @@ public class XPathParser
       @return result of the last reduction, if any.
       @throws yyException on irrecoverable parse error.
     */
+  @SuppressWarnings("unchecked")
   public Object yyparse (yyInput yyLex)
 				throws java.io.IOException, yyException {
     if (yyMax <= 0) yyMax = 256;			// initial size
@@ -491,7 +492,7 @@ case 5:
       else
         {
           steps = new Steps();
-          steps.path.addFirst(yyVals[0+yyTop]);
+          steps.path.addFirst((Expr) yyVals[0+yyTop]);
         }
       steps.path.addFirst(new Root());
       yyVal = steps;
@@ -512,7 +513,7 @@ case 6:
       else
         {
           steps = new Steps();
-          steps.path.addFirst(yyVals[0+yyTop]);
+          steps.path.addFirst((Expr) yyVals[0+yyTop]);
         }
       steps.path.addFirst(s);
       steps.path.addFirst(new Root());
@@ -532,9 +533,9 @@ case 8:
       else
         {
           steps = new Steps();
-          steps.path.addFirst(yyVals[-2+yyTop]);
+          steps.path.addFirst((Expr) yyVals[-2+yyTop]);
         }
-      steps.path.addLast(yyVals[0+yyTop]);
+      steps.path.addLast((Expr) yyVals[0+yyTop]);
       yyVal = steps;
       /*$$ = new Step((Expr) $1, (Path) $3);*/
     }
@@ -553,10 +554,10 @@ case 9:
       else
         {
           steps = new Steps();
-          steps.path.addFirst(yyVals[-2+yyTop]);
+          steps.path.addFirst((Expr) yyVals[-2+yyTop]);
         }
       steps.path.addLast(s);
-      steps.path.addLast(yyVals[0+yyTop]);
+      steps.path.addLast((Expr) yyVals[0+yyTop]);
       yyVal = steps;
       /*Step step = new Step(s, (Path) $3);*/
       /*$$ = new Step((Expr) $1, step);*/
@@ -565,46 +566,48 @@ case 9:
 case 10:
 					// line 362 "XPathParser.y"
   {
-      yyVal = new Selector (Selector.CHILD, (List) yyVals[0+yyTop]);
+      yyVal = new Selector (Selector.CHILD, (List<Test>) yyVals[0+yyTop]);
     }
   break;
 case 11:
 					// line 366 "XPathParser.y"
   {
-      yyVal = new Selector (Selector.ATTRIBUTE, (List) yyVals[0+yyTop]);
+      yyVal = new Selector (Selector.ATTRIBUTE, (List<Test>) yyVals[0+yyTop]);
     }
   break;
 case 12:
 					// line 370 "XPathParser.y"
   {
-      yyVal = new Selector (((Integer) yyVals[-2+yyTop]).intValue (), (List) yyVals[0+yyTop]);
+      yyVal = new Selector (((Integer) yyVals[-2+yyTop]).intValue (), (List<Test>) yyVals[0+yyTop]);
     }
   break;
 case 13:
 					// line 374 "XPathParser.y"
   {
-      yyVal = new Selector (Selector.SELF, Collections.EMPTY_LIST);
-    }
+    List<Test> emptyList = Collections.emptyList();
+    yyVal = new Selector (Selector.SELF, emptyList);
+  }
   break;
 case 14:
 					// line 378 "XPathParser.y"
   {
-      yyVal = new Selector (Selector.PARENT, Collections.EMPTY_LIST);
-    }
+    List<Test> emptyList = Collections.emptyList();
+    yyVal = new Selector (Selector.PARENT, emptyList);
+  }
   break;
 case 15:
 					// line 385 "XPathParser.y"
   {
-      List list = new ArrayList();
-      list.add(yyVals[0+yyTop]);
+      List<Test> list = new ArrayList<Test>();
+      list.add((Test) yyVals[0+yyTop]);
       yyVal = list;
     }
   break;
 case 16:
 					// line 391 "XPathParser.y"
   {
-      List list = (List)yyVals[-1+yyTop];
-      list.add(yyVals[0+yyTop]);
+      List<Test> list = (List<Test>)yyVals[-1+yyTop];
+      list.add((Test) yyVals[0+yyTop]);
       yyVal = list;
     }
   break;
@@ -725,8 +728,9 @@ case 37:
 case 39:
 					// line 508 "XPathParser.y"
   {
-      yyVal = lookupFunction((String) yyVals[-2+yyTop], Collections.EMPTY_LIST);
-    }
+    List<Expr> emptyList = Collections.emptyList();
+    yyVal = lookupFunction((String) yyVals[-2+yyTop], emptyList);
+  }
   break;
 case 40:
 					// line 512 "XPathParser.y"
@@ -737,16 +741,16 @@ case 40:
 case 41:
 					// line 519 "XPathParser.y"
   {
-      List list = new ArrayList();
-      list.add(yyVals[0+yyTop]);
+      List<Expr> list = new ArrayList<Expr>();
+      list.add((Expr) yyVals[0+yyTop]);
       yyVal = list;
     }
   break;
 case 42:
 					// line 525 "XPathParser.y"
   {
-      List list = (List) yyVals[0+yyTop];
-      list.add(0, yyVals[-2+yyTop]);
+      List<Expr> list = (List<Expr>) yyVals[0+yyTop];
+      list.add(0, (Expr) yyVals[-2+yyTop]);
       yyVal = list;
     }
   break;
@@ -767,9 +771,9 @@ case 47:
       else
         {
           steps = new Steps();
-          steps.path.addFirst(yyVals[0+yyTop]);
+          steps.path.addFirst((Expr) yyVals[0+yyTop]);
         }
-      steps.path.addFirst(yyVals[-2+yyTop]);
+      steps.path.addFirst((Expr) yyVals[-2+yyTop]);
       yyVal = steps;
       /*$$ = new Step ((Expr) $1, (Path) $3);*/
     }
@@ -788,10 +792,10 @@ case 48:
       else
         {
           steps = new Steps();
-          steps.path.addFirst(yyVals[0+yyTop]);
+          steps.path.addFirst((Expr) yyVals[0+yyTop]);
         }
       steps.path.addFirst(s);
-      steps.path.addFirst(yyVals[-2+yyTop]);
+      steps.path.addFirst((Expr) yyVals[-2+yyTop]);
       yyVal = steps;
       /*Step step = new Step (s, (Path) $3);*/
       /*$$ = new Step ((Expr) $1, step);*/
@@ -811,7 +815,7 @@ case 50:
       else
         {
           steps = new Steps();
-          steps.path.addFirst(yyVals[-1+yyTop]);
+          steps.path.addFirst((Expr) yyVals[-1+yyTop]);
         }
       steps.path.addLast(s);
       yyVal = steps;

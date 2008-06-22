@@ -68,9 +68,9 @@ final class TranslateFunction
   final Expr arg2;
   final Expr arg3;
 
-  TranslateFunction(List args)
+  TranslateFunction(List<Expr> args)
   {
-    this((Expr) args.get(0), (Expr) args.get(1), (Expr) args.get(2));
+    this(args.get(0), args.get(1), args.get(2));
   }
 
   TranslateFunction(Expr arg1, Expr arg2, Expr arg3)

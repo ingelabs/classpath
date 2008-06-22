@@ -74,16 +74,17 @@ public final class UnionExpr
     return false;
   }
 
+  @Override @SuppressWarnings("unchecked")
   public Object evaluate(Node context, int pos, int len)
   {
     Object left = lhs.evaluate(context, pos, len);
     Object right = rhs.evaluate(context, pos, len);
     if (left instanceof Collection && right instanceof Collection)
       {
-        Set set = new HashSet();
-        set.addAll ((Collection) left);
-        set.addAll ((Collection) right);
-        List list = new ArrayList(set);
+        Set<Node> set = new HashSet<Node>();
+	set.addAll ((Collection<Node>) left);
+        set.addAll ((Collection<Node>) right);
+        List<Node> list = new ArrayList<Node>(set);
         Collections.sort(list, documentOrderComparator);
         return list;
       }

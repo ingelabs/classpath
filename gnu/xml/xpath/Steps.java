@@ -58,14 +58,14 @@ public final class Steps
   extends Path
 {
 
-  final LinkedList path;
+  final LinkedList<Expr> path;
 
   public Steps()
   {
-    this(new LinkedList());
+    this(new LinkedList<Expr>());
   }
 
-  Steps(LinkedList path)
+  Steps(LinkedList<Expr> path)
   {
     this.path = path;
   }
@@ -86,10 +86,8 @@ public final class Steps
     if (pos > 0)
       {
         Pattern left = (Pattern) path.get(pos - 1);
-        Iterator j = possibleContexts(right, context).iterator();
-        while (j.hasNext())
+	for (Node candidate : possibleContexts(right, context))
           {
-            Node candidate = (Node) j.next();
             if (left.matches(candidate) &&
                 matches(candidate, pos - 1))
               {
@@ -106,12 +104,12 @@ public final class Steps
    * Essentially the reverse of Selector.addCandidates.
    * The idea is to determine possible context nodes for a match.
    */
-  Collection possibleContexts(Pattern pattern, Node context)
+  Collection<Node> possibleContexts(Pattern pattern, Node context)
   {
     if (pattern instanceof Selector)
       {
         Selector s = (Selector) pattern;
-        Collection candidates = new LinkedHashSet();
+        Collection<Node> candidates = new LinkedHashSet<Node>();
         switch (s.axis)
           {
           case Selector.PARENT:
@@ -159,15 +157,16 @@ public final class Steps
           }
         return candidates;
       }
-    return Collections.EMPTY_SET;
+    return Collections.emptySet();
   }
 
+  @Override
   public Object evaluate(Node context, int pos, int len)
   {
     //System.err.println(toString()+" evaluate");
     // Left to right
-    Iterator i = path.iterator();
-    Expr lhs = (Expr) i.next();
+    Iterator<Expr> i = path.iterator();
+    Expr lhs = i.next();
     Object val = lhs.evaluate(context, pos, len);
     //System.err.println("\tevaluate "+lhs+" = "+val);
     while (val instanceof Collection && i.hasNext())
@@ -179,26 +178,26 @@ public final class Steps
     return val;
   }
 
-  Collection evaluate(Node context, Collection ns)
+  @Override
+  Collection<Node> evaluate(Node context, Collection<Node> ns)
   {
     // Left to right
-    Iterator i = path.iterator();
-    Expr lhs = (Expr) i.next();
+    Iterator<Expr> i = path.iterator();
+    Expr lhs = i.next();
     if (lhs instanceof Path)
       {
         ns = ((Path) lhs).evaluate(context, ns);
       }
     else
       {
-        Set acc = new LinkedHashSet();
+        Set<Node> acc = new LinkedHashSet<Node>();
         int pos = 1, len = ns.size();
-        for (Iterator j = ns.iterator(); j.hasNext(); )
+	for (Node node : ns)
           {
-            Node node = (Node) j.next();
             Object ret = lhs.evaluate(node, pos++, len);
             if (ret instanceof Collection)
               {
-                acc.addAll((Collection) ret);
+                acc.addAll((Collection<Node>) ret);
               }
           }
         ns = acc;
@@ -214,19 +213,19 @@ public final class Steps
   public Expr clone(Object context)
   {
     int len = path.size();
-    LinkedList path2 = new LinkedList();
+    LinkedList<Expr> path2 = new LinkedList<Expr>();
     for (int i = 0; i < len; i++)
       {
-        path2.add(((Expr) path.get(i)).clone(context));
+        path2.add(path.get(i).clone(context));
       }
     return new Steps(path2);
   }
 
   public boolean references(QName var)
   {
-    for (Iterator i = path.iterator(); i.hasNext(); )
+    for (Iterator<Expr> i = path.iterator(); i.hasNext(); )
       {
-        if (((Expr) i.next()).references(var))
+        if (i.next().references(var))
           {
             return true;
           }
@@ -237,15 +236,15 @@ public final class Steps
   public String toString()
   {
     CPStringBuilder buf = new CPStringBuilder();
-    Iterator i = path.iterator();
-    Expr expr = (Expr) i.next();
+    Iterator<Expr> i = path.iterator();
+    Expr expr = i.next();
     if (!(expr instanceof Root))
       {
         buf.append(expr);
       }
     while (i.hasNext())
       {
-        expr = (Expr) i.next();
+        expr = i.next();
         buf.append('/');
         buf.append(expr);
       }

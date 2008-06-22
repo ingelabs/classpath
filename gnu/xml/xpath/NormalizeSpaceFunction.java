@@ -61,9 +61,9 @@ final class NormalizeSpaceFunction
 
   final Expr arg;
 
-  NormalizeSpaceFunction(List args)
+  NormalizeSpaceFunction(List<Expr> args)
   {
-    this((Expr) args.get(0));
+    this(args.get(0));
   }
   
   NormalizeSpaceFunction(Expr arg)
@@ -71,6 +71,7 @@ final class NormalizeSpaceFunction
     this.arg = arg;
   }
 
+  @Override
   public Object evaluate(Node context, int pos, int len)
   {
     Object val = (arg == null) ? null : arg.evaluate(context, pos, len);

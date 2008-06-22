@@ -92,7 +92,7 @@ implements XPathParser.yyInput
     
   }
 
-  static final Map keywords = new TreeMap ();
+  static final Map<String,Integer> keywords = new TreeMap<String,Integer> ();
   static
   {
     keywords.put ("ancestor", new Integer (XPathParser.ANCESTOR));

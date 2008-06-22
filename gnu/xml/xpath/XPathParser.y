@@ -78,7 +78,7 @@ public class XPathParser
     return qName;
   }
 
-  Expr lookupFunction(String name, List args)
+  Expr lookupFunction(String name, List<Expr> args)
   {
     int arity = args.size();
     if ("position".equals(name) && arity == 0)
@@ -287,7 +287,7 @@ absolute_location_path:
       else
         {
           steps = new Steps();
-          steps.path.addFirst($2);
+          steps.path.addFirst((Expr) $2);
         }
       steps.path.addFirst(new Root());
       $$ = steps;
@@ -306,7 +306,7 @@ absolute_location_path:
       else
         {
           steps = new Steps();
-          steps.path.addFirst($2);
+          steps.path.addFirst((Expr) $2);
         }
       steps.path.addFirst(s);
       steps.path.addFirst(new Root());
@@ -328,9 +328,9 @@ relative_location_path:
       else
         {
           steps = new Steps();
-          steps.path.addFirst($1);
+          steps.path.addFirst((Expr) $1);
         }
-      steps.path.addLast($3);
+      steps.path.addLast((Expr) $3);
       $$ = steps;
       //$$ = new Step((Expr) $1, (Path) $3);
     }
@@ -347,10 +347,10 @@ relative_location_path:
       else
         {
           steps = new Steps();
-          steps.path.addFirst($1);
+          steps.path.addFirst((Expr) $1);
         }
       steps.path.addLast(s);
-      steps.path.addLast($3);
+      steps.path.addLast((Expr) $3);
       $$ = steps;
       //Step step = new Step(s, (Path) $3);
       //$$ = new Step((Expr) $1, step);
@@ -372,25 +372,27 @@ step:
     }
   | DOT
     {
-      $$ = new Selector (Selector.SELF, Collections.EMPTY_LIST);
+      List<Test> emptyList = Collections.emptyList();
+      $$ = new Selector (Selector.SELF, emptyList);
     }
   | DOUBLE_DOT
     {
-      $$ = new Selector (Selector.PARENT, Collections.EMPTY_LIST);
+      List<Test> emptyList = Collections.emptyList();
+      $$ = new Selector (Selector.PARENT, emptyList);
     }
   ;
 
 step_node_test:
   node_test
     {
-      List list = new ArrayList();
-      list.add($1);
+      List<Test> list = new ArrayList<Test>();
+      list.add((Test) $1);
       $$ = list;
     }
   | step_node_test predicate
     {
-      List list = (List)$1;
-      list.add($2);
+      List<Test> list = (List<Test>)$1;
+      list.add((Test) $2);
       $$ = list;
     }
   ;
@@ -506,7 +508,7 @@ primary_expr:
 function_call:
   function_name LP RP
     {
-      $$ = lookupFunction((String) $1, Collections.EMPTY_LIST);
+      $$ = lookupFunction((String) $1, Collections.emptyList());
     }
   | function_name LP argument_list RP
     {
@@ -517,14 +519,14 @@ function_call:
 argument_list:
   expr
     {
-      List list = new ArrayList();
-      list.add($1);
+      List<Expr> list = new ArrayList<Expr>();
+      list.add((Expr) $1);
       $$ = list;
     }
   | expr COMMA argument_list
     {
-      List list = (List) $3;
-      list.add(0, $1);
+      List<Expr> list = (List<Expr>) $3;
+      list.add(0, (Expr) $1);
       $$ = list;
     }
   ;
@@ -550,9 +552,9 @@ path_expr:
       else
         {
           steps = new Steps();
-          steps.path.addFirst($3);
+          steps.path.addFirst((Expr) $3);
         }
-      steps.path.addFirst($1);
+      steps.path.addFirst((Expr) $1);
       $$ = steps;
       //$$ = new Step ((Expr) $1, (Path) $3);
     }
@@ -572,7 +574,7 @@ path_expr:
           steps.path.addFirst($3);
         }
       steps.path.addFirst(s);
-      steps.path.addFirst($1);
+      steps.path.addFirst((Expr) $1);
       $$ = steps;
       //Step step = new Step (s, (Path) $3);
       //$$ = new Step ((Expr) $1, step);
@@ -594,7 +596,7 @@ filter_expr:
       else
         {
           steps = new Steps();
-          steps.path.addFirst($1);
+          steps.path.addFirst((Expr) $1);
         }
       steps.path.addLast(s);
       $$ = steps;
