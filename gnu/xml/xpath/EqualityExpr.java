@@ -62,6 +62,7 @@ final class EqualityExpr
     this.invert = invert;
   }
 
+  @Override
   public Object evaluate(Node context, int pos, int len)
   {
     boolean val = evaluateImpl(context, pos, len);
@@ -75,6 +76,7 @@ final class EqualityExpr
       }
   }
 
+  @SuppressWarnings("unchecked")
   private boolean evaluateImpl(Node context, int pos, int len)
   {
     Object left = lhs.evaluate(context, pos, len);
@@ -90,19 +92,17 @@ final class EqualityExpr
     boolean frns = right instanceof Collection;
     if (flns && frns)
       {
-        Collection lns = (Collection) left;
-        Collection rns = (Collection) right;
+        Collection<Node> lns = (Collection<Node>) left;
+        Collection<Node> rns = (Collection<Node>) right;
         if (lns.isEmpty())
           {
             return false;
           }
         boolean all = true;
-        for (Iterator i = lns.iterator(); i.hasNext(); )
-          {
-            Node ltest = (Node) i.next();
-            for (Iterator j = rns.iterator(); j.hasNext(); )
-              {
-                Node rtest = (Node) j.next();
+	for (Node ltest : lns)
+	  {
+	    for (Node rtest : rns)
+	      {
                 if (ltest == rtest || ltest.equals(rtest))
                   {
                     // much shorter
@@ -138,13 +138,12 @@ final class EqualityExpr
     boolean frn = right instanceof Double;
     if ((flns && frn) || (frns && fln))
       {
-        Collection ns = flns ? (Collection) left : (Collection) right;
+        Collection<Node> ns = flns ? (Collection<Node>) left : (Collection<Node>) right;
         double n = fln ? ((Double) left).doubleValue() :
           ((Double) right).doubleValue();
         boolean all = true;
-        for (Iterator i = ns.iterator(); i.hasNext(); )
+	for (Node test : ns)
           {
-            Node test = (Node) i.next();
             double nn = _number(context, stringValue(test));
             if (nn == n)
               {
@@ -171,12 +170,11 @@ final class EqualityExpr
     boolean frs = right instanceof String;
     if ((flns && frs) || (frns && fls))
       {
-        Collection ns = flns ? (Collection) left : (Collection) right;
+        Collection<Node> ns = flns ? (Collection<Node>) left : (Collection<Node>) right;
         String s = fls ? (String) left : (String) right;
         boolean all = true;
-        for (Iterator i = ns.iterator(); i.hasNext(); )
+	for (Node test : ns)
           {
-            Node test = (Node) i.next();
             if (stringValue(test).equals(s))
               {
                 if (!invert)
@@ -202,7 +200,7 @@ final class EqualityExpr
     boolean frb = right instanceof Boolean;
     if ((flns && frb) || (frns && flb))
       {
-        Collection ns = flns ? (Collection) left : (Collection) right;
+        Collection<Node> ns = flns ? (Collection<Node>) left : (Collection<Node>) right;
         boolean b = flb ? ((Boolean) left).booleanValue() :
           ((Boolean) right).booleanValue();
         return _boolean(context, ns) == b;

@@ -69,12 +69,12 @@ final class LocalNameFunction
     this.arg = arg;
   }
 
-  @Override
+  @Override @SuppressWarnings("unchecked")
   public Object evaluate(Node context, int pos, int len)
   {
-    Object val = (arg == null) ? Collections.singleton(context) :
-        arg.evaluate(context, pos, len);
-    return _local_name(context, (Collection) val);
+    Collection<Node> val = (arg == null) ? Collections.singleton(context) :
+      (Collection<Node>) arg.evaluate(context, pos, len);
+    return _local_name(context, val);
   }
 
   public Expr clone(Object context)

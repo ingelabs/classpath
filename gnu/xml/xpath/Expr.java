@@ -86,14 +86,14 @@ public abstract class Expr
   static class ExprNodeSet implements NodeList
   {
 
-    private ArrayList list;
+    private ArrayList<Node> list;
 
-    ExprNodeSet(Collection collection)
+    ExprNodeSet(Collection<Node> collection)
     {
       if (collection instanceof ArrayList)
-        list = (ArrayList) collection;
+        list = (ArrayList<Node>) collection;
       else
-        list = new ArrayList(collection);
+        list = new ArrayList<Node>(collection);
     }
 
     public int getLength()
@@ -105,7 +105,7 @@ public abstract class Expr
     {
       try
         {
-          return (Node) list.get(index);
+          return list.get(index);
         }
       catch (ArrayIndexOutOfBoundsException e)
         {
@@ -115,6 +115,7 @@ public abstract class Expr
     
   }
 
+  @SuppressWarnings("unchecked")
   public Object evaluate(Object item, QName returnType)
     throws XPathExpressionException
   {
@@ -143,14 +144,14 @@ public abstract class Expr
           {
             if (ret instanceof Collection)
               {
-                Collection ns = (Collection) ret;
+                Collection<Node> ns = (Collection<Node>) ret;
                 switch (ns.size())
                   {
                   case 0:
                     ret = null;
                     break;
                   case 1:
-                    ret = (Node) ns.iterator().next();
+                    ret = ns.iterator().next();
                     break;
                   default:
                     throw new XPathExpressionException("multiple nodes in node-set");
@@ -168,7 +169,7 @@ public abstract class Expr
                 throw new XPathExpressionException("return value is not a node-set");
               }
             if (ret != null)
-              ret = new ExprNodeSet((Collection) ret);
+              ret = new ExprNodeSet((Collection<Node>) ret);
           }
       }
     return ret;
@@ -231,15 +232,16 @@ public abstract class Expr
    * same document as the context node that have a unique ID equal to any of
    * the tokens in the list.
    */
-  public static Collection _id(Node context, Object object)
+  @SuppressWarnings("unchecked")
+  public static Collection<Node> _id(Node context, Object object)
   {
-    Set ret = new HashSet();
+    Set<Node> ret = new HashSet<Node>();
     if (object instanceof Collection)
       {
-        Collection nodeSet = (Collection) object;
-        for (Iterator i = nodeSet.iterator(); i.hasNext(); )
+        Collection<Node> nodeSet = (Collection<Node>) object;
+        for (Iterator<Node> i = nodeSet.iterator(); i.hasNext(); )
           {
-            String string = stringValue((Node) i.next());
+            String string = stringValue(i.next());
             ret.addAll(_id (context, string));
           }
       }
@@ -268,7 +270,7 @@ public abstract class Expr
    * an empty string is returned. If the argument is omitted, it defaults to
    * a node-set with the context node as its only member.
    */
-  public static String _local_name(Node context, Collection nodeSet)
+  public static String _local_name(Node context, Collection<Node> nodeSet)
   {
     if (nodeSet == null || nodeSet.isEmpty())
       return "";
@@ -310,7 +312,7 @@ public abstract class Expr
    * string is returned. If the argument it omitted, it defaults to a
    * node-set with the context node as its only member.
    */
-  public static String _name(Node context, Collection nodeSet)
+  public static String _name(Node context, Collection<Node> nodeSet)
   {
     if (nodeSet == null || nodeSet.isEmpty())
       return "";
@@ -341,6 +343,7 @@ public abstract class Expr
   /**
    * Implementation of the XPath <code>string</code> function.
    */
+  @SuppressWarnings("unchecked")
   public static String _string(Node context, Object object)
   {
     if (object == null)
@@ -389,7 +392,7 @@ public abstract class Expr
       }
     if (object instanceof Collection)
       {
-        Collection nodeSet = (Collection) object;
+        Collection<Node> nodeSet = (Collection<Node>) object;
         if (nodeSet.isEmpty())
           {
             return "";
@@ -405,6 +408,7 @@ public abstract class Expr
   /**
    * Implementation of the XPath <code>boolean</code> function.
    */
+  @SuppressWarnings("unchecked")
   public static boolean _boolean(Node context, Object object)
   {
     if (object instanceof Boolean)
@@ -424,7 +428,7 @@ public abstract class Expr
       }
     if (object instanceof Collection)
       {
-        return ((Collection) object).size() != 0;
+        return ((Collection<Node>) object).size() != 0;
       }
     return false; // TODO user defined types
   }
@@ -434,6 +438,7 @@ public abstract class Expr
   /**
    * Implementation of the XPath <code>number</code> function.
    */
+  @SuppressWarnings("unchecked")
   public static double _number(Node context, Object object)
   {
     if (object == null)
@@ -451,7 +456,7 @@ public abstract class Expr
     if (object instanceof Collection)
       {
         // Convert node-set to string
-        object = stringValue((Collection) object);
+        object = stringValue((Collection<Node>) object);
       }
     if (object instanceof String)
       {
@@ -471,12 +476,12 @@ public abstract class Expr
   /**
    * Computes the XPath string-value of the specified node-set.
    */
-  public static String stringValue(Collection nodeSet)
+  public static String stringValue(Collection<Node> nodeSet)
   {
     CPStringBuilder buf = new CPStringBuilder();
-    for (Iterator i = nodeSet.iterator(); i.hasNext(); )
+    for (Iterator<Node> i = nodeSet.iterator(); i.hasNext(); )
       {
-        buf.append(stringValue((Node) i.next()));
+        buf.append(stringValue(i.next()));
       }
     return buf.toString();
   }

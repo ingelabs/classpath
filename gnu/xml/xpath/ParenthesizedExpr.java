@@ -60,7 +60,7 @@ final class ParenthesizedExpr
     this.expr = expr;
   }
 
-  @Override
+  @Override @SuppressWarnings("unchecked")
   public Object evaluate(Node context, int pos, int len)
   {
     Object ret = expr.evaluate(context, pos, len);
