@@ -1,6 +1,6 @@
 nativeexeclib_LTLIBRARIES = libjavamath.la
 
-libjavamath_la_SOURCES = java_math_VMBigInteger.c
+libjavamath_la_SOURCES = gnu_java_math_GMP.c
 
 libjavamath_la_LIBADD = $(top_builddir)/native/jni/classpath/jcl.lo
 

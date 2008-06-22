@@ -1,3 +1,22 @@
+2008-06-22  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	PR classpath/28664:
+	* gnu/java/math/GMP.java:
+	Renamed from VMBigInteger.java and fixed to use
+	GMP instances directly.
+	* include/Makefile.am:
+	Generate GMP.h not VMBigInteger.h.
+	* java/math/BigInteger.java:
+	Send instances of GMP in calls to GMP rather than
+	the wrapping BigInteger class.
+	* native/jni/java-math/Makefile.am:
+	Fix filename of source code file.
+	* native/jni/java-math/gnu_java_math_GMP.c:
+	Renamed from java_math_VMBigInteger.c.
+	* native/jni/java-math/java_math_VMBigInteger.c,
+	* vm/reference/java/math/VMBigInteger.java:
+	Removed.
+
 2008-06-21  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* configure.ac:
