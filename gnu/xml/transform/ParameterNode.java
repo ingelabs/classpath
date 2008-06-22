@@ -72,7 +72,7 @@ final class ParameterNode
   TemplateNode clone(Stylesheet stylesheet)
   {
     TemplateNode ret = new ParameterNode(name,
-                                         select.clone(stylesheet),
+                                         select == null ? null : select.clone(stylesheet),
                                          type);
     if (children != null)
       ret.children = children.clone(stylesheet);
@@ -166,11 +166,8 @@ final class ParameterNode
     buf.append('[');
     buf.append("name=");
     buf.append(name);
-    if (select != null)
-      {
-        buf.append(",select=");
-        buf.append(select);
-      }
+    buf.append(",select=");
+    buf.append(select);
     buf.append(']');
     return buf.toString();
   }

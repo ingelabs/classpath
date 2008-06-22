@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package gnu.xml.transform;
 
+import gnu.java.lang.CPStringBuilder;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
@@ -1766,6 +1768,15 @@ class Stylesheet
   public void handle(short op, String key, Object data, Node src, Node dst)
   {
     dst.setUserData(key, data, this);
+  }
+
+  public String toString()
+  {
+    CPStringBuilder b = new CPStringBuilder(getClass().getName());
+    b.append("[templates=");
+    b.append(templates);
+    b.append("]");
+    return b.toString();
   }
 
 }

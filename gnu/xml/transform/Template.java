@@ -245,6 +245,8 @@ class Template
         buf.append(",mode=");
         buf.append(mode);
       }
+    buf.append(",node=");
+    buf.append(node);
     buf.append(']');
     return buf.toString();
     
