@@ -76,7 +76,8 @@ final class ValueOfNode
       ret.next = next.clone(stylesheet);
     return ret;
   }
-
+  
+  @Override
   void doApply(Stylesheet stylesheet, QName mode,
                Node context, int pos, int len,
                Node parent, Node nextSibling)
@@ -87,9 +88,8 @@ final class ValueOfNode
     if (ret instanceof Collection)
       {
         CPStringBuilder buf = new CPStringBuilder();
-        for (Iterator i = ((Collection) ret).iterator(); i.hasNext(); )
+        for (Node node : ((Collection<Node>) ret))
           {
-            Node node = (Node) i.next();
             buf.append(Expr.stringValue(node));
           }
         value = buf.toString();
