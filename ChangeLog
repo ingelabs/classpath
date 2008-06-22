@@ -1,5 +1,18 @@
 2008-06-22  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	* gnu/xml/xpath/Expr.java,
+	* gnu/xml/xpath/FloorFunction.java,
+	* gnu/xml/xpath/Function.java,
+	* gnu/xml/xpath/FunctionCall.java,
+	* gnu/xml/xpath/NamespaceUriFunction.java,
+	* gnu/xml/xpath/ParenthesizedExpr.java,
+	* gnu/xml/xpath/Root.java,
+	* gnu/xml/xpath/Selector.java,
+	* gnu/xml/xpath/Steps.java:
+	Genericised.
+
+2008-06-22  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* gnu/xml/xpath/BooleanFunction.java,
 	* gnu/xml/xpath/CeilingFunction.java,
 	* gnu/xml/xpath/ConcatFunction.java,

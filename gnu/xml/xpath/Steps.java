@@ -160,7 +160,7 @@ public final class Steps
     return Collections.emptySet();
   }
 
-  @Override
+  @Override @SuppressWarnings("unchecked")
   public Object evaluate(Node context, int pos, int len)
   {
     //System.err.println(toString()+" evaluate");
@@ -172,13 +172,13 @@ public final class Steps
     while (val instanceof Collection && i.hasNext())
       {
         Path rhs = (Path) i.next();
-        val = rhs.evaluate(context, (Collection) val);
+        val = rhs.evaluate(context, (Collection<Node>) val);
         //System.err.println("\tevaluate "+rhs+" = "+val);
       }
     return val;
   }
 
-  @Override
+  @Override @SuppressWarnings("unchecked")
   Collection<Node> evaluate(Node context, Collection<Node> ns)
   {
     // Left to right

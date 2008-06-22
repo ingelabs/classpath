@@ -285,7 +285,7 @@ public abstract class Expr
    * empty string is returned. If the argument is omitted, it defaults to a
    * node-set with the context node as its only member.
    */
-  public static String _namespace_uri(Node context, Collection nodeSet)
+  public static String _namespace_uri(Node context, Collection<Node> nodeSet)
   {
     if (nodeSet == null || nodeSet.isEmpty())
       return "";
@@ -329,11 +329,11 @@ public abstract class Expr
   /**
    * Returns the first node in the set in document order.
    */
-  static Node firstNode(Collection nodeSet)
+  static Node firstNode(Collection<Node> nodeSet)
   {
-    List list = new ArrayList(nodeSet);
+    List<Node> list = new ArrayList<Node>(nodeSet);
     Collections.sort(list, documentOrderComparator);
-    return (Node) list.get(0);
+    return list.get(0);
   }
 
   /* -- 4.2 String Functions -- */

@@ -190,7 +190,7 @@ public final class Selector
     return ret;
   }
 
-  Collection evaluate(Node context, Collection<Node> ns)
+  Collection<Node> evaluate(Node context, Collection<Node> ns)
   {
     Set<Node> acc = new LinkedHashSet<Node>();
     for (Iterator<Node> i = ns.iterator(); i.hasNext(); )
@@ -417,7 +417,7 @@ public final class Selector
   public Expr clone(Object context)
   {
     int len = tests.length;
-    List tests2 = new ArrayList(len);
+    List<Test> tests2 = new ArrayList<Test>(len);
     for (int i = 0; i < len; i++)
       tests2.add(tests[i].clone(context));
     return new Selector(axis, tests2);

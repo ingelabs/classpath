@@ -60,12 +60,13 @@ final class ParenthesizedExpr
     this.expr = expr;
   }
 
+  @Override
   public Object evaluate(Node context, int pos, int len)
   {
     Object ret = expr.evaluate(context, pos, len);
     if (ret instanceof Collection)
       {
-        List list = new ArrayList((Collection) ret);
+        List<Node> list = new ArrayList<Node>((Collection<Node>) ret);
         Collections.sort(list, documentOrderComparator);
         ret = list;
       }
