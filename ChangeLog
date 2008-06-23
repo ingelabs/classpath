@@ -1,3 +1,8 @@
+2008-06-23  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* include/jni.h [__cplusplus] (_Jv_JNIEnv): Renamed member p to
+	functions to be compatible with OpenJDK.
+
 2008-06-23  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* gnu/xml/transform/ParameterNode.java,
