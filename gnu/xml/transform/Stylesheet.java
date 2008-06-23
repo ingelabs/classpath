@@ -1680,7 +1680,7 @@ class Stylesheet
           }
         node = node.getNextSibling();
       }
-    return ret.isEmpty() ? null : ret;
+    return ret;
   }
 
   /**

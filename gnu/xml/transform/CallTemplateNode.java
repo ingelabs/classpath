@@ -88,7 +88,7 @@ final class CallTemplateNode
     TemplateNode t = stylesheet.getTemplate(mode, name);
     if (t != null)
       {
-        if (withParams != null)
+        if (!withParams.isEmpty())
           {
             // compute the parameter values
             LinkedList values = new LinkedList();
@@ -120,7 +120,7 @@ final class CallTemplateNode
           }
         t.apply(stylesheet, mode, context, pos, len,
                 parent, nextSibling);
-        if (withParams != null)
+        if (!withParams.isEmpty())
           {
             // pop the variable context
             stylesheet.bindings.pop(Bindings.WITH_PARAM);
@@ -135,13 +135,10 @@ final class CallTemplateNode
   
   public boolean references(QName var)
   {
-    if (withParams != null)
+    for (Iterator i = withParams.iterator(); i.hasNext(); )
       {
-        for (Iterator i = withParams.iterator(); i.hasNext(); )
-          {
-            if (((WithParam) i.next()).references(var))
-              return true;
-          }
+	if (((WithParam) i.next()).references(var))
+	  return true;
       }
     return super.references(var);
   }
