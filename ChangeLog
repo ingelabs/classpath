@@ -1,5 +1,20 @@
 2008-06-23  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	PR classpath/36219:
+	* gnu/xml/transform/ForEachNode.java:
+	Genericised.
+	* gnu/xml/transform/SortKey.java:
+	Documented.
+	(clone(Stylesheet)): Implemented.
+	(cloneAttributeValueTemplate(TemplateNode,Stylesheet)):
+	Implemented.
+	* gnu/xml/transform/Stylesheet.java:
+	(parseSortKeys(Node)): Return empty list not null.
+	* gnu/xml/transform/TemplateNode.java:
+	Genericise documentOrderComparator.
+
+2008-06-23  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* gnu/xml/xpath/CountFunction.java,
 	* gnu/xml/xpath/EqualityExpr.java,
 	* gnu/xml/xpath/Expr.java,

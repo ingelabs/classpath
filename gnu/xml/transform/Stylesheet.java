@@ -1644,7 +1644,7 @@ class Stylesheet
           }
         node = node.getNextSibling();
       }
-    return ret.isEmpty() ? null : ret;
+    return ret;
   }
 
   final List<WithParam> parseWithParams(Node node)
