@@ -104,7 +104,6 @@ extends AccessibleObject implements Member, GenericDeclaration
    * is a non-inherited member.
    * @return the class that declared this member
    */
-  @SuppressWarnings("unchecked")
   public Class<?> getDeclaringClass()
   {
     return (Class<?>) m.getDeclaringClass();
@@ -167,7 +166,6 @@ extends AccessibleObject implements Member, GenericDeclaration
    * Gets the return type of this method.
    * @return the type of this method
    */
-  @SuppressWarnings("unchecked")
   public Class<?> getReturnType()
   {
     return (Class<?>) m.getReturnType();
@@ -179,7 +177,6 @@ extends AccessibleObject implements Member, GenericDeclaration
    *
    * @return a list of the types of the method's parameters
    */
-  @SuppressWarnings("unchecked")
   public Class<?>[] getParameterTypes()
   {
     return (Class<?>[]) m.getParameterTypes();
@@ -192,7 +189,6 @@ extends AccessibleObject implements Member, GenericDeclaration
    *
    * @return a list of the types in the method's throws clause
    */
-  @SuppressWarnings("unchecked")
   public Class<?>[] getExceptionTypes()
   {
     return (Class<?>[]) m.getExceptionTypes();
@@ -474,10 +470,12 @@ extends AccessibleObject implements Member, GenericDeclaration
    *         <code>null</code> if no such annotation exists.
    * @throws NullPointerException if the annotation class is <code>null</code>.
    */
-  @SuppressWarnings("unchecked")
   public <T extends Annotation> T getAnnotation(Class<T> annotationClass)
   {
-    return (T) m.getAnnotation(annotationClass);
+    // Inescapable as the VM layer is 1.4 based. T will erase to Annotation anyway. 
+    @SuppressWarnings("unchecked")
+      T ann = (T) m.getAnnotation(annotationClass);
+    return ann;
   }
 
   /**

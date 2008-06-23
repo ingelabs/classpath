@@ -160,7 +160,7 @@ public final class Steps
     return Collections.emptySet();
   }
 
-  @Override @SuppressWarnings("unchecked")
+  @Override 
   public Object evaluate(Node context, int pos, int len)
   {
     //System.err.println(toString()+" evaluate");
@@ -172,13 +172,16 @@ public final class Steps
     while (val instanceof Collection && i.hasNext())
       {
         Path rhs = (Path) i.next();
-        val = rhs.evaluate(context, (Collection<Node>) val);
+	/* Suppression is safe, as we know context produces Collection<Node> */
+        @SuppressWarnings("unchecked")
+	  Collection<Node> nodes = (Collection<Node>) val;
+	val = rhs.evaluate(context, nodes);
         //System.err.println("\tevaluate "+rhs+" = "+val);
       }
     return val;
   }
 
-  @Override @SuppressWarnings("unchecked")
+  @Override 
   Collection<Node> evaluate(Node context, Collection<Node> ns)
   {
     // Left to right
@@ -197,7 +200,10 @@ public final class Steps
             Object ret = lhs.evaluate(node, pos++, len);
             if (ret instanceof Collection)
               {
-                acc.addAll((Collection<Node>) ret);
+		/* Suppression is safe, as we know context produces Collection<Node> */
+		@SuppressWarnings("unchecked")
+		  Collection<Node> nodes = (Collection<Node>) ret;
+                acc.addAll(nodes);
               }
           }
         ns = acc;

@@ -69,9 +69,11 @@ final class LocalNameFunction
     this.arg = arg;
   }
 
-  @Override @SuppressWarnings("unchecked")
+  @Override 
   public Object evaluate(Node context, int pos, int len)
   {
+    /* Suppression is safe, as we know context produces Collection<Node> */
+    @SuppressWarnings("unchecked")
     Collection<Node> val = (arg == null) ? Collections.singleton(context) :
       (Collection<Node>) arg.evaluate(context, pos, len);
     return _local_name(context, val);

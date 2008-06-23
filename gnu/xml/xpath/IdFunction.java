@@ -72,11 +72,10 @@ public final class IdFunction
     this.arg = arg;
   }
 
-  @SuppressWarnings("unchecked")
   public boolean matches(Node context)
   {
     Object ret = evaluate(context, 1, 1);
-    return !((Collection<Node>) ret).isEmpty();
+    return !((Collection<?>) ret).isEmpty();
   }
 
   @Override

@@ -1,3 +1,25 @@
+2008-06-23  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* gnu/xml/xpath/CountFunction.java,
+	* gnu/xml/xpath/EqualityExpr.java,
+	* gnu/xml/xpath/Expr.java,
+	* gnu/xml/xpath/IdFunction.java,
+	* gnu/xml/xpath/LocalNameFunction.java,
+	* gnu/xml/xpath/NameFunction.java,
+	* gnu/xml/xpath/NamespaceUriFunction.java,
+	* gnu/xml/xpath/ParenthesizedExpr.java,
+	* gnu/xml/xpath/Steps.java,
+	* gnu/xml/xpath/SumFunction.java,
+	* gnu/xml/xpath/UnionExpr.java,
+	* gnu/xml/xpath/XPathParser.java,
+	* gnu/xml/xpath/XPathParser.y,
+	* java/lang/Enum.java,
+	* java/lang/reflect/Constructor.java,
+	* java/lang/reflect/Field.java,
+	* java/lang/reflect/Method.java:
+	Reduce scope of unchecked warning suppression,
+	and remove unneeded uses.
+
 2008-06-23  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	* include/jni.h [__cplusplus] (_Jv_JNIEnv): Renamed member p to

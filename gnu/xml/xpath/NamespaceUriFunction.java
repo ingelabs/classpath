@@ -69,12 +69,14 @@ final class NamespaceUriFunction
     this.arg = arg;
   }
 
-  @Override @SuppressWarnings("unchecked")
+  @Override 
   public Object evaluate(Node context, int pos, int len)
   {
-    Object val = (arg == null) ? Collections.singleton(context) :
-        arg.evaluate(context, pos, len);
-    return _namespace_uri(context, (Collection<Node>) val);
+    /* Suppression is safe, as we know context produces Collection<Node> */
+    @SuppressWarnings("unchecked")
+    Collection<Node> val = (arg == null) ? Collections.singleton(context) :
+        (Collection<Node>) arg.evaluate(context, pos, len);
+    return _namespace_uri(context, val);
   }
 
   public Expr clone(Object context)

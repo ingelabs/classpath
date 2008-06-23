@@ -391,7 +391,6 @@ public class XPathParser
       @return result of the last reduction, if any.
       @throws yyException on irrecoverable parse error.
     */
-  @SuppressWarnings("unchecked")
   public Object yyparse (yyInput yyLex)
 				throws java.io.IOException, yyException {
     if (yyMax <= 0) yyMax = 256;			// initial size
@@ -566,20 +565,25 @@ case 9:
 case 10:
 					// line 362 "XPathParser.y"
   {
-      yyVal = new Selector (Selector.CHILD, (List<Test>) yyVals[0+yyTop]);
-    }
+    @SuppressWarnings("unchecked") List<Test> tests = (List<Test>) yyVals[0+yyTop];
+      yyVal = new Selector (Selector.CHILD, tests);
+  }
   break;
 case 11:
 					// line 366 "XPathParser.y"
   {
-      yyVal = new Selector (Selector.ATTRIBUTE, (List<Test>) yyVals[0+yyTop]);
-    }
+    /* This is safe as we create this in one of the other cases */
+    @SuppressWarnings("unchecked") List<Test> tests = (List<Test>) yyVals[0+yyTop];
+    yyVal = new Selector (Selector.ATTRIBUTE, tests);
+  }
   break;
 case 12:
 					// line 370 "XPathParser.y"
   {
-      yyVal = new Selector (((Integer) yyVals[-2+yyTop]).intValue (), (List<Test>) yyVals[0+yyTop]);
-    }
+    /* This is safe as we create this in one of the other cases */
+    @SuppressWarnings("unchecked") List<Test> tests = (List<Test>) yyVals[0+yyTop];
+    yyVal = new Selector (((Integer) yyVals[-2+yyTop]).intValue (), tests);
+  }
   break;
 case 13:
 					// line 374 "XPathParser.y"
@@ -606,10 +610,11 @@ case 15:
 case 16:
 					// line 391 "XPathParser.y"
   {
-      List<Test> list = (List<Test>)yyVals[-1+yyTop];
-      list.add((Test) yyVals[0+yyTop]);
-      yyVal = list;
-    }
+    /* This is safe as we create this in one of the other cases */
+    @SuppressWarnings("unchecked") List<Test> tests = (List<Test>)yyVals[-1+yyTop];
+    tests.add((Test) yyVals[0+yyTop]);
+    yyVal = tests;
+  }
   break;
 case 17:
 					// line 415 "XPathParser.y"
@@ -735,8 +740,10 @@ case 39:
 case 40:
 					// line 512 "XPathParser.y"
   {
-      yyVal = lookupFunction((String) yyVals[-3+yyTop], (List) yyVals[-1+yyTop]);
-    }
+    /* This is safe as we create this below  */
+    @SuppressWarnings("unchecked") List<Expr> exprs = (List<Expr>) yyVals[-1+yyTop];
+    yyVal = lookupFunction((String) yyVals[-3+yyTop], exprs);
+  }
   break;
 case 41:
 					// line 519 "XPathParser.y"
@@ -749,10 +756,11 @@ case 41:
 case 42:
 					// line 525 "XPathParser.y"
   {
-      List<Expr> list = (List<Expr>) yyVals[0+yyTop];
-      list.add(0, (Expr) yyVals[-2+yyTop]);
-      yyVal = list;
-    }
+    /* This is safe as we create this above  */
+    @SuppressWarnings("unchecked") List<Expr> list = (List<Expr>) yyVals[0+yyTop];
+    list.add(0, (Expr) yyVals[-2+yyTop]);
+    yyVal = list;
+  }
   break;
 case 44:
 					// line 535 "XPathParser.y"

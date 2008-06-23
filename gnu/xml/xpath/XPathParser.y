@@ -360,15 +360,18 @@ relative_location_path:
 step:
   step_node_test
     {
-      $$ = new Selector (Selector.CHILD, (List) $1);
+      @SuppressWarnings("unchecked") List<Test> tests = (List<Test>) $1;
+      $$ = new Selector (Selector.CHILD, tests);
     }
   | AT step_node_test
     {
-      $$ = new Selector (Selector.ATTRIBUTE, (List) $2);
+      @SuppressWarnings("unchecked") List<Test> tests = (List<Test>) $2;
+      $$ = new Selector (Selector.ATTRIBUTE, tests);
     }
   | axis_name DOUBLE_COLON step_node_test
     {
-      $$ = new Selector (((Integer) $1).intValue (), (List) $3);
+      @SuppressWarnings("unchecked") List<Test> tests = (List<Test>) $3;
+      $$ = new Selector (((Integer) $1).intValue (), tests);
     }
   | DOT
     {
@@ -391,8 +394,9 @@ step_node_test:
     }
   | step_node_test predicate
     {
-      List<Test> list = (List<Test>)$1;
-      list.add((Test) $2);
+      /* This is safe as we create this in one of the other cases */
+      @SuppressWarnings("unchecked") List<Test> tests = (List<Test>)$1;
+      tests.add((Test) $2);
       $$ = list;
     }
   ;
@@ -508,11 +512,14 @@ primary_expr:
 function_call:
   function_name LP RP
     {
-      $$ = lookupFunction((String) $1, Collections.emptyList());
+      List<Expr> emptyList = Collections.emptyList();
+      $$ = lookupFunction((String) $1, emptyList);
     }
   | function_name LP argument_list RP
     {
-      $$ = lookupFunction((String) $1, (List) $3);
+      /* This is safe as we create this below  */
+      @SuppressWarnings("unchecked") List<Expr> exprs = (List<Expr>) $3;
+      $$ = lookupFunction((String) $1, (List) exprs);
     }
   ;
 
@@ -525,7 +532,8 @@ argument_list:
     }
   | expr COMMA argument_list
     {
-      List<Expr> list = (List<Expr>) $3;
+      /* This is safe as we create this above  */
+      @SuppressWarnings("unchecked") List<Expr> list = (List<Expr>) $3;
       list.add(0, (Expr) $1);
       $$ = list;
     }

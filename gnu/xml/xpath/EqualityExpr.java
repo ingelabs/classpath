@@ -76,7 +76,6 @@ final class EqualityExpr
       }
   }
 
-  @SuppressWarnings("unchecked")
   private boolean evaluateImpl(Node context, int pos, int len)
   {
     Object left = lhs.evaluate(context, pos, len);
@@ -92,8 +91,11 @@ final class EqualityExpr
     boolean frns = right instanceof Collection;
     if (flns && frns)
       {
-        Collection<Node> lns = (Collection<Node>) left;
-        Collection<Node> rns = (Collection<Node>) right;
+	/* Suppression is safe, as we know context produces Collection<Node> */
+	@SuppressWarnings("unchecked") 
+	  Collection<Node> lns = (Collection<Node>) left;
+	@SuppressWarnings("unchecked")
+	  Collection<Node> rns = (Collection<Node>) right;
         if (lns.isEmpty())
           {
             return false;
@@ -138,7 +140,9 @@ final class EqualityExpr
     boolean frn = right instanceof Double;
     if ((flns && frn) || (frns && fln))
       {
-        Collection<Node> ns = flns ? (Collection<Node>) left : (Collection<Node>) right;
+	/* Suppression is safe, as we know context produces Collection<Node> */
+	@SuppressWarnings("unchecked") 
+	  Collection<Node> ns = flns ? (Collection<Node>) left : (Collection<Node>) right;
         double n = fln ? ((Double) left).doubleValue() :
           ((Double) right).doubleValue();
         boolean all = true;
@@ -170,7 +174,9 @@ final class EqualityExpr
     boolean frs = right instanceof String;
     if ((flns && frs) || (frns && fls))
       {
-        Collection<Node> ns = flns ? (Collection<Node>) left : (Collection<Node>) right;
+	/* Suppression is safe, as we know context produces Collection<Node> */
+	@SuppressWarnings("unchecked") 
+	  Collection<Node> ns = flns ? (Collection<Node>) left : (Collection<Node>) right;
         String s = fls ? (String) left : (String) right;
         boolean all = true;
 	for (Node test : ns)
@@ -200,7 +206,9 @@ final class EqualityExpr
     boolean frb = right instanceof Boolean;
     if ((flns && frb) || (frns && flb))
       {
-        Collection<Node> ns = flns ? (Collection<Node>) left : (Collection<Node>) right;
+	/* Suppression is safe, as we know context produces Collection<Node> */
+	@SuppressWarnings("unchecked") 
+	  Collection<Node> ns = flns ? (Collection<Node>) left : (Collection<Node>) right;
         boolean b = flb ? ((Boolean) left).booleanValue() :
           ((Boolean) right).booleanValue();
         return _boolean(context, ns) == b;

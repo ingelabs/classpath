@@ -66,14 +66,18 @@ final class SumFunction
     this.arg = arg;
   }
 
-  @Override @SuppressWarnings("unchecked")
+  @Override 
   public Object evaluate(Node context, int pos, int len)
   {
     Object val = arg.evaluate(context, pos, len);
     double sum = 0.0d;
     if (val instanceof Collection)
       {
-	for (Node node : ((Collection<Node>) val))
+	/* Suppression is safe, as we know context produces
+	   Collection<Node> */
+	@SuppressWarnings("unchecked")
+	  Collection<Node> nodes = (Collection<Node>) val;
+	for (Node node : nodes)
           {
             String s = stringValue(node);
             sum += _number(context, s);

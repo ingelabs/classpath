@@ -64,11 +64,11 @@ final class CountFunction
     this.arg = arg;
   }
 
-  @Override @SuppressWarnings("unchecked")
+  @Override 
   public Object evaluate(Node context, int pos, int len)
   {
     Object val = arg.evaluate(context, pos, len);
-    return new Double((double) ((Collection<Node>) val).size());
+    return new Double((double) ((Collection<?>) val).size());
   }
 
   public Expr clone(Object context)

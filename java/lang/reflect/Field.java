@@ -104,7 +104,6 @@ extends AccessibleObject implements Member
    * is a non-inherited member.
    * @return the class that declared this member
    */
-  @SuppressWarnings("unchecked")
   public Class<?> getDeclaringClass()
   {
     return (Class<?>) f.getDeclaringClass();
@@ -710,10 +709,11 @@ extends AccessibleObject implements Member
    *         <code>null</code> if no such annotation exists.
    * @throws NullPointerException if the annotation class is <code>null</code>.
    */
-  @SuppressWarnings("unchecked")
   public <T extends Annotation> T getAnnotation(Class<T> annotationClass)
   {
-    return (T) f.getAnnotation(annotationClass);
+    // Inescapable as the VM layer is 1.4 based. T will erase to Annotation anyway. 
+    @SuppressWarnings("unchecked") T ann = (T) f.getAnnotation(annotationClass);
+    return ann;
   }
 
   /**

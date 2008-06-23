@@ -106,10 +106,12 @@ public final class Constructor<T>
    * Gets the class that declared this constructor.
    * @return the class that declared this member
    */
-  @SuppressWarnings("unchecked")
   public Class<T> getDeclaringClass()
   {
-    return (Class<T>) cons.getDeclaringClass();
+    // Inescapable as the VM layer is 1.4 based. 
+    @SuppressWarnings("unchecked")
+      Class<T> declClass = (Class<T>) cons.getDeclaringClass();
+    return declClass;
   }
 
   /**
@@ -162,7 +164,6 @@ public final class Constructor<T>
    *
    * @return a list of the types of the constructor's parameters
    */
-  @SuppressWarnings("unchecked")
   public Class<?>[] getParameterTypes()
   {
     return (Class<?>[]) cons.getParameterTypes();
@@ -175,7 +176,6 @@ public final class Constructor<T>
    *
    * @return a list of the types in the constructor's throws clause
    */
-  @SuppressWarnings("unchecked")
   public Class<?>[] getExceptionTypes()
   {
     return (Class<?>[]) cons.getExceptionTypes();
@@ -310,12 +310,14 @@ public final class Constructor<T>
    * @throws ExceptionInInitializerError if construction triggered class
    *         initialization, which then failed
    */
-  @SuppressWarnings("unchecked")
   public T newInstance(Object... args)
     throws InstantiationException, IllegalAccessException,
            InvocationTargetException
   {
-    return (T) cons.construct(args);
+    // Inescapable as the VM layer is 1.4 based. 
+    @SuppressWarnings("unchecked")
+      T ins = (T) cons.construct(args);
+    return ins;
   }
 
   /**
@@ -424,10 +426,12 @@ public final class Constructor<T>
    *         <code>null</code> if no such annotation exists.
    * @throws NullPointerException if the annotation class is <code>null</code>.
    */
-  @SuppressWarnings("unchecked")
   public <T extends Annotation> T getAnnotation(Class<T> annotationClass)
   {
-    return (T) cons.getAnnotation(annotationClass);
+    // Inescapable as the VM layer is 1.4 based. 
+    @SuppressWarnings("unchecked")
+      T ann = (T) cons.getAnnotation(annotationClass);
+    return ann;
   }
 
   /**

@@ -115,7 +115,6 @@ public abstract class Expr
     
   }
 
-  @SuppressWarnings("unchecked")
   public Object evaluate(Object item, QName returnType)
     throws XPathExpressionException
   {
@@ -144,7 +143,10 @@ public abstract class Expr
           {
             if (ret instanceof Collection)
               {
-                Collection<Node> ns = (Collection<Node>) ret;
+		/* Suppression is safe, as we know context
+		   produces Collection<Node> */
+		@SuppressWarnings("unchecked") 
+		  Collection<Node> ns = (Collection<Node>) ret;
                 switch (ns.size())
                   {
                   case 0:
@@ -169,7 +171,12 @@ public abstract class Expr
                 throw new XPathExpressionException("return value is not a node-set");
               }
             if (ret != null)
-              ret = new ExprNodeSet((Collection<Node>) ret);
+	      {
+		/* Suppression is safe, as we know context produces Collection<Node> */
+		@SuppressWarnings("unchecked")
+		  Collection<Node> nodes = (Collection<Node>) ret;
+		ret = new ExprNodeSet(nodes);
+	      }
           }
       }
     return ret;
@@ -232,13 +239,14 @@ public abstract class Expr
    * same document as the context node that have a unique ID equal to any of
    * the tokens in the list.
    */
-  @SuppressWarnings("unchecked")
   public static Collection<Node> _id(Node context, Object object)
   {
     Set<Node> ret = new HashSet<Node>();
     if (object instanceof Collection)
       {
-        Collection<Node> nodeSet = (Collection<Node>) object;
+	/* Suppression is safe, as the iteration will check each value is a Node */
+	@SuppressWarnings("unchecked")
+	  Collection<Node> nodeSet = (Collection<Node>) object;
         for (Iterator<Node> i = nodeSet.iterator(); i.hasNext(); )
           {
             String string = stringValue(i.next());
@@ -343,7 +351,6 @@ public abstract class Expr
   /**
    * Implementation of the XPath <code>string</code> function.
    */
-  @SuppressWarnings("unchecked")
   public static String _string(Node context, Object object)
   {
     if (object == null)
@@ -392,7 +399,10 @@ public abstract class Expr
       }
     if (object instanceof Collection)
       {
-        Collection<Node> nodeSet = (Collection<Node>) object;
+	/* Suppression is safe, as we fail immediately if the
+	 * first element is not a Node and don't use the rest */
+	@SuppressWarnings("unchecked") 
+	  Collection<Node> nodeSet = (Collection<Node>) object;
         if (nodeSet.isEmpty())
           {
             return "";
@@ -408,7 +418,6 @@ public abstract class Expr
   /**
    * Implementation of the XPath <code>boolean</code> function.
    */
-  @SuppressWarnings("unchecked")
   public static boolean _boolean(Node context, Object object)
   {
     if (object instanceof Boolean)
@@ -428,7 +437,7 @@ public abstract class Expr
       }
     if (object instanceof Collection)
       {
-        return ((Collection<Node>) object).size() != 0;
+        return ((Collection<?>) object).size() != 0;
       }
     return false; // TODO user defined types
   }
@@ -438,7 +447,6 @@ public abstract class Expr
   /**
    * Implementation of the XPath <code>number</code> function.
    */
-  @SuppressWarnings("unchecked")
   public static double _number(Node context, Object object)
   {
     if (object == null)
@@ -455,8 +463,12 @@ public abstract class Expr
       }
     if (object instanceof Collection)
       {
+	/* Suppression is safe, as we fail immediately if one
+	 * of the elements is not a Node */
+	@SuppressWarnings("unchecked") 
+	  Collection<Node> nodeSet = (Collection<Node>) object;
         // Convert node-set to string
-        object = stringValue((Collection<Node>) object);
+        object = stringValue(nodeSet);
       }
     if (object instanceof String)
       {
