@@ -1,3 +1,29 @@
+2008-06-25  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	PR classpath/36221:
+	* gnu/xml/dom/DomAttr.java:
+	(DomAttr(DomDocument,String,String,String,String)):
+	New constructor.
+	* gnu/xml/dom/DomDocument.java:
+	(createElement(String)): Use new constructor rather than
+	setting variable directly.
+	(createAttribute(String)): Likewise.
+	* gnu/xml/dom/DomElement.java:
+	(DomElement(DomDocument,String,String,String,String)):
+	New constructor.
+	* gnu/xml/dom/DomNsNode.java:
+	(localName): Make private.
+	(DomNsNode(short,DomDocument,String,String,String,String)):
+	New constructor.
+	* gnu/xml/dom/ls/DomLSParser.java:
+	(doParse(LSInput)): Set namespace awareness using a method,
+	not directly.
+	* gnu/xml/dom/ls/SAXEventSink.java:
+	(namespaceAware): Make private.
+	(setNamespaceAware(boolean)): New method.
+	* gnu/xml/transform/XSLURIResolver.java:
+	(parse(InputSource,XMLReader)): Parse with namespace awareness on.
+
 2008-06-24  Tom Tromey  <tromey@redhat.com>
 
 	PR libgcj/32198:

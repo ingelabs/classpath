@@ -301,6 +301,7 @@ class XSLURIResolver
   {
     SAXEventSink eventSink = new SAXEventSink();
     eventSink.setReader(reader);
+    eventSink.setNamespaceAware(true);
     reader.setContentHandler(eventSink);
     reader.setDTDHandler(eventSink);
     reader.setProperty("http://xml.org/sax/properties/lexical-handler",
