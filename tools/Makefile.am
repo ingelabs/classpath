@@ -303,10 +303,10 @@ dist-hook:
 # so they get also included.
 $(TOOLS_ZIP): $(ALL_TOOLS_FILES)
 	@rm -rf classes asm generated
-	@MKDIR_P@ classes asm 
+	@mkdir_p@ classes asm 
 if CREATE_GJDOC
 ## Generate antlr sources.
-	@MKDIR_P@ generated/gnu/classpath/tools/gjdoc/expr
+	@mkdir_p@ generated/gnu/classpath/tools/gjdoc/expr
 	$(ANTLR) -o generated/gnu/classpath/tools/gjdoc/expr \
 	  $(srcdir)/gnu/classpath/tools/gjdoc/expr/java-expression.g
 endif
@@ -330,7 +330,7 @@ endif
 	       sun/rmi/rmic $(GJDOC_EX) -name \*.properties -print -o -name \*.jav -print`; \
 	for p in $$list; do \
 	  dirname=classes/`dirname $$p`; \
-	  if ! test -d "$$dirname"; then @MKDIR_P@ "$$dirname"; fi; \
+	  if ! test -d "$$dirname"; then @mkdir_p@ "$$dirname"; fi; \
 	  echo "  cp $(srcdir)/resource/$$p classes/$$p"; \
 	  cp $(srcdir)/resource/$$p classes/$$p; \
 	done
@@ -338,7 +338,7 @@ if CREATE_GJDOC
 ## Copy over gjdoc resource files.
 	for res in $(gjdoc_resources); do \
 	  dir=classes/`dirname $$res`; \
-	  if ! test -d "$$dir"; then @MKDIR_P@ "$$dir"; fi; \
+	  if ! test -d "$$dir"; then @mkdir_p@ "$$dir"; fi; \
 	  echo "  cp $(srcdir)/resource/gnu/classpath/tools/gjdoc/$$res classes/$$res"; \
 	  cp $(srcdir)/resource/gnu/classpath/tools/gjdoc/$$res classes/$$res; \
 	done 

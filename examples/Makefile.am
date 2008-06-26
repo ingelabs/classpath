@@ -85,9 +85,9 @@ dist-hook:
 # class files. Always regenerate all .class files and remove them immediatly.
 # And copy the png icons we use to the classes dir so they get also included.
 $(EXAMPLE_ZIP): $(EXAMPLE_JAVA_FILES)
-	@MKDIR_P@ classes/gnu/classpath/examples/icons
+	@mkdir_p@ classes/gnu/classpath/examples/icons
 	cp $(EXAMPLE_ICONS) classes/gnu/classpath/examples/icons
-	@MKDIR_P@ classes/gnu/classpath/examples/swing
+	@mkdir_p@ classes/gnu/classpath/examples/swing
 	cp $(EXAMPLE_HTML) classes/gnu/classpath/examples/swing
 	$(JCOMPILER) -d classes $(EXAMPLE_JAVA_FILES) 
 	(cd classes; \

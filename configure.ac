@@ -348,7 +348,6 @@ AM_CONDITIONAL(CREATE_WRAPPERS, test "x${COMPILE_WRAPPERS}" = xyes)
 
 AC_PROG_LN_S
 AC_PROG_INSTALL
-AC_PROG_MKDIR_P
 
 dnl -----------------------------------------------------------
 dnl Checks for programs.
