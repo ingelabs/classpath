@@ -38,6 +38,7 @@
 
 package gnu.classpath.tools.jar;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -86,6 +87,32 @@ public class Updater
       }
 
     close();
-    tmpFile.renameTo(parameters.archiveFile);
+    if (!tmpFile.renameTo(parameters.archiveFile))
+      {
+	if (!parameters.archiveFile.delete())
+	  throw new IOException("Couldn't delete original JAR file " +
+				parameters.archiveFile);
+	copyFile(tmpFile, parameters.archiveFile);
+	tmpFile.delete();
+      }
   }
+
+  private void copyFile(File sourceFile, File destFile) 
+    throws IOException 
+  {
+    BufferedInputStream source =
+      new BufferedInputStream(new FileInputStream(sourceFile));
+    BufferedOutputStream dest =
+      new BufferedOutputStream(new FileOutputStream(destFile));
+    int inputByte;
+    
+    while ((inputByte = source.read()) != -1) 
+      {
+	dest.write(inputByte);
+      }
+        
+    source.close();
+    dest.close();
+  }
+
 }
