@@ -55,18 +55,45 @@ dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_GLIBJ],
 [
   AC_PATH_PROG(ZIP, zip)
-  AC_ARG_WITH([fastjar],
-	      [AS_HELP_STRING([--with-fastjar=PATH], [define to use a fastjar style tool])],
+
+  AC_MSG_CHECKING(for a jar-like tool)
+  AC_ARG_WITH([jar],
+	      [AS_HELP_STRING([--with-jar=PATH], [define to use a jar style tool])],
 	      [
-		AC_MSG_CHECKING([for user supplied fastjar])
-		FASTJAR=${withval}
-		AC_MSG_RESULT([${FASTJAR}])
-	      ],
-	      [AC_PATH_PROGS([FASTJAR], [fastjar gjar jar])])
-dnl We disable ZIP by default if we find fastjar.
-  if test x"${FASTJAR}" != x; then
-    ZIP=""
+	        case "${withval}" in
+      		  yes)
+		    JAR=yes
+        	    ;;
+      		  no)
+		    JAR=no
+  		    AC_MSG_RESULT(${JAR})
+		    ;;
+		  *)
+    		    if test -f "${withval}"; then
+          	      JAR="${withval}"
+		      AC_MSG_RESULT(${JAR})
+        	    else
+	  	      AC_MSG_RESULT([not found])
+	              AC_MSG_ERROR([The jar tool ${withval} was not found.])
+        	    fi
+		    ;;
+     		esac
+  	      ],
+	      [
+		JAR=yes
+	      ])
+  if test x"${JAR}" = "xyes"; then
+    AC_MSG_RESULT([trying fastjar, gjar and jar])
+    AC_PATH_PROGS([JAR], [fastjar gjar jar])
+    if test x"${RHINO_JAR}" = "xyes"; then
+      AC_MSG_RESULT([not found])
+    fi
   fi
+  if test x"${JAR}" = "xno" && test x"${ZIP}" = ""; then
+    AC_MSG_ERROR([No zip or jar tool found.])
+  fi
+  AM_CONDITIONAL(WITH_JAR, test x"${JAR}" != "xno" && test x"${JAR}" != "xyes")
+  AC_SUBST(JAR)
   
   AC_ARG_WITH([glibj],
               [AS_HELP_STRING([--with-glibj],[define what to install (zip|flat|both|none|build) [default=zip]])],

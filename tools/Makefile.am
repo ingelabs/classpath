@@ -343,15 +343,22 @@ if CREATE_GJDOC
 	  cp $(srcdir)/resource/gnu/classpath/tools/gjdoc/$$res classes/$$res; \
 	done 
 endif
+
+if WITH_JAR
+CREATE_TOOLS_ZIP=$(JAR) cf ../$(TOOLS_ZIP) .
+UPDATE_TOOLS_ZIP=$(JAR) uf ../$(TOOLS_ZIP) .
+else
+CREATE_TOOLS_ZIP=$(ZIP) -r ../$(TOOLS_ZIP) .
+UPDATE_TOOLS_ZIP=$(ZIP) -u -r ../$(TOOLS_ZIP) .
+endif
+
 ## First add classpath tools stuff.
 	(cd classes; \
-	if test "$(ZIP)" != ""; then $(ZIP) -r ../$(TOOLS_ZIP) .; fi; \
-	if test "$(FASTJAR)" != ""; then "$(FASTJAR)" cf ../$(TOOLS_ZIP) .; fi; \
+	$(CREATE_TOOLS_ZIP); \
 	cd ..)
 ## Now add ASM classes.
 	(cd asm; \
-	if test "$(ZIP)" != ""; then $(ZIP) -u -r ../$(TOOLS_ZIP) .; fi; \
-	if test "$(FASTJAR)" != ""; then "$(FASTJAR)" uf ../$(TOOLS_ZIP) .; fi; \
+	$(UPDATE_TOOLS_ZIP); \
 	cd ..)
 	rm -rf classes
 

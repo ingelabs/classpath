@@ -13,18 +13,16 @@ JCOMPILER = $(JAVAC) $(JAVACFLAGS) $(JAVAC_MEM_OPT) -source 1.5 -target 1.5 -boo
 if CREATE_COLLECTIONS
 COLLECTIONS = collections.jar
 
+if WITH_JAR
+CREATE_COLLECTIONS_JAR=$(JAR) cf $@ $(COLLECTIONS_PREFIX)
+else
+CREATE_COLLECTIONS_JAR=$(ZIP) -r -D $@ $(COLLECTIONS_PREFIX) > /dev/null
+endif
+
 collections.jar: mkcollections.pl
 	./mkcollections.pl $(top_srcdir)
-#if FOUND_GCJ
-#	$(GCJ) -C `$(FIND) $(COLLECTIONS_PREFIX) -name '*.java' -type f -print`
-#else
 	$(JCOMPILER) `$(FIND) $(COLLECTIONS_PREFIX) -name '*.java' -type f -print`
-#endif
-	if test "$(FASTJAR)" != ""; then \
-	  "$(FASTJAR)" cf $@ $(COLLECTIONS_PREFIX); \
-	else \
-	  echo "fastjar not found" > collections.jar; \
-	fi
+	$(CREATE_COLLECTIONS_JAR)
 endif # CREATE_COLLECTIONS
 
 if INSTALL_GLIBJ_ZIP
@@ -68,10 +66,14 @@ glibj.zip:
 
 else
 
-glibj.zip: classes compile-classes resources
-	if test "$(ZIP)" != ""; then $(ZIP) -r -D glibj.zip gnu java javax org sun META-INF > /dev/null; fi
-	if test "$(FASTJAR)" != ""; then "$(FASTJAR)" cf glibj.zip gnu java javax org sun META-INF; fi
+if WITH_JAR
+CREATE_GLIBJ_ZIP=$(JAR) cf glibj.zip gnu java javax org sun META-INF
+else
+CREATE_GLIBJ_ZIP=$(ZIP) -r -D glibj.zip gnu java javax org sun META-INF > /dev/null
+endif
 
+glibj.zip: classes compile-classes resources
+	$(CREATE_GLIBJ_ZIP)
 endif # USE_PREBUILT_GLIBJ_ZIP
 
 resources: copy-vmresources.sh

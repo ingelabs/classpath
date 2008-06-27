@@ -1,3 +1,15 @@
+2008-06-27  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	PR classpath/36637:
+	* examples/Makefile.am,
+	* lib/Makefile.am:
+	Use new conditional and $(JAR).
+	* m4/acinclude.m4:
+	Replace --with-fastjar with a general
+	--with-jar check that can be turned off.
+	* tools/Makefile.am:
+	Use new conditional and $(JAR).
+
 2008-06-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/36636:
