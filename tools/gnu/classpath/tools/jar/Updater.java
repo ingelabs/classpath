@@ -71,7 +71,8 @@ public class Updater
     inputJar = new JarFile(parameters.archiveFile);
 
     // Write all the new entries to a temporary file.
-    File tmpFile = File.createTempFile("jarcopy", null);
+    File tmpFile = File.createTempFile("jarcopy", null,
+				       parameters.archiveFile.getParentFile());
     OutputStream os = new BufferedOutputStream(new FileOutputStream(tmpFile));
     writeCommandLineEntries(parameters, os);
 
@@ -89,30 +90,9 @@ public class Updater
     close();
     if (!tmpFile.renameTo(parameters.archiveFile))
       {
-	if (!parameters.archiveFile.delete())
-	  throw new IOException("Couldn't delete original JAR file " +
-				parameters.archiveFile);
-	copyFile(tmpFile, parameters.archiveFile);
-	tmpFile.delete();
+	  throw new IOException("Couldn't rename new JAR file " + tmpFile +
+				"to " + parameters.archiveFile);
       }
-  }
-
-  private void copyFile(File sourceFile, File destFile) 
-    throws IOException 
-  {
-    BufferedInputStream source =
-      new BufferedInputStream(new FileInputStream(sourceFile));
-    BufferedOutputStream dest =
-      new BufferedOutputStream(new FileOutputStream(destFile));
-    int inputByte;
-    
-    while ((inputByte = source.read()) != -1) 
-      {
-	dest.write(inputByte);
-      }
-        
-    source.close();
-    dest.close();
   }
 
 }
