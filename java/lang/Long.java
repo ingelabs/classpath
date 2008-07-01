@@ -689,7 +689,8 @@ public final class Long extends Number implements Comparable<Long>
    */
   public static int signum(long x)
   {
-    return (int)(x >> 63) - (int)(-x >> 63);
+    // Hacker's Delight, Section 2-7
+    return (int) ((x >> 63) | (-x >>> 63));
   }
 
   /**
