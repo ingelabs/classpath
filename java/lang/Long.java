@@ -689,8 +689,14 @@ public final class Long extends Number implements Comparable<Long>
    */
   public static int signum(long x)
   {
-    // Hacker's Delight, Section 2-7
     return (int) ((x >> 63) | (-x >>> 63));
+
+    // The LHS propagates the sign bit through every bit in the word;
+    // if X < 0, every bit is set to 1, else 0.  if X > 0, the RHS
+    // negates x and shifts the resulting 1 in the sign bit to the
+    // LSB, leaving every other bit 0.
+
+    // Hacker's Delight, Section 2-7
   }
 
   /**
