@@ -687,7 +687,14 @@ public final class Integer extends Number implements Comparable<Integer>
    */
   public static int signum(int x)
   {
-    return (x >> 31) - (-x >> 31);
+    return (x >> 31) | (-x >>> 31);
+
+    // The LHS propagates the sign bit through every bit in the word;
+    // if X < 0, every bit is set to 1, else 0.  if X > 0, the RHS
+    // negates x and shifts the resulting 1 in the sign bit to the
+    // LSB, leaving every other bit 0.
+
+    // Hacker's Delight, Section 2-7
   }
 
   /**

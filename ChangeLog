@@ -1,3 +1,9 @@
+2008-07-01  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* java/lang/Integer.java (signum): Implemented properly as
+	described in Hacker's Delight Section 2-7, plus Andrew Haley's
+	explanation.
+
 2008-07-01  Andrew Haley  <aph@redhat.com>
 
 	* java/lang/Long.java: Comment change only.
