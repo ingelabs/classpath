@@ -297,14 +297,29 @@ public abstract class ResourceBundle
           && locale.equals(key.locale)
           && classLoader.equals(key.classLoader);
     }    
+
+    public String toString()
+    {
+      CPStringBuilder builder = new CPStringBuilder(getClass().getName());
+      builder.append("[defaultLocale=");
+      builder.append(defaultLocale);
+      builder.append(",baseName=");
+      builder.append(baseName);
+      builder.append(",locale=");
+      builder.append(locale);
+      builder.append(",classLoader=");
+      builder.append(classLoader);
+      builder.append("]");
+      return builder.toString();
+    }
   }
   
   /** A cache lookup key. This avoids having to a new one for every
    *  getBundle() call. */
-  private static BundleKey lookupKey = new BundleKey();
+  private static final BundleKey lookupKey = new BundleKey();
   
   /** Singleton cache entry to represent previous failed lookups. */
-  private static Object nullEntry = new Object();
+  private static final Object nullEntry = new Object();
 
   /**
    * Get the appropriate ResourceBundle for the given locale. The following
@@ -498,7 +513,7 @@ public abstract class ResourceBundle
   }
 
   /**
-   * Tries to load a the bundle for a given locale, also loads the backup
+   * Tries to load the bundle for a given locale, also loads the backup
    * locales with the same language.
    *
    * @param baseName the raw bundle name, without locale qualifiers
@@ -571,4 +586,40 @@ public abstract class ResourceBundle
     
     return first;
   }
+
+  /**
+   * Remove all resources from the cache that were loaded
+   * using the class loader of the calling class.
+   *
+   * @since 1.6
+   */
+  public static final void clearCache()
+  {
+    clearCache(VMStackWalker.getCallingClassLoader());
+  }
+
+  /**
+   * Remove all resources from the cache that were loaded
+   * using the specified class loader.
+   *
+   * @param loader the loader used for the bundles that will be removed.
+   * @throws NullPointerException if {@code loader} is {@code null}.
+   * @since 1.6
+   */
+  public static final void clearCache(ClassLoader loader)
+  {
+    if (loader == null)
+      throw new NullPointerException("The loader can not be null.");
+    synchronized (ResourceBundle.class)
+      {    
+	Iterator<BundleKey> iter = bundleCache.keySet().iterator();
+	while (iter.hasNext())
+	  {
+	    BundleKey key = iter.next();
+	    if (key.classLoader == loader)
+	      iter.remove();
+	  }
+      }
+  }
+
 }
