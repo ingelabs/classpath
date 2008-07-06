@@ -48,6 +48,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.io.Reader;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -157,7 +158,7 @@ public class Properties extends Hashtable<Object, Object>
   }
 
   /**
-   * Reads a property list from an input stream.  The stream should
+   * Reads a property list from a character stream.  The stream should
    * have the following format: <br>
    *
    * An empty line or a line starting with <code>#</code> or
@@ -189,15 +190,14 @@ weekdays: Sunday,Monday,Tuesday,Wednesday,\\
 # The safest way to include a space at the end of a value:
 label   = Name:\\u0020</pre>
    *
-   * @param inStream the input stream
+   * @param inReader the input {@link java.io.Reader}.
    * @throws IOException if an error occurred when reading the input
    * @throws NullPointerException if in is null
+   * @since 1.6
    */
-  public void load(InputStream inStream) throws IOException
+  public void load(Reader inReader) throws IOException
   {
-    // The spec says that the file must be encoded using ISO-8859-1.
-    BufferedReader reader =
-      new BufferedReader(new InputStreamReader(inStream, "ISO-8859-1"));
+    BufferedReader reader = new BufferedReader(inReader);
     String line;
 
     while ((line = reader.readLine()) != null)
@@ -360,6 +360,24 @@ label   = Name:\\u0020</pre>
           }
         put(keyString, element.toString());
       }
+  }
+
+  /**
+   * Reads a property list from the supplied input stream.
+   * This method has the same functionality as {@link #load(Reader)}
+   * but the character encoding is assumed to be ISO-8859-1.
+   * Unicode characters not within the Latin1 set supplied by
+   * ISO-8859-1 should be escaped using '\\uXXXX' where XXXX
+   * is the UTF-16 code unit in hexadecimal.
+   *
+   * @param inStream the byte stream to read the property list from.
+   * @throws IOException if an I/O error occurs.
+   * @see #load(Reader)
+   * @since 1.2
+   */
+  public void load(InputStream inStream) throws IOException
+  {
+    load(new InputStreamReader(inStream, "ISO-8859-1"));
   }
 
   /**
