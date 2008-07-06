@@ -123,9 +123,10 @@ public abstract class ResourceBundle
    * 
    * @see BundleKey
    */
-  private static Map bundleCache = new LinkedHashMap(CACHE_SIZE + 1, 0.75F, true)
+  private static Map<BundleKey,Object> bundleCache =
+    new LinkedHashMap<BundleKey,Object>(CACHE_SIZE + 1, 0.75F, true)
   {
-    public boolean removeEldestEntry(Map.Entry entry)
+    public boolean removeEldestEntry(Map.Entry<BundleKey,Object> entry)
     {
       return size() > CACHE_SIZE;
     }
@@ -454,7 +455,7 @@ public abstract class ResourceBundle
     ResourceBundle bundle = null;
     try
       {
-        Class rbClass;
+        Class<?> rbClass;
         if (classloader == null)
           rbClass = Class.forName(localizedName);
         else
