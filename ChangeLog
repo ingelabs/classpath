@@ -1,3 +1,12 @@
+2008-07-07  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* configure.ac (AC_CHECK_HEADERS): Added sys/sockio.h, required
+	for Solaris.
+	(AC_CHECK_LIB): Check for socket.
+	* native/jni/java-net/java_net_VMNetworkInterface.c (unistd.h):
+	Added.
+	[HAVE_SYS_SOCKIO_H] (sys/sockio.h): Likewise.
+
 2008-07-07  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* THANKYOU: Added Byeogncheol.

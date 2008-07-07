@@ -398,6 +398,7 @@ if test "x${COMPILE_JNI}" = xyes; then
   dnl Check for crt_externs.h on Darwin.
   dnl Check for netinet/in_systm.h, netinet/ip.h and net/if.h for Windows CE.
   dnl Check for sys/loadavg.h for getloadavg() on Solaris 9.
+  dnl Check for sys/sockio.h for SIOCGIFFLAGS on OpenSolaris.
   AC_CHECK_HEADERS([unistd.h sys/types.h sys/config.h sys/ioctl.h \
 		    asm/ioctls.h \
 		    inttypes.h stdint.h utime.h sys/utime.h sys/filio.h \
@@ -410,14 +411,15 @@ if test "x${COMPILE_JNI}" = xyes; then
                     sys/event.h sys/epoll.h \
 		    ifaddrs.h \
 		    netinet/in_systm.h netinet/ip.h net/if.h \
-		    sys/loadavg.h])
+		    sys/loadavg.h sys/sockio.h])
 
   AC_EGREP_HEADER(uint32_t, stdint.h, AC_DEFINE(HAVE_INT32_DEFINED, 1, [Define to 1 if you have uint32_t]))
   AC_EGREP_HEADER(uint32_t, inttypes.h, AC_DEFINE(HAVE_INT32_DEFINED, 1, [Define to 1 if you have uint32_t]))
   AC_EGREP_HEADER(u_int32_t, sys/types.h, AC_DEFINE(HAVE_BSD_INT32_DEFINED, 1, [Define to 1 if you have BSD u_int32_t]))
   AC_EGREP_HEADER(u_int32_t, sys/config.h, AC_DEFINE(HAVE_BSD_INT32_DEFINED, 1, [Define to 1 if you have BSD u_int32_t]))
 
-  AC_SEARCH_LIBS([inet_pton],[nsl]) 
+  AC_SEARCH_LIBS([inet_pton],[nsl])
+  AC_CHECK_LIB([socket], [gethostname]) 
   AC_CHECK_FUNCS([ftruncate fsync select \
 		  gethostname socket strerror fork pipe execve open close \
 		  lseek fstat read readv write writev htonl memset htons connect \

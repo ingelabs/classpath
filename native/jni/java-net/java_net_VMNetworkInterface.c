@@ -52,6 +52,12 @@ exception statement from your version. */
 
 #include <net/if.h>
 #include <sys/ioctl.h>
+/* Required on Solaris. */
+#include <unistd.h>
+
+#ifdef HAVE_SYS_SOCKIO_H
+# include <sys/sockio.h>
+#endif
 
 #include <jni.h>
 #include <jcl.h>
