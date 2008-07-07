@@ -174,7 +174,32 @@ public class DateFormatSymbols implements java.io.Serializable, Cloneable
 					     LocaleHelper.getFallbackLocale(res.getLocale()),
 					     ClassLoader.getSystemClassLoader());
 	  }
-	allZones.addAll(systemZones.values());
+	/* Final sanity check for missing values */
+	for (String[] zstrings : systemZones.values())
+	  {
+	    if (zstrings[1].equals("") && zstrings[2].equals(""))
+	      {
+		for (Map.Entry<Object,Object> entry : properties.entrySet())
+		  {
+		    String val = (String) entry.getValue();
+		    if (val.equals(zstrings[0]))
+		      {
+			String key = (String) entry.getKey();
+			String metazone = key.substring(0, key.indexOf("."));
+			String type = properties.getProperty(metazone + "." + locale.getCountry());
+			if (type == null)
+			  type = properties.getProperty(metazone + ".DEFAULT");
+			if (type != null)
+			  {
+			    String[] ostrings = systemZones.get(type);
+			    zstrings[1] = ostrings[1];
+			    zstrings[2] = ostrings[2];
+			  }
+		      }
+		  }
+	      }
+	  }
+	allZones.addAll(systemZones.values());	
       }
     catch (MissingResourceException e)
       {
