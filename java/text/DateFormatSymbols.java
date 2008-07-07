@@ -113,7 +113,18 @@ public class DateFormatSymbols implements java.io.Serializable, Cloneable
         String data = res.getString("zoneStrings");
 	String[] zones = data.split("\u00a9");
 	for (int a = 0; a < zones.length; ++a)
-	  allZones.add(zones[a].split("\u00ae"));
+	  {
+	    String[] strings = zones[a].split("\u00ae");
+	    if (strings.length < 5)
+	      {
+		String[] newStrings = new String[5];
+		System.arraycopy(strings, 0, newStrings, 0, strings.length);
+		for (int b = strings.length; a < newStrings.length; ++a)
+		  newStrings[b] = "";
+		strings = newStrings;
+	      }
+	    allZones.add(strings);
+	  }
       }
     catch (MissingResourceException e)
       {
