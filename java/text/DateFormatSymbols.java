@@ -40,12 +40,17 @@ package java.text;
 
 import gnu.java.locale.LocaleHelper;
 
+import java.io.IOException;
+
 import java.text.spi.DateFormatSymbolsProvider;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.ServiceLoader;
 import java.util.TimeZone;
@@ -72,6 +77,27 @@ public class DateFormatSymbols implements java.io.Serializable, Cloneable
   String[] shortMonths;
   String[] shortWeekdays;
   String[] weekdays;
+
+  /**
+   * The set of properties for obtaining the metazone data.
+   */
+  private static transient final Properties properties;
+
+  /**
+   * Reads in the properties.
+   */
+  static
+  {
+    properties = new Properties();
+    try 
+      {
+        properties.load(DateFormatSymbols.class.getResourceAsStream("metazones.properties"));
+      }
+    catch (IOException exception)
+      {
+        System.out.println("Failed to load weeks resource: " + exception);
+      }
+  }
 
   /**
    * The timezone strings supplied by the runtime.
@@ -110,21 +136,40 @@ public class DateFormatSymbols implements java.io.Serializable, Cloneable
     try
       {
         int index = 0;
+	String country = locale.getCountry();
+	Map<String,String[]> systemZones = new HashMap<String,String[]>();
         String data = res.getString("zoneStrings");
 	String[] zones = data.split("\u00a9");
 	for (int a = 0; a < zones.length; ++a)
 	  {
 	    String[] strings = zones[a].split("\u00ae");
+	    // Workaround for missing short GMT display name
+	    // See http://www.unicode.org/cldr/bugs/locale-bugs/incoming?id=1885
+	    if (strings[0].equals("GMT"))
+	      strings[2] = "GMT";
+	    String type = properties.getProperty(strings[0] + "." + country);
+	    if (type == null)
+	      type = properties.getProperty(strings[0] + ".DEFAULT");
+	    if (type != null)
+	      strings[0] = type;
 	    if (strings.length < 5)
 	      {
 		String[] newStrings = new String[5];
 		System.arraycopy(strings, 0, newStrings, 0, strings.length);
-		for (int b = strings.length; a < newStrings.length; ++a)
+		for (int b = strings.length; b < newStrings.length; ++b)
 		  newStrings[b] = "";
 		strings = newStrings;
 	      }
-	    allZones.add(strings);
+	    String[] existing = systemZones.get(strings[0]);
+	    if (existing != null && existing.length > 1)
+	      {
+		for (int b = 1; b < existing.length; ++b)
+		  if (!existing[b].equals(""))
+		    strings[b] = existing[b];	   
+	      }
+	    systemZones.put(strings[0], strings);
 	  }
+	allZones.addAll(systemZones.values());
       }
     catch (MissingResourceException e)
       {

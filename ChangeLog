@@ -1,3 +1,13 @@
+2008-07-07  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/text/DateFormatSymbols.java:
+	Use metazones to convert metazone names to standard
+	Continent/City form.  Also add hack to include GMT
+	as a short name.
+	* resource/java/text/metazones.properties:
+	New properties file for mapping metazones to standard
+	zone names.
+	
 2008-07-07  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	* configure.ac (AC_CHECK_HEADERS): Added sys/sockio.h, required
