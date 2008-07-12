@@ -101,7 +101,7 @@ public class ChoiceFormat extends NumberFormat
     Vector stringVec = new Vector ();
     Vector limitVec = new Vector ();
     final CPStringBuilder buf = new CPStringBuilder ();
-    
+
     while (true)
       {
 	// Find end of double.
