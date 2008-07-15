@@ -101,7 +101,8 @@ if CREATE_GJDOC
 bin_SCRIPTS += gjdoc
 endif
 bin_PROGRAMS =
-## FIXME: revisit this with a newer automake.
+## FIXME: remove these unneeded dependency lines once we can
+## require Automake 1.11.
 gappletviewer: gappletviewer.in
 gjarsigner: gjarsigner.in
 gkeytool: gkeytool.in

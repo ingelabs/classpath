@@ -1077,9 +1077,8 @@ examples/Makefile
 examples/Makefile.jawt
 examples/Makefile.java2d])
 
-if test "x${COMPILE_WRAPPERS}" = xno
-then
-AC_CONFIG_FILES([tools/gappletviewer
+CLASSPATH_COND_IF([CREATE_WRAPPERS], [test "x${COMPILE_WRAPPERS}" = xyes], [],
+[AC_CONFIG_FILES([tools/gappletviewer
 tools/gjarsigner
 tools/gkeytool
 tools/gjar
@@ -1091,6 +1090,7 @@ tools/gorbd
 tools/grmid
 tools/grmic
 tools/gjavah])
+
 AC_CONFIG_COMMANDS([gappletviewer],[chmod 755 tools/gappletviewer])
 AC_CONFIG_COMMANDS([gjarsigner],[chmod 755 tools/gjarsigner])
 AC_CONFIG_COMMANDS([gkeytool],[chmod 755 tools/gkeytool])
@@ -1103,11 +1103,12 @@ AC_CONFIG_COMMANDS([gorbd],[chmod 755 tools/gorbd])
 AC_CONFIG_COMMANDS([grmid],[chmod 755 tools/grmid])
 AC_CONFIG_COMMANDS([grmic],[chmod 755 tools/grmic])
 AC_CONFIG_COMMANDS([gjavah], [chmod 755 tools/gjavah])
+])
+
 if test "x${COMPILE_GJDOC}" = xyes
 then
 AC_CONFIG_FILES([tools/gjdoc])
 AC_CONFIG_COMMANDS([gjdoc], [chmod 755 tools/gjdoc])
-fi
 fi
 
 AC_CONFIG_COMMANDS([gen-classlist],[chmod 755 lib/gen-classlist.sh])
