@@ -1,3 +1,9 @@
+2008-08-12  Robert Schuster  <robertschuster@fsfe.org>
+
+	* native/jni/java-net/local.c
+	(local_bind): Removed fprintf call, fixed access outside
+	of array bounds.
+
 2008-07-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/acinclude.m4 (CLASSPATH_COND_IF): New macro.
