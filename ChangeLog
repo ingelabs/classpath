@@ -1,3 +1,10 @@
+2008-08-13  Joshua Sumali  <jsumali@redhat.com>
+
+	* doc/Makefile.am (gjdoc.pod): Generate gjdoc pod from cp-tools.texinfo
+	instead of invoke.texi. Remove invoke.texi from EXTRA_DIST.
+	* doc/invoke.texi: Removed and merged into ...
+	* doc/cp-tools.texinfo: Here
+
 2008-08-12  Robert Schuster  <robertschuster@fsfe.org>
 
 	* native/jni/java-net/local.c

@@ -1,6 +1,6 @@
 SUBDIRS = api
 
-EXTRA_DIST = README.jaxp texi2pod.pl invoke.texi
+EXTRA_DIST = README.jaxp texi2pod.pl
 
 info_TEXINFOS = cp-hacking.texinfo cp-vmintegration.texinfo cp-tools.texinfo
 
@@ -82,7 +82,7 @@ gserialver.pod: $(srcdir)/cp-tools.texinfo
 gtnameserv.pod: $(srcdir)/cp-tools.texinfo
 	-$(TEXI2POD) -D gtnameserv < $< > $@
 
-gjdoc.pod: $(srcdir)/invoke.texi
+gjdoc.pod: $(srcdir)/cp-tools.texinfo
 	-$(TEXI2POD) -D gjdoc < $< > $@
 
 CLEANFILES = $(TOOLS_MANFILES)
