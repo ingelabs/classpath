@@ -171,7 +171,7 @@ public final class Matcher implements MatchResult
 	int endIndex = match.getEndIndex();
 	// Are we stuck at the same position?
 	if (!first && endIndex == position)
-	  {
+	  {	    
 	    match = null;
 	    // Not at the end of the input yet?
 	    if (position < input.length() - 1)
@@ -588,6 +588,22 @@ public final class Matcher implements MatchResult
     else
       anchoringBounds = RE.REG_NOTBOL|RE.REG_NOTEOL;
     return this;
+  }
+
+  /**
+   * Returns a read-only snapshot of the current state of
+   * the {@link Matcher} as a {@link MatchResult}.  Any
+   * subsequent changes to this instance are not reflected
+   * in the returned {@link MatchResult}.
+   *
+   * @return a {@link MatchResult} instance representing the
+   *         current state of the {@link Matcher}.
+   */
+  public MatchResult toMatchResult()
+  {
+    Matcher snapshot = new Matcher(pattern, input);
+    snapshot.match = (REMatch) match.clone();
+    return snapshot;
   }
 
 }
