@@ -1,5 +1,22 @@
 2008-08-17  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	* AUTHORS: Added Laszlo.
+
+2008-04-20  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	PR classpath/30436:
+	* java/util/Scanner.java:
+	Fix package to be java.util and correct
+	indentation.
+
+2007-07-25  Laszlo Andras Hernadi  <e0327023@student.tuwien.ac.at>
+
+	PR classpath/30436:
+	* java/util/Scanner.java:
+	Initial implementation.
+
+2008-08-17  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* java/util/regex/Matcher.java:
 	(toMatchResult()): Implemented.
 	
