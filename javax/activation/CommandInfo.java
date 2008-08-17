@@ -52,8 +52,8 @@ import java.io.ObjectInputStream;
 public class CommandInfo
 {
 
-  private String verb;
-  private String className;
+  private final String verb;
+  private final String className;
   
   /**
    * Constructor.

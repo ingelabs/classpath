@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package javax.activation;
 
+import gnu.java.lang.CPStringBuilder;
+
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -173,7 +175,7 @@ public class MimeType
    */
   public String toString()
   {
-    return new StringBuffer(primaryType)
+    return new CPStringBuilder(primaryType)
       .append('/')
       .append(subType)
       .append(parameters.toString())
@@ -186,7 +188,7 @@ public class MimeType
    */
   public String getBaseType()
   {
-    return new StringBuffer(primaryType)
+    return new CPStringBuilder(primaryType)
       .append('/')
       .append(subType)
       .toString();

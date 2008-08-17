@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package javax.activation;
 
+import gnu.java.lang.CPStringBuilder;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -91,7 +93,7 @@ public class MimetypesFileTypeMap
       }
   }
   
-  private Map[] mimetypes;
+  private Map<String,String>[] mimetypes;
   
   /**
    * Default constructor.
@@ -138,7 +140,7 @@ public class MimetypesFileTypeMap
     mimetypes = new Map[5];
     for (int i = 0; i < mimetypes.length; i++)
       {
-        mimetypes[i] = new HashMap();
+        mimetypes[i] = new HashMap<String,String>();
       }
     if (in != null)
       {
@@ -164,7 +166,7 @@ public class MimetypesFileTypeMap
         String home = System.getProperty("user.home");
         if (home != null)
           {
-            parseFile(mimetypes[HOME], new StringBuffer(home)
+            parseFile(mimetypes[HOME], new CPStringBuilder(home)
                       .append(File.separatorChar)
                       .append(".mime.types")
                       .toString());
@@ -181,8 +183,9 @@ public class MimetypesFileTypeMap
     try
       {
         parseFile(mimetypes[SYS],
-                  new StringBuffer(System.getProperty("java.home"))
-                  .append(File.separatorChar)                                                     .append("lib")
+                  new CPStringBuilder(System.getProperty("java.home"))
+                  .append(File.separatorChar)                                                     
+		  .append("lib")
                   .append(File.separatorChar)
                   .append("mime.types")
                   .toString());
@@ -194,7 +197,7 @@ public class MimetypesFileTypeMap
       {
         System.out.println("MimetypesFileTypeMap: load JAR");
       }
-    List systemResources = getSystemResources("META-INF/mime.types");
+    List<URL> systemResources = getSystemResources("META-INF/mime.types");
     int len = systemResources.size();
     if (len > 0)
       {
@@ -294,7 +297,7 @@ public class MimetypesFileTypeMap
     return DEFAULT_MIME_TYPE;
   }
   
-  private void parseFile(Map mimetypes, String filename)
+  private void parseFile(Map<String,String> mimetypes, String filename)
   {
     Reader in = null;
     try
@@ -320,7 +323,7 @@ public class MimetypesFileTypeMap
       }
   }
   
-  private void parseResource(Map mimetypes, String name)
+  private void parseResource(Map<String,String> mimetypes, String name)
   {
     Reader in = null;
     try
@@ -350,11 +353,11 @@ public class MimetypesFileTypeMap
       }
   }
   
-  private void parse(Map mimetypes, Reader in)
+  private void parse(Map<String,String> mimetypes, Reader in)
     throws IOException
   {
     BufferedReader br = new BufferedReader(in);
-    StringBuffer buf = null;
+    CPStringBuilder buf = null;
     for (String line = br.readLine(); line != null; line = br.readLine())
       {
         line = line.trim();
@@ -367,7 +370,7 @@ public class MimetypesFileTypeMap
           {
             if (buf == null)
               {
-                buf = new StringBuffer();
+                buf = new CPStringBuilder();
               }
             buf.append(line.substring(0, len - 1));
           }
@@ -384,13 +387,14 @@ public class MimetypesFileTypeMap
       }
   }
   
-  private void parseEntry(Map mimetypes, String line)
+  private void parseEntry(Map<String,String> mimetypes,
+			  String line)
   {
     // Tokenize
     String mimeType = null;
     char[] chars = line.toCharArray();
     int len = chars.length;
-    StringBuffer buffer = new StringBuffer();
+    CPStringBuilder buffer = new CPStringBuilder();
     for (int i = 0; i < len; i++)
       {
         char c = chars[i];
@@ -417,12 +421,12 @@ public class MimetypesFileTypeMap
   
   // -- Utility methods --
   
-  private List getSystemResources(String name)
+  private List<URL> getSystemResources(String name)
   {
-    List acc = new ArrayList();
+    List<URL> acc = new ArrayList<URL>();
     try
       {
-        for (Enumeration i = ClassLoader.getSystemResources(name);
+        for (Enumeration<URL> i = ClassLoader.getSystemResources(name);
              i.hasMoreElements(); )
           acc.add(i.nextElement());
       }

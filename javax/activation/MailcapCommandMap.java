@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package javax.activation;
 
+import gnu.java.lang.CPStringBuilder;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -93,7 +95,7 @@ public class MailcapCommandMap
       }
   }
   
-  private Map[][] mailcaps;
+  private Map<String,Map<String,List<String>>>[][] mailcaps;
   
   /**
    * Default constructor.
@@ -147,7 +149,8 @@ public class MailcapCommandMap
       {
         for (int j = 0; j < 2; j++)
           {
-            mailcaps[i][j] = new LinkedHashMap();
+            mailcaps[i][j] =
+	      new LinkedHashMap<String,Map<String,List<String>>>();
           }
       }
     if (in != null)
@@ -174,7 +177,7 @@ public class MailcapCommandMap
         String home = System.getProperty("user.home");
         if (home != null)
           {
-            parseFile(HOME, new StringBuffer(home)
+            parseFile(HOME, new CPStringBuilder(home)
                       .append(File.separatorChar)
                       .append(".mailcap")
                       .toString());
@@ -191,8 +194,9 @@ public class MailcapCommandMap
     try
       {
         parseFile(SYS, 
-                  new StringBuffer(System.getProperty("java.home"))
-                  .append(File.separatorChar)                                                     .append("lib")
+                  new CPStringBuilder(System.getProperty("java.home"))
+                  .append(File.separatorChar)                                                     
+		  .append("lib")
                   .append(File.separatorChar)
                   .append("mailcap")
                   .toString());
@@ -205,14 +209,14 @@ public class MailcapCommandMap
       {
         System.out.println("MailcapCommandMap: load JAR");
       }
-    List systemResources = getSystemResources("META-INF/mailcap");
+    List<URL> systemResources = getSystemResources("META-INF/mailcap");
     int len = systemResources.size();
     if (len > 0)
       {
         for (int i = 0; i < len ; i++)
           {
             Reader urlIn = null;
-            URL url = (URL) systemResources.get(i);
+            URL url = systemResources.get(i);
             try
               {
                 if (debug)
@@ -263,23 +267,22 @@ public class MailcapCommandMap
    */
   public synchronized CommandInfo[] getPreferredCommands(String mimeType)
   {
-    List cmdList = new ArrayList();
-    List verbList = new ArrayList();
+    List<CommandInfo> cmdList = new ArrayList<CommandInfo>();
+    List<String> verbList = new ArrayList<String>();
     for (int i = 0; i < 2; i++)
       {
         for (int j = 0; j < 5; j++)
           {
-            Map map = getCommands(mailcaps[j][i], mimeType);
+            Map<String,List<String>> map = getCommands(mailcaps[j][i], mimeType);
             if (map != null)
               {
-                for (Iterator k = map.entrySet().iterator(); k.hasNext(); )
+                for (Map.Entry<String,List<String>> entry : map.entrySet())
                   {
-                    Map.Entry entry = (Map.Entry) k.next();
-                    String verb = (String) entry.getKey();
+                    String verb = entry.getKey();
                     if (!verbList.contains(verb))
                       {
-                        List classNames = (List) entry.getValue();
-                        String className = (String) classNames.get(0);
+                        List<String> classNames = entry.getValue();
+                        String className = classNames.get(0);
                         CommandInfo cmd = new CommandInfo(verb, className);
                         cmdList.add(cmd);
                         verbList.add(verb);
@@ -299,23 +302,22 @@ public class MailcapCommandMap
    */
   public synchronized CommandInfo[] getAllCommands(String mimeType)
   {
-    List cmdList = new ArrayList();
+    List<CommandInfo> cmdList = new ArrayList<CommandInfo>();
     for (int i = 0; i < 2; i++)
       {
         for (int j = 0; j < 5; j++)
           {
-            Map map = getCommands(mailcaps[j][i], mimeType);
+            Map<String,List<String>> map = getCommands(mailcaps[j][i], mimeType);
             if (map != null)
               {
-                for (Iterator k = map.entrySet().iterator(); k.hasNext(); )
+                for (Map.Entry<String,List<String>> entry : map.entrySet())
                   {
-                    Map.Entry entry = (Map.Entry) k.next();
-                    String verb = (String) entry.getKey();
-                    List classNames = (List) entry.getValue();
+                    String verb = entry.getKey();
+                    List<String> classNames = entry.getValue();
                     int len = classNames.size();
                     for (int l = 0; l < len; l++)
                       {
-                        String className = (String) classNames.get(l);
+                        String className = classNames.get(l);
                         CommandInfo cmd = new CommandInfo(verb, className);
                         cmdList.add(cmd);
                       }
@@ -340,17 +342,18 @@ public class MailcapCommandMap
       {
         for (int j = 0; j < 5; j++)
           {
-            Map map = getCommands(mailcaps[j][i], mimeType);
+            Map<String,List<String>> map =
+	      getCommands(mailcaps[j][i], mimeType);
             if (map != null)
               {
-                List classNames = (List) map.get(cmdName);
+                List<String> classNames = map.get(cmdName);
                 if (classNames == null)
                   {
-                    classNames = (List) map.get("x-java-" + cmdName);
+                    classNames = map.get("x-java-" + cmdName);
                   }
                 if (classNames != null)
                   {
-                    String className = (String) classNames.get(0);
+                    String className = classNames.get(0);
                     return new CommandInfo(cmdName, className);
                   }
               }
@@ -361,9 +364,9 @@ public class MailcapCommandMap
 
   /**
    * Adds entries programmatically to the registry.
-   * @param mail_cap a mailcap string
+   * @param mailcap a mailcap string
    */
-  public synchronized void addMailcap(String mail_cap)
+  public synchronized void addMailcap(String mailcap)
   {
     if (debug)
       {
@@ -371,7 +374,7 @@ public class MailcapCommandMap
       }
     try
       {
-        parse(PROG, new StringReader(mail_cap));
+        parse(PROG, new StringReader(mailcap));
       }
     catch (IOException e)
       {
@@ -398,17 +401,17 @@ public class MailcapCommandMap
               {
                 System.out.println("  search DB #" + i);
               }
-            Map map = getCommands(mailcaps[j][i], mimeType);
+            Map<String,List<String>> map = getCommands(mailcaps[j][i], mimeType);
             if (map != null)
               {
-                List classNames = (List) map.get("content-handler");
+                List<String> classNames = map.get("content-handler");
                 if (classNames == null)
                   {
-                    classNames = (List) map.get("x-java-content-handler");
+                    classNames = map.get("x-java-content-handler");
                   }
                 if (classNames != null)
                   {
-                    String className = (String) classNames.get(0);
+                    String className = classNames.get(0);
                     if (debug)
                       {
                         System.out.println("  In " + nameOf(j) +
@@ -416,7 +419,7 @@ public class MailcapCommandMap
                       }
                     try
                       {
-                        Class clazz = Class.forName(className);
+                        Class<?> clazz = Class.forName(className);
                         return (DataContentHandler)clazz.newInstance();
                       }
                     catch (IllegalAccessException e)
@@ -462,7 +465,7 @@ public class MailcapCommandMap
    */
   public String[] getNativeCommands(String mimeType)
   {
-    List acc = new ArrayList();
+    List<String> acc = new ArrayList<String>();
     for (int i = 0; i < 2; i++)
       {
         for (int j = 0; j < 5; j++)
@@ -475,37 +478,36 @@ public class MailcapCommandMap
     return ret;
   }
 
-  private void addNativeCommands(List acc, Map mailcap, String mimeType)
+  private void addNativeCommands(List<String> acc,
+				 Map<String,Map<String,List<String>>> mailcap,
+				 String mimeType)
   {
-    for (Iterator j = mailcap.entrySet().iterator(); j.hasNext(); )
+    for (Map.Entry<String,Map<String,List<String>>> mEntry : mailcap.entrySet())
       {
-        Map.Entry m_entry = (Map.Entry) j.next();
-        String entryMimeType = (String) m_entry.getKey();
+        String entryMimeType = mEntry.getKey();
         if (!entryMimeType.equals(mimeType))
           {
             continue;
           }
-        Map commands = (Map) m_entry.getValue();
-        String viewCommand = (String) commands.get("view-command");
+        Map<String,List<String>> commands = mEntry.getValue();
+        String viewCommand = commands.get("view-command").get(0);
         if (viewCommand == null)
           {
             continue;
           }
-        StringBuffer buf = new StringBuffer();
+        CPStringBuilder buf = new CPStringBuilder();
         buf.append(mimeType);
         buf.append(';');
         buf.append(' ');
         buf.append(viewCommand);
-        for (Iterator k = commands.entrySet().iterator(); k.hasNext(); )
+        for (Map.Entry<String,List<String>> cEntry : commands.entrySet())
           {
-            Map.Entry c_entry = (Map.Entry) k.next();
-            String verb = (String) c_entry.getKey();
-            List classNames = (List) c_entry.getValue();
+            String verb = cEntry.getKey();
+            List<String> classNames = cEntry.getValue();
             if (!"view-command".equals(verb))
               {
-                for (Iterator l = classNames.iterator(); l.hasNext(); )
+                for (String command : classNames)
                   {
-                    String command = (String) l.next();
                     buf.append(';');
                     buf.append(' ');
                     buf.append(verb);
@@ -618,7 +620,7 @@ public class MailcapCommandMap
     throws IOException
   {
     BufferedReader br = new BufferedReader(in);
-    StringBuffer buf = null;
+    CPStringBuilder buf = null;
     for (String line = br.readLine(); line != null; line = br.readLine())
       {
         line = line.trim();
@@ -631,7 +633,7 @@ public class MailcapCommandMap
           {
             if (buf == null)
               {
-                buf = new StringBuffer();
+                buf = new CPStringBuilder();
               }
             buf.append(line.substring(0, len - 1));
           }
@@ -655,8 +657,8 @@ public class MailcapCommandMap
     int len = chars.length;
     boolean inQuotedString = false;
     boolean fallback = false;
-    StringBuffer buffer = new StringBuffer();
-    List fields = new ArrayList();
+    CPStringBuilder buffer = new CPStringBuilder();
+    List<String> fields = new ArrayList<String>();
     for (int i = 0; i < len; i++)
       {
         char c = chars[i];
@@ -700,9 +702,9 @@ public class MailcapCommandMap
         return;
       }
     
-    Map mailcap = fallback ? mailcaps[index][FALLBACK] :
-      mailcaps[index][NORMAL];
-    String mimeType = (String) fields.get(0);
+    Map<String,Map<String,List<String>>> mailcap =
+      fallback ? mailcaps[index][FALLBACK] : mailcaps[index][NORMAL];
+    String mimeType = fields.get(0);
     addField(mailcap, mimeType, "view-command", (String) fields.get(1));
     for (int i = 2; i < len; i++)
       {
@@ -710,8 +712,8 @@ public class MailcapCommandMap
       }
   }
     
-  private void addField(Map mailcap, String mimeType, String verb,
-                        String command)
+  private void addField(Map<String,Map<String,List<String>>> mailcap,
+			String mimeType, String verb, String command)
   {
     if (verb == null)
       {
@@ -727,30 +729,32 @@ public class MailcapCommandMap
         return; // Invalid field or flag
       }
       
-    Map commands = (Map) mailcap.get(mimeType);
+    Map<String,List<String>> commands = mailcap.get(mimeType);
     if (commands == null)
       {
-        commands = new LinkedHashMap();
+        commands = new LinkedHashMap<String,List<String>>();
         mailcap.put(mimeType, commands);
       }
-    List classNames = (List) commands.get(verb);
+    List<String> classNames = commands.get(verb);
     if (classNames == null)
       {
-        classNames = new ArrayList();
+        classNames = new ArrayList<String>();
         commands.put(verb, classNames);
       }
     classNames.add(command);
   }
   
-  private Map getCommands(Map mailcap, String mimeType)
+  private Map<String,List<String>>
+    getCommands(Map<String,Map<String,List<String>>> mailcap,
+		String mimeType)
   {
     int si = mimeType.indexOf('/');
-    String genericMimeType = new StringBuffer(mimeType.substring(0, si))
+    String genericMimeType = new CPStringBuilder(mimeType.substring(0, si))
       .append('/')
       .append('*')
       .toString();
-    Map specific = (Map) mailcap.get(mimeType);
-    Map generic = (Map) mailcap.get(genericMimeType);
+    Map<String,List<String>> specific = mailcap.get(mimeType);
+    Map<String,List<String>> generic = mailcap.get(genericMimeType);
     if (generic == null)
       {
         return specific;
@@ -759,13 +763,12 @@ public class MailcapCommandMap
       {
         return generic;
       }
-    Map combined = new LinkedHashMap();
+    Map<String,List<String>> combined = new LinkedHashMap<String,List<String>>();
     combined.putAll(specific);
-    for (Iterator i = generic.keySet().iterator(); i.hasNext(); )
+    for (String verb : generic.keySet())
       {
-        String verb = (String) i.next();
-        List genericClassNames = (List) generic.get(verb);
-        List classNames = (List) combined.get(verb);
+        List<String> genericClassNames = generic.get(verb);
+        List<String> classNames = combined.get(verb);
         if (classNames == null)
           {
             combined.put(verb, genericClassNames);
@@ -780,12 +783,12 @@ public class MailcapCommandMap
 
   // -- Utility methods --
   
-  private List getSystemResources(String name)
+  private List<URL> getSystemResources(String name)
   {
-    List acc = new ArrayList();
+    List<URL> acc = new ArrayList<URL>();
     try
       {
-        for (Enumeration i = ClassLoader.getSystemResources(name);
+        for (Enumeration<URL> i = ClassLoader.getSystemResources(name);
              i.hasMoreElements(); )
           {
             acc.add(i.nextElement());

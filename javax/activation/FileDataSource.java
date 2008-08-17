@@ -54,7 +54,7 @@ public class FileDataSource
   implements DataSource
 {
 
-  private File file;
+  private final File file;
   private FileTypeMap typeMap;
   
   /**

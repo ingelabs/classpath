@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package javax.activation;
 
+import gnu.java.lang.CPStringBuilder;
+
 import java.awt.datatransfer.DataFlavor;
 import java.io.InputStream;
 
@@ -49,9 +51,9 @@ import java.io.InputStream;
 public class ActivationDataFlavor extends DataFlavor
 {
 
-    private String mimeType;
+    private final String mimeType;
+    private final Class<?> representationClass;
     private String humanPresentableName;
-    private Class representationClass;
 
     /**
      * Constructor.
@@ -60,6 +62,8 @@ public class ActivationDataFlavor extends DataFlavor
      * @param humanPresentableName the human-presentable name of the data
      * flavor
      */
+  // Raw types enforced as part of spec.
+  @SuppressWarnings("unchecked")
     public ActivationDataFlavor(Class representationClass, String mimeType,
             String humanPresentableName)
     {
@@ -75,6 +79,8 @@ public class ActivationDataFlavor extends DataFlavor
      * @param humanPresentableName the human-presentable name of the data
      * flavor
      */
+  // Raw types enforced as part of spec.
+  @SuppressWarnings("unchecked")
     public ActivationDataFlavor(Class representationClass,
             String humanPresentableName)
     {
@@ -103,6 +109,8 @@ public class ActivationDataFlavor extends DataFlavor
         return mimeType;
     }
 
+  // Raw types enforced as part of spec.
+  @SuppressWarnings("unchecked")
     public Class getRepresentationClass()
     {
         return representationClass;
@@ -139,7 +147,7 @@ public class ActivationDataFlavor extends DataFlavor
     protected String normalizeMimeTypeParameter(String parameterName,
             String parameterValue)
     {
-        return new StringBuffer(parameterName)
+        return new CPStringBuilder(parameterName)
             .append('=')
             .append(parameterValue)
             .toString();

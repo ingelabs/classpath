@@ -60,7 +60,7 @@ public class DataHandler
   private static final DataFlavor[] NO_FLAVORS = new DataFlavor[0];
   private static DataContentHandlerFactory factory = null;
   
-  private DataSource dataSource;
+  private final DataSource dataSource;
   private DataSource objDataSource;
   private Object object;
   private String objectMimeType;
@@ -88,6 +88,7 @@ public class DataHandler
    */
   public DataHandler(Object obj, String mimeType)
   {
+    dataSource = null;
     object = obj;
     objectMimeType = mimeType;
     oldFactory = factory;

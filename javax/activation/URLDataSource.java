@@ -53,7 +53,7 @@ public class URLDataSource
     implements DataSource
 {
 
-  private URL url;
+  private final URL url;
   private URLConnection connection;
   
   /**

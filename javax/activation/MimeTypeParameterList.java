@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package javax.activation;
 
+import gnu.java.lang.CPStringBuilder;
+
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -53,18 +55,16 @@ import java.util.Map;
 public class MimeTypeParameterList
 {
 
-  private static final String TSPECIALS = "()<>@,;:/[]?=\\\"";
-  
-  private List parameterNames;
-  private Map parameterValues;
+  private final List<String> parameterNames;
+  private final Map<String,String> parameterValues;
   
   /**
    * Constructor for an empty parameter list.
    */
   public MimeTypeParameterList()
   {
-    parameterNames = new ArrayList();
-    parameterValues = new HashMap();
+    parameterNames = new ArrayList<String>();
+    parameterValues = new HashMap<String,String>();
   }
 
   /**
@@ -74,8 +74,7 @@ public class MimeTypeParameterList
   public MimeTypeParameterList(String parameterList)
     throws MimeTypeParseException
   {
-    parameterNames = new ArrayList();
-    parameterValues = new HashMap();
+    this();
     parse(parameterList);
   }
 
@@ -95,8 +94,8 @@ public class MimeTypeParameterList
     char[] chars = parameterList.toCharArray();
     int len = chars.length;
     boolean inQuotedString = false;
-    StringBuffer buffer = new StringBuffer();
-    List params = new ArrayList();
+    CPStringBuilder buffer = new CPStringBuilder();
+    List<String> params = new ArrayList<String>();
     for (int i = 0; i < len; i++)
       {
         char c = chars[i];
@@ -125,9 +124,9 @@ public class MimeTypeParameterList
       }
     
     // Tokenize each parameter into name + value
-    for (Iterator i = params.iterator(); i.hasNext(); )
+    for (Iterator<String> i = params.iterator(); i.hasNext();)
       {
-        param = (String)i.next();
+	param = i.next();
         int ei = param.indexOf('=');
         if (ei == -1)
           {
@@ -177,7 +176,7 @@ public class MimeTypeParameterList
   public synchronized String get(String name)
   {
     name = name.trim();
-    return (String) parameterValues.get(name.toLowerCase());
+    return parameterValues.get(name.toLowerCase());
   }
   
   /**
@@ -189,9 +188,8 @@ public class MimeTypeParameterList
   {
     name = name.trim();
     boolean exists = false;
-    for (Iterator i = parameterNames.iterator(); i.hasNext(); )
+    for (String pname : parameterNames)
       {
-        String pname = (String)i.next();
         if (name.equalsIgnoreCase(pname))
           {
             exists = true;
@@ -211,9 +209,9 @@ public class MimeTypeParameterList
   public synchronized void remove(String name)
   {
     name = name.trim();
-    for (Iterator i = parameterNames.iterator(); i.hasNext(); )
+    for (Iterator<String> i = parameterNames.iterator();i.hasNext();)
       {
-        String pname = (String)i.next();
+	String pname = i.next();
         if (name.equalsIgnoreCase(pname))
           {
             i.remove();
@@ -225,6 +223,8 @@ public class MimeTypeParameterList
   /**
    * Returns an enumeration of all the parameter names.
    */
+  // Raw type is forced by public spec.
+  @SuppressWarnings("unchecked")
   public synchronized Enumeration getNames()
   {
     return new IteratorEnumeration(parameterNames.iterator());
@@ -236,11 +236,10 @@ public class MimeTypeParameterList
    */
   public synchronized String toString()
   {
-    StringBuffer buffer = new StringBuffer();
-    for (Iterator i = parameterNames.iterator(); i.hasNext(); )
+    CPStringBuilder buffer = new CPStringBuilder();
+    for (String name : parameterNames)
       {
-        String name = (String)i.next();
-        String value = (String)parameterValues.get(name.toLowerCase());
+        String value = parameterValues.get(name.toLowerCase());
         
         buffer.append(';');
         buffer.append(' ');
@@ -266,7 +265,7 @@ public class MimeTypeParameterList
     
     if (needsQuoting)
       {
-        StringBuffer buffer = new StringBuffer();
+        CPStringBuilder buffer = new CPStringBuilder();
         buffer.append('"');
         for (int i = 0; i < len; i++)
           {
@@ -286,7 +285,7 @@ public class MimeTypeParameterList
   private static String unquote(String value)
   {
     int len = value.length();
-    StringBuffer buffer = new StringBuffer();
+    CPStringBuilder buffer = new CPStringBuilder();
     for (int i = 1; i < len - 1; i++)
       {
         char c = value.charAt(i);
@@ -311,12 +310,12 @@ public class MimeTypeParameterList
    * Enumeration proxy for an Iterator.
    */
   static class IteratorEnumeration
-    implements Enumeration
+    implements Enumeration<String>
   {
     
-    final Iterator iterator;
+    final Iterator<String> iterator;
     
-    IteratorEnumeration(Iterator iterator)
+    IteratorEnumeration(Iterator<String> iterator)
     {
       this.iterator = iterator;
     }
@@ -326,7 +325,7 @@ public class MimeTypeParameterList
       return iterator.hasNext();
     }
     
-    public Object nextElement()
+    public String nextElement()
     {
       return iterator.next();
     }

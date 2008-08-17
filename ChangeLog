@@ -1,5 +1,39 @@
 2008-08-17  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	* javax/activation/ActivationDataFlavor.java:
+	Suppress warnings from public API.
+	(mimeType): Made final.
+	(representationClass): Added generic type and
+	made final.
+	(normalizeMimeTypeParameter(String,String)):
+	Use CPStringBuilder.
+	* javax/activation/CommandInfo.java:
+	(verb): Made final.
+	(className): Made final.
+	* javax/activation/DataHandler.java:
+	(dataSource): Made final.
+	* javax/activation/FileDataSource.java:
+	(file): Made final.
+	* javax/activation/MailcapCommandMap.java:
+	Use generics on collections and CPStringBuilder
+	instead of StringBuffer.
+	* javax/activation/MimeType.java:
+	(toString()): Use CPStringBuilder.
+	(getBaseType()): Likewise.
+	* javax/activation/MimeTypeParameterList.java:
+	Use generics on collections and CPStringBuilder
+	instead of StringBuffer.
+	* javax/activation/MimeTypeParseException.java:
+	(MimeTypeParseException(String,String)): Use
+	CPStringBuilder.
+	* javax/activation/MimetypesFileTypeMap.java:
+	Use generics on collections and CPStringBuilder
+	instead of StringBuffer.	
+	* javax/activation/URLDataSource.java:
+	(url): Made final.
+
+2008-08-17  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* gnu/javax/activation/viewers/ImageViewer.java,
 	* gnu/javax/activation/viewers/TextEditor.java,
 	* gnu/javax/activation/viewers/TextViewer.java,

@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package javax.activation;
 
+import gnu.java.lang.CPStringBuilder;
+
 /**
  * Exception thrown to indicate a malformed MIME content type.
  *
@@ -71,7 +73,7 @@ public class MimeTypeParseException
    */
   MimeTypeParseException(String message, String token)
   {
-    this(new StringBuffer(message)
+    this(new CPStringBuilder(message)
          .append(':')
          .append(' ')
          .append(token)
