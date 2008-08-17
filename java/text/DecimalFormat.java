@@ -73,7 +73,7 @@ import java.util.Locale;
  * Generally, to get an instance of DecimalFormat you should call the factory
  * methods in the <code>NumberFormat</code> base class.
  * 
- * @author Mario Torre <neugens@limasoftware.net>
+ * @author Mario Torre (neugens@limasoftware.net)
  * @author Tom Tromey (tromey@cygnus.com)
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  */
@@ -801,7 +801,30 @@ public class DecimalFormat extends NumberFormat
    */
   public void setCurrency(Currency currency)
   {
-    symbols.setCurrency(currency);
+    Currency current = symbols.getCurrency();
+    if (current != currency)
+      {
+	String oldSymbol = symbols.getCurrencySymbol();
+	int len = oldSymbol.length();
+	symbols.setCurrency(currency);
+	String newSymbol = symbols.getCurrencySymbol();
+	int posPre = positivePrefix.indexOf(oldSymbol);
+	if (posPre != -1)
+	  positivePrefix = positivePrefix.substring(0, posPre) +
+	    newSymbol + positivePrefix.substring(posPre+len);
+	int negPre = negativePrefix.indexOf(oldSymbol);
+	if (negPre != -1)
+	  negativePrefix = negativePrefix.substring(0, negPre) +
+	    newSymbol + negativePrefix.substring(negPre+len);
+	int posSuf = positiveSuffix.indexOf(oldSymbol);
+	if (posSuf != -1)
+	  positiveSuffix = positiveSuffix.substring(0, posSuf) +
+	    newSymbol + positiveSuffix.substring(posSuf+len);
+	int negSuf = negativeSuffix.indexOf(oldSymbol);
+	if (negSuf != -1)
+	  negativeSuffix = negativeSuffix.substring(0, negSuf) +
+	    newSymbol + negativeSuffix.substring(negSuf+len);
+      }
   }
   
   /**

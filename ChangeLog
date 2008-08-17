@@ -1,5 +1,19 @@
 2008-08-17  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	PR classpath/31895:
+	* java/text/DecimalFormat.java:
+	(setCurrency(Currency)): Update prefixes and
+	suffixes when currency changes.
+	* java/text/DecimalFormatSymbols.java:
+	(DecimalFormatSymbols(Locale)): Set locale earlier
+	so it can be used by setCurrency(Currency).
+	(setCurrency(Currency)): Set the symbol correctly using
+	the locale of the instance.
+	* java/util/Currency.java:
+	Throw error instead of just printing a message.
+
+2008-08-17  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* javax/activation/ActivationDataFlavor.java:
 	Suppress warnings from public API.
 	(mimeType): Made final.
