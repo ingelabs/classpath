@@ -182,8 +182,16 @@ AC_DEFUN([CLASSPATH_WITH_GJDOC],
 		               AC_MSG_ERROR("Cannot use ${withval} as gjdoc executable since it doesn't exist"))
 	       fi],
               [WITH_GJDOC=no])
-
   AM_CONDITIONAL(CREATE_API_DOCS, test "x${WITH_GJDOC}" = xyes)
+  if test "x${WITH_GJDOC}" = xyes; then
+    AC_MSG_CHECKING([version of GJDoc])
+    gjdoc_version=$(${GJDOC} --version|cut -d ' ' -f2)
+    AC_MSG_RESULT(${gjdoc_version})
+    case ${gjdoc_version} in
+      0.7.9) ;;
+      *) AC_MSG_ERROR([Building documentation requires GJDoc 0.7.9, ${gjdoc_version} found.]) ;;
+    esac
+  fi
 ])
 
 dnl -----------------------------------------------------------
