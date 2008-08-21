@@ -262,6 +262,7 @@ gjdoc_resources = $(gnu_classpath_tools_gjdoc_jar_CSS) $(gnu_classpath_tools_gjd
 if !CREATE_GJDOC
 GJDOC_EX = -path '*gnu/classpath/tools/gjdoc' -prune -o \
 	-path '*gnu/classpath/tools/doclets' -prune -o \
+	-path '*gnu/classpath/tools/taglets' -prune -o \
 	-path '*com/sun/javadoc' -prune -o \
 	-path '*com/sun/tools/doclets' -prune -o \
 	-path '*com/sun/tools/javadoc' -prune -o
