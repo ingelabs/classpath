@@ -337,6 +337,7 @@ public final class Matcher implements MatchResult
     match = null;
     regionStart = 0;
     regionEnd = input.length();
+    appendPosition = 0;
     return this;
   }
   

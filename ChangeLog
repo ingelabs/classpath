@@ -1,3 +1,10 @@
+2008-08-23  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/util/regex/Matcher.java:
+	(reset()): Reset append position so
+	we don't try and append to the end of
+	the old input.
+	
 2008-08-22  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/32028:
