@@ -235,12 +235,11 @@ public class MBeanServerDelegate
   public void removeNotificationListener(NotificationListener listener)
     throws ListenerNotFoundException
   {
-    Iterator it = listeners.iterator();
+    Iterator<ListenerData> it = listeners.iterator();
     boolean foundOne = false;
     while (it.hasNext())
       {
-	ListenerData data = (ListenerData) it.next();
-	if (data.getListener() == listener)
+	if (it.next().getListener() == listener)
 	  {
 	    it.remove();
 	    foundOne = true;
