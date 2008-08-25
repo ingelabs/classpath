@@ -702,13 +702,14 @@ public class RmiUtilities
     if (in instanceof HeadlessInput)
       ((HeadlessInput) in).subsequentCalls = true;
 
-    gnuRuntime g;
+    gnuRuntime g = null;
     Serializable object = null;
 
     try
       {
         g = (gnuRuntime) sender;
-        object = g.target;
+        if (sender != null)
+          object = g.target;
       }
     catch (ClassCastException e)
       {

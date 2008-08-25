@@ -1,3 +1,8 @@
+2008-08-25  Mario Torre  <neugens@aicas.com>
+
+	* gnu/javax/rmi/CORBA/RmiUtilities.java (readValue): check if sender is
+	null to avoid NPE.
+	
 2008-08-22  Mario Torre  <neugens@aicas.com>
  
 	* gnu/CORBA/OrbFunctional.java (set_parameters): Fix
