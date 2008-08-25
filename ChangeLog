@@ -1,3 +1,12 @@
+2008-08-25  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/management/MBeanPermission.java,
+	* javax/management/MBeanServerDelegate.java,
+	* javax/management/MBeanServerFactory.java,
+	* javax/management/MBeanServerInvocationHandler.java,
+	* javax/management/MBeanServerPermission.java:
+	Fix warnings due to use of non-generic collections.
+
 2008-08-25  Mario Torre  <neugens@aicas.com>
 
 	* gnu/javax/rmi/CORBA/RmiUtilities.java (readValue): check if sender is

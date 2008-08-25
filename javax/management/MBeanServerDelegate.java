@@ -69,7 +69,8 @@ public class MBeanServerDelegate
   /**
    * The listeners registered with the delegate.
    */
-  private final List listeners = new ArrayList();
+  private final List<ListenerData> listeners =
+    new ArrayList<ListenerData>();
 
   /**
    * The sequence identifier used by the delegate.
@@ -293,10 +294,8 @@ public class MBeanServerDelegate
   {
     if (notification.getSequenceNumber() <= 0)
       notification.setSequenceNumber(++seqNo);
-    Iterator it = listeners.iterator();
-    while (it.hasNext())
+    for (ListenerData ldata : listeners)
       {
-	ListenerData ldata = (ListenerData) it.next();
 	NotificationFilter filter = ldata.getFilter();
 	if (filter == null || filter.isNotificationEnabled(notification))
 	  ldata.getListener().handleNotification(notification, ldata.getPassback());
