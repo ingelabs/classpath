@@ -115,7 +115,8 @@ public class Server
    * {@link javax.management.ObjectName}s to
    * {@link java.lang.Object}s.
    */
-  private final Map beans = new HashMap();
+  private final Map<ObjectName,ServerInfo> beans =
+    new HashMap<ObjectName,ServerInfo>();
 
   /**
    * The default domain.
@@ -136,7 +137,7 @@ public class Server
    * The map of listener delegates to the true
    * listener.
    */
-  private Map listeners;
+  private Map<NotificationListener,NotificationListener> listeners;
 
   /**
    * An MBean that emits notifications when an MBean is registered and
@@ -145,7 +146,7 @@ public class Server
    */
   private final MBeanServerDelegate delegate;
 
-  static private final AtomicLong sequenceNumber = new AtomicLong(1);
+  private static final AtomicLong sequenceNumber = new AtomicLong(1);
 
   /**
    * Initialise the delegate name.
@@ -320,7 +321,7 @@ public class Server
       {
 	NotificationBroadcaster bbean = (NotificationBroadcaster) bean;
 	if (listeners == null)
-	  listeners = new HashMap();
+	  listeners = new HashMap<NotificationListener,NotificationListener>();
 	NotificationListener indirection = new ServerNotificationListener(bean, name,
 									  listener);
 	bbean.addNotificationListener(indirection, filter, passback);
@@ -671,7 +672,7 @@ public class Server
   {
     try
       {
-	Class c = getClassLoaderRepository().loadClass(name);
+	Class<?> c = getClassLoaderRepository().loadClass(name);
 	return new ServerInputStream(new ByteArrayInputStream(data),
 					   c.getClassLoader());
       }
@@ -717,7 +718,7 @@ public class Server
   {
     try
       {
-	Class c = getClassLoader(loader).loadClass(name);
+	Class<?> c = getClassLoader(loader).loadClass(name);
 	return new ServerInputStream(new ByteArrayInputStream(data),
 					   c.getClassLoader());
       }
@@ -975,11 +976,11 @@ public class Server
   public String[] getDomains()
   {
     checkSecurity(null, null, "getDomains");
-    Set domains = new HashSet();
-    Iterator iterator = beans.keySet().iterator();
+    Set<String> domains = new HashSet<String>();
+    Iterator<ObjectName> iterator = beans.keySet().iterator();
     while (iterator.hasNext())
       {
-	String d  = ((ObjectName) iterator.next()).getDomain();
+	String d = iterator.next().getDomain();
 	try
 	  {
 	    checkSecurity(new ObjectName(d + ":x=x"), null, "getDomains");
@@ -990,7 +991,7 @@ public class Server
 	    /* Ignored */
 	  }
       }
-    return (String[]) domains.toArray(new String[domains.size()]);
+    return domains.toArray(new String[domains.size()]);
   }
 
   /**
@@ -1158,7 +1159,7 @@ public class Server
 	  new IllegalArgumentException("The name was null.");
 	throw new RuntimeOperationsException(e);
       }
-    Class[] sigTypes = new Class[sig.length];
+    Class<?>[] sigTypes = new Class[sig.length];
     for (int a = 0; a < sigTypes.length; ++a)
       {
 	try 
@@ -1174,7 +1175,7 @@ public class Server
       }
     try
       {
-	Constructor cons =
+	Constructor<?> cons =
 	  repository.loadClass(name).getConstructor(sigTypes);
 	return cons.newInstance(params);
       }
@@ -1288,7 +1289,7 @@ public class Server
 	throw new RuntimeOperationsException(e);
       }
     ClassLoader loader = getClassLoader(loaderName);
-    Class[] sigTypes = new Class[sig.length];
+    Class<?>[] sigTypes = new Class[sig.length];
     for (int a = 0; a < sig.length; ++a)
       {
 	try 
@@ -1304,7 +1305,7 @@ public class Server
       }
     try
       {
-	Constructor cons =
+	Constructor<?> cons =
 	  Class.forName(name, true, loader).getConstructor(sigTypes);
 	return cons.newInstance(params);
       }
@@ -1433,10 +1434,10 @@ public class Server
 	}
     if (info.getClassName().equals(className))
       return true;
-    Class bclass = bean.getClass();
+    Class<?> bclass = bean.getClass();
     try
       {
-	Class oclass = Class.forName(className);
+	Class<?> oclass = Class.forName(className);
 	return (bclass.getClassLoader().equals(oclass.getClassLoader()) &&
 		oclass.isAssignableFrom(bclass));  
       }
@@ -1502,21 +1503,19 @@ public class Server
    *                           arise from the execution of the query, in which
    *                           case that particular bean will again be excluded.
    */
-  public Set queryMBeans(ObjectName name, QueryExp query)
+  public Set<ObjectInstance> queryMBeans(ObjectName name, QueryExp query)
   {
     checkSecurity(name, null, "queryMBeans");
-    Set results = new HashSet();
-    Iterator iterator = beans.entrySet().iterator();
-    while (iterator.hasNext())
+    Set<ObjectInstance> results = new HashSet<ObjectInstance>();
+    for (Map.Entry<ObjectName,ServerInfo> entry : beans.entrySet())
       {
-	Map.Entry entry = (Map.Entry) iterator.next();
-	ObjectName nextName = (ObjectName) entry.getKey();
+	ObjectName nextName = entry.getKey();
 	checkSecurity(name, nextName.toString(), "queryMBeans");
 	try
 	  {
 	    if ((name == null || name.apply(nextName)) &&
 		(query == null || query.apply(nextName)))
-	      results.add(((ServerInfo) entry.getValue()).getInstance());
+	      results.add(entry.getValue().getInstance());
 	  }
 	catch (BadStringOperationException e)
 	  {
@@ -1575,15 +1574,12 @@ public class Server
    *                           Note that these permissions are implied if the
    *                           <code>queryMBeans</code> permissions are available.
    */
-  public Set queryNames(ObjectName name, QueryExp query)
+  public Set<ObjectName> queryNames(ObjectName name, QueryExp query)
   {
     checkSecurity(name, null, "queryNames");
-    Set results = new HashSet();
-    Iterator iterator = beans.entrySet().iterator();
-    while (iterator.hasNext())
+    Set<ObjectName> results = new HashSet<ObjectName>();
+    for (ObjectName nextName : beans.keySet())
       {
-	Map.Entry entry = (Map.Entry) iterator.next();
-	ObjectName nextName = (ObjectName) entry.getKey();
 	checkSecurity(name, nextName.toString(), "queryNames");
 	try
 	  {
@@ -1656,7 +1652,7 @@ public class Server
 	   NotCompliantMBeanException
   {  
     SecurityManager sm = System.getSecurityManager();
-    Class cl = obj.getClass();
+    Class<?> cl = obj.getClass();
     String className = cl.getName();
     if (sm != null)
       {
@@ -2011,7 +2007,7 @@ public class Server
     Object abean = getBean(name);
     checkSecurity(name, null, "setAttribute");
     AttributeList list = new AttributeList(attributes.size());
-    Iterator it = attributes.iterator();
+    Iterator<Object> it = attributes.iterator();
     while (it.hasNext())
       {
 	try
@@ -2136,7 +2132,7 @@ public class Server
       this.cl = cl;
     }
 
-    protected Class resolveClass(ObjectStreamClass osc)
+    protected Class<?> resolveClass(ObjectStreamClass osc)
       throws ClassNotFoundException, IOException
     {
       try
