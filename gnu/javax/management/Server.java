@@ -48,12 +48,13 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.management.Attribute;
 import javax.management.AttributeList;
@@ -113,20 +114,20 @@ public class Server
   /**
    * The registered beans, represented as a map of
    * {@link javax.management.ObjectName}s to
-   * {@link java.lang.Object}s.
+   * {@link gnu.javax.management.Server.ServerInfo}s.
    */
-  private final Map<ObjectName,ServerInfo> beans =
-    new HashMap<ObjectName,ServerInfo>();
+  private final ConcurrentHashMap<ObjectName,ServerInfo> beans =
+    new ConcurrentHashMap<ObjectName,ServerInfo>();
 
   /**
    * The default domain.
    */
-  private String defaultDomain;
+  private final String defaultDomain;
 
   /**
    * The outer server.
    */
-  private MBeanServer outer;
+  private final MBeanServer outer;
 
   /**
    * The class loader repository.
@@ -135,9 +136,15 @@ public class Server
 
   /**
    * The map of listener delegates to the true
-   * listener.
+   * listener.  We wrap this in an inner class
+   * to delay initialisation until a listener
+   * is actually added.
    */
-  private Map<NotificationListener,NotificationListener> listeners;
+  private static class LazyListenersHolder
+  {
+    private static final Map<NotificationListener,NotificationListener> listeners =
+      new ConcurrentHashMap<NotificationListener,NotificationListener>();
+  }
 
   /**
    * An MBean that emits notifications when an MBean is registered and
@@ -146,6 +153,9 @@ public class Server
    */
   private final MBeanServerDelegate delegate;
 
+  /**
+   * Provides sequencing for notifications about registrations.
+   */
   private static final AtomicLong sequenceNumber = new AtomicLong(1);
 
   /**
@@ -275,7 +285,7 @@ public class Server
   private Object getBean(ObjectName name)
     throws InstanceNotFoundException
   {
-    ServerInfo bean = (ServerInfo) beans.get(name);
+    ServerInfo bean = beans.get(name);
     if (bean == null)
       throw new InstanceNotFoundException("The bean, " + name +
 					  ", was not found.");
@@ -320,12 +330,10 @@ public class Server
     if (bean instanceof NotificationBroadcaster)
       {
 	NotificationBroadcaster bbean = (NotificationBroadcaster) bean;
-	if (listeners == null)
-	  listeners = new HashMap<NotificationListener,NotificationListener>();
 	NotificationListener indirection = new ServerNotificationListener(bean, name,
 									  listener);
 	bbean.addNotificationListener(indirection, filter, passback);
-	listeners.put(listener, indirection);
+	LazyListenersHolder.listeners.put(listener, indirection);
       }
   }
 
@@ -952,7 +960,6 @@ public class Server
     return defaultDomain;
   }
 
-
   /**
    * Returns an array containing all the domains used by beans registered
    * with this server.  The ordering of the array is undefined.
@@ -1078,7 +1085,7 @@ public class Server
   public ObjectInstance getObjectInstance(ObjectName name)
     throws InstanceNotFoundException
   {
-    ServerInfo bean = (ServerInfo) beans.get(name);
+    ServerInfo bean = beans.get(name);
     if (bean == null)
       throw new InstanceNotFoundException("The bean, " + name +
 					  ", was not found.");
@@ -1708,14 +1715,13 @@ public class Server
 	    throw new MBeanRegistrationException(e, "Pre-registration failed.");
 	  }
       }
-    if (beans.containsKey(name))
+    ObjectInstance obji = new ObjectInstance(name, className);
+    if (beans.putIfAbsent(name, new ServerInfo(obji, obj)) != null)
       {
 	if (register != null)
 	  register.postRegister(Boolean.FALSE);
 	throw new InstanceAlreadyExistsException(name + "is already registered.");
       }
-    ObjectInstance obji = new ObjectInstance(name, className);
-    beans.put(name, new ServerInfo(obji, obj));
     if (register != null)
       register.postRegister(Boolean.TRUE);
     notify(name, MBeanServerNotification.REGISTRATION_NOTIFICATION);
@@ -1754,15 +1760,8 @@ public class Server
     if (bean instanceof NotificationBroadcaster)
       {
 	NotificationBroadcaster bbean = (NotificationBroadcaster) bean;
-	NotificationListener indirection = (NotificationListener)
-	  listeners.get(listener);
-	if (indirection == null)
-	  bbean.removeNotificationListener(listener);
-	else
-	  {
-	    bbean.removeNotificationListener(indirection);
-	    listeners.remove(listener);
-	  }
+	bbean.removeNotificationListener(listener);
+	LazyListenersHolder.listeners.remove(listener);
       }
   }
 
@@ -1805,15 +1804,8 @@ public class Server
     if (bean instanceof NotificationEmitter)
       {
 	NotificationEmitter bbean = (NotificationEmitter) bean;
-	NotificationListener indirection = (NotificationListener)
-	  listeners.get(listener);
-	if (indirection == null)
-	  bbean.removeNotificationListener(listener, filter, passback);
-	else
-	  {
-	    bbean.removeNotificationListener(indirection, filter, passback);
-	    listeners.remove(listener);
-	  }
+	bbean.removeNotificationListener(listener, filter, passback);
+	LazyListenersHolder.listeners.remove(listener);
       }
   }
 
@@ -2109,6 +2101,15 @@ public class Server
       register.postDeregister();
   }
 
+  /**
+   * Notifies the delegate of beans being registered
+   * and unregistered.
+   *
+   * @param name the bean being registered.
+   * @param type the type of notification;
+   * {@code REGISTRATION_NOTIFICATION} or
+   * {@code UNREGISTRATION_NOTIFICATION}.
+   */
    private void notify(ObjectName name, String type)
    {
       delegate.sendNotification

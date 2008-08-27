@@ -1,5 +1,28 @@
 2008-08-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	PR classpath/35487:
+	* gnu/javax/management/Server.java:
+	(beans): Change to ConcurrentHashMap.
+	(defaultDomain): Make final.
+	(outer): Likewise.
+	(LazyListenersHolder): Added to wrap
+	listeners, also now a ConcurrentHashMap,
+	providing lazy initialisation safely.
+	(sequenceNumber): Documented.
+	(getBean(ObjectName)): Remove redundant cast.
+	(addNotificationListener(ObjectName,NotificationListener,
+	NotificationFilter,Object)): Remove map initialisation
+	and use holder.
+	(getObjectInstance(ObjectName)): Remove redundant cast.
+	(registerMBean(Object,ObjectName)): Add bean atomically.
+	(removeNotificationListener(ObjectName,NotificationListener)):
+	Simplified.
+	(removeNotificationListener(ObjectName,NotificationListener,
+	NotificationFilter,Object)): Likewise.
+	(notify(ObjectName,String)): Documented.
+	
+2008-08-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* gnu/javax/management/Server.java:
 	Genericised.
 
