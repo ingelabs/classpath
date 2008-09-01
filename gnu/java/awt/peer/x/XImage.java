@@ -118,33 +118,28 @@ public class XImage
   {
     private Vector<ImageConsumer> consumers = new Vector<ImageConsumer>();
     
-    @Override
     public void addConsumer(ImageConsumer ic)
     {
       if (ic != null && !isConsumer(ic))
         this.consumers.add(ic);
     }
 
-    @Override
     public boolean isConsumer(ImageConsumer ic)
     {
       return this.consumers.contains(ic);
     }
 
-    @Override
     public void removeConsumer(ImageConsumer ic)
     {
       if (ic != null)
         this.consumers.remove(ic);
     }
 
-    @Override
     public void requestTopDownLeftRightResend(ImageConsumer ic)
     {
       /* just ignore the call */
     }
 
-    @Override
     public void startProduction(ImageConsumer ic)
     {
       this.addConsumer(ic);

@@ -1,5 +1,10 @@
 2008-09-01  Mario Torre  <neugens@aicas.com>
 
+    * gnu/java/awt/peer/x/XImage.java (XImageProducer): remove @Override
+    annotation to allow compilation on javac < 1.5
+
+2008-09-01  Mario Torre  <neugens@aicas.com>
+
 	* gnu/java/awt/peer/x/XGraphicsDevice.java (getDisplay): fix to support
 	new Escher API.
 	* gnu/java/awt/peer/x/XImage.java (getSource): method implemented.
