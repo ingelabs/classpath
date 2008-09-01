@@ -55,10 +55,12 @@ class RETokenStart extends REToken {
         this.check_java_line_terminators = b;
     }
 
+  @Override
     int getMaximumLength() {
-        return 0;
+      return 0;
     }
-    
+
+  @Override
     REMatch matchThis(CharIndexed input, REMatch mymatch) {
 	// charAt(index-n) may be unknown on a Reader/InputStream. FIXME
 	// Match after a newline if in multiline mode
@@ -110,13 +112,16 @@ class RETokenStart extends REToken {
 		mymatch : null;
     }
 
-    boolean returnsFixedLengthmatches() { return true; }
+  @Override
+    boolean returnsFixedLengthMatches() { return true; }
 
+  @Override
     int findFixedLengthMatches(CharIndexed input, REMatch mymatch, int max) {
         if (matchThis(input, mymatch) != null) return max;
 	else return 0;
     }
     
+  @Override
     void dump(CPStringBuilder os) {
 	os.append('^');
     }

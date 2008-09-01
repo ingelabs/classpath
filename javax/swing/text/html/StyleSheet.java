@@ -1071,7 +1071,7 @@ public class StyleSheet extends StyleContext
    */
   public void setBaseFontSize(String size)
   {
-    size.trim();
+    size = size.trim();
     int temp = 0;
     try
       {

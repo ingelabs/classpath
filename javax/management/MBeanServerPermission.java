@@ -306,13 +306,14 @@ public class MBeanServerPermission
 		      String cps = cp[b].trim();
 		      if (cps.equals(nps))
 			found = true;
-		      if (np.equals("newMBeanServer") 
+		      if (nps.equals("newMBeanServer") 
 			  && createms != -1)
 			found = true;
-		      if (np.equals("createMBeanServer")
+		      if (nps.equals("createMBeanServer")
 			  && newms != -1)
-			finalString.replace("newMBeanServer",
-					    "createMBeanServer");
+			finalString =
+			  finalString.replace("newMBeanServer",
+					      "createMBeanServer");
 		    }
 		  if (!found)
 		    finalString += "," + nps;
