@@ -39,34 +39,41 @@ package gnu.java.util.regex;
 
 import gnu.java.lang.CPStringBuilder;
 
-final class RETokenEndSub extends REToken {
-    RETokenEndSub(int subIndex) {
-	super(subIndex);
-    }
+final class RETokenEndSub extends REToken
+{
+  RETokenEndSub (int subIndex)
+  {
+    super (subIndex);
+  }
 
-    int getMaximumLength() {
-      return 0;
-    }
-    
-    REMatch matchThis(CharIndexed input, REMatch mymatch) {
-	mymatch.start[subIndex] = mymatch.start1[subIndex];
-	mymatch.end[subIndex] = mymatch.index;
-	return mymatch;
-    }
+  int getMaximumLength ()
+  {
+    return 0;
+  }
 
-    REMatch findMatch(CharIndexed input, REMatch mymatch) {
-	mymatch.start[subIndex] = mymatch.start1[subIndex];
-	mymatch.end[subIndex] = mymatch.index;
-	return super.findMatch(input, mymatch);
-    }
+  REMatch matchThis (CharIndexed input, REMatch mymatch)
+  {
+    mymatch.start[subIndex] = mymatch.start1[subIndex];
+    mymatch.end[subIndex] = mymatch.index;
+    return mymatch;
+  }
 
-    void setHitEnd(CharIndexed input, REMatch mymatch) {
-	// Do nothing
-    }
+  REMatch findMatch (CharIndexed input, REMatch mymatch)
+  {
+    mymatch.start[subIndex] = mymatch.start1[subIndex];
+    mymatch.end[subIndex] = mymatch.index;
+    return super.findMatch (input, mymatch);
+  }
 
-    void dump(CPStringBuilder os) {
-	// handled by RE
-	// But add something for debugging.
-	os.append("(?#RETokenEndSub subIndex=" + subIndex + ")");
-    }
+  void setHitEnd (CharIndexed input, REMatch mymatch)
+  {
+    // Do nothing
+  }
+
+  void dump (CPStringBuilder os)
+  {
+    // handled by RE
+    // But add something for debugging.
+    os.append ("(?#RETokenEndSub subIndex=" + subIndex + ")");
+  }
 }

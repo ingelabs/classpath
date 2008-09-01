@@ -8,6 +8,41 @@
 	 
 2008-09-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	* gnu/java/util/regex/BacktrackStack.java,
+	* gnu/java/util/regex/CharIndexed.java,
+	* gnu/java/util/regex/CharIndexedCharArray.java,
+	* gnu/java/util/regex/CharIndexedCharSequence.java,
+	* gnu/java/util/regex/CharIndexedInputStream.java,
+	* gnu/java/util/regex/CharIndexedString.java,
+	* gnu/java/util/regex/CharIndexedStringBuffer.java,
+	* gnu/java/util/regex/RE.java,
+	* gnu/java/util/regex/REException.java,
+	* gnu/java/util/regex/REFilterInputStream.java,
+	* gnu/java/util/regex/REMatch.java,
+	* gnu/java/util/regex/REMatchEnumeration.java,
+	* gnu/java/util/regex/RESyntax.java,
+	* gnu/java/util/regex/REToken.java,
+	* gnu/java/util/regex/RETokenAny.java,
+	* gnu/java/util/regex/RETokenBackRef.java,
+	* gnu/java/util/regex/RETokenChar.java,
+	* gnu/java/util/regex/RETokenEnd.java,
+	* gnu/java/util/regex/RETokenEndOfPreviousMatch.java,
+	* gnu/java/util/regex/RETokenEndSub.java,
+	* gnu/java/util/regex/RETokenIndependent.java,
+	* gnu/java/util/regex/RETokenLookAhead.java,
+	* gnu/java/util/regex/RETokenLookBehind.java,
+	* gnu/java/util/regex/RETokenNamedProperty.java,
+	* gnu/java/util/regex/RETokenOneOf.java,
+	* gnu/java/util/regex/RETokenPOSIX.java,
+	* gnu/java/util/regex/RETokenRange.java,
+	* gnu/java/util/regex/RETokenRepeated.java,
+	* gnu/java/util/regex/RETokenStart.java,
+	* gnu/java/util/regex/RETokenWordBoundary.java,
+	* gnu/java/util/regex/UncheckedRE.java:
+	Fix indentation.
+
+2008-09-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* gnu/java/util/regex/RETokenStart.java:
 	(getMaximumLength()): Add Override annotation.
 	(matchThis(CharIndexed, REMatch)): Likewise.

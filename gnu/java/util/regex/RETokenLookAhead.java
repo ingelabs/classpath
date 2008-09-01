@@ -48,35 +48,41 @@ final class RETokenLookAhead extends REToken
   REToken re;
   boolean negative;
 
-  RETokenLookAhead(REToken re, boolean negative) throws REException {
-    super(0);
+    RETokenLookAhead (REToken re, boolean negative) throws REException
+  {
+    super (0);
     this.re = re;
     this.negative = negative;
   }
 
-  int getMaximumLength() {
+  int getMaximumLength ()
+  {
     return 0;
   }
 
-  REMatch matchThis(CharIndexed input, REMatch mymatch)
+  REMatch matchThis (CharIndexed input, REMatch mymatch)
   {
-    REMatch trymatch = (REMatch)mymatch.clone();
-    if (re.match(input, trymatch)) {
-      if (negative) return null;
-      trymatch.index = mymatch.index;
-      return trymatch;
-    }
-    else {
-      if (negative) return mymatch;
-      return null;
-    }
+    REMatch trymatch = (REMatch) mymatch.clone ();
+    if (re.match (input, trymatch))
+      {
+	if (negative)
+	  return null;
+	trymatch.index = mymatch.index;
+	return trymatch;
+      }
+    else
+      {
+	if (negative)
+	  return mymatch;
+	return null;
+      }
   }
 
-    void dump(CPStringBuilder os) {
-	os.append("(?");
-	os.append(negative ? '!' : '=');
-	re.dumpAll(os);
-	os.append(')');
-    }
+  void dump (CPStringBuilder os)
+  {
+    os.append ("(?");
+    os.append (negative ? '!' : '=');
+    re.dumpAll (os);
+    os.append (')');
+  }
 }
-

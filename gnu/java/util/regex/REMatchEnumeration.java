@@ -69,12 +69,13 @@ import java.util.NoSuchElementException;
  * 
  * @author <A HREF="mailto:wes@cacas.org">Wes Biggs</A> 
  */
-public class REMatchEnumeration 
-  implements Enumeration<REMatch>, Serializable {
+public class REMatchEnumeration
+  implements Enumeration < REMatch >, Serializable
+{
   private static final int YES = 1;
   private static final int MAYBE = 0;
   private static final int NO = -1;
-  
+
   private int more;
   private REMatch match;
   private final RE expr;
@@ -83,7 +84,8 @@ public class REMatchEnumeration
   private int index;
 
   // Package scope constructor is used by RE.getMatchEnumeration()
-  REMatchEnumeration(RE expr, CharIndexed input, int index, int eflags) {
+    REMatchEnumeration (RE expr, CharIndexed input, int index, int eflags)
+  {
     more = MAYBE;
     this.expr = expr;
     this.input = input;
@@ -92,42 +94,48 @@ public class REMatchEnumeration
   }
 
   /** Returns true if there are more matches in the input text. */
-  public boolean hasMoreElements() {
-    return hasMoreMatches(null);
+  public boolean hasMoreElements ()
+  {
+    return hasMoreMatches (null);
   }
 
   /** Returns true if there are more matches in the input text. */
-  public boolean hasMoreMatches() {
-    return hasMoreMatches(null);
+  public boolean hasMoreMatches ()
+  {
+    return hasMoreMatches (null);
   }
 
   /** Returns true if there are more matches in the input text.
    * Saves the text leading up to the match (or to the end of the input)
    * in the specified buffer.
    */
-  public boolean hasMoreMatches(CPStringBuilder buffer) {
-    if (more == MAYBE) {
-	match = expr.getMatchImpl(input,index,eflags,buffer);
-	if (match != null) {
-	    input.move((match.end[0] > 0) ? match.end[0] : 1);
-	    
-	    index = (match.end[0] > 0) ? match.end[0] + match.offset : index + 1;
+  public boolean hasMoreMatches (CPStringBuilder buffer)
+  {
+    if (more == MAYBE)
+      {
+	match = expr.getMatchImpl (input, index, eflags, buffer);
+	if (match != null)
+	  {
+	    input.move ((match.end[0] > 0) ? match.end[0] : 1);
+
+	    index =
+	      (match.end[0] > 0) ? match.end[0] + match.offset : index + 1;
 	    more = YES;
-	} else more = NO;
-    }
+	  }
+	else
+	  more = NO;
+      }
     return (more == YES);
   }
 
   /** Returns the next match in the input text. */
-  public REMatch nextElement() 
-    throws NoSuchElementException 
+  public REMatch nextElement () throws NoSuchElementException
   {
-    if (hasMoreElements()) 
+    if (hasMoreElements ())
       {
-	more = (input.isValid()) ? MAYBE : NO;
+	more = (input.isValid ())? MAYBE : NO;
 	return match;
       }
-    throw new NoSuchElementException();
+    throw new NoSuchElementException ();
   }
 }
-

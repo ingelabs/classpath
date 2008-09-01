@@ -39,36 +39,50 @@ package gnu.java.util.regex;
 
 import gnu.java.lang.CPStringBuilder;
 
-class RETokenEndOfPreviousMatch extends RETokenStart {
+class RETokenEndOfPreviousMatch extends RETokenStart
+{
 
-    RETokenEndOfPreviousMatch(int subIndex) {
-	super(subIndex, null);
-    }
+  RETokenEndOfPreviousMatch (int subIndex)
+  {
+    super (subIndex, null);
+  }
 
-    int getMaximumLength() {
-        return 0;
-    }
-    
-    REMatch matchThis(CharIndexed input, REMatch mymatch) {
-	REMatch lastMatch = input.getLastMatch();
-	if (lastMatch == null) return super.matchThis(input, mymatch);
-	if (input.getAnchor()+mymatch.index ==
-		lastMatch.anchor+lastMatch.index) {
-	    return mymatch;
-	}
-	else {
-	    return null;
-	}
-    }
+  int getMaximumLength ()
+  {
+    return 0;
+  }
 
-    boolean returnsFixedLengthmatches() { return true; }
+  REMatch matchThis (CharIndexed input, REMatch mymatch)
+  {
+    REMatch lastMatch = input.getLastMatch ();
+    if (lastMatch == null)
+      return super.matchThis (input, mymatch);
+    if (input.getAnchor () + mymatch.index ==
+	lastMatch.anchor + lastMatch.index)
+      {
+	return mymatch;
+      }
+    else
+      {
+	return null;
+      }
+  }
 
-    int findFixedLengthMatches(CharIndexed input, REMatch mymatch, int max) {
-        if (matchThis(input, mymatch) != null) return max;
-	else return 0;
-    }
-    
-    void dump(CPStringBuilder os) {
-	os.append("\\G");
-    }
+  boolean returnsFixedLengthmatches ()
+  {
+    return true;
+  }
+
+  int findFixedLengthMatches (CharIndexed input, REMatch mymatch, int max)
+  {
+    if (matchThis (input, mymatch) != null)
+      return max;
+    else
+      return 0;
+  }
+
+  void dump (CPStringBuilder os)
+  {
+    os.append ("\\G");
+  }
 }

@@ -39,90 +39,115 @@ package gnu.java.util.regex;
 
 import gnu.java.lang.CPStringBuilder;
 
-class RETokenStart extends REToken {
-    private String newline; // matches after a newline
-    private boolean check_java_line_terminators;
-    
-    RETokenStart(int subIndex, String newline) {
-	super(subIndex);
-	this.newline = newline;
-	this.check_java_line_terminators = false;
-    }
+class RETokenStart extends REToken
+{
+  private String newline;	// matches after a newline
+  private boolean check_java_line_terminators;
 
-    RETokenStart(int subIndex, String newline, boolean b) {
-    	super(subIndex);
-        this.newline = newline;
-        this.check_java_line_terminators = b;
-    }
+  RETokenStart (int subIndex, String newline)
+  {
+    super (subIndex);
+    this.newline = newline;
+    this.check_java_line_terminators = false;
+  }
+
+  RETokenStart (int subIndex, String newline, boolean b)
+  {
+    super (subIndex);
+    this.newline = newline;
+    this.check_java_line_terminators = b;
+  }
+
+  @Override 
+    int getMaximumLength ()
+  {
+    return 0;
+  }
+
+  @Override 
+    REMatch matchThis (CharIndexed input, REMatch mymatch)
+  {
+    // charAt(index-n) may be unknown on a Reader/InputStream. FIXME
+    // Match after a newline if in multiline mode
+
+    if (check_java_line_terminators)
+      {
+	char ch = input.charAt (mymatch.index - 1);
+	if (ch != CharIndexed.OUT_OF_BOUNDS)
+	  {
+	    if (ch == '\n')
+	      return mymatch;
+	    if (ch == '\r')
+	      {
+		char ch1 = input.charAt (mymatch.index);
+		if (ch1 != '\n')
+		  return mymatch;
+		return null;
+	      }
+	    if (ch == '\u0085')
+	      return mymatch;	// A next-line character
+	    if (ch == '\u2028')
+	      return mymatch;	// A line-separator character
+	    if (ch == '\u2029')
+	      return mymatch;	// A paragraph-separator character
+	  }
+      }
+
+    if (newline != null)
+      {
+	int len = newline.length ();
+	if (mymatch.offset >= len)
+	  {
+	    boolean found = true;
+	    char z;
+	    int i = 0;		// position in REToken.newline
+	    char ch = input.charAt (mymatch.index - len);
+	    do
+	      {
+		z = newline.charAt (i);
+		if (ch != z)
+		  {
+		    found = false;
+		    break;
+		  }
+		++i;
+		ch = input.charAt (mymatch.index - len + i);
+	      }
+	    while (i < len);
+
+	    if (found)
+	      return mymatch;
+	  }
+      }
+
+    // Don't match at all if REG_NOTBOL is set.
+    if ((mymatch.eflags & RE.REG_NOTBOL) > 0)
+      return null;
+
+    if ((mymatch.eflags & RE.REG_ANCHORINDEX) > 0)
+      return (mymatch.anchor == mymatch.offset) ? mymatch : null;
+    else
+      return ((mymatch.index == 0) && (mymatch.offset == 0)) ? mymatch : null;
+  }
+
+  @Override 
+    boolean returnsFixedLengthMatches ()
+  {
+    return true;
+  }
 
   @Override
-    int getMaximumLength() {
+    int findFixedLengthMatches (CharIndexed input, REMatch mymatch, int max)
+  {
+    if (matchThis (input, mymatch) != null)
+      return max;
+    else
       return 0;
-    }
+  }
 
   @Override
-    REMatch matchThis(CharIndexed input, REMatch mymatch) {
-	// charAt(index-n) may be unknown on a Reader/InputStream. FIXME
-	// Match after a newline if in multiline mode
-	
-	if (check_java_line_terminators) {
-	    char ch = input.charAt(mymatch.index - 1);
-	    if (ch != CharIndexed.OUT_OF_BOUNDS) {
-		if (ch == '\n') return mymatch;
-		if (ch == '\r') {
-		    char ch1 = input.charAt(mymatch.index);
-		    if (ch1 != '\n') return mymatch;
-		    return null;
-		}
-		if (ch == '\u0085') return mymatch; // A next-line character
-		if (ch == '\u2028') return mymatch; // A line-separator character
-		if (ch == '\u2029') return mymatch; // A paragraph-separator character
-	    }
-	}
-
-	if (newline != null) {
-	    int len = newline.length();
-	    if (mymatch.offset >= len) {
-		boolean found = true;
-		char z;
-		int i = 0; // position in REToken.newline
-		char ch = input.charAt(mymatch.index - len);
-		do {
-		    z = newline.charAt(i);
-		    if (ch != z) {
-			found = false;
-			break;
-		    }
-		    ++i;
-		    ch = input.charAt(mymatch.index - len + i);
-		} while (i < len);
-	    
-		if (found) return mymatch;
-	    }
-	}
-	
-	// Don't match at all if REG_NOTBOL is set.
-	if ((mymatch.eflags & RE.REG_NOTBOL) > 0) return null;
-	
-	if ((mymatch.eflags & RE.REG_ANCHORINDEX) > 0)
-	    return (mymatch.anchor == mymatch.offset) ? 
-		mymatch : null;
-	else
-	    return ((mymatch.index == 0) && (mymatch.offset == 0)) ?
-		mymatch : null;
-    }
-
-  @Override
-    boolean returnsFixedLengthMatches() { return true; }
-
-  @Override
-    int findFixedLengthMatches(CharIndexed input, REMatch mymatch, int max) {
-        if (matchThis(input, mymatch) != null) return max;
-	else return 0;
-    }
-    
-  @Override
-    void dump(CPStringBuilder os) {
-	os.append('^');
-    }
+    void dump (CPStringBuilder os)
+  {
+    os.append ('^');
+  }
 }
