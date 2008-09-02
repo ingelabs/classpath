@@ -1,7 +1,14 @@
+2008-09-02  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* tools/gnu/classpath/tools/javah/ClassWrapper.java:
+	(makeVtable()): Populate methodNameMap.
+	(printMethods(CniPrintStream)): Always use pre-populated
+	methodNameMap for bridge targets.
+
 2008-09-01  Mario Torre  <neugens@aicas.com>
 
-    * gnu/java/awt/peer/x/XImage.java (XImageProducer): remove @Override
-    annotation to allow compilation on javac < 1.5
+	* gnu/java/awt/peer/x/XImage.java (XImageProducer): remove @Override
+	annotation to allow compilation on javac < 1.6 and ecj < 3.4.
 
 2008-09-01  Mario Torre  <neugens@aicas.com>
 
