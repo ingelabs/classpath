@@ -1321,7 +1321,7 @@ public class DecimalFormat extends NumberFormat
             currencySymbol = this.symbols.getCurrencySymbol();
 
             // if \u00A4 is doubled, we use the international currency symbol
-            if (i < len && pattern.charAt(i + 1) == '\u00A4')
+            if ((i + 1) < len && pattern.charAt(i + 1) == '\u00A4')
               {
                 currencySymbol = this.symbols.getInternationalCurrencySymbol();
                 i++;
@@ -1345,7 +1345,7 @@ public class DecimalFormat extends NumberFormat
         else if (ch == '\'')
           {
             // QUOTE
-            if (i < len && pattern.charAt(i + 1) == '\'')
+            if ((i + 1) < len && pattern.charAt(i + 1) == '\'')
               {
                 // we need to add ' to the buffer 
                 buffer.append(ch);
@@ -1717,7 +1717,7 @@ public class DecimalFormat extends NumberFormat
         else if (ch == '\'')
           {
             // QUOTE
-            if (i < len && pattern.charAt(i + 1) == '\'')
+            if ((i + 1) < len && pattern.charAt(i + 1) == '\'')
               {
                 // we need to add ' to the buffer 
                 buffer.append(ch);
