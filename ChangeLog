@@ -1,5 +1,12 @@
 2008-09-04  Robert Schuster  <robertschuster@fsfe.org>
 
+	* gnu/java/nio/charset/ByteDecodeLoopHelper:
+	(arrayDecodeLoop): Added new break label, escape to that label.
+	* gnu/java/nio/charset/ByteEncodeLoopHelper:
+	(arrayDecodeLoop): Added new break label, escape to that label.
+
+2008-09-04  Robert Schuster  <robertschuster@fsfe.org>
+
 	* java/text/DecimalFormat.java:
 	(scanFix): Use 'i + 1' when looking at following character.
 	(scanNegativePattern): Dito.
