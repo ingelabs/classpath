@@ -197,7 +197,7 @@ public class Parser
    * 
    * @param headerText the header text
    */
-  public void setHeader(String headerText)
+  public synchronized void setHeader(String headerText)
   {
     this.headerText = headerText;
   }
@@ -207,7 +207,7 @@ public class Parser
    * 
    * @param footerText the footer text
    */
-  public void setFooter(String footerText)
+  public synchronized void setFooter(String footerText)
   {
     this.footerText = footerText;
   }

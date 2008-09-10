@@ -140,7 +140,7 @@ public class SourceGiopRmicCompiler
   /**
    * Clear data, preparing for the next compilation.
    */
-  public void reset()
+  public synchronized void reset()
   {
     packag = name = implName = stubName = null;
     implementedRemotes.clear();
@@ -329,7 +329,7 @@ public class SourceGiopRmicCompiler
    *          the class to name
    * @return the name of class as it should appear in java language
    */
-  public String name(Class nameIt)
+  public synchronized String name(Class nameIt)
   {
     if (nameIt.isArray())
       {
