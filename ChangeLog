@@ -1,3 +1,13 @@
+2007-08-23  Daniel Frampton  <zyridium@zyridium.net>
+
+	* AUTHORS: Added.
+	* java/lang/InheritableThreadLocal.java,
+	* java/lang/Thread.java,
+	* java/lang/ThreadLocal.java:
+	Modified to use java.lang.ThreadLocalMap.
+	* java/lang/ThreadLocalMap.java:
+	New cheaper ThreadLocal-specific WeakHashMap.
+
 2008-02-07  Ian Rogers  <ian.rogers@manchester.ac.uk>
 
 	* java/util/zip/ZipEntry.java:
