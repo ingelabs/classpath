@@ -1,3 +1,18 @@
+2008-02-07  Ian Rogers  <ian.rogers@manchester.ac.uk>
+
+	* java/util/zip/ZipEntry.java:
+	Use byte fields instead of integer fields,
+	store the time as well as the DOS time and
+	don't retain a global Calendar instance.
+	(setDOSTime(int)): Set KNOWN_DOSTIME instead
+	of KNOWN_TIME, and unset KNOWN_TIME.
+	(getDOSTime()): Compute DOS time from UNIX time
+	only when needed.
+	(clone()): Provide cloning via the ZipEntry constructor
+	where possible.
+	(setTime(long)): Don't compute DOS time at this point.
+	(getCalendar()): Removed.
+	
 2008-09-09  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* tools/gnu/classpath/tools/getopt/Parser.java:
