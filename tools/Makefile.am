@@ -4,7 +4,11 @@ GLIBJ_BOOTCLASSPATH='$(top_builddir)/lib/glibj.zip'
 GLIBJ_CLASSPATH=asm
 
 # Setup the compiler to use the GNU Classpath library we just built.
+if GCJ_JAVAC
+JCOMPILER = $(JAVAC) $(JAVACFLAGS) -fsource=1.5 -ftarget=1.5 --encoding=UTF-8 --bootclasspath=$(GLIBJ_BOOTCLASSPATH) --classpath=$(GLIBJ_CLASSPATH)
+else
 JCOMPILER = $(JAVAC) $(JAVACFLAGS) -source 1.5 -target 1.5 -encoding UTF-8 -bootclasspath $(GLIBJ_BOOTCLASSPATH) -classpath $(GLIBJ_CLASSPATH)
+endif
 
 if CREATE_GJDOC
 USE_JAVAC_FLAGS = -classpath $(CLASSPATH):$(srcdir):$(ANTLR_JAR):generated:. $(JAVAC_FLAGS)
