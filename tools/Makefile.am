@@ -1,6 +1,6 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
-GLIBJ_BOOTCLASSPATH='$(top_builddir)/lib/glibj.zip'
+GLIBJ_BOOTCLASSPATH='$(top_builddir)/lib/glibj.zip:$(top_builddir)/lib'
 GLIBJ_CLASSPATH=asm
 
 # Setup the compiler to use the GNU Classpath library we just built.

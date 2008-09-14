@@ -138,7 +138,7 @@ AC_DEFUN([CLASSPATH_WITH_GLIBJ],
 		  *) AC_MSG_ERROR(bad value ${enableval} for --enable-examples) ;;
 		esac],
 		[EXAMPLESDIR="examples"])
-  if test "x${use_zip}" = xno && test "x${install_class_files}" = xno; then
+  if test "x${build_class_files}" = xno; then
     EXAMPLESDIR=""
   fi
   AC_SUBST(EXAMPLESDIR)
@@ -151,7 +151,7 @@ AC_DEFUN([CLASSPATH_WITH_GLIBJ],
 		  *) AC_MSG_ERROR(bad value ${enableval} for --enable-tools) ;;
 		esac],
 		[TOOLSDIR="tools"])
-  if test "x${use_zip}" = xno && test "x${install_class_files}" = xno; then
+  if test "x${build_class_files}" = xno; then
     TOOLSDIR=""
   fi
   AC_SUBST(TOOLSDIR)

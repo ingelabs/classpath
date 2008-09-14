@@ -1,5 +1,5 @@
 ## Input file for automake to generate the Makefile.in used by configure
-GLIBJ_CLASSPATH='$(top_builddir)/lib/glibj.zip'
+GLIBJ_CLASSPATH='$(top_builddir)/lib/glibj.zip:$(top_builddir)/lib'
 
 if GCJ_JAVAC
 JCOMPILER = $(JAVAC) $(JAVACFLAGS) -fsource=1.5 -ftarget=1.5 --encoding=UTF-8 --bootclasspath=$(GLIBJ_CLASSPATH) --classpath='$(top_builddir)/tools/tools.zip'
