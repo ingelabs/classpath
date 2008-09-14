@@ -34,8 +34,15 @@ AC_DEFUN([AC_PROG_ANTLR],[
      test -f $ANTLR_JAR || AC_MSG_ERROR([specified ANTLR jar file $ANTLR_JAR not found.]) \
         && AC_MSG_NOTICE([using ANTLR parser generator in $ANTLR_JAR])
   fi
-  ANTLR="$JAVA -classpath $ANTLR_JAR antlr.Tool"
-  test -z $ANTLR_JAR && \
+  AC_CHECK_TOOLS([ANTLR], [runantlr])
+  if test "x$ANTLR" = x; then
+      if test -z "$JAVA"; then
+        AC_MSG_ERROR(Failed to find either runantlr or a suitable Java runtime for ANTLR.)
+      else
+        ANTLR="$JAVA -classpath $ANTLR_JAR antlr.Tool"
+      fi
+  fi
+  test -z "$ANTLR_JAR" && \
         AC_MSG_ERROR(no suitable antlr.jar found for version $1.$2.$3)
   AC_MSG_RESULT($antlr_use_major.$antlr_use_minor.$antlr_use_micro)
   AC_SUBST(ANTLR)
