@@ -1,19 +1,17 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
+if CREATE_GJDOC
+ANTLR_CLASSPATH = $(ANTLR_JAR):generated
+endif
+
 GLIBJ_BOOTCLASSPATH='$(top_builddir)/lib/glibj.zip:$(top_builddir)/lib'
-GLIBJ_CLASSPATH=asm
+GLIBJ_CLASSPATH=asm:$(ANTLR_CLASSPATH)
 
 # Setup the compiler to use the GNU Classpath library we just built.
 if GCJ_JAVAC
 JCOMPILER = $(JAVAC) $(JAVACFLAGS) -fsource=1.5 -ftarget=1.5 --encoding=UTF-8 --bootclasspath=$(GLIBJ_BOOTCLASSPATH) --classpath=$(GLIBJ_CLASSPATH)
 else
 JCOMPILER = $(JAVAC) $(JAVACFLAGS) -source 1.5 -target 1.5 -encoding UTF-8 -bootclasspath $(GLIBJ_BOOTCLASSPATH) -classpath $(GLIBJ_CLASSPATH)
-endif
-
-if CREATE_GJDOC
-USE_JAVAC_FLAGS = -classpath $(CLASSPATH):$(srcdir):$(ANTLR_JAR):generated:. $(JAVAC_FLAGS)
-else
-USE_JAVAC_FLAGS = -classpath $(CLASSPATH):$(srcdir):. $(JAVAC_FLAGS)
 endif
 
 if CREATE_WRAPPERS
@@ -329,7 +327,7 @@ endif
 	     $(srcdir)/sun/rmi/rmic \
 	     $(GJDOC_EX) \
 	     -name '*.java' -print > classes.lst
-	$(JCOMPILER) $(USE_JAVAC_FLAGS) -g -d classes @classes.lst
+	$(JCOMPILER) -g -d classes @classes.lst
 	cat classes.lst asm.lst > all-classes.lst
 ## Copy over tools resource files.
 	@list=`cd $(srcdir)/resource && find gnu/classpath/tools com/sun/tools/javac \
