@@ -549,7 +549,7 @@ public final class System
 
     if (environmentMap == null)
       {
-        Map<String, String> _map = new HashMap();
+	Map<String,String> variables = new EnvironmentMap();
         List<String> environ = (List<String>)VMSystem.environ();
         for (String envEntry : environ)
           {
@@ -561,11 +561,11 @@ public final class System
                 int equalSignIndex = envEntry.indexOf('=');            
                 String key = envEntry.substring(0, equalSignIndex);
                 String value = envEntry.substring(equalSignIndex + 1);
-                _map.put(key, value);
+                variables.put(key, value);
               }
           }
         
-        environmentMap = Collections.unmodifiableMap(_map);
+        environmentMap = Collections.unmodifiableMap(variables);
       }
     
     return environmentMap;
