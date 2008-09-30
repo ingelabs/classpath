@@ -49,7 +49,9 @@ public abstract class ShortBuffer extends Buffer
   final int array_offset;
   final short[] backing_buffer;
 
-  ShortBuffer (int capacity, int limit, int position, int mark, Pointer address, short[] backing_buffer, int array_offset)
+  ShortBuffer (int capacity, int limit, int position,
+	       int mark, Pointer address, short[] backing_buffer,
+	       int array_offset)
   {
     super (capacity, limit, position, mark, address);
     this.backing_buffer = backing_buffer;

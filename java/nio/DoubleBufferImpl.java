@@ -50,7 +50,8 @@ final class DoubleBufferImpl extends DoubleBuffer
     this (new double [capacity], 0, capacity, capacity, 0, -1, false);
   }
   
-  DoubleBufferImpl (double[] buffer, int offset, int capacity, int limit, int position, int mark, boolean readOnly)
+  DoubleBufferImpl (double[] buffer, int offset, int capacity, int limit,
+		    int position, int mark, boolean readOnly)
   {
     super (capacity, limit, position, mark, null, buffer, offset);
     this.readOnly = readOnly;
@@ -63,17 +64,20 @@ final class DoubleBufferImpl extends DoubleBuffer
   
   public DoubleBuffer slice ()
   {
-    return new DoubleBufferImpl (backing_buffer, array_offset + position (), remaining (), remaining (), 0, -1, isReadOnly ());
+    return new DoubleBufferImpl (backing_buffer, array_offset + position (),
+				 remaining (), remaining (), 0, -1, isReadOnly ());
   }
   
   public DoubleBuffer duplicate ()
   {
-    return new DoubleBufferImpl (backing_buffer, array_offset, capacity (), limit (), position (), mark, isReadOnly ());
+    return new DoubleBufferImpl (backing_buffer, array_offset, capacity (),
+				 limit (), position (), mark, isReadOnly ());
   }
   
   public DoubleBuffer asReadOnlyBuffer ()
   {
-    return new DoubleBufferImpl (backing_buffer, array_offset, capacity (), limit (), position (), mark, true);
+    return new DoubleBufferImpl (backing_buffer, array_offset, capacity (),
+				 limit (), position (), mark, true);
   }
   
   public DoubleBuffer compact ()

@@ -49,7 +49,8 @@ public abstract class FloatBuffer extends Buffer
   final int array_offset;
   final float[] backing_buffer;
 
-  FloatBuffer (int capacity, int limit, int position, int mark, Pointer address, float[] backing_buffer, int array_offset)
+  FloatBuffer (int capacity, int limit, int position, int mark,
+	       Pointer address, float[] backing_buffer, int array_offset)
   {
     super (capacity, limit, position, mark, address);
     this.backing_buffer = backing_buffer;

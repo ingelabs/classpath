@@ -38,8 +38,9 @@ exception statement from your version. */
 
 package java.nio;
 
-import java.io.IOException;
 import gnu.classpath.Pointer;
+
+import java.io.IOException;
 
 /**
  * @since 1.4
@@ -50,7 +51,8 @@ public abstract class CharBuffer extends Buffer
   final int array_offset;
   final char[] backing_buffer;
 
-  CharBuffer (int capacity, int limit, int position, int mark, Pointer address, char[] backing_buffer, int array_offset)
+  CharBuffer (int capacity, int limit, int position, int mark,
+	      Pointer address, char[] backing_buffer, int array_offset)
   {
     super (capacity, limit, position, mark, address);
     this.backing_buffer = backing_buffer;
@@ -80,7 +82,8 @@ public abstract class CharBuffer extends Buffer
    */
   public static final CharBuffer wrap(char[] array, int offset, int length)
   {
-    return new CharBufferImpl(array, 0, array.length, offset + length, offset, -1, false);
+    return new CharBufferImpl(array, 0, array.length, offset + length, offset,
+			      -1, false);
   }
   
   /**

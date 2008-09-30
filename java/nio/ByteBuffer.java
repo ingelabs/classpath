@@ -50,7 +50,8 @@ public abstract class ByteBuffer extends Buffer
   final byte[] backing_buffer;
   final int array_offset;
 
-  ByteBuffer (int capacity, int limit, int position, int mark, Pointer address, byte[] backing_buffer, int array_offset)
+  ByteBuffer (int capacity, int limit, int position, int mark,
+	      Pointer address, byte[] backing_buffer, int array_offset)
   {
     super (capacity, limit, position, mark, address);
     this.backing_buffer = backing_buffer;

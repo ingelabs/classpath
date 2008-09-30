@@ -216,7 +216,7 @@ final class ThreadLocalMap
           return e.value;
         }
       } else {
-        return ThreadLocal.notFound;
+        return ThreadLocal.sentinel;
       }
     }
   }

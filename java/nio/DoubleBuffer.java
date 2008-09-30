@@ -49,7 +49,8 @@ public abstract class DoubleBuffer extends Buffer
   final int array_offset;
   final double[] backing_buffer;
 
-  DoubleBuffer (int capacity, int limit, int position, int mark, Pointer address, double[] backing_buffer, int array_offset)
+  DoubleBuffer (int capacity, int limit, int position, int mark,
+		Pointer address, double[] backing_buffer, int array_offset)
   {
     super (capacity, limit, position, mark, address);
     this.backing_buffer = backing_buffer;

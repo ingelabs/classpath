@@ -50,7 +50,8 @@ final class FloatBufferImpl extends FloatBuffer
     this (new float [capacity], 0, capacity, capacity, 0, -1, false);
   }
   
-  FloatBufferImpl (float[] buffer, int offset, int capacity, int limit, int position, int mark, boolean readOnly)
+  FloatBufferImpl (float[] buffer, int offset, int capacity, int limit,
+		   int position, int mark, boolean readOnly)
   {
     super (capacity, limit, position, mark, null, buffer, offset);
     this.readOnly = readOnly;

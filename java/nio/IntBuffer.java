@@ -49,7 +49,8 @@ public abstract class IntBuffer extends Buffer
   final int array_offset;
   final int[] backing_buffer;
 
-  IntBuffer (int capacity, int limit, int position, int mark, Pointer address, int[] backing_buffer, int array_offset)
+  IntBuffer (int capacity, int limit, int position, int mark,
+	     Pointer address, int[] backing_buffer, int array_offset)
   {
     super (capacity, limit, position, mark, address);
     this.backing_buffer = backing_buffer;
@@ -73,7 +74,8 @@ public abstract class IntBuffer extends Buffer
    */
   public static final IntBuffer wrap (int[] array, int offset, int length)
   {
-    return new IntBufferImpl (array, 0, array.length, offset + length, offset, -1, false);
+    return new IntBufferImpl (array, 0, array.length, offset + length, offset,
+			      -1, false);
   }
 
   /**

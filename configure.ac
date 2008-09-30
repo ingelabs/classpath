@@ -942,6 +942,7 @@ if test "x${TOOLSDIR}" != x; then
     AC_PROG_JAVA
   fi
   if test "x${COMPILE_GJDOC}" = xyes; then
+    AC_PROG_JAVA
     AC_PROG_ANTLR(2,7,1)
   fi
 fi

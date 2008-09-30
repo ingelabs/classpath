@@ -46,7 +46,8 @@ import gnu.classpath.Pointer;
  */
 public abstract class MappedByteBuffer extends ByteBuffer
 {
-  MappedByteBuffer (int capacity, int limit, int position, int mark, Pointer address)
+  MappedByteBuffer (int capacity, int limit, int position, int mark,
+		    Pointer address)
   {
     super (capacity, limit, position, mark, address, null, 0);
   }

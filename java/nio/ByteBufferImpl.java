@@ -45,7 +45,8 @@ final class ByteBufferImpl extends ByteBuffer
 {
   private final boolean readOnly;
 
-  ByteBufferImpl (byte[] buffer, int offset, int capacity, int limit, int position, int mark, boolean readOnly)
+  ByteBufferImpl (byte[] buffer, int offset, int capacity, int limit,
+		  int position, int mark, boolean readOnly)
   {
     super (capacity, limit, position, mark, null, buffer, offset);
     this.readOnly = readOnly;
@@ -88,17 +89,20 @@ final class ByteBufferImpl extends ByteBuffer
   
   public ByteBuffer slice ()
   {
-    return new ByteBufferImpl (backing_buffer, array_offset + position (), remaining (), remaining (), 0, -1, isReadOnly ());
+    return new ByteBufferImpl (backing_buffer, array_offset + position (),
+			       remaining (), remaining (), 0, -1, isReadOnly ());
   }
   
   public ByteBuffer duplicate ()
   {
-    return new ByteBufferImpl (backing_buffer, array_offset, capacity (), limit (), position (), mark, isReadOnly ());
+    return new ByteBufferImpl (backing_buffer, array_offset, capacity (),
+			       limit (), position (), mark, isReadOnly ());
   }
   
   public ByteBuffer asReadOnlyBuffer ()
   {
-    return new ByteBufferImpl (backing_buffer, array_offset, capacity (), limit (), position (), mark, true);
+    return new ByteBufferImpl (backing_buffer, array_offset, capacity (),
+			       limit (), position (), mark, true);
   }
   
   void shiftDown (int dst_offset, int src_offset, int count)
