@@ -1,7 +1,12 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
 if CREATE_GJDOC
-ANTLR_CLASSPATH = $(ANTLR_JAR):generated
+if CREATE_GJDOC_PARSER
+gjdoc_gendir = ${top_builddir}/tools/generated
+else
+gjdoc_gendir = ${top_srcdir}/tools/generated
+endif
+ANTLR_CLASSPATH = $(ANTLR_JAR):$(gjdoc_gendir)
 endif
 
 GLIBJ_BOOTCLASSPATH='$(top_builddir)/lib/glibj.zip:$(top_builddir)/lib'
@@ -306,9 +311,9 @@ dist-hook:
 # immediately.  And copy the template files we use to the classes dir
 # so they get also included.
 $(TOOLS_ZIP): $(ALL_TOOLS_FILES)
-	@rm -rf classes asm generated
+	@rm -rf classes asm
 	@mkdir_p@ classes asm 
-if CREATE_GJDOC
+if CREATE_GJDOC_PARSER
 ## Generate antlr sources.
 	@mkdir_p@ generated/gnu/classpath/tools/gjdoc/expr
 	$(ANTLR) -o generated/gnu/classpath/tools/gjdoc/expr \
@@ -368,7 +373,10 @@ endif
 
 # Zip file be gone! (and make sure the classes are gone too)
 clean-local:
-	rm -rf $(TOOLS_ZIP) classes classes.lst asm asm.lst all-classes.lst generated
+	rm -rf $(TOOLS_ZIP) classes classes.lst asm asm.lst all-classes.lst
+if CREATE_GJDOC_PARSER
+	rm -rf $(gjdoc_gendir)
+endif
 
 # FIXME: remove this when GNU Classpath includes a bootstrap VM.
 installcheck-binSCRIPTS:

@@ -312,8 +312,9 @@ AC_ARG_WITH([antlr-jar],
             ])
 
 dnl -----------------------------------------------------------
-dnl Regenerate headers at build time (disabled by default)
+dnl Regenerate headers at build time (enabled if not found)
 dnl -----------------------------------------------------------
+AC_MSG_CHECKING([whether to regenerate the headers])
 AC_ARG_ENABLE([regen-headers],
               [AS_HELP_STRING(--enable-regen-headers,automatically regenerate JNI headers [default=yes if headers don't exist])],
               [case "${enableval}" in
@@ -321,12 +322,32 @@ AC_ARG_ENABLE([regen-headers],
                 no) REGENERATE_JNI_HEADERS=no ;;
                 *) REGENERATE_JNI_HEADERS=yes ;;
               esac],
-              [if test -e include/java_lang_VMSystem.h; then
+              [if test -e ${srcdir}/include/java_lang_VMSystem.h; then
 			REGENERATE_JNI_HEADERS=no ;
 		   else
 			REGENERATE_JNI_HEADERS=yes ;
 	       fi])
+AC_MSG_RESULT(${REGENERATE_JNI_HEADERS})
 AM_CONDITIONAL(CREATE_JNI_HEADERS, test "x${REGENERATE_JNI_HEADERS}" = xyes)
+
+dnl ------------------------------------------------------------------------
+dnl Regenerate GJDoc parser at build time (enabled if not found)
+dnl ------------------------------------------------------------------------
+AC_MSG_CHECKING([whether to regenerate the GJDoc parser])
+AC_ARG_ENABLE([regen-gjdoc-parser],
+              [AS_HELP_STRING(--enable-regen-gjdoc-parser,automatically regenerate the GJDoc parser [default=yes if generated source doesn't exist])],
+              [case "${enableval}" in
+                yes) REGENERATE_GJDOC_PARSER=yes ;;
+                no) REGENERATE_GJDOC_PARSER=no ;;
+                *) REGENERATE_GJDOC_PARSER=yes ;;
+              esac],
+              [if test -e ${srcdir}/tools/generated/gnu/classpath/tools/gjdoc/expr/JavaLexer.java; then
+			REGENERATE_GJDOC_PARSER=no ;
+		   else
+			REGENERATE_GJDOC_PARSER=yes ;
+	       fi])
+AC_MSG_RESULT(${REGENERATE_GJDOC_PARSER})
+AM_CONDITIONAL(CREATE_GJDOC_PARSER, test "x${REGENERATE_GJDOC_PARSER}" = xyes)
 
 dnl -----------------------------------------------------------
 dnl Enable tool wrapper binaries (disabled by default)
@@ -943,7 +964,10 @@ if test "x${TOOLSDIR}" != x; then
   fi
   if test "x${COMPILE_GJDOC}" = xyes; then
     AC_PROG_JAVA
-    AC_PROG_ANTLR(2,7,1)
+    AC_LIB_ANTLR
+    if test "x${REGENERATE_GJDOC_PARSER}" = xyes; then
+	AC_PROG_ANTLR(2,7,1)
+    fi
   fi
 fi
 

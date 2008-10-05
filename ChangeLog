@@ -1,3 +1,16 @@
+2008-10-02  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* configure.ac:
+	Add regen-gjdoc-parser option,
+	and separate antlr tests.
+	* m4/ac_prog_antlr.m4:
+	Turn single test into AC_LIB_ANTLR
+	and AC_PROG_ANTLR.
+	* m4/ac_prog_java.m4:
+	Quote tests.
+	* tools/Makefile.am:
+	Support CREATE_GJDOC_PARSER option.
+
 2008-09-29  Matthias Klose  <doko@ubuntu.com>
 
 	* m4/ac_prog_antlr.m4:
