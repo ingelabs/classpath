@@ -1,3 +1,12 @@
+2008-10-06  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* m4/ac_prog_antlr:
+	Check for cantlr as well.
+	* tools/Makefile.am:
+	Only build GJDoc parser when both
+	CREATE_GJDOC and CREATE_GJDOC_PARSER
+	are on.
+
 2008-10-02  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* configure.ac:

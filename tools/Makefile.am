@@ -313,11 +313,13 @@ dist-hook:
 $(TOOLS_ZIP): $(ALL_TOOLS_FILES)
 	@rm -rf classes asm
 	@mkdir_p@ classes asm 
+if CREATE_GJDOC
 if CREATE_GJDOC_PARSER
 ## Generate antlr sources.
 	@mkdir_p@ generated/gnu/classpath/tools/gjdoc/expr
 	$(ANTLR) -o generated/gnu/classpath/tools/gjdoc/expr \
 	  $(srcdir)/gnu/classpath/tools/gjdoc/expr/java-expression.g
+endif
 endif
 ## Compile ASM separately as it is latin-1 encoded.
 	find $(srcdir)/external/asm -name '*.java' -print > asm.lst

@@ -19,7 +19,7 @@ AC_DEFUN([AC_LIB_ANTLR],[
 
 AC_DEFUN([AC_PROG_ANTLR],[
   AC_REQUIRE([AC_PROG_JAVA])dnl
-  AC_CHECK_TOOLS([ANTLR], [runantlr antlr])
+  AC_CHECK_TOOLS([ANTLR], [cantlr runantlr antlr])
   if test "x$ANTLR" = x; then
       if test -z "$JAVA"; then
         AC_MSG_ERROR(Failed to find either an antlr binary or a suitable Java runtime for ANTLR.)
