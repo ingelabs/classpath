@@ -963,7 +963,6 @@ if test "x${TOOLSDIR}" != x; then
     AC_PROG_JAVA
   fi
   if test "x${COMPILE_GJDOC}" = xyes; then
-    AC_PROG_JAVA
     AC_LIB_ANTLR
     if test "x${REGENERATE_GJDOC_PARSER}" = xyes; then
 	AC_PROG_ANTLR(2,7,1)
