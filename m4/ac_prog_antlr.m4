@@ -35,19 +35,12 @@ AC_DEFUN([AC_PROG_ANTLR],[
     antlr_version_major=`echo $antlr_version_str | sed "$antlr_version_regex\\1/"`
     antlr_version_minor=`echo $antlr_version_str | sed "$antlr_version_regex\\2/"`
     antlr_version_micro=`echo $antlr_version_str | sed "$antlr_version_regex\\3/"`
-    (test $antlr_version_major -gt $1 ||
+    (test $antlr_version_major -gt $1 || \
     (test $antlr_version_major -eq $1 && \
      test $antlr_version_minor -gt $2) || \
     (test $antlr_version_major -eq $1 && \
      test $antlr_version_minor -eq $2 && \
-     test $antlr_version_micro -ge $3)) && \
-    (test -z $ANTLR_JAR || \
-     (test $antlr_version_major -gt $antlr_use_major ||
-      (test $antlr_version_major -eq $antlr_use_major && \
-       test $antlr_version_minor -gt $antlr_use_minor) || \
-      (test $antlr_version_major -eq $antlr_use_major && \
-       test $antlr_version_minor -eq $antlr_use_minor && \
-       test $antlr_version_micro -ge $antlr_use_micro)))
-    fi
-  AC_MSG_RESULT($antlr_use_major.$antlr_use_minor.$antlr_use_micro)
+     test $antlr_version_micro -ge $3))
+  fi
+  AC_MSG_RESULT($antlr_version_major.$antlr_version_minor.$antlr_version_micro)
 ])

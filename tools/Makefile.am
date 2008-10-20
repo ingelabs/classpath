@@ -316,8 +316,8 @@ $(TOOLS_ZIP): $(ALL_TOOLS_FILES)
 if CREATE_GJDOC
 if CREATE_GJDOC_PARSER
 ## Generate antlr sources.
-	@mkdir_p@ generated/gnu/classpath/tools/gjdoc/expr
-	$(ANTLR) -o generated/gnu/classpath/tools/gjdoc/expr \
+	@mkdir_p@ $(gjdoc_gendir)/gnu/classpath/tools/gjdoc/expr
+	$(ANTLR) -o $(gjdoc_gendir)/gnu/classpath/tools/gjdoc/expr/ \
 	  $(srcdir)/gnu/classpath/tools/gjdoc/expr/java-expression.g
 endif
 endif
