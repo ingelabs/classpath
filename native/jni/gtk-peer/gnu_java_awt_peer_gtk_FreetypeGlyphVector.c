@@ -176,9 +176,6 @@ Java_gnu_java_awt_peer_gtk_FreetypeGlyphVector_getKerning
 {
   FT_Face ft_face;
   FT_Vector kern;
-  jclass cls;
-  jmethodID method;
-  jvalue values[2];
   PangoFcFont *font;
 
   font = JLONG_TO_PTR(PangoFcFont, fnt);
