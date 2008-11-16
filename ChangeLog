@@ -1,3 +1,8 @@
+2008-11-16  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* gnu/javax/crypto/jce/key/SecretKeyGeneratorImpl.java:
+	(init(int,SecureRandom)): Improve exception message.
+	
 2008-11-06  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_FreetypeGlyphVector.c
