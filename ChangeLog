@@ -1,3 +1,11 @@
+2008-12-09  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	PR classpath/38473:
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_FreetypeGlyphVector.c:
+	(Java_gnu_java_awt_peer_gtk_FreetypeGlyphVector_getGlyphOutlineNative):
+	Check that the glyph is an outline before calling
+	FT_Outline_Decompose.
+
 2008-11-16  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* gnu/xml/transform/Bindings.java:
