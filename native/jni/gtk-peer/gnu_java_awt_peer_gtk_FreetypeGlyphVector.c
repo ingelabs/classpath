@@ -392,12 +392,13 @@ Java_gnu_java_awt_peer_gtk_FreetypeGlyphVector_getGlyphOutlineNative
     }
   else
     {
-      char format[4];
+      char format[5];
 
       format[0] = (glyph->format & 0xFF000000) >> 24;
       format[1] = (glyph->format & 0x00FF0000) >> 16;
       format[2] = (glyph->format & 0x0000FF00) >> 8;
       format[3] = (glyph->format & 0x000000FF);
+      format[4] = '\0';
       printf("WARNING: Unable to create outline for font %s %s of format %s\n",
 	     ft_face->family_name, ft_face->style_name, format);
     }
