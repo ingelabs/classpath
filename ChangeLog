@@ -1,3 +1,25 @@
+2008-12-31  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/text/MessageFormat.java:
+	Convert variables to use generic types, use
+	CPStringBuilder in place of StringBuilder.
+	(Field()): Suppress warning due to only being used by
+	deserialization.
+	(scanFormat(String,int,CPStringBuilder,List,Locale)):
+	Use ArrayList instead of Vector as no synchronisation needed.
+	(parse(String,ParsePosition)): Likewise.
+	* java/text/NumberFormat.java:
+	(Field()): Suppress warning due to only being used by
+	deserialization.
+	* java/text/RuleBasedCollator.java:
+	Convert variables to use generic types.
+	(CollationElement): Make fields final.
+	(CollationSorter): Likewise.
+	(CollationSorter(int,String,int,boolean)): New constructor.
+	* java/text/SimpleDateFormat.java,
+	Convert variables to use generic types.
+	(applyPattern(String)): Clear list rather than creating a new instance.
+	
 2008-12-30  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/text/SimpleDateFormat.java:

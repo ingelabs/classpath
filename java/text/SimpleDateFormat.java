@@ -159,13 +159,13 @@ public class SimpleDateFormat extends DateFormat
   }
 
   /**
-   * A list of <code>CompiledField</code>s,
+   * A list of <code>CompiledField</code>s and {@code String}s
    * representing the compiled version of the pattern.
    *
    * @see CompiledField
    * @serial Ignored.
    */
-  private transient ArrayList tokens;
+  private transient ArrayList<Object> tokens;
 
   /**
    * The localised data used in formatting,
@@ -274,7 +274,7 @@ public class SimpleDateFormat extends DateFormat
       set2DigitYearStart(defaultCenturyStart);
 
     // Set up items normally taken care of by the constructor.
-    tokens = new ArrayList();
+    tokens = new ArrayList<Object>();
     try
       {
 	compileFormat(pattern);
@@ -416,7 +416,7 @@ public class SimpleDateFormat extends DateFormat
     Locale locale = Locale.getDefault();
     calendar = new GregorianCalendar(locale);
     computeCenturyStart();
-    tokens = new ArrayList();
+    tokens = new ArrayList<Object>();
     formatData = new DateFormatSymbols(locale);
     pattern = (formatData.dateFormats[DEFAULT] + ' '
 	       + formatData.timeFormats[DEFAULT]);
@@ -454,7 +454,7 @@ public class SimpleDateFormat extends DateFormat
     super();
     calendar = new GregorianCalendar(locale);
     computeCenturyStart();
-    tokens = new ArrayList();
+    tokens = new ArrayList<Object>();
     formatData = new DateFormatSymbols(locale);
     compileFormat(pattern);
     this.pattern = pattern;
@@ -479,7 +479,7 @@ public class SimpleDateFormat extends DateFormat
     super();
     calendar = new GregorianCalendar();
     computeCenturyStart ();
-    tokens = new ArrayList();
+    tokens = new ArrayList<Object>();
     if (formatData == null)
       throw new NullPointerException("formatData");
     this.formatData = formatData;
@@ -524,7 +524,7 @@ public class SimpleDateFormat extends DateFormat
    */
   public void applyPattern(String pattern)
   {
-    tokens = new ArrayList();
+    tokens.clear();
     compileFormat(pattern);
     this.pattern = pattern;
   }
@@ -698,11 +698,10 @@ public class SimpleDateFormat extends DateFormat
   private void formatWithAttribute(Date date, FormatBuffer buffer, FieldPosition pos)
   {
     String temp;
-    AttributedCharacterIterator.Attribute attribute;
     calendar.setTime(date);
 
     // go through vector, filling in fields where applicable, else toString
-    Iterator iter = tokens.iterator();
+    Iterator<Object> iter = tokens.iterator();
     while (iter.hasNext())
       {
 	Object o = iter.next();
@@ -911,7 +910,6 @@ public class SimpleDateFormat extends DateFormat
 	    char ch = pattern.charAt(fmt_index);
 	    if (ch == '\'')
 	      {
-		int index = pos.getIndex();
 		if (fmt_index < fmt_max - 1
 		    && pattern.charAt(fmt_index + 1) == '\'')
 		  {
