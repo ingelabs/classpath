@@ -1,3 +1,10 @@
+2008-12-30  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/text/SimpleDateFormat.java:
+	(standardChars): Use standard characters from CLDR.
+	(RFC822_TIMEZONE_FIELD): Fixed to match new standard
+	characters.
+	
 2008-12-22  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/lang/String.java:

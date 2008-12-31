@@ -235,8 +235,8 @@ public class SimpleDateFormat extends DateFormat
    */
   private static final long serialVersionUID = 4774881970558875024L;
 
-  // This string is specified in the Java class libraries.
-  private static final String standardChars = "GyMdkHmsSEDFwWahKzZ";
+  // This string is specified in the root of the CLDR.
+  private static final String standardChars = "GyMdkHmsSEDFwWahKzYeugAZvcL";
 
   /**  
    * Represents the position of the RFC822 timezone pattern character
@@ -244,7 +244,7 @@ public class SimpleDateFormat extends DateFormat
    * U.S. locale, this is 'Z'.  The value is the offset of the current
    * time from GMT e.g. -0500 would be five hours prior to GMT.
    */  
-  private static final int RFC822_TIMEZONE_FIELD = 18;
+  private static final int RFC822_TIMEZONE_FIELD = 23;
 
   /**
    * Reads the serialized version of this object.
@@ -576,6 +576,7 @@ public class SimpleDateFormat extends DateFormat
 	    int j = oldChars.indexOf(ch);
 	    if (j >= 0)
 	      ch = newChars.charAt(j);
+
 	  }
 	buf.append(ch);
       }
