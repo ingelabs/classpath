@@ -576,7 +576,6 @@ public class SimpleDateFormat extends DateFormat
 	    int j = oldChars.indexOf(ch);
 	    if (j >= 0)
 	      ch = newChars.charAt(j);
-
 	  }
 	buf.append(ch);
       }
