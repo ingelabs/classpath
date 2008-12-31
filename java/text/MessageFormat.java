@@ -686,7 +686,12 @@ public class MessageFormat extends Format
 	  }
 
 	if (elements[i].argNumber >= results.size())
-	  results.ensureCapacity(elements[i].argNumber + 1);
+	  {
+	    // Emulate padding behaviour of Vector.setSize() with ArrayList
+	    results.ensureCapacity(elements[i].argNumber + 1);
+	    for (int a = results.size(); a <= elements[i].argNumber; ++a)
+	      results.add(a, null);
+	  }
 	results.set(elements[i].argNumber, value);
 
 	index += elements[i].trailer.length();
