@@ -99,12 +99,7 @@ public class MessageFormat extends Format
               else if (style.equals("percent"))
                 format = NumberFormat.getPercentInstance(loc);
               else if (style.equals("integer"))
-                {
-                  NumberFormat nf = NumberFormat.getNumberInstance(loc);
-                  nf.setMaximumFractionDigits(0);
-                  nf.setGroupingUsed(false);
-                  format = nf;
-                }
+		format = NumberFormat.getIntegerInstance(loc);
               else
                 {
                   format = NumberFormat.getNumberInstance(loc);
