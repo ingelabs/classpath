@@ -45,7 +45,6 @@ import gnu.java.security.prng.MDGenerator;
 
 import java.security.AccessController;
 import java.security.SecureRandom;
-import java.security.VMSecureRandom;
 import java.security.SecureRandomSpi;
 
 import java.util.Collections;
@@ -101,7 +100,7 @@ public abstract class SecureRandomAdapter
   }
 
   public static final byte[] getSeed(int numBytes)
-  {
+  {  
     URL sourceUrl = null;
     String urlStr = null;
 

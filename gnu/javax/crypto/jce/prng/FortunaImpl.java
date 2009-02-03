@@ -93,7 +93,7 @@ public final class FortunaImpl
       }
   }
 
-  protected byte[] engineGenerateSeed(int numbytes)
+  protected byte[] engineGenerateSeed(int numBytes)
   {
     return SecureRandomAdapter.getSeed(numBytes);
   }

@@ -1,3 +1,17 @@
+2009-02-03  Andrew John Hughes  <ahughes@redhat.com>
+
+	PR classpath/38417:
+	* gnu/java/security/jce/prng/SecureRandomAdapter.java:
+	Remove unneeded import.
+	* gnu/javax/crypto/jce/prng/FortunaImpl.java:
+	Fix typo.
+	* java/security/SecureRandom.java:
+	Remove duplicate use of VMSecureRandom,
+	call SecureRandomAdapter instead.
+	* vm/reference/gnu/java/security/jce/prng/VMSecureRandom.java:
+	Moved from java/security so SecureRandomAdapter can
+	access it.
+
 2009-01-22  Mario Torre  <neugens@aicas.com>
 
 	PR classpath/38417:
