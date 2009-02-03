@@ -1,3 +1,28 @@
+2009-01-22  Mario Torre  <neugens@aicas.com>
+
+	PR classpath/38417:
+	* gnu/java/security/jce/prng/SecureRandomAdapter.java:
+	(getSeed(int)): New; retrieve seed from source specified
+	by securerandom.source property or failing that, use
+	VMSecureRandom.
+	* gnu/javax/crypto/jce/prng/ARCFourRandomSpi.java:
+	(engineGenerateSeed(int)): Use SecureRandomAdapter.
+	(engineNextBytes(byte[])): Initialise using new seed.
+	* gnu/javax/crypto/jce/prng/CSPRNGSpi.java:
+	(engineGenerateSeed(int)): Use SecureRandomAdapter.
+	(engineNextBytes(byte[])): Initialise using new seed.
+	* gnu/javax/crypto/jce/prng/FortunaImpl.java:
+	(engineSetSeed(byte[])): Initialise with new seed if unused.
+	(engineGenerateSeed(int)): Use SecureRandomAdapter.	
+	* gnu/javax/crypto/jce/prng/ICMRandomSpi.java:
+	(engineGenerateSeed(int)): Use SecureRandomAdapter.	
+	(engineNextBytes(byte[])): Initialise using new seed.
+	* gnu/javax/crypto/jce/prng/UMacRandomSpi.java:
+	(engineGenerateSeed(int)): Use SecureRandomAdapter.	
+	(engineNextBytes(byte[])): Initialise using new seed.
+	* gnu/javax/crypto/prng/ICMGenerator.java:
+	(setup(Map)): Call fillBlock().
+
 2009-01-22  Mark Wielaard  <mark@klomp.org>
 
 	* tools/gnu/classpath/tools/gjdoc/Main.java (getGjdocVersion):
