@@ -1,5 +1,11 @@
 2009-02-03  Andrew John Hughes  <ahughes@redhat.com>
 
+	* native/jni/native-lib/cpproc.c:
+	(cpproc_forkAndExec): Handle return of
+	chdir.
+	
+2009-02-03  Andrew John Hughes  <ahughes@redhat.com>
+
 	PR classpath/38417:
 	* gnu/java/security/jce/prng/SecureRandomAdapter.java:
 	Remove unneeded import.
