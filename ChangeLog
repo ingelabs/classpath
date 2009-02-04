@@ -1,3 +1,10 @@
+2009-02-04  Andrew John Hughes  <ahughes@redhat.com>
+
+	* native/jni/native-lib/cpproc.c:
+	(cpproc_forkAndExec): Don't return on a -1
+	result from chdir as this may be valid in
+	some cases.  A better fix is needed.
+	
 2009-02-03  Andrew John Hughes  <ahughes@redhat.com>
 
 	* native/jni/native-lib/cpproc.c:
