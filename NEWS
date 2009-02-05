@@ -35,9 +35,17 @@ javax.activation (part of 1.6).
   - PR36636: gjar -u doesn't work
   - PR36637: --without-fastjar doesn't wor
   - PR36677: Omission bug in JDWP VirtualMachineCommandSet 
+  - PR38417: gnu.java.security.util.PRNG produces easily predictable values
   - PR38473: Segmentation fault in retrieving font outline decomposition 
   - PR38861: Support XULRunner 1.9.1.
   - PR38912: XMLParser not interning element names 
+
+Runtime interface changes:
+
+  * VMSecureRandom has moved to gnu.java.security.jce.prng.VMSecureRandom
+  as part of the fix for PR38417.
+  * gnu.java.lang.VMCPStringBuilder has been added and should be added to
+  avoid the inefficency of reflection when creating non-copied String objects.
 
 Bug fixes in release 0.97.2 (Jun 06, 2007)
 

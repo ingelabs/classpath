@@ -1,5 +1,9 @@
 2009-02-05  Andrew John Hughes  <ahughes@redhat.com>
 
+	* NEWS: Add VM updates.
+	
+2009-02-05  Andrew John Hughes  <ahughes@redhat.com>
+
 	* NEWS: Updated.
 	* configure.ac:
 	Bump to 0.98 proper.
