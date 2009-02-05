@@ -1,3 +1,11 @@
+2009-02-05  Mark Wielaard  <mark@klomp.org>
+
+	PR classpath/38912:
+	* gnu/xml/stream/XMLParser.java:
+	(getLocalName()): Respect stringInterning.
+	(getName()): Likewise.
+	(getPrefix()): Likewise.
+
 2009-02-04  Andrew John Hughes  <ahughes@redhat.com>
 
 	* native/jni/native-lib/cpproc.c:
