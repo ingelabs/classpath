@@ -1,3 +1,14 @@
+2009-02-06  Andrew John Hughes  <ahughes@redhat.com>
+
+	* NEWS:
+	Add stub for 0.99.
+	* configure.ac:
+	Bump to 0.99.
+	* doc/www.gnu.org/announce/20090205.wml,
+	* doc/www.gnu.org/downloads/downloads.wml,
+	* doc/www.gnu.org/newsitems.txt:
+	Update website.
+
 2009-02-05  Andrew John Hughes  <ahughes@redhat.com>
 
 	* NEWS: Add VM updates.
