@@ -1,3 +1,25 @@
+2009-02-14  Andrew John Hughes  <ahughes@redhat.com>
+
+	* org/omg/CORBA/LocalObject.java,
+	* org/omg/CORBA/portable/Delegate.java,
+	* org/omg/CORBA/portable/InputStream.java,
+	* org/omg/CORBA/portable/ObjectImpl.java,
+	* org/omg/CORBA_2_3/portable/InputStream.java,
+	* org/omg/CORBA_2_3/portable/OutputStream.java,
+	* org/omg/DynamicAny/_DynAnyFactoryStub.java,
+	* org/omg/DynamicAny/_DynAnyStub.java,
+	* org/omg/DynamicAny/_DynArrayStub.java,
+	* org/omg/DynamicAny/_DynEnumStub.java,
+	* org/omg/DynamicAny/_DynFixedStub.java,
+	* org/omg/DynamicAny/_DynSequenceStub.java,
+	* org/omg/DynamicAny/_DynStructStub.java,
+	* org/omg/DynamicAny/_DynUnionStub.java,
+	* org/omg/DynamicAny/_DynValueStub.java,
+	* org/omg/PortableServer/_ServantActivatorStub.java,
+	* org/omg/PortableServer/_ServantLocatorStub.java:
+	Turn off warnings where Class is used; forced
+	to use raw type for API compatibility.
+	
 2009-02-06  Andrew John Hughes  <ahughes@redhat.com>
 
 	* NEWS:
