@@ -1,3 +1,39 @@
+2009-03-09  Andrew John Hughes  <ahughes@redhat.com>
+
+	* gnu/javax/swing/text/html/css/Selector.java:
+	Use CPStringBuilder.  Use typed list of maps
+	rather than an array for type safety.
+	* javax/swing/text/html/HTMLEditorKit.java,
+	* javax/swing/text/html/HTMLWriter.java:
+	Add generic typing where appropriate.
+	* javax/swing/text/html/ImageView.java:
+	Remove unused AttributeSet variables.
+	* javax/swing/text/html/MinimalHTMLWriter.java:
+	Switch to an ArrayDeque to avoid unnecessary
+	internal synchronisation on a private variable.
+	Add generic typing.
+	* javax/swing/text/html/MultiAttributeSet.java:
+	Add generic typing.
+	* javax/swing/text/html/MultiStyle.java:
+	Add generic typing, make class package-private
+	as not part of the standard classes.
+	* javax/swing/text/html/ObjectView.java,
+	* javax/swing/text/html/StyleSheet.java:
+	Add generic typing.
+	* javax/swing/text/html/TableView.java:
+	Remove unused variable.
+	* javax/swing/tree/DefaultMutableTreeNode.java:
+	Add generic typing, mute warnings where necessary.
+	* javax/swing/tree/FixedHeightLayoutCache.java:
+	Add generic typing.
+	* javax/swing/tree/TreeNode.java:
+	Mute warnings where necessary.
+	* javax/swing/tree/VariableHeightLayoutCache.java,
+	* javax/swing/undo/StateEdit.java,
+	* javax/swing/undo/UndoableEditSupport.java,
+	* org/ietf/jgss/GSSManager.java:
+	Add generic typing.
+
 2009-02-14  Andrew John Hughes  <ahughes@redhat.com>
 
 	* org/omg/CORBA/LocalObject.java,
