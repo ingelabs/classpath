@@ -1,3 +1,37 @@
+2009-03-20  Andrew John Hughes  <ahughes@redhat.com>
+
+	* tools/gnu/classpath/tools/javah/ClassWrapper.java,
+	* tools/gnu/classpath/tools/javah/CniPrintStream.java,
+	* tools/gnu/classpath/tools/javah/CniStubPrinter.java,
+	* tools/gnu/classpath/tools/javah/GcjhMain.java,
+	* tools/gnu/classpath/tools/javah/JniIncludePrinter.java,
+	* tools/gnu/classpath/tools/javah/JniPrintStream.java,
+	* tools/gnu/classpath/tools/javah/JniStubPrinter.java,
+	* tools/gnu/classpath/tools/javah/Keywords.java,
+	* tools/gnu/classpath/tools/javah/Main.java,
+	* tools/gnu/classpath/tools/javah/MethodHelper.java,
+	* tools/gnu/classpath/tools/javah/PathOptionGroup.java:
+	Fix generic issues in gjavah.
+
+2009-03-17  Andrew John Hughes  <ahughes@redhat.com>
+
+	* tools/gnu/classpath/tools/FileSystemClassLoader.java,
+	* tools/gnu/classpath/tools/doclets/xmldoclet/Driver.java,
+	* tools/gnu/classpath/tools/doclets/xmldoclet/Driver1_4.java,
+	* tools/gnu/classpath/tools/doclets/xmldoclet/HtmlRepairer.java,
+	* tools/gnu/classpath/tools/doclets/xmldoclet/TargetContext.java,
+	* tools/gnu/classpath/tools/doclets/xmldoclet/doctranslet/OutputFileInfo.java,
+	* tools/gnu/classpath/tools/gjdoc/ErrorReporter.java,
+	* tools/gnu/classpath/tools/gjdoc/TemporaryStore.java,
+	* tools/gnu/classpath/tools/gjdoc/WritableType.java,
+	* tools/gnu/classpath/tools/taglets/AuthorTaglet.java,
+	* tools/gnu/classpath/tools/taglets/CopyrightTaglet.java,
+	* tools/gnu/classpath/tools/taglets/DeprecatedTaglet.java,
+	* tools/gnu/classpath/tools/taglets/GenericTaglet.java,
+	* tools/gnu/classpath/tools/taglets/SinceTaglet.java,
+	* tools/gnu/classpath/tools/taglets/VersionTaglet.java:
+	Switch to UNIX line endings.
+
 2009-03-17  Andrew John Hughes  <ahughes@redhat.com>
 
 	* tools/com/sun/tools/javadoc/Main.java,

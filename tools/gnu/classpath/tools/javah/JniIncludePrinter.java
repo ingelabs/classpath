@@ -63,7 +63,7 @@ public class JniIncludePrinter
     boolean wroteAny = false;
     for (; klass != null; klass = klass.superClass)
       {
-        Iterator i = klass.fields.iterator();
+        Iterator<?> i = klass.fields.iterator();
         while (i.hasNext())
           {
             FieldNode field = (FieldNode) i.next();
@@ -138,7 +138,7 @@ public class JniIncludePrinter
     out.println("#endif");
     out.println();
 
-    Iterator i = klass.methods.iterator();
+    Iterator<?> i = klass.methods.iterator();
     while (i.hasNext())
       {
         MethodNode method = (MethodNode) i.next();
