@@ -59,7 +59,9 @@ public class JniIncludePrinter
   }
 
   private void writeFields(ClassWrapper klass, JniPrintStream out)
+    throws IOException
   {
+    klass.linkSupers();
     boolean wroteAny = false;
     for (; klass != null; klass = klass.superClass)
       {

@@ -1,3 +1,12 @@
+2009-03-26  Andrew John Hughes  <ahughes@redhat.com>
+
+	PR classpath/39408:
+	* tools/gnu/classpath/tools/javah/ClassWrapper.java:
+	(linkSupers()): Make package-private.
+	* tools/gnu/classpath/tools/javah/JniIncludePrinter.java:
+	(writeFields(ClassWrapper, JniPrintStream)):
+	Link in data from superclass before searching for fields.
+
 2009-03-20  Andrew John Hughes  <ahughes@redhat.com>
 
 	* tools/gnu/classpath/tools/javah/ClassWrapper.java,

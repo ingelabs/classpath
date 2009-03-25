@@ -104,7 +104,7 @@ public class ClassWrapper
     return false;
   }
 
-  private void linkSupers() throws IOException
+  void linkSupers() throws IOException
   {
     if (superName == null)
       {
