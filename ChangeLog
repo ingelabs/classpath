@@ -1,3 +1,7 @@
+2009-03-29  Mark Wielaard  <mark@klomp.org>
+
+	* m4/ac_prog_antlr.m4: Check whether ANTLR_JAR is empty.
+
 2009-03-26  Andrew John Hughes  <ahughes@redhat.com>
 
 	PR classpath/39408:
