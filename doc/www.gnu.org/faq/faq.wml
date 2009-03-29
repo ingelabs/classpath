@@ -202,7 +202,7 @@ service, please write to <a href="mailto:compliance-lab@fsf.org">compliance-lab@
 <faq question="I would like to contribute, where shall I start?">
 <p>See the <a
 href="docs/">documentation page</a>, especially the <a
-href="docs/hacking.html">GNU
+href="docs/cp-hacking.html">GNU
 Classpath Hacker&#x2019;s Guide</a>, and pick up a <createlink name="task" url="tasks.html"> from the list!
 </faq>
 
