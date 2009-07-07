@@ -1,3 +1,10 @@
+2009-07-06  Ludovic Claude  <ludovic.claude@laposte.net>
+
+	PR xml/40653:
+	* gnu/xml/stream/XMLStreamWriterImpl.java:
+	Weaken testing of namespace prefix to match
+	reference implementation and spec.
+	
 2009-07-07  Andrew John Hughes  <ahughes@redhat.com>
 
 	PR classpath/40630
