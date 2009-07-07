@@ -603,7 +603,8 @@ public final class Matcher implements MatchResult
   public MatchResult toMatchResult()
   {
     Matcher snapshot = new Matcher(pattern, input);
-    snapshot.match = (REMatch) match.clone();
+    if (match != null)
+      snapshot.match = (REMatch) match.clone();
     return snapshot;
   }
 

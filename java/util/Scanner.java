@@ -1668,6 +1668,8 @@ public class Scanner
       // the end of input is matched
       {
         tmp2 = this.actBuffer.substring (this.actPos);
+        if (tmp2.length() == 0)
+          tmp2 = null;
         this.lastNextPos = this.actBuffer.length ();
         if (delete)
           {

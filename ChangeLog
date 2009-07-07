@@ -1,5 +1,16 @@
 2009-07-07  Andrew John Hughes  <ahughes@redhat.com>
 
+	PR classpath/40630
+	* java/util/Scanner.java:
+	(myCoreNext(boolean, Pattern)): Set tmp2 to
+	null if the string is empty (i.e. we are at
+	the end of the file).
+	* java/util/regex/Matcher.java:
+	(toMatchResult()): Check that match is non-null
+	before attempting to clone it.
+
+2009-07-07  Andrew John Hughes  <ahughes@redhat.com>
+
 	* java/util/Scanner.java,
 	* java/util/regex/Matcher.java:
 	Replace tab characters with spaces.
