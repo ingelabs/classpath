@@ -1,3 +1,21 @@
+2009-07-08  Chris Burdess  <dog@gnu.org>
+
+	PR xml/40663:
+	* javax/xml/stream/XMLEventFactory.java,
+	* javax/xml/stream/XMLInputFactory.java,
+	* javax/xml/stream/XMLOutputFactory.java,
+	* javax/xml/stream/events/Namespace.java: Update API to match final
+	  version of StAX.
+	* javax/xml/stream/util/ReaderDelegate.java: Removed.
+	* javax/xml/stream/util/StreamReaderDelegate.java: Added (renamed
+	  from ReaderDelegate)
+	* gnu/xml/stream/FilteredStreamReader.java,
+	* gnu/xml/stream/NamespaceImpl.java,
+	* gnu/xml/stream/XIncludeFilter.java,
+	* gnu/xml/stream/XMLEventAllocatorImpl.java,
+	* gnu/xml/stream/XMLEventFactoryImpl.java: Update implementation to
+	  match final version of StAX API.
+	
 2009-07-06  Ludovic Claude  <ludovic.claude@laposte.net>
 
 	PR xml/40653:
