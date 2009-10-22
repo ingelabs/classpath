@@ -1,3 +1,15 @@
+2009-10-22  Andrew Haley  <aph@redhat.com>
+
+	* native/jni/native-lib/cpnet.c (cpnet_addMembership): Fix
+	aliasing warning.
+	(cpnet_dropMembership): Likewise.
+
+2009-10-21  Richard Guenther  <rguenther@suse.de>
+
+	PR cp-tools/39177
+	* tools/gnu/classpath/tools/jar/Creator.java (writeCommandLineEntries):
+	Do not use uninitialized manifest.
+
 2009-08-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* doc/cp-hacking.texinfo (Needed Tools and Libraries): Bump
