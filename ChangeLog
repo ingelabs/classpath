@@ -1,5 +1,15 @@
 2010-01-30  Andrew John Hughes  <ahughes@redhat.com>
 
+	PR classpath/41686
+	* javax/security/auth/kerberos/KerberosTicket.java:
+	Fix formatting.
+	(toString()): Add full implementation.
+	(getSessionKeyType()): Implemented.
+	* javax/security/auth/kerberos/KeyImpl.java:
+	(toString()): Implemented.
+
+2010-01-30  Andrew John Hughes  <ahughes@redhat.com>
+
 	* autogen.sh:
 	Allow libtool 2.* through.
 	* configure.ac:
