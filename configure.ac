@@ -8,6 +8,7 @@ dnl define([AC_CACHE_SAVE], )dnl
 
 AC_INIT([GNU Classpath],[0.99-pre],[classpath@gnu.org],[classpath])
 AC_CONFIG_SRCDIR(java/lang/System.java)
+AC_CONFIG_MACRO_DIR([m4])
 
 AC_CANONICAL_TARGET
 
@@ -36,7 +37,7 @@ AC_SUBST(CLASSPATH_MODULE)
 CLASSPATH_CONVENIENCE="-no-undefined"
 AC_SUBST(CLASSPATH_CONVENIENCE)
 
-AC_PREREQ(2.59)
+AC_PREREQ(2.65)
 AM_INIT_AUTOMAKE([1.9.0 gnu std-options tar-ustar -Wno-portability])
 AC_CONFIG_HEADERS([include/config.h])
 AC_PREFIX_DEFAULT(/usr/local/classpath)
@@ -376,7 +377,7 @@ dnl -----------------------------------------------------------
 AC_PROG_CXX
 dnl Initialize libtool
 AC_DISABLE_STATIC
-AC_PROG_LIBTOOL
+LT_INIT
 AC_PROG_AWK
 AC_PROG_CC
 AM_PROG_CC_C_O
@@ -690,35 +691,26 @@ if test "x${COMPILE_JNI}" = xyes; then
   dnl Check for MSG_NOSIGNAL
   dnl **********************************************************************
   AC_MSG_CHECKING(for MSG_NOSIGNAL)
-  AC_TRY_COMPILE([#include <sys/socket.h>],
-   [ int f = MSG_NOSIGNAL; ],
-   [ AC_MSG_RESULT(yes)
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <sys/socket.h>]], [[ int f = MSG_NOSIGNAL; ]])],[ AC_MSG_RESULT(yes)
      AC_DEFINE(HAVE_MSG_NOSIGNAL, 1,
-     	       [Define this symbol if you have MSG_NOSIGNAL]) ],
-   [ AC_MSG_RESULT(no)]
-  )
+     	       [Define this symbol if you have MSG_NOSIGNAL]) ],[ AC_MSG_RESULT(no)
+  ])
  dnl **********************************************************************
  dnl Check for SO_NOSIGPIPE (Darwin equivalent for MSG_NOSIGNAL)
  dnl **********************************************************************
  AC_MSG_CHECKING(for SO_NOSIGPIPE )
- AC_TRY_COMPILE([#include <sys/socket.h>],
-  [ int f = SO_NOSIGPIPE; ],
-  [ AC_MSG_RESULT(yes)
+ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <sys/socket.h>]], [[ int f = SO_NOSIGPIPE; ]])],[ AC_MSG_RESULT(yes)
     AC_DEFINE(HAVE_SO_NOSIGPIPE, 1,
-    	      [Define this symbol if you have SO_NOSIGPIPE]) ],
-  [ AC_MSG_RESULT(no)]
- )
+    	      [Define this symbol if you have SO_NOSIGPIPE]) ],[ AC_MSG_RESULT(no)
+ ])
   dnl **********************************************************************
   dnl Check for MSG_WAITALL
   dnl **********************************************************************
   AC_MSG_CHECKING(for MSG_WAITALL)
-  AC_TRY_COMPILE([#include <sys/socket.h>],
-   [ int f = MSG_WAITALL; ],
-   [ AC_MSG_RESULT(yes)
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <sys/socket.h>]], [[ int f = MSG_WAITALL; ]])],[ AC_MSG_RESULT(yes)
      AC_DEFINE(HAVE_MSG_WAITALL, 1,
-     	       [Define this symbol if you have MSG_WAITALL]) ],
-   [ AC_MSG_RESULT(no)]
-  )
+     	       [Define this symbol if you have MSG_WAITALL]) ],[ AC_MSG_RESULT(no)
+  ])
 
   dnl Check for plugin support headers and libraries.
   if test "x${COMPILE_PLUGIN}" = xyes; then

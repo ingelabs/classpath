@@ -1,3 +1,15 @@
+2010-01-30  Andrew John Hughes  <ahughes@redhat.com>
+
+	* autogen.sh:
+	Allow libtool 2.* through.
+	* configure.ac:
+	Updated via autoupdate.
+	* m4/lib-ld.m4,
+	* m4/lib-link.m4,
+	* m4/lib-prefix.m4:
+	Drop old libtool macros which
+	result in build failure.
+
 2010-01-12  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/util/zip/Inflater. java (inflate(byte[],int,int)): Fix for #41696.
