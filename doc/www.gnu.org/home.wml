@@ -37,7 +37,12 @@ An up to date view of the current state of GNU Classpath can be
 obtained by looking at these resources.
   <ul>
     <li><createlink url="http://developer.classpath.org/mediation/ClasspathOpenTasks" name="Task descriptions"></li>
-    <li>GNU Classpath vs: <createlink url="http://builder.classpath.org/japi/jdk14-classpath.html" name="JDK 1.4"> <createlink url="http://builder.classpath.org/japi/jdk15-classpath.html" name="JDK 1.5"> (updated ~3 times a day)</li>
+    <li>GNU Classpath vs:
+    <createlink url="http://builder.classpath.org/japi/jdk14-classpath.html" name="JDK 1.4">
+    <createlink url="http://builder.classpath.org/japi/jdk15-classpath.html" name="JDK 1.5">
+    <createlink url="http://builder.classpath.org/japi/openjdk6-classpath.html" name="OpenJDK/IcedTea6">
+    <createlink url="http://builder.classpath.org/japi/openjdk7-classpath.html" name="OpenJDK/IcedTea7">
+     (updated ~3 times a day)</li>
     <li>GNU Classpath <createlink url="http://builder.classpath.org/mauve/mauvereport.cgi" name="Mauve Results"></li>
   </ul>
 </p>
