@@ -147,14 +147,16 @@ public final class IppUtilities
 {
   // These are reused in the reflection code to not instantiate an array everytime
   private static Object[] INTEGER_ATT_VALUE = new Object[1];
-  private static Class[] INTEGER_CLASS_ARRAY = new Class[] {int.class};
+  private static Class<?>[] INTEGER_CLASS_ARRAY = new Class[] {int.class};
   private static Object[] TEXT_ATT_VALUE = new Object[2];
-  private static Class[] TEXT_CLASS_ARRAY = new Class[] {String.class, Locale.class};
+  private static Class<?>[] TEXT_CLASS_ARRAY = new Class[] {String.class, Locale.class};
 
   // The map -> Attribute name to Attribute class
-  private static HashMap classesByName = new HashMap();
+  private static HashMap<String,Class<? extends Attribute>> classesByName =
+                                                new HashMap<String,Class<? extends Attribute>>();
   // The map -> StandardAttribute class to SupportedAttribute category name
-  private static HashMap instanceByClass = new HashMap();
+  private static HashMap<Class<? extends Attribute>,SupportedValuesAttribute> instanceByClass =
+                                         new HashMap<Class<? extends Attribute>,SupportedValuesAttribute>();
 
   /**
    * All the currently needed attributes
@@ -312,9 +314,9 @@ public final class IppUtilities
    * @param name the attribute name
    * @return The <code>Class</code> object.
    */
-  public static Class getClass(String name)
+  public static Class<? extends Attribute> getClass(String name)
   {
-    return (Class) classesByName.get(name);
+    return classesByName.get(name);
   }
 
   /**
@@ -324,9 +326,9 @@ public final class IppUtilities
    * @param clazz the standard attribute category
    * @return The name of the supported attribute category.
    */
-  public static String getSupportedAttrName(Class clazz)
+  public static String getSupportedAttrName(Class<? extends Attribute> clazz)
   {
-    return ((SupportedValuesAttribute) instanceByClass.get(clazz)).getName();
+    return instanceByClass.get(clazz).getName();
   }
 
   /**
@@ -336,9 +338,9 @@ public final class IppUtilities
    * @param clazz the standard attribute category
    * @return The supported attribute category.
    */
-  public static Class getSupportedCategory(Class clazz)
+  public static Class<? extends Attribute> getSupportedCategory(Class<? extends Attribute> clazz)
   {
-    return ((SupportedValuesAttribute) instanceByClass.get(clazz)).getCategory();
+    return instanceByClass.get(clazz).getCategory();
   }
 
   /**
@@ -387,7 +389,7 @@ public final class IppUtilities
    */
   public static Attribute getEnumAttribute(String name, Object value)
   {
-    Class attrClass = getClass(name);
+    Class<?> attrClass = getClass(name);
 
     // There might be unknown enums we have no mapped class for
     if (attrClass ==  null)
@@ -439,7 +441,7 @@ public final class IppUtilities
    */
   public static Attribute getIntegerAttribute(String name, int value)
   {
-    Class attrClass = getClass(name);
+    Class<?> attrClass = getClass(name);
 
     // There might be unknown attributes we have no mapped class for
     if (attrClass ==  null)
@@ -447,8 +449,8 @@ public final class IppUtilities
 
     try
       {
-        INTEGER_ATT_VALUE[0] = new Integer(value);
-        Constructor c = attrClass.getDeclaredConstructor(INTEGER_CLASS_ARRAY);
+        INTEGER_ATT_VALUE[0] = Integer.valueOf(value);
+        Constructor<?> c = attrClass.getDeclaredConstructor(INTEGER_CLASS_ARRAY);
         return (Attribute) c.newInstance(INTEGER_ATT_VALUE);
       }
     catch (SecurityException e)
@@ -514,7 +516,7 @@ public final class IppUtilities
         TEXT_ATT_VALUE[1] = locale;
       }
 
-    Class attrClass = getClass(name);
+    Class<?> attrClass = getClass(name);
 
     // There might be unknown attributes we have no mapped class for
     if (attrClass ==  null)
@@ -522,7 +524,7 @@ public final class IppUtilities
 
     try
       {
-        Constructor c = attrClass.getDeclaredConstructor(TEXT_CLASS_ARRAY);
+        Constructor<?> c = attrClass.getDeclaredConstructor(TEXT_CLASS_ARRAY);
         return (Attribute) c.newInstance(TEXT_ATT_VALUE);
       }
     catch (SecurityException e)

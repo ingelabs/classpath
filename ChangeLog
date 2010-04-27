@@ -1,3 +1,18 @@
+2010-04-28  Andrew John Hughes  <ahughes@redhat.com>
+
+	* gnu/javax/print/ipp/IppUtilities.java:
+	(INTEGER_CLASS_ARRAY): Use generic typing.
+	(TEXT_CLASS_ARRAY): Likewise.
+	(classesByName): Likewise.
+	(instanceByClass): Likewise.
+	(getClass(String)): Remove cast.  Return generic type.
+	(getSupportedAttrName(Class<? extends Attribute>)): Remove cast.
+	Add generic type to parameter.
+	(getSupportedCategory(Class<?> extends Attribute>)): Likewise.
+	(getEnumAttribute(String,Object)): Add missing generic types on Class.
+	(getIntegerAttribute(String,int)): Likewise and on Constructor.
+	(getTextAttribute(String,byte,byte[])): Likewise.
+
 2010-04-27  Andrew John Hughes  <ahughes@redhat.com>
 
 	* gnu/javax/print/ipp/IppRequest.java:
