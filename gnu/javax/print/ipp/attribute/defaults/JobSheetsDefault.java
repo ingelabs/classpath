@@ -87,7 +87,7 @@ public final class JobSheetsDefault extends TextSyntax
    *
    * @return The class <code>JobSheetsDefault</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return JobSheetsDefault.class;
   }

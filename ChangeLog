@@ -1,5 +1,84 @@
 2010-04-27  Andrew John Hughes  <ahughes@redhat.com>
 
+	* gnu/javax/print/ipp/IppRequest.java:
+	(write(RequestedAttributes)): Fix for change in return value
+	of RequestedAttributes.getValues().
+	* gnu/javax/print/ipp/attribute/DetailedStatusMessage.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/DocumentAccessError.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/RequestedAttributes.java:
+	(RequestedAttributes()): Use appropriate generic type with attributes
+	ArrayList.
+	(getValues()): Return an array-based snapshot of the current state of
+	attributes rather than providing direct mutable access to it.
+	* gnu/javax/print/ipp/attribute/StatusMessage.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/UnknownAttribute.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/defaults/CopiesDefault.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/defaults/DocumentFormatDefault.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/defaults/FinishingsDefault.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/defaults/JobHoldUntilDefault.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/defaults/JobPriorityDefault.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/defaults/JobSheetsDefault.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/defaults/MediaDefault.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/defaults/MultipleDocumentHandlingDefault.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/defaults/NumberUpDefault.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/defaults/OrientationRequestedDefault.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/defaults/PrintQualityDefault.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/defaults/PrinterResolutionDefault.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/defaults/SidesDefault.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/job/AttributesCharset.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/job/AttributesNaturalLanguage.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/job/JobDetailedStatusMessages.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/job/JobDocumentAccessErrors.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/job/JobId.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/job/JobMoreInfo.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/job/JobPrinterUri.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/job/JobStateMessage.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/job/JobUri.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/printer/CharsetConfigured.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/printer/DocumentFormat.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/printer/MultipleOperationTimeOut.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/printer/NaturalLanguageConfigured.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/printer/PrinterCurrentTime.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/printer/PrinterDriverInstaller.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/printer/PrinterStateMessage.java:
+	(getCategory()): Fix return value.
+	* gnu/javax/print/ipp/attribute/printer/PrinterUpTime.java:
+	(getCategory()): Fix return value.
+
+2010-04-27  Andrew John Hughes  <ahughes@redhat.com>
+
 	* gnu/javax/print/CupsIppOperation.java,
 	* gnu/javax/print/CupsMediaMapping.java,
 	* gnu/javax/print/CupsPrintService.java,

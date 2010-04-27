@@ -77,7 +77,7 @@ public final class UnknownAttribute implements Attribute
    *
    * @return The class <code>UnknownAttribute</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return UnknownAttribute.class;
   }

@@ -74,7 +74,7 @@ public final class DetailedStatusMessage extends TextSyntax
    *
    * @return The class <code>DetailedStatusMessage</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return DetailedStatusMessage.class;
   }

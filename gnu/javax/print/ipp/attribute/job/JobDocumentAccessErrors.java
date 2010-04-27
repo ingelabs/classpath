@@ -74,7 +74,7 @@ public final class JobDocumentAccessErrors
    *
    * @return The class <code>JobDocumentAccessErrors</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return JobDocumentAccessErrors.class;
   }

@@ -40,6 +40,7 @@ package gnu.javax.print.ipp.attribute.printer;
 
 import java.util.Date;
 
+import javax.print.attribute.Attribute;
 import javax.print.attribute.DateTimeSyntax;
 import javax.print.attribute.PrintServiceAttribute;
 
@@ -88,7 +89,7 @@ public final class PrinterCurrentTime extends DateTimeSyntax
    *
    * @return The class <code>PrinterCurrentTime</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return PrinterCurrentTime.class;
   }

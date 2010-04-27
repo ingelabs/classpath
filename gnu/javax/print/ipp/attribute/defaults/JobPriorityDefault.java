@@ -90,7 +90,7 @@ public final class JobPriorityDefault extends IntegerSyntax
    *
    * @return The class <code>JobPriorityDefault</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return JobPriorityDefault.class;
   }

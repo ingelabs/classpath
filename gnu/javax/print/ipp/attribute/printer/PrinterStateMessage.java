@@ -40,6 +40,7 @@ package gnu.javax.print.ipp.attribute.printer;
 
 import java.util.Locale;
 
+import javax.print.attribute.Attribute;
 import javax.print.attribute.PrintServiceAttribute;
 import javax.print.attribute.TextSyntax;
 
@@ -75,7 +76,7 @@ public final class PrinterStateMessage extends TextSyntax
    *
    * @return The class <code>PrinterStateMessage</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return PrinterStateMessage.class;
   }

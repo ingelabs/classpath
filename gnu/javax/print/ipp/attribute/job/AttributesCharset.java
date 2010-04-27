@@ -76,7 +76,7 @@ public final class AttributesCharset extends CharsetSyntax
    *
    * @return The class <code>AttributesCharset</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return AttributesCharset.class;
   }

@@ -76,7 +76,7 @@ public final class MediaDefault extends TextSyntax
    *
    * @return The class <code>MediaDefault</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return MediaDefault.class;
   }

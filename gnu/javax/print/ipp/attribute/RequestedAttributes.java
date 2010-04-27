@@ -53,7 +53,7 @@ import javax.print.attribute.Attribute;
  */
 public final class RequestedAttributes implements Attribute
 {
-  private ArrayList attributes;
+  private ArrayList<String> attributes;
 
   /**
    * Creates a <code>RequestedAttributes</code> object with
@@ -68,7 +68,7 @@ public final class RequestedAttributes implements Attribute
     if (value == null)
       throw new NullPointerException();
 
-    attributes = new ArrayList();
+    attributes = new ArrayList<String>();
     attributes.add(value);
   }
 
@@ -87,9 +87,9 @@ public final class RequestedAttributes implements Attribute
    *
    * @return The values as list.
    */
-  public List getValues()
+  public String[] getValues()
   {
-    return attributes;
+    return attributes.toArray(new String[attributes.size()]);
   }
 
   /**
@@ -97,7 +97,7 @@ public final class RequestedAttributes implements Attribute
    *
    * @return The class <code>DocumentFormat</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return RequestedAttributes.class;
   }

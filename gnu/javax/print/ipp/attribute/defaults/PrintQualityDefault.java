@@ -81,7 +81,7 @@ public final class PrintQualityDefault extends EnumSyntax
    *
    * @return The class <code>PrintQualityDefault</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return PrintQualityDefault.class;
   }

@@ -204,7 +204,7 @@ public final class FinishingsDefault extends EnumSyntax
    *
    * @return the class <code>FinishingsDefault</code> itself
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return FinishingsDefault.class;
   }

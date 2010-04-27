@@ -101,7 +101,7 @@ public final class SidesDefault extends EnumSyntax
    *
    * @return The class <code>SidesDefault</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return SidesDefault.class;
   }

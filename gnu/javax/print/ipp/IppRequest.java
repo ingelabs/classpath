@@ -380,21 +380,21 @@ public class IppRequest
      */
     private void write(RequestedAttributes attribute) throws IOException
     {
-      List values = attribute.getValues();
+      String[] values = attribute.getValues();
 
       String name = ((Attribute) attribute).getName();
       out.writeByte(IppValueTag.KEYWORD);
       out.writeShort(name.length());
       out.write(name.getBytes());
-      out.writeShort(((String) values.get(0)).length());
-      out.write(((String) values.get(0)).getBytes());
+      out.writeShort(values[0].length());
+      out.write(values[0].getBytes());
 
-      for (int i=1; i < values.size(); i++)
+      for (int i=1; i < values.length; i++)
         {
           out.writeByte(IppValueTag.KEYWORD);
           out.writeShort(0x0000); // length for additional value
-          out.writeShort(((String) values.get(i)).length());
-          out.write(((String) values.get(i)).getBytes());
+          out.writeShort(values[i].length());
+          out.write(values[i].getBytes());
         }
     }
 

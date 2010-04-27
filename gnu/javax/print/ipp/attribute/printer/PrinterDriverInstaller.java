@@ -70,7 +70,7 @@ public final class PrinterDriverInstaller extends URISyntax
    *
    * @return The class <code>PrinterDriverInstaller</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return PrinterDriverInstaller.class;
   }

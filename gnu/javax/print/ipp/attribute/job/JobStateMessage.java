@@ -73,7 +73,7 @@ public final class JobStateMessage
    *
    * @return The class <code>JobStateMessage</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return JobStateMessage.class;
   }

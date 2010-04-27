@@ -69,7 +69,7 @@ public final class JobId extends IntegerSyntax implements Attribute
    *
    * @return The class <code>JobId</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return JobId.class;
   }

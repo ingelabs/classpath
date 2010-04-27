@@ -77,7 +77,7 @@ public final class DocumentFormatDefault extends TextSyntax
    *
    * @return The class <code>DocumentFormatDefault</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return DocumentFormatDefault.class;
   }

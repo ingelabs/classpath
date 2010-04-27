@@ -68,7 +68,7 @@ public final class CharsetConfigured extends CharsetSyntax
    *
    * @return The class <code>CharsetConfigured</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return CharsetConfigured.class;
   }

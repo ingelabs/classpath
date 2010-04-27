@@ -94,7 +94,7 @@ public final class OrientationRequestedDefault extends EnumSyntax
    *
    * @return The class <code>OrientationRequestedDefault</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return OrientationRequestedDefault.class;
   }

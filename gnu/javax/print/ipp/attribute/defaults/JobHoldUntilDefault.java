@@ -119,7 +119,7 @@ public final class JobHoldUntilDefault extends TextSyntax
    *
    * @return The class <code>JobHoldUntilDefault</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return JobHoldUntilDefault.class;
   }

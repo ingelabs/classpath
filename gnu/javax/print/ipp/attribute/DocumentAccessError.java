@@ -74,7 +74,7 @@ public final class DocumentAccessError extends TextSyntax
    *
    * @return The class <code>DocumentAccessError</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return DocumentAccessError.class;
   }

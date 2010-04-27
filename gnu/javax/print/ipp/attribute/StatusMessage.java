@@ -73,7 +73,7 @@ public final class StatusMessage extends TextSyntax implements Attribute
    *
    * @return The class <code>StatusMessage</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return StatusMessage.class;
   }

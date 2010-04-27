@@ -78,7 +78,7 @@ public final class AttributesNaturalLanguage extends NaturalLanguageSyntax
    *
    * @return The class <code>AttributesNaturalLanguage</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return AttributesNaturalLanguage.class;
   }

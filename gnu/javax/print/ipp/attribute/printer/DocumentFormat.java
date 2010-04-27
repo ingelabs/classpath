@@ -41,6 +41,7 @@ package gnu.javax.print.ipp.attribute.printer;
 import java.util.Locale;
 
 import javax.print.DocFlavor;
+import javax.print.attribute.Attribute;
 import javax.print.attribute.SupportedValuesAttribute;
 import javax.print.attribute.TextSyntax;
 
@@ -92,7 +93,7 @@ public final class DocumentFormat extends TextSyntax
    *
    * @return The class <code>DocumentFormat</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return DocumentFormat.class;
   }

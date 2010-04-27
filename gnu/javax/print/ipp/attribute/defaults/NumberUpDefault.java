@@ -85,7 +85,7 @@ public final class NumberUpDefault extends IntegerSyntax
    *
    * @return The class <code>NumberUpDefault</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return NumberUpDefault.class;
   }

@@ -68,7 +68,7 @@ public final class MultipleOperationTimeOut extends IntegerSyntax
    *
    * @return The class <code>MultipleOperationTimeOut</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return MultipleOperationTimeOut.class;
   }

@@ -89,7 +89,7 @@ public final class CopiesDefault extends IntegerSyntax
    *
    * @return The class <code>CopiesDefault</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return CopiesDefault.class;
   }

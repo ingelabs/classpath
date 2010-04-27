@@ -69,7 +69,7 @@ public final class JobUri extends URISyntax implements Attribute
    *
    * @return The class <code>JobUri</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return JobUri.class;
   }

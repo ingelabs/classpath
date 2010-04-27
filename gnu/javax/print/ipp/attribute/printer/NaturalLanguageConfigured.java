@@ -68,7 +68,7 @@ public final class NaturalLanguageConfigured extends NaturalLanguageSyntax
    *
    * @return The class <code>NaturalLanguageConfigured</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return NaturalLanguageConfigured.class;
   }

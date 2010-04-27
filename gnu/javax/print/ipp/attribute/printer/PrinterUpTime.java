@@ -68,7 +68,7 @@ public final class PrinterUpTime extends IntegerSyntax
    *
    * @return The class <code>PrinterUpTime</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return PrinterUpTime.class;
   }

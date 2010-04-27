@@ -90,7 +90,7 @@ public final class PrinterResolutionDefault extends ResolutionSyntax
    *
    * @return The class <code>PrinterResolutionDefault</code> itself.
    */
-  public Class getCategory()
+  public Class<? extends Attribute> getCategory()
   {
     return PrinterResolutionDefault.class;
   }
