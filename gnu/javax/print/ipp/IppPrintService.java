@@ -1,4 +1,4 @@
-/* IppPrintService.java -- 
+/* IppPrintService.java --
    Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -130,137 +130,137 @@ import javax.print.event.PrintServiceAttributeListener;
 /**
  * Implementation of the PrintService interface
  * for IPP based printers.
- * 
+ *
  * @author Wolfgang Baer (WBaer@gmx.de)
  */
 public class IppPrintService implements PrintService
 {
-  /** 
+  /**
    * A Map with sets of attributes.
    * key: A attribute category
    * value: A set with values
-   * 
+   *
    * IPP may return sets of attributes e.g. for supported
    * compression methods so we need to map to sets here.
    */
-  private Map printerAttr;
-    
+  private Map<Class<? extends Attribute>, Set<? extends Attribute>> printerAttr;
+
   /** The set of listeners.*/
   private HashSet printServiceAttributeListener;
-  
+
   /** The username. */
   private transient String user;
-  
+
   /** The password of the user. */
   private transient String passwd;
-  
+
   /** The name of this print service. */
   private String name;
-  
+
   /** The list of supported document flavors. */
   private List flavors;
-  
+
   /** The standard printer URI. */
   private PrinterURI printerUri;
-  
+
   /** The list of all supported printer URIs. */
   private ArrayList printerUris;
-    
+
   /**
    * Logger for tracing - enable by passing
    * -Dgnu.classpath.debug.components=ipp to the vm.
    */
   static final Logger logger = SystemLogger.SYSTEM;
-  
-  /** 
+
+  /**
    * requesting-user-name defaults to the executing user.
    */
   public static final RequestingUserName REQUESTING_USER_NAME;
-  
-  /** 
+
+  /**
    * job-name defaults to "Java Printing".
    */
   public static final JobName JOB_NAME;
-  
+
   static
   {
     JOB_NAME = new JobName("Java Printing", null);
     REQUESTING_USER_NAME = new RequestingUserName(
-      SystemProperties.getProperty("user.name", ""), null);    
+      SystemProperties.getProperty("user.name", ""), null);
   }
-  
+
   // TODO Implement service listener notification and change detection.
-  
+
   /**
    * Creates a <code>IppPrintService</code> object.
-   * 
+   *
    * @param uri the URI of the IPP printer.
    * @param username the user of this print service.
    * @param password the password of the user.
-   * 
+   *
    * @throws IppException if an error during connection occurs.
    */
-  public IppPrintService(URI uri, String username, String password) 
+  public IppPrintService(URI uri, String username, String password)
     throws IppException
   {
     printerUri = new PrinterURI(uri);
     user = username;
     passwd = password;
-    
+
     printServiceAttributeListener = new HashSet();
-        
+
     printerAttr = getPrinterAttributes();
     processResponse();
   }
-  
+
   /**
    * Fetches all printer attributes from the IPP printer.
-   * 
+   *
    * @return The Map with the printer attributes.
    * @throws IppException if an error occurs.
    */
   private Map getPrinterAttributes() throws IppException
   {
     IppResponse response = null;
-    
+
     try
       {
-        IppRequest request = new IppRequest(printerUri.getURI(), user, passwd);    
-        
+        IppRequest request = new IppRequest(printerUri.getURI(), user, passwd);
+
         int operation = OperationsSupported.GET_PRINTER_ATTRIBUTES.getValue();
-        request.setOperationID((short) operation);        
-        request.setOperationAttributeDefaults();  
+        request.setOperationID((short) operation);
+        request.setOperationAttributeDefaults();
         request.addOperationAttribute(printerUri);
-        
+
         response = request.send();
-      }   
+      }
     catch (IOException e)
       {
         throw new IppException("IOException in IPP request/response.", e);
-      }   
-     
-    return (Map) response.getPrinterAttributes().get(0);   
+      }
+
+    return (Map) response.getPrinterAttributes().get(0);
   }
-  
+
   /**
-   * Extracts the set of attribute values for a given 
+   * Extracts the set of attribute values for a given
    * attribute category from the printer attributes map.
-   * 
+   *
    * @param attributeClass the category
    * @return The set of attributes of the category.
    */
-  private Set getPrinterAttributeSet(Class attributeClass)
+  private Set getPrinterAttributeSet(Class<? extends Attribute> attributeClass)
   {
     return (Set) printerAttr.get(attributeClass);
   }
-  
+
   /**
-   * Extracts the default attribute value for the given 
+   * Extracts the default attribute value for the given
    * default attribute category from the printer attributes map.
-   * 
+   *
    * @param attributeClass the category
    * @return The default attribute.
-   * 
+   *
    * @throws ClassCastException if attributClass is not an
    * instance of <code>DefaultValueAttribute</code>.
    */
@@ -269,7 +269,7 @@ public class IppPrintService implements PrintService
     Set set = (Set) printerAttr.get(attributeClass);
     return ((DefaultValueAttribute) set.toArray()[0]).getAssociatedAttribute();
   }
-  
+
   /**
    * Processes the response, sorts and splits the attributes.
    */
@@ -279,11 +279,11 @@ public class IppPrintService implements PrintService
     PrinterName[] tmp = (PrinterName[]) getPrinterAttributeSet(
                          PrinterName.class).toArray(new PrinterName[1]);
     name = tmp[0].getValue();
-    
+
     // supported flavors
     // TODO Check if charsets-supported are charsets that are actually supported
     // for text doc flavors as cups doesn't send charset parameters
-    
+
     // utf-8 is supported at least - so we go with this only for now
     flavors = new ArrayList();
     Set flavorAttributes = getPrinterAttributeSet(DocumentFormatSupported.class);
@@ -292,13 +292,13 @@ public class IppPrintService implements PrintService
         for (Iterator it = flavorAttributes.iterator(); it.hasNext();)
           {
             String mimeType = ((DocumentFormatSupported) it.next()).getValue();
-                        
+
             if (mimeType.equals("text/plain"))
               {
                 flavors.add(DocFlavor.CHAR_ARRAY.TEXT_PLAIN);
                 flavors.add(DocFlavor.READER.TEXT_PLAIN);
                 flavors.add(DocFlavor.STRING.TEXT_PLAIN);
-                
+
                 // add utf-8
                 mimeType = mimeType + "; charset=utf-8";
               }
@@ -307,11 +307,11 @@ public class IppPrintService implements PrintService
                 flavors.add(DocFlavor.CHAR_ARRAY.TEXT_HTML);
                 flavors.add(DocFlavor.READER.TEXT_HTML);
                 flavors.add(DocFlavor.STRING.TEXT_HTML);
-                
+
                 // add utf-8
                 mimeType = mimeType + "; charset=utf-8";
               }
-            
+
             // Process the predefined DocFlavors and if mimetype is
             // equal put them into the flavors array - otherwise
             // just build them as binarie class representation.
@@ -320,8 +320,8 @@ public class IppPrintService implements PrintService
               {
                 Class[] clazzes = new Class[] { DocFlavor.BYTE_ARRAY.class,
                                                 DocFlavor.INPUT_STREAM.class,
-                                                DocFlavor.URL.class };                
-                 
+                                                DocFlavor.URL.class };
+
                 for (int j = 0; j < clazzes.length; j++)
                   {
                     Field[] fields = clazzes[j].getDeclaredFields();
@@ -336,7 +336,7 @@ public class IppPrintService implements PrintService
                       }
                   }
                 if (!changed) // not in predefined constants of DocFlavor
-                  {                    
+                  {
                     // everything should be supported as binary stuff
                     flavors.add(new DocFlavor(mimeType, "[B"));
                     flavors.add(new DocFlavor(mimeType, "java.io.InputStream"));
@@ -357,14 +357,14 @@ public class IppPrintService implements PrintService
               }
           }
 
-	if (this.getClass()
-	    .isAssignableFrom(gnu.javax.print.CupsPrintService.class))
-	  {
-// 	    CUPS always provides filters to convert from Postscript.
-//  	    This logic looks odd, but it's what OpenJDK does.
-	    flavors.add(DocFlavor.SERVICE_FORMATTED.PAGEABLE);
-	    flavors.add(DocFlavor.SERVICE_FORMATTED.PRINTABLE);
-	  }
+        if (this.getClass()
+            .isAssignableFrom(gnu.javax.print.CupsPrintService.class))
+          {
+//          CUPS always provides filters to convert from Postscript.
+//          This logic looks odd, but it's what OpenJDK does.
+            flavors.add(DocFlavor.SERVICE_FORMATTED.PAGEABLE);
+            flavors.add(DocFlavor.SERVICE_FORMATTED.PRINTABLE);
+          }
       }
 
     // printer uris
@@ -380,14 +380,14 @@ public class IppPrintService implements PrintService
 
   /**
    * We always return a implementation implementing CancelablePrintJob.
-   * 
+   *
    * @see javax.print.PrintService#createPrintJob()
    */
   public DocPrintJob createPrintJob()
   {
     return new DocPrintJobImpl(this, user, passwd);
   }
-  
+
 
   /**
    * @see javax.print.PrintService#getAttribute(java.lang.Class)
@@ -396,15 +396,15 @@ public class IppPrintService implements PrintService
   {
     if (category == null)
       throw new NullPointerException("category may not be null");
-    
+
     if (! PrintServiceAttribute.class.isAssignableFrom(category))
       throw new IllegalArgumentException(
          "category must be of type PrintServiceAttribute");
-    
+
     Set set = getPrinterAttributeSet(category);
-    if (set != null && set.size() > 0)     
+    if (set != null && set.size() > 0)
         return (PrintServiceAttribute) set.toArray()[0];
-        
+
     return null;
   }
 
@@ -414,10 +414,10 @@ public class IppPrintService implements PrintService
   public PrintServiceAttributeSet getAttributes()
   {
     PrintServiceAttributeSet set = new HashPrintServiceAttributeSet();
-    
+
     Iterator it = printerAttr.values().iterator();
     while (it.hasNext())
-      {        
+      {
         Iterator it2 = ((Set) it.next()).iterator();
         while (it2.hasNext())
           {
@@ -426,7 +426,7 @@ public class IppPrintService implements PrintService
               set.add(attr);
           }
       }
-    
+
     return AttributeSetUtilities.unmodifiableView(set);
   }
 
@@ -434,61 +434,61 @@ public class IppPrintService implements PrintService
    * @see javax.print.PrintService#getDefaultAttributeValue(java.lang.Class)
    */
   public Object getDefaultAttributeValue(Class category)
-  { 
+  {
     // required attributes
     if (category.equals(Fidelity.class))
-      return Fidelity.FIDELITY_FALSE;    
+      return Fidelity.FIDELITY_FALSE;
     if (category.equals(JobName.class))
       return JOB_NAME;
     if (category.equals(RequestingUserName.class))
       return REQUESTING_USER_NAME;
-    
+
     // optional attributes
-    if (category.equals(JobPriority.class) 
+    if (category.equals(JobPriority.class)
         && printerAttr.containsKey(JobPriorityDefault.class))
       return getPrinterDefaultAttribute(JobPriorityDefault.class);
-    if (category.equals(JobHoldUntil.class) 
+    if (category.equals(JobHoldUntil.class)
         && printerAttr.containsKey(JobHoldUntilDefault.class))
       return getPrinterDefaultAttribute(JobHoldUntilDefault.class);
-    if (category.equals(JobSheets.class) 
+    if (category.equals(JobSheets.class)
         && printerAttr.containsKey(JobSheetsDefault.class))
       return getPrinterDefaultAttribute(JobSheetsDefault .class);
-    if (category.equals(MultipleDocumentHandling.class) 
+    if (category.equals(MultipleDocumentHandling.class)
         && printerAttr.containsKey(MultipleDocumentHandlingDefault.class))
       return getPrinterDefaultAttribute(MultipleDocumentHandlingDefault.class);
-    if (category.equals(Copies.class) 
+    if (category.equals(Copies.class)
         && printerAttr.containsKey(CopiesDefault.class))
       return getPrinterDefaultAttribute(CopiesDefault.class);
-    if (category.equals(Finishings.class) 
+    if (category.equals(Finishings.class)
         && printerAttr.containsKey(FinishingsDefault.class))
       return getPrinterDefaultAttribute(FinishingsDefault.class);
-    if (category.equals(Sides.class) 
+    if (category.equals(Sides.class)
         && printerAttr.containsKey(SidesDefault.class))
       return getPrinterDefaultAttribute(SidesDefault.class);
-    if (category.equals(NumberUp.class) 
+    if (category.equals(NumberUp.class)
         && printerAttr.containsKey(NumberUpDefault.class))
       return getPrinterDefaultAttribute(NumberUpDefault.class);
-    if (category.equals(OrientationRequested.class) 
+    if (category.equals(OrientationRequested.class)
         && printerAttr.containsKey(OrientationRequestedDefault.class))
       return getPrinterDefaultAttribute(OrientationRequestedDefault.class);
-    if (category.equals(Media.class) 
+    if (category.equals(Media.class)
         && printerAttr.containsKey(MediaDefault.class))
       return getPrinterDefaultAttribute(MediaDefault.class);
-    if (category.equals(PrinterResolution.class) 
+    if (category.equals(PrinterResolution.class)
         && printerAttr.containsKey(PrinterResolutionDefault.class))
       return getPrinterDefaultAttribute(PrinterResolutionDefault.class);
-    if (category.equals(PrintQuality.class) 
+    if (category.equals(PrintQuality.class)
         && printerAttr.containsKey(PrintQualityDefault.class))
       return getPrinterDefaultAttribute(PrintQualityDefault.class);
-    if (category.equals(Compression.class) 
+    if (category.equals(Compression.class)
         && printerAttr.containsKey(CompressionSupported.class))
       return Compression.NONE;
     if (category.equals(PageRanges.class))
       return new PageRanges(1, Integer.MAX_VALUE);
 
-    return null; 
+    return null;
   }
-  
+
   /**
    * We return the value of <code>PrinterName</code> here.
    * @see javax.print.PrintService#getName()
@@ -506,7 +506,7 @@ public class IppPrintService implements PrintService
   {
     // SUN does not provide any service factory for
     // print services (tested on linux/windows)
-    
+
     // for the moment we do the same - just return null
     // later on we could provide at least the about UI dialog
     return null;
@@ -518,8 +518,8 @@ public class IppPrintService implements PrintService
   public Class[] getSupportedAttributeCategories()
   {
     Set categories = new HashSet();
-    
-    // Should only be job template attributes as of section 4.2    
+
+    // Should only be job template attributes as of section 4.2
     if (printerAttr.containsKey(JobPrioritySupported.class))
       categories.add(JobPriority.class);
     if (printerAttr.containsKey(JobHoldUntilSupported.class))
@@ -527,14 +527,14 @@ public class IppPrintService implements PrintService
     if (printerAttr.containsKey(JobSheetsSupported.class))
       categories.add(JobSheets.class);
     if (printerAttr.containsKey(MultipleDocumentHandlingSupported.class))
-      categories.add(MultipleDocumentHandling.class);    
+      categories.add(MultipleDocumentHandling.class);
     if (printerAttr.containsKey(CopiesSupported.class))
       categories.add(Copies.class);
     if (printerAttr.containsKey(FinishingsSupported.class))
       {
         // if only none finishing is supported - it does not count as supported
-        Set set = getPrinterAttributeSet(FinishingsSupported.class);        
-        if (! (set.size() == 1 && set.contains(FinishingsSupported.NONE)))          
+        Set set = getPrinterAttributeSet(FinishingsSupported.class);
+        if (! (set.size() == 1 && set.contains(FinishingsSupported.NONE)))
           categories.add(Finishings.class);
       }
     if (printerAttr.containsKey(PageRangesSupported.class))
@@ -551,11 +551,11 @@ public class IppPrintService implements PrintService
       categories.add(PrinterResolution.class);
     if (printerAttr.containsKey(PrintQualitySupported.class))
       categories.add(PrintQuality.class);
-      
-    // Chromaticity, Destination, MediaPrintableArea, 
+
+    // Chromaticity, Destination, MediaPrintableArea,
     // SheetCollate, PresentationDirection - not IPP attributes
-    
-    // attributes outside section 4.2   
+
+    // attributes outside section 4.2
     if (printerAttr.containsKey(CompressionSupported.class))
       categories.add(Compression.class);
     if (printerAttr.containsKey(JobImpressionsSupported.class))
@@ -564,7 +564,7 @@ public class IppPrintService implements PrintService
       categories.add(JobKOctets.class);
     if (printerAttr.containsKey(JobMediaSheetsSupported.class))
       categories.add(JobMediaSheets.class);
-    
+
     // always supported as required by IPP specification
     categories.add(Fidelity.class);
     categories.add(JobName.class);
@@ -578,7 +578,7 @@ public class IppPrintService implements PrintService
    * attribute values totally different may override this methods. Subclass only in
    * need of handling the response differently may override the method
    * <code>handleSupportedAttributeValuesResponse(IppResponse, Class)</code> only.
-   * 
+   *
    * @see PrintService#getSupportedAttributeValues(Class, DocFlavor, AttributeSet)
    * @see #handleSupportedAttributeValuesResponse(IppResponse, Class)
    */
@@ -620,7 +620,7 @@ public class IppPrintService implements PrintService
         request.setOperationAttributeDefaults();
         request.addOperationAttribute(new RequestedAttributes(categoryName));
         request.addOperationAttribute(printerUri);
-        
+
         if (flavor != null)
           {
             DocumentFormat f = DocumentFormat.createDocumentFormat(flavor);
@@ -628,7 +628,7 @@ public class IppPrintService implements PrintService
           }
 
         response = request.send();
-        
+
         int status = response.getStatusCode();
         if (! (status == IppStatusCode.SUCCESSFUL_OK
              || status == IppStatusCode.SUCCESSFUL_OK_IGNORED_OR_SUBSTITUED_ATTRIBUTES
@@ -647,38 +647,38 @@ public class IppPrintService implements PrintService
         // method cannot throw exception - just log
         logger.log(Component.IPP, "IPPException", e);
       }
-    
+
     return handleSupportedAttributeValuesResponse(response, category);
   }
-  
+
   /**
    * Called to handle the supported attribute values response for the given
    * category. This might be overridden by subclasses with different requirements
    * for parsing/handling the response from the GetPrinterAttributes.
-   * 
+   *
    * @param response the response of the GetPrinterAttributes IPP request
    * @param category the category for which the supported values are requested
-   * @return A object indicating the supported values for the given attribute 
-   * category, or <code>null</code> if this print service doesn't support the 
+   * @return A object indicating the supported values for the given attribute
+   * category, or <code>null</code> if this print service doesn't support the
    * given attribute category at all.
-   * 
+   *
    * @see #getSupportedAttributeValues(Class, DocFlavor, AttributeSet)
    */
-  protected Object handleSupportedAttributeValuesResponse(IppResponse response, 
+  protected Object handleSupportedAttributeValuesResponse(IppResponse response,
     Class category)
   {
     List printerAtts = response.getPrinterAttributes();
-   
+
     // only one will be returned
     Map printerAttribute = (Map) printerAtts.get(0);
     Class suppCategory = IppUtilities.getSupportedCategory(category);
     Set attr = (Set) printerAttribute.get(suppCategory);
-    
-    // We sometime assume its a single instance with arbritrary value just indicating 
+
+    // We sometime assume its a single instance with arbritrary value just indicating
     // support or an array which is returned. This is because I sometimes just choosed
-    // what sounds right to me - as I have yet to find a printer which supports every 
+    // what sounds right to me - as I have yet to find a printer which supports every
     // special category in the SUN implementation to see what they return :-)
-    
+
     //  Map whats in the JSP API
     if (suppCategory.equals(JobPrioritySupported.class))
       return (JobPrioritySupported) attr.toArray(new JobPrioritySupported[1])[0];
@@ -693,7 +693,7 @@ public class IppPrintService implements PrintService
     if (suppCategory.equals(FinishingsSupported.class))
       return FinishingsSupported.getAssociatedAttributeArray(attr);
     if (suppCategory.equals(PageRangesSupported.class))
-      return new PageRanges[] { new PageRanges(1, Integer.MAX_VALUE) };    
+      return new PageRanges[] { new PageRanges(1, Integer.MAX_VALUE) };
     if (suppCategory.equals(OrientationRequestedSupported.class))
       return OrientationRequestedSupported.getAssociatedAttributeArray(attr);
     if (suppCategory.equals(MediaSupported.class))
@@ -707,7 +707,7 @@ public class IppPrintService implements PrintService
     // Special handling as it might also be in range of integers
     if (suppCategory.equals(NumberUpSupported.class))
       {
-        NumberUpSupported[] tmp = (NumberUpSupported[]) 
+        NumberUpSupported[] tmp = (NumberUpSupported[])
           attr.toArray(new NumberUpSupported[attr.size()]);
 
         if (attr.size() == 1) // number-up maybe in rangeofintegers
@@ -723,10 +723,10 @@ public class IppPrintService implements PrintService
         NumberUpSupported supported = new NumberUpSupported(members);
         return supported;
       }
-        
+
     return null;
-  }  
-  
+  }
+
   /**
    * @see javax.print.PrintService#getSupportedDocFlavors()
    */
@@ -736,7 +736,7 @@ public class IppPrintService implements PrintService
   }
 
   /**
-   * This is done by a validate-job operation and actually implemented in 
+   * This is done by a validate-job operation and actually implemented in
    * this generic IPP reference implementation. Subclasses which does
    * not correctly support Validate-Job operation might want to override this.
    *
@@ -744,7 +744,7 @@ public class IppPrintService implements PrintService
    */
   public AttributeSet getUnsupportedAttributes(DocFlavor flavor,
                                                AttributeSet attributes)
-  {    
+  {
     if (flavor != null && !isDocFlavorSupported(flavor))
       throw new IllegalArgumentException("flavor is not supported");
 
@@ -757,21 +757,21 @@ public class IppPrintService implements PrintService
         request.setOperationAttributeDefaults();
         request.addOperationAttribute(printerUri);
         request.addOperationAttribute(Fidelity.FIDELITY_TRUE);
-        
+
         if (attributes != null && attributes.size() > 0)
           {
             request.addAndFilterJobOperationAttributes(attributes);
             request.addAndFilterJobTemplateAttributes(attributes);
           }
-        
+
         if (flavor != null)
           {
             DocumentFormat f = DocumentFormat.createDocumentFormat(flavor);
             request.addOperationAttribute(f);
           }
-        
+
         response = request.send();
-        
+
         int status = response.getStatusCode();
         if (! (status == IppStatusCode.SUCCESSFUL_OK
              || status == IppStatusCode.SUCCESSFUL_OK_IGNORED_OR_SUBSTITUED_ATTRIBUTES
@@ -791,16 +791,16 @@ public class IppPrintService implements PrintService
         logger.log(Component.IPP, "IPPException", e);
       }
 
-    // Validate Jobs returns only Unsupported and Operation  
-    List unsupportedMaps = response.getUnsupportedAttributes();    
+    // Validate Jobs returns only Unsupported and Operation
+    List unsupportedMaps = response.getUnsupportedAttributes();
     if (unsupportedMaps.size() == 0)
       return  null;
-    
+
     Map unsupportedAttr = (Map) unsupportedMaps.get(0);
     if (unsupportedAttr.size() == 0)
       return null;
-    
-    // Convert the return map with unsupported attributes 
+
+    // Convert the return map with unsupported attributes
     // into an AttribueSet instance
     HashAttributeSet set = new HashAttributeSet();
     Iterator it = unsupportedAttr.values().iterator();
@@ -809,9 +809,9 @@ public class IppPrintService implements PrintService
         Set unsupported = (Set) it.next();
         Iterator it2 = unsupported.iterator();
         while (it2.hasNext())
-          set.add((Attribute) it2.next());        
+          set.add((Attribute) it2.next());
       }
-    
+
     return set;
   }
 
@@ -822,10 +822,10 @@ public class IppPrintService implements PrintService
   {
     if (category == null)
       throw new NullPointerException("category may not be null");
-    
+
     if (! Attribute.class.isAssignableFrom(category))
       throw new IllegalArgumentException("category must be of type Attribute");
-    
+
     return Arrays.asList(getSupportedAttributeCategories()).contains(category);
   }
 
@@ -835,28 +835,28 @@ public class IppPrintService implements PrintService
   public boolean isAttributeValueSupported(Attribute attrval, DocFlavor flavor,
                                            AttributeSet attributes)
   {
-    // just redirect to getSupportedAttributeValues    
-    Object values = getSupportedAttributeValues(attrval.getCategory(), 
-                                                flavor, attributes);    
+    // just redirect to getSupportedAttributeValues
+    Object values = getSupportedAttributeValues(attrval.getCategory(),
+                                                flavor, attributes);
     // null means none supported
     if (values == null)
       return false;
-    
+
     // object may be an array
     if (values.getClass().isArray())
       return Arrays.asList((Object[]) values).contains(attrval);
-    
+
     // may be a single instance of the category (value is irrelevant)
     if (values.getClass().equals(attrval.getCategory()))
       return true;
-       
-    // a single instance of another class to give the bounds    
+
+    // a single instance of another class to give the bounds
     // copies
     if (values.getClass().equals(CopiesSupported.class))
-      return ((CopiesSupported) values).contains((IntegerSyntax) attrval);    
+      return ((CopiesSupported) values).contains((IntegerSyntax) attrval);
     // number up
     if (values.getClass().equals(NumberUpSupported.class))
-      return ((NumberUpSupported) values).contains((IntegerSyntax) attrval);    
+      return ((NumberUpSupported) values).contains((IntegerSyntax) attrval);
     // job priority
     if (values.getClass().equals(JobPrioritySupported.class))
       {
@@ -865,15 +865,15 @@ public class IppPrintService implements PrintService
         if (priority.getValue() < maxSupported.getValue())
           return true;
       }
-    
-    // I am unsure if these might also show up - not yet found a printer where 
-    // Suns implementation supports them: 
+
+    // I am unsure if these might also show up - not yet found a printer where
+    // Suns implementation supports them:
     // JobImpressionsSupported, JobKOctetsSupported, JobMediaSheetsSupported
-    
+
     return false;
   }
 
- 
+
   /**
    * @see javax.print.PrintService#isDocFlavorSupported(DocFlavor)
    */
@@ -881,11 +881,11 @@ public class IppPrintService implements PrintService
   {
     if (flavor == null)
       throw new NullPointerException("DocFlavor may not be null.");
-    
+
     return flavors.contains(flavor);
   }
 
-  
+
   /**
    * @see PrintService#addPrintServiceAttributeListener(PrintServiceAttributeListener)
    */
@@ -894,7 +894,7 @@ public class IppPrintService implements PrintService
   {
     printServiceAttributeListener.add(listener);
   }
-  
+
   /**
    * @see PrintService#removePrintServiceAttributeListener(PrintServiceAttributeListener)
    */
@@ -903,7 +903,7 @@ public class IppPrintService implements PrintService
   {
     printServiceAttributeListener.remove(listener);
   }
-  
+
   /**
    * Returns "IppPrinter: " + <code>getName()</code>
    * @return The string representation.
@@ -911,15 +911,15 @@ public class IppPrintService implements PrintService
   public String toString()
   {
     return "IppPrinter: " + getName();
-  } 
-  
+  }
+
   /**
    * Returns the printer-uri of this print service.
-   * 
+   *
    * @return The printer-uri attribute.
    */
   public PrinterURI getPrinterURI()
   {
     return printerUri;
-  }  
+  }
 }

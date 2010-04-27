@@ -1,3 +1,87 @@
+2010-04-27  Andrew John Hughes  <ahughes@redhat.com>
+
+	* gnu/javax/print/ipp/IppPrintService.java:
+	Fix whitespace.  Use correct generic type for printerAttr
+	map.
+	(getPrinterAttributeSet(Class<? extends Attribute>)): Add
+	appropriate generic type.
+	* gnu/javax/print/ipp/attribute/supported/CharsetSupported.java:
+	Fix whitespace.
+	(getCategory()): Fix return type.
+	* gnu/javax/print/ipp/attribute/supported/CompressionSupported.java:
+	Fix whitespace.
+	(getCategory()): Fix return type.
+	(getAssociatedAttributeArray(Set<CompressionSupported>)): Add generic
+	type to set and use for-each loop.
+	* gnu/javax/print/ipp/attribute/supported/DocumentFormatSupported.java:
+	Fix whitespace.
+	(getCategory()): Fix return type.
+	* gnu/javax/print/ipp/attribute/supported/FinishingsSupported.java:
+	Fix whitespace.
+	(getCategory()): Fix return type.
+	(getAssociatedAttributeArray(Set<FinishingsSupported>)): Add generic
+	type to set and use for-each loop.
+	* gnu/javax/print/ipp/attribute/supported/GeneratedNaturalLanguageSupported.java:
+	Fix whitespace.
+	(getCategory()): Fix return type.
+	* gnu/javax/print/ipp/attribute/supported/IppVersionsSupported.java:
+	Fix whitespace.
+	(getCategory()): Fix return type.
+	* gnu/javax/print/ipp/attribute/supported/JobHoldUntilSupported.java:
+	Fix whitespace.
+	(getCategory()): Fix return type.
+	* gnu/javax/print/ipp/attribute/supported/JobSheetsSupported.java:
+	Fix whitespace.
+	(getCategory()): Fix return type.
+	(getAssociatedAttributeArray(Set<JobSheetsSupported>)): Add generic
+	type to set and use for-each loop.
+	* gnu/javax/print/ipp/attribute/supported/MediaSupported.java:
+	Fix whitespace.
+	(getCategory()): Fix return type.
+	(getAssociatedAttributeArray(Set<MediaSupported>)): Add generic
+	type to set and use for-each loop.
+	* gnu/javax/print/ipp/attribute/supported/MultipleDocumentHandlingSupported.java:
+	Fix whitespace.
+	(getCategory()): Fix return type.
+	(getAssociatedAttributeArray(Set<MultipleDocumentHandlingSupported>)): Add generic
+	type to set and use for-each loop.
+	* gnu/javax/print/ipp/attribute/supported/MultipleDocumentJobsSupported.java,
+	Fix whitespace.
+	(getCategory()): Fix return type.
+	* gnu/javax/print/ipp/attribute/supported/OperationsSupported.java,
+	Fix whitespace.
+	(getCategory()): Fix return type.
+	* gnu/javax/print/ipp/attribute/supported/OrientationRequestedSupported.java,
+	Fix whitespace.
+	(getCategory()): Fix return type.
+	(getAssociatedAttributeArray(Set<OrientationRequestedSupported>)): Add generic
+	type to set and use for-each loop.
+	* gnu/javax/print/ipp/attribute/supported/PageRangesSupported.java,
+	Fix whitespace.
+	(getCategory()): Fix return type.
+	* gnu/javax/print/ipp/attribute/supported/PrintQualitySupported.java,
+	Fix whitespace.
+	(getCategory()): Fix return type.
+	(getAssociatedAttributeArray(Set<PrintQualitySupported>)): Add generic
+	type to set and use for-each loop.
+	* gnu/javax/print/ipp/attribute/supported/PrinterResolutionSupported.java,
+	Fix whitespace.
+	(getCategory()): Fix return type.
+	(getAssociatedAttributeArray(Set<PrinterResolutionSupported>)): Add generic
+	type to set and use for-each loop.
+	* gnu/javax/print/ipp/attribute/supported/PrinterUriSupported.java,
+	Fix whitespace.
+	(getCategory()): Fix return type.
+	* gnu/javax/print/ipp/attribute/supported/SidesSupported.java,
+	Fix whitespace.
+	(getCategory()): Fix return type.
+	* gnu/javax/print/ipp/attribute/supported/UriAuthenticationSupported.java,
+	Fix whitespace.
+	(getCategory()): Fix return type.
+	* gnu/javax/print/ipp/attribute/supported/UriSecuritySupported.java,
+	Fix whitespace.
+	(getCategory()): Fix return type.
+
 2010-04-27  Andrew Haley  <aph@redhat.com>
 
         * java/util/concurrent/CopyOnWriteArrayList.java: Fix for empty
@@ -6,7 +90,7 @@
 2010-04-27  Andrew Haley  <aph@redhat.com>
 
         * gnu/javax/print/ipp/IppResponse.java (parseAttributes): Handle
-        IppValueTag.UNKNOWN.  
+        IppValueTag.UNKNOWN.
         * gnu/javax/print/ipp/IppRequest.java (writeOperationAttributes):
         Handle RequestedAttributes.
         * gnu/javax/print/ipp/IppPrintService.java (processResponse): Add
@@ -29,7 +113,7 @@
 
 	* doc/www.gnu.org/home.wml:
 	Add newer JAPI results.
-	
+
 2010-01-30  Andrew John Hughes  <ahughes@redhat.com>
 
 	PR classpath/41686
