@@ -1,4 +1,4 @@
-/* IppResponse.java -- 
+/* IppResponse.java --
  Copyright (C) 2006 Free Software Foundation, Inc.
 
  This file is part of GNU Classpath.
@@ -99,9 +99,9 @@ import javax.print.attribute.standard.PrinterStateReasons;
 import javax.print.attribute.standard.Severity;
 
 /**
- * <code>IppResponse</code> models a response received from an IPP 
+ * <code>IppResponse</code> models a response received from an IPP
  * compatible server as described in RFC 2910 IPP 1.1 Encoding and Transport.
- *  
+ *
  * @author Wolfgang Baer (WBaer@gmx.de)
  */
 public class IppResponse
@@ -112,7 +112,7 @@ public class IppResponse
    * response stream. It provides access to the attribute groups after parsing
    * via getter methods.
    * <p>
-   * The enconding of a response is structured as follows (for an official 
+   * The enconding of a response is structured as follows (for an official
    * description please have a look at the RFC document mentioned above):
    * <ul>
    * <li>version-number            - 2 bytes - required</li>
@@ -122,19 +122,19 @@ public class IppResponse
    * <li>end-of-attributes-tag     - 1 byte  - required</li>
    * <li>data                      - q bytes - optional</li>
    * </ul>
-   * </p><p> 
+   * </p><p>
    * Where each attribute-group (if any) is encoded as follows:
    * <ul>
    * <li>begin-attribute-group-tag - 1 byte</li>
    * <li>attribute                 - p bytes - 0 or more</li>
    * </ul>
-   * </p><p> 
+   * </p><p>
    * Encoding of attributes:
    * <ul>
    * <li>attribute-with-one-value - q bytes</li>
    * <li>additional-value         - r bytes  - 0 or more</li>
    * </ul>
-   * </p><p>  
+   * </p><p>
    * Encoding of attribute-with-one-value:
    * <ul>
    * <li>value-tag                  - 1 byte</li>
@@ -143,7 +143,7 @@ public class IppResponse
    * <li>value-length  (value is v) - 2 bytes</li>
    * <li>value                      - v bytes</li>
    * </ul>
-   * </p><p> 
+   * </p><p>
    * Encoding of additional value:
    * <ul>
    * <li>value-tag                       - 1 byte</li>
@@ -152,21 +152,21 @@ public class IppResponse
    * <li>value                           - w bytes</li>
    * </ul>
    * </p>
-   * 
+   *
    * @author Wolfgang Baer (WBaer@gmx.de)
    */
   class ResponseReader
   {
     /** The IPP version defaults to 1.1 */
     private static final short VERSION = 0x0101;
-   
+
     /**
      * Parses the inputstream containing the response of the IPP request.
      * @param input the inputstream
      * @throws IppException if unexpected exceptions occur.
      * @throws IOException if IO problems with the underlying inputstream occur.
      */
-    public void parseResponse(InputStream input) 
+    public void parseResponse(InputStream input)
         throws IppException, IOException
     {
       DataInputStream stream = new DataInputStream(input);
@@ -179,7 +179,7 @@ public class IppResponse
         throw new IppException("Version mismatch - "
           + "implementation does not support other versions than IPP 1.1");
 
-      logger.log(Component.IPP, "Statuscode: " 
+      logger.log(Component.IPP, "Statuscode: "
         + Integer.toHexString(status_code) + " Request-ID: " + request_id);
 
       byte tag = 0;
@@ -294,7 +294,7 @@ public class IppResponse
 
           // (4) The value itself
           value = new byte[valueLength];
-          stream.read(value);       
+          stream.read(value);
 
           // the value itself
           switch (tag)
@@ -304,12 +304,12 @@ public class IppResponse
             case IppValueTag.UNKNOWN:
               // TODO implement out-of-band handling
               // We currently throw an exception to see when it occurs - not yet :-)
-	      throw new IppException(
+              throw new IppException(
                     "Unexpected name value for out-of-band value tag " + tag);
             case IppValueTag.NO_VALUE:
-	      attribute = null;
+              attribute = null;
 
-	      break;
+              break;
             case IppValueTag.INTEGER:
               int intValue = IppUtilities.convertToInt(value);
               attribute = IppUtilities.getIntegerAttribute(name, intValue);
@@ -319,11 +319,11 @@ public class IppResponse
               // JPS API models boolean syntax type as enums
               // 0x01 = true, 0x00 = false - all are enums
               attribute = IppUtilities.getEnumAttribute(name, new Integer(value[0]));
-              
+
               break;
             case IppValueTag.ENUM:
-              int intVal = IppUtilities.convertToInt(value);            
-              attribute = IppUtilities.getEnumAttribute(name, new Integer(intVal));    
+              int intVal = IppUtilities.convertToInt(value);
+              attribute = IppUtilities.getEnumAttribute(name, new Integer(intVal));
 
               break;
             case IppValueTag.OCTECTSTRING_UNSPECIFIED:
@@ -347,7 +347,7 @@ public class IppResponse
               int crossFeed = IppUtilities.convertToInt(value[0], value[1], value[2], value[3]);
               int feed = IppUtilities.convertToInt(value[4], value[5], value[6], value[7]);
               int units = value[8];
-              
+
               if (name.equals("printer-resolution-default"))
                 attribute = new PrinterResolutionDefault(crossFeed, feed, units);
               else if (name.equals("printer-resolution-supported")) // may be here also
@@ -362,7 +362,7 @@ public class IppResponse
                 attribute = new CopiesSupported(lower, upper);
               else if (name.equals("number-up-supported"))
                 attribute = new NumberUpSupported(lower, upper);
-              else if (name.equals("job-k-octets-supported")) 
+              else if (name.equals("job-k-octets-supported"))
                 attribute = new JobKOctetsSupported(lower, upper);
               else if (name.equals("job-impressions-supported"))
                 attribute = new JobImpressionsSupported(lower, upper);
@@ -375,19 +375,19 @@ public class IppResponse
             case IppValueTag.NAME_WITH_LANGUAGE:
             case IppValueTag.NAME_WITHOUT_LANGUAGE:
               attribute = IppUtilities.getTextAttribute(name, tag, value);
-             
+
               break;
             case IppValueTag.KEYWORD:
               str = new String(value);
               if (name.equals("job-hold-until-supported")) // may also be name type
                 attribute = new JobHoldUntilSupported(str, null);
               else if (name.equals("job-hold-until-default"))
-                attribute = new JobHoldUntilDefault(str, null);             
+                attribute = new JobHoldUntilDefault(str, null);
               else if (name.equals("media-supported"))
                 attribute = new MediaSupported(str, null);
               else if (name.equals("media-default"))
                   attribute = new MediaDefault(str, null);
-              else if (name.equals("job-sheets-default")) 
+              else if (name.equals("job-sheets-default"))
                 attribute = new JobSheetsDefault(str, null);
               else if (name.equals("job-sheets-supported"))
                 attribute = new JobSheetsSupported(str, null);
@@ -397,13 +397,13 @@ public class IppResponse
                 attribute = parsePrinterStateReasons(value, lastAttribute);
               else
                 attribute = IppUtilities.getEnumAttribute(name, str);
-              
-              // all other stuff is either an enum or needs to be mapped to an 
-              // UnknownAttribute instance. Enums catched here are: 
+
+              // all other stuff is either an enum or needs to be mapped to an
+              // UnknownAttribute instance. Enums catched here are:
               // ipp-versions-supported, pdl-override-supported, compression-supported
               // uri-authentication-supported, uri-security-supported, sides-supported
               // sides-default, multiple-document-handling-supported, multiple-document-handling-default
-                            
+
               break;
             case IppValueTag.URI:
               try
@@ -429,13 +429,13 @@ public class IppResponse
                 attribute = new PrinterDriverInstaller(uri);
               else if (name.equals("printer-more-info-manufacturer"))
                 attribute = new PrinterMoreInfoManufacturer(uri);
-              
+
               break;
             case IppValueTag.URI_SCHEME:
               // only one uri-scheme exists - and its an enum
               if (name.equals("reference-uri-schemes-supported"))
                 attribute = IppUtilities.getEnumAttribute(name, new String(value));
-              
+
               break;
             case IppValueTag.CHARSET:
               str = new String(value);
@@ -445,7 +445,7 @@ public class IppResponse
                 attribute = new CharsetConfigured(str);
               else if (name.equals("charset-supported")) // setOf
                 attribute = new CharsetSupported(str);
-              
+
               break;
             case IppValueTag.NATURAL_LANGUAGE:
               str = new String(value);
@@ -455,7 +455,7 @@ public class IppResponse
                 attribute = new NaturalLanguageConfigured(str);
               else if (name.equals("generated-natural-language-supported")) // setOf
                 attribute = new GeneratedNaturalLanguageSupported(str);
-              
+
               break;
             case IppValueTag.MIME_MEDIA_TYPE:
               str = new String(value);
@@ -465,7 +465,7 @@ public class IppResponse
                 attribute = new DocumentFormatSupported(str, null);
               else if (name.equals("document-format")) // setOf
                 attribute = new DocumentFormat(str, null);
-              
+
               break;
             default:
               throw new IppException("Unknown tag with value "
@@ -474,10 +474,10 @@ public class IppResponse
 
           if (attribute == null)
             attribute =  new UnknownAttribute(tag, name, value);
-          
+
           addAttribute(attributes, attribute);
           lastAttribute = attribute;
-          
+
           logger.log(Component.IPP, "Attribute: " + name
                      + " Value: " + attribute.toString());
         }
@@ -505,7 +505,7 @@ public class IppResponse
 
       attributeValues.add(attribute);
     }
-    
+
     /**
      * Parses a name with or without language attribute value from the byte[]
      * and returns the result as an object[].
@@ -516,39 +516,39 @@ public class IppResponse
     private PrinterStateReasons parsePrinterStateReasons(byte[] value, Attribute lastAttr)
     {
       String str = new String(value);
-      PrinterStateReasons attribute; 
-      
+      PrinterStateReasons attribute;
+
       if (lastAttr instanceof PrinterStateReasons)
         attribute = (PrinterStateReasons) lastAttr;
       else
         attribute = new PrinterStateReasons();
-      
+
       // special case indicating no reasons
-      if (str.equals("none")) 
+      if (str.equals("none"))
         return attribute;
-      
+
       Severity severity = null;
       PrinterStateReason reason = null;
-      
+
       if (str.endsWith(Severity.WARNING.toString()))
         severity = Severity.WARNING;
       else if (str.endsWith(Severity.REPORT.toString()))
         severity = Severity.REPORT;
       else if (str.endsWith(Severity.ERROR.toString()))
         severity = Severity.ERROR;
-      
+
       if (severity != null)
-        str = str.substring(0, str.lastIndexOf('-'));    
-      else // we must associate a severity 
+        str = str.substring(0, str.lastIndexOf('-'));
+      else // we must associate a severity
         severity = Severity.REPORT;
-      
-      reason = (PrinterStateReason) 
+
+      reason = (PrinterStateReason)
         IppUtilities.getEnumAttribute("printer-state-reason", str);
-      
+
       attribute.put(reason , severity);
       return attribute;
     }
-    
+
     /**
      * Parses a name with or without language attribute value from the byte[]
      * and returns the result as an object[].
@@ -559,24 +559,24 @@ public class IppResponse
     private JobStateReasons parseJobStateReasons(byte[] value, Attribute lastAttr)
     {
       String str = new String(value);
-      JobStateReasons attribute; 
-      
+      JobStateReasons attribute;
+
       if (lastAttr instanceof JobStateReasons)
         attribute = (JobStateReasons) lastAttr;
       else
         attribute = new JobStateReasons();
-      
+
       // special case indicating no reasons
-      if (str.equals("none")) 
+      if (str.equals("none"))
         return attribute;
-      
-      JobStateReason reason = (JobStateReason) 
+
+      JobStateReason reason = (JobStateReason)
         IppUtilities.getEnumAttribute("job-state-reason", str);
-      
+
       attribute.add(reason);
       return attribute;
     }
-    
+
     /**
      * Parses a DateTime syntax attribute and returns the constructed Date
      * object.
@@ -597,7 +597,7 @@ public class IppResponse
      * <li>10 | 11 | minutes from UTC | 0..59</li>
      * </ul>
      * </p>
-     * 
+     *
      * @param value the byte[]
      * @return The date object.
      */
@@ -625,13 +625,13 @@ public class IppResponse
       return cal.getTime();
     }
   }
-  
+
   /**
    * Logger for tracing - enable by passing
    * -Dgnu.classpath.debug.components=ipp to the vm.
    */
   static final Logger logger = SystemLogger.SYSTEM;
-  
+
   URI uri;
   short operation_id;
   short status_code;
@@ -646,7 +646,7 @@ public class IppResponse
 
   /**
    * Creates an <code>IppResponse</code> instance.
-   * 
+   *
    * @param uri the uri the request was directy to.
    * @param operation_id the operation id of the request.
    */
@@ -662,7 +662,7 @@ public class IppResponse
 
   /**
    * Sets the data received from the request sent.
-   * 
+   *
    * @param input the input stream received.
    * @throws IppException if parsing fails.
    */
@@ -703,7 +703,7 @@ public class IppResponse
    * Returns the set of job attributes group maps.
    * There may occur more than one group of type job attribute in a response
    * because of e.g. multiple job or print service informations requested.
-   *  
+   *
    * @return The list of job attribute grou maps.
    */
   public List getJobAttributes()
@@ -715,7 +715,7 @@ public class IppResponse
    * Returns the set of operation attributes group maps.
    * There may occur more than one group of type job attribute in a response
    * because of e.g. multiple job or print service informations requested.
-   *  
+   *
    * @return The list of operation attribute grou maps.
    */
   public List getOperationAttributes()
@@ -727,7 +727,7 @@ public class IppResponse
    * Returns the set of printer attributes group maps.
    * There may occur more than one group of type job attribute in a response
    * because of e.g. multiple job or print service informations requested.
-   *  
+   *
    * @return The list of printer attribute grou maps.
    */
   public List getPrinterAttributes()
@@ -737,7 +737,7 @@ public class IppResponse
 
   /**
    * Returns the ID of the initial request.
-   * 
+   *
    * @return The request ID.
    */
   public int getRequestID()
@@ -748,7 +748,7 @@ public class IppResponse
   /**
    * Returns the status code of the response.
    * Defined in {@link IppStatusCode}.
-   * 
+   *
    * @return The status code.
    */
   public short getStatusCode()
@@ -760,7 +760,7 @@ public class IppResponse
    * Returns the set of unsupported attributes group maps.
    * There may occur more than one group of type job attribute in a response
    * because of e.g. multiple job or print service informations requested.
-   *  
+   *
    * @return The list of unsupported attribute grou maps.
    */
   public List getUnsupportedAttributes()
@@ -770,7 +770,7 @@ public class IppResponse
 
   /**
    * Returns the data of the response.
-   * 
+   *
    * @return The data as byte[].
    */
   public byte[] getData()

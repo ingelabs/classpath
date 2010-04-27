@@ -1,4 +1,4 @@
-/* JobMoreInfo.java -- 
+/* JobMoreInfo.java --
    Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -47,7 +47,7 @@ import javax.print.attribute.URISyntax;
  * JobMoreInfo attribute as described in RFC 2911 section
  * 4.3.4 contains the URI where more information about a job
  * (e.g. through a HTML page) can be found.
- * 
+ *
  * @author Wolfgang Baer (WBaer@gmx.de)
  */
 public final class JobMoreInfo extends URISyntax implements Attribute

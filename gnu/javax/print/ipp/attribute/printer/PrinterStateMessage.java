@@ -1,4 +1,4 @@
-/* PrinterStateMessage.java -- 
+/* PrinterStateMessage.java --
    Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -48,15 +48,15 @@ import javax.print.attribute.TextSyntax;
  * 4.4.13 provides a textual representation of the attributes
  * printer-state and printer-state-reasons for consumption by
  * humans.
- * 
+ *
  * @author Wolfgang Baer (WBaer@gmx.de)
  */
-public final class PrinterStateMessage extends TextSyntax 
+public final class PrinterStateMessage extends TextSyntax
   implements PrintServiceAttribute
 {
 
   /**
-   * Creates a <code>PrinterStateMessage</code> object with the 
+   * Creates a <code>PrinterStateMessage</code> object with the
    * given value and locale.
    *
    * @param value the value for this syntax
