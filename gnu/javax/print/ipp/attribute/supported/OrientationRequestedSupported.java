@@ -164,13 +164,13 @@ public final class OrientationRequestedSupported extends EnumSyntax
    * @see #getAssociatedAttribute()
    */
   public static OrientationRequested[]
-    getAssociatedAttributeArray(Set<OrientationRequestedSupported> set)
+    getAssociatedAttributeArray(Set<Attribute> set)
   {
     OrientationRequested[] result = new OrientationRequested[set.size()];
     int j = 0;
-    for (OrientationRequestedSupported tmp : set)
+    for (Attribute tmp : set)
       {
-        result[j] = tmp.getAssociatedAttribute();
+        result[j] = ((OrientationRequestedSupported) tmp).getAssociatedAttribute();
         j++;
       }
     return result;

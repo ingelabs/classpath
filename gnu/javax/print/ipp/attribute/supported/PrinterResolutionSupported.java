@@ -128,13 +128,13 @@ public final class PrinterResolutionSupported extends ResolutionSyntax
    * @see #getAssociatedAttribute()
    */
   public static PrinterResolution[]
-    getAssociatedAttributeArray(Set<PrinterResolutionSupported> set)
+    getAssociatedAttributeArray(Set<Attribute> set)
   {
     PrinterResolution[] result = new PrinterResolution[set.size()];
     int j = 0;
-    for (PrinterResolutionSupported tmp : set)
+    for (Attribute tmp : set)
       {
-        result[j] = tmp.getAssociatedAttribute();
+        result[j] = ((PrinterResolutionSupported) tmp).getAssociatedAttribute();
         j++;
       }
     return result;

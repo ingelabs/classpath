@@ -155,13 +155,13 @@ public final class PrintQualitySupported extends EnumSyntax
    *
    * @see #getAssociatedAttribute()
    */
-  public static PrintQuality[] getAssociatedAttributeArray(Set<PrintQualitySupported> set)
+  public static PrintQuality[] getAssociatedAttributeArray(Set<Attribute> set)
   {
     PrintQuality[] result = new PrintQuality[set.size()];
     int j = 0;
-    for (PrintQualitySupported tmp : set)
+    for (Attribute tmp : set)
       {
-        result[j] = tmp.getAssociatedAttribute();
+        result[j] = ((PrintQualitySupported) tmp).getAssociatedAttribute();
         j++;
       }
     return result;

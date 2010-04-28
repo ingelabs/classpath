@@ -147,13 +147,13 @@ public final class CompressionSupported extends EnumSyntax
    * @see #getAssociatedAttribute()
    */
   public static Compression[]
-    getAssociatedAttributeArray(Set<CompressionSupported> set)
+    getAssociatedAttributeArray(Set<Attribute> set)
   {
     Compression[] result = new Compression[set.size()];
     int j = 0;
-    for (CompressionSupported tmp : set)
+    for (Attribute tmp : set)
       {
-        result[j] = tmp.getAssociatedAttribute();
+        result[j] = ((CompressionSupported) tmp).getAssociatedAttribute();
         j++;
       }
     return result;

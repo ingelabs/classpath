@@ -184,7 +184,7 @@ public class IppResponse
 
       byte tag = 0;
       boolean proceed = true;
-      HashMap tmp;
+      HashMap<Class<? extends Attribute>, Set<Attribute>> tmp;
       // iterate over attribute-groups until end-of-attributes-tag is found
       while (proceed)
         {
@@ -200,23 +200,23 @@ public class IppResponse
               proceed = false;
               break;
             case IppDelimiterTag.OPERATION_ATTRIBUTES_TAG:
-              tmp = new HashMap();
+              tmp = new HashMap<Class<? extends Attribute>, Set<Attribute>>();
               tag = parseAttributes(tmp, stream);
               operationAttributes.add(tmp);
               break;
             case IppDelimiterTag.JOB_ATTRIBUTES_TAG:
-              tmp = new HashMap();
+              tmp = new HashMap<Class<? extends Attribute>, Set<Attribute>>();
               tag = parseAttributes(tmp, stream);
               jobAttributes.add(tmp);
               break;
             case IppDelimiterTag.PRINTER_ATTRIBUTES_TAG:
-              tmp = new HashMap();
+              tmp = new HashMap<Class<? extends Attribute>, Set<Attribute>>();
               tag = parseAttributes(tmp, stream);
               printerAttributes.add(tmp);
               break;
             case IppDelimiterTag.UNSUPPORTED_ATTRIBUTES_TAG:
               System.out.println("Called");
-              tmp = new HashMap();
+              tmp = new HashMap<Class<? extends Attribute>, Set<Attribute>>();
               tag = parseAttributes(tmp, stream);
               unsupportedAttributes.add(tmp);
               break;
@@ -247,7 +247,8 @@ public class IppResponse
      * @throws IppException if unexpected exceptions occur.
      * @throws IOException if IO problems with the underlying inputstream occur.
      */
-    private byte parseAttributes(Map attributes, DataInputStream stream)
+    private byte parseAttributes(Map<Class<? extends Attribute>, Set<Attribute>> attributes,
+                                 DataInputStream stream)
         throws IppException, IOException
     {
       Attribute lastAttribute = null;
@@ -386,7 +387,7 @@ public class IppResponse
               else if (name.equals("media-supported"))
                 attribute = new MediaSupported(str, null);
               else if (name.equals("media-default"))
-                  attribute = new MediaDefault(str, null);
+                attribute = new MediaDefault(str, null);
               else if (name.equals("job-sheets-default"))
                 attribute = new JobSheetsDefault(str, null);
               else if (name.equals("job-sheets-supported"))
@@ -473,7 +474,7 @@ public class IppResponse
             }
 
           if (attribute == null)
-            attribute =  new UnknownAttribute(tag, name, value);
+            attribute = new UnknownAttribute(tag, name, value);
 
           addAttribute(attributes, attribute);
           lastAttribute = attribute;
@@ -492,14 +493,15 @@ public class IppResponse
      * @param attribute
      *          the attribute to add
      */
-    private void addAttribute(Map attributeGroup, Attribute attribute)
+    private void addAttribute(Map<Class<? extends Attribute>, Set<Attribute>> attributeGroup,
+                              Attribute attribute)
     {
-      Class clazz = attribute.getCategory();
-      Set attributeValues = (Set) attributeGroup.get(clazz);
+      Class<? extends Attribute> clazz = attribute.getCategory();
+      Set<Attribute> attributeValues = attributeGroup.get(clazz);
 
       if (attributeValues == null) // first attribute of this category
         {
-          attributeValues = new HashSet();
+          attributeValues = new HashSet<Attribute>();
           attributeGroup.put(clazz, attributeValues);
         }
 
@@ -637,10 +639,10 @@ public class IppResponse
   short status_code;
   int request_id;
 
-  List operationAttributes;
-  List printerAttributes;
-  List jobAttributes;
-  List unsupportedAttributes;
+  List<Map<Class<? extends Attribute>, Set<Attribute>>> operationAttributes;
+  List<Map<Class<? extends Attribute>, Set<Attribute>>> printerAttributes;
+  List<Map<Class<? extends Attribute>, Set<Attribute>>> jobAttributes;
+  List<Map<Class<? extends Attribute>, Set<Attribute>>> unsupportedAttributes;
 
   byte[] data;
 
@@ -654,10 +656,14 @@ public class IppResponse
   {
     this.uri = uri;
     this.operation_id = operation_id;
-    operationAttributes = new ArrayList();
-    jobAttributes = new ArrayList();
-    printerAttributes = new ArrayList();
-    unsupportedAttributes = new ArrayList();
+    operationAttributes =
+      new ArrayList<Map<Class<? extends Attribute>, Set<Attribute>>>();
+    jobAttributes =
+      new ArrayList<Map<Class<? extends Attribute>, Set<Attribute>>>();
+    printerAttributes =
+      new ArrayList<Map<Class<? extends Attribute>, Set<Attribute>>>();
+    unsupportedAttributes =
+      new ArrayList<Map<Class<? extends Attribute>, Set<Attribute>>>();
   }
 
   /**
@@ -704,9 +710,9 @@ public class IppResponse
    * There may occur more than one group of type job attribute in a response
    * because of e.g. multiple job or print service informations requested.
    *
-   * @return The list of job attribute grou maps.
+   * @return The list of job attribute group maps.
    */
-  public List getJobAttributes()
+  public List<Map<Class<? extends Attribute>, Set<Attribute>>> getJobAttributes()
   {
     return jobAttributes;
   }
@@ -716,9 +722,9 @@ public class IppResponse
    * There may occur more than one group of type job attribute in a response
    * because of e.g. multiple job or print service informations requested.
    *
-   * @return The list of operation attribute grou maps.
+   * @return The list of operation attribute group maps.
    */
-  public List getOperationAttributes()
+  public List<Map<Class<? extends Attribute>, Set<Attribute>>> getOperationAttributes()
   {
     return operationAttributes;
   }
@@ -728,9 +734,9 @@ public class IppResponse
    * There may occur more than one group of type job attribute in a response
    * because of e.g. multiple job or print service informations requested.
    *
-   * @return The list of printer attribute grou maps.
+   * @return The list of printer attribute group maps.
    */
-  public List getPrinterAttributes()
+  public List<Map<Class<? extends Attribute>, Set<Attribute>>> getPrinterAttributes()
   {
     return printerAttributes;
   }
@@ -761,9 +767,9 @@ public class IppResponse
    * There may occur more than one group of type job attribute in a response
    * because of e.g. multiple job or print service informations requested.
    *
-   * @return The list of unsupported attribute grou maps.
+   * @return The list of unsupported attribute group maps.
    */
-  public List getUnsupportedAttributes()
+  public List<Map<Class<? extends Attribute>, Set<Attribute>>> getUnsupportedAttributes()
   {
     return unsupportedAttributes;
   }

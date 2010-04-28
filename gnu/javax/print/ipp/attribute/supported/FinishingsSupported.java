@@ -288,13 +288,13 @@ public final class FinishingsSupported extends EnumSyntax
    * @see #getAssociatedAttribute()
    */
   public static Finishings[]
-    getAssociatedAttributeArray(Set<FinishingsSupported> set)
+    getAssociatedAttributeArray(Set<Attribute> set)
   {
     Finishings[] result = new Finishings[set.size()];
     int j = 0;
-    for (FinishingsSupported tmp : set)
+    for (Attribute tmp : set)
       {
-        result[j] = tmp.getAssociatedAttribute();
+        result[j] = ((FinishingsSupported) tmp).getAssociatedAttribute();
         j++;
       }
     return result;

@@ -131,13 +131,13 @@ public final class JobSheetsSupported extends TextSyntax
    * @see #getAssociatedAttribute()
    */
   public static JobSheets[]
-    getAssociatedAttributeArray(Set<JobSheetsSupported> set)
+    getAssociatedAttributeArray(Set<Attribute> set)
   {
     ArrayList<JobSheets> result = new ArrayList<JobSheets>();
     int j = 0;
-    for (JobSheetsSupported tmp : set)
+    for (Attribute tmp : set)
       {
-        JobSheets att = tmp.getAssociatedAttribute();
+        JobSheets att = ((JobSheetsSupported) tmp).getAssociatedAttribute();
         if (att != null)
           result.add(att);
         j++;

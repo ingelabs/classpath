@@ -100,11 +100,11 @@ public final class MediaSupported extends TextSyntax
    * @param set set to process
    * @return The constructed array.
    */
-  public static Media[] getAssociatedAttributeArray(Set<MediaSupported> set)
+  public static Media[] getAssociatedAttributeArray(Set<Attribute> set)
   {
     Media tmp2;
     ArrayList<Media> result = new ArrayList<Media>();
-    for (MediaSupported tmp : set)
+    for (Attribute tmp : set)
       {
         tmp2 = (Media) IppUtilities.getEnumAttribute("media", tmp.toString());
         if (tmp2 != null)

@@ -143,10 +143,10 @@ public class IppPrintService implements PrintService
    * IPP may return sets of attributes e.g. for supported
    * compression methods so we need to map to sets here.
    */
-  private Map<Class<? extends Attribute>, Set<? extends Attribute>> printerAttr;
+  private Map<Class<? extends Attribute>, Set<Attribute>> printerAttr;
 
   /** The set of listeners.*/
-  private HashSet printServiceAttributeListener;
+  private HashSet<PrintServiceAttributeListener> printServiceAttributeListener;
 
   /** The username. */
   private transient String user;
@@ -158,13 +158,13 @@ public class IppPrintService implements PrintService
   private String name;
 
   /** The list of supported document flavors. */
-  private List flavors;
+  private List<DocFlavor> flavors;
 
   /** The standard printer URI. */
   private PrinterURI printerUri;
 
   /** The list of all supported printer URIs. */
-  private ArrayList printerUris;
+  private ArrayList<PrinterURI> printerUris;
 
   /**
    * Logger for tracing - enable by passing
@@ -207,7 +207,8 @@ public class IppPrintService implements PrintService
     user = username;
     passwd = password;
 
-    printServiceAttributeListener = new HashSet();
+    printServiceAttributeListener =
+      new HashSet<PrintServiceAttributeListener>();
 
     printerAttr = getPrinterAttributes();
     processResponse();
@@ -219,7 +220,8 @@ public class IppPrintService implements PrintService
    * @return The Map with the printer attributes.
    * @throws IppException if an error occurs.
    */
-  private Map getPrinterAttributes() throws IppException
+  private Map<Class<? extends Attribute>, Set<Attribute>> getPrinterAttributes()
+    throws IppException
   {
     IppResponse response = null;
 
@@ -239,7 +241,7 @@ public class IppPrintService implements PrintService
         throw new IppException("IOException in IPP request/response.", e);
       }
 
-    return (Map) response.getPrinterAttributes().get(0);
+    return response.getPrinterAttributes().get(0);
   }
 
   /**
@@ -249,9 +251,13 @@ public class IppPrintService implements PrintService
    * @param attributeClass the category
    * @return The set of attributes of the category.
    */
-  private Set getPrinterAttributeSet(Class<? extends Attribute> attributeClass)
+  private <T extends Attribute> Set<T> getPrinterAttributeSet(Class<T> attributeClass)
   {
-    return (Set) printerAttr.get(attributeClass);
+    Set<Attribute> set = printerAttr.get(attributeClass);
+    Set<T> attSet = new HashSet<T>();
+    for (Attribute att : set)
+      attSet.add(attributeClass.cast(att));
+    return attSet;
   }
 
   /**
@@ -264,9 +270,9 @@ public class IppPrintService implements PrintService
    * @throws ClassCastException if attributClass is not an
    * instance of <code>DefaultValueAttribute</code>.
    */
-  private Attribute getPrinterDefaultAttribute(Class attributeClass)
+  private Attribute getPrinterDefaultAttribute(Class<? extends Attribute> attributeClass)
   {
-    Set set = (Set) printerAttr.get(attributeClass);
+    Set<Attribute> set = printerAttr.get(attributeClass);
     return ((DefaultValueAttribute) set.toArray()[0]).getAssociatedAttribute();
   }
 
@@ -276,8 +282,7 @@ public class IppPrintService implements PrintService
   private void processResponse()
   {
     // printer name
-    PrinterName[] tmp = (PrinterName[]) getPrinterAttributeSet(
-                         PrinterName.class).toArray(new PrinterName[1]);
+    PrinterName[] tmp = getPrinterAttributeSet(PrinterName.class).toArray(new PrinterName[1]);
     name = tmp[0].getValue();
 
     // supported flavors
@@ -285,13 +290,13 @@ public class IppPrintService implements PrintService
     // for text doc flavors as cups doesn't send charset parameters
 
     // utf-8 is supported at least - so we go with this only for now
-    flavors = new ArrayList();
-    Set flavorAttributes = getPrinterAttributeSet(DocumentFormatSupported.class);
+    flavors = new ArrayList<DocFlavor>();
+    Set<DocumentFormatSupported> flavorAttributes = getPrinterAttributeSet(DocumentFormatSupported.class);
     if (flavorAttributes != null)
       {
-        for (Iterator it = flavorAttributes.iterator(); it.hasNext();)
+        for (DocumentFormatSupported dfs : flavorAttributes)
           {
-            String mimeType = ((DocumentFormatSupported) it.next()).getValue();
+            String mimeType = dfs.getValue();
 
             if (mimeType.equals("text/plain"))
               {
@@ -318,9 +323,10 @@ public class IppPrintService implements PrintService
             boolean changed = false;
             try
               {
-                Class[] clazzes = new Class[] { DocFlavor.BYTE_ARRAY.class,
-                                                DocFlavor.INPUT_STREAM.class,
-                                                DocFlavor.URL.class };
+                Class<?>[] clazzes = new Class<?>[] { DocFlavor.BYTE_ARRAY.class,
+                    DocFlavor.INPUT_STREAM.class,
+                    DocFlavor.URL.class
+                    };
 
                 for (int j = 0; j < clazzes.length; j++)
                   {
@@ -368,12 +374,10 @@ public class IppPrintService implements PrintService
       }
 
     // printer uris
-    Set uris = getPrinterAttributeSet(PrinterUriSupported.class);
-    printerUris = new ArrayList(uris.size());
-    Iterator it = uris.iterator();
-    while (it.hasNext())
+    Set<PrinterUriSupported> uris = getPrinterAttributeSet(PrinterUriSupported.class);
+    printerUris = new ArrayList<PrinterURI>(uris.size());
+    for (PrinterUriSupported uri : uris)
       {
-        PrinterUriSupported uri = (PrinterUriSupported) it.next();
         printerUris.add( new PrinterURI(uri.getURI()));
       }
   }
@@ -392,7 +396,7 @@ public class IppPrintService implements PrintService
   /**
    * @see javax.print.PrintService#getAttribute(java.lang.Class)
    */
-  public PrintServiceAttribute getAttribute(Class category)
+  public <T extends PrintServiceAttribute> T getAttribute(Class<T> category)
   {
     if (category == null)
       throw new NullPointerException("category may not be null");
@@ -401,9 +405,9 @@ public class IppPrintService implements PrintService
       throw new IllegalArgumentException(
          "category must be of type PrintServiceAttribute");
 
-    Set set = getPrinterAttributeSet(category);
+    Set<T> set = getPrinterAttributeSet(category);
     if (set != null && set.size() > 0)
-        return (PrintServiceAttribute) set.toArray()[0];
+      return set.iterator().next();
 
     return null;
   }
@@ -415,13 +419,10 @@ public class IppPrintService implements PrintService
   {
     PrintServiceAttributeSet set = new HashPrintServiceAttributeSet();
 
-    Iterator it = printerAttr.values().iterator();
-    while (it.hasNext())
+    for (Set<Attribute> attrSet : printerAttr.values())
       {
-        Iterator it2 = ((Set) it.next()).iterator();
-        while (it2.hasNext())
+        for (Attribute attr : attrSet)
           {
-            Attribute attr = (Attribute) it2.next();
             if (attr instanceof PrintServiceAttribute)
               set.add(attr);
           }
@@ -433,7 +434,7 @@ public class IppPrintService implements PrintService
   /**
    * @see javax.print.PrintService#getDefaultAttributeValue(java.lang.Class)
    */
-  public Object getDefaultAttributeValue(Class category)
+  public Object getDefaultAttributeValue(Class<? extends Attribute> category)
   {
     // required attributes
     if (category.equals(Fidelity.class))
@@ -515,9 +516,10 @@ public class IppPrintService implements PrintService
   /**
    * @see javax.print.PrintService#getSupportedAttributeCategories()
    */
-  public Class[] getSupportedAttributeCategories()
+  public Class<?>[] getSupportedAttributeCategories()
   {
-    Set categories = new HashSet();
+    Set<Class<? extends Attribute>> categories =
+      new HashSet<Class<? extends Attribute>>();
 
     // Should only be job template attributes as of section 4.2
     if (printerAttr.containsKey(JobPrioritySupported.class))
@@ -533,7 +535,7 @@ public class IppPrintService implements PrintService
     if (printerAttr.containsKey(FinishingsSupported.class))
       {
         // if only none finishing is supported - it does not count as supported
-        Set set = getPrinterAttributeSet(FinishingsSupported.class);
+        Set<FinishingsSupported> set = getPrinterAttributeSet(FinishingsSupported.class);
         if (! (set.size() == 1 && set.contains(FinishingsSupported.NONE)))
           categories.add(Finishings.class);
       }
@@ -570,7 +572,7 @@ public class IppPrintService implements PrintService
     categories.add(JobName.class);
     categories.add(RequestingUserName.class);
 
-    return (Class[]) categories.toArray(new Class[categories.size()]);
+    return categories.toArray(new Class[categories.size()]);
   }
 
   /**
@@ -582,8 +584,8 @@ public class IppPrintService implements PrintService
    * @see PrintService#getSupportedAttributeValues(Class, DocFlavor, AttributeSet)
    * @see #handleSupportedAttributeValuesResponse(IppResponse, Class)
    */
-  public Object getSupportedAttributeValues(Class category, DocFlavor flavor,
-                                            AttributeSet attributes)
+  public Object getSupportedAttributeValues(Class<? extends Attribute> category,
+                                            DocFlavor flavor, AttributeSet attributes)
   {
     // We currently ignore the attribute set - there is nothing in the IPP
     // specification which would come closer to what we do here.
@@ -665,14 +667,15 @@ public class IppPrintService implements PrintService
    * @see #getSupportedAttributeValues(Class, DocFlavor, AttributeSet)
    */
   protected Object handleSupportedAttributeValuesResponse(IppResponse response,
-    Class category)
+                                                          Class<? extends Attribute> category)
   {
-    List printerAtts = response.getPrinterAttributes();
+    List<Map<Class<? extends Attribute>, Set<Attribute>>> printerAtts =
+      response.getPrinterAttributes();
 
     // only one will be returned
-    Map printerAttribute = (Map) printerAtts.get(0);
-    Class suppCategory = IppUtilities.getSupportedCategory(category);
-    Set attr = (Set) printerAttribute.get(suppCategory);
+    Map<Class<? extends Attribute>, Set<Attribute>> printerAttribute = printerAtts.get(0);
+    Class<? extends Attribute> suppCategory = IppUtilities.getSupportedCategory(category);
+    Set<Attribute> attr = printerAttribute.get(suppCategory);
 
     // We sometime assume its a single instance with arbritrary value just indicating
     // support or an array which is returned. This is because I sometimes just choosed
@@ -681,7 +684,7 @@ public class IppPrintService implements PrintService
 
     //  Map whats in the JSP API
     if (suppCategory.equals(JobPrioritySupported.class))
-      return (JobPrioritySupported) attr.toArray(new JobPrioritySupported[1])[0];
+      return (JobPrioritySupported) attr.iterator().next();
     if (suppCategory.equals(JobHoldUntilSupported.class))
       return new JobHoldUntil(new Date());
     if (suppCategory.equals(JobSheetsSupported.class))
@@ -689,7 +692,7 @@ public class IppPrintService implements PrintService
     if (suppCategory.equals(MultipleDocumentHandlingSupported.class))
       return MultipleDocumentHandlingSupported.getAssociatedAttributeArray(attr);
     if (suppCategory.equals(CopiesSupported.class))
-      return (CopiesSupported) attr.toArray(new CopiesSupported[1])[0];
+      return (CopiesSupported) attr.iterator().next();
     if (suppCategory.equals(FinishingsSupported.class))
       return FinishingsSupported.getAssociatedAttributeArray(attr);
     if (suppCategory.equals(PageRangesSupported.class))
@@ -707,16 +710,14 @@ public class IppPrintService implements PrintService
     // Special handling as it might also be in range of integers
     if (suppCategory.equals(NumberUpSupported.class))
       {
-        NumberUpSupported[] tmp = (NumberUpSupported[])
-          attr.toArray(new NumberUpSupported[attr.size()]);
-
         if (attr.size() == 1) // number-up maybe in rangeofintegers
-          return tmp[0];
+          return attr.iterator().next();
 
         int[][] members = new int[attr.size()][2];
+        Iterator<Attribute> it = attr.iterator();
         for (int j = 0; j < attr.size(); j++)
           {
-            int value = tmp[j].getMembers()[0][0];
+            int value = ((NumberUpSupported) it.next()).getMembers()[0][0];
             members[j] = new int[] { value, value };
           }
 
@@ -732,7 +733,7 @@ public class IppPrintService implements PrintService
    */
   public DocFlavor[] getSupportedDocFlavors()
   {
-    return (DocFlavor[]) flavors.toArray(new DocFlavor[flavors.size()]);
+    return flavors.toArray(new DocFlavor[flavors.size()]);
   }
 
   /**
@@ -792,24 +793,22 @@ public class IppPrintService implements PrintService
       }
 
     // Validate Jobs returns only Unsupported and Operation
-    List unsupportedMaps = response.getUnsupportedAttributes();
+    List<Map<Class<? extends Attribute>, Set<Attribute>>> unsupportedMaps =
+      response.getUnsupportedAttributes();
     if (unsupportedMaps.size() == 0)
-      return  null;
+      return null;
 
-    Map unsupportedAttr = (Map) unsupportedMaps.get(0);
+    Map<Class<? extends Attribute>, Set<Attribute>> unsupportedAttr = unsupportedMaps.get(0);
     if (unsupportedAttr.size() == 0)
       return null;
 
     // Convert the return map with unsupported attributes
     // into an AttribueSet instance
     HashAttributeSet set = new HashAttributeSet();
-    Iterator it = unsupportedAttr.values().iterator();
-    while (it.hasNext())
+    for (Set<Attribute> unsupported : unsupportedAttr.values())
       {
-        Set unsupported = (Set) it.next();
-        Iterator it2 = unsupported.iterator();
-        while (it2.hasNext())
-          set.add((Attribute) it2.next());
+        for (Attribute att : unsupported)
+          set.add(att);
       }
 
     return set;
@@ -818,7 +817,7 @@ public class IppPrintService implements PrintService
   /**
    * @see PrintService#isAttributeCategorySupported(Class)
    */
-  public boolean isAttributeCategorySupported(Class category)
+  public boolean isAttributeCategorySupported(Class<? extends Attribute> category)
   {
     if (category == null)
       throw new NullPointerException("category may not be null");

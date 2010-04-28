@@ -162,13 +162,13 @@ public final class MultipleDocumentHandlingSupported extends EnumSyntax
    * @see #getAssociatedAttribute()
    */
   public static MultipleDocumentHandling[]
-    getAssociatedAttributeArray(Set<MultipleDocumentHandlingSupported> set)
+    getAssociatedAttributeArray(Set<Attribute> set)
   {
     MultipleDocumentHandling[] result = new MultipleDocumentHandling[set.size()];
     int j = 0;
-    for (MultipleDocumentHandlingSupported tmp : set)
+    for (Attribute tmp : set)
       {
-        result[j] = tmp.getAssociatedAttribute();
+        result[j] = ((MultipleDocumentHandlingSupported) tmp).getAssociatedAttribute();
         j++;
       }
     return result;

@@ -1,5 +1,64 @@
 2010-04-28  Andrew John Hughes  <ahughes@redhat.com>
 
+	* gnu/javax/print/ipp/IppPrintService.java:
+	(printerAttr): Add generic typing.
+	(printServiceAttributeListener): Likewise.
+	(flavors): Likewise.
+	(printerUris): Likewise.
+	(IppPrintService(URI uri, String username, String password)):
+	Use generic types in initialising listener set.
+	(getPrinterAttributes()): Add generic types.  Remove cast.
+	(getPrinterAttributeSet(Class<T>)): Return a set containing
+	attributes of type T.  Now creates a new set and checks that
+	all elements of the original set can be cast and added to this
+	new set.
+	(getPrinterDefaultAttribute(Class<? extends Attribute>)): Add
+	generic types.
+	(processResponse()): Add generic types.
+	(getAttribute(Class<T>)): Use generic types corresponding to
+	parent interface.
+	(getSupportedAttributeCategories()): Use generic types.
+	(getSupportedAttributeValues()): Likewise.
+	(handleSupportedAttributeValuesResponse(IppResponse,Class<? extends Attribute>)):
+	Likewise.
+	(isAttributeCategorySupported(Class<? extends Attribute>)): Likewise.
+	* gnu/javax/print/ipp/IppResponse.java:
+	(parseResponse(InputStream)): Use generic types.
+	(parseAttributes(Map<Class<? extends Attribute>, Set<Attribute>, DataInputStream)):
+	Likewise.
+	(addAttribute(Map<Class<? extends Attribute>, Set<Attribute>>, Attribute): Likewise.
+	(IppResponse(URI, short)): Create lists with appropriate type parameters.
+	(getJobAttributes()): Use generic return type.
+	(getOperationAttributes()): Likewise.
+	(getPrinterAttributes()): Likewise.
+	(getUnsupportedAttributes()): Likewise.
+	* gnu/javax/print/ipp/attribute/supported/CompressionSupported.java:
+	(getAssociatedAttributeArray(Set<Attribute>)): Use superclass Attribute
+	as set type parameter and cast when looping over it.
+	* gnu/javax/print/ipp/attribute/supported/FinishingsSupported.java,
+	(getAssociatedAttributeArray(Set<Attribute>)): Use superclass Attribute
+	as set type parameter and cast when looping over it.
+	* gnu/javax/print/ipp/attribute/supported/JobSheetsSupported.java,
+	(getAssociatedAttributeArray(Set<Attribute>)): Use superclass Attribute
+	as set type parameter and cast when looping over it.
+	* gnu/javax/print/ipp/attribute/supported/MediaSupported.java,
+	(getAssociatedAttributeArray(Set<Attribute>)): Use superclass Attribute
+	as set type parameter and cast when looping over it.
+	* gnu/javax/print/ipp/attribute/supported/MultipleDocumentHandlingSupported.java,
+	(getAssociatedAttributeArray(Set<Attribute>)): Use superclass Attribute
+	as set type parameter and cast when looping over it.
+	* gnu/javax/print/ipp/attribute/supported/OrientationRequestedSupported.java,
+	(getAssociatedAttributeArray(Set<Attribute>)): Use superclass Attribute
+	as set type parameter and cast when looping over it.
+	* gnu/javax/print/ipp/attribute/supported/PrintQualitySupported.java,
+	(getAssociatedAttributeArray(Set<Attribute>)): Use superclass Attribute
+	as set type parameter and cast when looping over it.
+	* gnu/javax/print/ipp/attribute/supported/PrinterResolutionSupported.java,
+	(getAssociatedAttributeArray(Set<Attribute>)): Use superclass Attribute
+	as set type parameter and cast when looping over it.
+
+2010-04-28  Andrew John Hughes  <ahughes@redhat.com>
+
 	* gnu/javax/print/ipp/IppUtilities.java:
 	(INTEGER_CLASS_ARRAY): Use generic typing.
 	(TEXT_CLASS_ARRAY): Likewise.
