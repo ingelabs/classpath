@@ -1,3 +1,16 @@
+2010-05-04  Andrew John Hughes  <ahughes@redhat.com>
+
+	* configure.ac:
+	Add output to GMP directory detection and
+	only perform when compiling GMP.
+
+2010-05-04  Mike Stump  <mikestump@comcast.net>
+
+	* configure.ac:
+	Allow prefix, libdir and includedir of GMP
+	to be specified via --with-gmp, --with-gmp-include
+	and --with-gmp-lib.
+
 2010-04-28  Andrew John Hughes  <ahughes@redhat.com>
 
 	* gnu/javax/print/ipp/IppPrintService.java:
