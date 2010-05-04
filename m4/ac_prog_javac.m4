@@ -46,10 +46,13 @@ else
 fi
 test "x$JAVAC" = x && AC_MSG_ERROR([no acceptable Java compiler found in \$PATH])
 AC_CACHE_CHECK([if $JAVAC is a version of gcj], ac_cv_prog_javac_is_gcj, [
-if $JAVAC --version | grep gcj > /dev/null; then
+if $JAVAC --version 2>&1 | grep gcj >&AS_MESSAGE_LOG_FD ; then
   ac_cv_prog_javac_is_gcj=yes;
   JAVAC="$JAVAC $GCJ_OPTS";
-fi])
+else
+  ac_cv_prog_javac_is_gcj=no;
+fi
+])
 AC_SUBST(JAVAC_IS_GCJ, $ac_cv_prog_javac_is_gcj)
 AM_CONDITIONAL(GCJ_JAVAC, test x"${JAVAC_IS_GCJ}" = xyes)
 AC_PROG_JAVAC_WORKS

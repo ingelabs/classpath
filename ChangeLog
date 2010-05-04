@@ -1,5 +1,12 @@
 2010-05-04  Andrew John Hughes  <ahughes@redhat.com>
 
+	* m4/ac_prog_javac.m4:
+	Capture all output from javac --version
+	to avoid excess output.  Make sure no appears
+	when javac is not gcj.
+
+2010-05-04  Andrew John Hughes  <ahughes@redhat.com>
+
 	* configure.ac:
 	Add output to GMP directory detection and
 	only perform when compiling GMP.
