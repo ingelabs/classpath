@@ -1,3 +1,25 @@
+2010-05-04  Andrew John Hughes  <ahughes@redhat.com>
+
+	* configure.ac:
+	Call AC_PROG_JAVA_WORKS and AC_PROG_JAVAC_WORKS
+	in place of AC_PROG_JAVA and AC_PROG_JAVAC
+	respectively, as this is the real test we want.
+	* m4/ac_prog_java.m4:
+	(AC_PROG_JAVA): Don't include AC_PROG_JAVA_WORKS.
+	* m4/ac_prog_java_works.m4:
+	(AC_PROG_JAVA_WORKS): Require AC_PROG_JAVA and be
+	defined only once.  Require AC_PROG_JAVAC_WORKS for
+	compilation of test class.  Remove inclusion of
+	AC_PROG_JAVAC.
+	(AC_TRY_COMPILE_JAVA): Require AC_PROG_JAVAC_WORKS
+	rather than AC_PROG_JAVAC.  Be defined only once.
+	* m4/ac_prog_javac.m:
+	(AC_PROG_JAVAC): Be defined only once.  Don't include
+	AC_PROG_JAVAC_WORKS.
+	* m4/ac_prog_javac_works.m4:
+	(AC_PROG_JAVAC_WORKS): Be defined only once.  Require
+	AC_PROG_JAVAC.
+
 2010-05-04  Andrew Haley  <aph@redhat.com>
 
 	* lib/gen-classlist.sh.in: Use absolute pathnames for all the
@@ -324,6 +346,7 @@
 
 2010-04-27  Andrew Haley  <aph@redhat.com>
 
+	PR classpath/43536
         * java/util/concurrent/CopyOnWriteArrayList.java: Fix for empty
         list.
 

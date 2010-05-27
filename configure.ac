@@ -974,7 +974,7 @@ AC_SUBST(PATH_TO_GLIBJ_ZIP)
 
 if test "x${TOOLSDIR}" != x; then
   if test "x${COMPILE_WRAPPERS}" = xno; then
-    AC_PROG_JAVA
+    AC_PROG_JAVA_WORKS
   fi
   if test "x${COMPILE_GJDOC}" = xyes; then
     AC_LIB_ANTLR
@@ -990,7 +990,7 @@ if test "x${use_glibj_zip}" = xfalse || \
    test "x${EXAMPLESDIR}" != x || \
    test "x${TOOLSDIR}" != x && \
    test "x${build_class_files}" != xno; then 	
-	AC_PROG_JAVAC
+	AC_PROG_JAVAC_WORKS
   	CLASSPATH_JAVAC_MEM_CHECK
 fi
 
