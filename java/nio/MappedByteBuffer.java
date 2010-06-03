@@ -1,4 +1,4 @@
-/* MappedByteBuffer.java -- 
+/* MappedByteBuffer.java --
    Copyright (C) 2002, 2004  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -47,11 +47,11 @@ import gnu.classpath.Pointer;
 public abstract class MappedByteBuffer extends ByteBuffer
 {
   MappedByteBuffer (int capacity, int limit, int position, int mark,
-		    Pointer address)
+                    Pointer address)
   {
     super (capacity, limit, position, mark, address, null, 0);
   }
-  
+
   void forceImpl()
   {
   }
@@ -61,7 +61,7 @@ public abstract class MappedByteBuffer extends ByteBuffer
     forceImpl();
     return this;
   }
-    
+
   boolean isLoadedImpl()
   {
     load();
@@ -72,7 +72,7 @@ public abstract class MappedByteBuffer extends ByteBuffer
   {
     return isLoadedImpl();
   }
-    
+
   void loadImpl()
   {
   }
