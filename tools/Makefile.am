@@ -164,8 +164,8 @@ PROPERTY_FILES = $(srcdir)/external/asm/org/objectweb/asm/optimizer/shrink.prope
 	$(srcdir)/resource/gnu/classpath/tools/keytool/messages.properties \
 	$(srcdir)/resource/gnu/classpath/tools/native2ascii/messages.properties \
 	$(srcdir)/resource/gnu/classpath/tools/appletviewer/messages.properties \
-	$(srcdir)/resource/gnu/classpath/tools/common/Messages.properties \
-	$(srcdir)/resource/gnu/classpath/tools/getopt/Messages.properties \
+	$(srcdir)/resource/gnu/classpath/tools/common/messages.properties \
+	$(srcdir)/resource/gnu/classpath/tools/getopt/messages.properties \
 	$(srcdir)/resource/gnu/classpath/tools/tnameserv/messages.properties \
 	$(srcdir)/resource/gnu/classpath/tools/jarsigner/messages.properties \
 	$(srcdir)/resource/gnu/classpath/tools/rmiregistry/messages.properties \

@@ -1,3 +1,33 @@
+2010-06-21  Andrew John Hughes  <ahughes@redhat.com>
+
+	* tools/Makefile.am:
+	Fix patch to message bundles.
+
+2010-04-12  Ivan Maidanski  <ivmai@mail.ru>
+
+        * examples/gnu/classpath/examples/swing/Demo.java:
+	(mkMenuBar): Don't pass null as a second argument to getMethod() (to suppress
+	a warning).
+	* resource/gnu/javax/print/PrinterDialog.properties: Rename to
+	"MessagesBundle.properties" (to prevent class name collision
+	in case the properties file is converted to a class).
+	* resource/gnu/javax/print/PrinterDialog_de.properties: Likewise.
+	* gnu/javax/print/PrinterDialog.java (messages): Get resources from
+	"gnu.javax.print.MessagesBundle" bundle instead of
+	"gnu/javax/print/PrinterDialog" one.
+	* tools/gnu/classpath/tools/common/Messages.java (BUNDLE_NAME):
+	Convert "gnu.classpath.tools.common.Messages" to lowercase (to be
+	consistent with other tools resource bundle names and to prevent class
+	name collision in case the properties file is converted to a class).
+	* tools/resource/gnu/classpath/tools/common/Messages.properties:
+	Rename to "messages.properties".
+	* tools/resource/gnu/classpath/tools/getopt/Messages.properties:
+	Likewise.
+	* testsuite/javax.swing.text.html.parser/test/gnu/javax/swing/text/html/parser/Parser_Test.java:
+	Rename "enum" local variable to "en".
+	* testsuite/javax.swing.text.html.parser/test/gnu/javax/swing/text/html/parser/ParserTest.java:
+	Likewise.
+
 2010-06-05  Mark Wielaard  <mark@klomp.org>
 
 	* doc/cp-tools.texinfo: Move copying information in @copying section.

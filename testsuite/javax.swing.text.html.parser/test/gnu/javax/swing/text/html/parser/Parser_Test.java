@@ -1,5 +1,5 @@
 /* Parser_Test.java --
-   Copyright (C) 2005 Free Software Foundation, Inc.
+   Copyright (C) 2005, 2010  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -138,12 +138,12 @@ public class Parser_Test
 
   protected void dumpAttributes(AttributeSet atts)
   {
-    Enumeration enum = atts.getAttributeNames();
+    Enumeration en = atts.getAttributeNames();
 
     // Sort them to ensure the same order every time:
     TreeSet t = new TreeSet();
-    while (enum.hasMoreElements())
-      t.add(enum.nextElement().toString());
+    while (en.hasMoreElements())
+      t.add(en.nextElement().toString());
 
     Iterator iter = t.iterator();
 
