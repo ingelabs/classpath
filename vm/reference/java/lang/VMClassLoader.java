@@ -1,6 +1,7 @@
 /* VMClassLoader.java -- Reference implementation of native interface
    required by ClassLoader
-   Copyright (C) 1998, 2001, 2002, 2004, 2005, 2006 Free Software Foundation
+   Copyright (C) 1998, 2001, 2002, 2004, 2005, 2006, 2010
+   Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -71,13 +72,11 @@ import java.util.zip.ZipFile;
 final class VMClassLoader
 {
 
-
   /** packages loaded by the bootstrap class loader */
   static final HashMap definedPackages = new HashMap();
 
   /** jars from property java.boot.class.path */
   static final HashMap bootjars = new HashMap();
-
 
   /**
    * Converts the array string of native package names to
@@ -116,6 +115,7 @@ final class VMClassLoader
       }
   }
 
+  private VMClassLoader() {} // Prohibits instantiation.
 
   /**
    * Helper to define a class using a string of bytes. This assumes that
@@ -172,6 +172,7 @@ final class VMClassLoader
       return (URL)e.nextElement();
     return null;
   }
+
   /**
    * Helper to get a list of resources from the bootstrap class loader.
    *
@@ -239,7 +240,6 @@ final class VMClassLoader
     return v.elements();
   }
 
-
   /**
    * Returns a String[] of native package names. The default
    * implementation tries to load a list of package from
@@ -283,7 +283,6 @@ final class VMClassLoader
     else
       return new String[0];
   }
-
 
   /**
    * Helper to get a package from the bootstrap class loader.

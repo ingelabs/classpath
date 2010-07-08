@@ -1,3 +1,114 @@
+2010-04-12  Ivan Maidanski  <ivmai@mail.ru>
+
+	* vm/reference/gnu/classpath/VMStackWalker.java: Make the default
+	constructor private.
+	* vm/reference/gnu/classpath/VMSystemProperties.java: Likewise and make class final.
+	* vm/reference/gnu/java/lang/VMCPStringBuilder.java: Likewise.
+	* vm/reference/gnu/java/lang/VMInstrumentationImpl.java: Likewise.
+	* vm/reference/gnu/java/lang/management/VMClassLoadingMXBeanImpl.java:
+	Likewise.
+	* vm/reference/gnu/java/lang/management/VMCompilationMXBeanImpl.java:
+	Likewise.
+	* vm/reference/gnu/java/lang/management/VMGarbageCollectorMXBeanImpl.java:
+	Likewise.
+	* vm/reference/gnu/java/lang/management/VMMemoryMXBeanImpl.java:
+	Likewise.
+	* vm/reference/gnu/java/lang/management/VMMemoryManagerMXBeanImpl.java:
+	Likewise.
+	* vm/reference/gnu/java/lang/management/VMMemoryPoolMXBeanImpl.java:
+	Likewise.
+	* vm/reference/gnu/java/lang/management/VMOperatingSystemMXBeanImpl.java:
+	Likewise.
+	* vm/reference/gnu/java/lang/management/VMRuntimeMXBeanImpl.java:
+	Likewise.
+	* vm/reference/gnu/java/lang/management/VMThreadMXBeanImpl.java:
+	Likewise.
+	* vm/reference/gnu/java/net/VMPlainDatagramSocketImpl.java: Likewise.
+	Make class non-public and add missing full stop in comment.
+	* vm/reference/gnu/java/nio/VMPipe.java: Make the default constructor private.
+	* vm/reference/gnu/java/nio/VMSelector.java: Likewise and make class non-public.
+	* vm/reference/gnu/java/security/jce/prng/VMSecureRandom.java:
+	Make the default constructor private.
+	(Spinner.stop()): Make package-private to ease access from enclosing class.
+	* vm/reference/java/io/VMFile.java: Make the default constructor private.
+	Fix punctuation in documentation.
+	(getTotalSpace(String)): Make package-private.
+	(getFreeSpace(String)): Likewise.
+	(getUsableSpace(String)): Likewise.
+	(setReadable(String,boolean,boolean)): Likewise.
+	(setExecutable(String,boolean,boolean)): Likewise.
+	(toCanonicalForm(String)): Likewise.
+	* vm/reference/java/io/VMObjectInputStream.java: Make default constructor private.
+	* vm/reference/java/io/VMObjectStreamClass.java: Likewise.
+	* vm/reference/java/lang/VMClassLoader.java: Likewise.
+	* vm/reference/java/lang/VMCompiler.java:
+	(compileClass(Class)): Make package-private.
+	(compileClasses(String)): Likewise.
+	(command(String)): Likewise.
+        (enable()): Likewise.
+        (disable()): Likewise.
+	* vm/reference/java/lang/VMDouble.java: Make constructor package-private.
+	(doubleToRawLongBits(double)): Make package-private.
+	(longBitsToDouble(long)): Likewise.
+	(toString(double, boolean)): Likewise.
+	(initIDs()): Make private.
+	(parseDouble(String)): Make package-private.
+	* vm/reference/java/lang/VMFloat.java: Make constructor package-private.
+	* vm/reference/java/lang/VMMath.java: Likewise and make class final.
+	(sin(double)): Make package-private.
+	(cos(double)): Likewise.
+	(tan(double)): Likewise.
+	(asin(double)): Likewise.
+	(acos(double)): Likewise.
+	(atan(double)): Likewise.
+	(atan2(double, double)): Likewise.
+	(exp(double)): Likewise.
+	(log(double)): Likewise.
+	(sqrt(double)): Likewise.
+	(pow(double)): Likewise.
+	(IEEEremainder(double, double)): Likewise.
+	(ceil(double)): Likewise.
+	(floor(double)): Likewise.
+	(rint(double)): Likewise.
+	(cbrt(double)): Likewise.
+        (cosh(double)): Likewise.
+        (expm1(double)): Likewise.
+        (hypot(double)): Likewise.
+        (log10(double)): Likewise.
+        (log1p(double)): Likewise.
+        (sinh(double)): Likewise.
+        (tanh(double)): Likewise.
+	* vm/reference/java/lang/VMObject.java: Make constructor package-private.
+	* vm/reference/java/lang/VMString.java: Likewise.
+	* vm/reference/java/lang/VMSystem.java: Likewise.
+	(mapLibraryName(String)): Remove the commented out function (since
+	exists in VMRuntime).
+	(currentTimeMillis()): Make package-private.
+	(nanoTime()): Likewise.
+	* vm/reference/java/lang/management/VMManagementFactory.java:
+	Make constructor package-private.
+	* vm/reference/java/lang/reflect/VMArray.java: Make constructor
+	package-private and class final.
+	* vm/reference/java/lang/reflect/VMProxy.java: Make constructor
+	package-private.
+	* vm/reference/java/net/VMInetAddress.java: Make constructor package-private
+	and class final..
+	(getLocalHostname()): Make package-private.
+	(lookupInaddrAny()): Likewise.
+	(getHostByAddr(byte[])): Likewise.
+	(getHostByName(String)): Likewise.
+	(aton(String)): Likewise.
+	* vm/reference/java/net/VMURLConnection.java: Make constructor package-private.
+	(LENGTH): Likewise.
+	* vm/reference/java/nio/VMDirectByteBuffer.java: Make constructor package-private.
+	Fix indenting.
+	* vm/reference/java/security/VMSecureRandom.java: Make constructor package-private.
+	Make the default constructor private.
+	(Spinner.stop()): Make package-private to ease access from enclosing class.
+	* vm/reference/java/util/VMTimeZone.java: Make constructor package-private.
+	* vm/reference/sun/misc/Unsafe.java: Make class final.
+	(unsafe): Make final.
+
 2010-06-21  Andrew John Hughes  <ahughes@redhat.com>
 
 	* tools/Makefile.am:
