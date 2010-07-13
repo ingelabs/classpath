@@ -1,3 +1,8 @@
+2010-07-13  Daniel Noll  <daniel@nuix.com>
+
+	* java/util/zip/InflaterHuffmanTree.java:
+	(buildTree): Fix for #36560.
+
 2010-04-12  Ivan Maidanski  <ivmai@mail.ru>
 
 	* vm/reference/gnu/classpath/VMStackWalker.java: Make the default
