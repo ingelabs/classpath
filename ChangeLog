@@ -1,3 +1,8 @@
+2010-07-13  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/util/zip/ZipFile.java:
+	(readEntries): Throw exception when an encrypted entry is encountered.
+
 2010-07-13  Daniel Noll  <daniel@nuix.com>
 
 	* java/util/zip/InflaterHuffmanTree.java:
