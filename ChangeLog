@@ -1,5 +1,13 @@
 2010-04-12  Ivan Maidanski  <ivmai@mail.ru>
 
+	PR classpath/40889
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkToolkit.c:
+	(Java_gnu_java_awt_peer_gtk_GtkToolkit_gtkInit): Convert gtktoolkit
+	value to a global reference (to be accessible in set_running_flag,
+	clear_running_flag).
+
+2010-04-12  Ivan Maidanski  <ivmai@mail.ru>
+
         * native/jni/classpath/jcl.c:
 	Simplify attribute #ifndef block.
 	(JCL_POINTER_CLASSNAME): Define dependent on size of void*.
