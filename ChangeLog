@@ -1,3 +1,20 @@
+2010-04-12  Ivan Maidanski  <ivmai@mail.ru>
+
+        * native/jni/classpath/jcl.c:
+	Simplify attribute #ifndef block.
+	(JCL_POINTER_CLASSNAME): Define dependent on size of void*.
+	(JCL_POINTER_DATASIGN): Likewise.
+	(JCL_POINTER_INTTYPE): Likewise.
+	(JCL_POINTER_GETFIELD): Likewise.
+	(JNI_OnLoad): Define only if not JCL_NO_JNIONLOAD.
+	Use JCL_POINTER_xxx macros instead of SIZEOF_VOID_P.
+	(JCL_NewRawDataObject): Use JCL_POINTER_xxx macros instead of SIZEOF_VOID_P.
+	Initialize rawDataClass, rawData_fid, rawData_mid global variables if JCL_NO_JNIONLOAD.
+	(JCL_realloc): Don't call free() for NULL pointer.
+	(JCL_GetRawData): Use JCL_POINTER_xxx macros instead of SIZEOF_VOID_P.
+	Initialize rawDataClass, rawData_fid, rawData_mid global variables
+	if JCL_NO_JNIONLOAD.
+
 2010-07-30  Andrew Haley  <aph@redhat.com>
 
         * javax/print/attribute/standard/JobStateReasons.java (add): Fix
