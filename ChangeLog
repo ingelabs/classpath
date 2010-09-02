@@ -1,3 +1,73 @@
+2010-05-09  Ivan Maidanski  <ivmai@mail.ru>
+
+	* gnu/java/security/Properties.java: Only
+	initialise log if Configuration.DEBUG is true.
+	* gnu/java/security/der/DERWriter.java:
+	(toUtf8(String)): Calculate 1.5 * len using
+	len + (len >> 1) to avoid multiplication by a floating-point
+	number.
+	* gnu/java/security/hash/Whirlpool.java: Only
+	initialise log if Configuration.DEBUG is true.
+	* gnu/java/security/jce/sig/EncodedKeyFactory.java: Likewise.
+	* gnu/java/security/jce/sig/SignatureAdapter.java: Likewise.
+	* gnu/java/security/key/dss/DSSKeyPairGenerator.java: Likewise.
+	* gnu/java/security/key/dss/DSSKeyPairPKCS8Codec.java: Likewise.
+	* gnu/java/security/key/rsa/RSAKeyPairGenerator.java: Likewise.
+	* gnu/java/security/key/rsa/RSAKeyPairPKCS8Codec.java: Likewise.
+	* gnu/java/security/key/rsa/RSAKeyPairX509Codec.java: Likewise.
+	* gnu/java/security/pkcs/PKCS7SignedData.java: Likewise.
+	* gnu/java/security/pkcs/SignerInfo.java: Likewise.
+	(SignerInfo(BERReader)): Only print version if Configuration.DEBUG is
+	true, as with other output.
+	* gnu/java/security/provider/PKIXCertPathValidatorImpl.java:
+	Only initialise log if Configuration.DEBUG is true.
+	* gnu/java/security/sig/rsa/EMSA_PSS.java: Likewise.
+	* gnu/java/security/sig/rsa/RSAPSSSignature.java: Likewise.
+	* gnu/java/security/x509/X509CRL.java: Likewise.
+	* gnu/java/security/x509/X509CRLEntry.java: Likewise.
+	* gnu/java/security/x509/ext/Extension.java: Likewise.
+	* gnu/javax/crypto/cipher/Anubis.java: Likewise.
+	* gnu/javax/crypto/cipher/BaseCipher.java: Likewise.
+	* gnu/javax/crypto/cipher/Khazad.java: Likewise.
+	* gnu/javax/crypto/cipher/Rijndael.java: Likewise.
+	* gnu/javax/crypto/cipher/Twofish.java: Likewise.
+	* gnu/javax/crypto/jce/cipher/KeyWrappingAlgorithmAdapter.java: Likewise.
+	* gnu/javax/crypto/jce/keyring/GnuKeyring.java: Likewise.
+	* gnu/javax/crypto/jce/params/BlockCipherParameters.java: Likewise.
+	* gnu/javax/crypto/jce/prng/ICMRandomSpi.java: Likewise.
+	* gnu/javax/crypto/jce/prng/UMacRandomSpi.java: Likewise.
+	* gnu/javax/crypto/key/dh/GnuDHKeyPairGenerator.java: Likewise.
+	(sha): Drop unused variable.
+	(rnd): Use implicit initialisation to null as with other variables.
+	* gnu/javax/crypto/key/srp6/SRPKeyPairGenerator.java:
+	Only initialise log if Configuration.DEBUG is true.
+	* gnu/javax/crypto/keyring/Entry.java: Likewise.
+	* gnu/javax/crypto/keyring/EnvelopeEntry.java: Likewise.
+	* gnu/javax/crypto/keyring/GnuPublicKeyring.java: Likewise.
+	* gnu/javax/crypto/mac/OMAC.java: Likewise.
+	* gnu/javax/crypto/pad/BasePad.java: Likewise.
+	* gnu/javax/crypto/pad/PKCS1_V1_5.java: Likewise.
+	* gnu/javax/crypto/pad/PKCS7.java: Likewise.
+	* gnu/javax/crypto/pad/TBC.java: Likewise.
+	* gnu/javax/crypto/prng/CSPRNG.java: Likewise.
+	(getSystemInstance()): Clarify bracketing of for loop
+	and ignorance of exceptions in the OTHER case.
+	* gnu/javax/crypto/sasl/SaslInputStream.java:
+	Only initialise log if Configuration.DEBUG is true.
+	* gnu/javax/crypto/sasl/SaslOutputStream.java: Likewise.
+	* gnu/javax/crypto/sasl/srp/SRPClient.java: Likewise.
+	* gnu/javax/crypto/sasl/srp/SRPServer.java: Likewise.
+	* gnu/javax/security/auth/login/ConfigFileParser.java: Likewise.
+	(map): Make final.
+	* gnu/javax/security/auth/login/ConfigFileTokenizer.java:
+	Only initialise log if Configuration.DEBUG is true.
+	(br): Make final.
+	(ConfigFileTokenizer(Reader)): Remove explicit initialisation of
+	initialised and call to superclass when superclass is Object.
+	* gnu/javax/security/auth/login/GnuConfiguration.java:
+	Only iniialise log if Configuration.DEBUG is true.
+	* java/math/BigInteger.java: Likewise.
+
 2010-04-12  Ivan Maidanski  <ivmai@mail.ru>
 
 	PR classpath/40889
