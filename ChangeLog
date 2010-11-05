@@ -1,3 +1,31 @@
+2010-11-04  Andrew John Hughes  <ahughes@redhat.com>
+
+	Provide a fallback for systems without POSIX timers.
+	* native/jni/java-lang/java_lang_VMSystem.c:
+	(currentTimeMillis): New function which provides
+	the behaviour for both Java_java_lang_VMSystem_currentTimeMillis
+	and the fallback by obtaining the result of gettimeofday.
+	(Java_java_lang_VMSystem_nanoTime): Return currentTimeMillis
+	multiplied by a 1000 if a monotonic clock is unavailable.
+	(Java_java_lang_VMSystem_currentTimeMillis): Split main behaviour
+	out into currentTimeMillis and then return its result divided by a
+	1000.
+
+2010-07-08  Roland Brand  <roland.brand@ergon.ch>
+	Pekka Enberg  <penberg@kernel.org>
+
+	PR classpath/44411
+	* native/jni/java-lang/java_lang_VMSystem.c:
+	(Java_java_lang_VMSystem_nanoTime): Implement
+	using POSIX monotonic clock support and clock_gettime.
+	(Java_java_lang_VMSystem_currentTimeMillis):
+	Use old nanoTime method (which uses gettimeofday) to
+	provide the current time in milliseconds.
+	* vm/reference/java/lang/VMSystem.java:
+	(currentTimeMillis()): Make native with its own implementation
+	rather than using nanoTime, which should be
+	independent of wall-clock time.
+
 2010-05-09  Ivan Maidanski  <ivmai@mail.ru>
 
 	* gnu/java/security/Properties.java: Only

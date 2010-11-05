@@ -129,10 +129,7 @@ final class VMSystem
    * @return the current time
    * @see java.util.Date
    */
-   static long currentTimeMillis()
-   {
-     return nanoTime() / 1000000L;
-   }
+  static native long currentTimeMillis();
 
   /**
    * <p>
