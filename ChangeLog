@@ -1,5 +1,14 @@
 2010-11-04  Andrew John Hughes  <ahughes@redhat.com>
 
+	* config.rpath:
+	Add file required by autogen.sh due to use
+	of AM_ICONV.
+	* m4/ax_func_which_gethostbyname_r.m4:
+	Use AC_LANG_SOURCE as suggested by warnings from
+	autoconf 2.68.
+
+2010-11-04  Andrew John Hughes  <ahughes@redhat.com>
+
 	Provide a fallback for systems without POSIX timers.
 	* native/jni/java-lang/java_lang_VMSystem.c:
 	(currentTimeMillis): New function which provides
