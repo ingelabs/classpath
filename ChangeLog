@@ -1,3 +1,15 @@
+2010-12-02  Andrew John Hughes  <ahughes@redhat.com>
+
+	PR classpath/46775
+	* vm/reference/java/security/VMAccessController.java:
+	(DEFAULT_CONTEXT): Create ProtectionDomain with
+	four argument constructor (arguments are the same
+	as those implied by the two argument constructor).
+	(getContext()): Create ProtectionDomain instances
+	with four argument constructor using a null Principal
+	array (as before) but including the classloader, which
+	was always null before.
+
 2010-11-04  Andrew John Hughes  <ahughes@redhat.com>
 
 	* config.rpath:
