@@ -1,3 +1,9 @@
+2006-07-21  Tom Tromey  <tromey@redhat.com>
+
+	* vm/reference/java/lang/VMClass.java:
+	(getSimpleName()): Use implementation from
+	gcj.
+
 2010-12-02  Andrew John Hughes  <ahughes@redhat.com>
 
 	PR classpath/46775
