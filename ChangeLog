@@ -1,3 +1,13 @@
+2010-12-25  Andrew John Hughes  <ahughes@redhat.com>
+
+	PR classpath/42390
+	* java/io/ObjectOutputStream.java:
+	(ObjectOutputStream(OutputStream)): Add
+	required security check.
+	(overridesMethods(Class<?>)): Check whether
+	the subclass overrides one of the methods
+	which requires a security check.
+
 2010-12-24  Andrew John Hughes  <ahughes@redhat.com>
 
 	* java/security/ProtectionDomain.java,
