@@ -1,6 +1,13 @@
 2010-12-25  Andrew John Hughes  <ahughes@redhat.com>
 
 	PR classpath/42390
+	* java/io/File.java:
+	(isHidden()): Add and document missing
+	security check.
+
+2010-12-25  Andrew John Hughes  <ahughes@redhat.com>
+
+	PR classpath/42390
 	* java/util/logging/LogManager.java:
 	(addPropertyChangeListener(PropertyChangeListener)):
 	Document fully.  Throw NPE in a clearer way.  Add
