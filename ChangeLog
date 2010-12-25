@@ -1,3 +1,14 @@
+2010-12-24  Andrew John Hughes  <ahughes@redhat.com>
+
+	* java/security/ProtectionDomain.java,
+	(hasAllPermissions): Add new field.
+	(ProtectionDomain(CodeSource,PermissionCollection,
+	ClassLoader,Principal,boolean)): Check if permission
+	collection includes AllPermission and, if so, set
+	hasAllPermissions.
+	(implies(Permission)): Immediately return true if
+	hasAllPermissions is set.
+
 2006-07-21  Tom Tromey  <tromey@redhat.com>
 
 	* vm/reference/java/lang/VMClass.java:
