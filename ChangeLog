@@ -1,6 +1,16 @@
 2010-12-25  Andrew John Hughes  <ahughes@redhat.com>
 
 	PR classpath/42390
+	* java/util/logging/LogManager.java:
+	(addPropertyChangeListener(PropertyChangeListener)):
+	Document fully.  Throw NPE in a clearer way.  Add
+	SecurityException.
+	(removePropertyChangeListener(PropertyChangeListener)):
+	Document fully. Add SecurityException.
+
+2010-12-25  Andrew John Hughes  <ahughes@redhat.com>
+
+	PR classpath/42390
 	* java/io/ObjectOutputStream.java:
 	(ObjectOutputStream(OutputStream)): Add
 	required security check.
