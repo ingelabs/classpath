@@ -1,3 +1,13 @@
+2011-01-21  Pekka Enberg <penberg@kernel.org>
+
+	* java/lang/Class.java:
+	(getDeclaredField): Throw NullPointerException instead of
+	NoSuchFieldException if name is null.
+	(getField): Likewise.
+	(getDeclaredMethod): Throw NullPointerException instead of
+	NoSuchMethodException if name is null.
+	(getMethod): Likewise.
+
 2010-12-25  Andrew John Hughes  <ahughes@redhat.com>
 
 	PR classpath/42390
