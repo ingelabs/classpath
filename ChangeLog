@@ -1,4 +1,10 @@
-2011-01-21  Pekka Enberg <penberg@kernel.org>
+2011-01-22  Pekka Enberg  <penberg@kernel.org>
+
+	* native/jni/java-lang/java_lang_VMSystem.c
+	(currentTimeMillis): Rename currentTimeMillis to
+	currentTimeMicros to reflect what the function returns.
+
+2011-01-21  Pekka Enberg  <penberg@kernel.org>
 
 	* java/lang/Class.java:
 	(getDeclaredField): Throw NullPointerException instead of

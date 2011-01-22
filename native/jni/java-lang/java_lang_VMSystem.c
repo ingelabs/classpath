@@ -115,7 +115,7 @@ Java_java_lang_VMSystem_setErr (JNIEnv * env,
   (*env)->SetStaticObjectField (env, cls, field, obj);
 }
 
-static jlong currentTimeMillis(JNIEnv * env)
+static jlong currentTimeMicros(JNIEnv * env)
 {
   /* Note: this implementation copied directly from Japhar's, by Chris Toshok. */
   jlong result;
@@ -157,7 +157,7 @@ Java_java_lang_VMSystem_nanoTime
 
   return result;
 #else
-  return currentTimeMillis(env) * (jlong)1000;
+  return currentTimeMicros(env) * (jlong)1000;
 #endif
 }
 
@@ -171,7 +171,7 @@ Java_java_lang_VMSystem_currentTimeMillis
   (JNIEnv * env,
    jclass thisClass __attribute__ ((__unused__)))
 {
-  return currentTimeMillis(env) / (jlong)1000L;
+  return currentTimeMicros(env) / (jlong)1000L;
 }
 
 JNIEXPORT jstring JNICALL
