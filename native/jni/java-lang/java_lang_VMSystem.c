@@ -146,9 +146,7 @@ Java_java_lang_VMSystem_nanoTime
   struct timespec tp;
 
   if (clock_gettime (CLOCK_MONOTONIC, &tp) == -1) {
-    char error[64];
-    snprintf(error, 64, "clock_gettime call failed: %s.", strerror(errno));
-    (*env)->FatalError (env, error);
+    return currentTimeMicros(env) * (jlong)1000;
   }
 
   result = (jlong) tp.tv_sec;

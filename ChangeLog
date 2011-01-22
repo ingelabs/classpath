@@ -1,6 +1,12 @@
 2011-01-22  Pekka Enberg  <penberg@kernel.org>
 
 	* native/jni/java-lang/java_lang_VMSystem.c
+	(Java_java_lang_VMSystem_nanoTime): Fallback to
+	gettimeofday() if clock_gettime(CLOCK_MONOTONIC) fails.
+
+2011-01-22  Pekka Enberg  <penberg@kernel.org>
+
+	* native/jni/java-lang/java_lang_VMSystem.c
 	(currentTimeMillis): Rename currentTimeMillis to
 	currentTimeMicros to reflect what the function returns.
 
