@@ -1,3 +1,10 @@
+2010-02-16  Pekka Enberg  <penberg@kernel.org>
+
+	* java/util/Formatter.java:
+	(parseInt): Use Integer.parseInt() insted of Integer.decode()
+	because the latter doesn't work with leading zeros which are
+	used in String.format() formatting, for example.
+
 2010-07-02  Ivan Maidanski  <ivmai@mail.ru>
 
 	* java/util/regex/Pattern.java:
