@@ -1,3 +1,9 @@
+2011-02-22  Pekka Enberg  <penberg@kernel.org>
+
+	* java/util/HashMap:
+	(DEFAULT_CAPACITY): Make default initial capacity 16 as it is
+	defined in official Javadocs.
+
 2010-02-16  Pekka Enberg  <penberg@kernel.org>
 
 	* java/util/Formatter.java:
