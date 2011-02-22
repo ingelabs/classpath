@@ -345,7 +345,7 @@ public class HashMap<K, V> extends AbstractMap<K, V>
 
     while (e != null)
       {
-        if (equals(key, e.key))
+        if ((key.hashCode() == e.key.hashCode()) && equals(key, e.key))
           {
             e.access(); // Must call this for bookkeeping in LinkedHashMap.
             V r = e.value;
