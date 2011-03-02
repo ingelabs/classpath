@@ -1,3 +1,8 @@
+2011-03-02  Pekka Enberg  <penberg@kernel.org>
+
+	* java/util/regex/Matcher:
+	(find): Make sure match is within input data limits.
+
 2011-02-22  Pekka Enberg  <penberg@kernel.org>
 
 	* java/util/HashMap:

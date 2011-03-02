@@ -169,6 +169,12 @@ public final class Matcher implements MatchResult
     if (match != null)
       {
         int endIndex = match.getEndIndex();
+        // Is the match within input limits?
+        if (endIndex > input.length())
+          {
+            match = null;
+            return false;
+          }
         // Are we stuck at the same position?
         if (!first && endIndex == position)
           {
