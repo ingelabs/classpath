@@ -255,7 +255,15 @@ public class ProtectionDomain
     sb.append(linesep);
     if (!staticBinding) // include all but dont force loading Policy.currentPolicy
       if (Policy.isLoaded())
-        sb.append(Policy.getCurrentPolicy().getPermissions(this));
+        try
+          {
+            sb.append(Policy.getPolicy().getPermissions(this));
+          }
+        catch (SecurityException e)
+          {
+            // We are not allowed access to the policy.
+            sb.append(perms);
+          }
       else // fallback on this one's permissions
         sb.append(perms);
     else

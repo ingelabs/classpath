@@ -1,3 +1,11 @@
+2011-02-22  Andrew John Hughes  <ahughes@redhat.com>
+
+	PR classpath/42390
+	* java/security/ProtectionDomain.java:
+	(toString()): Don't include permissions from
+	the policy if we don't have permission to read
+	it.
+
 2011-03-02  Pekka Enberg  <penberg@kernel.org>
 
 	* java/util/regex/Matcher:
