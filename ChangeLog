@@ -1,3 +1,8 @@
+2011-03-14  Pekka Enberg  <penberg@kernel.org>
+
+	* javax/swing/text/html/StyleSheet.java:
+	(resolveStyle()): Fix misuse of ArrayList.set().
+
 2011-02-22  Andrew John Hughes  <ahughes@redhat.com>
 
 	PR classpath/42390
