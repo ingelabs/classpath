@@ -1,3 +1,9 @@
+2011-03-15  Jeroen Frijters  <jeroen@frijters.net>
+
+	PR classpath/48131
+	* java/util/zip/InflaterHuffmanTree.java:
+	(buildTree): Handle empty tree.
+
 2011-03-14  Pekka Enberg  <penberg@kernel.org>
 
 	* javax/swing/text/html/StyleSheet.java:
