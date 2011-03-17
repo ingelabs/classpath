@@ -1,3 +1,9 @@
+2011-03-17  Pekka Enberg  <penberg@kernel.org>
+
+	* native/jni/java-nio/java_nio_VMDirectByteBuffer.c:
+	(Java_java_nio_VMDirectByteBuffer_allocate): Check for negative
+	capacity.
+
 2011-03-14  Andrew John Hughes  <ahughes@redhat.com>
 
 	PR classpath/42390
