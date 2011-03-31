@@ -1,3 +1,12 @@
+2011-03-30  Gert Brettlecker  <gert.brettlecker@ergon.ch>
+
+	PR classpath/42823
+	* native/jni/java-net/java_net_VMInetAddress.c,
+	(Java_VMInetAddress_getHostByAddr(JNIEnv*,jclass,jarray)):
+	Free address structure after use.
+	(Java_java_net_VMInetAddress_aton(JNIEnv*,jclass,jstring)):
+	Release UTF string after use.
+
 2011-03-17  Pekka Enberg  <penberg@kernel.org>
 
 	* native/jni/java-nio/java_nio_VMDirectByteBuffer.c:
