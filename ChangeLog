@@ -1,3 +1,8 @@
+2011-04-25  Pekka Enberg  <penberg@kernel.org>
+
+	* java/util/regex/Matcher.java:
+	(quoteReplacement): Implement missing Java 1.5 API method.
+
 2011-03-30  Gert Brettlecker  <gert.brettlecker@ergon.ch>
 
 	PR classpath/42823
