@@ -1,3 +1,35 @@
+2011-06-27  Andrew John Hughes  <ahughes@redhat.com>
+
+	Fix issues with building with -Werror and gcc 4.6.
+	* native/jni/gtk-peer/GtkDragSourceContextPeer.c:
+	(Java_gnu_java_awt_dnd_peer_gtk_GtkDragSourceContextPeer_nativeSetCursor):
+	Remove unused ptr variable and mark env as unused.
+	(connect_signals_for_widget(GtkWidget*)): Mark w unused and don't set it.
+	(Java_gnu_java_awt_dnd_peer_gtk_GtkDragSourceContextPeer_nativeStartDrag):
+	Remove unused ptr variable.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_ComponentGraphics.c:
+	(Java_gnu_java_awt_peer_gtk_ComponentGraphics_initState):
+	Remove unused width and height variables.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkRobotPeer.c:
+	(Java_gnu_java_awt_peer_gtk_GdkRobotPeer_mouseMove):
+	Check result of XTestFakeMotionEvent call.
+	(Java_gnu_java_awt_peer_gtk_GdkRobotPeer_mousePress): Likewise for
+	XTestFakeButtonEvent call.
+	(Java_gnu_java_awt_peer_gtk_GdkRobotPeer_mouseRelease): Likewise.
+	(Java_gnu_java_awt_peer_gtk_GdkRobotPeer_keyPress): Use g_message
+	instead of deprecated g_printerr.  Check result of XTestFakeKeyEvent.
+	(Java_gnu_java_awt_peer_gtk_GdkRobotPeer_keyRelease): Likewise.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkPopupMenuPeer.c:
+	(Java_gnu_java_awt_peer_gtk_GtkPopupMenuPeer_setupAccelGroup):
+	Completely disable code to attach parent, including use of ptr2
+	and parent argument, and reinstate original FIXME to explain why.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkVolatileImage.c:
+	(Java_gnu_java_awt_peer_gtk_GtkVolatileImage_nativeGetPixels):
+	Remove unused depth variable.
+	* native/jni/midi-alsa/gnu_javax_sound_midi_alsa_AlsaPortDevice.c,
+	(Java_gnu_javax_sound_midi_alsa_AlsaPortDevice_run_1receiver_1thread_1):
+	Check return values and throw an InternalError if a problem occurs.
+
 2011-05-29  Pekka Enberg  <penberg@kernel.org>
 
 	* lib/Makefile.am:
