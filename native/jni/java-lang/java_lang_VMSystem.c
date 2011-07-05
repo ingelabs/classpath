@@ -141,7 +141,7 @@ Java_java_lang_VMSystem_nanoTime
   (JNIEnv * env,
    jclass thisClass __attribute__ ((__unused__)))
 {
-#ifdef _POSIX_MONOTONIC_CLOCK
+#if defined(HAVE_CLOCK_GETTIME) && defined(_POSIX_MONOTONIC_CLOCK)
   jlong result;
   struct timespec tp;
 

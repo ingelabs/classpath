@@ -1,3 +1,11 @@
+2011-07-05  Pekka Enberg  <penberg@kernel.org>
+
+	* configure.ac:
+	Check for clock_gettime().
+	native/jni/java-lang/java_lang_VMSystem.c:
+	(Java_java_lang_VMSystem_nanoTime):
+	Fix compile error on systems that don't have clock_gettime().
+
 2011-06-27  Andrew John Hughes  <ahughes@redhat.com>
 
 	Fix issues with building with -Werror and gcc 4.6.
