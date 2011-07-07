@@ -1,5 +1,12 @@
 2011-07-07  Andrew John Hughes  <ahughes@redhat.com>
 
+	PR classpath/45527
+	* tools/gnu/classpath/tools/javah/JniHelper.java:
+	(mangle(String)): Replace '$' with '_' rather than
+	encoding it as hex.
+
+2011-07-07  Andrew John Hughes  <ahughes@redhat.com>
+
 	PR classpath/40188
 	* tools/gnu/classpath/tools/javah/JniIncludePrinter.java:
 	(writeFields(ClassWrapper,JniPrintStream)): Retain a
