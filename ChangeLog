@@ -1,3 +1,11 @@
+2011-07-07  Andrew John Hughes  <ahughes@redhat.com>
+
+	PR classpath/40188
+	* tools/gnu/classpath/tools/javah/JniIncludePrinter.java:
+	(writeFields(ClassWrapper,JniPrintStream)): Retain a
+	reference to the original class and use it in naming
+	fields, as opposed to the class in which it occurs.
+
 2011-07-05  Pekka Enberg  <penberg@kernel.org>
 
 	* configure.ac:
