@@ -1,3 +1,10 @@
+2011-07-20  Ivan Maidanski  <ivmai@mail.ru>
+
+	* native/jni/java-util/java_util_VMTimeZone.c:
+	Include jcl.h file.
+	(Java_java_util_VMTimeZone_getSystemTimeZoneId): Throw
+	OutOfMemoryException in case of malloc() failure.
+
 2012-06-10  Ivan Maidanski  <ivmai@mail.ru>
 
 	* compat/.gitignore,
