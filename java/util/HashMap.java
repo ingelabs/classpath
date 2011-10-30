@@ -343,9 +343,12 @@ public class HashMap<K, V> extends AbstractMap<K, V>
     int idx = hash(key);
     HashEntry<K, V> e = buckets[idx];
 
+    int hash1 = key == null ? 0 : key.hashCode();
     while (e != null)
       {
-        if ((key.hashCode() == e.key.hashCode()) && equals(key, e.key))
+        int hash2 = e.key == null ? 0 : e.key.hashCode();
+
+        if ((hash1 == hash2) && equals(key, e.key))
           {
             e.access(); // Must call this for bookkeeping in LinkedHashMap.
             V r = e.value;
