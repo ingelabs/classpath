@@ -1,3 +1,26 @@
+2011-12-01  Andrew John Hughes  <ahughes@redhat.com>
+
+	* gnu/javax/net/ssl/provider/CipherSuite.java:
+	Pass CBC mode to the static CipherSuite instances.
+	(isCBCMode): New variable.
+	(CipherSuite(CipherAlgorithm, KeyExchangeAlgorithm,
+	SignatureAlgorithm, MacAlgorithm, int, int, int, String, boolean)):
+	Allow isCBCMode to be specified.
+	(CipherSuite(CipherAlgorithm, KeyExchangeAlgorithm, boolean,
+	SignatureAlgorithm, MacAlgorithm, int, int, int, String, boolean)):
+	Likewise.
+	(cipher()): Generalise setting of 'alg' to work with any suite
+	that does not use CBC, not just "RC4".
+	(isCBCMode()): New method.  Returns true if the CBC mode is used.
+	* gnu/javax/net/ssl/provider/OutputSecurityParameters.java:
+	(enableCBCProtection): Set to true by default of if jsse.enableCBCProtection
+	is true.
+	(needToSplitPayload()): Returns true if TLS < 1.1 is in use with
+	a CBC mode cipher and CBC protection is enabled.
+	* gnu/javax/net/ssl/provider/SSLEngineImpl.java:
+	(wrap(ByteBuffer[], int, int, ByteBuffer)): Send application data
+	as two packets (1 and n - 1) if CBC protection is enabled.
+
 2011-10-24  Pekka Enberg  <penberg@kernel.org>
 
 	* java/util/HashMap.java:
