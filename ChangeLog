@@ -1,3 +1,8 @@
+2012-01-05  Pekka Enberg  <penberg@kernel.org>
+
+	* java/io/IOError:
+	Add new class.
+
 2011-12-01  Andrew John Hughes  <ahughes@redhat.com>
 
 	* gnu/javax/net/ssl/provider/CipherSuite.java:
