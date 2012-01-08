@@ -144,6 +144,7 @@ gnu_java_nio_VMSelector.h \
 gnu_java_nio_charset_iconv_IconvEncoder.h \
 gnu_java_nio_charset_iconv_IconvDecoder.h \
 gnu_java_lang_management_VMOperatingSystemMXBeanImpl.h \
+java_io_VMConsole.h \
 java_io_VMFile.h \
 java_io_VMObjectInputStream.h \
 java_io_VMObjectStreamClass.h \
@@ -384,6 +385,8 @@ gnu_java_nio_VMSelector.h: $(top_srcdir)/vm/reference/gnu/java/nio/VMSelector.ja
 	$(JAVAH) -o $@ gnu.java.nio.VMSelector
 gnu_java_lang_management_VMOperatingSystemMXBeanImpl.h: $(top_srcdir)/vm/reference/gnu/java/lang/management/VMOperatingSystemMXBeanImpl.java
 	$(JAVAH) -o $@ gnu.java.lang.management.VMOperatingSystemMXBeanImpl
+java_io_VMConsole.h: $(top_srcdir)/vm/reference/java/io/VMConsole.java
+	$(JAVAH) -o $@ java.io.VMConsole
 java_io_VMFile.h: $(top_srcdir)/vm/reference/java/io/VMFile.java
 	$(JAVAH) -o $@ java.io.VMFile
 java_io_VMObjectInputStream.h: $(top_srcdir)/vm/reference/java/io/VMObjectInputStream.java

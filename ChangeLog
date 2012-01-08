@@ -1,3 +1,23 @@
+2012-01-07  Pekka Enberg  <penberg@kernel.org>
+
+	* include/Makefile.am:
+	Add java_io_VMConsole.h.
+
+	* java/io/Console:
+	Add Java 1.6 java/io/Console API.
+
+	* java/lang/System.java:
+	(console): Add Java 1.6 console() API.
+
+	* vm/reference/java/io/VMConsole:
+	Add new class.
+
+	* native/jni/java-io/Makefile.am:
+	Add java_io_VMConsole.c.
+
+	* native/jni/java-io/java_io_VMConsole.c:
+	Add native helpers for java/io/Console.
+
 2012-01-05  Pekka Enberg  <penberg@kernel.org>
 
 	* java/io/IOError:
