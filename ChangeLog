@@ -1,20 +1,31 @@
+2011-12-12  Andrew John Hughes  <ahughes@redhat.com>
+
+	RH712013: pdftk crashes with java.lang.ArrayIndexOutOfBoundsException
+	* java/text/DateFormatSymbols.java:
+	(getStringArray(List<ResourceBundle>, String, int)):
+	Calls getStringArray(list,string,int,null).
+	(getStringArray(List<ResourceBundle>, String, int, String[])):
+	Populate a String array with locale data.  The data
+	used is the first non-null non-empty element found
+	as we traverse the locale hierarchy. May be supplemented
+	by fallback data.
+	(DateFormatSymbols(Locale)): Get a list of all bundles up the
+	locale hierarchy, rather than just using the one specific locale.
+	Use the improved getStringArray method to populate the arrays,
+	supplying existing data where "sideways" inheritance takes place.
+
 2012-01-07  Pekka Enberg  <penberg@kernel.org>
 
 	* include/Makefile.am:
 	Add java_io_VMConsole.h.
-
 	* java/io/Console:
 	Add Java 1.6 java/io/Console API.
-
 	* java/lang/System.java:
 	(console): Add Java 1.6 console() API.
-
 	* vm/reference/java/io/VMConsole:
 	Add new class.
-
 	* native/jni/java-io/Makefile.am:
 	Add java_io_VMConsole.c.
-
 	* native/jni/java-io/java_io_VMConsole.c:
 	Add native helpers for java/io/Console.
 
