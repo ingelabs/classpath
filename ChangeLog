@@ -1,3 +1,12 @@
+2012-02-08  Andrew John Hughes  <ahughes@redhat.com>
+
+	PR classpath/42390
+	* java/nio/channels/spi/SelectorProvider.java:
+	(provider()): Retrieve property value using
+	PrivilegedAction.
+	* java/security/KeyStore.java:
+	(getDefaultType()): Likewise.
+
 2012-02-06  Andrew John Hughes  <ahughes@redhat.com>
 
 	PR classpath/42390
