@@ -1,3 +1,12 @@
+2012-02-06  Andrew John Hughes  <ahughes@redhat.com>
+
+	PR classpath/42390
+	* java/net/DatagramSocket.java:
+	(connect(InetAddress,int)): Add missing security
+	checks which OpenJDK performs and we don't.  It's
+	possible to initialise a DatagramSocket with null
+	so we should also ensure we are bound.
+
 2012-02-01  Andrew John Hughes  <ahughes@redhat.com>
 
 	* resource/gnu/java/locale/LocaleInformation.properties,
