@@ -161,7 +161,7 @@ public class DateFormatSymbols implements java.io.Serializable, Cloneable
     for (int a = 0; a < bundles.size(); ++a)
       {
         String localeData = bundles.get(a).getString(name);
-        String[] array = localeData.substring(0, localeData.length() -1).split("\u00ae", size);
+        String[] array = localeData.split("\u00ae", size);
         for (int b = 0; b < data.length; ++b)
           {
             if (array.length > b && array[b] != null && data[b].isEmpty() && !array[b].isEmpty())
