@@ -1,5 +1,9 @@
 2012-02-15  Andrew John Hughes  <ahughes@redhat.com>
 
+	* NEWS: Updated prior to release.
+
+2012-02-15  Andrew John Hughes  <ahughes@redhat.com>
+
 	* java/text/DateFormatSymbols.java:
 	(getStringArray(List,String,int,String)): Remove hack which
 	removes last character of the input data; now unnecessary.
