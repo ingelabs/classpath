@@ -1,5 +1,11 @@
 2012-02-15  Andrew John Hughes  <ahughes@redhat.com>
 
+	* native/jni/gstreamer-peer/gst_classpath_src.c,
+	(gst_classpath_src_class_init(GstClasspathSrcClass)):
+	Remove unused gstelement_class.
+
+2012-02-15  Andrew John Hughes  <ahughes@redhat.com>
+
 	* NEWS: Updated prior to release.
 
 2012-02-15  Andrew John Hughes  <ahughes@redhat.com>
