@@ -1,3 +1,9 @@
+2012-03-07  Andrew John Hughes  <ahughes@redhat.com>
+
+	* doc/cp-tools.texinfo:
+	Move macro definition outside of if block
+	so gcctabopt is always defined.
+
 2012-02-15  Andrew John Hughes  <ahughes@redhat.com>
 
 	* native/jni/gstreamer-peer/gst_classpath_src.c,

@@ -20,10 +20,6 @@ Permission is granted to copy and distribute translations of this manual into an
 @end quotation
 @end copying
 
-@ifinfo
-@ifnotplaintext
-@setchapternewpage on
-
 @c Common macros to support generating man pages:
 
 @macro gcctabopt{body}
@@ -34,6 +30,10 @@ Permission is granted to copy and distribute translations of this manual into an
 \body\
 @end smallexample
 @end macro
+
+@ifinfo
+@ifnotplaintext
+@setchapternewpage on
 
 @dircategory GNU Libraries
 @direntry
@@ -2438,14 +2438,14 @@ with the header @samp{CVS ID}, you would specify:
 Let's say that a class javadoc comment contains
 
 @smallexample
-@@cvsid $Id: cp-tools.texinfo,v 1.8 2010-06-05 20:18:00 mark Exp $
+@@cvsid $Id: cp-tools.texinfo,v 1.9 2012-03-07 15:27:27 gnu_andrew Exp $
 @end smallexample
 
 Then the HTML output will contain something like
 
 @smallexample
 CVS ID:
-  $Id: cp-tools.texinfo,v 1.8 2010-06-05 20:18:00 mark Exp $
+  $Id: cp-tools.texinfo,v 1.9 2012-03-07 15:27:27 gnu_andrew Exp $
 @end smallexample
 @end table
 
