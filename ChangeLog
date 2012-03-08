@@ -1,5 +1,11 @@
 2012-03-07  Andrew John Hughes  <ahughes@redhat.com>
 
+	* tools/Makefile.am:
+	(TOOLS_JAVA_FILES): Remove duplication.
+	(dist-hook): Fail if copying fails.
+
+2012-03-07  Andrew John Hughes  <ahughes@redhat.com>
+
 	* doc/cp-tools.texinfo:
 	Move macro definition outside of if block
 	so gcctabopt is always defined.

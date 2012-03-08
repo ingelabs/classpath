@@ -131,7 +131,7 @@ EXTRA_DIST = toolwrapper.c gappletviewer.in gjarsigner.in gkeytool.in \
 	gtnameserv.in gorbd.in grmid.in grmic.in gjdoc.in
 
 # All our example java source files
-TOOLS_JAVA_FILES = $(srcdir)/gnu/classpath/tools/*/*.java \
+TOOLS_JAVA_FILES = \
 	$(srcdir)/gnu/classpath/tools/*.java \
 	$(srcdir)/gnu/classpath/tools/*/*.java \
 	$(srcdir)/gnu/classpath/tools/*/*/*.java \
@@ -303,7 +303,9 @@ dist-hook:
 	    $(mkinstalldirs) $(distdir)/$$fdir; \
 	  fi; \
 	  echo "cp -p $$file $(distdir)/$$f"; \
-	  cp -p $$file $(distdir)/$$f; \
+	  if ! cp -p $$file $(distdir)/$$f; then \
+	    exit -1 ; \
+	  fi ; \
 	done
 
 # To generate the example zip just depend on the sources and ignore
