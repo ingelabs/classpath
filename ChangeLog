@@ -1,5 +1,12 @@
 2012-03-07  Andrew John Hughes  <ahughes@redhat.com>
 
+	* NEWS:
+	Add section for 1.0 release.
+	* configure.ac:
+	Bump to 1.0pre.
+
+2012-03-07  Andrew John Hughes  <ahughes@redhat.com>
+
 	* tools/Makefile.am:
 	(TOOLS_JAVA_FILES): Remove duplication.
 	(dist-hook): Fail if copying fails.
