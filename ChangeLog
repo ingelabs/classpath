@@ -1,5 +1,20 @@
 2012-03-12  Pekka Enberg  <penberg@kernel.org>
 
+	* java/lang/Boolean.java:
+	(compare): Add missing method.
+	* java/lang/Byte.java:
+	(compare): Add missing method.
+	* java/lang/Character.java:
+	(compare): Add missing method.
+	* java/lang/Integer.java:
+	(compare): Add missing method.
+	* java/lang/Long.java:
+	(compare): Add missing method.
+	* java/lang/Short.java:
+	(compare): Add missing method.
+
+2012-03-12  Pekka Enberg  <penberg@kernel.org>
+
 	* java/lang/System.java:
 	(lineSeparator): Add missing method.
 
