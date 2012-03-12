@@ -1,5 +1,12 @@
 2012-03-12  Pekka Enberg  <penberg@kernel.org>
 
+	* java/lang/AssertionError.java:
+	(AssertionError): Add missing constructor.
+	* java/lang/LinkageError.java:
+	(LinkageError): Add missing constructor.
+
+2012-03-12  Pekka Enberg  <penberg@kernel.org>
+
 	* java/lang/Boolean.java:
 	(compare): Add missing method.
 	* java/lang/Byte.java:
