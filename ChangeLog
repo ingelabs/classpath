@@ -1,5 +1,16 @@
 2012-03-12  Pekka Enberg  <penberg@kernel.org>
 
+	* java/lang/ClassNotFoundException,
+	* java/lang/IllegalAccessException.java,
+	* java/lang/InstantiationException.java,
+	* java/lang/NoSuchFieldException.java,
+	* java/lang/NoSuchMethodException.java,
+	* java/lang/ReflectiveOperationException.java,
+	* java/lang/reflect/InvocationTargetException.java:
+	Add ReflectiveOperationException class.
+
+2012-03-12  Pekka Enberg  <penberg@kernel.org>
+
 	* java/lang/AssertionError.java:
 	(AssertionError): Add missing constructor.
 	* java/lang/LinkageError.java:

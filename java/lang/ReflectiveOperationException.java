@@ -1,5 +1,5 @@
-/* NoSuchMethodException.java -- thrown when reflecting a non-existant method
-   Copyright (C) 1998, 1999, 2001, 2002, 2005, 2012  Free Software Foundation, Inc.
+/* ReflectiveOperationException.java -- thrown when reflective operation fails
+   Copyright (C) 2012  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -39,24 +39,18 @@ exception statement from your version. */
 package java.lang;
 
 /**
- * Thrown to indicate the class does not have the specified method. This is
- * caused by a variety of reflection methods, when looking up a method by name.
+ * This exception is thrown when reflective operations fail.
  *
- * @author Brian Jones
- * @author Warren Levy (warrenl@cygnus.com)
- * @status updated to 1.7
+ * @since 1.7
  */
-public class NoSuchMethodException extends ReflectiveOperationException
+public class ReflectiveOperationException extends Exception
 {
-  /**
-   * Compatible with JDK 1.0+.
-   */
-  private static final long serialVersionUID = 5034388446362600923L;
+  private static final long serialVersionUID = 123456789L;
 
   /**
    * Create an exception without a message.
    */
-  public NoSuchMethodException()
+  public ReflectiveOperationException()
   {
   }
 
@@ -65,8 +59,30 @@ public class NoSuchMethodException extends ReflectiveOperationException
    *
    * @param s the message
    */
-  public NoSuchMethodException(String s)
+  public ReflectiveOperationException(String s)
   {
     super(s);
   }
+
+  /**
+   * Create an exception with a message and a cause.
+   *
+   * @param s the message
+   * @param cause the cause, may be null
+   */
+  public ReflectiveOperationException(String message, Throwable cause)
+  {
+    super(message, cause);
+  }
+
+  /**
+   * Create an exception with a cause.
+   *
+   * @param cause the cause, may be null
+   */
+  public ReflectiveOperationException(Throwable cause)
+  {
+    super(cause);
+  }
+
 }
