@@ -1,5 +1,6 @@
-/* FileLockImpl.java -- FileLock associated with a FileChannelImpl.
-   Copyright (C) 2002, 2004, 2005 Free Software Foundation, Inc.
+/* AutoCloseable.java -- Resource that must be closed after it is no longer
+   used.
+   Copyright (C) 2012  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,72 +37,14 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package gnu.java.nio;
-
-import java.io.IOException;
-import java.nio.channels.FileLock;
+package java.lang;
 
 /**
- * A FileLock associated with a FileChannelImpl.
+ * Resource that must be closed after it is no longer used.
  *
- * @author Michael Koch
- * @since 1.4
+ * @since 1.7
  */
-public final class FileLockImpl extends FileLock
+public interface AutoCloseable
 {
-  /**
-   * Whether or not this lock is valid, false when channel is closed or
-   * release has been explicitly called.
-   */
-  private boolean valid;
-
-  public FileLockImpl (FileChannelImpl channel, long position,
-                       long size, boolean shared)
-  {
-    super (channel, position, size, shared);
-    valid = true;
-  }
-
-  /**
-   * Releases this lock.
-   */
-  protected void finalize()
-  {
-    try
-      {
-        release();
-      }
-    catch (IOException e)
-      {
-        // Ignore this.
-      }
-  }
-
-  /**
-   * Whether or not this lock is valid, false when channel is closed or
-   * release has been explicitly called.
-   */
-  public boolean isValid()
-  {
-    if (valid)
-      valid = channel().isOpen();
-    return valid;
-  }
-
-  public void close() throws Exception
-  {
-    release();
-  }
-
-  /**
-   * Releases the lock if it is still valid. Marks this lock as invalid.
-   */
-  public void release() throws IOException
-  {
-    if (isValid())
-      {
-        valid = false;
-        ((FileChannelImpl) channel()).unlock(position(), size());
-      }
-  }
+  void close() throws Exception;
 }

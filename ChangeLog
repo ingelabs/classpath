@@ -1,5 +1,24 @@
 2012-03-12  Pekka Enberg  <penberg@kernel.org>
 
+	* gnu/java/nio/FileLockImpl.java,
+	* java/beans/XMLDecoder.java,
+	* java/beans/XMLEncoder.java,
+	* java/io/Closeable.java,
+	* java/io/ObjectInput.java,
+	* java/io/ObjectOutput.java,
+	* java/lang/AutoCloseable.java,
+	* java/nio/channels/FileLock.java,
+	* java/sql/Connection.java,
+	* java/sql/ResultSet.java,
+	* java/sql/Statement.java,
+	* javax/sound/midi/MidiDevice.java,
+	* javax/sound/midi/Receiver.java,
+	* javax/sound/midi/Transmitter.java,
+	* javax/sound/sampled/Line.java:
+	Add missing interface.
+
+2012-03-12  Pekka Enberg  <penberg@kernel.org>
+
 	* java/lang/reflect/Modifier.java:
 	(classModifiers): Add missing method.
 	(interfaceModifiers): Add missing method.
