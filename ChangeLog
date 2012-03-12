@@ -1,5 +1,14 @@
 2012-03-12  Pekka Enberg  <penberg@kernel.org>
 
+	* java/lang/reflect/Modifier.java:
+	(classModifiers): Add missing method.
+	(interfaceModifiers): Add missing method.
+	(constructorModifiers): Add missing method.
+	(methodModifiers): Add missing method.
+	(fieldModifiers): Add missing method.
+
+2012-03-12  Pekka Enberg  <penberg@kernel.org>
+
 	* java/lang/ClassNotFoundException,
 	* java/lang/IllegalAccessException.java,
 	* java/lang/InstantiationException.java,
