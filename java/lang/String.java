@@ -705,6 +705,8 @@ public final class String
    */
   public synchronized int codePointAt(int index)
   {
+    if (index < 0 || index >= count)
+      throw new StringIndexOutOfBoundsException(index);
     // Use the CharSequence overload as we get better range checking
     // this way.
     return Character.codePointAt(this, index);
@@ -722,6 +724,8 @@ public final class String
    */
   public synchronized int codePointBefore(int index)
   {
+    if (index < 0 || index >= count)
+      throw new StringIndexOutOfBoundsException(index);
     // Use the CharSequence overload as we get better range checking
     // this way.
     return Character.codePointBefore(this, index);
