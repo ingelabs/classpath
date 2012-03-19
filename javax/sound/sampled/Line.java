@@ -43,6 +43,7 @@ package javax.sound.sampled;
  * @since 1.3
  */
 public interface Line
+  extends AutoCloseable
 {
   /**
    * An object of this type holds information about a Line.

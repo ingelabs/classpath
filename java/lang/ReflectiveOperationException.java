@@ -1,5 +1,5 @@
-/* FileLockImpl.java -- FileLock associated with a FileChannelImpl.
-   Copyright (C) 2002, 2004, 2005 Free Software Foundation, Inc.
+/* ReflectiveOperationException.java -- thrown when reflective operation fails
+   Copyright (C) 2012  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,72 +36,53 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package gnu.java.nio;
-
-import java.io.IOException;
-import java.nio.channels.FileLock;
+package java.lang;
 
 /**
- * A FileLock associated with a FileChannelImpl.
+ * This exception is thrown when reflective operations fail.
  *
- * @author Michael Koch
- * @since 1.4
+ * @since 1.7
  */
-public final class FileLockImpl extends FileLock
+public class ReflectiveOperationException extends Exception
 {
-  /**
-   * Whether or not this lock is valid, false when channel is closed or
-   * release has been explicitly called.
-   */
-  private boolean valid;
+  private static final long serialVersionUID = 123456789L;
 
-  public FileLockImpl (FileChannelImpl channel, long position,
-                       long size, boolean shared)
+  /**
+   * Create an exception without a message.
+   */
+  public ReflectiveOperationException()
   {
-    super (channel, position, size, shared);
-    valid = true;
   }
 
   /**
-   * Releases this lock.
+   * Create an exception with a message.
+   *
+   * @param s the message
    */
-  protected void finalize()
+  public ReflectiveOperationException(String s)
   {
-    try
-      {
-        release();
-      }
-    catch (IOException e)
-      {
-        // Ignore this.
-      }
+    super(s);
   }
 
   /**
-   * Whether or not this lock is valid, false when channel is closed or
-   * release has been explicitly called.
+   * Create an exception with a message and a cause.
+   *
+   * @param s the message
+   * @param cause the cause, may be null
    */
-  public boolean isValid()
+  public ReflectiveOperationException(String message, Throwable cause)
   {
-    if (valid)
-      valid = channel().isOpen();
-    return valid;
-  }
-
-  public void close() throws Exception
-  {
-    release();
+    super(message, cause);
   }
 
   /**
-   * Releases the lock if it is still valid. Marks this lock as invalid.
+   * Create an exception with a cause.
+   *
+   * @param cause the cause, may be null
    */
-  public void release() throws IOException
+  public ReflectiveOperationException(Throwable cause)
   {
-    if (isValid())
-      {
-        valid = false;
-        ((FileChannelImpl) channel()).unlock(position(), size());
-      }
+    super(cause);
   }
+
 }

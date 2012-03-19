@@ -3,6 +3,77 @@
 	* NEWS: Add key along the same lines
 	as IcedTea.
 
+2012-03-12  Pekka Enberg  <penberg@kernel.org>
+
+	* gnu/java/nio/FileLockImpl.java,
+	* java/beans/XMLDecoder.java,
+	* java/beans/XMLEncoder.java,
+	* java/io/Closeable.java,
+	* java/io/ObjectInput.java,
+	* java/io/ObjectOutput.java,
+	* java/lang/AutoCloseable.java,
+	* java/nio/channels/FileLock.java,
+	* java/sql/Connection.java,
+	* java/sql/ResultSet.java,
+	* java/sql/Statement.java,
+	* javax/sound/midi/MidiDevice.java,
+	* javax/sound/midi/Receiver.java,
+	* javax/sound/midi/Transmitter.java,
+	* javax/sound/sampled/Line.java:
+	Add missing interface.
+
+2012-03-12  Pekka Enberg  <penberg@kernel.org>
+
+	* java/lang/reflect/Modifier.java:
+	(classModifiers): Add missing method.
+	(interfaceModifiers): Add missing method.
+	(constructorModifiers): Add missing method.
+	(methodModifiers): Add missing method.
+	(fieldModifiers): Add missing method.
+
+2012-03-12  Pekka Enberg  <penberg@kernel.org>
+
+	* java/lang/ClassNotFoundException,
+	* java/lang/IllegalAccessException.java,
+	* java/lang/InstantiationException.java,
+	* java/lang/NoSuchFieldException.java,
+	* java/lang/NoSuchMethodException.java,
+	* java/lang/ReflectiveOperationException.java,
+	* java/lang/reflect/InvocationTargetException.java:
+	Add ReflectiveOperationException class.
+
+2012-03-12  Pekka Enberg  <penberg@kernel.org>
+
+	* java/lang/AssertionError.java:
+	(AssertionError): Add missing constructor.
+	* java/lang/LinkageError.java:
+	(LinkageError): Add missing constructor.
+
+2012-03-12  Pekka Enberg  <penberg@kernel.org>
+
+	* java/lang/Boolean.java:
+	(compare): Add missing method.
+	* java/lang/Byte.java:
+	(compare): Add missing method.
+	* java/lang/Character.java:
+	(compare): Add missing method.
+	* java/lang/Integer.java:
+	(compare): Add missing method.
+	* java/lang/Long.java:
+	(compare): Add missing method.
+	* java/lang/Short.java:
+	(compare): Add missing method.
+
+2012-03-12  Pekka Enberg  <penberg@kernel.org>
+
+	* java/lang/System.java:
+	(lineSeparator): Add missing method.
+
+2012-03-12  Pekka Enberg  <penberg@kernel.org>
+
+	* java/lang/reflect/Member.java:
+	(getDeclaringClass): Fix return type.
+
 2012-03-07  Andrew John Hughes  <ahughes@redhat.com>
 
 	* NEWS:
