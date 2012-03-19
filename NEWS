@@ -1,3 +1,15 @@
+Key:
+
+SX  - http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=X
+RHX - https://bugzilla.redhat.com/show_bug.cgi?id=X
+DX  - http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=X
+GX  - http://bugs.gentoo.org/show_bug.cgi?id=X
+CAX - http://server.complang.tuwien.ac.at/cgi-bin/bugzilla/show_bug.cgi?id=X
+LPX - https://bugs.launchpad.net/bugs/X 
+PRX - http://gcc.gnu.org/bugzilla/show_bug.cgi?id=X
+
+CVE-XXXX-YYYY: http://www.cve.mitre.org/cgi-bin/cvename.cgi?name=XXXX-YYYY
+
 New in release 1.00 (XXX XX, XXXX)
 
 New in release 0.99 (Feb 15, 2012)
