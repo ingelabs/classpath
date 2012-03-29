@@ -1,3 +1,9 @@
+2012-03-25  Gerald Pfeifer  <gerald@pfeifer.com>
+
+        PR libgcj/52694
+	* native/jni/java-io/java_io_VMConsole.c (IUCLC): Define, if
+	undefined.
+
 2012-03-16  Andrew John Hughes  <ahughes@redhat.com>
 
 	* NEWS: Add key along the same lines
