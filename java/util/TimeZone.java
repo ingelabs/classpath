@@ -1404,14 +1404,7 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable
 
   private String getDefaultDisplayName(boolean dst)
   {
-    int offset = getRawOffset();
-    if (dst && this instanceof SimpleTimeZone)
-      {
-        // ugly, but this is a design failure of the API:
-        // getDisplayName takes a dst parameter even though
-        // TimeZone knows nothing about daylight saving offsets.
-        offset += ((SimpleTimeZone) this).getDSTSavings();
-      }
+    int offset = getRawOffset() + (dst ? getDSTSavings() : 0);
 
     CPStringBuilder sb = new CPStringBuilder(9);
     sb.append("GMT");
