@@ -1,3 +1,7 @@
+2012-04-03  Andrew John Hughes  <ahughes@redhat.com>
+
+	* .gitignore: Renamed from .cvsignore.
+
 2012-01-01  Jakub Jelinek  <jakub@redhat.com>
 
 	* gnu/java/rmi/registry/RegistryImpl.java (version): Update
