@@ -1,3 +1,9 @@
+2006-09-13  Andrew Haley  <aph@redhat.com>
+
+	* java/util/PriorityQueue.java: Throw IllegalArgumentException for
+	capacity < 1.
+	(Iterator.remove()): Decrement index after removing element.
+
 2007-02-14  Jakub Jelinek  <jakub@redhat.com>
 	Andrew Haley  <aph@redhat.com>
 
