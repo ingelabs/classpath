@@ -1,3 +1,8 @@
+2012-03-22  Andrew John Hughes  <ahughes@redhat.com>
+
+	* java/util/regex/Matcher.java:
+	(usePattern(Pattern)): Implemented.
+
 2012-03-25  Gerald Pfeifer  <gerald@pfeifer.com>
 
         PR libgcj/52694
