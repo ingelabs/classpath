@@ -1,3 +1,10 @@
+2012-04-24  Andrew John Hughes  <ahughes@redhat.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c:
+	(Java_gnu_java_awt_peer_gtk_GtkImage_freePixbuf):
+	Use g_object_unref rather than deprecated gdk_pixbuf_unref
+	to avoid warning.
+
 2012-04-03  Andrew John Hughes  <ahughes@redhat.com>
 
 	* .gitignore: Renamed from .cvsignore.
