@@ -1,3 +1,21 @@
+2012-05-01  Andrew John Hughes  <ahughes@redhat.com>
+
+	* java/text/DateFormatSymbols.java:
+	Rename U00AE and U000A9 as the more memorable
+	FIELD_SPLIT and ZONE_SPLIT respectively.
+	* THANKYOU: Add Andreas Sewe.
+
+2012-04-30  Andreas Sewe  <sewe@st.informatik.tu-darmstadt.de>
+
+	PR classpath/53171
+	* java/text/DateFormatSymbols.java:
+	(U00A9): Pre-compile pattern for zone separation.
+	(U00AE): Likewise for fields.
+	(getStringArray(List,String,int,String)): Use U00AE.split
+	in place of String.split.
+	(getZoneStrings(ResourceBundle,Locale)): Use U00AE.split
+	and U00A9.split in place of String.split.
+
 2012-04-25  Andrew John Hughes  <ahughes@redhat.com>
 
 	Update warning suppression so it still works
