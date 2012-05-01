@@ -1,3 +1,105 @@
+2012-04-25  Andrew John Hughes  <ahughes@redhat.com>
+
+	Update warning suppression so it still works
+	with newer compilers.
+	* javax/activation/ActivationDataFlavor.java:
+	(ActivationDataFlavor(Class,String,String)): Suppress
+	rawtypes not unchecked.
+	(ActivationDataFlavor(Class,String)): Likewise.
+	(getRepresentationClass()): Likewise.
+	* javax/activation/MimeTypeParameterList.java:
+	(getNames()): Likewise.
+	* javax/management/DefaultLoaderRepository.java:
+	(loadClass(String)): Likewise.
+	(loadClassWithout(ClassLoader,String)): Likewise.
+	* javax/management/MBeanConstructorInfo.java:
+	(MBeanConstructorInof(String,Constructor)): Likewise.
+	* javax/management/remote/rmi/RMIConnection.java:
+	(addNotificationListener(ObjectName,ObjectName,MarshelledObject,
+	MarshelledObject,Subject)): Likewise.
+	(addNotificationListeners(ObjectName[],MarshelledObject[], Subject[])):
+	Likewise.
+	(createMBean(String,ObjectName,MarshalledObject,String,Subject)): Likewise.
+	(createMBean(String,ObjectName,ObjectName,MarshalledObject,String[],Subject)):
+	Likewise.
+	(invoke(ObjectName,String,MarshalledObject,String[],Subject)): Likewise.
+	(queryMBeans(ObjectName,MarshalledObject,Subject)): Likewise.
+	(queryNames(ObjectName,MarshalledObject,Subject)): Likewise.
+	(removeNotificationListener(ObjectName,ObjectName,MarshalledObject,
+	MarshalledObject,Subject)): Likewise.
+	(setAttribute(ObjectName,MarshalledObject,Subject)): Likewise.
+	(setAttributes(ObjectName,MarshalledObject,Subject)): Likewise.
+	* javax/swing/tree/DefaultMutableTreeNode.java:
+	(children()): Likewise.
+	(preorderEnumeration()): Likewise.
+	(postorderEnumeration()): Likewise.
+	(breadthFirstEnumeration()): Likewise.
+	(depthFirstEnumeration()): Likewise.
+	(pathFromAncestorEnumeration(TreeNode)): Likewise.
+	(BreadthFirstEnumeration.nextElement()): Move annotation down to assignment level.
+	(PreorderEnumeration.PreorderEnumeration(TreeNode)): Likewise.
+	(PreorderEnumeration.traverse(Enumeration)): Likewise.
+	(PostorderEnumeration.PostorderEnumeration(TreeNode)): Likewise.
+	(PostorderEnumeration.traverse(Enumeration()): Likewise.
+	* javax/swing/tree/TreeNode.java:
+	(children()): Suppress rawtypes not unchecked.
+	* javax/xml/namespace/NamespaceContext.java:
+	(getPrefixes(String)): Likewise.
+	* javax/xml/stream/XMLEventFactory.java:
+	(createStartElement(QName,Iterator,Iterator)): Likewise.
+	(createStartElement(String,String,String,Iterator,Iterator)): Likewise.
+	(createStartElement(String,String,String,Iterator,Iterator,NamespaceContext)):
+	Likewise.
+	(createEndElement(QName,Iterator)): Likewise.
+	(createEndElement(String,String,String,Iterator)): Likewise.
+	* javax/xml/stream/XMLEventReader.java: Likewise (at class level
+	due to inheritance).
+	* javax/xml/stream/events/DTD.java:
+	(getNotations()): Likewise.
+	(getEntities()): Likewise.
+	* javax/xml/stream/events/EndElement.java:
+	(getNamespaces()): Likewise.
+	* javax/xml/stream/events/StartElement.java:
+	(getAttributes()): Likewise.
+	(getNamespaces()): Likewise.
+	* javax/xml/xpath/XPathFunction.java:
+	(evaluate(List)): Likewise.
+	* org/omg/CORBA/LocalObject.java:
+	(_servant_preinvoke(String,Class)): Likewise.
+	* org/omg/CORBA/portable/Delegate.java:
+	(servant_preinvoke(org.omg.CORBA.Object,String,Class)): Likewise.
+	* org/omg/CORBA/portable/InputStream.java:
+	(read_Object(Class)): Likewise.
+	* org/omg/CORBA/portable/ObjectImpl.java:
+	(_servant_preinvoke(String,Class)): Likewise.
+	* org/omg/CORBA_2_3/portable/InputStream.java:
+	(read_abstract_interface(Class)): Likewise.
+	(read_value(Class)): Likewise.
+	* org/omg/CORBA_2_3/portable/OutputStream.java:
+	(write_value(Serializable,Class)): Likewise.
+	* org/omg/DynamicAny/_DynAnyFactoryStub.java:
+	(_opsClass): Likewise.
+	* org/omg/DynamicAny/_DynAnyStub.java:
+	(_opsClass): Likewise.
+	* org/omg/DynamicAny/_DynArrayStub.java,
+	(_opsClass): Likewise.
+	* org/omg/DynamicAny/_DynEnumStub.java,
+	(_opsClass): Likewise.
+	* org/omg/DynamicAny/_DynFixedStub.java,
+	(_opsClass): Likewise.
+	* org/omg/DynamicAny/_DynSequenceStub.java,
+	(_opsClass): Likewise.
+	* org/omg/DynamicAny/_DynStructStub.java,
+	(_opsClass): Likewise.
+	* org/omg/DynamicAny/_DynUnionStub.java,
+	(_opsClass): Likewise.
+	* org/omg/DynamicAny/_DynValueStub.java,
+	(_opsClass): Likewise.
+	* org/omg/PortableServer/_ServantActivatorStub.java,
+	(_opsClass): Likewise.
+	* org/omg/PortableServer/_ServantLocatorStub.java,
+	(_opsClass): Likewise.
+
 2012-04-24  Andrew John Hughes  <ahughes@redhat.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c:
