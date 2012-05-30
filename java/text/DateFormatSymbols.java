@@ -185,17 +185,16 @@ public class DateFormatSymbols implements java.io.Serializable, Cloneable
     return data;
   }
 
-  private String[][] getZoneStrings(ResourceBundle res, Locale locale)
+  private String[][] getZoneStrings(List<ResourceBundle> bundles, Locale locale)
   {
     List<String[]> allZones = new ArrayList<String[]>();
     try
       {
         Map<String,String[]> systemZones = new HashMap<String,String[]>();
-        while (true)
+        for (ResourceBundle bundle : bundles)
           {
-            int index = 0;
             String country = locale.getCountry();
-            String data = res.getString("zoneStrings");
+            String data = bundle.getString("zoneStrings");
             String[] zones = ZONE_SEP.split(data);
             for (int a = 0; a < zones.length; ++a)
               {
@@ -222,12 +221,6 @@ public class DateFormatSymbols implements java.io.Serializable, Cloneable
                   }
                 systemZones.put(strings[0], strings);
               }
-            if (res.getLocale() == Locale.ROOT)
-              break;
-            else
-              res = ResourceBundle.getBundle("gnu.java.locale.LocaleInformation",
-                                             LocaleHelper.getFallbackLocale(res.getLocale()),
-                                             ClassLoader.getSystemClassLoader());
           }
         /* Final sanity check for missing values */
         for (String[] zstrings : systemZones.values())
@@ -293,14 +286,46 @@ public class DateFormatSymbols implements java.io.Serializable, Cloneable
     return allZones.toArray(new String[allZones.size()][]);
   }
 
-  private String[] formatsForKey(ResourceBundle res, String key)
+  /**
+   * Retrieve the date or time formats for a specific key e.g.
+   * asking for "DateFormat" will return an array containing the
+   * full, long, medium and short date formats localised for
+   * the locales in the specified bundle.
+   *
+   * @param bundles the stack of bundles to check, most-specific first.
+   * @param key the type of format to retrieve.
+   * @param an array of localised strings for each format prefix.
+   */
+  private String[] formatsForKey(List<ResourceBundle> bundles, String key)
   {
     String[] values = new String[formatPrefixes.length];
 
     for (int i = 0; i < formatPrefixes.length; i++)
-      values[i] = res.getString(formatPrefixes[i] + key);
+      values[i] = getString(bundles, formatPrefixes[i] + key);
 
     return values;
+  }
+
+  /**
+   * Simple wrapper around extracting a {@code String} from a
+   * {@code ResourceBundle}.  Keep searching less-specific locales
+   * until a non-null non-empty value is found.
+   *
+   * @param bundles the stack of bundles to check, most-specific first.
+   * @param key the key of the value to retrieve.
+   * @return the first non-null non-empty String found or the last
+   *         retrieved if one isn't found.
+   */
+  private String getString(List<ResourceBundle> bundles, String key)
+  {
+    String val = null;
+    for (ResourceBundle bundle : bundles)
+      {
+        val = bundle.getString(key);
+        if (val != null && !val.isEmpty())
+          return val;
+      }
+    return val;
   }
 
   /**
@@ -334,14 +359,14 @@ public class DateFormatSymbols implements java.io.Serializable, Cloneable
       }
     ampms = getStringArray(bundles, "ampms", 2);
     eras = getStringArray(bundles, "eras", 2);
-    localPatternChars = res.getString("localPatternChars");
+    localPatternChars = getString(bundles, "localPatternChars");
     months = getStringArray(bundles, "months", 13);
     shortMonths = getStringArray(bundles, "shortMonths", 13, months);
     weekdays = getStringArray(bundles, "weekdays", 8);
     shortWeekdays = getStringArray(bundles, "shortWeekdays", 8, weekdays);
-    dateFormats = formatsForKey(res, "DateFormat");
-    timeFormats = formatsForKey(res, "TimeFormat");
-    runtimeZoneStrings = getZoneStrings(res, locale);
+    dateFormats = formatsForKey(bundles, "DateFormat");
+    timeFormats = formatsForKey(bundles, "TimeFormat");
+    runtimeZoneStrings = getZoneStrings(bundles, locale);
   }
 
   /**

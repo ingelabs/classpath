@@ -1,3 +1,17 @@
+2012-05-30  Andrew John Hughes  <ahughes@redhat.com>
+
+	* java/text/DateFormatSymbols.java:
+	(getZoneStrings(List<ResourceBundle>, Locale)):
+	Refactor to use existing list of resource bundles.
+	(formatsForKey(List<ResourceBundle>, String)):
+	Likewise and use new local getString method.
+	(getString(List<ResourceBundle>, String)):
+	Use first available String from most-specific locale
+	rather than the least-specific.
+	(DateFormatSymbols(Locale)): Use bundles for resolving
+	localPatternChars, dateFormats, timeFormats and runtimeZoneStrings
+	as well.
+
 2012-05-04  Andrew John Hughes  <ahughes@redhat.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c,
