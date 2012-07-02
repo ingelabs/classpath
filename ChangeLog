@@ -1,3 +1,36 @@
+2012-07-01  Andrew John Hughes  <ahughes@redhat.com>
+
+	PR classpath/44052
+	* java/text/DateFormatSymbols.java:
+	(DFSData): Inner immutable class for storing parsed
+	locale data.
+	(DFSData.DFSData(String[],String[],String,String[],
+	String[],String[],String[],String[],String[],
+	String[][])): Constructor to initialise a new instance
+	with property data.
+	(DFSData.getAMPMs()): Return a clone of the ampms array.
+	(DFSData.getEras()): Likewise for eras.
+	(DFSData.getLocalPatternChars()): Return the local pattern
+	characters.
+	(DFSData.getMonths()): Return a clone of the (long) months
+	array.
+	(DFSData.getShortMonths()): Likewise for the short months array.
+	(DFSData.getWeekdays()): Likewise for (long) weekdays.
+	(DFSData.getShortWeekdays()): Likewise for short weekdays.
+	(DFSData.getDateFormats()): Likewise for date formats.
+	(DFSData.getTimeFormats()): Likewise for time formats.
+	(DFSData.getZoneStrings()): Likewise for zone strings.
+	(dataCache): Cache of parsed locale data.
+	(getZoneStrings(List<ResourceBundle>,Locale)):
+	Make static so it can be called by retrieveData.
+	(formatsForKey(List<ResourceBundle>,String)):
+	Likewise.
+	(getString(List<ResourceBundle>, String)): Likewise.
+	(retrieveData(Locale)): Separate out retrieval of
+	locale data from constructor and store it in the cache.
+	(DateFormatSymbols(Locale)): Modify to call retrieveData
+	and set fields from the returned DFSData instance.
+
 2012-05-30  Andrew John Hughes  <ahughes@redhat.com>
 
 	* java/text/DateFormatSymbols.java:
