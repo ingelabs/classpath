@@ -1,3 +1,101 @@
+2012-07-03  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	Update copyright headers throughout.
+	* gnu/java/text/AttributedFormatBuffer.java:
+	(ranges): Add generic type information.
+	(attributes): Likewise.
+	(aRanges): Rename from a_ranges.
+	(aAttributes): Add generic type information and
+	rename from a_attributes.  Convert to a list of
+	maps rather than an array for type safety.
+	(defaultAttr): Replace prefix with static import.
+	(AttributedFormatBuffer(CPStringBuilder): Add generic
+	typing.
+	(addAttribute(int,Attribute)): Drop prefix, rename
+	new_range to newRange.  Add generic types.
+	Use Integer.valueOf in place of new Integer.
+	(append(String,Attribute)): Drop prefix.
+	(append(String,int[],List)): Replace array with list.
+	Use Integer.valueOf instead of new Integer.
+	(append(char,Attribute)): Drop prefix.
+	(setDefaultAttribute(Attribute)): Likewise.
+	(getDefaultAttribute()): Likewise.
+	(sync()): Rename a_ranges to aRanges.  Drop unneeded casts.
+	Replace array with list.
+	(getRanges()): Rename a_ranges to aRanges.
+	(getAttributes()): Replace map with list.  Rename a_attributes
+	to aAttributes.
+	* gnu/java/text/FormatBuffer.java:
+	Add static import for Attribute.
+	* gnu/java/text/FormatCharacterIterator.java:
+	(attributes): Replace array with list.
+	(FormatCharacterIterator()): Likewise.
+	(FormatCharacterIterator(String,int,List)): Switch from
+	array to list.  Update documentation.
+	(getAllAttributeKeys()): Add generic type.  Switch
+	from array to list.
+	(getAttributes()): Likewise.
+	(getAttribute(Attribute)): Likewise.
+	(getRunLimit(Set)): Likewise.
+	(getRunLimit(Attribute)): Likewise.
+	(getRunStart(Set)): Likewise.
+	(getRunStart(Attribute)): Likewise.
+	(mergeAttributes(List,int[])): Likewise.  Use List
+	in preference to Vector.  Use newRanges & newAttributes
+	rather than new_ranges and new_attributes.
+	(append(AttributedCharacterIterator)): Likewise.
+	(append(String,HashMap)): Likewise.
+	(addAttributes(Map,int,int)): Likewise.
+	(dumpTable()): Use startRange instead of start_range.
+	Add generic types.
+	* gnu/java/text/StringFormatBuffer.java,
+	Add static import for Attribute.
+	* java/text/AttributedString.java:
+	Add static import for Attribute.
+	(attribs): Add generic type.
+	(AttributeRange(Map,int,int)): Likewise.
+	(AttributedString(String,Map)): Likewise.
+	(AttributedString(AttributedCharacterIterator, int, int,
+	Attribute)): Drop prefix, add generic types.
+	(addAttribute(Attribute,Object)): Drop prefix.
+	(addAttribute(Attribute,Object,int,int)): Likewise
+	and add generic types.
+	(addAttributes(Map,int,int)): Add generic types.
+	(getIterator(Attribute)): Drop prefix.
+	(getIterator(Attribute[])): Likewise.
+	* java/text/AttributedStringIterator.java:
+	Add static import for Attribute.
+	(getAllAttributeKeys()): Add generic type.
+	(getRunLimit(Attribute)): Add generic type, drop
+	prefix.
+	(getRunLimit(Set)): Add generic types.
+	(getRunStart(Attribute)): Add generic type, drop
+	prefix.
+	(getRunStart(Set)): Add generic types.
+	(getAttributes()): Likewise.
+	* java/text/Bidi.java:
+	(formatterIndices): Add generic type.
+	(reinsertFormattingCodes()): Drop redundant cast.
+	* java/text/BreakIterator.java:
+	(getInstance(String,Locale)): Add generic type to Class.
+	* java/text/ChoiceFormat.java:
+	(stringVec): Add generic type.
+	(limitVec): Likewise.
+	(applyPattern(String)): Remove redundant cast.
+	* java/text/CollationElementIterator.java:
+	(textDecomposition): Renamed from text_decomposition.
+	(textIndexes): Renamed from text_indexes.
+	(setText(String)): Add generic types.  Rename a_element
+	to aElement.  Rename a_idx to aIdx.  Rename key_old to
+	keyOld.  Use Integer.valueOf rather than new Integer.
+	* java/text/DecimalFormat.java:
+	(attributes): Add generic type.
+	(formatToCharacterIterator(Object)): Remove redundant cast.
+	* java/text/MessageFormat.java:
+	(Field()): Remove unneeded warning suppression.
+	* java/text/NumberFormat.java:
+	(Field()): Likewise.
+
 2012-07-01  Andrew John Hughes  <ahughes@redhat.com>
 
 	PR classpath/44052
