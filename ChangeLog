@@ -1,3 +1,16 @@
+2012-08-09  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/util/TimeZone.java:
+	(defaultZone()): Use parameterized PrivilegedAction.
+	(aliases0): Add type parameters.
+	(timezones0); Likewise.
+	(timezones()): Likewise.
+	(getDateParams(String)): Fix indenting.
+	(getTimeZoneInternal(String)): Remove redundant casts.
+	(getAvailableIDs(int)): Add type parameters.
+	(getAvailableIDs(File,String,ArrayList)): Likewise.
+	(getAvailableIDs()): Likewise.
+
 2012-07-03  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	Update copyright headers throughout.
