@@ -1,3 +1,223 @@
+2012-09-24  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* tools/com/sun/javadoc/Doc.java:
+	Add type parameter to Comparable.
+	* tools/gnu/classpath/tools/doclets/AbstractDoclet.java:
+	(tagletMap): Use type parameters.
+	(packageGroups): Likewise.
+	(tagletPath): Removed, unused.
+	(mentionedTags): Use type parameters.
+	(optionNoEmailWarn): Removed, unused.
+	(optionTagletPath): Likewise.
+	(DocletOptionTaglet): Likewise.
+	(DocletOptionGroup.set(String[])): Add type aprameters to
+	groupPackages.
+	(DocletOptionTagletPath): Removed, unused.
+	(commonOptions): Remove optionTagletPath.
+	(nameToOptionMap): Add type parameters.
+	(getOptionLength(String)): Remove unnecessary cast.
+	(getKnownDirectSubclasses(ClassDoc)): Add type parameters.
+	(IndexKey): Add type parameter to Comparable.
+	(IndexKey.compareTo(IndexKey)): Update to use specific type.
+	(categorizedIndex): Use type parameters.
+	(getCategorizedIndex()): Likewise.
+	(indexByName): Likewise.
+	(getIndexByName()): Likewise.
+	(printTaglets(Tag[],TagletContext,TagletPrinter,boolean)): Likewise.
+	(addUsedBy(Map,ClassDoc,UsageType,Doc,PackageDoc)): Likewise.
+	(collectUsage()): Likewise.
+	(usedClassToPackagesMap): Likewise.
+	(getUsageOfClass(ClassDoc)): Likewise.
+	(UsageType): Add type parameter to Comparable.
+	(UsageType.compareTo(UsageType)): Update to use specific type.
+	(getPackageGroups()): Use type parameters.
+	* tools/gnu/classpath/tools/doclets/PackageMatcher.java:
+	(patterns): Use type parameters.
+	(filter(Packagedoc[])): Likewise.
+	(match(PackageDoc)): Likewise.
+	* tools/gnu/classpath/tools/doclets/htmldoclet/HtmlDoclet.java:
+	(externalDocSets): Use type parameters.
+	(packageNameToDocSet)): Likewise.
+	(printPackagePage(File,String,PackageDoc,PackageDoc,PackageDoc)): Likewise.
+	(TreeNode): Add type parameter to Comparable.
+	(TreeNode.children): Use type parameters.
+	(TreeNode.compareTo(TreeNode)): Update to use specific type.
+	(addClassTreeNode(Map,ClassDoc)): Use type parameters.
+	(addInterfacetreeNode(Map,ClassDoc)): Likewise.
+	(printClassTree(HtmlPage,ClassDoc[])): Likewise.
+	(printInterfaceTree(HtmlPage,ClassDoc[])): Likewise.
+	(printFullTreePage()): Likewise.
+	(printIndexEntry(HtmlPage,Doc)): Likewise.
+	(printPackagesMenuPage()): Likewise.
+	(printClassMenuSection(HtmlPage,Collection,String)): Likewise.
+	(printClassMenuList(HtmlPage,ClassDoc[],boolean)): Likewise.
+	(printSplitIndex()): Likewise.
+	(printIndexPage(int,int,Character,List)): Likewise.
+	(printSerializationPage()): Likewise.
+	(printDeprecationPage()): Likewise.
+	(getMemberDocURL(HtmlPage,ProgramElementDoc)): Likewise.
+	(createTypeHref(HtmlPage,Type,boolean)): Likewise.
+	(getPackageURL(PackageDoc)): Remove redundant cast.
+	(getClassURL(ClassDoc)): Likewise.
+	* tools/gnu/classpath/tools/gjdoc/ClassDocImpl.java:
+	(primitiveNames): Add type parameters.
+	(findClassCache): Likewise.
+	(findClass(String,String): Likewise.
+	(createInstance(ClassDoc,PackageDoc,ClassDoc[],PackageDoc[],
+	char[],int,int,List)): Likewise.
+	(resolve()): Likewise.
+	(typeMap): Likewise.
+	(typeForString(String)): Likewise..
+	(equals(Object)): Likewise.
+	(maybeSerMethodList): Likewise.
+	(setMaybeSerMethodList(List)): Likewise.
+	(findFieldValue(String,ClassDoc,String,Set)): Likewise.
+	(getValue(String,Set)): Likewise.
+	(compareTo(Doc)): Use specific type.
+	(importStatementList): Use type parameters.
+	(setImportStatementList(List)): Likewise.
+	* tools/gnu/classpath/tools/gjdoc/ClassDocProxy.java:
+	(compareTo(Doc)): Use specific type.
+	* tools/gnu/classpath/tools/gjdoc/ClassDocReflectedImpl.java:
+	Expand imports.
+	(findClass(String)): Don't use full class name for String.
+	(compareTo(Doc)): Use specific type.
+	* tools/gnu/classpath/tools/gjdoc/DocImpl.java:
+	(compareTo(Doc)): Use specific type.
+	* tools/gnu/classpath/tools/gjdoc/ExecutableMemberDocImpl.java:
+	(compareTo(Doc)): Use specific type.
+	* tools/gnu/classpath/tools/gjdoc/FieldDocImpl.java:
+	(createFromSource(ClassDoc,PackageDoc,char[],int,int)):
+	Use type parameters.  Remove unused lastFieldDefStart
+	variable.
+	(constantValue(Set)): Use type parameters.
+	* tools/gnu/classpath/tools/gjdoc/Main.java:
+	(option_overview): Removed unused field.
+	(option_classpath): Likewise.
+	(option_sourcepath): Add type parameters.
+	(option_extdirs): Removed unused field.
+	(option_verbose): Likewise.
+	(option_java_flags): Likewise.
+	(option_subpackages): Add type parameters.
+	(option_exclude): Likewise.
+	(startDoclet(List)): Likewise.
+	(addFoundPackages(String,Set)): Likewise.
+	(findPackages(String,File,Set)): Likewise.
+	(start(String[])): Likewise.
+	(addJavaLangClasses()): Commented out, apparently unused.
+	(options): Add type parameters.
+	(initOptions()): Likewise.  Remove redundant variable
+	setting.
+	* tools/gnu/classpath/tools/gjdoc/MemberDocImpl.java:
+	(compareTo(Doc)): Use specific type.
+	* tools/gnu/classpath/tools/gjdoc/PackageDocImpl.java:
+	(allClassesSet): Use type parameters.
+	(ordinaryClassesList): Likewise.
+	(exceptionsList): Likewise.
+	(interfacesList): Likewise.
+	(errorsList): Likewise.
+	(resolve()): Likewise.
+	(toClassDocArray(Collection)): Likewise.
+	(compareTo(Doc)): Use specific type.
+	* tools/gnu/classpath/tools/gjdoc/Parser.java:
+	Expand import statements.
+	(process(Parser,char[],int,int)): Add type parameters.
+	(processedFiles): Add type parameters.
+	(processSourceFile(File,boolean,String,String)): Add type
+	parameters.
+	(classOpened(char[],int,int)): Likewise.
+	(toArray(List,T[])): Likewise.
+	(classClosed()): Likewise.
+	(Context.fieldList): Likewise.
+	(Context.filteredFieldList): Likewise.
+	(Context.sfieldList): Likewise.
+	(Context.methodList): Likewise.
+	(Context.filteredMethodList): Likewise.
+	(Context.maybeSerMethodList): Likewise.
+	(Context.constructorList): Likewise.
+	(Context.filteredConstructorList): Likewise.
+	(Context.innerClassesList): Likewise.
+	(Context.filteredInnerClassesList): Likewise.
+	* tools/gnu/classpath/tools/gjdoc/RootDocImpl.java:
+	(findSourceFiles(String)): Add type parameters.
+	* tools/gnu/classpath/tools/gjdoc/expr/Evaluator.java:
+	(evaluate(String,Set,EvaluatorEnvironment)): Add type parameters.
+	* tools/gnu/classpath/tools/gjdoc/expr/EvaluatorEnvironment.java:
+	(getValue(String,Set)): Add type parameters.
+	* tools/gnu/classpath/tools/gjdoc/expr/Type.java:
+	(clazz): Add type parameters.
+	(Type(Class)): Likewise.
+	* tools/gnu/classpath/tools/rmic/ClassRmicCompiler.java:
+	(keep): Remove unused field.
+	(errors): Add type parameter.
+	(compile): Remove unused field.
+	(classpath): Likewise.
+	(clazz): Add type parameter.
+	(mRemoteInterfaces): Likewise.
+	(run(String[])): Add type parameters.
+	(processClass(String)): Likewise.
+	(getException()): Remove unnecessary cast.
+	(typeArray(Class[])): Add type parameter.
+	(param(Method,int)): Add type parameter.  Use Integer.valueOf.
+	(generateClassConstant(MethodVisitor,Class)): Add type parameters.
+	(generateClassArray(MethodVisitor,Class)): Likewise.
+	(generateStub()): Remove unused variables stubclassname, size
+	& endReturnTryCatch.  Remove unnecessary casts and add type
+	parameters.
+	(generateSkel()): Remove unused variable skelclassname.
+	Use Long.valueOf.
+	(generateMethodSkel(MethodVisitor,Method,Variables)):
+	Add type parameters.
+	(typeArg(Class)): Add type parameter.
+	(readMethod(Class)): Likewise.
+	(writeMethod(Class)): Likewise.
+	(returnOpcode(Class)): Likewise.
+	(loadOpcode(Class)): Likewise.
+	(storeOpcode(Class)): Likewise.
+	(unboxMethod(Class)): Likewise.
+	(box(Class)): Likewise.
+	(size(Class)): Likewise.
+	(sortExceptions(Class[])): Add type parameters.
+	(setup(boolean,boolean,boolean,boolean,boolean,boolean,
+	boolean,boolean,boolean,boolean,String,String,String,String)):
+	Remove unused variables keep & classpath.
+	(findRemoteMethods()): Add type parameters.
+	(MethodRef.exceptions): Add type parameter.
+	(MethodRef.removeSubclasses(Class[])): Add type parameters.
+	(MethodRef.intersectExceptions(Method)): Likewise.
+	* tools/gnu/classpath/tools/rmic/Main.java:
+	(backends): Add type parameter.
+	(run(String[])): Remove redundant cast.
+	* tools/gnu/classpath/tools/rmic/RmiMethodGenerator.java:
+	(getArgumentList()): Add type parameters.
+	(getArgumentNames()): Likewise.
+	(getThrows()): Likewise.
+	(getStaticMethodDeclarations()): Likewise.
+	* tools/gnu/classpath/tools/rmic/SourceGiopRmicCompiler.java:
+	Add type parameter to Comparable.
+	(implementedRemotes): Add type parameter.
+	(extraImports): Likewise.
+	(methods): Likewise.
+	(interfaces): Likewise.
+	(compile(Class)): Add type parameters.
+	(getId(Class)): Add type parameter.
+	(getIdList(Collection)): Add type parameters.
+	(generateStub()): Add type parameters.
+	(generateTie()): Likewise.
+	(compare(AbstractMethodGenerator,AbstractMethodGenerator)): Use
+	more specific types.
+	(getImportStatements()): Add type parameters.
+	* tools/gnu/classpath/tools/rmic/Variables.java:
+	(free): Add type parameter.
+	(names): Add type parameters.
+	(wides): Add type parameter.
+	(declared): Likewise.
+	(allocateNow(Object,int)): Use Integer.valueOf.
+	(allocate(Object,int)): Add type parameters.
+	(deallocate(Object)): Remove redundant cast.
+	Use Integer.valueOf.
+	(get(Object)): Remove redundant cast.
+
 2012-08-09  Dodji Seketeli  <dodji@redhat.com>
 
 	Use accessor functions to manipulate xmlOutputBuffer
