@@ -161,13 +161,13 @@ public final class Bidi
     if (val instanceof NumericShaper)
       shaper = (NumericShaper) val;
 
-    char[] text = new char[iter.getEndIndex() - iter.getBeginIndex()];
-    this.embeddings = new byte[this.text.length];
-    this.embeddingOffset = 0;
-    this.length = text.length;
-    for (int i = 0; i < this.text.length; ++i)
+    text = new char[iter.getEndIndex() - iter.getBeginIndex()];
+    embeddings = new byte[text.length];
+    embeddingOffset = 0;
+    length = text.length;
+    for (int i = 0; i < text.length; ++i)
       {
-        this.text[i] = iter.current();
+        text[i] = iter.current();
 
         val = iter.getAttribute(TextAttribute.BIDI_EMBEDDING);
         if (val instanceof Integer)
@@ -178,13 +178,13 @@ public final class Bidi
               bval = 0;
             else
               bval = (byte) ival;
-            this.embeddings[i] = bval;
+            embeddings[i] = bval;
           }
       }
 
     // Invoke the numeric shaper, if specified.
     if (shaper != null)
-      shaper.shape(this.text, 0, this.length);
+      shaper.shape(text, 0, length);
 
     runBidi();
   }

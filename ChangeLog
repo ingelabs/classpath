@@ -1,3 +1,12 @@
+2012-09-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	PR classpath/42134
+	* java/text/Bidi.java:
+	(Bidi(AttributedCharacterIterator)): Remove shadow
+	variable text which hides the instance variable
+	of the same name.  Remove unnecessary use of this.
+	* NEWS: Updated.
+
 2012-09-24  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* tools/com/sun/javadoc/Doc.java:

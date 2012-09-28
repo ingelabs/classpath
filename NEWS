@@ -12,6 +12,9 @@ CVE-XXXX-YYYY: http://www.cve.mitre.org/cgi-bin/cvename.cgi?name=XXXX-YYYY
 
 New in release 1.00 (XXX XX, XXXX)
 
+* Bug fixes:
+  - PR42134: NPE in java.text.Bidi
+
 New in release 0.99 (Feb 15, 2012)
 
 * Addition of java.util.regex.Pattern.quote.
