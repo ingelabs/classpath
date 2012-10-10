@@ -1,3 +1,86 @@
+2012-10-09  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* gnu/javax/sound/midi/dssi/DSSIMidiDeviceProvider.java:
+	(DSSIInfo.copyright): Added field.
+	(DSSIInfo(String,String,String,String,String,String,long)):
+	Extended constructor to store copyright.
+	(examineLibrary(String)): Add type parameter.
+	Fix call to new DSSIInfo constructor.
+	(static): Add type parameters.
+	* gnu/javax/sound/midi/dssi/DSSISynthesizer.java:
+	(instruments): Add type parameter.
+	(resources): Likewise.
+	(getResources()): Remove redundant cast.
+	(getInstruments()): Likewise.
+	(getInstrument(Patch)): Add type parameter and remove
+	redundant cast.
+	(soundbanks): Add type parameter.
+	(getAvailableInstruments()): Add type parameters and
+	remove redundant casts.
+	* gnu/javax/sound/midi/file/MidiFileReader.java:
+	(getSequence(InputStream)): Don't store length as not used.
+	* gnu/javax/sound/midi/file/MidiFileWriter.java:
+	(computeTrackLength(Track,MidiDataOutputStream)): Drop unused
+	count variable.
+	* gnu/javax/sound/sampled/WAV/WAVReader.java:
+	(getAudioFileFormat(InputStream)): Drop unused blockAlign variable.
+	* gnu/javax/sound/sampled/gstreamer/GStreamerMixer.java:
+	(getLine(Line.Info)): Add type parameter to Class.
+	* javax/sound/midi/MidiSystem.java:
+	(getMidiDeviceInfo()): Add type parameters.  Remove unnecessary cast.
+	(getMidiDevice(MidiDevice.Info)): Add type parameter.
+	(getSoundbank(InputStream)): Add type parameters and remove
+	unnecessary casts.
+	(getSoundbank(URL)): Likewise.
+	(getSoundbank(File)): Likewise.
+	(getMidiFileFormat(InputStream)): Likewise.
+	(getMidiFileFormat(URL)): Likewise.
+	(getMidiFileFormat(File)): Likewise.
+	(getSequence(InputStream)): Likewise.
+	(getSequence(URL)): Likewise.
+	(getSequence(File)): Likewise.
+	(getMidiFileTypes()): Likewise.
+	(isFileTypeSupported(int)): Likewise.
+	(getMidiFileTypes(Sequence)): Likewise.
+	(isFileTypeSupported(int,Sequence)): Likewise.
+	(write(Sequence,int,OutputStream)): Likewise.
+	(write(Sequence,int,File)): Likewise.
+	* javax/sound/midi/SoundbankResource.java:
+	(dataClass): Add type parameter.
+	* javax/sound/midi/Track.java:
+	(events): Add type parameter.
+	(eventSet): Likewise.
+	(add(MidiEvent)): Remove redundant cast.
+	(get(int)): Likewise.
+	(ticks()): Likewise.
+	* javax/sound/sampled/AudioSystem.java:
+	(getAudioFileFormat(File)): Add type parameters and
+	remove unnecessary casts.
+	(getAudioFileFormat(InputStream)): Likewise.
+	(getAudioFileFormat(URL)): Likewise.
+	(getAudioFileTypes()): Likewise.
+	(getAudioFileTypes(AudioInputStream)): Likewise.
+	(getAudioInputStream(AudioFormat.Encoding,AudioInputStream)):
+	Likewise.
+	(getAudioInputStream(AudioFormat,AudioInputStream)): Likewise.
+	(getAudioInputStream(File)): Likewise.
+	(getAudioInputStream(InputStream)): Likewise.
+	(getAudioInputStream(URL)): Likewise.
+	(getMixer(Mixer.Info)): Likewise.
+	(getMixerInfo()): Likewise.
+	(getTargetEncodings(AudioFormat.Encoding)): Likewise.
+	(getTargetEncodings(AudioFormat)): Likewise.
+	(getTargetFormats(AudioFormat.Encoding,AudioFormat)): Likewise.
+	(isConversionSupported(AudioFormat.Encoding,AudioFormat)): Likewise.
+	(isConversionSupported(AudioFormat,AudioFormat)): Likewise.
+	(write(AudioInputStream,AudioFileFormat.Type,File)): Likewise.
+	(write(AudioInputStream,AudioFileFormat.Type,OutputStream)): Likewise.
+	* javax/sound/sampled/Line.java:
+	(klass): Add type parameter.
+	* m4/ac_prog_javac.m4:
+	(ECJ_OPTS): Turn of unused private field warnings for now,
+	as some may be used from native code.
+
 2012-09-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/42134
