@@ -8,6 +8,16 @@
 
 2012-03-15  Pekka Enberg  <penberg@kernel.org>
 
+	* java/util/Formatter.java:
+	(icharacterFormat(Object,int,int,int,char):
+	Fix NullPointerException for null characters.
+	(basicIntegralConversion(Object, int, int, int, int, char):
+	Fix NullPointerException for null integers.
+	(format(Locale, String, Object...)):
+	Fix NullPointerException for null object.
+
+2012-03-15  Pekka Enberg  <penberg@kernel.org>
+
 	* java/lang/String.java:
 	(codePointAt(int))): Fix exception type.
 	(codePointBefore(int)): Fix exception type.
