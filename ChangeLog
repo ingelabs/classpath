@@ -1,3 +1,49 @@
+2012-10-10  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/awt/geom/Area.java:
+	(solids): Add type parameter.
+	(holes): Likewise.
+	(ccIntersections): Likewise and rename to meet
+	standards.
+	(Area()): Add type parameters.
+	(Area(Shape)): Likewise and remove redundant casts.
+	(add(Area)): Likewise and remove unused nNodes variable.
+	(subtract(Area)): Likewise.
+	(intersect(Area)): Likewise.
+	(exclusiveOr(Area)): Likewise.
+	(reset()): Add type parameters.
+	(isEmpty()): Remove redundant casts.
+	(isPolygonal()): Likewise.
+	(isRectangular()): Likewise.
+	(getBounds2D()): Likewise.
+	(clone()): Likewise.
+	(equals(Area)): Add type parameters.
+	(transform(AffineTransform)): Remove redundant casts.
+	(contains(double,double)): Likewise.
+	(contains(double,double,double,double)): Likewise.
+	(intersects(double,double,double,double)): Likewise.
+	(AreaIterator.segments): Add type parameter.
+	(AreaIterator(AffineTransform)): Add type parameters.
+	Remove redundant casts.
+	(currentSegment(double[])): Remove redundant casts.
+	(currentSegment(float[])): Likewise.
+	(weilerAtherton(Vector)): Add type parameters and remove
+	redundant casts.
+	(recursiveSubdivide(CubicCurve2D,CubicCurve2D,int,int,double,
+	double,double,double)): Fix use of cc_intersections/ccIntersections.
+	(cubicCubicIntersect(CubicSegment,CubicSegment)): Likewise.
+	(lineQuadIntersect(LineSegment,QuadSegment)): Fix Javadoc typo.
+	(makeSegment(Shape)): Add type parameters.
+	(createNodes(Segment,Segment)): Remove redundant bracketing.
+	(deleteRedundantPaths(Vector)): Likewise.  Remove redundant
+	casts.  Add type parameters.
+	(setDirection(Vector,boolean)): Add type parameters and remove
+	redundant casts.
+	(cloneSegmentList()): Add type parameter.  Remove redundant
+	cast.
+	(createNodes(Segment,Intersection[])): Add type parameter.
+	Remove redundant cast.
+
 2012-10-09  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* gnu/javax/sound/midi/dssi/DSSIMidiDeviceProvider.java:
