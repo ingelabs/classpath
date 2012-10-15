@@ -1,3 +1,11 @@
+2012-10-15  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	PR classpath/54931
+	* m4/acinclude.m4:
+	(CLASSPATH_WITH_GJDOC): Allow GJDoc versions
+	included with GNU Classpath to be used to
+	build (0.98 on).
+
 2012-03-15  Pekka Enberg  <penberg@kernel.org>
 
 	* java/lang/String.java:
