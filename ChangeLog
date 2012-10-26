@@ -1,3 +1,10 @@
+2009-12-30  Paul Fernhout  <pdfernhout@kurtz-fernhout.com>
+
+	PR classpath/42551
+	* javax/sound/midi/MetaMessage.java:
+	(setMessage(int,byte[],int)): Don't overwrite
+	length variable when computing the length representation.
+
 2012-10-17  Jeremy Singer  <Jeremy.Singer@glasgow.ac.uk>
 
 	PR classpath/54960
