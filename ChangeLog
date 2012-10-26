@@ -1,5 +1,12 @@
 2012-10-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	PR classpath/41689
+	* javax/security/sasl/Sasl.java:
+	(CREDENTIALS): Add missing field.
+	* NEWS: Updated.
+
+2012-10-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* NEWS: Updated with latest bug fixes.
 	* THANKYOU: Add bug authors.
 

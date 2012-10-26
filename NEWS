@@ -18,6 +18,7 @@ New in release 0.99.1 (XXX XX, 2012)
   - PR54960: Avoid NullPointerException in SAXSerializer.
   - PR42551: Avoid overwriting length of message when computing length representation.
   - PR44208: Ensure a handle for the enum is registered before its constant.
+  - PR41689: javax.security.sasl.CREDIENTIALS field is missing
 
 New in release 0.99 (Feb 15, 2012)
 
