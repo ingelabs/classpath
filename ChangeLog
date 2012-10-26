@@ -1,3 +1,10 @@
+2012-10-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* native/jni/midi-dssi/gnu_javax_sound_midi_dssi_DSSISynthesizer.c:
+	(Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_open_1(JNIEnv*,
+	jclass, jlong)): Use jack_client_open instead of
+	deprecated jack_client_new.
+
 2012-10-15  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* configure.ac: Set to 0.99.1pre, as
