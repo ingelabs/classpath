@@ -1,3 +1,11 @@
+2010-05-20  Paul Viney  <paul@diasoft.nl>
+
+	PR classpath/44208
+	* java/io/ObjectInputStream.java,
+	(parseContent(byte,boolean)): Ensure a handle
+	for the enum is registered before one for its
+	String constant.
+
 2009-12-30  Paul Fernhout  <pdfernhout@kurtz-fernhout.com>
 
 	PR classpath/42551
