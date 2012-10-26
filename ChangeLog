@@ -1,3 +1,19 @@
+2012-10-16  Ivan Maidanski  <ivmai@mail.ru>
+
+	* java/util/Collections.java:
+	(emptySet(), EmptySet.iterator(), emptyList(), emptyMap(),
+	EmptyMap.entrySet(), EmptyMap.keySet(), EmptyMap.values()): Suppress
+	"unchecked" warnings.
+	(emptySet(), emptyList(), emptyMap()): Don't create new instance (use
+	the corresponding immutable container instance); remove FIXME.
+	(EmptySet.equals(Object), EmptyList.equals(Object),
+	EmptyMap.entrySet(), EmptyMap.equals(Object), EmptyMap.keySet(),
+	EmptyMap.values()): Add generic typing.
+	(SingletonList.subList(int, int)): Use emptyList() instead of
+	EMPTY_LIST (to eliminate "unchecked" warning).
+	(SynchronizedCollection.toArray(T[])): Rename T type to E (to
+	suppress compiler warning about type hiding).
+
 2012-10-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/41689
