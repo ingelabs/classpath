@@ -38,8 +38,12 @@ exception statement from your version. */
 package javax.annotation.processing;
 
 import java.util.Locale;
+import java.util.Map;
+
+import javax.lang.model.SourceVersion;
 
 import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
 /**
  * Provides the annotation processor with access to the
@@ -95,6 +99,34 @@ public interface ProcessingEnvironment
    */
   Messager getMessager();
 
+  /**
+   * Returns the options passed to the annotation processor
+   * as a map of option names to values.  If an option does
+   * not have a value, it will map to {@code null}.  For
+   * details of the options themselves, see the documentation
+   * for the annotation processor.
+   *
+   * @return a map of the options passed to the annotation processor.
+   */
+  Map<String,String> getOptions();
 
+  /**
+   * Returns the version of Java source code that generated
+   * source files and class files should conform to.
+   *
+   * @return the version of Java code used in generated files.
+   * @see Processor#getSupportedSourceVersion()
+   */
+  SourceVersion getSourceVersion();
 
+  /**
+   * Returns an implementation of a number of utility
+   * methods which provide additional functionality for
+   * working with (@link javax.lang.model.type.TypeMirror}
+   * instances.
+   *
+   * @return the type utilities.
+   */
+  Types getTypeUtils();
+  
 }

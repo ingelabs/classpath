@@ -1,3 +1,10 @@
+2012-11-13  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/annotation/processing/ProcessingEnvironment.java:
+	(getOptions()): Implemented.
+	(getSourceVersion()): Likewise.
+	(getTypeUtils()): Likewise.
+
 2012-11-12  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	New files to start supporting recent versions
