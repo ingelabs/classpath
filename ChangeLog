@@ -1,3 +1,102 @@
+2012-11-12  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	New files to start supporting recent versions
+	of ecj & javac.
+	* javax/annotation/processing/Filer.java: Stub.
+	* javax/annotation/processing/Messager.java: Likewise.
+	* javax/annotation/processing/ProcessingEnvironment.java:
+	(getElementUtils()): Added.
+	(getFiler()): Likewise.
+	(getLocale()): Likewise.
+	(getMessager()): Likewise.
+	* javax/annotation/processing/RoundEnvironment.java:
+	(errorRaised()): Likewise.
+	(getElementsAnnotatedWith(Class)): Likewise.
+	(getElementsAnnotatedWith(TypeElement)): Likewise.
+	(getRootElements()): Likewise.
+	(processingOver()): Likewise.
+	* javax/lang/model/SourceVersion.java:
+	(RELEASE_0): Likewise.
+	(RELEASE_1): Likewise.
+	(RELEASE_2): Likewise.
+	(RELEASE_3): Likewise.
+	(RELEASE_4): Likewise.
+	(RELEASE_5): Likewise.
+	(RELEASE_6): Likewise.
+	(isIdentifier(CharSequence)): Likewise.
+	(latest()): Likewise.
+	(latestSupported()): Likewise.
+	* javax/lang/model/element/Element.java:
+	(accept(ElementVisitor,P)): Likewise.
+	(equals(Object)): Likewise.
+	(getAnnotation(Class)): Likewise.
+	(getEnclosedElements()): Likewise.
+	(getEnclosingElement()): Likewise.
+	(getKind()): Likewise.
+	(hashCode()): Likewise.
+	* javax/lang/model/element/ElementKind.java:
+	(ANNOTATION_TYPE): Likewise.
+	(CLASS): Likewise.
+	(CONSTRUCTOR): Likewise.
+	(ENUM): Likewise.
+	(ENUM_CONSTANT): Likewise.
+	(EXCEPTION_PARAMETER): Likewise.
+	(FIELD): Likewise.
+	(INSTANCE_INIT): Likewise.
+	(INTERFACE): Likewise.
+	(LOCAL_VARIABLE): Likewise.
+	(METHOD): Likewise.
+	(OTHER): Likewise.
+	(PACKAGE): Likewise.
+	(PARAMETER): Likewise.
+	(STATIC_INIT): Likewise.
+	(TYPE_PARAMETER): Likewise.
+	* javax/lang/model/element/ElementVisitor.java:
+	(visit(Element)): Likewise.
+	(visit(Element, P)): Likewise.
+	(visitType(TypeElement, P): Likewise.
+	(visitUnknown(Element, P): Likewise.
+	* javax/lang/model/element/TypeElement.java: Stub.
+	* javax/lang/model/util/ElementFilter.java:
+	(typesIn(Set)): Implemented.
+	(FilteredSet): Class which typesIn returns an instance of.
+	(FilteredSet.elements): New field.
+	(FilteredSet.clazz): Likewise.
+	(FilteredSet.FilteredSet(Set,Class)): Implemented.
+	(FilteredSet.add(E)): Likewise.
+	(FilteredSet.addAll(Collection)): Likewise.
+	(FilteredSet.clear()): Likewise.
+	(FilteredSet.contains(Object)): Likewise.
+	(FilteredSet.containsAll(Collection)): Likewise.
+	(FilteredSet.equals(Object)): Likewise.
+	(FilteredSet.hashCode()): Likewise.
+	(FilteredSet.isEmpty()): Likewise.
+	(FilteredSet.iterator()): Likewise.
+	(FilteredSet.remove(Object)): Likewise.
+	(FilteredSet.removeAll(Collection)): Likewise.
+	(FilteredSet.retainAll(Collection)): Likewise.
+	(FilteredSet.size()): Likewise.
+	(FilteredSet.toArray()): Likewise.
+	(FilteredSet.toArray(T[])): Likewise.
+	(FilteredIterator): Class which FilteredSet.iterator()
+	provides an instance of.
+	(FilteredIterator.iterator): New field.
+	(FilteredIterator.clazz): Likewise.
+	(FilteredIterator.next): Likewise.
+	(FilteredIterator.FilteredIterator(Iterator,Class)): Implemented.
+	(FilteredIterator.hasNext()): Likewise.
+	(FilteredIterator.next()): Likewise.
+	(FilteredIterator.remove()): Likewise.
+	* javax/lang/model/util/Elements.java:
+	(getAllMembers(TypeElement)): Likewise.
+	(getConstantExpression(Object)): Likewise.
+	(getDocComment(Object)): Likewise.
+	(getTypeElement(CharSequence)): Likewise.
+	(hides(Element,Element)): Likewise.
+	(isDeprecated(Element)): Likewise.
+	(printElements(Writer,Element...)): Likewise.
+	* javax/lang/model/util/Types.java: Stub.
+
 2012-11-02  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/55182
