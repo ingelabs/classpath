@@ -37,6 +37,14 @@ exception statement from your version. */
 
 package javax.annotation.processing;
 
+import java.io.IOException;
+
+import javax.lang.model.element.Element;
+
+import javax.tools.JavaFileManager;
+import javax.tools.JavaFileObject;
+import javax.tools.FileObject;
+
 /**
  * <p>This interface supports the creation of new files by the
  * annotation processor.  Creating files via this interface means
@@ -88,4 +96,119 @@ package javax.annotation.processing;
  */
 public interface Filer
 {
+
+  /**
+   * Returns a {@link JavaFileObject} for writing a class
+   * file.  The name and location of the created file are
+   * based on the specified type name.  The location used
+   * is relative to the root location for class files.
+   * A class file may be created for a package by appending
+   * the suffix {@code ".package-info"} to the name.  The
+   * contents of the class file should be compatible with
+   * source version being used for this run of the annotation
+   * processor.
+   *
+   * @param name the name of the type (or package if
+   *             the {@code ".package-info"} suffix) to create
+   *             a class file for.
+   * @param elements program elements associated with this class
+   *                 file.  May be {@code null} or incomplete.
+   * @return access to the new class file via a {@link JavaFileObject}.
+   * @throws FilerException if the same pathname has already been used,
+   *                       the same type has already been created or
+   *                       the name is invalid.
+   * @throws IOException if an I/O error occurs.
+   */
+  JavaFileObject createClassFile(CharSequence name, Element... elements)
+    throws IOException;
+
+  /**
+   * <p>Returns a {@link FileObject} for writing a resource file.
+   * The name and location of the created file are determined
+   * by combining the given location (either that used by class
+   * files, source files or another location supported by the
+   * implementation), the name of a package in which the resource
+   * should live (if any), and the specified name.</p>
+   * <p>Files created by this method are not registered for annotation
+   * processing.</p>
+   *
+   * @param location the location to use for the resource.  Can be
+   *                 {@link javax.tools.StandardLocation#CLASS_OUTPUT},
+   *                 {@link javax.tools.StandardLocation#SOURCE_OUTPUT},
+   *                 or another location supported by the implementation.
+   * @param pkg the package which should contain the resource, or the
+   *            empty string if one is not used.
+   * @param relName the final path components of the file name, which will
+   *                be relative to the location and (if specified) the package.
+   * @param elements program elements associated with this resource
+   *                 file.  May be {@code null} or incomplete.
+   * @return access to the new resource file via a {@link FileObject}.
+   * @throws FilerException if the same pathname has already been used.
+   * @throws IOException if an I/O error occurs.
+   * @throws IllegalArgumentException if the location specified is not supported,
+   *                                  or {@code relName} is not relative.
+   */
+  FileObject createResource(JavaFileManager.Location location,
+			    CharSequence pkg, CharSequence relName,
+			    Element... elements)
+    throws IOException;
+
+  /**
+   * <p>Returns a {@link JavaFileObject} for writing a source
+   * file.  The name and location of the created file are
+   * based on the specified type name.  If more than one
+   * type is being declared, the top-level one should be used.
+   * The location used is relative to the root location for
+   * source files.  A source file may be created for a package by
+   * appending the suffix {@code ".package-info"} to the name.  The
+   * contents of the source file should be compatible with
+   * source version being used for this run of the annotation
+   * processor.</p>
+   * <p>The character set used by the {@link java.io.OutputStream}
+   * of the returned object is determined by the implementation,
+   * and may be set using either the platform default or by an
+   * option passed to the annotation processing tool.  To override
+   * this, users can wrap the stream in an
+   * {@link java.io.OutputStreamWriter}.</p>
+   *
+   * @param name the fully-qualified name of the type (or package if
+   *             the {@code ".package-info"} suffix) to create
+   *             a source file for.
+   * @param elements program elements associated with this source
+   *                 file.  May be {@code null} or incomplete.
+   * @return access to the new source file via a {@link JavaFileObject}.
+   * @throws FilerException if the same pathname has already been used,
+   *                       the same type has already been created or
+   *                       the name is invalid.
+   * @throws IOException if an I/O error occurs.
+   */
+  JavaFileObject createSourceFile(CharSequence name, Element... elements)
+    throws IOException;
+
+  /**
+   * Returns a {@link FileObject} for reading a resource file.
+   * The name and location of the file to read are determined
+   * by combining the given location (either that used by class
+   * files, source files or another location supported by the
+   * implementation), the name of a package in which the resource
+   * lives (if any), and the specified name.
+   *
+   * @param location the location to use for the resource.  Can be
+   *                 {@link javax.tools.StandardLocation#CLASS_OUTPUT},
+   *                 {@link javax.tools.StandardLocation#SOURCE_OUTPUT},
+   *                 or another location supported by the implementation.
+   * @param pkg the package which contains the resource, or the
+   *            empty string if one is not used.
+   * @param relName the final path components of the file name, which will
+   *                be relative to the location and (if specified) the package.
+   * @return access to the new resource file via a {@link FileObject}.
+   * @throws FilerException if the same pathname is open for writing.
+   * @throws IOException if an I/O error occurs.
+   * @throws IllegalArgumentException if the location specified is not supported,
+   *                                  or {@code relName} is not relative.
+   */
+  FileObject getResource(JavaFileManager.Location location,
+			 CharSequence pkg, CharSequence relName)
+    throws IOException;
+
 }

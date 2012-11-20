@@ -1,3 +1,62 @@
+2012-11-19  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/annotation/processing/Filer.java:
+	(createClassFile(CharSequence,Element...): Added.
+	(createResource(JavaFileManager.Location, CharSequence,
+	CharSequence, Element...)): Likewise.
+	(createSourceFile(CharSequence,Element...): Likewise.
+	(getResource(JavaFileManager.Location, CharSequence,
+	CharSequence)): Likewise.
+	* javax/annotation/processing/FilerException.java:
+	New class.
+	(FilerException(String)): Implemented.
+	* javax/tools/JavaFileManager.java:
+	New interface.
+	(Location): New member interface.
+	(Location.getName()): Added.
+	(Location.isOutputLocation()): Likewise.
+	(close()): Likewise.
+	(flush()): Likewise.
+	(getClassLoader(Location)): Likewise.
+	(getFileForInput(Location,String,String)):
+	Likewise.
+	(getFileForOutput(Location,String,String,FileObject)):
+	Likewise.
+	(getJavaFileForInput(Location,String,
+	JavaFileObject.Kind)): Likewise.
+	(getJavaFileForOutput(Location,String,
+	JavaFileObject.Kind,FileObject)): Likewise.
+	(handleOption(String,Iterator)): Likewise.
+	(hasLocation(Location)): Likewise.
+	(inferBinaryName(Location,JavaFileObject)): Likewise.
+	(isSameFile(FileObject,FileObject)): Likewise.
+	(list(Location,String,Set,boolean)): Likewise.
+	* javax/tools/JavaFileObject.java:
+	New interface.
+	(Kind): New inner enum.
+	(CLASS): Added.
+	(HTML): Likewise.
+	(OTHER): Likewise.
+	(SOURCE): Likewise.
+	(Kind.extension): New public field.
+	(Kind.Kind(String)): Implemented.
+	(getKind()): Added.
+	(isNameCompatible(String,Kind)): Likewise.
+	* javax/tools/OptionChecker.java:
+	New interface.
+	(isSupportedOption(String)): Added.
+	* javax/tools/StandardLocation.java:
+	New enum.
+	(ANNOTATION_PROCESSOR_PATH): Added.
+	(CLASS_OUTPUT): Likewise.
+	(CLASS_PATH): Likewise.
+	(PLATFORM_CLASS_PATH): Likewise.
+	(SOURCE_OUTPUT): Likewise.
+	(SOURCE_PATH): Likewise.
+	(locCache): Likewise.
+	(getName()): Implemented.
+	(locationFor(String)): Implemented.
+
 2012-11-13  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/annotation/processing/ProcessingEnvironment.java:
