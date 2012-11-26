@@ -50,6 +50,7 @@ import javax.lang.model.element.TypeElement;
  * of this interface, so that processors can be supplied with an instance
  * in order to query information about their environment.
  *
+ * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.6
  */
 public interface RoundEnvironment

@@ -57,6 +57,7 @@ package javax.lang.model.element;
  * file, elements are returned in the order they appear
  * in the source code.</p>
  *
+ * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.6
  */
 public interface TypeElement

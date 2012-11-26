@@ -53,17 +53,17 @@ public enum StandardLocation
   implements Location
 {
   /** Location where annotation processors are found. */
-  ANNOTATION_PROCESSOR_PATH { public boolean isOutputLocation() { return false; } },
+  ANNOTATION_PROCESSOR_PATH { @Override public boolean isOutputLocation() { return false; } },
   /** Location to write class files to. */
-  CLASS_OUTPUT { public boolean isOutputLocation() { return true; } },
+  CLASS_OUTPUT { @Override public boolean isOutputLocation() { return true; } },
   /** Location where class files are found. */
-  CLASS_PATH { public boolean isOutputLocation() { return false; } },
+  CLASS_PATH { @Override public boolean isOutputLocation() { return false; } },
   /** Location where platform class files are found. */
-  PLATFORM_CLASS_PATH { public boolean isOutputLocation() { return false; } },
+  PLATFORM_CLASS_PATH { @Override public boolean isOutputLocation() { return false; } },
   /** Location to write source files to. */
-  SOURCE_OUTPUT { public boolean isOutputLocation() { return true; } },
+  SOURCE_OUTPUT { @Override public boolean isOutputLocation() { return true; } },
   /** Location where source files are found. */
-  SOURCE_PATH { public boolean isOutputLocation() { return false; } };
+  SOURCE_PATH { @Override public boolean isOutputLocation() { return false; } };
   
   private static final ConcurrentMap<String,Location> locCache =
     new ConcurrentHashMap<String,Location>();
@@ -80,6 +80,7 @@ public enum StandardLocation
    *
    * @return the name of the location.
    */
+  @Override
   public String getName()
   {
     return name();

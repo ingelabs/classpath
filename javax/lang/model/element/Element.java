@@ -54,6 +54,7 @@ import java.util.List;
  * implementations may use the same class to implement multiple
  * subinterfaces.</p>
  *
+ * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.6
  */
 public interface Element

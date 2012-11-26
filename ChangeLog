@@ -1,5 +1,55 @@
 2012-11-25  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	* javax/annotation/processing/Filer.java,
+	* javax/annotation/processing/Messager.java,
+	* javax/annotation/processing/ProcessingEnvironment.java,
+	* javax/annotation/processing/RoundEnvironment.java,
+	* javax/lang/model/SourceVersion.java,
+	* javax/lang/model/element/Element.java,
+	* javax/lang/model/element/ElementKind.java:
+	Add authorship.
+	* javax/lang/model/element/ElementVisitor.java:
+	Add authorship and properly document type parameters.
+	* javax/lang/model/element/TypeElement.java:
+	Add authorship.
+	* javax/lang/model/util/ElementFilter.java:
+	Add authorship.
+	(FilteredSet.add(E)): Add @Override.
+	(FilteredSet.addAll(Collection)): Likewise.
+	(FilteredSet.clear()): Likewise.
+	(FilteredSet.contains(Object)): Likewise.
+	(FilteredSet.containsAll(Collection)): Likewise.
+	(FilteredSet.equals(Object)): Likewise.
+	(FilteredSet.hashCode()): Likewise.
+	(FilteredSet.isEmpty()): Likewise.
+	(FilteredSet.iterator()): Likewise.
+	(FilteredSet.remove(Object)): Likewise.
+	(FilteredSet.removeAll(Collection)): Likewise.
+	(FilteredSet.retainAll(Collection)): Likewise.
+	(FilteredSet.size()): Likewise.
+	(FilteredSet.toArray()): Likewise.
+	(FilteredSet.toArray(T[])): Likewise.
+	(FilteredIterator.hasNext()): Likewise.
+	(FilteredIterator.next()): Likewise.
+	(FilteredIterator.remove()): Likewise.
+	* javax/lang/model/util/Elements.java,
+	* javax/lang/model/util/Types.java:
+	Add authorship.
+	* javax/tools/ForwardingFileObject.java,
+	* javax/tools/ForwardingJavaFileObject.java:
+	Document type parameter.
+	* javax/tools/StandardLocation.java:
+	(ANNOTATION_PROCESSOR_PATH.isOutputLocation()):
+	Add @Override annotation.
+	(CLASS_OUTPUT.isOutputLocation()): Likewise.
+	(CLASS_PATH.isOutputLocation()): Likewise.
+	(PLATFORM_CLASS_PATH.isOutputLocation()): Likewise.
+	(SOURCE_OUTPUT.isOutputLocation()): Likewise.
+	(SOURCE_PATH.isOutputLocation()): Likewise.
+	(getName()): Likewise.
+
+2012-11-25  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* javax/tools/FileObject.java:
 	Add missing comment in header.
 	* javax/tools/ForwardingFileObject.java:

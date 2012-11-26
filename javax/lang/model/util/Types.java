@@ -40,6 +40,7 @@ package javax.lang.model.util;
 /**
  * Utility methods for operating on types.
  *
+ * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.6
  */
 public interface Types

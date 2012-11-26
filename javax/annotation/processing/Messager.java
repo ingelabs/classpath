@@ -49,6 +49,7 @@ package javax.annotation.processing;
  * {@code System.out} and/or {@code System.err} or something
  * more graphical if the application has a user interface.
  *
+ * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.6
  */
 public interface Messager

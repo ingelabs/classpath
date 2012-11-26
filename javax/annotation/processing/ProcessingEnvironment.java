@@ -56,6 +56,7 @@ import javax.lang.model.util.Types;
  * facility objects, such as the {@code Filer}, so that
  * these additional changes are reflected throughout.
  *
+ * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.6
  */
 public interface ProcessingEnvironment

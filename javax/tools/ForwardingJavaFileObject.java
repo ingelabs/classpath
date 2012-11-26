@@ -40,6 +40,7 @@ package javax.tools;
 /**
  * Forwards calls to a specified {@link JavaFileObject}.
  *
+ * @param <F> the kind of object calls are forwarded to.
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.6
  */

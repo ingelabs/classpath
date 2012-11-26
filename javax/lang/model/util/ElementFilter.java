@@ -54,6 +54,7 @@ import javax.lang.model.element.TypeElement;
  *<p>For convenience, a static import may be used to allow the
  * methods to be called more succinctly.</p>
  * 
+ * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.6
  */
 public class ElementFilter
@@ -114,6 +115,7 @@ public class ElementFilter
      * @param elem the element to add.
      * @return true if the element was added.
      */
+    @Override
     public boolean add(E elem)
     {
       return elements.add(elem);
@@ -128,6 +130,7 @@ public class ElementFilter
      * @param coll the collection of elements to add.
      * @return true if the set was modified.
      */
+    @Override
     public boolean addAll(Collection<? extends E> coll)
     {
       return elements.addAll(coll);
@@ -136,6 +139,7 @@ public class ElementFilter
     /**
      * Removes all elements from the set.
      */
+    @Override
     public void clear()
     {
       elements.clear();
@@ -148,6 +152,7 @@ public class ElementFilter
      * @param obj the object to check for.
      * @return true if the backing set contains the element.
      */
+    @Override
     public boolean contains(Object obj)
     {
       if (clazz.isInstance(obj))
@@ -164,6 +169,7 @@ public class ElementFilter
      * @param coll the collection of elements to check.
      * @return true if the set contains all elements in {@code coll}.
      */
+    @Override
     public boolean containsAll(Collection<?> coll)
     {
       for (Object obj : coll)
@@ -180,6 +186,7 @@ public class ElementFilter
      * @param obj the object to compare.
      * @return true if the above requirements are met.
      */
+    @Override
     public boolean equals(Object obj)
     {
       if (obj == null)
@@ -199,6 +206,7 @@ public class ElementFilter
      *
      * @return the hashcode of this set.
      */
+    @Override
     public int hashCode()
     {
       int sum = 0;
@@ -212,6 +220,7 @@ public class ElementFilter
      *
      * @return true if the size is zero.
      */
+    @Override
     public boolean isEmpty()
     {
       return size() == 0;
@@ -222,6 +231,7 @@ public class ElementFilter
      *
      * @return the iterator.
      */
+    @Override
     public Iterator<E> iterator()
     {
       return new FilteredIterator<E>(elements.iterator(), clazz);
@@ -233,6 +243,7 @@ public class ElementFilter
      * @param obj the object to remove.
      * @return true if the set contained the element.
      */
+    @Override
     public boolean remove(Object obj)
     {
       if (clazz.isInstance(obj))
@@ -248,6 +259,7 @@ public class ElementFilter
      * @param coll the collection of elements to remove.
      * @return true if the set changed.
      */
+    @Override
     public boolean removeAll(Collection<?> coll)
     {
       boolean modified = false;
@@ -265,6 +277,7 @@ public class ElementFilter
      * @param coll the collection of elements to remove.
      * @return true if the set changed.
      */
+    @Override
     public boolean retainAll(Collection<?> coll)
     {
       boolean modified = false;
@@ -283,6 +296,7 @@ public class ElementFilter
      *
      * @return the size of the set.
      */
+    @Override
     public int size()
     {
       int count = 0;
@@ -298,6 +312,7 @@ public class ElementFilter
      *
      * @return an array of all elements in the set.
      */
+    @Override
     public Object[] toArray()
     {
       int size = size();
@@ -320,6 +335,7 @@ public class ElementFilter
      *              return value of this method.
      * @return an array containing all elements in the set.
      */
+    @Override
     public <T> T[] toArray(T[] array)
     {
       int a, size = size();
@@ -383,6 +399,7 @@ public class ElementFilter
      *
      * @return true if there are more elements to retrieve.
      */
+    @Override
     public boolean hasNext()
     {
       while (iterator.hasNext() && next == null)
@@ -400,6 +417,7 @@ public class ElementFilter
      *
      * @return the next element.
      */
+    @Override
     public E next()
     {
       if (next == null)
@@ -415,6 +433,7 @@ public class ElementFilter
      * As we only return elements that match the filter,
      * the underlying iterator will always remove one of those.
      */
+    @Override
     public void remove()
     {
       iterator.remove();

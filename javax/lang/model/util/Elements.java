@@ -47,6 +47,7 @@ import javax.lang.model.element.TypeElement;
 /**
  * Utility methods for operating on elements.
  *
+ * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.6
  */
 public interface Elements

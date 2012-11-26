@@ -48,6 +48,7 @@ import java.net.URI;
 /**
  * Forwards calls to a specified file object.
  *
+ * @param <F> the kind of object calls are forwarded to.
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.6
  */

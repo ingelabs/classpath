@@ -92,6 +92,7 @@ import javax.tools.FileObject;
  * the class would provide the appropriate generated
  * subclass via the factory pattern.</p>
  *
+ * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.6
  */
 public interface Filer

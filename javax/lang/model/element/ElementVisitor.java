@@ -53,11 +53,12 @@ package javax.lang.model.element;
  * interface.  However, this interface should be used as the type
  * for parameters and return values.</p>
  *
- * @param R the return type of the visitor's methods.  {@code Void}
- *          can be used where there is no return value.
- * @param P the type of the additional parameter supplied to the visitor's
- *           methods.
+ * @param <R> the return type of the visitor's methods.  {@code Void}
+ *            can be used where there is no return value.
+ * @param <P> the type of the additional parameter supplied to the visitor's
+ *            methods.
  *
+ * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.6
  */
 public interface ElementVisitor<R,P>

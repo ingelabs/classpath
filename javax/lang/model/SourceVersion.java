@@ -42,6 +42,7 @@ package javax.lang.model;
  * Note that this will be extended with additional
  * constants to represent new versions.
  *
+ * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.6
  */
 public enum SourceVersion

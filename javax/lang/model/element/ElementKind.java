@@ -42,6 +42,7 @@ package javax.lang.model.element;
  * or a field element.  This enumeration may be extended with
  * further kinds to represent future versions of the language.</p>
  *
+ * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.6
  */
 public enum ElementKind
