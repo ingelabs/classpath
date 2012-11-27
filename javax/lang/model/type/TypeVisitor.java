@@ -1,4 +1,4 @@
-/* ElementVisitor.java -- A visitor of program elements.
+/* TypeVisitor.java -- A visitor of types.
    Copyright (C) 2012  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -35,14 +35,14 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package javax.lang.model.element;
+package javax.lang.model.type;
 
 /**
- * <p>A visitor for program elements.  This is used when the specific
- * type of element is not known at compile time.  A visitor instance
- * is passed to the {@link Element#accept(ElementVisitor,P)} method of
- * the element, which then calls the specific {@code visitN} method
- * appropriate to that specific element.</p>
+ * <p>A visitor for types.  This is used when the specific
+ * type is not known at compile time.  A visitor instance
+ * is passed to the {@link TypeMirror#accept(TypeVisitor,P)} method of
+ * the type, which then calls the specific {@code visitN} method
+ * appropriate to that specific type.</p>
  * <p>The additional parameter supplied to visitor methods may or
  * may not be optional, and so the class is free to throw a
  * {@code NullPointerException} if {@code null} is passed as the
@@ -61,73 +61,47 @@ package javax.lang.model.element;
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.6
  */
-public interface ElementVisitor<R,P>
+public interface TypeVisitor<R,P>
 {
 
   /**
    * A convenience method for use when there is no additional
-   * parameter to pass.  This is equivalent to {@code #visit(element, null)}.
+   * parameter to pass.  This is equivalent to {@code #visit(type, null)}.
    *
-   * @param element the element to visit.
+   * @param type the type to visit.
    * @return the return value specific to the visitor.
    */
-  R visit(Element element);
+  R visit(TypeMirror type);
 
   /**
-   * Visits an element.
+   * Visits a type.
    *
-   * @param element the element to visit.
+   * @param type the type to visit.
    * @param param the additional parameter, specific to the visitor.
    *        May be {@code null} if permitted by the visitor.
    */
-  R visit(Element element, P param);
+  R visit(TypeMirror type, P param);
 
   /**
-   * Visits a type element.
+   * Visits an unknown type.  This method is called if
+   * a new type is added to the hierarchy which isn't yet
+   * handled by the visitor.
    *
-   * @param element the type element to visit.
-   * @param param the additional parameter, specific to the visitor.
-   *        May be {@code null} if permitted by the visitor.
-   */
-  R visitType(TypeElement element, P param);
-
-  /**
-   * Visits an unknown element.  This method is called if
-   * a new type of element is added to the hierarchy
-   * which isn't yet handled by the visitor.
-   *
-   * @param element the element to visit.
+   * @param type the type to visit.
    * @param param the additional parameter, specific to the visitor.
    *        May be {@code null} if permitted by the visitor.
    * @return the return value specific to the visitor.
    */
-  R visitUnknown(Element element, P param);
+  R visitUnknown(TypeMirror type, P param);
 
   /**
-   * Visits an executable element.
+   * Visits a declared type.
    *
-   * @param element the type element to visit.
+   * @param type the type to visit.
    * @param param the additional parameter, specific to the visitor.
    *        May be {@code null} if permitted by the visitor.
+   * @return the return value specific to the visitor.
    */
-  R visitExecutable(ExecutableElement element, P param);
-
-  /**
-   * Visits a type parameter element.
-   *
-   * @param element the type element to visit.
-   * @param param the additional parameter, specific to the visitor.
-   *        May be {@code null} if permitted by the visitor.
-   */
-  R visitTypeParameter(TypeParameterElement element, P param);
-
-  /**
-   * Visits a variable element.
-   *
-   * @param element the type element to visit.
-   * @param param the additional parameter, specific to the visitor.
-   *        May be {@code null} if permitted by the visitor.
-   */
-  R visitVariable(VariableElement element, P param);
+  R visitDeclared(DeclaredType type, P param);
 
 }

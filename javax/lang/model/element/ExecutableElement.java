@@ -1,4 +1,4 @@
-/* TypeElement.java -- Represents a class or interface element.
+/* ExecutableElement.java -- Represents a method, constructor or initialiser.
    Copyright (C) 2012  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -42,61 +42,72 @@ import java.util.List;
 import javax.lang.model.type.TypeMirror;
 
 /**
- * <p>Represents a class or interface program element.
- * Note that enumerations are a kind of class and annotations
- * are a kind of interface.  The element provides access
- * to information about the type and its members.</p>
- * <p>A distinction is made between elements and types,
- * with the latter being an invocation of the former.
- * This distinction is most clear when looking at
- * parameterized types.  A {@code TypeElement} represents the
- * general type, such as {@code java.util.Set}, while
- * a {@link DeclaredType} instance represents different
- * instantiations such as {@code java.util.Set<String>},
- * {@code java.util.Set<Integer>} and the raw type
- * {@code java.util.Set}.</p>
- * <p>The methods of this interface return elements in the
- * natural order of the underlying information.  So, for
- * example, if the element is derived from a Java source
- * file, elements are returned in the order they appear
- * in the source code.</p>
+ * Represents a method, constructor or initialiser (static
+ * or instance) for a class or interface (including annotation
+ * types).
  *
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.6
+ * @see javax.lang.model.type.ExecutableType
  */
-public interface TypeElement
+public interface ExecutableElement
   extends Element
 {
 
   /**
-   * Returns the interface types directly implemented by this
-   * class or extended by this interface.  If there are none,
-   * an empty list is returned.
+   * Returns the default value of this type if this is an
+   * annotation with a default, or {@code null} otherwise.
    *
-   * @return the interface types directly implemented by this
-   *         class or extended by this interface.
+   * @return the default value or {@code null}.
    */
-  List<? extends TypeMirror> getInterfaces();
+  AnnotationValue getDefaultValue();
 
   /**
-   * Returns the direct superclass of this element.  If this
-   * is an interface or the class {@link Object}, then a
-   * instance of {@link javax.lang.model.type.NoType} with
-   * the kind {@link javax.lang.model.type.TypeKind#NONE} is
-   * returned.
+   * Returns the formal parameters of this executable
+   * in the order they were declared.  If there are no
+   * parameters, the list is empty.
    *
-   * @return the direct superclass or {@code NoType} if there
-   *         isn't one.
+   * @return the formal parameters.
    */
-  TypeMirror getSuperclass();
+  List<? extends VariableElement> getParameters();
 
   /**
-   * Returns the formal type parameters of this element in the
-   * order they were declared.  If there are none, then an empty
-   * list is returned.
+   * Returns the return type of this executable or
+   * an instance of {@link javax.lang.model.type.NoType}
+   * with the kind {@link javax.lang.model.type.TypeKind#VOID}
+   * if there is no return type or this is a
+   * constructor or initialiser.
+   *
+   * @return the return type of the executbale.
+   */
+  TypeMirror getReturnType();
+
+  /**
+   * Returns the exceptions or other throwables listed
+   * in the {@code throws} clause in the order they
+   * are declared.  The list is empty if there is no
+   * {@code throws} clause.
+   *
+   * @return the exceptions or other throwables listed
+   *         as thrown by this executable.
+   */
+  List<? extends TypeMirror> getThrownTypes();
+
+  /**
+   * Returns the formal type parameters of this executable
+   * in the order they were declared.  The list is empty
+   * if there are no type parameters.
    *
    * @return the formal type parameters.
    */
   List<? extends TypeParameterElement> getTypeParameters();
+
+  /**
+   * Returns {@code true} if this method or constructor accepts
+   * a variable number of arguments.
+   *
+   * @return true if this is a varargs method or constructor.
+   */
+  boolean isVarArgs();
 
 }

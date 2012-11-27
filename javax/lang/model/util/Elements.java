@@ -40,8 +40,12 @@ package javax.lang.model.util;
 import java.io.Writer;
 
 import java.util.List;
+import java.util.Map;
 
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 
 /**
@@ -120,5 +124,58 @@ public interface Elements
    * @param elements the elements to print.
    */
   void printElements(Writer w, Element... elements);
+
+  /**
+   * Returns all annotations associated with this element,
+   * whether present directly or inherited.
+   *
+   * @param element the element to examine.
+   * @return the annotations associated with this element or
+   *         an empty list if there are none.
+   * @see Element#getAnnotationMirrors()
+   */
+  List<? extends AnnotationMirror> getAllAnnotationMirrors(Element element);
+
+  /**
+   * Returns a map of elements to their values, including both
+   * those explicitly specified and default values.
+   * A marker annotation, by definition, returns an empty map.
+   * The order of the elements in the map follows that of the
+   * source code.
+   *
+   * @param annotation the annotation whose values should be returned.
+   * @return the map of elements to values.
+   */
+  Map<? extends ExecutableElement, ? extends AnnotationValue>
+    getElementValuesWithDefaults(AnnotationMirror annotation);
+
+  /**
+   * <p>Returns true if the method {@code overrider} overrides
+   * the method {@code overridden}, when {@code overrider} is
+   * a member of the given type, according to sections
+   * 8.4.8 and 9.4.1 of the Java Language Specification.</p>
+   * <p>In most cases, the specified type will simply be the
+   * class containing {@code overrider}.  For example, when
+   * checking if {@code String.hashCode()} overrides
+   * {@code Object.hashCode()}, the type will be {@code String}.
+   * However, in a more complex situation, the overridden and
+   * the overrider methods may be members of distinct types,
+   * {@code A} and {@code B}.  If the type refers to {@code B},
+   * the result will be {@code false} as {@code B} has no
+   * relationship to the methods in {@code A}.  However, if the
+   * type refers to a third type {@code C}, which forms the
+   * intersection of {@code A} and {@code B} (say, it extends
+   * the class {@code A} and implements the interface {@code B}),
+   * then the result may be true.</p>
+   *
+   * @param overrider the method which may overrider the other.
+   * @param overridden the method which may be overridden.
+   * @param type the type of which the overrider is a member.
+   * @return true if the overrider overriders the overridden
+   *              method in the specified type.
+   */
+  boolean overrides(ExecutableElement overrider,
+		    ExecutableElement overridden,
+		    TypeElement type);
 
 }

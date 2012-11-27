@@ -41,6 +41,8 @@ import java.lang.annotation.Annotation;
 
 import java.util.List;
 
+import javax.lang.model.type.TypeMirror;
+
 /**
  * <p>
  * Represents a program element at the language level.  For example,
@@ -158,5 +160,31 @@ public interface Element
    * @see #equals(Object)
    */
   int hashCode();
+
+  /**
+   * Returns the type defined by this element.  A generic
+   * element defines not one type, but a family of types.
+   * For such elements, a prototypical type is returned
+   * i.e. the element {@code Set<N extends Number>} will
+   * return the type {@code Set<N>}.  The methods of
+   * {@link javax.lang.model.util.Types} should be used to
+   * obtain the full family of types.
+   *
+   * @return the type defined by this element.
+   * @see javax.lang.model.util.Types
+   */
+  TypeMirror asType();
+
+  /**
+   * Returns the annotations directly present on this element.
+   * To obtain inherited annotations as well, call
+   * the {@link javax.lang.model.util.Elements#getAllAnnotationMirrors()}
+   * method of {@link javax.lang.model.util.Elements}.
+   *
+   * @return the annotations directly present on this element or
+   *         an empty list if there are none.
+   * @see javax.lang.model.util.ElementFilter
+   */
+  List<? extends AnnotationMirror> getAnnotationMirrors();
 
 }

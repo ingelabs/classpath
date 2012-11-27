@@ -1,3 +1,119 @@
+2012-11-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/lang/model/element/AnnotationMirror.java:
+	Added.
+	(getAnnotationType()): Added.
+	(getElementValues()): Likewise.
+	* javax/lang/model/element/AnnotationValue.java:
+	Added.
+	(accept(AnnotationValueVisitor,P)): Added.
+	(getValue()): Likewise.
+	(toString()): Likewise.
+	* javax/lang/model/element/AnnotationValueVisitor.java:
+	Added.
+	(visit(AnnotationValue)): Added.
+	(visit(AnnotationValue, P)): Likewise.
+	(visitAnnotation(AnnotationMirror, P)): Likewise.
+	(visitArray(List, P)): Likewise.
+	(visitBoolean(boolean, P)): Likewise.
+	(visitByte(byte, P)): Likewise.
+	(visitChar(char, P)): Likewise.
+	(visitDouble(double, P)): Likewise.
+	(visitEnumConstant(VariableElement, P)): Likewise.
+	(visitFloat(float, P)): Likewise.
+	(visitInt(float, P)): Likewise.
+	(visitLong(long, P)): Likewise.
+	(visitShort(short, P)): Likewise.
+	(visitString(String, P)): Likewise.
+	(visitType(TypeMirror, P)): Likewise.
+	(visitUnknown(AnnotationValue, P)): Likewise.
+	* javax/lang/model/element/Element.java:
+	(asType()): Added.
+	(getAnnotationMirrors()): Likewise.
+	* javax/lang/model/element/ElementVisitor.java:
+	(visitExecutable(ExecutableElement, P)): Added.
+	(visitTypeParameter(TypeParameterElement, P)): Likewise.
+	(visitVariable(VariableElement, P)): Likewise.
+	* javax/lang/model/element/ExecutableElement.java:
+	Added.
+	(getDefaultValue()): Added.
+	(getParameters()): Likewise.
+	(getReturnType()): Likewise.
+	(getThrownTypes()): Likewise.
+	(getTypeParameters()): Likewise.
+	(isVarArgs()): Likewise.
+	* javax/lang/model/element/TypeElement.java:
+	(getInterfaces()): Added.
+	(getSuperclass()): Likewise.
+	(getTypeParameters()): Likewise.
+	* javax/lang/model/element/TypeParameterElement.java:
+	Added.
+	(getBounds()): Added.
+	(getGenericElement()): Likewise.
+	* javax/lang/model/element/VariableElement.java:
+	Added.
+	(getConstantValue()): Added.
+	* javax/lang/model/type/DeclaredType.java:
+	Added.
+	(asElement()): Added.
+	(getEnclosingType()): Likewise.
+	(getTypeArguments()): Likewise.
+	* javax/lang/model/type/ReferenceType.java:
+	Added.
+	* javax/lang/model/type/TypeKind.java:
+	Added.
+	(ARRAY): Added.
+	(BOOLEAN): Likewise.
+	(BYTE): Likewise.
+	(CHAR): Likewise.
+	(DECLARED): Likewise.
+	(DOUBLE): Likewise.
+	(ERROR): Likewise.
+	(EXECUTABLE): Likewise.
+	(FLOAT): Likewise.
+	(INT): Likewise.
+	(LONG): Likewise.
+	(NONE): Likewise.
+	(NULL): Likewise.
+	(OTHER): Likewise.
+	(PACKAGE): Likewise.
+	(SHORT): Likewise.
+	(TYPEVAR): Likewise.
+	(VOID): Likewise.
+	(WILDCARD): Likewise.
+	(isPrimitive()): Implemented.
+	* javax/lang/model/type/TypeMirror.java:
+	Added.
+	(accept(TypeVisitor, P)): Added.
+	(equals(Object)): Likewise.
+	(getKind()): Likewise.
+	(hashCode()): Likewise.
+	(toString()): Likewise.
+	* javax/lang/model/type/TypeVisitor.java:
+	Added.
+	(visit(TypeMirror)): Added.
+	(visit(TypeMirror, P)): Likewise.
+	(visitUnknown(TypeMirror, P)): Likewise.
+	(visitDeclared(DeclaredType, P)): Likewise.
+	* javax/lang/model/util/Elements.java:
+	(getAllAnnotationMirrors(Element)): Added.
+	(getElementValuesWithDefaults(AnnotationMirror)): Likewise.
+	(overrides(ExecutableElement, ExecutableElement)): Likewise.
+	* javax/lang/model/util/Types.java:
+	(asElement(TypeMirror)): Added.
+	(asMemberOf(DeclaredType, Element)): Likewise.
+	(capture(TypeMirror)): Likewise.
+	(contains(TypeMirror, TypeMirror)): Likewise.
+	(directSupertypes(TypeMirror)): Likewise.
+	(erasure(TypeMirror)): Likewise.
+	(getDeclaredType(DeclaredType, TypeElement,
+	TypeMirror...)): Likewise.
+	(getDeclaredType(TypeElement, TypeMirror...)):
+	Likewise.
+	(isAssignable(TypeMirror, TypeMirror)): Likewise.
+	(isSameType(TypeMirror, TypeMirror)): Likewise.
+	(isSubtype(TypeMirror, TypeMirror)): Likewise.
+
 2012-11-25  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/annotation/processing/Processor.java:
