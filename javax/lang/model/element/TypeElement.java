@@ -99,4 +99,21 @@ public interface TypeElement
    */
   List<? extends TypeParameterElement> getTypeParameters();
 
+  /**
+   * Returns the fully qualified or <emph>canonical</emph>
+   * name of this type element.  For a local or anonymous
+   * class, the empty string is returned.  Generic types
+   * do not include their type parameters in the returned
+   * string i.e. {@code "java.util.Set"} not
+   * {@code "java.util.Set<E>"}.  A period ({@code "."}) is
+   * the only separator used, including for nested classes
+   * such as {@code "java.util.Map.Entry"}.  See
+   * Section 6.7 of the Java Language Specification for
+   * more details.
+   *
+   * @return the canonical name of this type element.
+   * @see javax.lang.model.util.Elements#getBinaryName(TypeElement)
+   */
+  Name getQualifiedName();
+
 }

@@ -1,3 +1,27 @@
+2012-11-29  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/lang/model/element/ElementVisitor.java:
+	(visitExecutable(ExecutableElement, P)): Correct documentation.
+	(visitTypeParameter(TypeParameterElement, P)): Likewise.
+	(visitVariable(VariableElement, P)): Likewise.
+	(visitPackage(PackageElement, P)): Added.
+	* javax/lang/model/element/Name.java:
+	Added.
+	(contentEquals(CharSequence)): Added.
+	(equals(Object)): Likewise.
+	(hashCode()): Likewise.
+	* javax/lang/model/element/PackageElement.java:
+	Added.
+	(getQualifiedName()): Added.
+	(isUnnamed()): Likewise.
+	* javax/lang/model/element/TypeElement.java:
+	(getQualifiedName()): Added.
+	* javax/lang/model/util/Elements.java:
+	(getBinaryName(TypeElement)): Added.
+	(getName(CharSequence)): Likewise.
+	(getPackageElement(CharSequence)): Likewise.
+	(getPackageOf(Element)): Likewise.
+
 2012-11-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/lang/model/element/AnnotationMirror.java:

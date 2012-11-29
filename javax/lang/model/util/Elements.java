@@ -46,6 +46,8 @@ import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Name;
+import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 
 /**
@@ -177,5 +179,66 @@ public interface Elements
   boolean overrides(ExecutableElement overrider,
 		    ExecutableElement overridden,
 		    TypeElement type);
+
+  /**
+   * <p>Returns the <emph>binary name</emph> of a type element.
+   * This is determined as follows, according to section
+   * 13.1 of the Java Language Specification:</p>
+   * <ul>
+   * <li>The binary name of a top-level element is its canonical name
+   * e.g. {@code java.util.Set}.</li>
+   * <li>The binary name of a member type is the binary name of
+   * its immediate enclosing type followed by the simple name of the
+   * member, separated by a {@code $} e.g. {@code java.util.Map$Entry}.</li>
+   * <li>The binary name of a local class is the binary name of
+   * its immediate enclosing type followed by the simple name of the
+   * local class, separated by {@code $} and a non-empty sequence of
+   * digits e.g. {@code java.awt.Window$1DisposeAction}.</li>
+   * <li>The binary name of an anonymous class is the binary name of
+   * its immediate enclosing type followed by a non-empty sequence of
+   * digits, separated by {@code $} e.g. {@code java.io.Console$1}.</li>
+   * <li>the binary name of a type variable declared by a generic
+   * class or interface is the binary name of its immediate enclosing type
+   * followed by the simple name of the type variable, separated by
+   * {@code $} e.g. {@code java.util.Set$E}</li>.
+   * <li>the binary name of a type variable declared by a generic
+   * method or constructor is the binary name of the type declaring the method
+   * or constructor, then a {@code $}, folllowed by the method or constructor
+   * descriptor, another {@code $} and the simple name of the type variable e.g.
+   * {@code java.util.Set$(Ljava/lang/Object;)Z$E</li>.
+   * </ul>
+   * 
+   * @param type the type whose binary name should be returned.
+   * @return the binary name, according to the above.
+   * @see javax.lang.model.util.element.TypeElement#getQualifiedName()
+   */
+  Name getBinaryName(TypeElement type);
+
+  /**
+   * Returns a name using the specified sequence of characters.
+   *
+   * @param chars the character sequence to use for the name.
+   * @return the resulting name.
+   */
+  Name getName(CharSequence chars);
+
+  /**
+   * Returns a package element corresponding to the specified
+   * package name, or {@code null} if it could not be found.
+   *
+   * @param chars the character sequence which makes up the name
+   *              of the package, or {@code ""} for the unnamed package.
+   * @return a corresponding package element.
+   */
+  PackageElement getPackageElement(CharSequence chars);
+
+  /**
+   * Returns the package which contains the specified element.
+   * If the given element is itself a package, it is returned.
+   *
+   * @param element the element whose package should be returned.
+   * @return the package for the specified type.
+   */
+  PackageElement getPackageOf(Element element);
 
 }

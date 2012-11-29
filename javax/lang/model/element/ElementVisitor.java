@@ -106,7 +106,7 @@ public interface ElementVisitor<R,P>
   /**
    * Visits an executable element.
    *
-   * @param element the type element to visit.
+   * @param element the executable element to visit.
    * @param param the additional parameter, specific to the visitor.
    *        May be {@code null} if permitted by the visitor.
    */
@@ -115,7 +115,7 @@ public interface ElementVisitor<R,P>
   /**
    * Visits a type parameter element.
    *
-   * @param element the type element to visit.
+   * @param element the type parameter element to visit.
    * @param param the additional parameter, specific to the visitor.
    *        May be {@code null} if permitted by the visitor.
    */
@@ -124,10 +124,19 @@ public interface ElementVisitor<R,P>
   /**
    * Visits a variable element.
    *
-   * @param element the type element to visit.
+   * @param element the variable element to visit.
    * @param param the additional parameter, specific to the visitor.
    *        May be {@code null} if permitted by the visitor.
    */
   R visitVariable(VariableElement element, P param);
+
+  /**
+   * Visits a package element.
+   *
+   * @param element the package element to visit.
+   * @param param the additional parameter, specific to the visitor.
+   *        May be {@code null} if permitted by the visitor.
+   */
+  R visitPackage(PackageElement element, P param);
 
 }
