@@ -1,3 +1,51 @@
+2012-11-30  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/lang/model/type/ArrayType.java:
+	Added.
+	(getComponentType()): Added.
+	* javax/lang/model/type/ErrorType.java:
+	Added.
+	* javax/lang/model/type/ExecutableType.java:
+	Added.
+	(getParameterTypes()): Added.
+	(getReturnType()): Likewise.
+	(getThrownTypes()): Likewise.
+	(getTypeVariables()): Likewise.
+	* javax/lang/model/type/NoType.java:
+	Added.
+	* javax/lang/model/type/NullType.java:
+	Added.
+	* javax/lang/model/type/PrimitiveType.java:
+	Added.
+	* javax/lang/model/type/TypeVariable.java:
+	Added.
+	(asElement()): Added.
+	(getLowerBound()): Likewise.
+	(getUpperBound()): Likewise.
+	* javax/lang/model/type/TypeVisitor.java:
+	(visitArray(ArrayType, P)): Added.
+	(visitError(ErrorType, P)): Likewise.
+	(visitExecutable(ExecutableType, P)): Likewise.
+	(visitNoType(NoType, P)): Likewise.
+	(visitNull(NullType, P)): Likewise.
+	(visitPrimitive(PrimitiveType, P)): Likewise.
+	(visitTypeVariable(TypeVariable, P)): Likewise.
+	(visitWildcard(WildcardType, P)): Likewise.
+	* javax/lang/model/type/WildcardType.java:
+	Added.
+	(getExtendsBound()): Likewise.
+	(getSuperBound()): Likewise.
+	* javax/lang/model/util/Types.java,
+	(boxedClass(PrimitiveType)): Likewise.
+	(getArrayType(TypeMirror)): Likewise.
+	(getNoType(TypeKind)): Likewise.
+	(getNullType()): Likewise.
+	(getPrimitiveType(TypeKind)): Likewise.
+	(getWildcardType(TypeMirror, TypeMirror)): Likewise.
+	(isSubsignature(ExecutableType, ExecutableType)):
+	Likewise.
+	(unboxedType(TypeMirror)): Likewise.
+
 2012-11-29  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/lang/model/element/ElementVisitor.java:

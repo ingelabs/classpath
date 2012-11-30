@@ -42,8 +42,15 @@ import java.util.List;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 
+import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.ExecutableType;
+import javax.lang.model.type.NoType;
+import javax.lang.model.type.NullType;
+import javax.lang.model.type.PrimitiveType;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.type.WildcardType;
 
 /**
  * Utility methods for operating on types.
@@ -210,5 +217,115 @@ public interface Types
    * @throws IllegalArgumentException if given an executable or package type.
    */
   boolean isSubtype(TypeMirror type1, TypeMirror type2);
+
+  /**
+   * <p>Returns the class which is used to wrap the given primitive
+   * type, according to the following mapping given in section
+   * 5.1.7 of the Java Language Specification:</p>
+   * <ul>
+   * <li>{@code boolean} ==&gt; {@code Boolean}</li>
+   * <li>{@code byte} ==&gt; {@code Byte}</li>
+   * <li>{@code char} ==&gt; {@code Character}</li>
+   * <li>{@code double} ==&gt; {@code Double}</li>
+   * <li>{@code float} ==&gt; {@code Float}</li>
+   * <li>{@code int} ==&gt; {@code Integer}</li>
+   * <li>{@code long} ==&gt; {@code Long}</li>
+   * <li>{@code short} ==&gt; {@code Short}</li>
+   * </ul>
+   *
+   * @param primitive the primitive type whose wrapper class should
+   *                  be returned.
+   * @return the wrapper class used for the given primitive type.
+   */
+  TypeElement boxedClass(PrimitiveType primitive);
+
+  /**
+   * Returns an array type with the specified component type.
+   *
+   * @param componentType the component type to be used in the array.
+   * @return an array type using the specified component type.
+   * @throws IllegalArgumentException if the component type given
+   *                                  can not be used in an array.
+   */
+  ArrayType getArrayType(TypeMirror componentType);
+
+  /**
+   * Returns a pseudo-type of the specified kind for use where a real
+   * type is not applicable.  Only the kinds {@link TypeKind#VOID}
+   * and {@link TypeKind#NONE} should be passed to this method.
+   * For packages, use
+   * {@code Elements#getPackageElement(CharSequence).asType()}
+   * instead.
+   *
+   * @param kind the kind of {@link NoType} to return.
+   * @return the corresponding instance.
+   * @throws IllegalArgumentException if an invalid kind is given.
+   */
+  NoType getNoType(TypeKind kind);
+
+  /**
+   * Returns the null type i.e. the type of {@code null}.
+   *
+   * @return the null type.
+   */
+  NullType getNullType();
+
+  /**
+   * Returns a primitive type of the given kind.
+   *
+   * @param kind the kind of primitive type to return.
+   * @return the corresponding instance.
+   * @throws IllegalArgumentException if the kind given is not
+   *                                  a primitive type.
+   */
+  PrimitiveType getPrimitiveType(TypeKind kind);
+
+  /**
+   * Returns a wildcard type with the specified bounds.
+   * Each bound is optional and {@code null} may be passed
+   * instead.  It is invalid for both bounds to be non-null.
+   *
+   * @param extendsBound the upper bound, which usually follows the
+   *                     {@code extends clause}, or {@code null}.
+   * @param superBound the lower bound, which usually follows the
+   *                   {@code super clause}, or {@code null}.
+   * @return the corresponding wildcard type.
+   * @throws IllegalArgumentException if the bounds are invalid.
+   */
+  WildcardType getWildcardType(TypeMirror extendsBound,
+			       TypeMirror superBound);
+
+  /**
+   * Returns {@code true} if the signature of {@code method1} is
+   * a subsignature of the signature of {@code method2}, according
+   * to section 8.4.2 of the Java Language Specification.
+   *
+   * @param method1 the first method.
+   * @param method2 the second method.
+   * @return true if method1's signature is a subsignature of method2's.
+   */
+  boolean isSubsignature(ExecutableType method1, ExecutableType method2);
+
+  /**
+   * <p>Returns the primitive type which is used to unwrap the value
+   * contained in the specified wrapper class, according to the following
+   * mapping given in section 5.1.8 of the Java Language Specification:</p>
+   * <ul>
+   * <li>{@code Boolean} ==&gt; {@code boolean}</li>
+   * <li>{@code Byte} ==&gt; {@code byte}</li>
+   * <li>{@code Character} ==&gt; {@code char}</li>
+   * <li>{@code Double} ==&gt; {@code double}</li>
+   * <li>{@code Float} ==&gt; {@code float}</li>
+   * <li>{@code Integer} ==&gt; {@code int}</li>
+   * <li>{@code Long} ==&gt; {@code long}</li>
+   * <li>{@code Short} ==&gt; {@code short}</li>
+   * </ul>
+   *
+   * @param wrapper the wrapper class for which the corresponding primitive
+   *                type should be returned.
+   * @return the corresponding primitive type.
+   * @throws IllegalArgumentException if the given class is not a wrapper class.
+   */
+  PrimitiveType unboxedType(TypeMirror wrapper);
 
 }

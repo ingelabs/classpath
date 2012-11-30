@@ -104,4 +104,84 @@ public interface TypeVisitor<R,P>
    */
   R visitDeclared(DeclaredType type, P param);
 
+  /**
+   * Visits an array type.
+   *
+   * @param type the array type to visit.
+   * @param param the additional parameter, specific to the visitor.
+   *        May be {@code null} if permitted by the visitor.
+   * @return the return value specific to the visitor.
+   */
+  R visitArray(ArrayType type, P param);
+
+  /**
+   * Visits an error type.
+   *
+   * @param type the error type to visit.
+   * @param param the additional parameter, specific to the visitor.
+   *        May be {@code null} if permitted by the visitor.
+   * @return the return value specific to the visitor.
+   */
+  R visitError(ErrorType type, P param);
+
+  /**
+   * Visits an executable type.
+   *
+   * @param type the executable type to visit.
+   * @param param the additional parameter, specific to the visitor.
+   *        May be {@code null} if permitted by the visitor.
+   * @return the return value specific to the visitor.
+   */
+  R visitExecutable(ExecutableType type, P param);
+
+  /**
+   * Visits a {@link NoType} instance.
+   *
+   * @param type the instance to visit.
+   * @param param the additional parameter, specific to the visitor.
+   *        May be {@code null} if permitted by the visitor.
+   * @return the return value specific to the visitor.
+   */
+  R visitNoType(NoType type, P param);
+
+  /**
+   * Visits the null type.
+   *
+   * @param type the type to visit.
+   * @param param the additional parameter, specific to the visitor.
+   *        May be {@code null} if permitted by the visitor.
+   * @return the return value specific to the visitor.
+   */
+  R visitNull(NullType type, P param);
+
+  /**
+   * Visits a primitive type.
+   *
+   * @param type the primitive type to visit.
+   * @param param the additional parameter, specific to the visitor.
+   *        May be {@code null} if permitted by the visitor.
+   * @return the return value specific to the visitor.
+   */
+  R visitPrimitive(PrimitiveType type, P param);
+
+  /**
+   * Visits a type variable.
+   *
+   * @param type the type variable to visit.
+   * @param param the additional parameter, specific to the visitor.
+   *        May be {@code null} if permitted by the visitor.
+   * @return the return value specific to the visitor.
+   */
+  R visitTypeVariable(TypeVariable type, P param);
+
+  /**
+   * Visits a wildcard type.
+   *
+   * @param type the wildcard type to visit.
+   * @param param the additional parameter, specific to the visitor.
+   *        May be {@code null} if permitted by the visitor.
+   * @return the return value specific to the visitor.
+   */
+  R visitWildcard(WildcardType type, P param);
+
 }
