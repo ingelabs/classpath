@@ -1,3 +1,29 @@
+2012-12-18  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/tools/JavaCompiler.java:
+	New interface added.
+	(CompilationTask): New inner interface.
+	(CompilationTask.call()): Added.
+	(CompilationTask.setLocale(Locale)): Likewise.
+	(CompilationTask.setProcessors(Iterable)): Likewise.
+	(getStandardFileManager(DiagnosticListener,Locale,Charset)):
+	Likewise.
+	(getTask(Writer,DiagnosticListener,Iterable,Iterable,Iterable)):
+	Likewise.
+	* javax/tools/StandardJavaFileManager.java:
+	New interface added.
+	(getJavaFileObjects(File...)): Added.
+	(getJavaFileObjects(String...)): Likewise.
+	(getJavaFileObjectsFromFiles(Iterable)): Likewise.
+	(getJavaFileObjectsFromStrings(Iterable)): Likewise.
+	(getLocation(Location)): Likewise.
+	(isSameFile(FileObject,FileObject)): Likewise.
+	(setLocation(Location,Iterable)): Likewise.
+	* javax/tools/Tool.java:
+	New interface added.
+	(getSourceVersions()): Added.
+	(run(InputStream,OutputStream,OutputStream,String...)): Likewise.
+
 2012-11-30  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/lang/model/type/ArrayType.java:
