@@ -1,3 +1,9 @@
+2012-12-17  Andrew Haley  <aph@redhat.com>
+
+	PR libgcj/55716
+	* tools/gnu/classpath/tools/javah/Main.java (parseClasses): Dont
+	scan inner classes if our item is a file.
+
 2012-11-02  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/55182
