@@ -1,3 +1,22 @@
+2012-12-19  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/tools/SimpleJavaFileObject.java:
+	New class added.
+	(kind): New field.
+	(uri): Likewise.
+	(SimpleJavaFileObject(URI,Kind)): Implemented.
+	(delete()): Likewise.
+	(getCharContent(boolean)): Likewise.
+	(getName()): Likewise.
+	(getKind()): Likewise.
+	(getLastModified()): Likewise.
+	(isNameCompatible(String,Kind)): Likewise.
+	(openInputStream()): Likewise.
+	(openOutputStream()): Likewise.
+	(openReader(boolean)): Likewise.
+	(openWriter()): Likewise.
+	(toUri()): Likewise.
+
 2012-12-18  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/tools/JavaCompiler.java:
