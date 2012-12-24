@@ -37,6 +37,12 @@ exception statement from your version. */
 
 package javax.annotation.processing;
 
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
+import javax.lang.model.element.Element;
+
+import static javax.tools.Diagnostic.Kind;
+
 /**
  * Provides a way for an annotation processor to report
  * messages to the user.  Messages may use elements,
@@ -54,4 +60,55 @@ package javax.annotation.processing;
  */
 public interface Messager
 {
+
+  /**
+   * Prints a message of the specified kind.
+   *
+   * @param kind the kind of message to print.
+   * @param message the message to print.
+   */
+  void printMessage(Kind kind, CharSequence message);
+
+  /**
+   * Prints a message of the specified kind at
+   * the location of the given element.
+   *
+   * @param kind the kind of message to print.
+   * @param message the message to print.
+   * @param element the element to use for positioning.
+   */
+  void printMessage(Kind kind, CharSequence message,
+		    Element element);
+
+  /**
+   * Prints a message of the specified kind at the
+   * location of the annotation mirror of the given
+   * annotated element.
+   *
+   * @param kind the kind of message to print.
+   * @param message the message to print.
+   * @param element the annotated element.
+   * @param annotation the annotation to use for
+   *                   positioning.
+   */
+  void printMessage(Kind kind, CharSequence message,
+		    Element element,
+		    AnnotationMirror annotation);
+
+  /**
+   * Prints a message of the specified kind at the
+   * location of the annotation value inside the
+   * annotation mirror of the given annotated element.
+   *
+   * @param kind the kind of message to print.
+   * @param message the message to print.
+   * @param element the annotated element.
+   * @param annotation the annotation containing the value.
+   * @param value the annotation value to use for positioning.
+   */
+  void printMessage(Kind kind, CharSequence message,
+		    Element element,
+		    AnnotationMirror annotation,
+		    AnnotationValue value);
+
 }
