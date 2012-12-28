@@ -1,3 +1,165 @@
+2012-12-28  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* gnu/xml/validation/datatype/AnySimpleType.java:
+	(AnySimpleType()): Remove unneeded cast.
+	* gnu/xml/validation/datatype/AtomicSimpleType.java:
+	(AtomicSimpleType(QName,Set,int,SimpleType,
+	Annotation)): Add type parameter to Set.
+	* gnu/xml/validation/datatype/BooleanType.java:
+	(VALUE_SPACE): Likewise.
+	* gnu/xml/validation/datatype/DoubleType.java:
+	(SPECIAL): Likewise.
+	* gnu/xml/validation/datatype/DurationType.java:
+	(Duration): Implement Comparable<Duration> not
+	Comparable.
+	(Duration.hashCode()): Add @Override.
+	(Duration.equals(Object)): Likewise.
+	(Duration.compareTo(Duration)): Likewise and
+	use specific type, which also fixes issue with
+	it returning 0 for other objects, rather than
+	throwing a ClassCastException.
+	(createValue(String,ValidationContext)): Remove
+	unused months field.  Set duration.years from
+	years.
+	* gnu/xml/validation/datatype/FloatType.java:
+	(SPECIAL): Add type parameter.
+	* gnu/xml/validation/datatype/GDayType.java,
+	(GDay): Implement Comparable<GDay> not
+	Comparable.
+	(GDay.hashCode()): Add @Override.
+	(GDay.equals(Object)): Likewise.
+	(GDay.compareTo(GDay)): Likewise and
+	use specific type, which also fixes issue with
+	it returning 0 for other objects, rather than
+	throwing a ClassCastException.
+	* gnu/xml/validation/datatype/GMonthDayType.java:
+	(GMonthDay): Implement Comparable<GMonthDay> not
+	Comparable.
+	(GMonthDay.hashCode()): Add @Override.
+	(GMonthDay.equals(Object)): Likewise.
+	(GMonthDay.compareTo(GMonthDay)): Likewise and
+	use specific type, which also fixes issue with
+	it returning 0 for other objects, rather than
+	throwing a ClassCastException.
+	* gnu/xml/validation/datatype/GMonthType.java:
+	(GMonth): Implement Comparable<GMonth> not
+	Comparable.
+	(GMonth.hashCode()): Add @Override.
+	(GMonth.equals(Object)): Likewise.
+	(GMonth.compareTo(GMonth)): Likewise and
+	use specific type, which also fixes issue with
+	it returning 0 for other objects, rather than
+	throwing a ClassCastException.
+	* gnu/xml/validation/datatype/GYearMonthType.java,
+	(GYearMonth): Implement Comparable<GYearMonth> not
+	Comparable.
+	(GYearMonth.hashCode()): Add @Override.
+	(GYearMonth.equals(Object)): Likewise.
+	(GYearMonth.compareTo(GYearMonth)): Likewise and
+	use specific type, which also fixes issue with
+	it returning 0 for other objects, rather than
+	throwing a ClassCastException.
+	* gnu/xml/validation/datatype/GYearType.java,
+	(GYear): Implement Comparable<GYear> not
+	Comparable.
+	(GYear.hashCode()): Add @Override.
+	(GYear.equals(Object)): Likewise.
+	(GYear.compareTo(GYear)): Likewise and
+	use specific type, which also fixes issue with
+	it returning 0 for other objects, rather than
+	throwing a ClassCastException.
+	* gnu/xml/validation/datatype/ListSimpleType.java:
+	(ListSimpleType(QName,Set,int,SimpleType,Annotation,
+	SimpleType)): Add type parameter to Set.
+	* gnu/xml/validation/datatype/MaxExclusiveFacet.java:
+	(matches(Object)): Use Comparable<Object>.
+	* gnu/xml/validation/datatype/MaxInclusiveFacet.java:
+	(matches(Object)): Likewise.
+	* gnu/xml/validation/datatype/MinExclusiveFacet.java:
+	(matches(Object)): Likewise.
+	* gnu/xml/validation/datatype/MinInclusiveFacet.java:
+	(matches(Object)): Likewise.
+	* gnu/xml/validation/datatype/SimpleType.java:
+	(facets): Add type parameter to Set.
+	(SimpleType(QName,int,Set,int,SimpleType,Annotation)):
+	Likewise.
+	(checkValid(String,ValidationContext)): Add type
+	parameter to Iterator and remove unnecessary cast.
+	* gnu/xml/validation/datatype/TimeType.java:
+	(Time): Implement Comparable<Time> not
+	Comparable.
+	(Time.hashCode()): Add @Override.
+	(Time.equals(Object)): Likewise.
+	(Time.compareTo(Time)): Likewise and
+	use specific type, which also fixes issue with
+	it returning 0 for other objects, rather than
+	throwing a ClassCastException.
+	* gnu/xml/validation/datatype/TypeBuilder.java:
+	(TypeBuilder(SimpleType)): Add type parameter.
+	* gnu/xml/validation/datatype/TypeLibrary.java:
+	(byName): Likewise.
+	(static): Likewise.
+	* gnu/xml/validation/datatype/UnionSimpleType.java:
+	(memberTypes): Likewise.
+	(UnionSimpleType(QName,Set,int,SimpleType,Annotation,List)):
+	Likewise.
+	(checkValid(String,ValidationContext)): Add type
+	parameter to Iterator and remove unnecessary cast.
+	* gnu/xml/validation/relaxng/DataPattern.java:
+	(params): Add type parameter.
+	* gnu/xml/validation/relaxng/FullSyntaxBuilder.java:
+	(VOCABULARY): Likewise.
+	(STRIPPED_ATTRIBUTES): Likewise.
+	(PATTERN_ELEMENTS): Likewise.
+	(EMPTY_STRING_SET): Added as a typesafe replacement for
+	Collections.EMPTY_SET.
+	(static): Add type parameters.
+	(urls): Likewise.
+	(datatypeLibraries): Likewise.
+	(parse(Document)): Likewise and remove redundant casts.
+	(getDefines(Set,Element,Element,boolean)): Add type parameter.
+	(getElements(Set,Element,Element)): Likewise.
+	(expandRefs(Set,Element)): Likewise.
+	(transform(Node)): Remove redundant casts and add type
+	parameters.
+	(handleRefs(Node,Node,Node)): Fix logic error found
+	by compiler.  Check should be == null, not != null,
+	or name will be null when dereferenced.
+	(getComponents(Node)): Add type parameter.
+	(forbidDescendants(Node,Set)): Likewise.
+	(combineNodes(Node,String,String,List)): Likewise
+	and remove redundant cast.
+	(getDatatypeLibrary(String)): Add type parameter.
+	* gnu/xml/validation/relaxng/Grammar.java:
+	(defines): Add type parameter.
+	* gnu/xml/validation/xmlschema/ComplexType.java:
+	(attributeUses): Add type parameter.
+	(annotations): Likewise.
+	(ComplexType(QName,boolean,int,int)): Likewise.
+	* gnu/xml/validation/xmlschema/XMLSchema.java:
+	(elementDeclarations): Likewise.
+	(attributeDeclarations): Likewise.
+	(types): Likewise.
+	(XMLSchema(String,String,int,int,boolean,boolean)):
+	Likewise.
+	* gnu/xml/validation/xmlschema/XMLSchemaBuilder.java:
+	(parseSimpleType(QName)): Return type from schema if
+	non-null and add ones returned from typeLibrary before
+	returning.
+	(parseSimpleType(Node)): Remove unused variable and replace
+	with TODO.  Add type parameter.
+	(parseRestriction(Node,ComplexType)): Likewise.
+	(parseExtension(Node,ComplexType)): Likewise.
+	* gnu/xml/validation/xmlschema/XMLSchemaValidatorHandler.java:
+	(context): Add type parameter.
+	(attributes): Likewise.
+	(XMLSchemaValidatorHandler(XMLSchema)): Likewise.
+	(getElementTypeInfo()): Remove redundant cast.
+	(getAttributeTypeInfo(int)): Likewise.
+	(isIdAttribute(int)): Likewise.
+	(isSpecified(int)): Likewise.
+	(startElement(String,String,String,Attributes)): Likewise.
+
 2012-12-27  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/lang/model/element/Element.java:
