@@ -1,4 +1,4 @@
-/* ForwardingJavaFileObject.java -- Java file object that forwards to another.
+/* NestingKind.java -- Represents the nesting level of an element.
    Copyright (C) 2012  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -35,68 +35,31 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package javax.tools;
-
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.NestingKind;
+package javax.lang.model.element;
 
 /**
- * Forwards calls to a specified {@link JavaFileObject}.
+ * Represents the level of nesting at which an element appears;
+ * top-level, member, local and anonymous.
  *
- * @param <F> the kind of object calls are forwarded to.
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.6
  */
-public class ForwardingJavaFileObject<F extends JavaFileObject>
-  extends ForwardingFileObject<F>
-  implements JavaFileObject
+public enum NestingKind
 {
+  ANONYMOUS,
+  LOCAL,
+  MEMBER,
+  TOP_LEVEL;
 
   /**
-   * Creates a new forwarder, delegating calls to the
-   * specified object.
+   * Returns true if this constant represents an element
+   * that is nested inside another i.e. is not top-level.
    *
-   * @param obj the object to forward calls to.
+   * @return true if this is a constant for a nested level.
    */
-  protected ForwardingJavaFileObject(F obj)
+  public boolean isNested()
   {
-    super(obj);
+    return this != TOP_LEVEL;
   }
 
-  /**
-   * @inheritDoc
-   */
-  @Override
-  public JavaFileObject.Kind getKind()
-  {
-    return ((JavaFileObject) fileObject).getKind();
-  }
-
-  /**
-   * @inheritDoc
-   */
-  @Override
-  public boolean isNameCompatible(String simpleName, JavaFileObject.Kind kind)
-  {
-    return ((JavaFileObject) fileObject).isNameCompatible(simpleName, kind);
-  }
-
-  /**
-   * @inheritDoc
-   */
-  @Override
-  public Modifier getAccessLevel()
-  {
-    return ((JavaFileObject) fileObject).getAccessLevel();
-  }
-
-  /**
-   * @inheritDoc
-   */
-  @Override
-  public NestingKind getNestingKind()
-  {
-    return ((JavaFileObject) fileObject).getNestingKind();
-  }
-  
 }

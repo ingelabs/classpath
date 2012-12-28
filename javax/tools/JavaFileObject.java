@@ -37,6 +37,9 @@ exception statement from your version. */
 
 package javax.tools;
 
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.NestingKind;
+
 /**
  * Abstraction for tools working with source and class files.
  * All methods may throw a {@link SecurityException}.  All
@@ -95,5 +98,28 @@ public interface JavaFileObject
    * @return true if this object matches the type specified.
    */
   boolean isNameCompatible(String simpleName, Kind kind);
+
+  /**
+   * Provides a hint about the access level of this class, based
+   * on its modifiers.  If the access level is unknown, or this
+   * file object does not represent a class file, {@code null}
+   * is returned.
+   *
+   * @return the access level.
+   */
+  Modifier getAccessLevel();
+
+  /**
+   * Provides a hint about the nesting level of this class.
+   * It may return {@link NestingKind#MEMBER} instead of
+   * {@link NestingKind#LOCAL} or {@link NestingKind#ANONYMOUS}
+   * if it can not determine the exact type of nesting.  If
+   * the nesting level is completely unknown, or this file
+   * object does not represent a class file, {@code null}
+   * is returned.
+   *
+   * @return the nesting level.
+   */
+  NestingKind getNestingKind();
 
 }

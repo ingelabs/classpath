@@ -1,4 +1,4 @@
-/* ForwardingJavaFileObject.java -- Java file object that forwards to another.
+/* Modifier.java -- Represents a modifier on an element such as a method.
    Copyright (C) 2012  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -35,68 +35,37 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package javax.tools;
-
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.NestingKind;
+package javax.lang.model.element;
 
 /**
- * Forwards calls to a specified {@link JavaFileObject}.
+ * Represents a modifier on an element such as a class, method
+ * or field.  Not all modifiers are applicable to all elements.
  *
- * @param <F> the kind of object calls are forwarded to.
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.6
  */
-public class ForwardingJavaFileObject<F extends JavaFileObject>
-  extends ForwardingFileObject<F>
-  implements JavaFileObject
+public enum Modifier
 {
-
-  /**
-   * Creates a new forwarder, delegating calls to the
-   * specified object.
-   *
-   * @param obj the object to forward calls to.
-   */
-  protected ForwardingJavaFileObject(F obj)
-  {
-    super(obj);
-  }
-
-  /**
-   * @inheritDoc
-   */
-  @Override
-  public JavaFileObject.Kind getKind()
-  {
-    return ((JavaFileObject) fileObject).getKind();
-  }
-
-  /**
-   * @inheritDoc
-   */
-  @Override
-  public boolean isNameCompatible(String simpleName, JavaFileObject.Kind kind)
-  {
-    return ((JavaFileObject) fileObject).isNameCompatible(simpleName, kind);
-  }
-
-  /**
-   * @inheritDoc
-   */
-  @Override
-  public Modifier getAccessLevel()
-  {
-    return ((JavaFileObject) fileObject).getAccessLevel();
-  }
-
-  /**
-   * @inheritDoc
-   */
-  @Override
-  public NestingKind getNestingKind()
-  {
-    return ((JavaFileObject) fileObject).getNestingKind();
-  }
-  
+  /** Denotes an abstract class or method. */
+  ABSTRACT,
+  /** Denotes a final class, method or field. */
+  FINAL,
+  /** Denotes a native method. */
+  NATIVE,
+  /** Denotes a private class, method or field. */
+  PRIVATE,
+  /** Denotes a protected class, method or field. */
+  PROTECTED,
+  /** Denotes a public class, method or field. */
+  PUBLIC,
+  /** Denotes a static class, method or field. */
+  STATIC,
+  /** Denotes a strictfp class or method. */
+  STRICTFP,
+  /** Denotes a synchronized method. */
+  SYNCHRONIZED,
+  /** Denotes a transient field. */
+  TRANSIENT,
+  /** Denotes a volatile field. */
+  VOLATILE;
 }

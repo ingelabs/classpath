@@ -47,6 +47,9 @@ import java.io.Writer;
 
 import java.net.URI;
 
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.NestingKind;
+
 /**
  * Provides a simple implementation of many of the
  * {@link JavaFileObject} methods, thus giving a useful basis
@@ -249,6 +252,30 @@ public class SimpleJavaFileObject
   public URI toUri()
   {
     return uri;
+  }
+
+  /**
+   * This implementation does nothing and always
+   * returns {@code null}.
+   *
+   * @return null.
+   */
+  @Override
+  public Modifier getAccessLevel()
+  {
+    return null;
+  }
+
+  /**
+   * This implementation does nothing and always
+   * returns {@code null}.
+   *
+   * @return null.
+   */
+  @Override
+  public NestingKind getNestingKind()
+  {
+    return null;
   }
 
 }

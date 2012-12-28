@@ -40,6 +40,7 @@ package javax.lang.model.element;
 import java.lang.annotation.Annotation;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.lang.model.type.TypeMirror;
 
@@ -186,5 +187,27 @@ public interface Element
    * @see javax.lang.model.util.ElementFilter
    */
   List<? extends AnnotationMirror> getAnnotationMirrors();
+
+  /**
+   * Returns the modifiers attached to this element, other than
+   * annotations e.g. {@code public} or {@code abstract}.  If
+   * there are no modifiers, an empty set is returned.
+   *
+   * @return the modifiers of this element.
+   */
+  Set<Modifier> getModifiers();
+
+  /**
+   * Returns the simple name of this element i.e. without any
+   * package prefix.  The simple name of a generic type is the
+   * same as that of the raw variant i.e. {@code Set<E>}'s simple
+   * name is {@code "Set"}.  Constructors are named {@code "<init>"}
+   * and static initializers {@code "<clinit>"}.  Unnamed packages,
+   * anonymous classes and instance initializers all return the
+   * empty string, {@code ""}.
+   *
+   * @return the simple name of this element.
+   */
+  Name getSimpleName();
 
 }

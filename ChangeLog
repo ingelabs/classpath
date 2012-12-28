@@ -1,3 +1,40 @@
+2012-12-27  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/lang/model/element/Element.java:
+	(getModifiers()): Added.
+	(getSimpleName()): Likewise.
+	* javax/lang/model/element/Modifier.java:
+	New enumeration.
+	(ABSTRACT): Added.
+	(FINAL): Likewise.
+	(NATIVE): Likewise.
+	(PRIVATE): Likewise.
+	(PROTECTED): Likewise.
+	(PUBLIC): Likewise.
+	(STATIC): Likewise.
+	(STRICTFP): Likewise.
+	(SYNCHRONIZED): Likewise.
+	(TRANSIENT): Likewise.
+	(VOLATILE): Likewise.
+	* javax/lang/model/element/NestingKind.java:
+	New enumeration.
+	(ANONYMOUS): Added.
+	(LOCAL): Likewise.
+	(MEMBER): Likewise.
+	(TOP_LEVEL): Likewise.
+	(isNested()): Implemented.
+	* javax/lang/model/element/TypeElement.java:
+	(getNestingKind()): Added.
+	* javax/tools/ForwardingJavaFileObject.java:
+	(getAccessLevel()): Implemented.
+	(getNestingKind()): Likewise.
+	* javax/tools/JavaFileObject.java:
+	(getAccessLevel()): Added.
+	(getNestingKind()): Likewise.
+	* javax/tools/SimpleJavaFileObject.java,
+	(getAccessLevel()): Implemented.
+	(getNestingKind()): Likewise.
+
 2012-12-19  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/annotation/processing/Messager.java:

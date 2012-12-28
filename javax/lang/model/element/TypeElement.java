@@ -116,4 +116,11 @@ public interface TypeElement
    */
   Name getQualifiedName();
 
+  /**
+   * Returns the nesting kind of this element.
+   *
+   * @return the nesting kind.
+   */
+  NestingKind getNestingKind();
+
 }
