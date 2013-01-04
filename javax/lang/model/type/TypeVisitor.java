@@ -91,6 +91,7 @@ public interface TypeVisitor<R,P>
    * @param param the additional parameter, specific to the visitor.
    *        May be {@code null} if permitted by the visitor.
    * @return the return value specific to the visitor.
+   * @throws UnknownTypeException if the implementation chooses to.
    */
   R visitUnknown(TypeMirror type, P param);
 
