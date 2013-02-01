@@ -1,3 +1,38 @@
+2013-02-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	The type of element should be determined by
+	its kind, not by the class.
+	* javax/lang/model/util/ElementFilter.java:
+	(typesIn(Set)): Pass list of type kinds to
+	FilteredSet constructor, rather than
+	TypeElement.class.
+	(ElementFilter.clazz): Removed.
+	(ElementFilter.kinds): Added.
+	(FilteredSet(Set,ElementKind...)): Take a varargs
+	list of ElementKinds rather than a class.
+	(FilteredSet.contains(Object)): Make test dependent
+	on whether the element's kind is in the array of kinds,
+	not whether it is an instance of a class.
+	(FilteredSet.iterator()): Use new FilteredIterator constructor.
+	(FilteredSet.remove(Object)): Call contains to check if
+	filtered out or not.
+	(FilteredSet.size()): Replace isInstance with binary search
+	of kinds array.
+	(FilteredSet.toArray(T[])): Cast to Object[] to populate
+	array to avoid warning.
+	(FilteredSet.toString()): Return normal toString() output for a
+	collection using the filtered iterator.
+	(FilteredIterator.clazz): Removed.
+	(FilteredIterator.kinds): Added.
+	(FilteredIterator.next): Set type to Element not E.
+	(FilteredIterator(Iterator, ElementKind...)): Again,
+	use varargs list of ElementKinds rather than class.
+	(FilteredIterator.hasNext()): Replace instanceof
+	with binary search.
+	(FilteredIterator.next()): Suppress warnings when
+	casting to E.  Safe as we know it's an E via the
+	kind test.
+
 2013-01-04  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/lang/model/element/AnnotationValueVisitor.java:

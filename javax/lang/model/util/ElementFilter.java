@@ -37,12 +37,14 @@ exception statement from your version. */
 
 package javax.lang.model.util;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 
 /**
@@ -69,13 +71,15 @@ public class ElementFilter
    */
   public static Set<TypeElement> typesIn(Set<? extends Element> elements)
   {
-    return new FilteredSet<TypeElement>(elements, TypeElement.class);
+    return new FilteredSet<TypeElement>(elements, ElementKind.CLASS,
+					ElementKind.INTERFACE,
+					ElementKind.ENUM,
+					ElementKind.ANNOTATION_TYPE);
   }
 
   /**
    * Provides a filtered view of the given set, returning only
-   * instances which are instances of the specified class or
-   * one of its subclasses.
+   * instances which are of one of the specified kinds.
    */
   private static final class FilteredSet<E extends Element> implements Set<E>
   {
@@ -86,9 +90,9 @@ public class ElementFilter
     private Set<Element> elements;
 
     /**
-     * The class returned elements must be instances of.
+     * The kinds accepted by this filter.
      */
-    private Class<E> clazz;
+    private ElementKind[] kinds;
 
     /**
      * Constructs a new filtered set, returning
@@ -96,14 +100,15 @@ public class ElementFilter
      * {@code elements}.
      *
      * @param elements the set to filter.
-     * @param clazz the class returned elements must be instances of.
+     * @param kinds the kinds to accept
      * @throws NullPointerException if the set contains a null element.
      */
     @SuppressWarnings("unchecked")
-    public FilteredSet(Set<? extends Element> elements, Class<E> clazz)
+    public FilteredSet(Set<? extends Element> elements, ElementKind... kinds)
     {
       this.elements = (Set<Element>) elements;
-      this.clazz = clazz;
+      this.kinds = kinds;
+      Arrays.sort(kinds);
       for (Element e : elements)
 	if (e == null)
 	  throw new NullPointerException("Sets can not contain null values.");
@@ -146,8 +151,9 @@ public class ElementFilter
     }
 
     /**
-     * Returns true if the element is an instance of the
-     * filter class and the backing set contains the given element.
+     * Returns true if the element is an instance of one
+     * of the specified kinds and the backing set contains
+     * the given element.
      *
      * @param obj the object to check for.
      * @return true if the backing set contains the element.
@@ -155,8 +161,12 @@ public class ElementFilter
     @Override
     public boolean contains(Object obj)
     {
-      if (clazz.isInstance(obj))
-	return elements.contains(obj);
+      if (obj instanceof Element)
+      {
+	Element elem = (Element) obj;
+	if (Arrays.binarySearch(kinds, elem.getKind()) >= 0)
+	  return elements.contains(obj);
+      }
       return false;
     }
 
@@ -234,7 +244,7 @@ public class ElementFilter
     @Override
     public Iterator<E> iterator()
     {
-      return new FilteredIterator<E>(elements.iterator(), clazz);
+      return new FilteredIterator<E>(elements.iterator(), kinds);
     }
 
     /**
@@ -246,7 +256,7 @@ public class ElementFilter
     @Override
     public boolean remove(Object obj)
     {
-      if (clazz.isInstance(obj))
+      if (contains(obj))
 	return elements.remove(obj);
       return false;
     }
@@ -292,7 +302,8 @@ public class ElementFilter
     
     /**
      * Returns the size of this set.  This is the size of the backing
-     * set, minus any elements which aren't instances of the filter class.
+     * set, minus any elements which aren't of one of the specified
+     * kinds.
      *
      * @return the size of the set.
      */
@@ -301,7 +312,7 @@ public class ElementFilter
     {
       int count = 0;
       for (Element elem : elements)
-	if (clazz.isInstance(elem))
+	if (Arrays.binarySearch(kinds, elem.getKind()) >= 0)
 	  ++count;
       return count;
     }
@@ -346,8 +357,7 @@ public class ElementFilter
 	    T[] newArray = (T[]) new Object[size];
 	  array = newArray;
 	}
-      @SuppressWarnings("unchecked")
-	E[] elemArray = (E[]) array;
+      Object[] elemArray = (Object[]) array;
       for (a = 0; a < size; ++a)
 	elemArray[a] = iterator.next();
       for (; a < array.length; ++a)
@@ -355,12 +365,29 @@ public class ElementFilter
       return array;
     }
 
+    /**
+     * Returns a textual representation of the filtered set.
+     *
+     * @return a textual representation.
+     */
+    @Override
+    public String toString()
+    {
+      StringBuilder builder = new StringBuilder("[");
+      for (E elem : this)
+      {
+	builder.append(elem.toString());
+	builder.append(",");
+      }
+      builder.insert(builder.length() - 1, "]");
+      return builder.toString();
+    }
+
   }
 
   /**
    * Provides a filtered view of the given iterator, returning only
-   * instances which are instances of the specified class or
-   * one of its subclasses.
+   * instances which are of one of the specified kinds.
    */
   private static final class FilteredIterator<E extends Element> implements Iterator<E>
   {
@@ -371,27 +398,29 @@ public class ElementFilter
     private Iterator<Element> iterator;
 
     /**
-     * The class returned elements must be instances of.
+     * The kinds accepted by this filter.
      */
-    private Class<E> clazz;
+    private ElementKind[] kinds;
 
     /**
      * Holds the next object if we had to retrieve it
      * in the {@link #hasNext()} method.
      */
-    private E next;
+    private Element next;
 
     /**
      * Constructs a new filtered iterator which only returns
-     * elements that are a subclass of the given class.
+     * elements that are of one of the specified kinds.
      *
      * @param iterator the iterator to filter.
-     * @param clazz the class returned elements must be instances of.
+     * @param kinds the kinds to accept.  This is assumed
+     *              to be sorted.
      */
-    public FilteredIterator(Iterator<Element> iterator, Class<E> clazz)
+    public FilteredIterator(Iterator<Element> iterator,
+			    ElementKind... kinds)
     {
       this.iterator = iterator;
-      this.clazz = clazz;
+      this.kinds = kinds;
     }
 
     /**
@@ -404,16 +433,16 @@ public class ElementFilter
     {
       while (iterator.hasNext() && next == null)
 	{
-	  next = clazz.cast(iterator.next());
-	  if (!clazz.isInstance(next))
+	  next = iterator.next();
+	  if (Arrays.binarySearch(kinds, next.getKind()) < 0)
 	    next = null;
 	}
       return next != null;
     }
 
     /**
-     * Returns the next element in the iteration which is an
-     * instance of the specified class.
+     * Returns the next element in the iteration which is of
+     * one of the specified kinds.
      *
      * @return the next element.
      */
@@ -423,7 +452,9 @@ public class ElementFilter
       if (next == null)
 	if (!hasNext())
 	  throw new NoSuchElementException("No more elements to return.");
-      E retVal = next;
+      // The kind check means it should be of the correct type.
+      @SuppressWarnings("unchecked")
+	E retVal = (E) next;
       next = null;
       return retVal;
     }
@@ -438,7 +469,6 @@ public class ElementFilter
     {
       iterator.remove();
     }
-
   }
 }
 
