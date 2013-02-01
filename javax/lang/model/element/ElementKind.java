@@ -47,20 +47,73 @@ package javax.lang.model.element;
  */
 public enum ElementKind
 {
+  /** An annotation type. */
   ANNOTATION_TYPE,
+  /** A normal class, not described by a more specific type. */
   CLASS,
+  /** A constructor */
   CONSTRUCTOR,
+  /** An enumeration */
   ENUM,
+  /** A constant field used in an enumeration. */
   ENUM_CONSTANT,
+  /** A parameter passed to an exception handler. */
   EXCEPTION_PARAMETER,
+  /** A normal field, not described by a more specific type. */ 
   FIELD,
+  /** An instance initializer. */
   INSTANCE_INIT,
+  /** A normal interface, not described by a more specific type. */
   INTERFACE,
+  /** A local variable. */
   LOCAL_VARIABLE,
+  /** A method. */
   METHOD,
+  /** An element reserved for implementation-specific usage. */
   OTHER,
+  /** A package. */
   PACKAGE,
+  /** A parameter passed to a method or constructor. */
   PARAMETER,
+  /** A static initializer. */
   STATIC_INIT,
+  /** A type parameter. */
   TYPE_PARAMETER;
+
+  /**
+   * Returns true if this element is a class i.e. either a
+   * general {@code CLASS} or the specific {@code ENUM}.
+   *
+   * @return true if this kind is either {@code CLASS} or
+   *         {@code ENUM}.
+   */
+  public boolean isClass()
+  {
+    return this == CLASS || this == ENUM;
+  }
+
+  /**
+   * Returns true if this element is a field i.e. either a
+   * general {@code FIELD} or the specific {@code ENUM_CONSTANT}.
+   *
+   * @return true if this kind is either {@code FIELD} or
+   *         {@code ENUM_CONSTANT}.
+   */
+  public boolean isField()
+  {
+    return this == FIELD || this == ENUM_CONSTANT;
+  }
+  
+  /**
+   * Returns true if this element is a interface i.e. either a
+   * general {@code INTERFACE} or the specific {@code ANNOTATION_TYPE}.
+   *
+   * @return true if this kind is either {@code INTERFACE} or
+   *         {@code ANNOTATION_TYPE}.
+   */
+  public boolean isInterface()
+  {
+    return this == INTERFACE || this == ANNOTATION_TYPE;
+  }
+
 }

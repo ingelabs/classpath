@@ -1,5 +1,28 @@
 2013-02-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	* javax/lang/model/element/ElementKind.java:
+	(ANNOTATION_TYPE): Documented.
+	(CLASS): Likewise.
+	(CONSTRUCTOR): Likewise.
+	(ENUM): Likewise.
+	(ENUM_CONSTANT): Likewise.
+	(EXCEPTION_PARAMETER): Likewise.
+	(FIELD): Likewise.
+	(INSTANCE_INIT): Likewise.
+	(INTERFACE): Likewise.
+	(LOCAL_VARIABLE): Likewise.
+	(METHOD): Likewise.
+	(OTHER): Likewise.
+	(PACKAGE): Likewise.
+	(PARAMETER): Likewise.
+	(STATIC_INIT): Likewise.
+	(TYPE_PARAMETER): Likewise.
+	(isClass()): Implemented.
+	(isField()): Likewise.
+	(isInterface()): Likewise.
+
+2013-02-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	The type of element should be determined by
 	its kind, not by the class.
 	* javax/lang/model/util/ElementFilter.java:
