@@ -45,7 +45,10 @@ import java.util.Set;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 
 /**
  * <p>Filter for selecting elements of interest from a collection.
@@ -75,6 +78,55 @@ public class ElementFilter
 					ElementKind.INTERFACE,
 					ElementKind.ENUM,
 					ElementKind.ANNOTATION_TYPE);
+  }
+
+  /**
+   * Returns a set containing just the constructors
+   * held in {@code elements}.
+   *
+   * @param elements the elements to filter.
+   * @return the filtered set.
+   */
+  public static Set<ExecutableElement> constructorsIn(Set<? extends Element> elements)
+  {
+    return new FilteredSet<ExecutableElement>(elements, ElementKind.CONSTRUCTOR);
+  }
+
+  /**
+   * Returns a set containing just the fields
+   * held in {@code elements}.
+   *
+   * @param elements the elements to filter.
+   * @return the filtered set.
+   */
+  public static Set<VariableElement> fieldsIn(Set<? extends Element> elements)
+  {
+    return new FilteredSet<VariableElement>(elements, ElementKind.FIELD,
+					    ElementKind.ENUM_CONSTANT);
+  }
+
+  /**
+   * Returns a set containing just the methods
+   * held in {@code elements}.
+   *
+   * @param elements the elements to filter.
+   * @return the filtered set.
+   */
+  public static Set<ExecutableElement> methodsIn(Set<? extends Element> elements)
+  {
+    return new FilteredSet<ExecutableElement>(elements, ElementKind.METHOD);
+  }
+
+  /**
+   * Returns a set containing just the packages
+   * held in {@code elements}.
+   *
+   * @param elements the elements to filter.
+   * @return the filtered set.
+   */
+  public static Set<PackageElement> packagesIn(Set<? extends Element> elements)
+  {
+    return new FilteredSet<PackageElement>(elements, ElementKind.PACKAGE);
   }
 
   /**

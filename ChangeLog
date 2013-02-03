@@ -1,3 +1,11 @@
+2013-02-03  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/lang/model/util/ElementFilter.java:
+	(constructorsIn(Set)): Implemented.
+	(fieldsIn(Set)): Likewise.
+	(methodsIn(Set)): Likewise.
+	(packagesIn(Set)): Likewise.
+
 2013-02-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/lang/model/element/ElementKind.java:
