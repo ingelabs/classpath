@@ -1,13 +1,823 @@
+2013-02-03  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/lang/model/util/ElementFilter.java:
+	(constructorsIn(Set)): Implemented.
+	(fieldsIn(Set)): Likewise.
+	(methodsIn(Set)): Likewise.
+	(packagesIn(Set)): Likewise.
+
+2013-02-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/lang/model/element/ElementKind.java:
+	(ANNOTATION_TYPE): Documented.
+	(CLASS): Likewise.
+	(CONSTRUCTOR): Likewise.
+	(ENUM): Likewise.
+	(ENUM_CONSTANT): Likewise.
+	(EXCEPTION_PARAMETER): Likewise.
+	(FIELD): Likewise.
+	(INSTANCE_INIT): Likewise.
+	(INTERFACE): Likewise.
+	(LOCAL_VARIABLE): Likewise.
+	(METHOD): Likewise.
+	(OTHER): Likewise.
+	(PACKAGE): Likewise.
+	(PARAMETER): Likewise.
+	(STATIC_INIT): Likewise.
+	(TYPE_PARAMETER): Likewise.
+	(isClass()): Implemented.
+	(isField()): Likewise.
+	(isInterface()): Likewise.
+
+2013-02-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	The type of element should be determined by
+	its kind, not by the class.
+	* javax/lang/model/util/ElementFilter.java:
+	(typesIn(Set)): Pass list of type kinds to
+	FilteredSet constructor, rather than
+	TypeElement.class.
+	(ElementFilter.clazz): Removed.
+	(ElementFilter.kinds): Added.
+	(FilteredSet(Set,ElementKind...)): Take a varargs
+	list of ElementKinds rather than a class.
+	(FilteredSet.contains(Object)): Make test dependent
+	on whether the element's kind is in the array of kinds,
+	not whether it is an instance of a class.
+	(FilteredSet.iterator()): Use new FilteredIterator constructor.
+	(FilteredSet.remove(Object)): Call contains to check if
+	filtered out or not.
+	(FilteredSet.size()): Replace isInstance with binary search
+	of kinds array.
+	(FilteredSet.toArray(T[])): Cast to Object[] to populate
+	array to avoid warning.
+	(FilteredSet.toString()): Return normal toString() output for a
+	collection using the filtered iterator.
+	(FilteredIterator.clazz): Removed.
+	(FilteredIterator.kinds): Added.
+	(FilteredIterator.next): Set type to Element not E.
+	(FilteredIterator(Iterator, ElementKind...)): Again,
+	use varargs list of ElementKinds rather than class.
+	(FilteredIterator.hasNext()): Replace instanceof
+	with binary search.
+	(FilteredIterator.next()): Suppress warnings when
+	casting to E.  Safe as we know it's an E via the
+	kind test.
+
 2013-01-10  Matthias Klose <doko@ubuntu.com>
 
 	* tools/gnu/classpath/tools/gjdoc/Main.java: Accept -source 1.5,
 	1.6, 1.7.
+
+2013-01-04  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/lang/model/element/AnnotationValueVisitor.java:
+	(visitUnknown(AnnotationValue,P)): Mention throwing of
+	UnknownAnnotationValueException in documentation.
+	* javax/lang/model/element/ElementVisitor.java:
+	(visitUnknown(Element,P)): Likewise for
+	UnknownElementException.
+	* javax/lang/model/element/UnknownAnnotationValueException.java:
+	Implemented.
+	(serialVersionUID): New field.
+	(annValue): Likewise.
+	(param): Likewise.
+	(UnknownAnnotationValueException(AnnotationValue,Object)):
+	Implemented.
+	(getArgument()): Likewise.
+	(getUnknownAnnotationValue()): Likewise.
+	* javax/lang/model/element/UnknownElementException.java,
+	Implemented.
+	(serialVersionUID): New field.
+	(element): Likewise.
+	(param): Likewise.
+	(UnknownElementException(Element,Object)):
+	Implemented.
+	(getArgument()): Likewise.
+	(getUnknownElement()): Likewise.
+	* javax/lang/model/type/MirroredTypeException.java,
+	Implemented.
+	(serialVersionUID): New field.
+	(mirror): Likewise.
+	(MirroredTypeException(TypeMirror)): Implemented.
+	(getTypeMirror()): Likewise.
+	* javax/lang/model/type/MirroredTypesException.java,
+	Implemented.
+	(serialVersionUID): New field.
+	(mirrors): Likewise.
+	(MirroredTypeException(List)): Implemented.
+	(getTypeMirrors()): Likewise.
+	* javax/lang/model/type/TypeVisitor.java,
+	(visitUnknown(TypeMirror,P)): Mention throwing of
+	UnknownTypeException in documentation.
+	* javax/lang/model/type/UnknownTypeException.java,
+	Implemented.
+	(serialVersionUID): New field.
+	(type): Likewise.
+	(param): Likewise.
+	(UnknownTypeException(TypeMirror,Object)):
+	Implemented.
+	(getArgument()): Likewise.
+	(getUnknownType()): Likewise.
+
+2012-12-28  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* gnu/xml/validation/datatype/AnySimpleType.java:
+	(AnySimpleType()): Remove unneeded cast.
+	* gnu/xml/validation/datatype/AtomicSimpleType.java:
+	(AtomicSimpleType(QName,Set,int,SimpleType,
+	Annotation)): Add type parameter to Set.
+	* gnu/xml/validation/datatype/BooleanType.java:
+	(VALUE_SPACE): Likewise.
+	* gnu/xml/validation/datatype/DoubleType.java:
+	(SPECIAL): Likewise.
+	* gnu/xml/validation/datatype/DurationType.java:
+	(Duration): Implement Comparable<Duration> not
+	Comparable.
+	(Duration.hashCode()): Add @Override.
+	(Duration.equals(Object)): Likewise.
+	(Duration.compareTo(Duration)): Likewise and
+	use specific type, which also fixes issue with
+	it returning 0 for other objects, rather than
+	throwing a ClassCastException.
+	(createValue(String,ValidationContext)): Remove
+	unused months field.  Set duration.years from
+	years.
+	* gnu/xml/validation/datatype/FloatType.java:
+	(SPECIAL): Add type parameter.
+	* gnu/xml/validation/datatype/GDayType.java,
+	(GDay): Implement Comparable<GDay> not
+	Comparable.
+	(GDay.hashCode()): Add @Override.
+	(GDay.equals(Object)): Likewise.
+	(GDay.compareTo(GDay)): Likewise and
+	use specific type, which also fixes issue with
+	it returning 0 for other objects, rather than
+	throwing a ClassCastException.
+	* gnu/xml/validation/datatype/GMonthDayType.java:
+	(GMonthDay): Implement Comparable<GMonthDay> not
+	Comparable.
+	(GMonthDay.hashCode()): Add @Override.
+	(GMonthDay.equals(Object)): Likewise.
+	(GMonthDay.compareTo(GMonthDay)): Likewise and
+	use specific type, which also fixes issue with
+	it returning 0 for other objects, rather than
+	throwing a ClassCastException.
+	* gnu/xml/validation/datatype/GMonthType.java:
+	(GMonth): Implement Comparable<GMonth> not
+	Comparable.
+	(GMonth.hashCode()): Add @Override.
+	(GMonth.equals(Object)): Likewise.
+	(GMonth.compareTo(GMonth)): Likewise and
+	use specific type, which also fixes issue with
+	it returning 0 for other objects, rather than
+	throwing a ClassCastException.
+	* gnu/xml/validation/datatype/GYearMonthType.java,
+	(GYearMonth): Implement Comparable<GYearMonth> not
+	Comparable.
+	(GYearMonth.hashCode()): Add @Override.
+	(GYearMonth.equals(Object)): Likewise.
+	(GYearMonth.compareTo(GYearMonth)): Likewise and
+	use specific type, which also fixes issue with
+	it returning 0 for other objects, rather than
+	throwing a ClassCastException.
+	* gnu/xml/validation/datatype/GYearType.java,
+	(GYear): Implement Comparable<GYear> not
+	Comparable.
+	(GYear.hashCode()): Add @Override.
+	(GYear.equals(Object)): Likewise.
+	(GYear.compareTo(GYear)): Likewise and
+	use specific type, which also fixes issue with
+	it returning 0 for other objects, rather than
+	throwing a ClassCastException.
+	* gnu/xml/validation/datatype/ListSimpleType.java:
+	(ListSimpleType(QName,Set,int,SimpleType,Annotation,
+	SimpleType)): Add type parameter to Set.
+	* gnu/xml/validation/datatype/MaxExclusiveFacet.java:
+	(matches(Object)): Use Comparable<Object>.
+	* gnu/xml/validation/datatype/MaxInclusiveFacet.java:
+	(matches(Object)): Likewise.
+	* gnu/xml/validation/datatype/MinExclusiveFacet.java:
+	(matches(Object)): Likewise.
+	* gnu/xml/validation/datatype/MinInclusiveFacet.java:
+	(matches(Object)): Likewise.
+	* gnu/xml/validation/datatype/SimpleType.java:
+	(facets): Add type parameter to Set.
+	(SimpleType(QName,int,Set,int,SimpleType,Annotation)):
+	Likewise.
+	(checkValid(String,ValidationContext)): Add type
+	parameter to Iterator and remove unnecessary cast.
+	* gnu/xml/validation/datatype/TimeType.java:
+	(Time): Implement Comparable<Time> not
+	Comparable.
+	(Time.hashCode()): Add @Override.
+	(Time.equals(Object)): Likewise.
+	(Time.compareTo(Time)): Likewise and
+	use specific type, which also fixes issue with
+	it returning 0 for other objects, rather than
+	throwing a ClassCastException.
+	* gnu/xml/validation/datatype/TypeBuilder.java:
+	(TypeBuilder(SimpleType)): Add type parameter.
+	* gnu/xml/validation/datatype/TypeLibrary.java:
+	(byName): Likewise.
+	(static): Likewise.
+	* gnu/xml/validation/datatype/UnionSimpleType.java:
+	(memberTypes): Likewise.
+	(UnionSimpleType(QName,Set,int,SimpleType,Annotation,List)):
+	Likewise.
+	(checkValid(String,ValidationContext)): Add type
+	parameter to Iterator and remove unnecessary cast.
+	* gnu/xml/validation/relaxng/DataPattern.java:
+	(params): Add type parameter.
+	* gnu/xml/validation/relaxng/FullSyntaxBuilder.java:
+	(VOCABULARY): Likewise.
+	(STRIPPED_ATTRIBUTES): Likewise.
+	(PATTERN_ELEMENTS): Likewise.
+	(EMPTY_STRING_SET): Added as a typesafe replacement for
+	Collections.EMPTY_SET.
+	(static): Add type parameters.
+	(urls): Likewise.
+	(datatypeLibraries): Likewise.
+	(parse(Document)): Likewise and remove redundant casts.
+	(getDefines(Set,Element,Element,boolean)): Add type parameter.
+	(getElements(Set,Element,Element)): Likewise.
+	(expandRefs(Set,Element)): Likewise.
+	(transform(Node)): Remove redundant casts and add type
+	parameters.
+	(handleRefs(Node,Node,Node)): Fix logic error found
+	by compiler.  Check should be == null, not != null,
+	or name will be null when dereferenced.
+	(getComponents(Node)): Add type parameter.
+	(forbidDescendants(Node,Set)): Likewise.
+	(combineNodes(Node,String,String,List)): Likewise
+	and remove redundant cast.
+	(getDatatypeLibrary(String)): Add type parameter.
+	* gnu/xml/validation/relaxng/Grammar.java:
+	(defines): Add type parameter.
+	* gnu/xml/validation/xmlschema/ComplexType.java:
+	(attributeUses): Add type parameter.
+	(annotations): Likewise.
+	(ComplexType(QName,boolean,int,int)): Likewise.
+	* gnu/xml/validation/xmlschema/XMLSchema.java:
+	(elementDeclarations): Likewise.
+	(attributeDeclarations): Likewise.
+	(types): Likewise.
+	(XMLSchema(String,String,int,int,boolean,boolean)):
+	Likewise.
+	* gnu/xml/validation/xmlschema/XMLSchemaBuilder.java:
+	(parseSimpleType(QName)): Return type from schema if
+	non-null and add ones returned from typeLibrary before
+	returning.
+	(parseSimpleType(Node)): Remove unused variable and replace
+	with TODO.  Add type parameter.
+	(parseRestriction(Node,ComplexType)): Likewise.
+	(parseExtension(Node,ComplexType)): Likewise.
+	* gnu/xml/validation/xmlschema/XMLSchemaValidatorHandler.java:
+	(context): Add type parameter.
+	(attributes): Likewise.
+	(XMLSchemaValidatorHandler(XMLSchema)): Likewise.
+	(getElementTypeInfo()): Remove redundant cast.
+	(getAttributeTypeInfo(int)): Likewise.
+	(isIdAttribute(int)): Likewise.
+	(isSpecified(int)): Likewise.
+	(startElement(String,String,String,Attributes)): Likewise.
+
+2012-12-27  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/lang/model/element/Element.java:
+	(getModifiers()): Added.
+	(getSimpleName()): Likewise.
+	* javax/lang/model/element/Modifier.java:
+	New enumeration.
+	(ABSTRACT): Added.
+	(FINAL): Likewise.
+	(NATIVE): Likewise.
+	(PRIVATE): Likewise.
+	(PROTECTED): Likewise.
+	(PUBLIC): Likewise.
+	(STATIC): Likewise.
+	(STRICTFP): Likewise.
+	(SYNCHRONIZED): Likewise.
+	(TRANSIENT): Likewise.
+	(VOLATILE): Likewise.
+	* javax/lang/model/element/NestingKind.java:
+	New enumeration.
+	(ANONYMOUS): Added.
+	(LOCAL): Likewise.
+	(MEMBER): Likewise.
+	(TOP_LEVEL): Likewise.
+	(isNested()): Implemented.
+	* javax/lang/model/element/TypeElement.java:
+	(getNestingKind()): Added.
+	* javax/tools/ForwardingJavaFileObject.java:
+	(getAccessLevel()): Implemented.
+	(getNestingKind()): Likewise.
+	* javax/tools/JavaFileObject.java:
+	(getAccessLevel()): Added.
+	(getNestingKind()): Likewise.
+	* javax/tools/SimpleJavaFileObject.java,
+	(getAccessLevel()): Implemented.
+	(getNestingKind()): Likewise.
+
+2012-12-19  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/annotation/processing/Messager.java:
+	(printMessage(Kind,CharSequence)): Added.
+	(printMessage(Kind,CharSequence,Element)): Likewise.
+	(printMessage(Kind,CharSequence,Element,
+	AnnotationMirror)): Likewise.
+	(printMessage(Kind,CharSequence,Element,
+	AnnotationMirror,AnnotationValue)): Likewise.
+
+2012-12-19  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/tools/SimpleJavaFileObject.java:
+	New class added.
+	(kind): New field.
+	(uri): Likewise.
+	(SimpleJavaFileObject(URI,Kind)): Implemented.
+	(delete()): Likewise.
+	(getCharContent(boolean)): Likewise.
+	(getName()): Likewise.
+	(getKind()): Likewise.
+	(getLastModified()): Likewise.
+	(isNameCompatible(String,Kind)): Likewise.
+	(openInputStream()): Likewise.
+	(openOutputStream()): Likewise.
+	(openReader(boolean)): Likewise.
+	(openWriter()): Likewise.
+	(toUri()): Likewise.
+
+2012-12-18  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/tools/JavaCompiler.java:
+	New interface added.
+	(CompilationTask): New inner interface.
+	(CompilationTask.call()): Added.
+	(CompilationTask.setLocale(Locale)): Likewise.
+	(CompilationTask.setProcessors(Iterable)): Likewise.
+	(getStandardFileManager(DiagnosticListener,Locale,Charset)):
+	Likewise.
+	(getTask(Writer,DiagnosticListener,Iterable,Iterable,Iterable)):
+	Likewise.
+	* javax/tools/StandardJavaFileManager.java:
+	New interface added.
+	(getJavaFileObjects(File...)): Added.
+	(getJavaFileObjects(String...)): Likewise.
+	(getJavaFileObjectsFromFiles(Iterable)): Likewise.
+	(getJavaFileObjectsFromStrings(Iterable)): Likewise.
+	(getLocation(Location)): Likewise.
+	(isSameFile(FileObject,FileObject)): Likewise.
+	(setLocation(Location,Iterable)): Likewise.
+	* javax/tools/Tool.java:
+	New interface added.
+	(getSourceVersions()): Added.
+	(run(InputStream,OutputStream,OutputStream,String...)): Likewise.
 
 2012-12-17  Andrew Haley  <aph@redhat.com>
 
 	PR libgcj/55716
 	* tools/gnu/classpath/tools/javah/Main.java (parseClasses): Dont
 	scan inner classes if our item is a file.
+
+2012-11-30  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/lang/model/type/ArrayType.java:
+	Added.
+	(getComponentType()): Added.
+	* javax/lang/model/type/ErrorType.java:
+	Added.
+	* javax/lang/model/type/ExecutableType.java:
+	Added.
+	(getParameterTypes()): Added.
+	(getReturnType()): Likewise.
+	(getThrownTypes()): Likewise.
+	(getTypeVariables()): Likewise.
+	* javax/lang/model/type/NoType.java:
+	Added.
+	* javax/lang/model/type/NullType.java:
+	Added.
+	* javax/lang/model/type/PrimitiveType.java:
+	Added.
+	* javax/lang/model/type/TypeVariable.java:
+	Added.
+	(asElement()): Added.
+	(getLowerBound()): Likewise.
+	(getUpperBound()): Likewise.
+	* javax/lang/model/type/TypeVisitor.java:
+	(visitArray(ArrayType, P)): Added.
+	(visitError(ErrorType, P)): Likewise.
+	(visitExecutable(ExecutableType, P)): Likewise.
+	(visitNoType(NoType, P)): Likewise.
+	(visitNull(NullType, P)): Likewise.
+	(visitPrimitive(PrimitiveType, P)): Likewise.
+	(visitTypeVariable(TypeVariable, P)): Likewise.
+	(visitWildcard(WildcardType, P)): Likewise.
+	* javax/lang/model/type/WildcardType.java:
+	Added.
+	(getExtendsBound()): Likewise.
+	(getSuperBound()): Likewise.
+	* javax/lang/model/util/Types.java,
+	(boxedClass(PrimitiveType)): Likewise.
+	(getArrayType(TypeMirror)): Likewise.
+	(getNoType(TypeKind)): Likewise.
+	(getNullType()): Likewise.
+	(getPrimitiveType(TypeKind)): Likewise.
+	(getWildcardType(TypeMirror, TypeMirror)): Likewise.
+	(isSubsignature(ExecutableType, ExecutableType)):
+	Likewise.
+	(unboxedType(TypeMirror)): Likewise.
+
+2012-11-29  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/lang/model/element/ElementVisitor.java:
+	(visitExecutable(ExecutableElement, P)): Correct documentation.
+	(visitTypeParameter(TypeParameterElement, P)): Likewise.
+	(visitVariable(VariableElement, P)): Likewise.
+	(visitPackage(PackageElement, P)): Added.
+	* javax/lang/model/element/Name.java:
+	Added.
+	(contentEquals(CharSequence)): Added.
+	(equals(Object)): Likewise.
+	(hashCode()): Likewise.
+	* javax/lang/model/element/PackageElement.java:
+	Added.
+	(getQualifiedName()): Added.
+	(isUnnamed()): Likewise.
+	* javax/lang/model/element/TypeElement.java:
+	(getQualifiedName()): Added.
+	* javax/lang/model/util/Elements.java:
+	(getBinaryName(TypeElement)): Added.
+	(getName(CharSequence)): Likewise.
+	(getPackageElement(CharSequence)): Likewise.
+	(getPackageOf(Element)): Likewise.
+
+2012-11-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/lang/model/element/AnnotationMirror.java:
+	Added.
+	(getAnnotationType()): Added.
+	(getElementValues()): Likewise.
+	* javax/lang/model/element/AnnotationValue.java:
+	Added.
+	(accept(AnnotationValueVisitor,P)): Added.
+	(getValue()): Likewise.
+	(toString()): Likewise.
+	* javax/lang/model/element/AnnotationValueVisitor.java:
+	Added.
+	(visit(AnnotationValue)): Added.
+	(visit(AnnotationValue, P)): Likewise.
+	(visitAnnotation(AnnotationMirror, P)): Likewise.
+	(visitArray(List, P)): Likewise.
+	(visitBoolean(boolean, P)): Likewise.
+	(visitByte(byte, P)): Likewise.
+	(visitChar(char, P)): Likewise.
+	(visitDouble(double, P)): Likewise.
+	(visitEnumConstant(VariableElement, P)): Likewise.
+	(visitFloat(float, P)): Likewise.
+	(visitInt(float, P)): Likewise.
+	(visitLong(long, P)): Likewise.
+	(visitShort(short, P)): Likewise.
+	(visitString(String, P)): Likewise.
+	(visitType(TypeMirror, P)): Likewise.
+	(visitUnknown(AnnotationValue, P)): Likewise.
+	* javax/lang/model/element/Element.java:
+	(asType()): Added.
+	(getAnnotationMirrors()): Likewise.
+	* javax/lang/model/element/ElementVisitor.java:
+	(visitExecutable(ExecutableElement, P)): Added.
+	(visitTypeParameter(TypeParameterElement, P)): Likewise.
+	(visitVariable(VariableElement, P)): Likewise.
+	* javax/lang/model/element/ExecutableElement.java:
+	Added.
+	(getDefaultValue()): Added.
+	(getParameters()): Likewise.
+	(getReturnType()): Likewise.
+	(getThrownTypes()): Likewise.
+	(getTypeParameters()): Likewise.
+	(isVarArgs()): Likewise.
+	* javax/lang/model/element/TypeElement.java:
+	(getInterfaces()): Added.
+	(getSuperclass()): Likewise.
+	(getTypeParameters()): Likewise.
+	* javax/lang/model/element/TypeParameterElement.java:
+	Added.
+	(getBounds()): Added.
+	(getGenericElement()): Likewise.
+	* javax/lang/model/element/VariableElement.java:
+	Added.
+	(getConstantValue()): Added.
+	* javax/lang/model/type/DeclaredType.java:
+	Added.
+	(asElement()): Added.
+	(getEnclosingType()): Likewise.
+	(getTypeArguments()): Likewise.
+	* javax/lang/model/type/ReferenceType.java:
+	Added.
+	* javax/lang/model/type/TypeKind.java:
+	Added.
+	(ARRAY): Added.
+	(BOOLEAN): Likewise.
+	(BYTE): Likewise.
+	(CHAR): Likewise.
+	(DECLARED): Likewise.
+	(DOUBLE): Likewise.
+	(ERROR): Likewise.
+	(EXECUTABLE): Likewise.
+	(FLOAT): Likewise.
+	(INT): Likewise.
+	(LONG): Likewise.
+	(NONE): Likewise.
+	(NULL): Likewise.
+	(OTHER): Likewise.
+	(PACKAGE): Likewise.
+	(SHORT): Likewise.
+	(TYPEVAR): Likewise.
+	(VOID): Likewise.
+	(WILDCARD): Likewise.
+	(isPrimitive()): Implemented.
+	* javax/lang/model/type/TypeMirror.java:
+	Added.
+	(accept(TypeVisitor, P)): Added.
+	(equals(Object)): Likewise.
+	(getKind()): Likewise.
+	(hashCode()): Likewise.
+	(toString()): Likewise.
+	* javax/lang/model/type/TypeVisitor.java:
+	Added.
+	(visit(TypeMirror)): Added.
+	(visit(TypeMirror, P)): Likewise.
+	(visitUnknown(TypeMirror, P)): Likewise.
+	(visitDeclared(DeclaredType, P)): Likewise.
+	* javax/lang/model/util/Elements.java:
+	(getAllAnnotationMirrors(Element)): Added.
+	(getElementValuesWithDefaults(AnnotationMirror)): Likewise.
+	(overrides(ExecutableElement, ExecutableElement)): Likewise.
+	* javax/lang/model/util/Types.java:
+	(asElement(TypeMirror)): Added.
+	(asMemberOf(DeclaredType, Element)): Likewise.
+	(capture(TypeMirror)): Likewise.
+	(contains(TypeMirror, TypeMirror)): Likewise.
+	(directSupertypes(TypeMirror)): Likewise.
+	(erasure(TypeMirror)): Likewise.
+	(getDeclaredType(DeclaredType, TypeElement,
+	TypeMirror...)): Likewise.
+	(getDeclaredType(TypeElement, TypeMirror...)):
+	Likewise.
+	(isAssignable(TypeMirror, TypeMirror)): Likewise.
+	(isSameType(TypeMirror, TypeMirror)): Likewise.
+	(isSubtype(TypeMirror, TypeMirror)): Likewise.
+
+2012-11-25  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/annotation/processing/Processor.java:
+	Implemented.
+	(getSupportedAnnotationTypes()): Added.
+	(getSupportedOptions()): Likewise.
+	(getSupportedSourceVersion()): Likewise.
+	(init(ProcessingEnvironment)): Likewise.
+	(process(Set, RoundEnvironment)): Likewise.
+
+2012-11-25  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/annotation/processing/Filer.java,
+	* javax/annotation/processing/Messager.java,
+	* javax/annotation/processing/ProcessingEnvironment.java,
+	* javax/annotation/processing/RoundEnvironment.java,
+	* javax/lang/model/SourceVersion.java,
+	* javax/lang/model/element/Element.java,
+	* javax/lang/model/element/ElementKind.java:
+	Add authorship.
+	* javax/lang/model/element/ElementVisitor.java:
+	Add authorship and properly document type parameters.
+	* javax/lang/model/element/TypeElement.java:
+	Add authorship.
+	* javax/lang/model/util/ElementFilter.java:
+	Add authorship.
+	(FilteredSet.add(E)): Add @Override.
+	(FilteredSet.addAll(Collection)): Likewise.
+	(FilteredSet.clear()): Likewise.
+	(FilteredSet.contains(Object)): Likewise.
+	(FilteredSet.containsAll(Collection)): Likewise.
+	(FilteredSet.equals(Object)): Likewise.
+	(FilteredSet.hashCode()): Likewise.
+	(FilteredSet.isEmpty()): Likewise.
+	(FilteredSet.iterator()): Likewise.
+	(FilteredSet.remove(Object)): Likewise.
+	(FilteredSet.removeAll(Collection)): Likewise.
+	(FilteredSet.retainAll(Collection)): Likewise.
+	(FilteredSet.size()): Likewise.
+	(FilteredSet.toArray()): Likewise.
+	(FilteredSet.toArray(T[])): Likewise.
+	(FilteredIterator.hasNext()): Likewise.
+	(FilteredIterator.next()): Likewise.
+	(FilteredIterator.remove()): Likewise.
+	* javax/lang/model/util/Elements.java,
+	* javax/lang/model/util/Types.java:
+	Add authorship.
+	* javax/tools/ForwardingFileObject.java,
+	* javax/tools/ForwardingJavaFileObject.java:
+	Document type parameter.
+	* javax/tools/StandardLocation.java:
+	(ANNOTATION_PROCESSOR_PATH.isOutputLocation()):
+	Add @Override annotation.
+	(CLASS_OUTPUT.isOutputLocation()): Likewise.
+	(CLASS_PATH.isOutputLocation()): Likewise.
+	(PLATFORM_CLASS_PATH.isOutputLocation()): Likewise.
+	(SOURCE_OUTPUT.isOutputLocation()): Likewise.
+	(SOURCE_PATH.isOutputLocation()): Likewise.
+	(getName()): Likewise.
+
+2012-11-25  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/tools/FileObject.java:
+	Add missing comment in header.
+	* javax/tools/ForwardingFileObject.java:
+	New class.
+	(fileObject): Added.
+	(ForwardingFileObject(F)): Implemented.
+	(delete()): Likewise.
+	(getCharContent(boolean)): Likewise.
+	(getLastModified()): Likewise.
+	(getName()): Likewise.
+	(openInputStream()): Likewise.
+	(openOutputStream()): Likewise.
+	(openReader(boolean)): Likewise.
+	(openWriter()): Likewise.
+	(toUri()): Likewise.
+	* javax/tools/ForwardingJavaFileObject.java:
+	New class.
+	(ForwardingJavaFileObject(F)): Implemented.
+	(getKind()): Likewise.
+	(isNameCompatible(String,Kind)): Likewise.
+	* lib/Makefile.am:
+	Bump source/target to 1.6 to allow use of
+	@Override on interface implementations.
+
+2012-11-19  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/annotation/processing/Filer.java:
+	(createClassFile(CharSequence,Element...): Added.
+	(createResource(JavaFileManager.Location, CharSequence,
+	CharSequence, Element...)): Likewise.
+	(createSourceFile(CharSequence,Element...): Likewise.
+	(getResource(JavaFileManager.Location, CharSequence,
+	CharSequence)): Likewise.
+	* javax/annotation/processing/FilerException.java:
+	New class.
+	(FilerException(String)): Implemented.
+	* javax/tools/JavaFileManager.java:
+	New interface.
+	(Location): New member interface.
+	(Location.getName()): Added.
+	(Location.isOutputLocation()): Likewise.
+	(close()): Likewise.
+	(flush()): Likewise.
+	(getClassLoader(Location)): Likewise.
+	(getFileForInput(Location,String,String)):
+	Likewise.
+	(getFileForOutput(Location,String,String,FileObject)):
+	Likewise.
+	(getJavaFileForInput(Location,String,
+	JavaFileObject.Kind)): Likewise.
+	(getJavaFileForOutput(Location,String,
+	JavaFileObject.Kind,FileObject)): Likewise.
+	(handleOption(String,Iterator)): Likewise.
+	(hasLocation(Location)): Likewise.
+	(inferBinaryName(Location,JavaFileObject)): Likewise.
+	(isSameFile(FileObject,FileObject)): Likewise.
+	(list(Location,String,Set,boolean)): Likewise.
+	* javax/tools/JavaFileObject.java:
+	New interface.
+	(Kind): New inner enum.
+	(CLASS): Added.
+	(HTML): Likewise.
+	(OTHER): Likewise.
+	(SOURCE): Likewise.
+	(Kind.extension): New public field.
+	(Kind.Kind(String)): Implemented.
+	(getKind()): Added.
+	(isNameCompatible(String,Kind)): Likewise.
+	* javax/tools/OptionChecker.java:
+	New interface.
+	(isSupportedOption(String)): Added.
+	* javax/tools/StandardLocation.java:
+	New enum.
+	(ANNOTATION_PROCESSOR_PATH): Added.
+	(CLASS_OUTPUT): Likewise.
+	(CLASS_PATH): Likewise.
+	(PLATFORM_CLASS_PATH): Likewise.
+	(SOURCE_OUTPUT): Likewise.
+	(SOURCE_PATH): Likewise.
+	(locCache): Likewise.
+	(getName()): Implemented.
+	(locationFor(String)): Implemented.
+
+2012-11-13  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/annotation/processing/ProcessingEnvironment.java:
+	(getOptions()): Implemented.
+	(getSourceVersion()): Likewise.
+	(getTypeUtils()): Likewise.
+
+2012-11-12  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	New files to start supporting recent versions
+	of ecj & javac.
+	* javax/annotation/processing/Filer.java: Stub.
+	* javax/annotation/processing/Messager.java: Likewise.
+	* javax/annotation/processing/ProcessingEnvironment.java:
+	(getElementUtils()): Added.
+	(getFiler()): Likewise.
+	(getLocale()): Likewise.
+	(getMessager()): Likewise.
+	* javax/annotation/processing/RoundEnvironment.java:
+	(errorRaised()): Likewise.
+	(getElementsAnnotatedWith(Class)): Likewise.
+	(getElementsAnnotatedWith(TypeElement)): Likewise.
+	(getRootElements()): Likewise.
+	(processingOver()): Likewise.
+	* javax/lang/model/SourceVersion.java:
+	(RELEASE_0): Likewise.
+	(RELEASE_1): Likewise.
+	(RELEASE_2): Likewise.
+	(RELEASE_3): Likewise.
+	(RELEASE_4): Likewise.
+	(RELEASE_5): Likewise.
+	(RELEASE_6): Likewise.
+	(isIdentifier(CharSequence)): Likewise.
+	(latest()): Likewise.
+	(latestSupported()): Likewise.
+	* javax/lang/model/element/Element.java:
+	(accept(ElementVisitor,P)): Likewise.
+	(equals(Object)): Likewise.
+	(getAnnotation(Class)): Likewise.
+	(getEnclosedElements()): Likewise.
+	(getEnclosingElement()): Likewise.
+	(getKind()): Likewise.
+	(hashCode()): Likewise.
+	* javax/lang/model/element/ElementKind.java:
+	(ANNOTATION_TYPE): Likewise.
+	(CLASS): Likewise.
+	(CONSTRUCTOR): Likewise.
+	(ENUM): Likewise.
+	(ENUM_CONSTANT): Likewise.
+	(EXCEPTION_PARAMETER): Likewise.
+	(FIELD): Likewise.
+	(INSTANCE_INIT): Likewise.
+	(INTERFACE): Likewise.
+	(LOCAL_VARIABLE): Likewise.
+	(METHOD): Likewise.
+	(OTHER): Likewise.
+	(PACKAGE): Likewise.
+	(PARAMETER): Likewise.
+	(STATIC_INIT): Likewise.
+	(TYPE_PARAMETER): Likewise.
+	* javax/lang/model/element/ElementVisitor.java:
+	(visit(Element)): Likewise.
+	(visit(Element, P)): Likewise.
+	(visitType(TypeElement, P): Likewise.
+	(visitUnknown(Element, P): Likewise.
+	* javax/lang/model/element/TypeElement.java: Stub.
+	* javax/lang/model/util/ElementFilter.java:
+	(typesIn(Set)): Implemented.
+	(FilteredSet): Class which typesIn returns an instance of.
+	(FilteredSet.elements): New field.
+	(FilteredSet.clazz): Likewise.
+	(FilteredSet.FilteredSet(Set,Class)): Implemented.
+	(FilteredSet.add(E)): Likewise.
+	(FilteredSet.addAll(Collection)): Likewise.
+	(FilteredSet.clear()): Likewise.
+	(FilteredSet.contains(Object)): Likewise.
+	(FilteredSet.containsAll(Collection)): Likewise.
+	(FilteredSet.equals(Object)): Likewise.
+	(FilteredSet.hashCode()): Likewise.
+	(FilteredSet.isEmpty()): Likewise.
+	(FilteredSet.iterator()): Likewise.
+	(FilteredSet.remove(Object)): Likewise.
+	(FilteredSet.removeAll(Collection)): Likewise.
+	(FilteredSet.retainAll(Collection)): Likewise.
+	(FilteredSet.size()): Likewise.
+	(FilteredSet.toArray()): Likewise.
+	(FilteredSet.toArray(T[])): Likewise.
+	(FilteredIterator): Class which FilteredSet.iterator()
+	provides an instance of.
+	(FilteredIterator.iterator): New field.
+	(FilteredIterator.clazz): Likewise.
+	(FilteredIterator.next): Likewise.
+	(FilteredIterator.FilteredIterator(Iterator,Class)): Implemented.
+	(FilteredIterator.hasNext()): Likewise.
+	(FilteredIterator.next()): Likewise.
+	(FilteredIterator.remove()): Likewise.
+	* javax/lang/model/util/Elements.java:
+	(getAllMembers(TypeElement)): Likewise.
+	(getConstantExpression(Object)): Likewise.
+	(getDocComment(Object)): Likewise.
+	(getTypeElement(CharSequence)): Likewise.
+	(hides(Element,Element)): Likewise.
+	(isDeprecated(Element)): Likewise.
+	(printElements(Writer,Element...)): Likewise.
+	* javax/lang/model/util/Types.java: Stub.
 
 2012-11-02  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
