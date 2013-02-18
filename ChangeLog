@@ -1,3 +1,66 @@
+2013-02-18  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/annotation/processing/SupportedSourceVersion.java:
+	Implemented.
+	(value()): Implemented.
+	* javax/lang/model/element/ElementVisitor.java:
+	Fix typo: "implementators" should be "implementors".
+	* javax/lang/model/element/UnknownElementException.java:
+	(UnknownElementException(Element,Object)): Set message
+	using superclass constructor.
+	* javax/lang/model/util/AbstractElementVisitor6.java:
+	Implemented.
+	(AbstractElementVisitor6()): Implemented.
+	(visit(Element)): Likewise.
+	(visit(Element,P)): Likewise.
+	(visitUnknown(Element,P)): Likewise.
+	* javax/lang/model/util/ElementScanner6.java:
+	Implemented.
+	(ElementScanner6()): Implemented.
+	(ElementScanner6(R)): Likewise.
+	(scan(Element)): Likewise.
+	(scan(Element, P)): Likewise.
+	(scan(Iterable, P)): Likewise.
+	(visitExecutable(ExecutableElement, P)): Likewise.
+	(visitPackage(PackageElement, P)): Likewise.
+	(visitType(TypeElement, P)): Likewise.
+	(visitTypeParameter(TypeElement, P)): Likewise.
+	(visitVariable(VariableElement, P)): Likewise.
+	* javax/lang/model/util/SimpleElementVisitor6.java,
+	Implemented.
+	(DEFAULT_VALUE): Added.
+	(SimpleElementVisitor6()): Implemented.
+	(SimpleElementVisitor6(R)): Likewise.
+	(defaultAction(Element, P)): Likewise.
+	(visitExecutable(ExecutableElement, P)): Likewise.
+	(visitPackage(PackageElement, P)): Likewise.
+	(visitType(TypeElement, P)): Likewise.
+	(visitTypeParameter(TypeElement, P)): Likewise.
+	(visitVariable(VariableElement, P)): Likewise.
+	* javax/tools/ForwardingJavaFileManager.java:
+	Implemented.
+	(fileManager): Added.
+	(ForwardingJavaFileManager(M)): Implemented.
+	(close()): Likewise.
+	(flush()): Likewise.
+	(getClassLoader(JavaFileManager.Location)): Likewise.
+	(getFileForInput(JavaFileManager.Location, String,
+	String)): Likewise.
+	(getFileForOutput(JavaFileManager.Location, String,
+	String, FileObject)): Likewise.
+	(getJavaFileForInput(JavaFileManager.Location, String,
+	JavaFileObject.Kind)): Likewise.
+	(getJavaFileForOutput(JavaFileManager.Location, String,
+	JavaFileObject.Kind, FileObject)): Likewise.
+	(handleOption(String,Iterator)): Likewise.
+	(hasLocation(JavaFileManager.Location)): Likewise.
+	(inferBinaryName(JavaFileManager.Location, JavaFileObject)):
+	Likewise.
+	(isSameFile(FileObject, FileObject)): Likewise.
+	(isSupportedOption(String)): Likewise.
+	(list(JavaFileManager.Location, String, Set, boolean)):
+	Likewise.
+
 2013-02-03  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/lang/model/util/ElementFilter.java:

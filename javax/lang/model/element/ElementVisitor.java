@@ -48,7 +48,7 @@ package javax.lang.model.element;
  * {@code NullPointerException} if {@code null} is passed as the
  * additional parameter.</p>
  * <p>As this interface may be extended to accomodate future language
- * versions, implementators are encouraged to extend one of the
+ * versions, implementors are encouraged to extend one of the
  * appropriate abstract classes rather than implementating this
  * interface.  However, this interface should be used as the type
  * for parameters and return values.</p>

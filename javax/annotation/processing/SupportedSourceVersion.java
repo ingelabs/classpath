@@ -1,5 +1,5 @@
-/* UnknownElementException.java -- Thrown by an unknown element.
-   Copyright (C) 2012  Free Software Foundation, Inc.
+/* SupportedSourceVersion.java -- Annotation to indicate supported source version.
+   Copyright (C) 2013  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -35,72 +35,27 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package javax.lang.model.element;
+package javax.annotation.processing;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import javax.lang.model.SourceVersion;
 
 /**
- * Thrown when an unknown element is encountered,
- * usually by a {@link ElementVisitor}.
+ * Indicates the latest source version supported.
+ * This can be used by {@link Processor#getSupportedSourceVersion()}
+ * to obtain the supported source version automatically.
  *
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.6
- * @see ElementVisitor#visitUnknown(Element,P)
  */
-public class UnknownElementException
-  extends RuntimeException
+@Documented @Retention(RetentionPolicy.RUNTIME) @Target(ElementType.TYPE)
+public @interface SupportedSourceVersion
 {
-
-  private static final long serialVersionUID = 269L;
-
-  /**
-   * The unknown element.
-   */
-  private Element element;
-
-  /**
-   * The additional parameter.
-   */
-  private Object param;
-
-  /**
-   * Constructs a new {@code UnknownElementException}
-   * for the specified element.  An additional
-   * object may also be passed to give further context as
-   * to where the exception occurred, such as the additional parameter
-   * used by visitor classes.
-   *
-   * @param element the unknown element or {@code null}.
-   * @param param the additional parameter or {@code null}.
-   */
-  public UnknownElementException(Element element, Object param)
-  {
-    super("The element " + element + " is not recognised,");
-    this.element = element;
-    this.param = param;
-  }
-
-  /**
-   * Returns the additional parameter or {@code null} if
-   * unavailable.
-   *
-   * @return the additional parameter.
-   */
-  public Object getArgument()
-  {
-    return param;
-  }
-
-  /**
-   * Returns the unknown element or {@code null}
-   * if unavailable.  The element may be {@code null} if
-   * the value is not {@link java.io.Serializable} but the
-   * exception has been serialized and read back in.
-   *
-   * @return the unknown element.
-   */
-  public Element getUnknownElement()
-  {
-    return element;
-  }
-
-
+  /** The language source version supported. */
+  SourceVersion value();
 }
