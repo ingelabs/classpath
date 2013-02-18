@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package javax.lang.model;
 
+import java.util.Arrays;
+
 /**
  * Source versions of the Java programming language.
  * Note that this will be extended with additional
@@ -54,6 +56,22 @@ public enum SourceVersion
   /** Java 1.4 */ RELEASE_4,
   /** Java 5 */ RELEASE_5,
   /** Java 6 */ RELEASE_6;
+
+  /** List of language keywords, as specified in 3.9 of the Java
+   * Language Specification.  Please keep sorted. */
+  private static final String[] KEYWORDS = { "abstract", "assert", "boolean",
+					     "break", "byte", "case", "catch",
+					     "char", "class", "const", "continue",
+					     "default", "do", "double", "else",
+					     "enum", "extends", "final", "finally",
+					     "float", "for", "if", "goto", "implements",
+					     "import", "instanceof", "int", "interface",
+					     "long", "native", "new", "package", "private",
+					     "protected", "public", "return", "short",
+					     "static", "strictfp", "super", "switch",
+					     "synchronized", "this", "throw", "throws",
+					     "transient", "try", "void", "volatile",
+					     "while" };
 
   /**
    * Returns true if {@code name} is a syntactically valid identifier or
@@ -98,6 +116,52 @@ public enum SourceVersion
   public static SourceVersion latestSupported()
   {
     return RELEASE_5;
+  }
+
+  /**
+   * Returns true if the specified character sequence
+   * represents a keyword or one of the literals:
+   * {@code "null"}, {@code "true"} or {@code "false"}.
+   *
+   * @param string the string to check.
+   * @return true if {@code string} represents a valid keyword or literal.
+   */
+  public static boolean isKeyword(CharSequence string)
+  {
+    if (Arrays.binarySearch(KEYWORDS, string) >= 0)
+      return true;
+    if (string.equals("true") || string.equals("false") ||
+	string.equals("null"))
+      return true;
+    return false;
+  }
+
+  /**
+   * Returns true if the specified character sequence
+   * represents a qualified name such as {@code "java.lang.Object"}
+   * or {@code "String"}.  Unlike {@link #isIdentifier(CharSequence)},
+   * this method does not return {@code true} for keywords
+   * and literals.
+   *
+   * @param string the string to check.
+   * @return true if {@code string} represents a valid qualified name.
+   */
+  public static boolean isName(CharSequence string)
+  {
+    int dotLocation = -1;
+    int length = string.length();
+
+    // Find a '.' if there is one
+    for (int a = 0; a < length; ++a)
+      if (string.charAt(a) == '.')
+	dotLocation = a;
+    
+    if (dotLocation == -1)
+      return isIdentifier(string) && !isKeyword(string);
+
+    CharSequence identifier = string.subSequence(dotLocation + 1, length);
+    return (isName(string.subSequence(0, dotLocation)) &&
+	    (isIdentifier(identifier) && !isKeyword(identifier)));
   }
 
 }
