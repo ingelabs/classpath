@@ -1,4 +1,4 @@
-/* SupportedSourceVersion.java -- Annotation to indicate supported source version.
+/* SupportedOptions.java -- Annotation to indicate supported processor options.
    Copyright (C) 2013  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -43,20 +43,22 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import javax.lang.model.SourceVersion;
-
 /**
- * Indicates the latest source version supported.
- * This can be used by {@link Processor#getSupportedSourceVersion()}
- * to obtain the supported source version automatically,
- * as is done in {@link AbstractProcessor}.
+ * Indicates options supported by an
+ * annotation processor.  This can be used by 
+ * {@link Processor#getSupportedOptions()}
+ * to obtain the supported options automatically, as is
+ * done in {@link AbstractProcessor}.  Note
+ * that the strings must comply with the grammar
+ * specified in the documentation of
+ * {@link Processor#getSupportedOptions()}.
  *
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.6
  */
 @Documented @Retention(RetentionPolicy.RUNTIME) @Target(ElementType.TYPE)
-public @interface SupportedSourceVersion
+public @interface SupportedOptions
 {
-  /** The language source version supported. */
-  SourceVersion value();
+  /** The annotation types supported. */
+  String[] value();
 }

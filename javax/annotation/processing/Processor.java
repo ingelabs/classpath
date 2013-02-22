@@ -1,5 +1,5 @@
 /* Processor.java -- An annotation processor.
-   Copyright (C) 2012  Free Software Foundation, Inc.
+   Copyright (C) 2012, 2013  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -40,6 +40,9 @@ package javax.annotation.processing;
 import java.util.Set;
 
 import javax.lang.model.SourceVersion;
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 
 /**
@@ -186,5 +189,42 @@ public interface Processor
    */
   boolean process(Set<? extends TypeElement> types, RoundEnvironment roundEnv);
 
+  /**
+   * <p>
+   * Returns a series of suggested completions for an annotation or an empty
+   * {@link Iterable}.  As a completion is being requested, the information
+   * provided to the method may be incomplete, but either {@code element} or
+   * {@code userText} must be non-{@code null}.  If the processor can not
+   * provide any completions due to a lack of available information, it should
+   * not throw a {@link NullPointerException}, but instead return an empty
+   * {@code Iterable} or a single completion with an empty value string and
+   * a message explaining why completions could not be returned.
+   * </p>
+   * <p>
+   * Completions are aimed at annotation members where validity constraints reduce
+   * the range of possible values.  For example, imagine an annotation {@code RainbowColour}
+   * which takes as its value one of the following strings: {@code "RED"}, {@code "ORANGE"},
+   * {@code "YELLOW"}, {@code "GREEN"}, {@code "BLUE"}, {@code "INDIGO"} and {@code "VIOLET"}.
+   * If this annotation is passed as the annotation mirror argument to this method, then
+   * a list of {@code Completion} objects may be returned as follows:</p>
+   * <code>return Arrays.asList({@link Completions#of}("RED"), of("ORANGE"), of("YELLOW"),
+   * of("GREEN"), of("BLUE"), of("INDIGO"), of("VIOLET"));</code>.  If {@code userText}
+   * is set, it may be used to further reduce the range of possible values.  For example,
+   * if {@code userText} was "R", then {@code Arrays.asList(of("RED"))} would be returned,
+   * as only one possible value starts with {@code "R"}.  However, if {@code userText}
+   * was {@code "P"}, then {@code Collections.emptyList()} would be returned, as there
+   * are no possible values beginning with {@code "P"}.  Alternatively,
+   * {@code of("", "No colours begin with the letter " + userText)} may be used to
+   * give a more informative result.
+   * </p>
+   *
+   * @param element the element being annotated.
+   * @param annotation the annotation (possibly partial) being applied to the element.
+   * @param member the annotation member to return completions for.
+   * @param userText the source code text to be completed.
+   * @return an {@code Iterable} over suggested completions to the annotation.
+   */
+  Iterable<? extends Completion> getCompletions(Element element, AnnotationMirror annotation,
+						ExecutableElement member, String userText);
 }
 

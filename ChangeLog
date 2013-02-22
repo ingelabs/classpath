@@ -1,3 +1,34 @@
+2013-02-21  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/annotation/processing/AbstractProcessor.java:
+	New class added.
+	(processingEnv): Added.
+	(initialized): Likewise.
+	(AbstractProcessor()): Implemented.
+	(getCompletions(Element,AnnotationMirror,ExecutableElement,
+	String)): Likewise.
+	(getSupportedAnnotationTypes()):Likewise.
+	(getSupportedOptions()): Likewise.
+	(getSupportedSourceVersion()): Likewise.
+	(init(ProcessingEnvironment)): Likewise.
+	(isInitialized()): Likewise.
+	(process(Set,RoundEnvironment)): Likewise.
+	* javax/annotation/processing/Completion.java:
+	New interface added.
+	(getValue()): Added.
+	(getMessage()): Likewise.
+	* javax/annotation/processing/Processor.java:
+	(getCompletions(Element,AnnotationMirror,ExecutableElement,
+	String)): Added.
+	* javax/annotation/processing/SupportedAnnotationTypes.java:
+	New annotation added.
+	(value()): Added.
+	* javax/annotation/processing/SupportedOptions.java:
+	New annotation added.
+	(value()): Added.
+	* javax/annotation/processing/SupportedSourceVersion.java:
+	Reference AbstractProcessor in documentation.
+
 2013-02-18  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/lang/model/SourceVersion.java,

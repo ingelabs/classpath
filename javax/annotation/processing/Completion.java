@@ -1,4 +1,4 @@
-/* SupportedSourceVersion.java -- Annotation to indicate supported source version.
+/* Completion.java -- Suggested completion for an annotation.
    Copyright (C) 2013  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,26 +37,29 @@ exception statement from your version. */
 
 package javax.annotation.processing;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import javax.lang.model.SourceVersion;
-
 /**
- * Indicates the latest source version supported.
- * This can be used by {@link Processor#getSupportedSourceVersion()}
- * to obtain the supported source version automatically,
- * as is done in {@link AbstractProcessor}.
+ * A suggested completion for an annotation.  It contains
+ * text which may be used in an annotation, together with
+ * an optional message describing it.
  *
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.6
  */
-@Documented @Retention(RetentionPolicy.RUNTIME) @Target(ElementType.TYPE)
-public @interface SupportedSourceVersion
+public interface Completion
 {
-  /** The language source version supported. */
-  SourceVersion value();
+
+  /**
+   * Returns the suggested annotation text.
+   *
+   * @return the suggested text.
+   */
+  String getValue();
+
+  /**
+   * Returns a description of the suggested completion.
+   *
+   * @return a message about the completion.
+   */
+  String getMessage();
+
 }
