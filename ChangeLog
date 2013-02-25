@@ -1,3 +1,54 @@
+2013-02-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* gnu/classpath/ServiceFactory.java:
+	(LOGGER): Removed.
+	(lookupProviders(Class,ClassLoader,boolean)):
+	Use SystemLogger/Component mechanism for logging.
+	(ServiceIterator.loadNextServiceProvider()):
+	Likewise.  Handle end-of-line comments as used
+	by ecj.
+	(advanceReader()): Use SystemLogger/Component
+	mechanism for logging.
+	(log(Component,Throwable,String,Object...)):
+	Change signature to use Component and take
+	a variable length series of Objects.  Call
+	SystemLogger instance rather than using
+	local logging.
+	* gnu/classpath/debug/Component.java:
+	(EVERYTHING): Extend range to include new components.
+	(SSL_HANDSHAKE): Avoid spaces in name and change to
+	match variable name for lookup.
+	(SSL_RECORD_LAYER): Likewise.
+	(SSL_KEY_EXCHANGE): Likewise.
+	(SSL_DELEGATED_TASK): Likewise.
+	(SERVICE_LOADING): New component for ServiceFactory.
+	(SERVICE_LOADING_WARNING): Likewise.
+	(SERVICE_LOADING_VERBOSE): Likewise.
+	* gnu/classpath/debug/PreciseFilter.java:
+	(isLoggable(LogRecord)): Use instanceof rather
+	than triggering a ClassCastException and the whole
+	exception throwing mechanism.
+	* gnu/classpath/debug/SystemLogger.java:
+	(static): Fully initialise logger so all selection
+	is handled by the filter.
+	(logp(Component,String,String,Throwable,String,Object...)):
+	Adapted from log method in ServiceFactory.  Handles
+	logging with both a Throwable and our own message.
+	* java/util/logging/Formatter.java:
+	Correct comment typo.
+	* javax/tools/ToolProvider.java:
+	Implemented.
+	(compiler): New field.
+	(COMPILER_CLASS): New constant field.
+	(getSystemJavaCompiler()): Return ecj if available.
+	(getSystemToolClassLoader()): Return classloader used
+	to load compiler.
+	(getCompilerClass()): Assistance method for finding
+	the compiler class.
+	(log(Component,Throwable,String,Object...)):
+	Logging method to auto-include the source class/method used
+	locally.
+
 2013-02-21  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/annotation/processing/AbstractProcessor.java:
