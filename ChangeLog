@@ -1,3 +1,182 @@
+2013-03-04  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* gnu/classpath/Pair.java:
+	(equals(Object)): Cast to Pair<?,?> not Pair<A,B>
+	as we don't know that the objects held by the pair
+	are of the same type.
+	* gnu/classpath/ServiceProviderLoadingAction.java:
+	(run()): Suppress warning as we check the loaded
+	class is an instance of P.
+	* gnu/classpath/jdwp/Jdwp.java:
+	(_properties): Add type parameters.
+	(notify(Event[])): Likewise.
+	(_processConfigury(String)): Likewise.
+	* gnu/classpath/jdwp/event/ClassPrepareEvent.java:
+	(_class): Add type parameter.
+	(ClassPrepareEvent(Thread,class,int)): Likewise.
+	* gnu/classpath/jdwp/event/ClassUnloadEvent.java:
+	(writeData(DataOutputStream)): Don't store result
+	of getDefault() call as unused.  Retain for
+	side-effects.
+	* gnu/classpath/jdwp/event/EventManager.java:
+	(_requests): Add type parameters.
+	(EventManager()): Likewise & use Byte.valueOf
+	rather than new.
+	(getEventRequests(Event)): Likewise and remove
+	unneeded cast.
+	(requestEvent(EventRequest)): Add type parameters,
+	remove unneeded cast and use Integer.valueOf
+	rather than new.
+	(deleteRequest(byte,int)): Add type parameters,
+	use valueOf methods instead of constructors
+	and drop unneeded cast.
+	(clearRequests(byte)): Add type parameters
+	and use Byte.valueOf.
+	(getRequest(byte,int)): Likewise and drop
+	unused cast and use Integer.valueOf.
+	(getRequests(byte)): Add type parameters
+	and use Byte.valueOf.
+	* gnu/classpath/jdwp/event/EventRequest.java:
+	(_filters): Add type parameter.
+	(EventRequest(byte,byte)): Likewise.
+	(EventRequest(int,byte,byte)): Likewise.
+	(addFilter(IEventFilter)): Likewise.
+	(getFilters()): Likewise.
+	(matches(Event)): Likewise and remove unneeded
+	cast.
+	* gnu/classpath/jdwp/event/ExceptionEvent.java:
+	(_klass): Add type parameter.
+	(ExceptionEvent(Throwable,Thread,Location,Location,
+	Class,Object)): Likewise.
+	* gnu/classpath/jdwp/event/filters/ClassMatchFilter.java:
+	(matches(Event)): Add type parameter.
+	* gnu/classpath/jdwp/event/filters/ClassOnlyFilter.java:
+	(matches(Event)): Add type parameters.
+	* gnu/classpath/jdwp/event/filters/ExceptionOnlyFilter.java:
+	(matches(Event)): Add type parameter.
+	* gnu/classpath/jdwp/event/filters/FieldOnlyFilter.java:
+	(FieldOnlyFilter(ReferenceTypeId,ReferenceTypeId)):
+	Avoid throwing a NullPointerException by using new
+	constructors for InvalidClassException and
+	InvalidFieldException.
+	* gnu/classpath/jdwp/exception/InvalidClassException.java:
+	(InvalidClassException()): New constructor for when there is
+	no ID (i.e. null was passed).
+	* gnu/classpath/jdwp/exception/InvalidFieldException.java
+	(InvalidFieldException()): New constructor for when there is
+	no ID (i.e. null was passed).
+	* gnu/classpath/jdwp/id/ClassLoaderId.java:
+	(typeClass): Add type parameter.
+	* gnu/classpath/jdwp/id/ClassObjectId.java,
+	(typeClass): Add type parameter.
+	(getClassObject()): Add type parameters.
+	* gnu/classpath/jdwp/id/JdwpId.java:
+	(_reference): Add type parameter.
+	(getReference()): Likewise.
+	(setReference(SoftReference)): Likewise.
+	* gnu/classpath/jdwp/id/NullObjectId.java:
+	(typeClass): Add type parameter.
+	(NullObjectId()): Change type parameter to same
+	used by superclass.
+	* gnu/classpath/jdwp/id/ObjectId.java:
+	(typeClass): Add type parameter.
+	* gnu/classpath/jdwp/id/ReferenceTypeId.java:
+	(getType()): Add type parameters.
+	* gnu/classpath/jdwp/id/StringId.java,
+	* gnu/classpath/jdwp/id/ThreadGroupId.java,
+	* gnu/classpath/jdwp/id/ThreadId.java:
+	(typeClass): Add type parameter.
+	* gnu/classpath/jdwp/processor/ArrayReferenceCommandSet.java:
+	(executeGetvalues(ByteBuffer,DataOutputStream)):
+	Add type parameter.
+	(executeSetValues(ByteBuffer,DataOutputStream)): Likewise.
+	* gnu/classpath/jdwp/processor/ArrayTypeCommandSet.java:
+	(executeNewInstance(ByteBuffer,DataOutputStream)): Add type
+	parameters.
+	* gnu/classpath/jdwp/processor/ClassLoaderReferenceCommandSet.java:
+	(executeVisibleClasses(ByteBuffer,DataOutputStream)):
+	Add type parameters.  Hide warnings from VM layer for now.
+	* gnu/classpath/jdwp/processor/ClassObjectReferenceCommandSet.java:
+	(executeReflectedType(ByteBuffer,DataOutputStream)): Add
+	type parameter.
+	* gnu/classpath/jdwp/processor/ClassTypeCommandSet.java:
+	(executeSuperclass(ByteBuffer,DataOutputStream)): Add
+	type parameter.
+	(executeSetValues(ByteBuffer,DataOutputStream)):
+	Call readReferenceTypeId only for side effect of changing
+	the ByteBuffer.  Result not needed.
+	(invokeMethod(ByteBuffer)): Add type parameter.
+	* gnu/classpath/jdwp/processor/MethodCommandSet.java:
+	(executeLineTable(ByteBuffer,DataOutputStream)): Add type
+	parameter.
+	(executeVariableTable(ByteBuffer,DataOutputStream)): Likewise.
+	(executeByteCodes(ByteBuffer,DataOutputStream)): Likewise.
+	* gnu/classpath/jdwp/processor/ObjectReferenceCommandSet.java:
+	(executeReferenceType(ByteBuffer,DataOutputStream)): Add type
+	parameter.
+	(executeInvokeMethod(ByteBuffer,DataOutputStream)): Likewise.
+	* gnu/classpath/jdwp/processor/PacketProcessor.java:
+	Add type parameter to implemented interface.
+	(run()): Change return type to match type parameter.
+	* gnu/classpath/jdwp/processor/ReferenceTypeCommandSet.java:
+	(executeClassLoader(ByteBuffer,DataOutputStream)): Add type
+	parameter.
+	(executeModifiers(ByteBuffer,DataOutputStream)): Likewise.
+	(executeFields(ByteBuffer,DataOutputStream)): Likewise.
+	(executeMethods(ByteBuffer,DataOutputStream)): Likewise.
+	(executeGetValues(ByteBuffer,DataOutputStream)): Likewise.
+	(executeSourceFile(ByteBuffer,DataOutputStream)): Likewise.
+	(executeNestedTypes(ByteBuffer,DataOutputStream)): Add type
+	parameters.
+	(executeStatus(ByteBuffer,DataOutputStream)): Add type parameter.
+	(executeInterfaces(ByteBuffer,DataOutputStream)): Add type
+	parameters.
+	(executeClassObject(ByteBuffer,DataOutputStream)): Add type parameter.
+	* gnu/classpath/jdwp/processor/StackFrameCommandSet.java:
+	(runCommand(ByteBuffer,DataOutputStream,byte)): Remove
+	unused keepRunning variable.
+	* gnu/classpath/jdwp/processor/ThreadReferenceCommandSet.java:
+	(executeFrames(ByteBuffer,DataOutputStream)): Add type parameter,
+	suppressing warnings from VM layer until fixed.  Remove
+	unnecessary cast.
+	* gnu/classpath/jdwp/processor/VirtualMachineCommandSet.java:
+	(executeClassesBySignature(ByteBuffer,DataOutputStream)):
+	Add type parameters, suppressing warnings from VM layer.
+	(executeAllClasses(ByteBuffer,DataOutputStream)): Likewise.
+	(executeRedefineClasses(ByteBuffer,DataOutputStream)):
+	Add type parameter.
+	* gnu/classpath/jdwp/transport/ITransport.java:
+	(configure(HashMap)): Add type parameters.
+	* gnu/classpath/jdwp/transport/JdwpConnection.java:
+	(_commandQueue): Add type parameter.
+	(JdwpConnection(ThreadGroup,ITransport)): Likewise.
+	(getPacket()): Remove unnecessary cast.
+	* gnu/classpath/jdwp/transport/JdwpPacket.java:
+	(fromBytes(byte[])): Add type parameter.
+	* gnu/classpath/jdwp/transport/SocketTransport.java:
+	(configure(HashMap)): Add type parameters.  Remove
+	unnecessary cast.
+	* gnu/classpath/jdwp/transport/TransportFactory.java:
+	(clazz): Add type parameter.
+	(TransportMethod(String,Class)): Likewise.
+	(newInstance(HashMap)): Add type parameters.  Remove
+	unnecessary cast.
+	* gnu/classpath/jdwp/util/Location.java:
+	(Location(ByteBuffer)): Don't store return value of
+	first bb.get() call as unneeded.  Add type parameter.
+	* gnu/classpath/jdwp/util/Signature.java:
+	(computeClassSignature(Class)): Add type parameter.
+	(_computeSignature(Class,Class[])): Likewise.
+	(_addToSignature(CPStringBuilder,Class)): Likewise.
+	* gnu/classpath/jdwp/value/Value.java:
+	(getUntaggedObject(ByteBuffer,Class)): Add type
+	parameter.
+	* gnu/classpath/jdwp/value/ValueFactory.java:
+	(createFromUntagged(ByteBuffer,Class)): Add type
+	parameter.
+	(getTagForClass(Class)): Likewise.
+	(createFromObject(Object,Class)): Likewise.
+
 2013-02-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* gnu/classpath/ServiceFactory.java:
