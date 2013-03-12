@@ -1,3 +1,8 @@
+2013-03-12  Pekka Enberg <penberg@kernel.org>
+
+	* autogen.sh:
+	Check that gettext.m4 is installed.
+
 2013-03-09  Pekka Enberg <penberg@kernel.org>
 
 	* .gitignore: Exclude autogen-generated files.
