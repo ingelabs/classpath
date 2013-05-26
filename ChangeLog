@@ -1,5 +1,22 @@
 2013-05-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	* gnu/java/net/loader/JarURLLoader.java:
+	(indexSet): Add type parameter.
+	(JarURLLoader(URLClassLoader,URLStreamHandlerCache,
+	URLStreamHandlerFactory,URL,URL,Set)): Add type
+	parameter to Set.
+	* gnu/java/net/loader/URLLoader.java:
+	(getClass(String)): Add type parameter to return type.
+	* gnu/java/net/protocol/http/HTTPConnection.java:
+	(run()): Remove redundant cast.
+	(get(String,int,boolean,int,int)): Add type parameter
+	to ListIterator and drop cast.
+	(removeOldest()): Remove redundant cast.
+	(getSocket()): Add type parameter to Iterator and
+	drop cast.
+
+2013-05-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* THANKYOU: List Carl Ritson.
 
 2013-04-25  Carl Ritson  <C.G.Ritson@kent.ac.uk>
