@@ -1,3 +1,114 @@
+2013-02-17  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	Fix warnings.
+	* java/util/TreeMap.java:
+	(nil): Add type parameters.
+	(root): Likewise.
+	(left): Don't set to nil here.
+	(right): Likewise.
+	(parent): Likewise.
+	(Node(K,V,int)): Set left, right and parent
+	here using correctly typed nil.
+	(TreeMap()): Cast Comparator with type parameters.
+	(TreeMap(Map)): Likewise.
+	(TreeMap(SortedMap)): Remove unused variable.  Use
+	for-each loop and typed nil.
+	(clone()): Separate cast and cloning.  Add type
+	parameters to node and cnode.
+	(containsKey(Object)): Cast key.
+	(containsvalue()): Add type parameters to node.
+	(get(Object)): Cast key.
+	(headMap(K,boolean)): Likewise.
+	(put(K,V)): Cast nil before assigning to parent.
+	Add type parameters to n.
+	(putAll(Map)): Rewrite using for-each loop.
+	(remove(Object)): Cast key.
+	(tailMap(K,boolean)): Likewise.
+	(values()): Add type parameter to iterator.
+	(compare(K,K)): Suppress warnings.
+	(fabricateTree(int)): Use typed nil.
+	Add type parameters to root, row, parent, last,
+	left, right and next.
+	(firstNode()): Add type parameters to node.
+	(highestLessThan(K,boolean)): Use typed nil.
+	(insertFixup(Node)): Add type parameters to
+	uncle.
+	(lastNode()): Add type parameters to node.
+	(lowestGreaterThan(K,boolean,boolean)):
+	Use typed nil.
+	(predecessor(Node)): Add type parameters to
+	parent.
+	(putFromObjStream(ObjectInputStream,int,V)):
+	Pass value with type rather than using String.
+	Add type parameter to node.
+	(putKeysLinear(Iterator,int,V)): Pass in value
+	rather than using empty string.
+	(readObject(ObjectInputStream)): Call putFromObjStream
+	with null rather than true.
+	(removeNode(Node)): Add type parameters to parent.
+	(rotateLeft(Node)): Add type parameters to child.
+	(rotateRight(Node)): Likewise.
+	(writeObject(ObjectOutputStream)): Add type parameters
+	to node.
+	(TreeIterator): Add type parameter.
+	(TreeIterator.last): Likewise.
+	(TreeIterator.next): Likewise.
+	(TreeIterator.max): Likewise.
+	(TreeIterator.TreeIterator(int)): Cast nil.
+	(TreeIterator.TreeIterator(int,Node,Node)): Add type
+	parameters.
+	(TreeIterator.next()): Suppress warnings and cast to
+	correct type.
+	(descendingMap()): Add type parameters.
+	(clear()): Add type parameters to next, max and current.
+	(SubMap.containsKey(Object)): Fix casting of key.
+	(SubMap.containsValue(Object)): Add type parameters to
+	node and max.
+	(SubMap.get(Object)): Fix casting of key.
+	(SubMap.remove(Object)): Likewise.
+	(SubMap.size()): Add type parameters to node and max.
+	(SubMap.values()): Add type parameter to AbstractCollection,
+	first, max and TreeIterator.
+	(SubMap.KeySet.iterator()): Add type parameters to first and
+	max.
+	(SubMap.KeySet.contains(Object)): Fix casting of key.
+	(SubMap.KeySet.remove(Object)): Likewise.
+	(SubMap.NavigableKeySet.descendingSet()): Add type parameter
+	to DescendingSet.
+	(SubMap.EntrySet.iterator()): Add type parameters to first
+	and max.
+	(SubMap.EntrySet.contains(Object)): Fix casting of entry.
+	(SubMap.EntrySet.remove(Object)): Likewise.
+	(SubMap.NavigableEntrySet.descendingSet()): Add type
+	parameter to DescendingSet.
+	(SubMap.NavigableEntrySet.tailSet(Entry,boolean)): Return
+	entry set, not key set.
+	(DescendingMap.headMap(DK,boolean)): Add type parameters.
+	(DescendingMap.subMap(DK,boolean,DK,boolean)): Likewise.
+	(DescendingMap.tailMap(Dk,boolean)): Likewise.
+	(DescendingMap.values()): Add type parameter to
+	AbstractCollection.
+	(KeySet.iterator()): Add type parameter to TreeIterator.
+	(KeySet.remove(Object)): Fix casting of key.
+	(NavigableKeySet.headSet(D,boolean)): Add type parameter.
+	(NavigableKeySet.subSet(D,boolean,D,boolean)): Likewise.
+	(NavigableKeySet.tailSet(D,boolean)): Likewise.
+	(NavigableKeySet.toArray()): Suppress warnings on cast.
+	(NavigableKeySet.toArray(T[])): Likewise.
+	(EntrySet.iterator()): Add type parameter to TreeIterator.
+	(EntrySet.contains(Object)): Fix casting of entry.
+	(EntrySet.remove(Object)): Likewise.
+	(NavigableEntrySet.descendingSet()): Add type
+	parameter to DescendingSet.
+	(NavigableEntrySet.tailSet(Entry,boolean)): Return
+	entry set, not key set.
+	* java/util/TreeSet.java:
+	(TreeSet(SortedSet)): Explicitly pass empty String to
+	putKeysLinear as it no longer defaults to this.
+	(readObject(ObjectInputStream)): Pass empty String rather
+	than false, which will in turn make "" == null return false
+	in putFromObjStream.
+
 2013-03-12  Pekka Enberg <penberg@kernel.org>
 
 	* autogen.sh:
