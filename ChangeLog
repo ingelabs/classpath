@@ -1,3 +1,14 @@
+2013-05-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* THANKYOU: List Carl Ritson.
+
+2013-04-25  Carl Ritson  <C.G.Ritson@kent.ac.uk>
+
+	* vm/reference/java/lang/VMProcess.java,
+	(ProcessThread.run()): Use notifyAll not notify.
+	(ProcessThread.spawn()): Likewise.
+	(VMProcess(String[],String[],File,boolean)): Likewise.
+
 2013-02-17  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	Fix warnings.
