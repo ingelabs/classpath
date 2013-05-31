@@ -1,5 +1,18 @@
 2013-05-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	* gnu/java/security/PolicyFile.java:
+	(fs): Remove unnecessary cast.
+	(DEFAULT_POLICY): Likewise.
+	(DEFAULT_USER_POLICY): Likewise.
+	(cs2pc): Add type parameters.
+	(PolicyFile): Likewise.
+	(getPermissions(CodeSource)): Use for-each loops
+	and remove unnecessary casts.
+	(refresh()): Add missing type parameters.
+	(parse(URL)): Likewise and remove unnecessary casts.
+
+2013-05-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* gnu/java/net/loader/JarURLLoader.java:
 	(indexSet): Add type parameter.
 	(JarURLLoader(URLClassLoader,URLStreamHandlerCache,

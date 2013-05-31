@@ -153,23 +153,23 @@ public final class PolicyFile extends Policy
   protected static final Logger logger = SystemLogger.SYSTEM;
   // Added to cut redundant AccessController.doPrivileged calls
   private static GetPropertyAction prop = new GetPropertyAction("file.separator");
-  private static final String fs = (String) AccessController.doPrivileged(prop);
+  private static final String fs = AccessController.doPrivileged(prop);
 
   private static final String DEFAULT_POLICY =
-    (String) AccessController.doPrivileged(prop.setParameters("java.home"))
+    AccessController.doPrivileged(prop.setParameters("java.home"))
     + fs + "lib" + fs + "security" + fs + "java.policy";
   private static final String DEFAULT_USER_POLICY =
-    (String) AccessController.doPrivileged(prop.setParameters("user.home")) +
+    AccessController.doPrivileged(prop.setParameters("user.home")) +
     fs + ".java.policy";
 
-  private final Map cs2pc;
+  private final Map<CodeSource,PermissionCollection> cs2pc;
 
   // Constructors.
   // -------------------------------------------------------------------------
 
   public PolicyFile()
   {
-    cs2pc = new HashMap();
+    cs2pc = new HashMap<CodeSource,PermissionCollection>();
     refresh();
   }
 
@@ -179,18 +179,17 @@ public final class PolicyFile extends Policy
   public PermissionCollection getPermissions(CodeSource codeSource)
   {
     Permissions perms = new Permissions();
-    for (Iterator it = cs2pc.entrySet().iterator(); it.hasNext(); )
+    for (Map.Entry<CodeSource,PermissionCollection> e : cs2pc.entrySet())
       {
-        Map.Entry e = (Map.Entry) it.next();
-        CodeSource cs = (CodeSource) e.getKey();
+        CodeSource cs = e.getKey();
         if (cs.implies(codeSource))
           {
             logger.log (Component.POLICY, "{0} -> {1}", new Object[]
               { cs, codeSource });
-            PermissionCollection pc = (PermissionCollection) e.getValue();
-            for (Enumeration ee = pc.elements(); ee.hasMoreElements(); )
+            PermissionCollection pc = e.getValue();
+            for (Enumeration<Permission> ee = pc.elements(); ee.hasMoreElements(); )
               {
-                perms.add((Permission) ee.nextElement());
+                perms.add(ee.nextElement());
               }
           }
         else
@@ -205,16 +204,16 @@ public final class PolicyFile extends Policy
   public void refresh()
   {
     cs2pc.clear();
-    final List policyFiles = new LinkedList();
+    final List<URL> policyFiles = new LinkedList<URL>();
     try
       {
         policyFiles.add (new File (DEFAULT_POLICY).toURL());
         policyFiles.add (new File (DEFAULT_USER_POLICY).toURL ());
 
         AccessController.doPrivileged(
-          new PrivilegedExceptionAction()
+          new PrivilegedExceptionAction<Void>()
           {
-            public Object run() throws Exception
+            public Void run() throws Exception
             {
               String allow = Security.getProperty ("policy.allowSystemProperty");
               if (allow == null || Boolean.getBoolean (allow))
@@ -257,11 +256,11 @@ public final class PolicyFile extends Policy
 
     logger.log (Component.POLICY, "building policy from URLs {0}",
                 policyFiles);
-    for (Iterator it = policyFiles.iterator(); it.hasNext(); )
+    for (Iterator<URL> it = policyFiles.iterator(); it.hasNext(); )
       {
         try
           {
-            URL url = (URL) it.next();
+            URL url = it.next();
             parse(url);
           }
         catch (IOException ioe)
@@ -314,9 +313,9 @@ public final class PolicyFile extends Policy
 
     int tok;
     int state = STATE_BEGIN;
-    List keystores = new LinkedList();
+    List<KeyStore> keystores = new LinkedList<KeyStore>();
     URL currentBase = null;
-    List currentCerts = new LinkedList();
+    List<Certificate> currentCerts = new LinkedList<Certificate>();
     Permissions currentPerms = new Permissions();
     while ((tok = in.nextToken()) != StreamTokenizer.TT_EOF)
       {
@@ -335,7 +334,7 @@ public final class PolicyFile extends Policy
             currentPerms.setReadOnly();
             Certificate[] c = null;
             if (!currentCerts.isEmpty())
-              c = (Certificate[]) currentCerts.toArray(new Certificate[currentCerts.size()]);
+              c = currentCerts.toArray(new Certificate[currentCerts.size()]);
             cs2pc.put(new CodeSource(currentBase, c), currentPerms);
             currentCerts.clear();
             currentPerms = new Permissions();
@@ -399,9 +398,9 @@ public final class PolicyFile extends Policy
             while (st.hasMoreTokens())
               {
                 String alias = st.nextToken();
-                for (Iterator it = keystores.iterator(); it.hasNext(); )
+                for (Iterator<KeyStore> it = keystores.iterator(); it.hasNext(); )
                   {
-                    KeyStore keystore = (KeyStore) it.next();
+                    KeyStore keystore = it.next();
                     try
                       {
                         if (keystore.isCertificateEntry(alias))
@@ -457,8 +456,8 @@ public final class PolicyFile extends Policy
                 Principal p = null;
                 try
                   {
-                    Class pclass = Class.forName(in.sval);
-                    Constructor c =
+                    Class<?> pclass = Class.forName(in.sval);
+                    Constructor<?> c =
                       pclass.getConstructor(new Class[] { String.class });
                     p = (Principal) c.newInstance(new Object[] { name });
                   }
@@ -466,14 +465,14 @@ public final class PolicyFile extends Policy
                   {
                     error(url, in, x.toString());
                   }
-                for (Iterator it = keystores.iterator(); it.hasNext(); )
+                for (Iterator<KeyStore> it = keystores.iterator(); it.hasNext(); )
                   {
-                    KeyStore ks = (KeyStore) it.next();
+                    KeyStore ks = it.next();
                     try
                       {
-                        for (Enumeration e = ks.aliases(); e.hasMoreElements(); )
+                        for (Enumeration<String> e = ks.aliases(); e.hasMoreElements(); )
                           {
-                            String alias = (String) e.nextElement();
+                            String alias = e.nextElement();
                             if (ks.isCertificateEntry(alias))
                               {
                                 Certificate cert = ks.getCertificate(alias);
@@ -494,9 +493,9 @@ public final class PolicyFile extends Policy
             else if (tok == '"' || tok == '\'')
               {
                 String alias = in.sval;
-                for (Iterator it = keystores.iterator(); it.hasNext(); )
+                for (Iterator<KeyStore> it = keystores.iterator(); it.hasNext(); )
                   {
-                    KeyStore ks = (KeyStore) it.next();
+                    KeyStore ks = it.next();
                     try
                       {
                         if (ks.isCertificateEntry(alias))
@@ -522,7 +521,7 @@ public final class PolicyFile extends Policy
             if (tok != StreamTokenizer.TT_WORD)
               error(url, in, "expecting permission class name");
             String className = in.sval;
-            Class clazz = null;
+            Class<?> clazz = null;
             try
               {
                 clazz = Class.forName(className);
@@ -563,7 +562,7 @@ public final class PolicyFile extends Policy
                   }
                 try
                   {
-                    Constructor c =
+                    Constructor<?> c =
                       clazz.getConstructor(new Class[] { String.class });
                     currentPerms.add((Permission) c.newInstance(
                       new Object[] { target }));
@@ -583,7 +582,7 @@ public final class PolicyFile extends Policy
                   error(url, in, "expecting 'signedBy'");
                 try
                   {
-                    Constructor c =
+                    Constructor<?> c =
                       clazz.getConstructor(new Class[] { String.class });
                     currentPerms.add((Permission) c.newInstance(
                       new Object[] { target }));
@@ -601,14 +600,14 @@ public final class PolicyFile extends Policy
             if (clazz == null)
               {
                 currentPerms.add(new UnresolvedPermission(className,
-                  target, action, (Certificate[]) currentCerts.toArray(new Certificate[currentCerts.size()])));
+                  target, action, (currentCerts.toArray(new Certificate[currentCerts.size()])));
                 continue;
               }
             else
               {
                 try
                   {
-                    Constructor c = clazz.getConstructor(
+                    Constructor<?> c = clazz.getConstructor(
                       new Class[] { String.class, String.class });
                     currentPerms.add((Permission) c.newInstance(
                       new Object[] { target, action }));
