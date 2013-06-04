@@ -600,7 +600,7 @@ public final class PolicyFile extends Policy
             if (clazz == null)
               {
                 currentPerms.add(new UnresolvedPermission(className,
-                  target, action, (currentCerts.toArray(new Certificate[currentCerts.size()])));
+		  target, action, (currentCerts.toArray(new Certificate[currentCerts.size()]))));
                 continue;
               }
             else
