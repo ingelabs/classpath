@@ -1,5 +1,11 @@
 2013-06-06  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	* examples/gnu/classpath/examples/awt/AicasGraphicsBenchmark.java:
+	(AicasGraphicsBenchmark()): Use absolute paths
+	to resources so they work within the zip file.
+
+2013-06-06  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* native/jni/gstreamer-peer/gst_classpath_src.c:
 	Define GLIB_DISABLE_DEPRECATION_WARNINGS so
 	the use of GStaticRecMutex in GStreamer still works.
