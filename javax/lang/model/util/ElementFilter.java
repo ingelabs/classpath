@@ -37,9 +37,13 @@ exception statement from your version. */
 
 package javax.lang.model.util;
 
+import java.util.AbstractSequentialList;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -130,6 +134,70 @@ public class ElementFilter
   }
 
   /**
+   * Returns a list containing just the {@link TypeElement}s
+   * held in {@code elements}.
+   *
+   * @param elements the elements to filter.
+   * @return the filtered list.
+   */
+  public static List<TypeElement> typesIn(Iterable<? extends Element> elements)
+  {
+    return new FilteredList<TypeElement>(elements, ElementKind.CLASS,
+					 ElementKind.INTERFACE,
+					 ElementKind.ENUM,
+					 ElementKind.ANNOTATION_TYPE);
+  }
+
+  /**
+   * Returns a list containing just the constructors
+   * held in {@code elements}.
+   *
+   * @param elements the elements to filter.
+   * @return the filtered list.
+   */
+  public static List<ExecutableElement> constructorsIn(Iterable<? extends Element> elements)
+  {
+    return new FilteredList<ExecutableElement>(elements, ElementKind.CONSTRUCTOR);
+  }
+
+  /**
+   * Returns a list containing just the fields
+   * held in {@code elements}.
+   *
+   * @param elements the elements to filter.
+   * @return the filtered list.
+   */
+  public static List<VariableElement> fieldsIn(Iterable<? extends Element> elements)
+  {
+    return new FilteredList<VariableElement>(elements, ElementKind.FIELD,
+					    ElementKind.ENUM_CONSTANT);
+  }
+
+  /**
+   * Returns a list containing just the methods
+   * held in {@code elements}.
+   *
+   * @param elements the elements to filter.
+   * @return the filtered list.
+   */
+  public static List<ExecutableElement> methodsIn(Iterable<? extends Element> elements)
+  {
+    return new FilteredList<ExecutableElement>(elements, ElementKind.METHOD);
+  }
+
+  /**
+   * Returns a list containing just the packages
+   * held in {@code elements}.
+   *
+   * @param elements the elements to filter.
+   * @return the filtered list.
+   */
+  public static List<PackageElement> packagesIn(Iterable<? extends Element> elements)
+  {
+    return new FilteredList<PackageElement>(elements, ElementKind.PACKAGE);
+  }
+
+  /**
    * Provides a filtered view of the given set, returning only
    * instances which are of one of the specified kinds.
    */
@@ -147,9 +215,8 @@ public class ElementFilter
     private ElementKind[] kinds;
 
     /**
-     * Constructs a new filtered set, returning
-     * only instances of {@code clazz} from
-     * {@code elements}.
+     * Constructs a new filtered set, returning only instances of {@code elements}
+     * which match one of the specified {@code kinds}.
      *
      * @param elements the set to filter.
      * @param kinds the kinds to accept
@@ -441,7 +508,7 @@ public class ElementFilter
    * Provides a filtered view of the given iterator, returning only
    * instances which are of one of the specified kinds.
    */
-  private static final class FilteredIterator<E extends Element> implements Iterator<E>
+  private static class FilteredIterator<E extends Element> implements Iterator<E>
   {
 
     /**
@@ -452,7 +519,7 @@ public class ElementFilter
     /**
      * The kinds accepted by this filter.
      */
-    private ElementKind[] kinds;
+    protected ElementKind[] kinds;
 
     /**
      * Holds the next object if we had to retrieve it
@@ -522,5 +589,229 @@ public class ElementFilter
       iterator.remove();
     }
   }
+
+  /**
+   * Provides a filtered view of the given {@link Iterable}, returning only
+   * instances which are of one of the specified kinds.
+   */
+  private static final class FilteredList<E extends Element> extends AbstractSequentialList<E>
+  {
+    /**
+     * The iterable being filtered.
+     */
+    private Iterable<? extends Element> elements;
+    
+    /**
+     * The kinds accepted by this filter.
+     */
+    private ElementKind[] kinds;
+
+    /**
+     * Constructs a new filtered list, returning only instances of {@code elements}
+     * which match one of the specified {@code kinds}.
+     *
+     * @param elements the set to filter.
+     * @param kinds the kinds to accept
+     * @throws NullPointerException if the set contains a null element.
+     */
+    public FilteredList(Iterable<? extends Element> elements, ElementKind... kinds)
+    {
+      super();
+      this.elements = elements;
+      this.kinds = kinds;
+      Arrays.sort(kinds);
+      for (Element e : elements)
+	if (e == null)
+	  throw new NullPointerException("Sets can not contain null values.");
+    }
+
+    /**
+     * Returns a list iterator over the list's elements,
+     * starting at the specified position.
+     *
+     * @param index the index to start at.
+     * @return the iterator.
+     */
+    @Override
+    public ListIterator<E> listIterator(int index)
+    {
+      return new FilteredListIterator<E>(elements.iterator(), index, kinds);
+    }
+
+    /**
+     * Returns the size of this list.  This is the number of elements
+     * returned by the underlying iterable,  minus any elements which
+     * aren't of one of the specified kinds.
+     *
+     * @return the size of the set.
+     */
+    @Override
+    public int size()
+    {
+      int count = 0;
+      for (Element elem : elements)
+	if (Arrays.binarySearch(kinds, elem.getKind()) >= 0)
+	  ++count;
+      return count;
+    }
+
+  }
+
+  /**
+   * Provides a filtered view of the given iterator, returning only
+   * instances which are of one of the specified kinds.
+   */
+  private static final class FilteredListIterator<E extends Element>
+    extends FilteredIterator<E> implements ListIterator<E>
+  {
+
+    /**
+     * References a {@code ListIterator} if the supplied
+     * iterator is an instance of one.
+     */
+    private ListIterator<Element> listIterator;
+
+    /**
+     * The current position.
+     */
+    private int index;
+
+    /**
+     * Cache of returned elements.
+     */
+    private List<E> cache;
+
+    /**
+     * Constructs a new filtered iterator which only returns
+     * elements that are of one of the specified kinds.
+     *
+     * @param iterator the iterator to filter.
+     * @param kinds the kinds to accept.  This is assumed
+     *              to be sorted.
+     */
+    @SuppressWarnings("unchecked")
+    public FilteredListIterator(Iterator<? extends Element> iterator,
+				int index, ElementKind... kinds)
+    {
+      super(((Iterator<Element>) iterator), kinds);
+      if (iterator instanceof ListIterator)
+	listIterator = (ListIterator<Element>) iterator;
+      index = 0;
+      cache = new ArrayList<E>();
+      for (int a = 0; a < index; ++a)
+	next();
+    }
+
+    /**
+     * Returns the next element in the iteration which is of
+     * one of the specified kinds.
+     *
+     * @return the next element.
+     */
+    @Override
+    public E next()
+    {
+      index++;
+      if (index < cache.size())
+	return cache.get(index);
+      E e = super.next();
+      cache.add(e);
+      return e;
+    }
+
+    /**
+     * Insert the specified element into the list at this position,
+     * if possible.
+     *
+     * @param e the element to add.
+     * @throws UnsupportedOperationException if the underlying iterator
+     *         does not provide {@code add}.
+     * @throws IllegalArgumentException if the element is not of a
+     *         supported kind.
+     */
+    @Override
+    public void add(E e)
+    {
+      if (listIterator == null)
+	throw new UnsupportedOperationException("No list iterator available.");
+      if (Arrays.binarySearch(kinds, e) < 0)
+	throw new IllegalArgumentException("Element of wrong kind.");
+      listIterator.add(e);
+    }
+
+    /**
+     * Returns true if an element would be returned by calling {@code #previous()}.
+     *
+     * @return true if there are elements before this one.
+     */
+    @Override
+    public boolean hasPrevious()
+    {
+      return index > 0;
+    }
+
+    /**
+     * Returns the previous element.
+     *
+     * @return the previous element.
+     * @throws NoSuchElementException if there is no previous element.
+     */
+    @Override
+    public E previous()
+    {
+      index--;
+      if (index >= 0)
+	return cache.get(index);
+      else
+	throw new NoSuchElementException("No previous element.");
+    }
+
+    /**
+     * Returns the index of the next element to be returned or the size of the list
+     * if we are at the end.
+     *
+     * @return the next index.
+     */
+    @Override
+    public int nextIndex()
+    {
+      return index + 1;
+    }
+
+    /**
+     * Returns the index of the element returned by the next call to {@code #previous()}
+     * or -1 if at the front of the list.
+     *
+     * @return the previous index.
+     */
+    @Override
+    public int previousIndex()
+    {
+      return index - 1;
+    }
+
+    /**
+     * Sets the specified element into the list at this position,
+     * if possible.
+     *
+     * @param e the new element to use.
+     * @throws UnsupportedOperationException if the underlying iterator
+     *         does not provide {@code set}.
+     * @throws IllegalArgumentException if the element is not of a
+     *         supported kind.
+     */
+    @Override
+    public void set(E e)
+    {
+      if (listIterator == null)
+	throw new UnsupportedOperationException("No list iterator available.");
+      if (Arrays.binarySearch(kinds, e) < 0)
+	throw new IllegalArgumentException("Element of wrong kind.");
+      listIterator.set(e);
+    }
+
+  }
+
 }
+
 
