@@ -75,6 +75,8 @@ public enum ElementKind
   PACKAGE,
   /** A parameter passed to a method or constructor. */
   PARAMETER,
+  /** A resource variable. */
+  RESOURCE_VARIABLE,
   /** A static initializer. */
   STATIC_INIT,
   /** A type parameter. */

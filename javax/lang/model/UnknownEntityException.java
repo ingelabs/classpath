@@ -1,5 +1,5 @@
-/* UnknownAnnotationValueException.java -- Thrown by an unknown annotation value.
-   Copyright (C) 2012, 2013  Free Software Foundation, Inc.
+/* UnknownEntityException.java -- Thrown by an unknown entity.
+   Copyright (C) 2013  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -35,75 +35,34 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package javax.lang.model.element;
-
-import javax.lang.model.UnknownEntityException;
+package javax.lang.model;
 
 /**
- * Thrown when an unknown annotation value is encountered,
- * usually by a {@link AnnotationValueVisitor}.
+ * Thrown when an unknown entity is encountered.  This class
+ * acts as a superclass for more specific exceptions and allows
+ * all such exceptions to be handled easily in the same catch
+ * block.  This exception is also used if the language changes
+ * and an element is encountered which is not handled by a more
+ * specific exception.
  *
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
- * @since 1.6
- * @see AnnotationValueVisitor#visitUnknown(AnnotationValue,P)
+ * @since 1.7
  */
-public class UnknownAnnotationValueException
-  extends UnknownEntityException
+public class UnknownEntityException
+  extends RuntimeException
 {
 
   private static final long serialVersionUID = 269L;
 
   /**
-   * The unknown annotation value.
-   */
-  private AnnotationValue annValue;
-
-  /**
-   * The additional parameter.
-   */
-  private Object param;
-
-  /**
-   * Constructs a new {@code UnknownAnnotationValueException}
-   * for the specified annotation value.  An additional
-   * object may also be passed to give further context as
-   * to where the exception occurred, such as the additional parameter
-   * used by visitor classes.
+   * Constructs a new {@code UnknownEntityException}
+   * with the specified message.
    *
-   * @param annValue the unknown annotation value or {@code null}.
-   * @param param the additional parameter or {@code null}.
+   * @param message the message to use.
    */
-  public UnknownAnnotationValueException(AnnotationValue annValue,
-					 Object param)
+  protected UnknownEntityException(String message)
   {
-    super("The annotation value " + annValue + " is not recognised.");
-    this.annValue = annValue;
-    this.param = param;
+      super(message);
   }
-
-  /**
-   * Returns the additional parameter or {@code null} if
-   * unavailable.
-   *
-   * @return the additional parameter.
-   */
-  public Object getArgument()
-  {
-    return param;
-  }
-
-  /**
-   * Returns the unknown annotation value or {@code null}
-   * if unavailable.  The value may be {@code null} if
-   * the value is not {@link java.io.Serializable} but the
-   * exception has been serialized and read back in.
-   *
-   * @return the unknown annotation value.
-   */
-  public AnnotationValue getUnknownAnnotationValue()
-  {
-    return annValue;
-  }
-
 
 }

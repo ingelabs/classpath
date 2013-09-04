@@ -1,5 +1,5 @@
 /* TypeVisitor.java -- A visitor of types.
-   Copyright (C) 2012  Free Software Foundation, Inc.
+   Copyright (C) 2012, 2013  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -184,5 +184,16 @@ public interface TypeVisitor<R,P>
    * @return the return value specific to the visitor.
    */
   R visitWildcard(WildcardType type, P param);
+
+  /**
+   * Visits a union type.
+   *
+   * @param type the union type to visit.
+   * @param param the additional parameter, specific to the visitor.
+   *        May be {@code null} if permitted by the visitor.
+   * @return the return value specific to the visitor.
+   * @since 1.7
+   */
+  R visitUnion(UnionType type, P param);
 
 }

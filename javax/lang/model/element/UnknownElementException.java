@@ -1,5 +1,5 @@
 /* UnknownElementException.java -- Thrown by an unknown element.
-   Copyright (C) 2012  Free Software Foundation, Inc.
+   Copyright (C) 2012, 2013  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package javax.lang.model.element;
 
+import javax.lang.model.UnknownEntityException;
+
 /**
  * Thrown when an unknown element is encountered,
  * usually by a {@link ElementVisitor}.
@@ -46,7 +48,7 @@ package javax.lang.model.element;
  * @see ElementVisitor#visitUnknown(Element,P)
  */
 public class UnknownElementException
-  extends RuntimeException
+  extends UnknownEntityException
 {
 
   private static final long serialVersionUID = 269L;
@@ -73,7 +75,7 @@ public class UnknownElementException
    */
   public UnknownElementException(Element element, Object param)
   {
-    super("The element " + element + " is not recognised,");
+    super("The element " + element + " is not recognised.");
     this.element = element;
     this.param = param;
   }

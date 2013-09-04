@@ -1,5 +1,5 @@
-/* UnknownTypeException.java -- Thrown by an unknown type.
-   Copyright (C) 2012, 2013  Free Software Foundation, Inc.
+/* QualifiedNameable.java -- Represents a element with a qualified name.
+   Copyright (C) 2013  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -35,74 +35,23 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package javax.lang.model.type;
-
-import javax.lang.model.UnknownEntityException;
+package javax.lang.model.element;
 
 /**
- * Thrown when an unknown type is encountered,
- * usually by a {@link TypeVisitor}.
+ * Represents a program element that has a qualified name.
  *
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
- * @since 1.6
- * @see TypeVisitor#visitUnknown(TypeMirror,P)
+ * @since 1.7
  */
-public class UnknownTypeException
-  extends UnknownEntityException
+public interface QualifiedNameable
+  extends Element
 {
 
-  private static final long serialVersionUID = 269L;
-
   /**
-   * The unknown type.
-   */
-  private TypeMirror type;
-
-  /**
-   * The additional parameter.
-   */
-  private Object param;
-
-  /**
-   * Constructs a new {@code UnknownTypeException}
-   * for the specified type.  An additional
-   * object may also be passed to give further context as
-   * to where the exception occurred, such as the additional parameter
-   * used by visitor classes.
+   * Returns the fully qualified name of this element.
    *
-   * @param type the unknown type or {@code null}.
-   * @param param the additional parameter or {@code null}.
+   * @return the qualified name.
    */
-  public UnknownTypeException(TypeMirror type, Object param)
-  {
-    super("The type " + type + " is not recognised.");
-    this.type = type;
-    this.param = param;
-  }
-
-  /**
-   * Returns the additional parameter or {@code null} if
-   * unavailable.
-   *
-   * @return the additional parameter.
-   */
-  public Object getArgument()
-  {
-    return param;
-  }
-
-  /**
-   * Returns the unknown type or {@code null}
-   * if unavailable.  The type may be {@code null} if
-   * the value is not {@link java.io.Serializable} but the
-   * exception has been serialized and read back in.
-   *
-   * @return the unknown type.
-   */
-  public TypeMirror getUnknownType()
-  {
-    return type;
-  }
-
+  Name getQualifiedName();
 
 }

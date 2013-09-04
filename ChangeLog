@@ -1,3 +1,51 @@
+2013-09-04  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/lang/model/SourceVersion.java:
+	(RELEASE_7): New enum value.
+	* javax/lang/model/UnknownEntityException.java:
+	New exception class.
+	(UnknownEntityException(String)): New constructor.
+	* javax/lang/model/element/ElementKind.java:
+	(RESOURCE_VARIABLE): New enum value.
+	* javax/lang/model/element/ExecutableElement.java:
+	Extend mixin interface Parameterizable.
+	* javax/lang/model/element/PackageElement.java:
+	Extend mixin interface QualifiedNameable.
+	* javax/lang/model/element/Parameterizable.java:
+	New interface.
+	(getTypeParameters()): New method.
+	* javax/lang/model/element/QualifiedNameable.java:
+	New interface.
+	(getQualifiedName()): New method.
+	* javax/lang/model/element/TypeElement.java:
+	Extend mixin interfaces Parameterizable and QualifiedNameable.
+	* javax/lang/model/element/UnknownAnnotationValueException.java:
+	Extend UnknownEntityException instead of RuntimeException.
+	(UnknownAnnotationValueException(AnnotationValue,Object)):
+	Call superclass with error message.
+	* javax/lang/model/element/UnknownElementException.java:
+	Extend UnknownEntityException instead of RuntimeException.
+	(UnknownElementException(Element,Object)): End sentence
+	with a full stop, not a comma.
+	* javax/lang/model/type/MirroredTypeException.java:
+	Extend MirroredTypesException instead of RuntimeException.
+	(mirror): Removed.
+	(MirroredTypeException(TypeMIrror)): Store mirror using list
+	in superclass rather than a local variable.
+	(getTypeMirror()): Return first (and only) element from
+	getTypeMirrors().
+	* javax/lang/model/type/TypeKind.java:
+	(UNION): New enum value.
+	* javax/lang/model/type/TypeVisitor.java:
+	(visitUnion(UnionType,P)): New method.
+	* javax/lang/model/type/UnionType.java:
+	New interface.
+	(getAlternatives()): New method.
+	* javax/lang/model/type/UnknownTypeException.java,
+	Extend UnknownEntityException instead of RuntimeException.
+	(UnknownTypeException(TypeMirror,Object)):
+	Call superclass with error message.
+
 2013-08-07  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* doc/cp-tools.texinfo:

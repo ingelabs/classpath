@@ -1,5 +1,5 @@
 /* ExecutableElement.java -- Represents a method, constructor or initialiser.
-   Copyright (C) 2012  Free Software Foundation, Inc.
+   Copyright (C) 2012, 2013  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -51,7 +51,7 @@ import javax.lang.model.type.TypeMirror;
  * @see javax.lang.model.type.ExecutableType
  */
 public interface ExecutableElement
-  extends Element
+  extends Element, Parameterizable
 {
 
   /**

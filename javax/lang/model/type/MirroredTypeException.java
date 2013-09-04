@@ -1,5 +1,5 @@
 /* MirroredTypeException.java -- An attempt to access a TypeMirror's class.
-   Copyright (C) 2012  Free Software Foundation, Inc.
+   Copyright (C) 2012, 2013  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package javax.lang.model.type;
 
+import java.util.Collections;
+
 /**
  * Thrown when an application attempts to access the
  * {@link Class} object corresponding to a {@link TypeMirror}.
@@ -46,15 +48,10 @@ package javax.lang.model.type;
  * @see javax.lang.model.element.Element#getAnnotation(Class)
  */
 public class MirroredTypeException
-  extends RuntimeException
+  extends MirroredTypesException
 {
 
   private static final long serialVersionUID = 269L;
-
-  /**
-   * The type mirror.
-   */
-  private TypeMirror mirror;
 
   /**
    * Constructs a new {@code MirroredTypeException}
@@ -65,7 +62,7 @@ public class MirroredTypeException
    */
   public MirroredTypeException(TypeMirror mirror)
   {
-    this.mirror = mirror;
+    super(Collections.singletonList(mirror));
   }
 
   /**
@@ -78,7 +75,7 @@ public class MirroredTypeException
    */
   public TypeMirror getTypeMirror()
   {
-    return mirror;
+    return getTypeMirrors().get(0);
   }
 
 

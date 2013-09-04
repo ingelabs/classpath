@@ -1,5 +1,5 @@
 /* PackageElement.java -- Represents a package.
-   Copyright (C) 2012  Free Software Foundation, Inc.
+   Copyright (C) 2012, 2013  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -46,7 +46,7 @@ package javax.lang.model.element;
  * @see javax.lang.model.util.Elements#getPackageOf(Element)
  */
 public interface PackageElement
-  extends Element
+  extends Element, QualifiedNameable
 {
 
   /**

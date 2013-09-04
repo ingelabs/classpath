@@ -1,5 +1,5 @@
 /* TypeKind.java -- Represents the kind of a type.
-   Copyright (C) 2012  Free Software Foundation, Inc.
+   Copyright (C) 2012, 2013  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -81,6 +81,8 @@ public enum TypeKind
   SHORT,
   /** A type variable */
   TYPEVAR,
+  /** A union type. */
+  UNION,
   /** A psuedo-type used for the void return type. */
   VOID,
   /** A wildcard type argument. */

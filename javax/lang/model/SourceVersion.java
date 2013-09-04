@@ -1,5 +1,5 @@
 /* SourceVersion.java -- Source versions of the Java programming language.
-   Copyright (C) 2012  Free Software Foundation, Inc.
+   Copyright (C) 2012, 2013  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -55,7 +55,8 @@ public enum SourceVersion
   /** Java 1.3 */ RELEASE_3,
   /** Java 1.4 */ RELEASE_4,
   /** Java 5 */ RELEASE_5,
-  /** Java 6 */ RELEASE_6;
+  /** Java 6 */ RELEASE_6,
+  /** Java 7 @since 1.7 */ RELEASE_7;
 
   /** List of language keywords, as specified in 3.9 of the Java
    * Language Specification.  Please keep sorted. */

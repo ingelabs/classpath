@@ -1,5 +1,5 @@
 /* TypeElement.java -- Represents a class or interface element.
-   Copyright (C) 2012  Free Software Foundation, Inc.
+   Copyright (C) 2012, 2013  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -65,7 +65,7 @@ import javax.lang.model.type.TypeMirror;
  * @since 1.6
  */
 public interface TypeElement
-  extends Element
+  extends Element, Parameterizable, QualifiedNameable
 {
 
   /**
