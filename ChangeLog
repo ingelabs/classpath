@@ -1,3 +1,10 @@
+2014-04-30  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* configure.ac:
+	Remove check for sys/loadavg.h used by Solaris 9.
+	* native/jni/java-lang/gnu_java_lang_management_VMOperatingSystemMXBeanImpl.c:
+	Remove Solaris 9 ifdef and update copyright header.
+
 2014-04-20  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_FreetypeGlyphVector.c:

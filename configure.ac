@@ -419,7 +419,6 @@ if test "x${COMPILE_JNI}" = xyes; then
   dnl BSD_COMP is defined; just including sys/filio.h is simpler.
   dnl Check for crt_externs.h on Darwin.
   dnl Check for netinet/in_systm.h, netinet/ip.h and net/if.h for Windows CE.
-  dnl Check for sys/loadavg.h for getloadavg() on Solaris 9.
   dnl Check for sys/sockio.h for SIOCGIFFLAGS on OpenSolaris.
   AC_CHECK_HEADERS([unistd.h sys/types.h sys/config.h sys/ioctl.h \
 		    asm/ioctls.h \
@@ -433,7 +432,7 @@ if test "x${COMPILE_JNI}" = xyes; then
                     sys/event.h sys/epoll.h \
 		    ifaddrs.h \
 		    netinet/in_systm.h netinet/ip.h net/if.h \
-		    sys/loadavg.h sys/sockio.h])
+		    sys/sockio.h])
 
   AC_EGREP_HEADER(uint32_t, stdint.h, AC_DEFINE(HAVE_INT32_DEFINED, 1, [Define to 1 if you have uint32_t]))
   AC_EGREP_HEADER(uint32_t, inttypes.h, AC_DEFINE(HAVE_INT32_DEFINED, 1, [Define to 1 if you have uint32_t]))
