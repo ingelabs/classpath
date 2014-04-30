@@ -1,3 +1,10 @@
+2014-04-20  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_FreetypeGlyphVector.c:
+	Use correct inclusion method, allowing builds with >=2.5.3.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c:
+	Likewise.
+
 2014-04-14  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	Fix issues with parallel make.
