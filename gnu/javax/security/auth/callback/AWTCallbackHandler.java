@@ -1,5 +1,5 @@
 /* AWTCallbackHandler.java --
-   Copyright (C) 2004, 2006  Free Software Foundation, Inc.
+   Copyright (C) 2004, 2006, 2014  Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -77,10 +77,8 @@ public class AWTCallbackHandler extends AbstractCallbackHandler
   protected String actionCommand;
 
   private static final String ACTION_CANCEL  = "CANCEL";
-  private static final String ACTION_NO      = "NO";
   private static final String ACTION_NONE    = "NONE";
   private static final String ACTION_OK      = "OK";
-  private static final String ACTION_YES     = "YES";
 
   // Constructor.
   // -------------------------------------------------------------------------
@@ -126,7 +124,7 @@ public class AWTCallbackHandler extends AbstractCallbackHandler
     buttons.add(ok);
     dialog.add(buttons, BorderLayout.SOUTH);
     dialog.pack();
-    dialog.show();
+    dialog.setVisible(true);
     try { wait(); }
     catch (InterruptedException ie) { }
     if (actionCommand.equals(ACTION_OK))
@@ -217,7 +215,7 @@ public class AWTCallbackHandler extends AbstractCallbackHandler
         buttons.add(b);
       }
     dialog.pack();
-    dialog.show();
+    dialog.setVisible(true);
     try { wait(); }
     catch (InterruptedException ie) { }
     for (int i = 0; i < choices.length; i++)
@@ -307,7 +305,7 @@ public class AWTCallbackHandler extends AbstractCallbackHandler
     buttons.add(cancel);
     dialog.add(buttons);
     dialog.pack();
-    dialog.show();
+    dialog.setVisible(true);
     try { wait(); }
     catch (InterruptedException ie) { }
     if (actionCommand.equals(ACTION_OK))
@@ -344,7 +342,7 @@ public class AWTCallbackHandler extends AbstractCallbackHandler
     buttons.add(cancel);
     dialog.add(buttons);
     dialog.pack();
-    dialog.show();
+    dialog.setVisible(true);
     try { wait(); }
     catch (InterruptedException ie) { }
     if (actionCommand.equals(ACTION_OK))
@@ -381,7 +379,7 @@ public class AWTCallbackHandler extends AbstractCallbackHandler
     buttons.add(cancel);
     dialog.add(buttons, BorderLayout.SOUTH);
     dialog.pack();
-    dialog.show();
+    dialog.setVisible(true);
     try { wait(); }
     catch (InterruptedException ie) { }
     if (actionCommand.equals(ACTION_OK))
@@ -420,7 +418,7 @@ public class AWTCallbackHandler extends AbstractCallbackHandler
     dialog.add(label);
     dialog.add(buttons);
     dialog.pack();
-    dialog.show();
+    dialog.setVisible(true);
     try { wait(); }
     catch (InterruptedException ie) { }
     dialog.dispose();

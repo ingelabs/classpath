@@ -1,5 +1,5 @@
 /* GnuRSAPublicKey.java --
-   Copyright 2001, 2002, 2003, 2006 Free Software Foundation, Inc.
+   Copyright 2001, 2002, 2003, 2006, 2014 Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -65,6 +65,8 @@ public class GnuRSAPublicKey
     extends GnuRSAKey
     implements PublicKey, RSAPublicKey
 {
+  private static final long serialVersionUID = -1206860366945100193L;
+
   /** String representation of this key. Cached for speed. */
   private transient String str;
 

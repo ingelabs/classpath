@@ -1,5 +1,5 @@
 /* DSSPublicKey.java --
-   Copyright 2001, 2002, 2003, 2006 Free Software Foundation, Inc.
+   Copyright 2001, 2002, 2003, 2006, 2014 Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -58,6 +58,8 @@ public class DSSPublicKey
     extends DSSKey
     implements PublicKey, DSAPublicKey
 {
+  private  static final long serialVersionUID = 4662188565230532792L;
+
   /**
    * <code>y = g<sup>x</sup> mod p</code> where <code>x</code> is the
    * private part of the DSA key.

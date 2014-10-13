@@ -1,5 +1,5 @@
 /* Properties.java -- run-time configuration properties.
-   Copyright (C) 2003, 2004, 2006, 2010  Free Software Foundation, Inc.
+   Copyright (C) 2003, 2004, 2006, 2010, 2014  Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -71,7 +71,8 @@ public final class Properties
 
   private static final String FALSE = Boolean.FALSE.toString();
 
-  private static final HashMap props = new HashMap();
+  private static final HashMap<String,String> props =
+    new HashMap<String,String>();
 
   private static Properties singleton = null;
 
@@ -108,7 +109,7 @@ public final class Properties
     key = key.trim().toLowerCase();
     if ("".equals(key))
       return null;
-    return (String) props.get(key);
+    return props.get(key);
   }
 
   /**
@@ -269,9 +270,10 @@ public final class Properties
     String propFile = null;
     try
       {
-        propFile = (String) AccessController.doPrivileged(new PrivilegedAction()
+        propFile = AccessController.doPrivileged(new PrivilegedAction<String>()
         {
-          public Object run()
+	  @Override
+          public String run()
           {
             return System.getProperty(PROPERTIES_FILE);
           }
@@ -290,7 +292,8 @@ public final class Properties
             final FileInputStream fin = new FileInputStream(propFile);
             temp.load(fin);
             temp.list(System.out);
-            props.putAll(temp);
+            for (String key : temp.stringPropertyNames())
+	      props.put(key, temp.getProperty(key));
           }
         catch (IOException ioe)
           {

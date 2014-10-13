@@ -1,5 +1,5 @@
 /* DSSSignatureX509Codec.java -- X.509 encoder/decoder for DSS signatures
-   Copyright (C) 2006 Free Software Foundation, Inc.
+   Copyright (C) 2006, 2014 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -130,7 +130,7 @@ public class DSSSignatureX509Codec
     DERValue derR = new DERValue(DER.INTEGER, rs[0]);
     DERValue derS = new DERValue(DER.INTEGER, rs[1]);
 
-    ArrayList dssSigValue = new ArrayList(2);
+    ArrayList<DERValue> dssSigValue = new ArrayList<DERValue>(2);
     dssSigValue.add(derR);
     dssSigValue.add(derS);
     DERValue derDssSigValue = new DERValue(DER.CONSTRUCTED | DER.SEQUENCE,

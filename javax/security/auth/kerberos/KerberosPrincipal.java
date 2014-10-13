@@ -1,5 +1,5 @@
 /* KerberosPrincipal.java -- a kerberos principal
-   Copyright (C) 2006 Free Software Foundation, Inc.
+   Copyright (C) 2006, 2014 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -55,7 +55,7 @@ public final class KerberosPrincipal
     implements Serializable, Principal
 {
   // Uncomment when serialization is correct.
-  // private static final long serialVersionUID = -7374788026156829911L;
+  private static final long serialVersionUID = -7374788026156829911L;
 
   /**
    * Constant from the RFC: "Just the name of the principal as in DCE, or

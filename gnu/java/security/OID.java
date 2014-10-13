@@ -1,5 +1,5 @@
 /* OID.java -- numeric representation of an object identifier
-   Copyright (C) 2003, 2004, 2005, 2006  Free Software Foundation, Inc.
+   Copyright (C) 2003, 2004, 2005, 2006, 2014  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -67,7 +67,7 @@ import java.util.StringTokenizer;
  *
  * @author Casey Marshall (csm@gnu.org)
  */
-public class OID implements Cloneable, Comparable, java.io.Serializable
+public class OID implements Cloneable, Comparable<OID>, java.io.Serializable
 {
 
   // Fields.
@@ -410,11 +410,11 @@ public class OID implements Cloneable, Comparable, java.io.Serializable
    *         argument.
    * @throws ClassCastException If <i>o</i> is not an OID.
    */
-  public int compareTo(Object o)
+  public int compareTo(OID o)
   {
     if (equals(o))
       return 0;
-    int[] components2 = ((OID) o).components;
+    int[] components2 = o.components;
     int len = Math.min(components.length, components2.length);
     for (int i = 0; i < len; i++)
       {

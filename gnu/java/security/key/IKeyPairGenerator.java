@@ -1,5 +1,5 @@
 /* IKeyPairGenerator.java --
-   Copyright 2001, 2002, 2006 Free Software Foundation, Inc.
+   Copyright 2001, 2002, 2006, 2014 Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -61,7 +61,7 @@ public interface IKeyPairGenerator
    * @exception IllegalArgumentException if at least one of the mandatory
    *              attributes is missing or an invalid value was specified.
    */
-  void setup(Map attributes);
+  void setup(Map<String,Object> attributes);
 
   /**
    * Generates a new keypair based on the attributes used to configure the

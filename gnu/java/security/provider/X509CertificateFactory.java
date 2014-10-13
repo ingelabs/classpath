@@ -1,5 +1,5 @@
 /* X509CertificateFactory.java -- generates X.509 certificates.
-   Copyright (C) 2003 Free Software Foundation, Inc.
+   Copyright (C) 2003, 2014 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -76,6 +76,7 @@ public class X509CertificateFactory
     super();
   }
 
+  @Override
   public Certificate engineGenerateCertificate(InputStream inStream)
       throws CertificateException
   {
@@ -91,10 +92,11 @@ public class X509CertificateFactory
       }
   }
 
-  public Collection engineGenerateCertificates(InputStream inStream)
+  @Override
+  public Collection<? extends Certificate> engineGenerateCertificates(InputStream inStream)
       throws CertificateException
   {
-    LinkedList certs = new LinkedList();
+    LinkedList<X509Certificate> certs = new LinkedList<X509Certificate>();
     while (true)
       {
         try
@@ -115,6 +117,7 @@ public class X509CertificateFactory
     return certs;
   }
 
+  @Override
   public CRL engineGenerateCRL(InputStream inStream) throws CRLException
   {
     try
@@ -129,10 +132,11 @@ public class X509CertificateFactory
       }
   }
 
-  public Collection engineGenerateCRLs(InputStream inStream)
+  @Override
+  public Collection<? extends CRL> engineGenerateCRLs(InputStream inStream)
       throws CRLException
   {
-    LinkedList crls = new LinkedList();
+    LinkedList<X509CRL> crls = new LinkedList<X509CRL>();
     while (true)
       {
         try
@@ -153,24 +157,28 @@ public class X509CertificateFactory
     return crls;
   }
 
-  public CertPath engineGenerateCertPath(List certs)
+  @Override
+  public CertPath engineGenerateCertPath(List<? extends Certificate> certs)
   {
     return new X509CertPath(certs);
   }
 
+  @Override
   public CertPath engineGenerateCertPath(InputStream in)
       throws CertificateEncodingException
   {
     return new X509CertPath(in);
   }
 
+  @Override
   public CertPath engineGenerateCertPath(InputStream in, String encoding)
       throws CertificateEncodingException
   {
     return new X509CertPath(in, encoding);
   }
 
-  public Iterator engineGetCertPathEncodings()
+  @Override
+  public Iterator<String> engineGetCertPathEncodings()
   {
     return X509CertPath.ENCODINGS.iterator();
   }

@@ -1,5 +1,5 @@
 /* ConfirmationCallback.java -- callback for confirmations.
-   Copyright (C) 2003, Free Software Foundation, Inc.
+   Copyright (C) 2003, 2014 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -53,6 +53,8 @@ public class ConfirmationCallback implements Callback, Serializable
 
   // Constants and variables
   // -------------------------------------------------------------------------
+
+  private static final long serialVersionUID = -9095656433782481624L;
 
   /**
    * <p>Unspecified option type.</p>

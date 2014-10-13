@@ -1,5 +1,5 @@
 /* GnuRSAKey.java --
-   Copyright 2001, 2002, 2003, 2006 Free Software Foundation, Inc.
+   Copyright 2001, 2002, 2003, 2006, 2014 Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -55,6 +55,8 @@ import java.security.interfaces.RSAKey;
 public abstract class GnuRSAKey
     implements Key, RSAKey
 {
+  private static final long serialVersionUID = -7321530024326974635L;
+
   /** The public modulus of an RSA key pair. */
   private final BigInteger n;
 

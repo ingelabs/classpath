@@ -1,5 +1,5 @@
 /* X509CertSelector.java -- selects X.509 certificates by criteria.
-   Copyright (C) 2004, 2005, 2006 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2005, 2006, 2014 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -646,7 +646,7 @@ public class X509CertSelector implements CertSelector, Cloneable
       }
     if (keyPurposeSet != null)
       {
-        List kp = null;
+        List<String> kp = null;
         try
           {
             kp = cert.getExtendedKeyUsage();
@@ -657,7 +657,7 @@ public class X509CertSelector implements CertSelector, Cloneable
           }
         if (kp == null)
           return false;
-        for (Iterator it = keyPurposeSet.iterator(); it.hasNext(); )
+        for (Iterator<String> it = keyPurposeSet.iterator(); it.hasNext(); )
           {
             if (!kp.contains(it.next()))
               return false;
@@ -846,14 +846,20 @@ public class X509CertSelector implements CertSelector, Cloneable
         return;
       }
     Set<String> s = new HashSet<String>();
-    for (Iterator it = keyPurposeSet.iterator(); it.hasNext(); )
+    for (Iterator<String> it = keyPurposeSet.iterator(); it.hasNext(); )
       {
-        Object o = it.next();
-        if (!(o instanceof String))
-          throw new IOException("not a string: " + o);
+	String o = null;
+	try
+	  {
+	    o = it.next();
+	  }
+	catch (ClassCastException ce)
+	  {
+	    throw new IOException("not a string: " + o, ce);
+	  }
         try
           {
-            OID oid = new OID((String) o);
+            OID oid = new OID(o);
             int[] comp = oid.getIDs();
             if (!checkOid(comp))
               throw new IOException("malformed OID: " + o);

@@ -1,5 +1,5 @@
 /* MDGenerator.java --
-   Copyright (C) 2001, 2002, 2006  Free Software Foundation, Inc.
+   Copyright (C) 2001, 2002, 2006, 2014  Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -71,7 +71,8 @@ public class MDGenerator
     super(Registry.MD_PRNG);
   }
 
-  public void setup(Map attributes)
+  @Override
+  public void setup(Map<String,Object> attributes)
   {
     // find out which hash to use
     String underlyingMD = (String) attributes.get(MD_NAME);
@@ -95,6 +96,7 @@ public class MDGenerator
     md.update(seed, 0, seed.length);
   }
 
+  @Override
   public void fillBlock() throws LimitReachedException
   {
     IMessageDigest mdc = (IMessageDigest) md.clone();
@@ -102,6 +104,7 @@ public class MDGenerator
     md.update(buffer, 0, buffer.length);
   }
 
+  @Override
   public void addRandomByte(final byte b)
   {
     if (md == null)
@@ -109,6 +112,7 @@ public class MDGenerator
     md.update(b);
   }
 
+  @Override
   public void addRandomBytes(final byte[] buf, final int off, final int len)
   {
     if (md == null)
@@ -116,6 +120,7 @@ public class MDGenerator
     md.update(buf, off, len);
   }
 
+  @Override
   public Object clone() throws CloneNotSupportedException
   {
     MDGenerator result = (MDGenerator) super.clone();

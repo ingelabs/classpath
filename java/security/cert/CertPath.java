@@ -1,5 +1,5 @@
 /* CertPath.java -- a sequence of certificates
-   Copyright (C) 2002, 2005  Free Software Foundation, Inc.
+   Copyright (C) 2002, 2005, 2014  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -195,7 +195,7 @@ public abstract class CertPath implements Serializable
 
   public String toString()
   {
-    List l = getCertificates();
+    List<? extends Certificate> l = getCertificates();
     int size = l.size();
     int i = 0;
     CPStringBuilder result = new CPStringBuilder(type);

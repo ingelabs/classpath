@@ -1,5 +1,5 @@
 /* SimpleList.java -- simple way to make tuples.
-   Copyright (C) 2004, 2006 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2006, 2014 Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -40,7 +40,6 @@ package gnu.java.security.util;
 
 import java.util.AbstractList;
 import java.util.Collection;
-import java.util.Iterator;
 
 /**
  * A simple way to create immutable n-tuples. This class can be created with up
@@ -48,7 +47,7 @@ import java.util.Iterator;
  * of arbitrary size.
  */
 public final class SimpleList
-    extends AbstractList
+    extends AbstractList<Object>
 {
   private final Object[] elements;
 
@@ -122,14 +121,14 @@ public final class SimpleList
    * natural order, the created n-tuple will have the order that the elements
    * are returned by the collection's iterator.
    *
-   * @param c The collection.
+   * @param coll The collection.
    */
-  public SimpleList(Collection c)
+  public SimpleList(Collection<? extends Object> coll)
   {
-    elements = new Object[c.size()];
+    elements = new Object[coll.size()];
     int i = 0;
-    for (Iterator it = c.iterator(); it.hasNext() && i < elements.length;)
-      elements[i++] = it.next();
+    for (Object o : coll)
+      elements[i++] = o;
   }
 
   public int size()

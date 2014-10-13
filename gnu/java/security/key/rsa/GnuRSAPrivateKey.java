@@ -1,5 +1,5 @@
 /* GnuRSAPrivateKey.java --
-   Copyright 2001, 2002, 2003, 2006 Free Software Foundation, Inc.
+   Copyright 2001, 2002, 2003, 2006, 2014 Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -67,6 +67,8 @@ public class GnuRSAPrivateKey
     extends GnuRSAKey
     implements PrivateKey, RSAPrivateCrtKey
 {
+  private static final long serialVersionUID = -2208207842306185913L;
+
   /** The first prime divisor of the modulus. */
   private final BigInteger p;
 

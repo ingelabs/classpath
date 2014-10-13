@@ -1,5 +1,5 @@
 /* ConsoleCallbackHandler.java --
-   Copyright (C) 2005, 2006  Free Software Foundation, Inc.
+   Copyright (C) 2005, 2006, 2014  Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -124,7 +124,7 @@ public class ConsoleCallbackHandler extends AbstractCallbackHandler
       }
     else
       {
-        TreeSet indices = new TreeSet();
+        TreeSet<Integer> indices = new TreeSet<Integer>();
         StringTokenizer tok = new StringTokenizer(reply, ",");
         String[] replies = new String[tok.countTokens()];
         int idx = 0;
@@ -146,7 +146,7 @@ public class ConsoleCallbackHandler extends AbstractCallbackHandler
           {
             int[] ii = new int[indices.size()];
             int i = 0;
-            for (Iterator it = indices.iterator(); it.hasNext(); )
+            for (Iterator<Integer> it = indices.iterator(); it.hasNext(); )
               ii[i++] = ((Integer) it.next()).intValue();
             c.setSelectedIndexes(ii);
           }

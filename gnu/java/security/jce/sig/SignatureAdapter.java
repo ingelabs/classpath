@@ -1,5 +1,5 @@
 /* SignatureAdapter.java --
-   Copyright 2001, 2002, 2006, 2010 Free Software Foundation, Inc.
+   Copyright 2001, 2002, 2006, 2010, 2014 Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -114,9 +114,10 @@ class SignatureAdapter
     return new SignatureAdapter((ISignature) adaptee.clone(), codec);
   }
 
+  @Override
   public void engineInitVerify(PublicKey publicKey) throws InvalidKeyException
   {
-    HashMap attributes = new HashMap();
+    HashMap<String,Object> attributes = new HashMap<String,Object>();
     attributes.put(BaseSignature.VERIFIER_KEY, publicKey);
     try
       {
@@ -128,9 +129,10 @@ class SignatureAdapter
       }
   }
 
+  @Override
   public void engineInitSign(PrivateKey privateKey) throws InvalidKeyException
   {
-    HashMap attributes = new HashMap();
+    HashMap<String,Object> attributes = new HashMap<String,Object>();
     attributes.put(BaseSignature.SIGNER_KEY, privateKey);
     try
       {
@@ -142,10 +144,11 @@ class SignatureAdapter
       }
   }
 
+  @Override
   public void engineInitSign(PrivateKey privateKey, SecureRandom random)
       throws InvalidKeyException
   {
-    HashMap attributes = new HashMap();
+    HashMap<String,Object> attributes = new HashMap<String,Object>();
     attributes.put(BaseSignature.SIGNER_KEY, privateKey);
     attributes.put(BaseSignature.SOURCE_OF_RANDOMNESS, random);
     try
@@ -158,6 +161,7 @@ class SignatureAdapter
       }
   }
 
+  @Override
   public void engineUpdate(byte b) throws SignatureException
   {
     try
@@ -170,6 +174,7 @@ class SignatureAdapter
       }
   }
 
+  @Override
   public void engineUpdate(byte[] b, int off, int len)
       throws SignatureException
   {
@@ -183,6 +188,7 @@ class SignatureAdapter
       }
   }
 
+  @Override
   public byte[] engineSign() throws SignatureException
   {
     Object signature = null;
@@ -198,6 +204,7 @@ class SignatureAdapter
     return result;
   }
 
+  @Override
   public int engineSign(byte[] outbuf, int offset, int len)
       throws SignatureException
   {
@@ -210,6 +217,7 @@ class SignatureAdapter
     return result;
   }
 
+  @Override
   public boolean engineVerify(byte[] sigBytes) throws SignatureException
   {
     if (Configuration.DEBUG)
@@ -231,18 +239,21 @@ class SignatureAdapter
   }
 
   // Deprecated. Replaced by engineSetParameter.
+  @Override
   public void engineSetParameter(String param, Object value)
       throws InvalidParameterException
   {
     throw new InvalidParameterException("deprecated");
   }
 
+  @Override
   public void engineSetParameter(AlgorithmParameterSpec params)
       throws InvalidAlgorithmParameterException
   {
   }
 
   // Deprecated
+  @Override
   public Object engineGetParameter(String param)
       throws InvalidParameterException
   {

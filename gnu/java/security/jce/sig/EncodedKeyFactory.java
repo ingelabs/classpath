@@ -1,5 +1,5 @@
 /* EncodedKeyFactory.java -- JCE Encoded key factory Adapter
-   Copyright (C) 2006, 2010  Free Software Foundation, Inc.
+   Copyright (C) 2006, 2010, 2014  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -84,10 +84,10 @@ public class EncodedKeyFactory
   private static Object invokeConstructor(String className, Object[] params)
       throws InvalidKeySpecException
   {
-    Class clazz = getConcreteClass(className);
+    Class<?> clazz = getConcreteClass(className);
     try
       {
-        Constructor ctor = getConcreteCtor(clazz);
+        Constructor<?> ctor = getConcreteCtor(clazz);
         Object result = ctor.newInstance(params);
         return result;
       }
@@ -105,12 +105,12 @@ public class EncodedKeyFactory
       }
   }
 
-  private static Class getConcreteClass(String className)
+  private static Class<?> getConcreteClass(String className)
       throws InvalidKeySpecException
   {
     try
       {
-        Class result = Class.forName(className);
+        Class<?> result = Class.forName(className);
         return result;
       }
     catch (ClassNotFoundException x)
@@ -119,12 +119,12 @@ public class EncodedKeyFactory
       }
   }
 
-  private static Constructor getConcreteCtor(Class clazz)
+  private static Constructor<?> getConcreteCtor(Class<?> clazz)
       throws InvalidKeySpecException
   {
     try
       {
-        Constructor result = clazz.getConstructor(new Class[] {int.class,
+        Constructor<?> result = clazz.getConstructor(new Class[] {int.class,
                                                                BigInteger.class,
                                                                BigInteger.class,
                                                                BigInteger.class,
@@ -140,7 +140,7 @@ public class EncodedKeyFactory
   private static Object invokeValueOf(String className, byte[] encoded)
       throws InvalidKeySpecException
   {
-    Class clazz = getConcreteClass(className);
+    Class<?> clazz = getConcreteClass(className);
     try
       {
         Method valueOf = getValueOfMethod(clazz);
@@ -157,7 +157,7 @@ public class EncodedKeyFactory
       }
   }
 
-  private static Method getValueOfMethod(Class clazz)
+  private static Method getValueOfMethod(Class<?> clazz)
       throws InvalidKeySpecException
   {
     try
@@ -171,6 +171,7 @@ public class EncodedKeyFactory
       }
   }
 
+  @Override
   protected PublicKey engineGeneratePublic(KeySpec keySpec)
       throws InvalidKeySpecException
   {
@@ -222,7 +223,8 @@ public class EncodedKeyFactory
       log.exiting(this.getClass().getName(), "engineGeneratePublic()", result);
     return result;
   }
-
+  
+  @Override
   protected PrivateKey engineGeneratePrivate(KeySpec keySpec)
       throws InvalidKeySpecException
   {
@@ -274,23 +276,25 @@ public class EncodedKeyFactory
       log.exiting(this.getClass().getName(), "engineGeneratePrivate()", result);
     return result;
   }
-
-  protected KeySpec engineGetKeySpec(Key key, Class keySpec)
+  
+  @Override
+  protected <T extends KeySpec> T engineGetKeySpec(Key key, Class<T> keySpec)
       throws InvalidKeySpecException
   {
     if (key instanceof PublicKey
         && Registry.X509_ENCODING_SORT_NAME.equalsIgnoreCase(key.getFormat())
         && keySpec.isAssignableFrom(X509EncodedKeySpec.class))
-      return new X509EncodedKeySpec(key.getEncoded());
+      return keySpec.cast(new X509EncodedKeySpec(key.getEncoded()));
 
     if (key instanceof PrivateKey
         && Registry.PKCS8_ENCODING_SHORT_NAME.equalsIgnoreCase(key.getFormat())
         && keySpec.isAssignableFrom(PKCS8EncodedKeySpec.class))
-      return new PKCS8EncodedKeySpec(key.getEncoded());
+      return keySpec.cast(new PKCS8EncodedKeySpec(key.getEncoded()));
 
     throw new InvalidKeySpecException("Unsupported format or invalid key spec class");
   }
 
+  @Override
   protected Key engineTranslateKey(Key key) throws InvalidKeyException
   {
     throw new InvalidKeyException("Key translation not supported");

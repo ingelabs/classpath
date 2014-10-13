@@ -49,7 +49,7 @@ import javax.crypto.SecretKey;
 final class KeyImpl implements Serializable, SecretKey
 {
   // Enable this when serialization works.
-  // private static final long serialVersionUID = -7889313790214321193L;
+  private static final long serialVersionUID = -7889313790214321193L;
 
   public String algorithm;
   public int type;

@@ -1,5 +1,5 @@
 /* Whirlpool.java --
-   Copyright (C) 2001, 2002, 2006, 2010 Free Software Foundation, Inc.
+   Copyright (C) 2001, 2002, 2006, 2010, 2014 Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -136,7 +136,6 @@ public final class Whirlpool
       int i, r, j;
       long s1, s2, s4, s5, s8, s9, t;
       char c;
-      final byte[] S = new byte[256];
       for (i = 0; i < 256; i++)
         {
           c = S_box.charAt(i >>> 1);

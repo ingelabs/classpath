@@ -1,5 +1,5 @@
 /* DSSPrivateKey.java --
-   Copyright 2001, 2002, 2003, 2006 Free Software Foundation, Inc.
+   Copyright 2001, 2002, 2003, 2006, 2014 Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -59,6 +59,8 @@ public class DSSPrivateKey
     extends DSSKey
     implements PrivateKey, DSAPrivateKey
 {
+  private static final long serialVersionUID = -4273348785094844114L;
+
   /**
    * A randomly or pseudorandomly generated integer with <code>0 &lt; x &lt;
    * q</code>.

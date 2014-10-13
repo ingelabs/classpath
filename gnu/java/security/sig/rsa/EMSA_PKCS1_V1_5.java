@@ -1,5 +1,5 @@
 /* EMSA_PKCS1_V1_5.java --
-   Copyright (C) 2003, 2006 Free Software Foundation, Inc.
+   Copyright (C) 2003, 2006, 2014 Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -116,9 +116,6 @@ public class EMSA_PKCS1_V1_5
   /** The underlying hash function to use with this instance. */
   private IMessageDigest hash;
 
-  /** The output size of the hash function in octets. */
-  private int hLen; // TODO: field not used!!!  investigate
-
   /** The DER part of DigestInfo not containing the hash value itself. */
   private byte[] prefix;
 
@@ -132,7 +129,6 @@ public class EMSA_PKCS1_V1_5
     super();
 
     this.hash = hash;
-    hLen = hash.hashSize();
     final String name = hash.name();
     if (name.equals(Registry.MD2_HASH))
       prefix = MD2_PREFIX;

@@ -1,5 +1,5 @@
 /* X509CRL.java -- X.509 certificate revocation list.
-   Copyright (C) 2003, 2004, 2010  Free Software Foundation, Inc.
+   Copyright (C) 2003, 2004, 2010, 2014  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -63,7 +63,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -92,12 +91,11 @@ public class X509CRL extends java.security.cert.X509CRL
   private byte[] tbsCRLBytes;
   private int version;
   private OID algId;
-  private byte[] algParams;
   private Date thisUpdate;
   private Date nextUpdate;
   private X500DistinguishedName issuerDN;
-  private HashMap revokedCerts;
-  private HashMap extensions;
+  private HashMap<BigInteger,X509CRLEntry> revokedCerts;
+  private HashMap<OID,Extension> extensions;
 
   private OID sigAlg;
   private byte[] sigAlgParams;
@@ -117,8 +115,8 @@ public class X509CRL extends java.security.cert.X509CRL
   public X509CRL(InputStream encoded) throws CRLException, IOException
   {
     super();
-    revokedCerts = new HashMap();
-    extensions = new HashMap();
+    revokedCerts = new HashMap<BigInteger,X509CRLEntry>();
+    extensions = new HashMap<OID,Extension>();
     try
       {
         parse(encoded);
@@ -150,11 +148,13 @@ public class X509CRL extends java.security.cert.X509CRL
     return revokedCerts.hashCode();
   }
 
+  @Override
   public byte[] getEncoded() throws CRLException
   {
     return (byte[]) encoded.clone();
   }
 
+  @Override
   public void verify(PublicKey key)
     throws CRLException, NoSuchAlgorithmException, InvalidKeyException,
            NoSuchProviderException, SignatureException
@@ -163,6 +163,7 @@ public class X509CRL extends java.security.cert.X509CRL
     doVerify(sig, key);
   }
 
+  @Override
   public void verify(PublicKey key, String provider)
     throws CRLException, NoSuchAlgorithmException, InvalidKeyException,
            NoSuchProviderException, SignatureException
@@ -171,11 +172,13 @@ public class X509CRL extends java.security.cert.X509CRL
     doVerify(sig, key);
   }
 
+  @Override
   public int getVersion()
   {
     return version;
   }
 
+  @Override
   public Principal getIssuerDN()
   {
     return issuerDN;
@@ -186,11 +189,13 @@ public class X509CRL extends java.security.cert.X509CRL
     return new X500Principal(issuerDN.getDer());
   }
 
+  @Override
   public Date getThisUpdate()
   {
     return (Date) thisUpdate.clone();
   }
 
+  @Override
   public Date getNextUpdate()
   {
     if (nextUpdate != null)
@@ -198,26 +203,31 @@ public class X509CRL extends java.security.cert.X509CRL
     return null;
   }
 
+  @Override
   public java.security.cert.X509CRLEntry getRevokedCertificate(BigInteger serialNo)
   {
-    return (java.security.cert.X509CRLEntry) revokedCerts.get(serialNo);
+    return revokedCerts.get(serialNo);
   }
 
-  public Set getRevokedCertificates()
+  @Override
+  public Set<? extends X509CRLEntry> getRevokedCertificates()
   {
-    return Collections.unmodifiableSet(new HashSet(revokedCerts.values()));
+    return Collections.unmodifiableSet(new HashSet<X509CRLEntry>(revokedCerts.values()));
   }
 
+  @Override
   public byte[] getTBSCertList() throws CRLException
   {
     return (byte[]) tbsCRLBytes.clone();
   }
 
+  @Override
   public byte[] getSignature()
   {
     return (byte[]) rawSig.clone();
   }
 
+  @Override
   public String getSigAlgName()
   {
     if (sigAlg.equals(ID_DSA_WITH_SHA1))
@@ -231,11 +241,13 @@ public class X509CRL extends java.security.cert.X509CRL
     return "unknown";
   }
 
+  @Override
   public String getSigAlgOID()
   {
     return sigAlg.toString();
   }
 
+  @Override
   public byte[] getSigAlgParams()
   {
     if (sigAlgParams != null)
@@ -248,33 +260,30 @@ public class X509CRL extends java.security.cert.X509CRL
 
   public boolean hasUnsupportedCriticalExtension()
   {
-    for (Iterator it = extensions.values().iterator(); it.hasNext(); )
+    for (Extension e : extensions.values())
       {
-        Extension e = (Extension) it.next();
         if (e.isCritical() && !e.isSupported())
           return true;
       }
     return false;
   }
 
-  public Set getCriticalExtensionOIDs()
+  public Set<String> getCriticalExtensionOIDs()
   {
-    HashSet s = new HashSet();
-    for (Iterator it = extensions.values().iterator(); it.hasNext(); )
+    HashSet<String> s = new HashSet<String>();
+    for (Extension e : extensions.values())
       {
-        Extension e = (Extension) it.next();
         if (e.isCritical())
           s.add(e.getOid().toString());
       }
     return Collections.unmodifiableSet(s);
   }
 
-  public Set getNonCriticalExtensionOIDs()
+  public Set<String> getNonCriticalExtensionOIDs()
   {
-    HashSet s = new HashSet();
-    for (Iterator it = extensions.values().iterator(); it.hasNext(); )
+    HashSet<String> s = new HashSet<String>();
+    for (Extension e : extensions.values())
       {
-        Extension e = (Extension) it.next();
         if (!e.isCritical())
           s.add(e.getOid().toString());
       }
@@ -294,12 +303,14 @@ public class X509CRL extends java.security.cert.X509CRL
   // GnuPKIExtension method.
   // -------------------------------------------------------------------------
 
+  @Override
   public Extension getExtension(OID oid)
   {
-    return (Extension) extensions.get(oid);
+    return extensions.get(oid);
   }
 
-  public Collection getExtensions()
+  @Override
+  public Collection<Extension> getExtensions()
   {
     return extensions.values();
   }
@@ -307,6 +318,7 @@ public class X509CRL extends java.security.cert.X509CRL
   // CRL methods.
   // -------------------------------------------------------------------------
 
+  @Override
   public String toString()
   {
     return X509CRL.class.getName();
@@ -382,7 +394,6 @@ public class X509CRL extends java.security.cert.X509CRL
         val = der.read();
         if (Configuration.DEBUG)
           log.fine("read parameters  len == " + val.getEncodedLength());
-        algParams = val.getEncoded();
         if (val.isConstructed())
           in.skip(val.getLength());
       }

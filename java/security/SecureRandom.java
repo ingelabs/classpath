@@ -1,5 +1,5 @@
 /* SecureRandom.java --- Secure Random class implementation
-   Copyright (C) 1999, 2001, 2002, 2003, 2005, 2006
+   Copyright (C) 1999, 2001, 2002, 2003, 2005, 2006, 2014
    Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,22 +38,14 @@ exception statement from your version. */
 
 package java.security;
 
-import gnu.classpath.SystemProperties;
 import gnu.java.lang.CPStringBuilder;
 import gnu.java.security.Engine;
-import gnu.java.security.action.GetSecurityPropertyAction;
 import gnu.java.security.jce.prng.SecureRandomAdapter;
 import gnu.java.security.jce.prng.Sha160RandomSpi;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Enumeration;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * An interface to a cryptographically secure pseudo-random number
@@ -110,7 +102,7 @@ public class SecureRandom extends Random
 
     String classname = null;
     int i;
-    Enumeration e;
+    Enumeration<?> e;
     for (i = 0; i < p.length; i++)
       {
         e = p[i].propertyNames();

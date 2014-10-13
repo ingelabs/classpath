@@ -1,3 +1,356 @@
+2014-10-09  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* NEWS: Updated.
+	* gnu/java/security/util/IntegerUtil.java: Removed.
+	Methods are available in java.lang.Integer.
+	* gnu/java/security/Engine.java:
+	Add missing type parameters to Class, Constructor and
+	Enumeration.
+	* gnu/java/security/OID.java:
+	Add type parameter to Comparable implementation.
+	(compareTo(OID)): Changed from compareTo(Object).
+	Remove now redundant cast.
+	* gnu/java/security/Properties.java:
+	Add type parameters to HashMap.
+	(getProperty(String)): Remove redundant cast.
+	(init()): Use generic implementation of PrivilegedAction.
+	Add properties in a for-each loop to get correct types.
+	* gnu/java/security/action/SetAccessibleAction.java:
+	Use generic implementation of PrivilegedAction.
+	* gnu/java/security/ber/BEREncodingException.java:
+	Add explicit serialVersionUID.
+	* gnu/java/security/der/BitString.java:
+	Add type parameter to Comparable implementation.
+	(compareTo(BitString)): Changed from compareTo(Object).
+	Remove now redundant cast.
+	* gnu/java/security/der/DEREncodingException.java:
+	Add explicit serialVersionUID.
+	* gnu/java/security/der/DERWriter.java:
+	(write(OutputStream,DERValue)): Cast List and Set
+	to correct generic versions.
+	(writeSequence(OutputStream,List)): Add type parameters.
+	Drop now redundant cast.
+	(writeSet(OutputStream,Set)): Likewise.
+	* gnu/java/security/hash/HashFactory.java:
+	(getNames()): Add type parameters.
+	* gnu/java/security/hash/Whirlpool.java:
+	Drop unused byte array.
+	* gnu/java/security/jce/prng/HavalRandomSpi.java:
+	Add explicit serialVersionUID.
+	* gnu/java/security/jce/prng/MD2RandomSpi.java: Likewise.
+	* gnu/java/security/jce/prng/MD4RandomSpi.java: Likewise.
+	* gnu/java/security/jce/prng/MD5RandomSpi.java: Likewise.
+	* gnu/java/security/jce/prng/RipeMD128RandomSpi.java: Likewise.
+	* gnu/java/security/jce/prng/RipeMD160RandomSpi.java: Likewise.
+	* gnu/java/security/jce/prng/SecureRandomAdapter.java:
+	Likewise. Drop unused mdName variable. Remove redundant casts.
+	Add Override annotation to interface implementation.
+	* gnu/java/security/jce/prng/Sha160RandomSpi.java:
+	Add explicit serialVersionUID.
+	* gnu/java/security/jce/prng/Sha256RandomSpi.java: Likewise.
+	* gnu/java/security/jce/prng/Sha384RandomSpi.java: Likewise.
+	* gnu/java/security/jce/prng/Sha512RandomSpi.java: Likewise.
+	* gnu/java/security/jce/prng/TigerRandomSpi.java: Likewise.
+	* gnu/java/security/jce/prng/WhirlpoolRandomSpi.java: Likewise.
+	* gnu/java/security/jce/sig/DSSKeyFactory.java: Add Override
+	annotation to interface implementation.
+	(engineGetKeySpec(Key,Class)): Update return type. Use
+	keySpec.cast to cast newly created instances to the correct type.
+	* gnu/java/security/jce/sig/DSSKeyPairGeneratorSpi.java:
+	Add missing type parameters and Override annotations.
+	* gnu/java/security/jce/sig/DSSParameters.java:
+	Add Override annotation to interface implementation.
+	(engineGetParameterSpec(Class)): Update return type. Use
+	paramSpec.cast to cast new instances to correct type.
+	(engineGetEncoded()): Add missing type parameter to list.
+	* gnu/java/security/jce/sig/EncodedKeyFactory.java:
+	Add type parameters and Override annotations.
+	(engineGetKeySpec(Key,Class)): Update return type. Use
+	keySpec.cast to cast new instances to correct type.
+	* gnu/java/security/jce/sig/RSAKeyFactory.java:
+	Add @Override annotation. Drop unused variables.
+	(engineGetKeySpec(Key,Class)): Update return type. Use
+	keySpec.cast to cast new instances to correct type.
+	* gnu/java/security/jce/sig/RSAKeyPairGeneratorSpi.java:
+	Add type parameters.
+	* gnu/java/security/jce/sig/SignatureAdapter.java:
+	Add type parameters and Override annotation.
+	* gnu/java/security/key/IKeyPairGenerator.java:
+	(setup(Map)): Add type parameters.
+	* gnu/java/security/key/KeyPairCodecFactory.java:
+	Add type parameters.
+	* gnu/java/security/key/KeyPairGeneratorFactory.java: Likewise.
+	* gnu/java/security/key/dss/DSSKey.java:
+	Add explicit serialVersionUID.
+	* gnu/java/security/key/dss/DSSKeyPairGenerator.java:
+	Add type parameters and Override annotations.
+	* gnu/java/security/key/dss/DSSKeyPairPKCS8Codec.java:
+	Likewise.
+	* gnu/java/security/key/dss/DSSKeyPairX509Codec.java:
+	Add type parameters.
+	* gnu/java/security/key/dss/DSSPrivateKey.java:
+	Add explicit serialVersionUID.
+	* gnu/java/security/key/dss/DSSPublicKey.java: Likewise.
+	* gnu/java/security/key/rsa/GnuRSAKey.java: Likewise.
+	* gnu/java/security/key/rsa/GnuRSAPrivateKey.java: Likewise.
+	* gnu/java/security/key/rsa/GnuRSAPublicKey.java: Likewise.
+	* gnu/java/security/key/rsa/RSAKeyPairGenerator.java:
+	Add Override annotations and type parameters.
+	* gnu/java/security/key/rsa/RSAKeyPairPKCS8Codec.java:
+	Add missing type parameters on ArrayList instances.
+	* gnu/java/security/key/rsa/RSAKeyPairX509Codec.java:
+	Add Override annotations and type parameters.
+	* gnu/java/security/pkcs/PKCS7SignedData.java:
+	(PKCS7SignedData(BERReader)): Add a type parameter to
+	the algId list and ensure all additions are homogenous.
+	Add other missing type parameters.
+	(PKCS7SignedData(Set,PKCS7Data,Certificate[],X509CRL[],Set)):
+	Add missing type parameters.
+	(getDigestAlgorithms()): Do a deep copy of the set.
+	(getSignerInfos()): Add type parameters.
+	(encode(OutputStream)): Likewise.
+	* gnu/java/security/pkcs/SignerInfo.java:
+	Drop unused variable, count. Add type parameters.
+	(encode(OutputStream)): Include derAuthenticatedAttributes
+	and derUnauthenticatedAttributes in signerInfo.
+	* gnu/java/security/prng/BasePRNG.java:
+	Add type parameters and Override annotations.
+	* gnu/java/security/prng/IRandom.java: Add type parameters.
+	* gnu/java/security/prng/LimitReachedException.java:
+	Add explicit serialVersionUID.
+	* gnu/java/security/prng/MDGenerator.java:
+	Add type parameters and Override annotations.
+	* gnu/java/security/prng/PRNGFactory.java:
+	Add missing type parameters.
+	* gnu/java/security/prng/RandomEvent.java:
+	Add explicit serialVersionUID.
+	* gnu/java/security/provider/CollectionCertStoreImpl.java:
+	Add Override annotation and missing type parameters.
+	* gnu/java/security/provider/Gnu.java:
+	Add explicit serialVersionUID. Parameterise implementation
+	of PrivilegedAction.
+	* gnu/java/security/provider/PKIXCertPathValidatorImpl.java:
+	Add missing type parameters. Remove unused qualifierInfos
+	variable.
+	* gnu/java/security/provider/X509CertificateFactory.java:
+	Add Override annotations and type parameters.
+	* gnu/java/security/sig/BaseSignature.java: Likewise.
+	* gnu/java/security/sig/ISignature.java: Add type parameters.
+	* gnu/java/security/sig/SignatureCodecFactory.java: Likewise.
+	* gnu/java/security/sig/SignatureFactory.java: Likewise.
+	* gnu/java/security/sig/dss/DSSSignature.java:
+	Add Override annotations and type parameters.
+	* gnu/java/security/sig/dss/DSSSignatureX509Codec.java: Add
+	type parameter to ArrayList instance.
+	* gnu/java/security/sig/rsa/EMSA_PKCS1_V1_5.java:
+	Remove unused hLen variable.
+	* gnu/java/security/sig/rsa/RSASignatureFactory.java:
+	Add type parameters.
+	* gnu/java/security/util/PRNG.java:
+	(getInstance()): Move initialisation code to shared
+	method, initialiseDelegate.
+	(nextBytes(byte[],int,int)): Call out to initialiseDelegate
+	to re-initialise.
+	(initialiseDelegate(IRandom)): New common method for
+	shared code.
+	* gnu/java/security/util/Sequence.java:
+	Add Override annotation and type parameters.
+	* gnu/java/security/util/SimpleList.java:
+	Add type parameters.
+	* gnu/java/security/x509/GnuPKIExtension.java: Likewise.
+	* gnu/java/security/x509/PolicyNodeImpl.java:
+	Add type parameters and Override annotations.
+	(addAllPolicyQualifiers(Collection)): Qualify reference
+	to addAll.
+	* gnu/java/security/x509/X500DistinguishedName.java:
+	Add type parameters.
+	* gnu/java/security/x509/X509CRL.java:
+	Remove unused variable algParams. Add type parameters
+	and Override annotations.
+	* gnu/java/security/x509/X509CRLEntry.java:
+	Add type parameters and Override annotations.
+	* gnu/java/security/x509/X509CRLSelectorImpl.java:
+	Likewise.
+	* gnu/java/security/x509/X509CertPath.java:
+	Add type parameters.
+	(pkcsEncoded): Renamed from pkcs_encoded.
+	(pkiEncoded): Renamed from pki_encoded.
+	* gnu/java/security/x509/X509CertSelectorImpl.java:
+	Add type parameters and Override annotations.
+	* gnu/java/security/x509/X509Certificate.java: Likewise.
+	* gnu/java/security/x509/ext/BasicConstraints.java:
+	Add type parameters.
+	* gnu/java/security/x509/ext/CertificatePolicies.java:
+	Likewise.
+	* gnu/java/security/x509/ext/PolicyMappings.java:
+	Likewise.
+	* gnu/javax/crypto/cipher/IBlockCipher.java:
+	Add type parameters.
+	* gnu/javax/crypto/jce/prng/FortunaImpl.java:
+	(engineSetSeed(byte[])): Add cast for singletonMap
+	invocation.
+	* gnu/javax/crypto/key/dh/DHKeyPairPKCS8Codec.java:
+	Add type parameters.
+	* gnu/javax/crypto/key/dh/DHKeyPairX509Codec.java:
+	Likewise.
+	* gnu/javax/crypto/mac/IMac.java: Likewise.
+	* gnu/javax/crypto/mode/BaseMode.java:
+	Add Override annotations and type parameters.
+	* gnu/javax/crypto/mode/EAX.java:
+	Add Override annotations, type parameters and
+	casts for singletonMap invocations.
+	* gnu/javax/crypto/prng/Fortuna.java: Likewise.
+	* gnu/javax/net/ssl/Session.java:
+	Add Override annotations and type parameters.
+	* gnu/javax/net/ssl/provider/AbstractHandshake.java:
+	Fix type parameters.
+	* gnu/javax/net/ssl/provider/SSLRandom.java:
+	Add Override annotations and type parameters.
+	* gnu/javax/net/ssl/provider/TLSRandom.java:
+	Likewise.
+	(hmacSHA): Renamed from hmac_sha.
+	(hmacMD5): Renamed from hmac_md5.
+	* gnu/javax/net/ssl/provider/Util.java:
+	(transform(Object,Class,String,Object[])): Use
+	a type parameter T rather than Object.
+	* gnu/javax/net/ssl/provider/X509KeyManagerFactory.java:
+	Add type parameters.
+	* gnu/javax/net/ssl/provider/X509TrustManagerFactory.java:
+	Likewise.
+	* gnu/javax/security/auth/callback/AWTCallbackHandler.java:
+	Replace calls to deprecated show() with setVisible(true).
+	(ACTION_NO): Remove unused variable.
+	(ACTION_YES): Likewise.
+	* gnu/javax/security/auth/callback/ConsoleCallbackHandler.java:
+	Add type parameters.
+	* gnu/javax/security/auth/callback/GnuCallbacks.java:
+	Add explicit serialVersionUID. Convert PrivilegedAction
+	implementation to parameterised version.
+	* gnu/javax/security/auth/login/ConfigFileParser.java:
+	Add type parameters.
+	* gnu/javax/security/auth/login/GnuConfiguration.java:
+	Likewise. Fix typo.
+	* java/security/AccessControlContext.java:
+	Add type parameters.
+	* java/security/AllPermission.java:
+	Add Override annotations.
+	(AllPermissionCollection.elements()): Add type parameter
+	to return type and return appropriately typed enumerations.
+	* java/security/BasicPermission.java:
+	Add type parameters and Override annotations.
+	* java/security/CodeSource.java: Likewise.
+	* java/security/DummySignature.java:
+	Add Override annotations.
+	* java/security/Identity.java:
+	Add type parameters.
+	* java/security/IntersectingDomainCombiner.java:
+	Likewise.
+	* java/security/KeyPairGenerator.java:
+	Add Override annotations.
+	* java/security/Permissions.java:
+	Add type parameters and Override annotations.
+	(elements()): Rename main_enum and sub_enum
+	to mainEnum and subEnum respectively.
+	* java/security/Policy.java: Add type parameters.
+	* java/security/SecureRandom.java: Add missing
+	type parameter. Remove unused imports.
+	* java/security/Security.java:
+	Add type parameters. Fix mis-spelling of 'query'.
+	* java/security/SignatureSpi.java: Add
+	Override annotation.
+	* java/security/UnresolvedPermission.java:
+	Add Override annotations and type parameters.
+	(elements()): Rename main_enum and sub_enum
+	to mainEnum and subEnum respectively.
+	* java/security/cert/CertPath.java:
+	Add type parameters.
+	* java/security/cert/CertPathValidator.java:
+	(getDefaultType()): Use GetSecurityPropertyAction
+	rather than implementing PrivilegedAction locally.
+	* java/security/cert/CertStore.java:
+	(getDefaultType()): Use GetSecurityPropertyAction
+	rather than implementing PrivilegedAction locally.
+	* java/security/cert/CollectionCertStoreParameters.java:
+	Add type parameters and Override annotations.
+	* java/security/cert/PKIXParameters.java:
+	Add type parameters.
+	* java/security/cert/X509CRLSelector.java:
+	Add type parameters.
+	(getIssuerNames()): Return a deep copy.
+	* java/security/cert/X509CertSelector.java:
+	Add type parameters.
+	* java/util/Properties.java:
+	Add type parameters.
+	(stringPropertyNames()): Implemented.
+	* javax/naming/directory/BasicAttribute.java:
+	Add Override annotations and missing type parameter.
+	* javax/security/auth/AuthPermission.java:
+	Add explicit serialVersionUID.
+	* javax/security/auth/DestroyFailedException.java:
+	Likewise.
+	* javax/security/auth/PrivateCredentialPermission.java:
+	Add type parameters.
+	(equals(Object)): Use thatPrincipals instead of
+	that_principals.
+	(implies(Permission)): Likewise.
+	(CredOwner): Add explicit serialVersionUID.
+	* javax/security/auth/RefreshFailedException.java:
+	Add explicit serialVersionUID.
+	* javax/security/auth/Subject.java:
+	Add type parameters and Override annotations.
+	* javax/security/auth/SubjectDomainCombiner.java:
+	Add type parameters.
+	* javax/security/auth/callback/ChoiceCallback.java:
+	Add explicit serialVersionUID.
+	* javax/security/auth/callback/ConfirmationCallback.java:
+	Likewise.
+	* javax/security/auth/callback/LanguageCallback.java:
+	Likewise.
+	* javax/security/auth/callback/NameCallback.java:
+	Likewise.
+	* javax/security/auth/callback/PasswordCallback.java:
+	Likewise.
+	* javax/security/auth/callback/TextInputCallback.java:
+	Likewise.
+	* javax/security/auth/callback/TextOutputCallback.java:
+	Likewise.
+	* javax/security/auth/callback/UnsupportedCallbackException.java:
+	Likewise.
+	* javax/security/auth/kerberos/DelegationPermission.java:
+	Re-enable explicit serialVersionUID. Add Override annotations
+	and type parameters.
+	* javax/security/auth/kerberos/KerberosPrincipal.java:
+	Re-enable explicit serialVersionUID.
+	* javax/security/auth/kerberos/KerberosTicket.java:
+	Suppress warning about unused asn1Encoding variable.
+	* javax/security/auth/kerberos/KeyImpl.java:
+	Re-enable explicit serialVersionUID.
+	* javax/security/auth/kerberos/ServicePermission.java:
+	Re-enable explicit serialVersionUID. Add Override annotations
+	and type parameters.
+	* javax/security/auth/login/AppConfigurationEntry.java:
+	Add type parameters.
+	* javax/security/auth/login/Configuration.java: Likewise.
+	* javax/security/auth/login/LoginContext.java: Likewise.
+	* javax/security/auth/x500/X500Principal.java: Likewise.
+	(fixed): Remove unused variable.
+	* javax/security/cert/CertificateEncodingException.java:
+	Add explicit serialVersionUID.
+	* javax/security/cert/CertificateException.java: Likewise.
+	* javax/security/cert/CertificateExpiredException.java:
+	Likewise.
+	* javax/security/cert/CertificateNotYetValidException.java:
+	Likewise.
+	* javax/security/cert/CertificateParsingException.java:
+	Likewise.
+	* javax/security/sasl/AuthenticationException.java:
+	Likewise.
+	* javax/security/sasl/RealmCallback.java: Likewise.
+	* javax/security/sasl/RealmChoiceCallback.java: Likewise.
+	* javax/security/sasl/Sasl.java: Add type parameters.
+	* tools/gnu/classpath/tools/jarsigner/SFHelper.java:
+	Likewise.
+
 2014-05-07  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/io/IOException.java:

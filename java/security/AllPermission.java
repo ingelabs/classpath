@@ -1,5 +1,5 @@
 /* AllPermission.java -- Permission to do anything
-   Copyright (C) 1998, 2001, 2002, 2004, 2005  Free Software Foundation, Inc.
+   Copyright (C) 1998, 2001, 2002, 2004, 2005, 2014  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -163,6 +163,7 @@ public final class AllPermission extends Permission
      * @throws IllegalArgumentException if perm is not an AllPermission
      * @throws SecurityException if the collection is read-only
      */
+    @Override
     public void add(Permission perm)
     {
       if (isReadOnly())
@@ -178,6 +179,7 @@ public final class AllPermission extends Permission
      * @param perm the permission to check
      * @return true if this collection contains an AllPermission
      */
+    @Override
     public boolean implies(Permission perm)
     {
       return all_allowed;
@@ -188,11 +190,12 @@ public final class AllPermission extends Permission
      *
      * @return the elements in the collection
      */
-    public Enumeration elements()
+    @Override
+    public Enumeration<Permission> elements()
     {
       return all_allowed
-        ? Collections.enumeration(Collections.singleton(new AllPermission()))
-        : EmptyEnumeration.getInstance();
+        ? Collections.enumeration(Collections.singleton((Permission) new AllPermission()))
+        : new EmptyEnumeration<Permission>();
     }
   } // class AllPermissionCollection
 } // class AllPermission

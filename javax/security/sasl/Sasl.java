@@ -1,5 +1,5 @@
 /* Sasl.java --
-   Copyright (C) 2003, 2004, 2005  Free Software Foundation, Inc.
+   Copyright (C) 2003, 2004, 2005, 2014 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -457,10 +457,9 @@ public class Sasl
    */
   public static Enumeration<SaslClientFactory> getSaslClientFactories()
   {
-    Vector result = new Vector();
-    HashSet names = new HashSet();
+    Vector<SaslClientFactory> result = new Vector<SaslClientFactory>();
+    HashSet<String> names = new HashSet<String>();
     Provider[] providers = Security.getProviders();
-    Iterator it;
     if (providers != null)
       {
         Provider p;
@@ -468,7 +467,7 @@ public class Sasl
         for (int i = 0; i < providers.length; i++)
           {
             p = providers[i];
-            for (it = p.keySet().iterator(); it.hasNext(); )
+            for (Iterator<Object> it = p.keySet().iterator(); it.hasNext(); )
               {
                 key = (String) it.next();
                 // add key's binding (a) it is a class of a client factory,
@@ -483,9 +482,9 @@ public class Sasl
       }
     // we have the factory class names in names; instantiate and enumerate
     String c;
-    for (it = names.iterator(); it.hasNext(); )
+    for (Iterator<String> it = names.iterator(); it.hasNext(); )
       {
-        c = (String) it.next();
+        c = it.next();
         try
           {
             SaslClientFactory f = (SaslClientFactory) Class.forName(c).newInstance();
@@ -650,10 +649,9 @@ public class Sasl
    */
   public static Enumeration<SaslServerFactory> getSaslServerFactories()
   {
-    Vector result = new Vector();
-    HashSet names = new HashSet();
+    Vector<SaslServerFactory> result = new Vector<SaslServerFactory>();
+    HashSet<String> names = new HashSet<String>();
     Provider[] providers = Security.getProviders();
-    Iterator it;
     if (providers != null)
       {
         Provider p;
@@ -661,7 +659,7 @@ public class Sasl
         for (int i = 0; i < providers.length; i++)
           {
             p = providers[i];
-            for (it = p.keySet().iterator(); it.hasNext(); )
+            for (Iterator<Object> it = p.keySet().iterator(); it.hasNext(); )
               {
                 key = (String) it.next();
                 // add key's binding (a) it is a class of a server factory,
@@ -675,10 +673,8 @@ public class Sasl
           }
       }
     // we have the factory class names in names; instantiate and enumerate
-    String c;
-    for (it = names.iterator(); it.hasNext(); )
+    for (String c : names)
       {
-        c = (String) it.next();
         try
           {
             SaslServerFactory f = (SaslServerFactory) Class.forName(c).newInstance();

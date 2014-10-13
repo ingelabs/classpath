@@ -1,5 +1,5 @@
 /* X509Certificate.java -- X.509 certificate.
-   Copyright (C) 2003, 2004, 2006  Free Software Foundation, Inc.
+   Copyright (C) 2003, 2004, 2006, 2014  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -84,7 +84,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -389,9 +388,8 @@ public class X509Certificate extends java.security.cert.X509Certificate
 
   public boolean hasUnsupportedCriticalExtension()
   {
-    for (Iterator it = extensions.values().iterator(); it.hasNext(); )
+    for (Extension e : extensions.values())
       {
-        Extension e = (Extension) it.next();
         if (e.isCritical() && !e.isSupported())
           return true;
       }
@@ -433,12 +431,14 @@ public class X509Certificate extends java.security.cert.X509Certificate
   // GnuPKIExtension method.
   // -------------------------------------------------------------------------
 
+  @Override
   public Extension getExtension(OID oid)
   {
-    return (Extension) extensions.get(oid);
+    return extensions.get(oid);
   }
 
-  public Collection getExtensions()
+  @Override
+  public Collection<Extension> getExtensions()
   {
     return extensions.values();
   }
@@ -502,9 +502,9 @@ public class X509Certificate extends java.security.cert.X509Certificate
     out.println("    issuerUniqueId  = " + issuerUniqueId + ";");
     out.println("    subjectUniqueId = " + subjectUniqueId + ";");
     out.println("    extensions = {");
-    for (Iterator it = extensions.values().iterator(); it.hasNext(); )
+    for (Extension e : extensions.values())
       {
-        out.println("      " + it.next());
+        out.println("      " + e);
       }
     out.println("    }");
     out.println("  }");
@@ -520,6 +520,7 @@ public class X509Certificate extends java.security.cert.X509Certificate
     return subjectKey;
   }
 
+  @Override
   public boolean equals(Object other)
   {
     if (!(other instanceof X509Certificate))

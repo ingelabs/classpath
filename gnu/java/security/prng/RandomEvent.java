@@ -1,5 +1,5 @@
 /* RandomEvent.java -- an event with random data.
-   Copyright (C) 2004, 2006 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2006, 2014 Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -46,6 +46,8 @@ import java.util.EventObject;
 public class RandomEvent
     extends EventObject
 {
+  private static final long serialVersionUID = 2750214083590538430L;
+
   private final byte sourceNumber;
 
   private final byte poolNumber;

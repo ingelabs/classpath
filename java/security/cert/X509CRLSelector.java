@@ -1,5 +1,5 @@
 /* X509CRLSelector.java -- selects X.509 CRLs by criteria.
-   Copyright (C) 2004 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2014 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -80,7 +80,7 @@ public class X509CRLSelector implements CRLSelector, Cloneable
 
   private static final String CRL_NUMBER_ID = "2.5.29.20";
 
-  private List issuerNames;
+  private List<X500Principal> issuerNames;
   private BigInteger maxCrlNumber;
   private BigInteger minCrlNumber;
   private Date date;
@@ -121,7 +121,7 @@ public class X509CRLSelector implements CRLSelector, Cloneable
         throw ioe;
       }
     if (issuerNames == null)
-      issuerNames = new LinkedList();
+      issuerNames = new LinkedList<X500Principal>();
     issuerNames.add(p);
   }
 
@@ -146,7 +146,7 @@ public class X509CRLSelector implements CRLSelector, Cloneable
         throw ioe;
       }
     if (issuerNames == null)
-      issuerNames = new LinkedList();
+      issuerNames = new LinkedList<X500Principal>();
     issuerNames.add(p);
   }
 
@@ -166,12 +166,12 @@ public class X509CRLSelector implements CRLSelector, Cloneable
         issuerNames = null;
         return;
       }
-    List l = new ArrayList(names.size());
-    for (Iterator it = names.iterator(); it.hasNext(); )
+    List<X500Principal> l = new ArrayList<X500Principal>(names.size());
+    for (Iterator<?> it = names.iterator(); it.hasNext(); )
       {
         Object o = it.next();
         if (o instanceof X500Principal)
-          l.add(o);
+          l.add((X500Principal) o);
         else if (o instanceof String)
           {
             try
@@ -222,14 +222,19 @@ public class X509CRLSelector implements CRLSelector, Cloneable
   /**
    * Returns the set of issuer names that are matched by this selector,
    * or <code>null</code> if this criteria is not set. The returned
-   * collection is not modifiable.
+   * collection is not modifiable and is a deep copy of the original.
    *
    * @return The set of issuer names.
    */
   public Collection<Object> getIssuerNames()
   {
     if (issuerNames != null)
-      return Collections.unmodifiableList(issuerNames);
+      {
+	List<Object> iNames = new ArrayList<Object>();
+	for (X500Principal principal : issuerNames)
+	  iNames.add(principal.getName());
+	return Collections.unmodifiableList(iNames);
+      }
     else
       return null;
   }

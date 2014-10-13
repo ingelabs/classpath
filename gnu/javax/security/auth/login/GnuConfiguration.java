@@ -1,5 +1,5 @@
 /* GnuConfiguration.java -- GNU Classpath implementation of JAAS Configuration
-   Copyright (C) 2006, 2010  Free Software Foundation, Inc.
+   Copyright (C) 2006, 2010, 2014  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -47,7 +47,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.Security;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -136,7 +135,7 @@ public final class GnuConfiguration extends Configuration
    * this map is a {@link List} of {@link AppConfigurationEntry}s for that
    * application name.
    */
-  private Map loginModulesMap;
+  private Map<String,List<AppConfigurationEntry>> loginModulesMap;
   /** Our reference to our default syntax parser. */
   private ConfigFileParser cp;
 
@@ -148,7 +147,7 @@ public final class GnuConfiguration extends Configuration
   {
     super();
 
-    loginModulesMap = new HashMap();
+    loginModulesMap = new HashMap<String,List<AppConfigurationEntry>>();
     cp = new ConfigFileParser();
     init();
   }
@@ -173,13 +172,13 @@ public final class GnuConfiguration extends Configuration
     if (appName.length() == 0)
       return null;
 
-    List loginModules = (List) loginModulesMap.get(appName);
+    List<AppConfigurationEntry> loginModules = loginModulesMap.get(appName);
     if (loginModules == null || loginModules.size() == 0)
       return null;
 
     if (gnu.java.security.Configuration.DEBUG)
       log.fine(appName + " -> " + loginModules.size() + " entry(ies)");
-    return (AppConfigurationEntry[]) loginModules.toArray(new AppConfigurationEntry[0]);
+    return loginModules.toArray(new AppConfigurationEntry[loginModules.size()]);
   }
 
   /**
@@ -241,7 +240,7 @@ public final class GnuConfiguration extends Configuration
    * <i>java.security.auth.login.config.url.N</i>.
    *
    * @return <code>true</code> if it succeeds, and <code>false</code>
-   *         otherwsie.
+   *         otherwise.
    */
   private boolean processSecurityProperties()
   {
@@ -386,23 +385,23 @@ public final class GnuConfiguration extends Configuration
   private void parseConfig(InputStream configStream) throws IOException
   {
     cp.parse(new InputStreamReader(configStream, "UTF-8"));
-    Map loginModulesMap = cp.getLoginModulesMap();
+    Map<String,List<AppConfigurationEntry>> loginModulesMap = cp.getLoginModulesMap();
     mergeLoginModules(loginModulesMap);
   }
 
-  private void mergeLoginModules(Map otherLoginModules)
+  private void mergeLoginModules(Map<String,List<AppConfigurationEntry>> otherLoginModules)
   {
     if (otherLoginModules == null || otherLoginModules.size() < 1)
       return;
 
-    for (Iterator it = otherLoginModules.keySet().iterator(); it.hasNext();)
+    for (Map.Entry<String,List<AppConfigurationEntry>> entry : otherLoginModules.entrySet())
       {
-        String appName = (String) it.next();
-        List thatListOfACEs = (List) otherLoginModules.get(appName);
+        String appName = entry.getKey();
+        List<AppConfigurationEntry> thatListOfACEs = entry.getValue();
         if (thatListOfACEs == null || thatListOfACEs.size() < 1)
           continue;
 
-        List thisListsOfACEs = (List) loginModulesMap.get(appName);
+        List<AppConfigurationEntry> thisListsOfACEs = loginModulesMap.get(appName);
         if (thisListsOfACEs == null)
           loginModulesMap.put(appName, thatListOfACEs);
         else

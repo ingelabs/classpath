@@ -1,5 +1,5 @@
 /* DSSKeyPairGeneratorSpi.java --
-   Copyright 2001, 2002, 2006 Free Software Foundation, Inc.
+   Copyright 2001, 2002, 2006, 2014 Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -75,7 +75,7 @@ public class DSSKeyPairGeneratorSpi
   public void initialize(AlgorithmParameterSpec params, SecureRandom random)
       throws InvalidAlgorithmParameterException
   {
-    HashMap attributes = new HashMap();
+    HashMap<String,Object> attributes = new HashMap<String,Object>();
     if (params != null)
       {
         if (! (params instanceof DSAParameterSpec))
@@ -99,6 +99,7 @@ public class DSSKeyPairGeneratorSpi
       }
   }
 
+  @Override
   public void initialize(DSAParams params, SecureRandom random)
       throws InvalidParameterException
   {
@@ -119,10 +120,11 @@ public class DSSKeyPairGeneratorSpi
       }
   }
 
+  @Override
   public void initialize(int modlen, boolean genParams, SecureRandom random)
       throws InvalidParameterException
   {
-    HashMap attributes = new HashMap();
+    HashMap<String,Object> attributes = new HashMap<String,Object>();
     attributes.put(DSSKeyPairGenerator.MODULUS_LENGTH, Integer.valueOf(modlen));
     if (random != null)
       attributes.put(DSSKeyPairGenerator.SOURCE_OF_RANDOMNESS, random);

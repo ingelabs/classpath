@@ -1,5 +1,5 @@
 /* Configuration.java
-   Copyright (C) 2004, 2006 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2006, 2014 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -96,10 +96,10 @@ public abstract class Configuration
   {
     if (config == null)
       {
-        String conf = (String) AccessController.doPrivileged
-          (new PrivilegedAction()
+        String conf = AccessController.doPrivileged
+          (new PrivilegedAction<String>()
             {
-              public Object run()
+              public String run()
               {
                 return Security.getProperty ("login.configuration.provider");
               }

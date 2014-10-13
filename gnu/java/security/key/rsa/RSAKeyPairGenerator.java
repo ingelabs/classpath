@@ -1,5 +1,5 @@
 /* RSAKeyPairGenerator.java --
-   Copyright 2001, 2002, 2003, 2006, 2010 Free Software Foundation, Inc.
+   Copyright 2001, 2002, 2003, 2006, 2010, 2014 Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -129,6 +129,7 @@ public class RSAKeyPairGenerator
 
   // implicit 0-arguments constructor
 
+  @Override
   public String name()
   {
     return Registry.RSA_KPG;
@@ -141,7 +142,8 @@ public class RSAKeyPairGenerator
    * @exception IllegalArgumentException if the designated MODULUS_LENGTH value
    *              is less than 1024.
    */
-  public void setup(Map attributes)
+  @Override
+  public void setup(Map<String,Object> attributes)
   {
     if (Configuration.DEBUG)
       log.entering(this.getClass().getName(), "setup", attributes);
@@ -179,6 +181,7 @@ public class RSAKeyPairGenerator
    *
    * @return an RSA keypair.
    */
+  @Override
   public KeyPair generate()
   {
     if (Configuration.DEBUG)

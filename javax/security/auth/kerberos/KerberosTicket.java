@@ -1,5 +1,5 @@
 /* KerberosTicket.java -- a kerberos ticket
-   Copyright (C) 2006 Free Software Foundation, Inc.
+   Copyright (C) 2006, 2014 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -73,7 +73,7 @@ public class KerberosTicket
   private static final int INITIAL = 9;
   private static final int NUM_FLAGS = 12;
 
-  private byte[] asn1Encoding;
+  @SuppressWarnings("unusedPrivate") private byte[] asn1Encoding;
   private KeyImpl sessionKey;
   private boolean[] flags;
   private Date authTime;

@@ -1,5 +1,5 @@
 /* DSSKey.java --
-   Copyright 2001, 2002, 2003, 2006 Free Software Foundation, Inc.
+   Copyright 2001, 2002, 2003, 2006, 2014 Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -73,6 +73,8 @@ import java.security.spec.DSAParameterSpec;
 public abstract class DSSKey
     implements Key, DSAKey
 {
+  private static final long serialVersionUID = -621913609497224901L;
+
   /**
    * A prime modulus, where
    * <code>2<sup>L-1</sup> &lt; p &lt; 2<sup>L</sup></code> for

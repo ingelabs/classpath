@@ -1,5 +1,5 @@
 /* KeyPairGenerator.java --- Key Pair Generator Class
-   Copyright (C) 1999, 2002, 2003, 2004, 2005  Free Software Foundation, Inc.
+   Copyright (C) 1999, 2002, 2003, 2004, 2005, 2014  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -236,6 +236,7 @@ public abstract class KeyPairGenerator extends KeyPairGeneratorSpi
    *          the {@link SecureRandom} to use.
    * @since 1.2
    */
+  @Override
   public void initialize(int keysize, SecureRandom random)
   {
   }
@@ -269,6 +270,7 @@ public abstract class KeyPairGenerator extends KeyPairGeneratorSpi
    *           if the designated specifications are invalid.
    * @since 1.2
    */
+  @Override
   public void initialize(AlgorithmParameterSpec params, SecureRandom random)
     throws InvalidAlgorithmParameterException
   {

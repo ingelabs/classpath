@@ -1,5 +1,5 @@
 /* Identity.java --- Identity Class
-   Copyright (C) 1999, 2003, Free Software Foundation, Inc.
+   Copyright (C) 1999, 2003, 2014, Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -71,7 +71,7 @@ public abstract class Identity implements Principal, Serializable
   private IdentityScope scope;
   private PublicKey publicKey;
   private String info;
-  private Vector certificates;
+  private Vector<Certificate> certificates;
 
   /** Constructor for serialization only. */
   protected Identity()
@@ -202,7 +202,7 @@ public abstract class Identity implements Principal, Serializable
     // Check public key of this certificate against the first one in the vector
     if (certificates.size() > 0)
       {
-        if (((Certificate) certificates.firstElement()).getPublicKey() != publicKey)
+        if (certificates.firstElement().getPublicKey() != publicKey)
           throw new KeyManagementException("Public key does not match");
       }
     certificates.addElement(certificate);
@@ -238,7 +238,7 @@ public abstract class Identity implements Principal, Serializable
     Certificate[] certs = new Certificate[certificates.size()];
     int max = certificates.size();
     for (int i = 0; i < max; i++)
-      certs[i] = (Certificate) certificates.elementAt(i);
+      certs[i] = certificates.elementAt(i);
 
     return certs;
   }

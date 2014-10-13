@@ -1,5 +1,5 @@
 /* DSSKeyPairGenerator.java --
-   Copyright 2001, 2002, 2003, 2006, 2010 Free Software Foundation, Inc.
+   Copyright 2001, 2002, 2003, 2006, 2010, 2014 Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -211,6 +211,7 @@ public class DSSKeyPairGenerator
   /** Preferred encoding format of generated keys. */
   private int preferredFormat;
 
+  @Override
   public String name()
   {
     return Registry.DSS_KPG;
@@ -224,7 +225,8 @@ public class DSSKeyPairGenerator
    *              is not greater than 512, less than 1024 and not of the form
    *              <code>512 + 64j</code>.
    */
-  public void setup(Map attributes)
+  @Override
+  public void setup(Map<String,Object> attributes)
   {
     // find out the modulus length
     Integer l = (Integer) attributes.get(MODULUS_LENGTH);
@@ -299,6 +301,7 @@ public class DSSKeyPairGenerator
     XKEY = new BigInteger(1, kb).setBit(159).setBit(0);
   }
 
+  @Override
   public KeyPair generate()
   {
     if (p == null)

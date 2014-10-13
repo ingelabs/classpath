@@ -1,5 +1,5 @@
 /* SignatureSpi.java --- Signature Service Provider Interface
-   Copyright (C) 1999, 2003, Free Software Foundation, Inc.
+   Copyright (C) 1999, 2003, 2014 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -309,6 +309,7 @@ public abstract class SignatureSpi
    * @throws CloneNotSupportedException
    *           if the implementation does not support cloning.
    */
+  @Override
   public Object clone() throws CloneNotSupportedException
   {
     return super.clone();

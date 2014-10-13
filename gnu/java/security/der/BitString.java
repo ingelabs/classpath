@@ -1,5 +1,5 @@
 /* BitString.java -- Java representation of the BIT STRING type.
-   Copyright (C) 2003 Free Software Foundation, Inc.
+   Copyright (C) 2003, 2014 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -55,7 +55,7 @@ import java.util.Arrays;
  *
  * @author Casey Marshall (csm@gnu.org)
  */
-public class BitString implements Cloneable, Comparable
+public class BitString implements Cloneable, Comparable<BitString>
 {
 
   // Fields.
@@ -273,9 +273,9 @@ public class BitString implements Cloneable, Comparable
       }
   }
 
-  public int compareTo(Object o)
+  @Override
+  public int compareTo(BitString that)
   {
-    BitString that = (BitString) o;
     if (this.equals(that))
       return 0;
     if (this.bytes.length != that.bytes.length)
