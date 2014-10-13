@@ -1,3 +1,14 @@
+2014-05-04  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/lang/model/util/AbstractAnnotationValueVisitor6.java:
+	New abstract class.
+	(AbstractAnnotationValueVisitor6()): Implemented.
+	(visit(AnnotationValue)): Likewise.
+	(visit(AnnotationValue, P)): Likewise.
+	(visitUnknown(AnnotationValue, P)): Likewise.
+	* javax/lang/model/util/AbstractElementVisitor6.java:
+	(visitUnknown(Element,P)): Add missing Override annotation.
+
 2014-10-09  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* NEWS: Updated.

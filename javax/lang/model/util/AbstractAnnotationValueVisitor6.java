@@ -1,5 +1,5 @@
-/* AbstractElementVisitor6.java -- A visitor of program elements for 1.6.
-   Copyright (C) 2013  Free Software Foundation, Inc.
+/* AbstractAnnotationValueVisitor6.java -- A visitor of annotation values for 1.6.
+   Copyright (C) 2014  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -41,12 +41,12 @@ import javax.annotation.processing.SupportedSourceVersion;
 
 import javax.lang.model.SourceVersion;
 
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementVisitor;
-import javax.lang.model.element.UnknownElementException;
+import javax.lang.model.element.AnnotationValue;
+import javax.lang.model.element.AnnotationValueVisitor;
+import javax.lang.model.element.UnknownAnnotationValueException;
 
 /**
- * <p>A skeletal implementation of {@link ElementVisitor} for the
+ * <p>A skeletal implementation of {@link AnnotationValueVisitor} for the
  * 1.6 version of the Java programming language
  * ({@link SourceVersion#RELEASE_6}).  Implementors can extend this
  * class and need provide only implementations of the
@@ -55,7 +55,7 @@ import javax.lang.model.element.UnknownElementException;
  * in order to support later language versions, methods beginning with
  * the phrase {@code "visit"} should be avoided in subclasses.  This
  * class itself will be extended to direct these new methods to the
- * {@link #visitUnknown(Element,P) method and a new class will be
+ * {@link #visitUnknown(AnnotationValue,P) method and a new class will be
  * added to provide implementations for the new language version.
  * At this time, all or some of this class may be deprecated.</p>
  *
@@ -68,61 +68,61 @@ import javax.lang.model.element.UnknownElementException;
  * @since 1.6
  */
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
-public abstract class AbstractElementVisitor6<R,P> implements ElementVisitor<R,P>
+public abstract class AbstractAnnotationValueVisitor6<R,P> implements AnnotationValueVisitor<R,P>
 {
 
   /**
-   * Constructs a new {@code AbstractElementVisitor6}.
+   * Constructs a new {@code AbstractAnnotationValueVisitor6}.
    */
-  protected AbstractElementVisitor6() {}
+  protected AbstractAnnotationValueVisitor6() {}
 
   /**
-   * Visits a program element by passing itself to the element's
-   * {@code accept} method and {@code null} for the additional
-   * parameter i.e. {@code{v.visit(element)} is equivalent to 
-   * {@code{element.accept(v, null)}.
+   * Visits an annotation value by passing itself to the annotation
+   * value's {@code accept} method, with {@code null} for the additional
+   * parameter i.e. {@code{v.visit(annotationValue)} is equivalent to 
+   * {@code{element.accept(annotationValue, null)}.
    *
-   * @param element the element to visit.
-   * @return the return value specific to the element.
+   * @param annotationValue the annotation value to visit.
+   * @return the return value specific to the annotation value.
    */
   @Override
-  public final R visit(Element element)
+  public final R visit(AnnotationValue annotationValue)
   {
-    return element.accept(this, null);
+    return annotationValue.accept(this, null);
   }
 
   /**
-   * Visits a program element by passing itself to the element's
-   * {@code accept} method and the specified value as the additional
-   * parameter i.e. {@code{v.visit(element, parameter)} is equivalent to 
-   * {@code{element.accept(v, parameter)}.
+   * Visits an annotation value by passing itself to the annotation
+   * value's {@code accept} method, with the specified value as the additional
+   * parameter i.e. {@code{v.visit(annotationValue, parameter)} is equivalent to 
+   * {@code{annotationValue.accept(v, parameter)}.
    *
-   * @param element the element to visit.
+   * @param annotationValue the annotation value to visit.
    * @param parameter the value to use as the additional parameter.
-   * @return the return value specific to the element.
+   * @return the return value specific to the annotation value.
    */
   @Override
-  public final R visit(Element element, P parameter)
+  public final R visit(AnnotationValue annotationValue, P parameter)
   {
-    return element.accept(this, parameter);
+    return annotationValue.accept(this, parameter);
   }
 
   /**
-   * Visits an unknown element.  This method is called if
+   * Visits an unknown annotation value.  This method is called if
    * this visitor is used in a version of the language later
    * than 1.6, where new elements have been added.  This
-   * implementation always throws a {@link UnknownElementException}
+   * implementation always throws a {@link UnknownAnnotationValueException}
    * but this is not required of subclasses.
    *
-   * @param element the element to visit.
+   * @param annotationValue the annotation value to visit.
    * @param parameter the additional parameter, specific to the visitor.
    * @return the return value specific to the visitor.
-   * @throws UnknownElementException by default.
+   * @throws UnknownAnnotationValueException by default.
    */
   @Override
-  public R visitUnknown(Element element, P parameter)
+  public R visitUnknown(AnnotationValue annotationValue, P parameter)
   {
-    throw new UnknownElementException(element, parameter);
+    throw new UnknownAnnotationValueException(annotationValue, parameter);
   }
 
 }
