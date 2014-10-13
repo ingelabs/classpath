@@ -853,6 +853,35 @@ AC_ARG_ENABLE([debug],
 AC_SUBST(LIBDEBUG)
 
 dnl -----------------------------------------------------------
+dnl Enable warnings at compile time.
+dnl -----------------------------------------------------------
+AC_MSG_CHECKING([whether to enable warnings])
+AC_ARG_ENABLE([warnings],
+              [AS_HELP_STRING(--enable-warnings,enable warnings during compiling)],
+              [case "${enableval}" in 
+                yes) 
+              	WARNINGS="true"
+              	;;
+                no)
+		WARNINGS="false"
+		;;
+                *)
+		AC_MSG_ERROR(bad value ${enableval} for --enable-warnings) ;;
+              esac],
+              [WARNINGS="false"])
+AC_MSG_RESULT(${WARNINGS})
+if test "x$WARNINGS" = "xtrue"; then
+  JAVAC_WARNINGS="-Xlint:unchecked,cast,divzero,empty,finally,overrides"
+  ECJ_WARNINGS="-warn:+all -warn:-deprecation,emptyBlock,nls,resource,serial,unavoidableGenericProblems,unqualifiedField,unusedPrivate"
+  AC_SUBST(JAVAC_WARNINGS)
+  AC_SUBST(ECJ_WARNINGS)
+else
+  JAVAC_WARNINGS="-nowarn"
+  ECJ_WARNINGS="-nowarn"
+fi
+AC_SUBST(WARNINGS)
+
+dnl -----------------------------------------------------------
 dnl Enable execution of all static initializer loadLibrary() 
 dnl calls at compile time.  By default most people will not
 dnl want to disable this, but some VMs (gcj) don't need or want 
@@ -997,6 +1026,7 @@ if test "x${use_glibj_zip}" = xfalse || \
    test "x${build_class_files}" != xno; then 	
 	AC_PROG_JAVAC_WORKS
   	CLASSPATH_JAVAC_MEM_CHECK
+	IT_USING_ECJ
 fi
 
 dnl -----------------------------------------------------------

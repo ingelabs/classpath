@@ -13,10 +13,19 @@ GLIBJ_BOOTCLASSPATH='$(top_builddir)/lib/glibj.zip:$(top_builddir)/lib'
 GLIBJ_CLASSPATH=asm:$(ANTLR_CLASSPATH)
 
 # Setup the compiler to use the GNU Classpath library we just built.
+
+# source, target and classpath options
+GCJ_OPTS = -fsource=1.5 -ftarget=1.5 --encoding=UTF-8 --bootclasspath=$(GLIBJ_BOOTCLASSPATH) --classpath=$(GLIBJ_CLASSPATH)
+ECJ_OPTS = -source 1.5 -target 1.5 -encoding UTF-8 -bootclasspath $(GLIBJ_BOOTCLASSPATH) -classpath $(GLIBJ_CLASSPATH)
+
 if GCJ_JAVAC
-JCOMPILER = $(JAVAC) $(JAVACFLAGS) -fsource=1.5 -ftarget=1.5 --encoding=UTF-8 --bootclasspath=$(GLIBJ_BOOTCLASSPATH) --classpath=$(GLIBJ_CLASSPATH)
+JCOMPILER = $(JAVAC) $(JAVACFLAGS) $(GCJ_OPTS)
 else
-JCOMPILER = $(JAVAC) $(JAVACFLAGS) -source 1.5 -target 1.5 -encoding UTF-8 -bootclasspath $(GLIBJ_BOOTCLASSPATH) -classpath $(GLIBJ_CLASSPATH)
+if ECJ_JAVAC
+JCOMPILER = $(JAVAC) $(JAVACFLAGS) $(ECJ_WARNINGS) $(ECJ_OPTS)
+else
+JCOMPILER = $(JAVAC) $(JAVACFLAGS) $(JAVAC_WARNINGS) $(ECJ_OPTS)
+endif
 endif
 
 if CREATE_WRAPPERS

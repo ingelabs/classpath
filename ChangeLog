@@ -1,3 +1,18 @@
+2014-10-13  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* configure.ac:
+	Add --enable-warnings so warnings can be turned
+	on and off. Invoke IT_USING_ECJ during compiler
+	checks.
+	* examples/Makefile.am:
+	Split options for GCJ, javac and ecj.
+	* lib/Makefile.am: Likewise.
+	* m4/acinclude.m4:
+	(IT_USING_ECJ): New macro taken from IcedTea to
+	detect the use of ecj.
+	* tools/Makefile.am:
+	Split options for GCJ, javac and ecj.
+
 2014-05-04  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/lang/model/util/AbstractAnnotationValueVisitor6.java:
