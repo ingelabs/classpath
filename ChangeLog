@@ -1,3 +1,12 @@
+2014-09-15  Guillermo Rodriguez  <guille.rodriguez@gmail.com>
+
+	* doc/www.gnu.org/announce/20120307.wml:
+	Add 0.99 release announcement.
+	* doc/www.gnu.org/downloads/downloads.wml:
+	List 0.99. Move to 0.98 to previous releases.
+	* doc/www.gnu.org/newsitems.txt:
+	Add 0.99 news item.
+
 2014-10-13  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* configure.ac:
