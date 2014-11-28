@@ -22,6 +22,7 @@ New in release 0.99.1 (XXX XX, 2012)
   - PR55140: Addition of exception to codePointBefore breaks OpenJDK GenerateBreakIteratorData tool
   - PR57070: VMProcess needs to notifyAll() instead of notify()
   - PR58688: gnu.java.security.x509.PolicyNodeImpl#addAllPolicyQualifiers does not work
+  - PR64109: Missing symbol in libjavautil.so
 
 New in release 0.99 (Feb 15, 2012)
 
