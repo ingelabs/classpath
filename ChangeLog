@@ -1,3 +1,15 @@
+2014-12-15  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	PR classpath/64176
+	* NEWS: Updated.
+	* java/util/GregorianCalendar.java:
+	(computeFields()): Handle the week that runs over
+	the end of the year and the beginning of the next
+	one, so that it is numbered the same in both years.
+	(getBaseWeekOfYear(int,int,int)): Broken out of
+	computeFields to avoid code duplication.
+	(getRelativeWeekday(int)): Likewise.
+
 2014-11-28  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/64109
