@@ -1,3 +1,17 @@
+2015-01-06  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* NEWS: Updated.
+	* java/util/Objects.java: New class.
+	(compareTo(T,T,Comparator)): Implemented.
+	(deepEquals(Object,Object)): Likewise.
+	(equals(Object,Object)): Likewise.
+	(hash(Object...)): Likewise.
+	(hashCode(Object)): Likewise.
+	(requireNonNull(T)): Likewise.
+	(requireNonNull(T,String)): Likewise.
+	(toString(Object)): Likewise.
+	(toString(Object,String)): Likewise.
+
 2014-12-15  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/64176
