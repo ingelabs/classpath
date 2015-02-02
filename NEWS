@@ -31,6 +31,7 @@ New in release 0.99.1 (XXX XX, 2012)
   - PR58688: gnu.java.security.x509.PolicyNodeImpl#addAllPolicyQualifiers does not work
   - PR64109: Missing symbol in libjavautil.so
   - PR64176: Week of year field during end of year transition is incorrect
+  - PR64881: KeyPairGenerator.genKeyPair() ends up calling the default generateKeyPair method which returns a DSA generator
 
 New in release 0.99 (Feb 15, 2012)
 
