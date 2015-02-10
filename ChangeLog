@@ -1,3 +1,62 @@
+2015-02-02  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	PR classpath/64902
+	PR classpath/64904
+	* NEWS: Updated.
+	* gnu/java/security/jce/sig/KeyPairGeneratorAdapter.java:
+	(KeyPairGeneratorAdapter(String)): Filter incoming generator
+	names so all standardised names are handled (e.g. the
+	DiffieHellman alias for DH.
+	(generateKeyPair()): Check whether the generator has been
+	initialized and initialize it with defaults if not.
+	(getAlgorithm()): Return the standardised name, not the
+	internal one.
+	(localiseName(String)): Convert requested standardised
+	name to the internal equivalent.
+	* gnu/java/security/key/IKeyPairGenerator.java:
+	(isInitialized()): New method to check whether the generator
+	has been initialized.
+	(getDefaultKeySize()): Return the default key size used
+	by the generator.
+	* gnu/java/security/key/dss/DSSKey.java:
+	(getAlgorithm()): Return standard "DSA" rather than "dsa".
+	* gnu/java/security/key/dss/DSSKeyPairGenerator.java:
+	(initialized): Flag to indicate whether the generator has
+	been initialized or not.
+	(initLock): Lock to prevent multiple concurrent initializations.
+	(setup(Map)): Wrap initialization in a lock and set initialized
+	flag when done.
+	(isInitialized()): Returns the value of the initialized flag.
+	(getDefaultKeySize()): Returns the default key size.
+	* gnu/java/security/key/rsa/GnuRSAKey.java:
+	(getAlgorithm()): Return standard "RSA" rather than "rsa".
+	* gnu/java/security/key/rsa/RSAKeyPairGenerator.java:
+	(initialized): Flag to indicate whether the generator has
+	been initialized or not.
+	(initLock): Lock to prevent multiple concurrent initializations.
+	(setup(Map)): Wrap initialization in a lock and set initialized
+	flag when done.
+	(isInitialized()): Returns the value of the initialized flag.
+	(getDefaultKeySize()): Returns the default key size.
+	* gnu/javax/crypto/key/dh/GnuDHKey.java:
+	(getAlgorithm()): Return standard "DH" rather than "dh".
+	* gnu/javax/crypto/key/dh/GnuDHKeyPairGenerator.java:
+	(initialized): Flag to indicate whether the generator has
+	been initialized or not.
+	(initLock): Lock to prevent multiple concurrent initializations.
+	(setup(Map)): Wrap initialization in a lock and set initialized
+	flag when done.
+	(isInitialized()): Returns the value of the initialized flag.
+	(getDefaultKeySize()): Returns the default key size.
+	* gnu/javax/crypto/key/srp6/SRPKeyPairGenerator.java:
+	(initialized): Flag to indicate whether the generator has
+	been initialized or not.
+	(initLock): Lock to prevent multiple concurrent initializations.
+	(setup(Map)): Wrap initialization in a lock and set initialized
+	flag when done.
+	(isInitialized()): Returns the value of the initialized flag.
+	(getDefaultKeySize()): Returns the default key size.
+
 2015-01-30  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/64881

@@ -135,7 +135,7 @@ public abstract class DSSKey
 
   public String getAlgorithm()
   {
-    return Registry.DSS_KPG;
+    return "DSA";
   }
 
   /** @deprecated see getEncoded(int). */

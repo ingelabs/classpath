@@ -97,7 +97,7 @@ public abstract class GnuRSAKey
 
   public String getAlgorithm()
   {
-    return Registry.RSA_KPG;
+    return "RSA";
   }
 
   /** @deprecated see getEncoded(int). */
