@@ -288,12 +288,9 @@ public class DSSKeyPairGenerator
 		  throw new IllegalArgumentException(
                     "Does not provide default parameters for " + L
                     + "-bit modulus length");
-		else
-		  {
-		    p = null;
-		    q = null;
-		    g = null;
-		  }
+		p = null;
+		q = null;
+		g = null;
 	      }
 	  }
 	else
@@ -326,7 +323,6 @@ public class DSSKeyPairGenerator
   {
     if (p == null)
       {
-	System.err.println("Attempting to generate parameters for modulus of length " + L);
         BigInteger[] params = new FIPS186(L, rnd).generateParameters();
         seed = params[FIPS186.DSA_PARAMS_SEED];
         counter = params[FIPS186.DSA_PARAMS_COUNTER];

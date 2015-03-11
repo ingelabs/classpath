@@ -872,7 +872,7 @@ AC_ARG_ENABLE([warnings],
 AC_MSG_RESULT(${WARNINGS})
 if test "x$WARNINGS" = "xtrue"; then
   JAVAC_WARNINGS="-Xlint:unchecked,cast,divzero,empty,finally,overrides"
-  ECJ_WARNINGS="-warn:+all -warn:-deprecation,emptyBlock,nls,resource,serial,unavoidableGenericProblems,unqualifiedField,unusedPrivate"
+  ECJ_WARNINGS="-warn:+all -warn:-deprecation,emptyBlock,nls,resource,serial,unavoidableGenericProblems,unqualifiedField,unusedPrivate,paramAssign,super,boxing"
   AC_SUBST(JAVAC_WARNINGS)
   AC_SUBST(ECJ_WARNINGS)
 else

@@ -1,5 +1,6 @@
 /* SignerInfo.java -- a SignerInfo object, from PKCS #7
-   Copyright (C) 2004, 2005, 2010. 2014  Free Software Foundation, Inc.
+   Copyright (C) 2004, 2005, 2010. 2014, 2015
+   Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -108,7 +109,7 @@ public class SignerInfo
       throw new BEREncodingException("malformed SignerInfo");
 
     val = ber.read();
-    if (val.getTag() != BER.INTEGER)
+    if (val.getTag() != DER.INTEGER)
       throw new BEREncodingException("malformed Version");
 
     version = (BigInteger) val.getValue();
@@ -131,7 +132,7 @@ public class SignerInfo
       log.fine("    Issuer: " + issuer);
 
     val = ber.read();
-    if (val.getTag() != BER.INTEGER)
+    if (val.getTag() != DER.INTEGER)
       throw new BEREncodingException("malformed SerialNumber");
 
     serialNumber = (BigInteger) val.getValue();
@@ -145,7 +146,7 @@ public class SignerInfo
       log.fine("  DigestAlgorithmIdentifier: " + val);
 
     DERValue val2 = ber.read();
-    if (val2.getTag() != BER.OBJECT_IDENTIFIER)
+    if (val2.getTag() != DER.OBJECT_IDENTIFIER)
       throw new BEREncodingException("malformed AlgorithmIdentifier");
 
     digestAlgorithmId = (OID) val2.getValue();
@@ -205,7 +206,7 @@ public class SignerInfo
     if (Configuration.DEBUG)
       log.fine("  DigestEncryptionAlgorithmIdentifier: " + val);
     val2 = ber.read();
-    if (val2.getTag() != BER.OBJECT_IDENTIFIER)
+    if (val2.getTag() != DER.OBJECT_IDENTIFIER)
       throw new BEREncodingException("malformed AlgorithmIdentifier");
 
     digestEncryptionAlgorithmId = (OID) val2.getValue();
@@ -242,7 +243,7 @@ public class SignerInfo
                                  "    digestEncryptionAlgorithm params: "));
       }
     val = ber.read();
-    if (val.getTag() != BER.OCTET_STRING)
+    if (val.getTag() != DER.OCTET_STRING)
       throw new BEREncodingException("malformed EncryptedDigest");
 
     encryptedDigest = (byte[]) val.getValue();

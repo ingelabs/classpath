@@ -1,5 +1,5 @@
 /* PolicyMappings.java -- policy mappings extension.
-   Copyright (C) 2004, 2014 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2014, 2015 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -97,6 +97,7 @@ public class PolicyMappings extends Extension.Value
     return mappings.get(issuerDomainPolicy);
   }
 
+  @Override
   public String toString()
   {
     return PolicyMappings.class.getName() + " [ " + mappings + " ]";

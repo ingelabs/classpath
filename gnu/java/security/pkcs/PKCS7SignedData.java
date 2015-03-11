@@ -1,5 +1,6 @@
 /* PKCS7SignedData.java -- reader/writer for PKCS#7 signedData objects
-   Copyright (C) 2004, 2005, 2006, 2010, 2014  Free Software Foundation, Inc.
+   Copyright (C) 2004, 2005, 2006, 2010, 2014, 2015
+   Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -161,7 +162,7 @@ public class PKCS7SignedData
       throw new BEREncodingException("malformed ContentInfo");
 
     val = ber.read();
-    if (val.getTag() != BER.OBJECT_IDENTIFIER)
+    if (val.getTag() != DER.OBJECT_IDENTIFIER)
       throw new BEREncodingException("malformed ContentType");
 
     if (!PKCS7_SIGNED_DATA.equals(val.getValue()))
@@ -179,7 +180,7 @@ public class PKCS7SignedData
       log.fine("SignedData: " + val);
 
     val = ber.read();
-    if (val.getTag() != BER.INTEGER)
+    if (val.getTag() != DER.INTEGER)
       throw new BEREncodingException("expecting Version");
     version = (BigInteger) val.getValue();
     if (Configuration.DEBUG)
@@ -238,7 +239,7 @@ public class PKCS7SignedData
     if (Configuration.DEBUG)
       log.fine("  ContentInfo: " + val);
     val2 = ber.read();
-    if (val2.getTag() != BER.OBJECT_IDENTIFIER)
+    if (val2.getTag() != DER.OBJECT_IDENTIFIER)
       throw new BEREncodingException("malformed ContentType");
 
     contentType = (OID) val2.getValue();
@@ -295,20 +296,20 @@ public class PKCS7SignedData
           log.fine("  CertificateRevocationLists: " + val);
         count = 0;
         val2 = ber.read();
-        List<CRL> crls = new LinkedList<CRL>();
+        List<CRL> generatedCRLs = new LinkedList<CRL>();
         while (val2 != BER.END_OF_SEQUENCE &&
                (val.getLength() > 0 && val.getLength() > count))
           {
             CRL crl = x509.generateCRL(new ByteArrayInputStream(val2.getEncoded()));
             if (Configuration.DEBUG)
               log.fine("    CRL: " + crl);
-            crls.add(crl);
+            generatedCRLs.add(crl);
             count += val2.getEncodedLength();
             ber.skip(val2.getLength());
             if (BERValue.isIndefinite(val) || val.getLength() > count)
               val2 = ber.read();
           }
-        this.crls = crls.toArray(new CRL[crls.size()]);
+        crls = generatedCRLs.toArray(new CRL[generatedCRLs.size()]);
         val = ber.read();
       }
 

@@ -315,6 +315,7 @@ public abstract class KeyPairGenerator extends KeyPairGeneratorSpi
    * @return a new unique {@link KeyPair}.
    * @see #genKeyPair()
    */
+  @Override
   public KeyPair generateKeyPair()
   {
     try

@@ -92,6 +92,7 @@ public class AWTCallbackHandler extends AbstractCallbackHandler
   // Instance methods.
   // -------------------------------------------------------------------------
 
+  @Override
   protected synchronized void handleChoice(ChoiceCallback c)
   {
     Frame ownerFrame = new Frame();
@@ -142,6 +143,7 @@ public class AWTCallbackHandler extends AbstractCallbackHandler
     ownerFrame.dispose();
   }
 
+  @Override
   protected synchronized void handleConfirmation(ConfirmationCallback c)
   {
     Frame ownerFrame = new Frame();
@@ -230,6 +232,7 @@ public class AWTCallbackHandler extends AbstractCallbackHandler
     ownerFrame.dispose();
   }
 
+  @Override
   protected synchronized void handleLanguage(LanguageCallback c)
   {
     Locale[] locales = Locale.getAvailableLocales();
@@ -279,6 +282,7 @@ public class AWTCallbackHandler extends AbstractCallbackHandler
       }
   }
 
+  @Override
   protected synchronized void handleName(NameCallback c)
   {
     Frame ownerFrame = new Frame();
@@ -316,6 +320,7 @@ public class AWTCallbackHandler extends AbstractCallbackHandler
     ownerFrame.dispose();
   }
 
+  @Override
   protected synchronized void handlePassword(PasswordCallback c)
   {
     Frame ownerFrame = new Frame();
@@ -353,6 +358,7 @@ public class AWTCallbackHandler extends AbstractCallbackHandler
     ownerFrame.dispose();
   }
 
+  @Override
   protected synchronized void handleTextInput(TextInputCallback c)
   {
     Frame ownerFrame = new Frame();
@@ -390,6 +396,7 @@ public class AWTCallbackHandler extends AbstractCallbackHandler
     ownerFrame.dispose();
   }
 
+  @Override
   protected synchronized void handleTextOutput(TextOutputCallback c)
   {
     Frame ownerFrame = new Frame();
@@ -428,6 +435,7 @@ public class AWTCallbackHandler extends AbstractCallbackHandler
   // ActionListener interface implementation.
   // -------------------------------------------------------------------------
 
+  @Override
   public synchronized void actionPerformed(ActionEvent ae)
   {
     actionCommand = ae.getActionCommand();
@@ -437,16 +445,17 @@ public class AWTCallbackHandler extends AbstractCallbackHandler
   // WindowListener interface implementation.
   // -------------------------------------------------------------------------
 
+  @Override
   public synchronized void windowClosing(WindowEvent we)
   {
     actionCommand = ACTION_NONE;
     notifyAll();
   }
 
-  public void windowOpened(WindowEvent we) { }
-  public void windowClosed(WindowEvent we) { }
-  public void windowIconified(WindowEvent we) { }
-  public void windowDeiconified(WindowEvent we) { }
-  public void windowActivated(WindowEvent we) { }
-  public void windowDeactivated(WindowEvent we) { }
+  @Override public void windowOpened(WindowEvent we) { }
+  @Override public void windowClosed(WindowEvent we) { }
+  @Override public void windowIconified(WindowEvent we) { }
+  @Override public void windowDeiconified(WindowEvent we) { }
+  @Override public void windowActivated(WindowEvent we) { }
+  @Override public void windowDeactivated(WindowEvent we) { }
 }

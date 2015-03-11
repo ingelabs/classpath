@@ -1,5 +1,5 @@
 /* AccessControlContext.java --- Access Control Context Class
-   Copyright (C) 1999, 2004, 2014 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2004, 2014, 2015 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -172,6 +172,7 @@ public final class AccessControlContext
    *
    * @return true if equal, false otherwise
    */
+  @Override
   public boolean equals(Object obj)
   {
     if (obj instanceof AccessControlContext)
@@ -202,6 +203,7 @@ public final class AccessControlContext
    *
    * @return a hash code representing this class
    */
+  @Override
   public int hashCode()
   {
     int h = 0;

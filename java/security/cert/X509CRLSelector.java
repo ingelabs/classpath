@@ -1,5 +1,5 @@
 /* X509CRLSelector.java -- selects X.509 CRLs by criteria.
-   Copyright (C) 2004, 2014 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2014, 2015 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -72,7 +72,7 @@ import javax.security.auth.x500.X500Principal;
  * @author Casey Marshall (csm@gnu.org)
  * @since 1.4
  */
-public class X509CRLSelector implements CRLSelector, Cloneable
+public class X509CRLSelector implements CRLSelector
 {
 
   // Fields.
@@ -235,8 +235,7 @@ public class X509CRLSelector implements CRLSelector, Cloneable
 	  iNames.add(principal.getName());
 	return Collections.unmodifiableList(iNames);
       }
-    else
-      return null;
+    return null;
   }
 
   /**
@@ -339,6 +338,7 @@ public class X509CRLSelector implements CRLSelector, Cloneable
    *
    * @return The string.
    */
+  @Override
   public String toString()
   {
     CPStringBuilder str = new CPStringBuilder(X509CRLSelector.class.getName());
@@ -367,6 +367,7 @@ public class X509CRLSelector implements CRLSelector, Cloneable
    * @param _crl The CRL being checked.
    * @return True if the CRL matches, false otherwise.
    */
+  @Override
   public boolean match(CRL _crl)
   {
     if (!(_crl instanceof X509CRL))
@@ -433,6 +434,7 @@ public class X509CRLSelector implements CRLSelector, Cloneable
    *
    * @return The copy.
    */
+  @Override
   public Object clone()
   {
     try

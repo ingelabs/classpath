@@ -141,6 +141,7 @@ public final class X500Principal implements Principal, Serializable
   // Instance methods.
   // ------------------------------------------------------------------------
 
+  @Override
   public int hashCode()
   {
     int result = size();
@@ -156,6 +157,7 @@ public final class X500Principal implements Principal, Serializable
     return result;
   }
 
+  @Override
   public boolean equals(Object o)
   {
     if (!(o instanceof X500Principal))
@@ -183,9 +185,10 @@ public final class X500Principal implements Principal, Serializable
   {
     if (encoded == null)
       encodeDer();
-    return (byte[]) encoded.clone();
+    return encoded.clone();
   }
 
+  @Override
   public String getName()
   {
     return getName (RFC2253);
@@ -241,6 +244,7 @@ public final class X500Principal implements Principal, Serializable
     return str.toString();
   }
 
+  @Override
   public String toString()
   {
     return getName (RFC2253);
@@ -318,7 +322,7 @@ public final class X500Principal implements Principal, Serializable
       }
   }
 
-  private String readAttributeType(Reader in) throws IOException
+  private static String readAttributeType(Reader in) throws IOException
   {
     CPStringBuilder buf = new CPStringBuilder();
     int ch;
@@ -441,9 +445,9 @@ public final class X500Principal implements Principal, Serializable
       }
   }
 
-  private void parseDer (InputStream encoded) throws IOException
+  private void parseDer (InputStream encodedStream) throws IOException
   {
-    DERReader der = new DERReader (encoded);
+    DERReader der = new DERReader (encodedStream);
     DERValue name = der.read();
     if (!name.isConstructed())
       throw new IOException ("malformed Name");

@@ -1,5 +1,5 @@
 /* Sequence.java -- a sequence of integers.
-   Copyright (C) 2004, 2006, 2014 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2006, 2014, 2015 Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -122,13 +122,15 @@ public final class Sequence
     return sequence[index];
   }
 
+  @Override
   public int size()
   {
     return sequence.length;
   }
 
+  @Override
   public Object[] toArray()
   {
-    return (Object[]) sequence.clone();
+    return sequence.clone();
   }
 }

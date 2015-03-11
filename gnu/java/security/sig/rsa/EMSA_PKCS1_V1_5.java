@@ -1,5 +1,6 @@
 /* EMSA_PKCS1_V1_5.java --
-   Copyright (C) 2003, 2006, 2014 Free Software Foundation, Inc.
+   Copyright (C) 2003, 2006, 2014, 2015
+   Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -171,6 +172,7 @@ public class EMSA_PKCS1_V1_5
     return new EMSA_PKCS1_V1_5(hash);
   }
 
+  @Override
   public Object clone()
   {
     return getInstance(hash.name());

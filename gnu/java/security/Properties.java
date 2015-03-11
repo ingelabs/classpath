@@ -1,5 +1,5 @@
 /* Properties.java -- run-time configuration properties.
-   Copyright (C) 2003, 2004, 2006, 2010, 2014  Free Software Foundation, Inc.
+   Copyright (C) 2003, 2004, 2006, 2010, 2014, 2015  Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -312,14 +312,14 @@ public final class Properties
     handleBooleanProperty(CHECK_WEAK_KEYS);
     handleBooleanProperty(DO_RSA_BLINDING);
     // re-sync the 'known' properties
-    reproducible = Boolean.valueOf((String) props.get(REPRODUCIBLE_PRNG)).booleanValue();
-    checkForWeakKeys = Boolean.valueOf((String) props.get(CHECK_WEAK_KEYS)).booleanValue();
-    doRSABlinding = Boolean.valueOf((String) props.get(DO_RSA_BLINDING)).booleanValue();
+    reproducible = Boolean.valueOf(props.get(REPRODUCIBLE_PRNG)).booleanValue();
+    checkForWeakKeys = Boolean.valueOf(props.get(CHECK_WEAK_KEYS)).booleanValue();
+    doRSABlinding = Boolean.valueOf(props.get(DO_RSA_BLINDING)).booleanValue();
     // This does not change.
     props.put(VERSION, Registry.VERSION_STRING);
   }
 
-  private void handleBooleanProperty(final String name)
+  private static void handleBooleanProperty(final String name)
   {
     String s = null;
     try

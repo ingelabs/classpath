@@ -1,5 +1,5 @@
 /* DSSKeyPairGeneratorSpi.java --
-   Copyright 2001, 2002, 2006, 2014 Free Software Foundation, Inc.
+   Copyright 2001, 2002, 2006, 2014, 2015 Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -67,11 +67,13 @@ public class DSSKeyPairGeneratorSpi
     super(Registry.DSS_KPG);
   }
 
+  @Override
   public void initialize(int keysize, SecureRandom random)
   {
     this.initialize(keysize, false, random);
   }
 
+  @Override
   public void initialize(AlgorithmParameterSpec params, SecureRandom random)
       throws InvalidAlgorithmParameterException
   {

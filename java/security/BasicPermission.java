@@ -1,5 +1,5 @@
 /* BasicPermission.java -- implements a simple named permission
-   Copyright (C) 1998, 1999, 2002, 2003, 2004, 2005, 2006, 2014
+   Copyright (C) 1998, 1999, 2002, 2003, 2004, 2005, 2006, 2014, 2015
    Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -39,7 +39,6 @@ exception statement from your version. */
 
 package java.security;
 
-import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -74,7 +73,6 @@ import java.util.Hashtable;
  * @status updated to 1.4
  */
 public abstract class BasicPermission extends Permission
-  implements Serializable
 {
   /**
    * Compatible with JDK 1.1+.
@@ -111,6 +109,7 @@ public abstract class BasicPermission extends Permission
    * @throws NullPointerException if name is null
    * @throws IllegalArgumentException if name is invalid
    */
+  @SuppressWarnings("unused")
   public BasicPermission(String name, String actions)
   {
     this(name);
@@ -183,6 +182,7 @@ public abstract class BasicPermission extends Permission
    *
    * @return the action list
    */
+  @Override
   public String getActions()
   {
     return "";
@@ -197,6 +197,7 @@ public abstract class BasicPermission extends Permission
    *
    * @return a new empty <code>PermissionCollection</code> object
    */
+  @Override
   public PermissionCollection newPermissionCollection()
   {
     return new BasicPermissionCollection(getClass());

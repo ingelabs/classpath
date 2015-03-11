@@ -96,13 +96,13 @@ public class LoginContext
     this.cbHandler = cbHandler;
     if (config == null)
       config = Configuration.getConfig();
-    AppConfigurationEntry[] entries = config.getAppConfigurationEntry (name);
-    if (entries == null)
-      entries = config.getAppConfigurationEntry (OTHER);
-    if (entries == null)
+    AppConfigurationEntry[] appEntries = config.getAppConfigurationEntry (name);
+    if (appEntries == null)
+      appEntries = config.getAppConfigurationEntry (OTHER);
+    if (appEntries == null)
       throw new LoginException ("no configured modules for application "
                                 + name);
-    this.entries = entries;
+    this.entries = appEntries;
     modules = new LoginModule[entries.length];
     sharedState = new HashMap<String,Object>();
     for (int i = 0; i < entries.length; i++)
@@ -223,7 +223,7 @@ public class LoginContext
   }
 
   private LoginModule lookupModule (AppConfigurationEntry entry,
-                                    Subject subject, Map<String,?> sharedState)
+                                    Subject subj, Map<String,?> state)
     throws LoginException
   {
     LoginModule module = null;
@@ -251,7 +251,7 @@ public class LoginContext
         cause = ie;
       }
 
-    if (cause != null)
+    if (module == null)
       {
         LoginException le = new LoginException ("could not load module "
                                                 + entry.getLoginModuleName());
@@ -259,7 +259,7 @@ public class LoginContext
         throw le;
       }
 
-    module.initialize (subject, cbHandler, sharedState, entry.getOptions());
+    module.initialize (subj, cbHandler, state, entry.getOptions());
     return module;
   }
 }

@@ -250,6 +250,7 @@ public abstract class SignatureSpi
    *           cannot be changed, a security exception occured, etc.
    * @deprecated use the other setParameter.
    */
+  @Deprecated
   protected abstract void engineSetParameter(String param, Object value)
     throws InvalidParameterException;
 
@@ -266,6 +267,7 @@ public abstract class SignatureSpi
    *           if the parameter is invalid, the parameter is already set and
    *           cannot be changed, a security exception occured, etc.
    */
+  @SuppressWarnings({"unused","static-method"})
   protected void engineSetParameter(AlgorithmParameterSpec params)
     throws InvalidAlgorithmParameterException
   {
@@ -284,6 +286,7 @@ public abstract class SignatureSpi
    * @throws UnsupportedOperationException
    *           always.
    */
+  @SuppressWarnings("static-method")
   protected AlgorithmParameters engineGetParameters()
   {
     throw new UnsupportedOperationException();
@@ -299,6 +302,7 @@ public abstract class SignatureSpi
    *           if the parameter is invalid.
    * @deprecated use the other getParameter
    */
+  @Deprecated
   protected abstract Object engineGetParameter(String param)
     throws InvalidParameterException;
 

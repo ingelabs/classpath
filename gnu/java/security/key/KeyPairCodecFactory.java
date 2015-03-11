@@ -1,5 +1,5 @@
 /* KeyPairCodecFactory.java --
-   Copyright 2001, 2002, 2006, 2014 Free Software Foundation, Inc.
+   Copyright 2001, 2002, 2006, 2014, 2015 Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -154,13 +154,14 @@ public class KeyPairCodecFactory
         return getX509Codec(name);
       case Registry.PKCS8_ENCODING_ID:
         return getPKCS8Codec(name);
+      default:
+	return null;
       }
 
-    return null;
   }
 
   /**
-   * Returns an instance of a keypair codec given a key.
+   * Returns an instance of a keypair codec, given a key.
    *
    * @param key the key to encode.
    * @return an instance of the keypair codec, or <code>null</code> if none
@@ -184,9 +185,10 @@ public class KeyPairCodecFactory
         return getX509Codec(key);
       case Registry.PKCS8_ENCODING_ID:
         return getPKCS8Codec(key);
+      default:
+	return null;
       }
 
-    return null;
   }
 
   /**

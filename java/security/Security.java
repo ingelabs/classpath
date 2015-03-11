@@ -183,6 +183,7 @@ public final class Security
    *             {@link AlgorithmParameters} and {@link KeyFactory} engine
    *             classes instead.
    */
+  @Deprecated
   public static String getAlgorithmProperty(String algName, String propName)
   {
     if (algName == null || propName == null)
@@ -322,12 +323,10 @@ public final class Security
   {
     if (name == null)
       return null;
-    else
-      {
-        name = name.trim();
-        if (name.length() == 0)
-          return null;
-      }
+    name = name.trim();
+    if (name.length() == 0)
+      return null;
+
     Provider p;
     int max = providers.size ();
     for (int i = 0; i < max; i++)
@@ -414,10 +413,10 @@ public final class Security
       return result;
 
     serviceName = serviceName.toUpperCase()+".";
-    Provider[] providers = getProviders();
+    Provider[] provs = getProviders();
     int ndx;
-    for (int i = 0; i < providers.length; i++)
-      for (String s : providers[i].stringPropertyNames())
+    for (int i = 0; i < provs.length; i++)
+      for (String s : provs[i].stringPropertyNames())
         {
           String service = s.trim();
           if (service.toUpperCase().startsWith(serviceName))
@@ -634,7 +633,7 @@ public final class Security
   private static boolean provides(Provider p, String svc, String algo,
                                   String attr, String val)
   {
-    String serviceDotAlgorithm = null;
+    String serviceDotAlgorithm = "";
     String realVal;
     boolean found = false;
     // if <svc>.<algo> <attr> is in the set then so is <svc>.<algo>

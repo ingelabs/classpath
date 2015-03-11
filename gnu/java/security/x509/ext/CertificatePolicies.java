@@ -1,5 +1,5 @@
 /* CertificatePolicies.java -- certificate policy extension.
-   Copyright (C) 2004, 2006, 2014 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2006, 2014, 2015 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -146,8 +146,8 @@ public class CertificatePolicies extends Extension.Value
 	  }
 	try
 	  {
-	    for (Iterator<PolicyQualifierInfo> i = e.getValue().iterator();
-		 i.hasNext(); i.next());
+	    Iterator<PolicyQualifierInfo> i = e.getValue().iterator();
+	    while (i.hasNext()) { i.next(); }
 	  }
 	catch (ClassCastException cce)
 	  {
@@ -188,6 +188,7 @@ public class CertificatePolicies extends Extension.Value
     return policyQualifierInfos.get(oid);
   }
 
+  @Override
   public byte[] getEncoded()
   {
     if (encoded == null)
@@ -219,9 +220,10 @@ public class CertificatePolicies extends Extension.Value
           }
         encoded = new DERValue(DER.CONSTRUCTED|DER.SEQUENCE, pol).getEncoded();
       }
-    return (byte[]) encoded.clone();
+    return encoded.clone();
   }
 
+  @Override
   public String toString()
   {
     return CertificatePolicies.class.getName() + " [ policies=" + policies +

@@ -1,5 +1,5 @@
 /* RandomEvent.java -- an event with random data.
-   Copyright (C) 2004, 2006, 2014 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2006, 2014, 2015 Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -63,7 +63,7 @@ public class RandomEvent
     if (data.length == 0 || data.length > 32)
       throw new IllegalArgumentException(
           "random events take between 1 and 32 bytes of data");
-    this.data = (byte[]) data.clone();
+    this.data = data.clone();
   }
 
   public byte getSourceNumber()

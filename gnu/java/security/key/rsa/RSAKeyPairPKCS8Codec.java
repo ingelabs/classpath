@@ -1,5 +1,5 @@
 /* RSAKeyPairPKCS8Codec.java -- PKCS#8 Encoding/Decoding handler
-   Copyright (C) 2006, 2010, 2014  Free Software Foundation, Inc.
+   Copyright (C) 2006, 2010, 2014, 2015  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -71,6 +71,7 @@ public class RSAKeyPairPKCS8Codec
 
   // implicit 0-arguments constructor
 
+  @Override
   public int getFormatID()
   {
     return PKCS8_FORMAT;
@@ -79,6 +80,7 @@ public class RSAKeyPairPKCS8Codec
   /**
    * @throws InvalidParameterException ALWAYS.
    */
+  @Override
   public byte[] encodePublicKey(PublicKey key)
   {
     throw new InvalidParameterException("Wrong format for public keys");
@@ -124,6 +126,7 @@ public class RSAKeyPairPKCS8Codec
    * @throw InvalidParameterException if an error occurs during the marshalling
    *        process.
    */
+  @Override
   public byte[] encodePrivateKey(PrivateKey key)
   {
     if (Configuration.DEBUG)
@@ -203,6 +206,7 @@ public class RSAKeyPairPKCS8Codec
   /**
    * @throws InvalidParameterException ALWAYS.
    */
+  @Override
   public PublicKey decodePublicKey(byte[] input)
   {
     throw new InvalidParameterException("Wrong format for public keys");
@@ -216,6 +220,7 @@ public class RSAKeyPairPKCS8Codec
    * @throw InvalidParameterException if an exception occurs during the
    *        unmarshalling process.
    */
+  @Override
   public PrivateKey decodePrivateKey(byte[] input)
   {
     if (Configuration.DEBUG)

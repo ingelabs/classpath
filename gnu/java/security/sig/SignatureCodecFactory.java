@@ -1,5 +1,5 @@
 /* SignatureCodecFactory.java -- Factory to instantiate Signature codecs
-   Copyright (C) 2006, 2014 Free Software Foundation, Inc.
+   Copyright (C) 2006, 2014, 2015 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -145,9 +145,9 @@ public class SignatureCodecFactory
         return getRawCodec(name);
       case Registry.X509_ENCODING_ID:
         return getX509Codec(name);
+      default:
+	return null;
       }
-
-    return null;
   }
 
   /**

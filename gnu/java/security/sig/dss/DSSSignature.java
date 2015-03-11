@@ -220,7 +220,7 @@ public class DSSSignature
    * @return an object encapsulating the DSS signature pair <code>r</code> and
    *         <code>s</code>.
    */
-  private Object encodeSignature(BigInteger r, BigInteger s)
+  private static Object encodeSignature(BigInteger r, BigInteger s)
   {
     return new BigInteger[] { r, s };
   }
@@ -231,7 +231,7 @@ public class DSSSignature
    *
    * @return the DSS signature pair <code>r</code> and <code>s</code>.
    */
-  private BigInteger[] decodeSignature(Object signature)
+  private static BigInteger[] decodeSignature(Object signature)
   {
     return (BigInteger[]) signature;
   }

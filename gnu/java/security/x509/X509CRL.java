@@ -136,6 +136,7 @@ public class X509CRL extends java.security.cert.X509CRL
   // X509CRL methods.
   // ------------------------------------------------------------------------
 
+  @Override
   public boolean equals(Object o)
   {
     if (!(o instanceof X509CRL))
@@ -143,6 +144,7 @@ public class X509CRL extends java.security.cert.X509CRL
     return ((X509CRL) o).getRevokedCertificates().equals(revokedCerts.values());
   }
 
+  @Override
   public int hashCode()
   {
     return revokedCerts.hashCode();
@@ -151,7 +153,7 @@ public class X509CRL extends java.security.cert.X509CRL
   @Override
   public byte[] getEncoded() throws CRLException
   {
-    return (byte[]) encoded.clone();
+    return encoded.clone();
   }
 
   @Override
@@ -184,6 +186,7 @@ public class X509CRL extends java.security.cert.X509CRL
     return issuerDN;
   }
 
+  @Override
   public X500Principal getIssuerX500Principal()
   {
     return new X500Principal(issuerDN.getDer());
@@ -218,13 +221,13 @@ public class X509CRL extends java.security.cert.X509CRL
   @Override
   public byte[] getTBSCertList() throws CRLException
   {
-    return (byte[]) tbsCRLBytes.clone();
+    return tbsCRLBytes.clone();
   }
 
   @Override
   public byte[] getSignature()
   {
-    return (byte[]) rawSig.clone();
+    return rawSig.clone();
   }
 
   @Override
@@ -251,13 +254,14 @@ public class X509CRL extends java.security.cert.X509CRL
   public byte[] getSigAlgParams()
   {
     if (sigAlgParams != null)
-      return (byte[]) sigAlgParams.clone();
+      return sigAlgParams.clone();
     return null;
   }
 
   // X509Extension methods.
   // ------------------------------------------------------------------------
 
+  @Override
   public boolean hasUnsupportedCriticalExtension()
   {
     for (Extension e : extensions.values())
@@ -267,7 +271,8 @@ public class X509CRL extends java.security.cert.X509CRL
       }
     return false;
   }
-
+  
+  @Override
   public Set<String> getCriticalExtensionOIDs()
   {
     HashSet<String> s = new HashSet<String>();
@@ -279,6 +284,7 @@ public class X509CRL extends java.security.cert.X509CRL
     return Collections.unmodifiableSet(s);
   }
 
+  @Override
   public Set<String> getNonCriticalExtensionOIDs()
   {
     HashSet<String> s = new HashSet<String>();
@@ -290,6 +296,7 @@ public class X509CRL extends java.security.cert.X509CRL
     return Collections.unmodifiableSet(s);
   }
 
+  @Override
   public byte[] getExtensionValue(String oid)
   {
     Extension e = getExtension(new OID(oid));
@@ -324,13 +331,14 @@ public class X509CRL extends java.security.cert.X509CRL
     return X509CRL.class.getName();
   }
 
+  @Override
   public boolean isRevoked(Certificate cert)
   {
     if (!(cert instanceof java.security.cert.X509Certificate))
       throw new IllegalArgumentException("not a X.509 certificate");
     BigInteger certSerial =
       ((java.security.cert.X509Certificate) cert).getSerialNumber();
-    X509CRLEntry ent = (X509CRLEntry) revokedCerts.get(certSerial);
+    X509CRLEntry ent = revokedCerts.get(certSerial);
     if (ent == null)
       return false;
     return ent.getRevocationDate().compareTo(new Date()) < 0;
@@ -485,7 +493,7 @@ public class X509CRL extends java.security.cert.X509CRL
         if (Configuration.DEBUG)
           log.fine("sig params tag = " + val.getTag() + " len == "
                    + val.getEncodedLength());
-        sigAlgParams = (byte[]) val.getEncoded();
+        sigAlgParams = val.getEncoded();
         if (val.isConstructed())
           in.skip(val.getLength());
       }

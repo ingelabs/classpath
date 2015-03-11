@@ -131,7 +131,7 @@ class X509CRLEntry extends java.security.cert.X509CRLEntry
   @Override
   public byte[] getEncoded() throws CRLException
   {
-    return (byte[]) encoded.clone();
+    return encoded.clone();
   }
 
   @Override
@@ -162,6 +162,7 @@ class X509CRLEntry extends java.security.cert.X509CRLEntry
   // X509Extension methods.
   // -------------------------------------------------------------------------
 
+  @Override
   public boolean hasUnsupportedCriticalExtension()
   {
     for (Extension e : extensions.values())
@@ -172,6 +173,7 @@ class X509CRLEntry extends java.security.cert.X509CRLEntry
     return false;
   }
 
+  @Override
   public Set<String> getCriticalExtensionOIDs()
   {
     HashSet<String> s = new HashSet<String>();
@@ -183,6 +185,7 @@ class X509CRLEntry extends java.security.cert.X509CRLEntry
     return Collections.unmodifiableSet(s);
   }
 
+  @Override
   public Set<String> getNonCriticalExtensionOIDs()
   {
     HashSet<String> s = new HashSet<String>();
@@ -194,6 +197,7 @@ class X509CRLEntry extends java.security.cert.X509CRLEntry
     return Collections.unmodifiableSet(s);
   }
 
+  @Override
   public byte[] getExtensionValue(String oid)
   {
     Extension e = getExtension(new OID(oid));

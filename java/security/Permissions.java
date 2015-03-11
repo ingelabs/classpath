@@ -1,5 +1,6 @@
 /* Permissions.java -- a collection of permission collections
-   Copyright (C) 1998, 2001, 2002, 2004, 2005, 2014 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2001, 2002, 2004, 2005, 2014, 2015
+   Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,7 +39,6 @@ exception statement from your version. */
 
 package java.security;
 
-import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.NoSuchElementException;
@@ -58,7 +58,6 @@ import java.util.NoSuchElementException;
  * @since 1.1
  */
 public final class Permissions extends PermissionCollection
-  implements Serializable
 {
   /**
    * Compatible with JDK 1.1+.
@@ -159,6 +158,7 @@ public final class Permissions extends PermissionCollection
       Enumeration<PermissionCollection> mainEnum = perms.elements();
       Enumeration<Permission> subEnum;
 
+      @Override
       public boolean hasMoreElements()
       {
         if (subEnum == null)
@@ -181,6 +181,7 @@ public final class Permissions extends PermissionCollection
         return true;
       }
 
+      @Override
       public Permission nextElement()
       {
         if (! hasMoreElements())
@@ -208,8 +209,12 @@ public final class Permissions extends PermissionCollection
      *
      * @serial the stored permissions, both as key and value
      */
-    private final Hashtable<Permission,Permission> perms =
-      new Hashtable<Permission,Permission>();
+    private final Hashtable<Permission,Permission> perms;
+
+    public PermissionsHash()
+    {
+      perms = new Hashtable<Permission,Permission>();
+    }
 
     /**
      * Add a permission. We don't need to check for read-only, as this
@@ -219,7 +224,7 @@ public final class Permissions extends PermissionCollection
      * @param perm the permission to add
      */
     @Override
-    public void add(Permission perm)
+    public synchronized void add(Permission perm)
     {
       perms.put(perm, perm);
     }
@@ -230,9 +235,9 @@ public final class Permissions extends PermissionCollection
      * @param perm the permission to check
      * @return true if it is implied
      */
-    // FIXME: Should this method be synchronized?
+    // Synchronized to avoid elements being added mid-iteration
     @Override
-    public boolean implies(Permission perm)
+    public synchronized boolean implies(Permission perm)
     {
       Enumeration<Permission> elements = elements();
 

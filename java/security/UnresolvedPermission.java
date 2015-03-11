@@ -246,7 +246,7 @@ public final class UnresolvedPermission extends Permission
   {
     if (certs == null)
       return null;
-    return (Certificate[]) certs.clone();
+    return certs.clone();
   }
 } // class UnresolvedPermission
 
@@ -322,6 +322,7 @@ class UnresolvedPermissionCollection extends PermissionCollection
       Enumeration<Vector<Permission>> mainEnum = permissions.elements();
       Enumeration<Permission> subEnum;
 
+      @Override
       public boolean hasMoreElements()
       {
         if (subEnum == null)
@@ -344,6 +345,7 @@ class UnresolvedPermissionCollection extends PermissionCollection
         return true;
       }
 
+      @Override
       public Permission nextElement()
       {
         if (! hasMoreElements())

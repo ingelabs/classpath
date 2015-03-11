@@ -1,5 +1,5 @@
 /* X509CRLSelectorImpl.java -- implementation of an X509CRLSelector.
-   Copyright (C) 2004, 2014  Free Software Foundation, Inc.
+   Copyright (C) 2004, 2014, 2015  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -80,7 +80,7 @@ public class X509CRLSelectorImpl implements CRLSelector
     issuerNames.add(new X500DistinguishedName(issuerName));
   }
 
-  public void addIssuerName(String issuerName)
+  public void addIssuerName(String issuerName) throws IOException
   {
     issuerNames.add(new X500DistinguishedName(issuerName));
   }

@@ -1,5 +1,5 @@
 /* SubjectDomainCombiner.java -- domain combiner for Subjects.
-   Copyright (C) 2004, 2005, 2014  Free Software Foundation, Inc.
+   Copyright (C) 2004, 2005, 2014, 2015  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -63,6 +63,7 @@ public class SubjectDomainCombiner implements DomainCombiner
   // Instance methods.
   // -------------------------------------------------------------------------
 
+  @Override
   public ProtectionDomain[] combine (final ProtectionDomain[] current,
                                      final ProtectionDomain[] assigned)
   {

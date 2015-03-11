@@ -1,5 +1,5 @@
 /* X509CertPath.java -- an X.509 certificate path.
-   Copyright (C) 2004, 2014  Free Software Fonudation, Inc.
+   Copyright (C) 2004, 2014, 2015  Free Software Fonudation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -117,16 +117,19 @@ public class X509CertPath extends CertPath
   // Instance methods.
   // -------------------------------------------------------------------------
 
+  @Override
   public List<Certificate> getCertificates()
   {
     return path; // already unmodifiable
   }
 
+  @Override
   public byte[] getEncoded() throws CertificateEncodingException
   {
     return getEncoded(ENCODINGS.get(0));
   }
 
+  @Override
   public byte[] getEncoded(String encoding) throws CertificateEncodingException
   {
     if (encoding.equalsIgnoreCase("PkiPath"))
@@ -142,7 +145,7 @@ public class X509CertPath extends CertPath
                 throw new CertificateEncodingException();
               }
           }
-        return (byte[]) pkiEncoded.clone();
+        return pkiEncoded.clone();
       }
     else if (encoding.equalsIgnoreCase("PKCS7"))
       {
@@ -157,12 +160,13 @@ public class X509CertPath extends CertPath
                 throw new CertificateEncodingException();
               }
           }
-        return (byte[]) pkcsEncoded.clone();
+        return pkcsEncoded.clone();
       }
     else
       throw new CertificateEncodingException("unknown encoding: " + encoding);
   }
 
+  @Override
   public Iterator<String> getEncodings()
   {
     return ENCODINGS.iterator(); // already unmodifiable
@@ -175,12 +179,12 @@ public class X509CertPath extends CertPath
     throws CertificateEncodingException, IOException
   {
     DERReader der = new DERReader(in);
-    DERValue path = null;
+    DERValue parsedPath = null;
     if (encoding.equalsIgnoreCase("PkiPath"))
       {
         // PKI encoding is just a SEQUENCE of X.509 certificates.
-        path = der.read();
-        if (!path.isConstructed())
+        parsedPath = der.read();
+        if (!parsedPath.isConstructed())
           throw new DEREncodingException("malformed PkiPath");
       }
     else if (encoding.equalsIgnoreCase("PKCS7"))
@@ -226,8 +230,8 @@ public class X509CertPath extends CertPath
         if (!value.isConstructed())
           throw new DEREncodingException("malformed ContentInfo");
         der.skip(value.getLength());
-        path = der.read();
-        if (!path.isConstructed() || path.getTag() != 0)
+        parsedPath = der.read();
+        if (!parsedPath.isConstructed() || parsedPath.getTag() != 0)
           throw new DEREncodingException("no certificates");
       }
     else
@@ -235,7 +239,7 @@ public class X509CertPath extends CertPath
 
     LinkedList<Certificate> certs = new LinkedList<Certificate>();
     int len = 0;
-    while (len < path.getLength())
+    while (len < parsedPath.getLength())
       {
         DERValue cert = der.read();
         try
@@ -250,7 +254,7 @@ public class X509CertPath extends CertPath
         der.skip(cert.getLength());
       }
 
-    this.path = Collections.unmodifiableList(certs);
+    path = Collections.unmodifiableList(certs);
   }
 
   private byte[] encodePki()

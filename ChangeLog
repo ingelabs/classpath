@@ -1,3 +1,1050 @@
+2015-03-11  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* configure.ac:
+	(ECJ_WARNINGS): Turn off parameter assignment,
+	autoboxing and overridding without a super method
+	call warnings for now.
+	* gnu/java/security/OID.java:
+	(OID(int[],boolean)): Remove unnecessary cast on clone() call.
+	(getIDs()): Likewise.
+	(getDER()): Likewise.
+	(clone()): Add @Override.
+	(toString()): Add @Override. Remove unncessary else clause.
+	(hashCode()): Add @Override.
+	(equals(Object)): Likewise.
+	(compareTo(OID)): Likewise.
+	* gnu/java/security/PolicyFile.java:
+	(getPermissions(CodeSource)): Add @Override.
+	(refresh()): Likewise and on anonymous inner class run() method.
+	(toString()): Add @Override.
+	(parse(URL)): Throw exception if p is null, and suppress associated
+	warning, as exception is thrown via error method. Add default
+	empty case to switch method. Call error method with the exception,
+	not the result of its toString() method. Remove unneeded else block.
+	(expand(String)): Avoid shadowing the prop variable.
+	(error(URL,StreamTokenizer,Throwable)): Add new variant that allows
+	the cause to be included.
+	* gnu/java/security/Properties.java:
+	(init()): Avoid unnecessary casts.
+	(handleBooleanProperty(String)): Make static.
+	* gnu/java/security/action/GetPropertyAction.java:
+	(run()): Add @Override.
+	* gnu/java/security/action/GetSecurityPropertyAction.java:
+	(run()): Add @Override.
+	* gnu/java/security/ber/BERReader.java:
+	(read()): Add @Override. Remove unnecessary else clause.
+	* gnu/java/security/ber/BERValue.java:
+	(getLength()): Add @Override.
+	* gnu/java/security/der/BitString.java:
+	(toByteArray()): Remove unnecessary cast on clone() call.
+	(getShiftedByteArray()): Likewise.
+	(toBooleanArray()): Likewise.
+	(clone(): Add @Override.
+	(hashCode()): Likewise.
+	(equals(Object)): Likewise.
+	(toString()): Likewise.
+	* gnu/java/security/der/DERReader.java:
+	(makeTime(int,byte[])): Make static. Mark fall-through
+	cases in switch statement. Add default case which throws
+	an exception.
+	* gnu/java/security/der/DERValue.java:
+	(DERValue(int,int,Object,byte[])): Remove unnecessary cast on clone() call.
+	(getValueAs(int)): Avoid shadowing of encoded variable.
+	(getEncoded()): Remove unnecessary cast on clone() call.
+	(toString()): Add @Override.
+	* gnu/java/security/hash/BaseHash.java:
+	(name()): Add @Override.
+	(hashSize()): Likewise.
+	(blockSize()): Likewise.
+	(update(byte)): Likewise.
+	(update(byte[])): Likewise.
+	(update(byte[],int,int)): Likewise.
+	(digest()): Likewise.
+	(reset()): Likewise.
+	(clone()): Likewise.
+	(selfTest()): Likewise.
+	* gnu/java/security/hash/Haval.java:
+	(Haval(Haval)): Remove unnecessary cast on clone() call.
+	(clone()): Add @Override.
+	(transform(byte[],int)): Likewise.
+	(padBuffer()): Likewise.
+	(getResult()): Likewise.
+	(resetContext()): Likewise.
+	(selfTest()): Likewise.
+	(tailorDigestBits()): Add empty default case to switch statement.
+	(FF5(int,int,int,int,int,int,int,int,int,int)): Make static.
+	(f1(int,int,int,int,int,int,int)): Likewise.
+	(f2(int,int,int,int,int,int,int)): Likewise.
+	(f3(int,int,int,int,int,int,int)): Likewise.
+	(f4(int,int,int,int,int,int,int)): Likewise.
+	(f5(int,int,int,int,int,int,int)): Likewise.
+	* gnu/java/security/hash/MD2.java:
+	(MD2(MD2)): Remove unnecessary casts on clone() call.
+	(clone()): Add @Override.
+	(getResult()): Likewise.
+	(resetContext()): Likewise.
+	(selfTest())): Likewise.
+	(padBuffer()): Likewise.
+	(transform(byte[],int)): LIkewise.
+	* gnu/java/security/hash/MD4.java:
+	(MD4(MD4)): Remove unncessary casts on clone() call.
+	(clone()): Add @Override.
+	(getResult()): Likewise.
+	(resetContext()): Likewise.
+	(selfTest())): Likewise. Avoid shadowing d variable.
+	(padBuffer()): Likewise.
+	(transform(byte[],int)): LIkewise.
+	* gnu/java/security/hash/MD5.java:
+	(MD5(MD5)): Remove unnecessary casts on clone() call.
+	(clone()): Add @Override.
+	(transform(byte[],int)): LIkewise.
+	(padBuffer()): Likewise.
+	(getResult()): Likewise.
+	(resetContext()): Likewise.
+	(selfTest())): Likewise.
+	* gnu/java/security/hash/RipeMD128.java:
+	(RipeMD128(RipeMD128)): Remove unnecessary casts on clone() call.
+	(clone()): Add @Override.
+	(transform(byte[],int)): LIkewise.
+	(padBuffer()): Likewise.
+	(getResult()): Likewise.
+	(resetContext()): Likewise.
+	(selfTest())): Likewise.
+	* gnu/java/security/hash/RipeMD160.java:
+	(RipeMD160(RipeMD160)): Remove unnecessary casts on clone() call.
+	(clone()): Add @Override.
+	(transform(byte[],int)): LIkewise.
+	(padBuffer()): Likewise.
+	(getResult()): Likewise.
+	(resetContext()): Likewise.
+	(selfTest())): Likewise.
+	* gnu/java/security/hash/Sha160.java:
+	(Sha160(Sha160)): Remove unnecessary casts on clone() call.
+	(clone()): Add @Override.
+	(transform(byte[],int)): LIkewise.
+	(padBuffer()): Likewise.
+	(getResult()): Likewise.
+	(resetContext()): Likewise.
+	(selfTest())): Likewise.
+	* gnu/java/security/hash/Sha256.java:
+	(Sha256(Sha256)): Remove unnecessary casts on clone() call.
+	(clone()): Add @Override.
+	(transform(byte[],int)): LIkewise.
+	(padBuffer()): Likewise.
+	(getResult()): Likewise.
+	(resetContext()): Likewise.
+	(selfTest())): Likewise.
+	* gnu/java/security/hash/Sha384.java:
+	(Sha384(Sha384)): Remove unnecessary casts on clone() call.
+	(clone()): Add @Override.
+	(transform(byte[],int)): LIkewise.
+	(padBuffer()): Likewise.
+	(getResult()): Likewise.
+	(resetContext()): Likewise.
+	(selfTest())): Likewise.
+	* gnu/java/security/hash/Sha512.java:
+	(Sha512(Sha512)): Remove unnecessary casts on clone() call.
+	(clone()): Add @Override.
+	(transform(byte[],int)): LIkewise.
+	(padBuffer()): Likewise.
+	(getResult()): Likewise.
+	(resetContext()): Likewise.
+	(selfTest())): Likewise.
+	* gnu/java/security/hash/Tiger.java:
+	(Tiger(Tiger)): Remove unnecessary casts on clone() call.
+	(clone()): Add @Override.
+	(selfTest())): Likewise.
+	(padBuffer()): Likewise.
+	(getResult()): Likewise.
+	(resetContext()): Likewise.
+	(transform(byte[],int)): LIkewise.
+	* gnu/java/security/hash/Whirlpool.java,
+	(Whirlpool(Whirlpool)): Remove unnecessary casts on clone() call.
+	(clone()): Add @Override.
+	(transform(byte[],int)): LIkewise.
+	(padBuffer()): Likewise.
+	(getResult()): Likewise.
+	(resetContext()): Likewise.
+	(selfTest())): Likewise.
+	* gnu/java/security/jce/hash/MessageDigestAdapter.java:
+	(clone()): Add @Override.
+	(engineGetDigestLength()): Likewise.
+	(engineUpdate(byte)): Likewise.
+	(engineUpdate(byte[],int,int)): Likewise.
+	(engineDigest()): Likewise.
+	(engineDigest(byte[],int,int)): Likewise.
+	(engineReset()): Likewise.
+	* gnu/java/security/jce/sig/DSSKeyPairGeneratorSpi.java:
+	(initialize(int,SecureRandom)): Add @Override.
+	(initialize(AlgorithmParameterSpec,SecureRandom)): Likewise.
+	* gnu/java/security/jce/sig/DSSParametersGenerator.java:
+	(engineInit(int,SecureRandom)): Add @Override.
+	(engineInit(AlgorithmParameterSpec,SecureRandom)): Likewise.
+	(engineGenerateParameters()): Likewise.
+	* gnu/java/security/jce/sig/EncodedKeyFactory.java:
+	(decodeDSSPublicKey(DSAPublicKeySpec)): Make static.
+	(decodeRSAPublicKey(RSAPublicKeySpec)): Likewise.
+	(decodeDHPublicKey(DHPublicKeySpec)): Likewise.
+	(decodeDHPublicKey(byte[]]): Likewise.
+	(decodeDSSPrivateKey(DSAPrivateKeySpec)): Likewise.
+	(decodeRSAPrivateKey(RSAPrivateCrtKeySpec)): Likewise.
+	(decodeDHPrivateKey(DHPrivateKeySpec)): Likewise.
+	(decodeDHPrivateKey(byte[])): Likewise.
+	* gnu/java/security/jce/sig/KeyPairGeneratorAdapter.java:
+	(initialize(int,SecureRandom)): Add Override.
+	(initialize(AlgorithmParameterSpec,SecureRandom)): Likewise.
+	(generateKeyPair()): Likewise.
+	(localiseName(String)): Uncomment conversion.
+	* gnu/java/security/jce/sig/RSAKeyPairGeneratorSpi.java:
+	(initialize(int,SecureRandom)): Add Override.
+	(initialize(AlgorithmParameterSpec,SecureRandom)): Likewise.
+	* gnu/java/security/jce/sig/SignatureAdapter.java:
+	Drop unneeded import of BaseSignature.
+	(clone()): Add @Override.
+	(engineInitVerify(PublicKey)): Reference VERIFIER_KEY via
+	interface ISignature where it is defined.
+	(engineInitSign(PrivateKey)): Likewise for SIGNER_KEY.
+	(engineInitSign(PrivateKey,SecureRandom)): Likewise for
+	SIGNER_KEY and SOURCE_OF_RANDOMNESS.
+	* gnu/java/security/key/KeyPairCodecFactory.java:
+	(getInstance(String,int)): Add default case which returns null.
+	(getInstance(Key)): Likewise and fix typo in documentation.
+	* gnu/java/security/key/dss/DSSKey.java:
+	(getParams()): Add @Override.
+	(getAlgorithm()): Likewise.
+	(getEncoded()): Likewise.
+	(getFormat()): LIkewise.
+	(equals(Object)): Likewise.
+	(hashCode()): Add implementation using java.util.Objects.hash
+	(toString()): Remove unneeded cast.
+	* gnu/java/security/key/dss/DSSKeyPairGenerator.java:
+	(setup(MAp)): Remove unnecessary else clause.
+	(generate()): Remove left-over debug statement.
+	* gnu/java/security/key/dss/DSSKeyPairRawCodec.java:
+	(getFormatID()): Add @Override.
+	(encodePublicKey(PublicKey)): Likewise.
+	(decodePublicKey(byte[])): Likewise.
+	(encodePrivateKey(PrivateKey)): Likewise.
+	(decodePrivateKey(byte[])): Likewise.
+	* gnu/java/security/key/dss/DSSKeyPairX509Codec.java:
+	(getFormatID()): Add @Override.
+	(encodePublicKey(PublicKey)): Likewise.
+	(encodePrivateKey(PrivateKey)): Likewise.
+	(decodePublicKey(byte[])): Likewise.
+	(decodePrivateKey(byte[])): Likewise.
+	* gnu/java/security/key/dss/DSSPrivateKey.java:
+	Drop unneeded reference to PrivateKey.
+	(getX()): Add @Override.
+	(getEncoded(int)): Likewise.
+	(equals(Object)): Likewise.
+	(hashCode()): Implemented.
+	(toString()): Add @Override and remove unneeded cast.
+	* gnu/java/security/key/dss/DSSPublicKey.java:
+	Drop unneeded reference to PublicKey.
+	(getY()): Add @Override.
+	(getEncoded(int)): Likewise.
+	(equals(Object)): Likewise.
+	(hashCode()): Implemented.
+	(toString()): Add @Override and remove unneeded cast.
+	* gnu/java/security/key/rsa/GnuRSAKey.java:
+	(getModulus()): Add @Override.
+	(getAlgorithm()): Likewise.
+	(getEncoded()): Likewise.
+	(getFormat()): Likewise.
+	(equals(Object)): Likewise.
+	(hashCode()): Implemented using java.util.Objects.hash
+	(toString()): Add @Override and remove unneeded cast.
+	* gnu/java/security/key/rsa/GnuRSAPrivateKey.java:
+	Drop unneeded reference to PrivateKey.
+	(getPrimeP()): Add @Override.
+	(getPrimeQ()): Likewise.
+	(getPrimeExponentP()): Likewise.
+	(getPrimeExponentQ()): Likewise.
+	(getCrtCoefficient()): Likewise.
+	(getPrivateExponent()): Likewise.
+	(getEncoded(int)): Likewise.
+	(equals(Object)): Likewise.
+	(hashCode()): Implemented using java.util.Objects.hash.
+	(toString()): Add @Override and remove unneeded cast.
+	* gnu/java/security/key/rsa/GnuRSAPublicKey.java:
+	Drop unneeded reference to PublicKey.
+	(getEncoded()): Add @Override.
+	(equals(Object)): Likewise.
+	(hashCode()): Implemented.
+	(toString()): Add @Override and remove unneeded cast.
+	* gnu/java/security/key/rsa/RSAKeyPairPKCS8Codec.java:
+	(getFormatID()): Add @Override.
+	(encodePublicKey(PublicKey)): Likewise.
+	(encodePrivateKey(PrivateKey)): Likewise.
+	(decodePublicKey(byte[])): Likewise.
+	(decodePrivateKey(byte[])): Likewise.
+	* gnu/java/security/key/rsa/RSAKeyPairRawCodec.java:
+	(getFormatID()): Add @Override.
+	(encodePublicKey(PublicKey)): Likewise.
+	(decodePublicKey(byte[])): Likewise.
+	(encodePrivateKey(PrivateKey)): Likewise.
+	(decodePrivateKey(byte[])): Likewise.
+	* gnu/java/security/pkcs/PKCS7SignedData.java:
+	(PKCS7SignedData(BERReader)): Refer to constants by
+	the interface where they are defined. Rename crls
+	to avoid shadowing the class variable.
+	* gnu/java/security/pkcs/SignerInfo.java:
+	(SignerInfo(BERReader)): Refer to constants by the
+	interface where they are defined.
+	* gnu/java/security/prng/BasePRNG.java:
+	(addRandomBytes(byte[])): Add @Override.
+	(addRandomBytes(byte[],int,int)): Likewise. Rename
+	buffer to buf to avoid shadowing.
+	(clone()): Remove unnecessary cast and this references.
+	* gnu/java/security/prng/MDGenerator.java:
+	Remove unneeded reference to Cloneable.
+	* gnu/java/security/prng/RandomEvent.java:
+	(RandomEvent(Object,byte,byte,byte[])): Remove unnecessary cast.
+	* gnu/java/security/provider/DefaultPolicy.java:
+	(getPermissions(CodeSource)): Add @Override.
+	(refresh()): Likewise.
+	* gnu/java/security/provider/Gnu.java:
+	(Gnu()): Add @Override to run implementation in anonymous inner
+	class.
+	* gnu/java/security/provider/PKIXCertPathValidatorImpl.java:
+	(engineValidate(CertPath,CertPathParameters)): Add @Override. Remove
+	unneeded cast and else clause.
+	(checkExplicitPolicy(int,List)): Make static.
+	* gnu/java/security/provider/X509CertificateFactory.java:
+	(generateCert(InputStream)): Make static. Remove unnecessary
+	else clause.
+	(generateCRL(InputStream)): Likewise.
+	* gnu/java/security/sig/SignatureCodecFactory.java:
+	(getInstance(String,int)): Add default case to switch statement.
+	* gnu/java/security/sig/dss/DSSSignature.java:
+	(encodeSignature(BigInteger,BigInteger)): Make static.
+	(decodeSignature(Object)): Likewise.
+	* gnu/java/security/sig/dss/DSSSignatureRawCodec.java:
+	(getFormatID()): Add @Override.
+	(encodeSignature(Object)): Likewise.
+	(decodeSignature(byte[])): Likewise.
+	* gnu/java/security/sig/dss/DSSSignatureX509Codec.java:
+	(getFormatID()): Add @Override.
+	(encodeSignature(Object)): Likewise.
+	(decodeSignature(byte[])): Likewise.
+	* gnu/java/security/sig/rsa/EMSA_PKCS1_V1_5.java:
+	(clone()): Add @Override.
+	* gnu/java/security/sig/rsa/EMSA_PSS.java:
+	(clone()): Add @Override.
+	* gnu/java/security/sig/rsa/RSA.java:
+	(RSADP(RSAPrivateKey, BigInteger)): Suppress null warning
+	as r is always non-null if rsaBlinding is true.
+	* gnu/java/security/sig/rsa/RSAPKCS1V1_5Signature.java:
+	(clone()): Add @Override.
+	(setupForVerification(PublicKey)): Likewise.
+	(setupForSigning(PrivateKey)): Likewise.
+	(generateSignature()): Likewise.
+	(verifySignature(Object)): Likewise.
+	* gnu/java/security/sig/rsa/RSAPKCS1V1_5SignatureRawCodec.java:
+	(getFormatID()): Add @Override.
+	(encodeSignature(Object)): Likewise.
+	(decodeSignature(byte[])): Likewise.
+	* gnu/java/security/sig/rsa/RSAPKCS1V1_5SignatureX509Codec.java:
+	(getFormatID()): Add @Override.
+	(encodeSignature(Object)): Likewise.
+	(decodeSignature(byte[])): Likewise.
+	* gnu/java/security/sig/rsa/RSAPSSSignature.java:
+	(clone()): Add @Override.
+	(setupForVerification(PublicKey)): Likewise. Remove unnecessary
+	cast.
+	(setupForSigning(PrivateKey)): Likewise.
+	(generateSignature()): Add @Override.
+	(verifySignature(Object)): Likewise.
+	* gnu/java/security/sig/rsa/RSAPSSSignatureRawCodec.java:
+	(getFormatID()): Add @Override.
+	(encodeSignature(Object)): Likewise.
+	(decodeSignature(byte[])): Likewise.
+	* gnu/java/security/util/ByteArray.java:
+	(toString()): Add @Override.
+	* gnu/java/security/util/ByteBufferOutputStream.java:
+	(toString()): Add @Override.
+	* gnu/java/security/util/ExpirableObject.java:
+	(destroy()): Add @Override.
+	(Destroyer.run()): Likewise.
+	* gnu/java/security/util/FormatUtil.java:
+	(getEncodingName(int)): Add default case for switch statement.
+	(getEncodingShortName(int)): Likewise.
+	* gnu/java/security/util/Sequence.java:
+	(size()): Add @Override.
+	(toArray()): Likewise. Remove unnecessary cast.
+	* gnu/java/security/util/SimpleList.java:
+	(size()): Add @Override.
+	(get(int)): Likewise.
+	(toString()): Likewise.
+	* gnu/java/security/util/Util.java:
+	(toBase64(byte[])): Add default case to switch statement which
+	does nothing. Remove unnecessary else clause.
+	* gnu/java/security/x509/PolicyNodeImpl.java:
+	(addExpectedPolicy(String)): Rename variable to expectedPolicy
+	to avoid shadowing policy variable.
+	(addAllPolicyQualifiers(Collection)): Rename variable to
+	policyQualifiers to avoid shadowing qualifiers variable.
+	Rewrite collection check to catch ClassCastException as,
+	if it.next() returns normally, it will always be an instance
+	of PolicyQualifierInfo.
+	(toString()): Add @Override.
+	* gnu/java/security/x509/X500DistinguishedName.java:
+	(X500DistinguishedName(String)): Throw IOException rather
+	than catching it as calling methods in X509CRLSelector
+	implementations, addIssuerName(String), expect an
+	IOException to be thrown if there is a parsing error.
+	(getName()): Add @Override.
+	(hashCode()): Likewise.
+	(equals(Object)): Likewise.
+	(toString()): Likewise.
+	(getDer()): Remove unnecessary casts.
+	(readAttributeType(Reader)): Make static.
+	* gnu/java/security/x509/X509CRL.java:
+	(equals(Object)): Add @Override.
+	(hashCode()): Likewise.
+	(getEncoded()): Remove unnecessary cast.
+	(getIssuerX500Principal()): Add @Override.
+	(getTBSCertList()): Remove unnecessary cast.
+	(getSignature()): Likewise.
+	(getSigAlgParams()): Likewise.
+	(hasUnsupportedCriticalExtension()): Add @Override.
+	(getCriticialExtensionOIDs()): Likewise.
+	(getNonCriticalExtensionOIDs()): Likewise.
+	(getExtensionValue(String)): Likewise.
+	(isRevoked(Certificate)): Likewise. Remove unnecessary
+	cast.
+	(parse(InputStream)): Remove unnecessary cast.
+	* gnu/java/security/x509/X509CRLEntry.java:
+	(getEncoded()): Remove unncessary cast.
+	(hasUnsupportedCriticalExtension()): Add @Override.
+	(getCriticialExtensionOIDs()): Likewise.
+	(getNonCriticalExtensionOIDs()): Likewise.
+	(getExtensionValue(String)): Likewise.
+	* gnu/java/security/x509/X509CRLSelectorImpl.java:
+	(addIssuerName(String)): Throw IOException as specified.
+	* gnu/java/security/x509/X509CertPath.java:
+	(getCertificates()): Add @Override.
+	(getEncoded()): Likewise. Remove unnecessary casts.
+	(getEncodings()): Add @Override.
+	(parse(InputStream, String)): Rename path to parsedPath
+	to avoid shadowing.
+	* gnu/java/security/x509/X509CertSelectorImpl.java:
+	(addIssuerName(String)): Throw IOException as specified.
+	* gnu/java/security/x509/X509Certificate.java:
+	Remove unneeded Serializable reference.
+	(checkValidity()): Add @Override.
+	(checkValidity(Date)): Likewise.
+	(getVersion()): Likewise.
+	(getSerialNumber()): Likewise.
+	(getIssuerDN()): Likewise.
+	(getIssuerX500Principal()): Likewise.
+	(getSubjectDN()): Likewise.
+	(getSubjectX500Principal()): Likewise.
+	(getNotBefore()): Likewise.
+	(getNotAfter()): Likewise.
+	(getTBSCertificate()): Likewise. Remove unnecessary cast.
+	(getSignature()): Likewise.
+	(getSigAlgName()): Add @Override.
+	(getSigAlgOID()): Likewise.
+	(getSigAlgParams()): Likewise. Remove unnecessary cast.
+	(getIssuerUniqueID()): Add @Override.
+	(getSubjectUniqueID()): Likewise.
+	(getKeyUsage()): Likewise.
+	(getExtendedKeyUsage()): Likewise.
+	(getBasicConstraints()): Likewise.
+	(getSubjectAlternativeNames()): Likewise. Make conversion
+	from int to Integer explicit.
+	(getIssuerAlternativeNames()): Likewise.
+	(hasUnsupportedCriticalExtension()): Add @Override.
+	(getCriticialExtensionOIDs()): Likewise.
+	(getNonCriticalExtensionOIDs()): Likewise.
+	(getExtensionValue(String)): Likewise.
+	(getEncoded()): Likewise. Remove unnecessary cast.
+	(verify(PublicKey)): Add @Override.
+	(verify(PublicKey, String)): Likewise.
+	(toString()): Likewise.
+	(getPublicKey()): Likewise.
+	(parse(InputStream)): Rename encoded to enc to avoid shadowing.
+	Avoid unnecessary cast.
+	* gnu/java/security/x509/ext/AuthorityKeyIdentifier.java:
+	(toString()): Add @Override.
+	* gnu/java/security/x509/ext/BasicConstraints.java:
+	(getEncoded()): Add @Override. Remove unncessary casts.
+	(toString()): Add @Override.
+	* gnu/java/security/x509/ext/CRLNumber.java:
+	(getEncoded()): Add @Override. Remove unncessary casts.
+	(toString()): Add @Override.
+	* gnu/java/security/x509/ext/CertificatePolicies.java:
+	(CertificatePolicies(List,Map)): Swap empty for-loop
+	for a while loop.
+	(getEncoded()): Add @Override. Remove unnecessary cast.
+	(toString()): Add @Override.
+	* gnu/java/security/x509/ext/ExtendedKeyUsage.java:
+	(toString()): Add @Override.
+	* gnu/java/security/x509/ext/Extension.java:
+	(Extension(byte[])): Remove unnecessary cast.
+	(getEncoded()): Likewise.
+	(toString()): Add @Override.
+	(Value.Value(byte[])): Remove unnecessary cast.
+	(Value.getEncoded()): Likewise.
+	(hashCode()): Add @Override.
+	(equals(Object)): Likewise.
+	(toString()): Likewise.
+	* gnu/java/security/x509/ext/GeneralName.java:
+	(Kind.forTag(int)): Add default case.
+	(Kind): Remove unnecessary ; on closing brace.
+	(GeneralName(Kind,byte[])): Remove unnecessary cast.
+	(name()): Likewise.
+	(encoded()): Check for null rather than catching exception.
+	Remove unnecessary cast.
+	(equals(Object)): Add @Override. Avoid unnecessary method call.
+	(hashCode()): Implemented using java.util.Objects.hash.
+	(toString()): Add @Override.
+	* gnu/java/security/x509/ext/GeneralNames.java:
+	(toString()): Add @Override.
+	* gnu/java/security/x509/ext/GeneralSubtree.java:
+	(toString()): Add @Override.
+	* gnu/java/security/x509/ext/IssuerAlternativeNames.java:
+	(toString()): Add @Override.
+	* gnu/java/security/x509/ext/KeyUsage.java:
+	(toString()): Add @Override.
+	* gnu/java/security/x509/ext/NameConstraints.java:
+	(toString()): Add @Override.
+	* gnu/java/security/x509/ext/PolicyConstraint.java:
+	(toString()): Add @Override.
+	* gnu/java/security/x509/ext/PolicyMappings.java:
+	(toString()): Add @Override.
+	* gnu/java/security/x509/ext/PrivateKeyUsagePeriod.java:
+	(toString()): Add @Override.
+	* gnu/java/security/x509/ext/ReasonCode.java:
+	(toString()): Add @Override.
+	* gnu/java/security/x509/ext/SubjectAlternativeNames.java:
+	(toString()): Add @Override.
+	* gnu/java/security/x509/ext/SubjectKeyIdentifier.java:
+	(getKeyIdentifier()): Remove unnecessary cast.
+	(toString()): Add @Override.
+	* gnu/javax/security/auth/Password.java:
+	(doDestroy): Add @Override. Remove unneeded else block.
+	(isDestroyed): Add @Override.
+	* gnu/javax/security/auth/callback/AWTCallbackHandler.java:
+	(handleChoice(ChoiceCallback)): Add @Override.
+	(handleConfirmation(ConfirmationCallback)): Likewise.
+	(handleLanguage(LanguageCallback)): Likewise.
+	(handleName(NameCallback)): Likewise.
+	(handlePassword(PasswordCallback)): Likewise.
+	(handleTextInput(TextInputCallback)): Likewise.
+	(handleTextOutput(TextOutputCallback)): Likewise.
+	(actionPerformed(ActionEvent)): Likewise.
+	(windowClosing(WindowEvent)): Likewise.
+	(windowOpened(WindowEvent)): Likewise.
+	(windowClosed(WindowEvent)): Likewise.
+	(windowIconified(WindowEvent)): Likewise.
+	(windowDeiconified(WindowEvent)): Likewise.
+	(windowActivated(WindowEvent)): Likewise.
+	(windowDeactivated(WindowEvent)): Likewise.
+	* gnu/javax/security/auth/callback/AbstractCallbackHandler.java:
+	(AbstractCallbackHandler(String)): Reference getBundle by class
+	where it is implemented (ResourceBundle).
+	(handle(Callback[])): Add @Override.
+	(handleChoice(ChoiceCallback)): Allow and document an
+	UnsupportedCallbackException being thrown.
+	(handleConfirmation(ConfirmationCallback)): Likewise.
+	(handleLanguage(LanguageCallback)): Likewise.
+	(handleName(NameCallback)): Likewise.
+	(handlePassword(PasswordCallback)): Likewise.
+	(handleTextInput(TextInputCallback)): Likewise.
+	(handleTextOutput(TextOutputCallback)): Likewise.
+	(handleOther(Callback)): Suppress warnings resulting from
+	unused variables, unthrown exceptions and lack of IOException
+	being thrown. They are necessary for subclasses.
+	* gnu/javax/security/auth/callback/ConsoleCallbackHandler.java:
+	(handleChoice(ChoiceCallback)): Add @Override. Drop unnecessary
+	cast.
+	(handleConfirmation(ConfirmationCallback)): Add @Override.
+	(handleLanguage(LanguageCallback)): Likewise.
+	(handleName(NameCallback)): Likewise.
+	(handlePassword(PasswordCallback)): Likewise.
+	(handleTextInput(TextInputCallback)): Likewise.
+	(handleTextOutput(TextOutputCallback)): Likewise.
+	* gnu/javax/security/auth/callback/DefaultCallbackHandler.java:
+	(handleChoice(ChoiceCallback)): Add @Override.
+	(handleConfirmation(ConfirmationCallback)): Likewise.
+	(handleLanguage(LanguageCallback)): Likewise.
+	(handleName(NameCallback)): Likewise.
+	(handlePassword(PasswordCallback)): Likewise.
+	(handleTextInput(TextInputCallback)): Likewise.
+	(handleTextOutput(TextOutputCallback)): Likewise.
+	* gnu/javax/security/auth/callback/GnuCallbacks.java:
+	(GnuCallbacks()): Add @Override to run() implementation
+	in anonymous inner class.
+	* gnu/javax/security/auth/callback/SwingCallbackHandler.java:
+	(handleChoice(ChoiceCallback)): Add @Override to method
+	and methods of anonymous inner classes. Refer to
+	constants using interface where they appear.
+	(handleConfirmation(ConfirmationCallback)): Add @Override
+	to method and methods of anonymous inner class. Declare
+	UnsupportedCallbackException as thrown and add default
+	cases and fall-through markers to switch statements.
+	(handleLanguage(LanguageCallback)): Add @Override. Remove
+	unused variable defaultIndex.
+	(handleName(NameCallback)): Add @Override to method and
+	method of anonymous inner class.
+	(handlePassword(PasswordCallback)): Likewise.
+	(handleTextInput(TextInputCallback)): Likewise. Refer to
+	constants using interface where they appear.
+	(handleTextOutput(TextOutputCallback)): Likewise. Declare
+	UnsupportedCallbackException as thrown and add default
+	case to switch statement.
+	(waitForInput(JDialog, Callback)): Make static.
+	* gnu/javax/security/auth/login/ConfigFileParser.java:
+	(initParser(Reader)): Don't declare IOException as thrown
+	as one is never thrown.
+	(expandParamValue(String)): Make static.
+	* gnu/javax/security/auth/login/GnuConfiguration.java:
+	(getAppConfigurationEntry(String)): Add @Override.
+	(refresh()): Likewise.
+	(getInputStreamFromURL(String)): Make static.
+	(parseConfig(InputStream)): Remove unneeded variable.
+	(getUserName()): Make static.
+	(getConfigFromUserName(File,String)): Likewise.
+	* java/security/AccessControlContext.java:
+	(equals(Object)): Add @Override.
+	(hashCode()): Likewise.
+	* java/security/AlgorithmParameters.java:
+	(toString()): Add @Override.
+	* java/security/AllPermission.java:
+	(AllPermission(String,String)): Suppress
+	warning about actions variable being unused.
+	(implies(Permission)): Add @Override.
+	(equals(Object)): Likewise.
+	(hashCode()): Likewise.
+	(getActions()): Likewise.
+	(newPermissionCollection()): Likewise.
+	(AllPermissionCollection()): Add public constructor
+	to avoid generating a synthetic accessor method.
+	* java/security/BasicPermission.java:
+	Remove unneeded Serializable reference.
+	(BasicPermission(String,String)): Suppress
+	warnings about actions variable being unused.
+	(getActions()): Add @Override.
+	(newPermissionCollection()): Likewise.
+	* java/security/Certificate.java:
+	Mark with @Deprecated. Fix typo in documentation.
+	* java/security/DigestInputStream.java:
+	(read()): Add @Override.
+	(read(byte[],int,int)): Likewise.
+	(toString()): Likewise.
+	* java/security/DigestOutputStream.java:
+	(write(int)): Add @Override.
+	(write(byte[],int,int)): Likewise.
+	(toString()): Likewise.
+	* java/security/DummyKeyPairGenerator.java:
+	(clone()): Add @Override.
+	(initialize(int,SecureRandom)): Likewise.
+	(initialize(AlgorithmParameterSpec,SecureRandom)):
+	Likewise.
+	(generateKeyPair()): Likewise.
+	* java/security/DummyMessageDigest.java:
+	(clone()): Add @Override.
+	(engineDigest()): Likewise.
+	(engineDigest(byte[],int,int)): Likewise.
+	(engineGetDigestLength()): Likewise.
+	(engineReset()): Likewise.
+	(engineUpdate(byte)): Likewise.
+	(engineUpdate(byte[],int,int)): Likewise.
+	* java/security/Identity.java:
+	Mark as @Deprecated. Fix typo in documentation.
+	(getName()): Add @Override.
+	(equals(Object)): Likewise.
+	(toString()): Likewise.
+	(toString(boolean)): Remove unnecessary else clause.
+	(hashCode()): Add @Override.
+	* java/security/IdentityScope.java:
+	Mark as @Deprecated.
+	(toString()): Add @Override.
+	* java/security/IntersectingDomainCombiner.java:
+	(combine(ProtectionDomain[],ProtectionDomain[])):
+	Add @Override.
+	* java/security/KeyPairGenerator.java:
+	(generateKeyPair()): Add @Override.
+	* java/security/KeyPairGeneratorSpi.java:
+	(initialize(AlgorithmParameterSpec,SecureRandom)):
+	Suppress warning about making this method static.
+	Intended to be overridden by subclasses.
+	(clone()): Add @Override.
+	* java/security/KeyStore.java:
+	(getInstance(String,Provider)): Fix typo in documentation.
+	(getDefaultType()): Add @Override to run() in anonymous
+	inner class.
+	* java/security/MessageDigest.java:
+	(toString()): Add @Override.
+	(clone()): Likewise.
+	* java/security/MessageDigestSpi.java:
+	(engineGetDigestLength()): Suppress warning about
+	making this method static. Intended to be overridden
+	by subclasses.
+	(clone()): Add @Override.
+	* java/security/Permission.java:
+	(checkGuard(Object)): Add @Override.
+	(equals(Object)): Likewise.
+	(hashCode()): Likewise.
+	(newPermissionCollection()): Likewise.
+	(toString()): Likewise.
+	* java/security/PermissionCollection.java:
+	(toString()): Add @Override.
+	* java/security/Permissions.java:
+	Remove unneeded Serializable reference.
+	(elements()): Add @Override to hasMoreElements
+	and nextElement methods in anonymous inner class.
+	(PermissionsHash.PermissionsHash()): Add explicit
+	constructor to avoid a synthetic accessor method.
+	(add(Permission)): Mark synchronized.
+	(implies(Permission)): Likewise.
+	* java/security/Policy.java:
+	(implies(ProtectionDomain,Permission)): Remove
+	unnecessary cast.
+	* java/security/Principal.java:
+	(equals(Object)): Add @Override.
+	(toString()): Likewise.
+	(hashCode()): Likewise.
+	* java/security/PrivilegedActionException.java:
+	(getCause()): Add @Override.
+	(toString()): Removed; pointless as it just calls
+	superclass version.
+	* java/security/ProtectionDomain.java:
+	(ProtectionDomain(CodeSource,PermissionCollection,
+	ClassLoader,Principal[],boolean)): Remove unnecessary
+	cast.
+	(getPrincipals()): Add @Override.
+	(toString()): Likewise.
+	* java/security/Provider.java:
+	Remove unneeded Serializable reference.
+	(put(Object,Object)): Add @Override. Suppress warnings
+	about overridding a synchronized method as all collection
+	modifications are made in synchronized superclass method.
+	(get(Object)): Likewise.
+	(remove(Object)): Likewise.
+	(clear()): Likewise.
+	(toString()): Add @Override. Suppress warning about
+	overridding a synchronized method as the collection isn't
+	used.
+	(toCanonicalKey(Object)): Make static.
+	* java/security/SecureClassLoader.java:
+	(getPermissions(CodeSource)): Suppress warning about
+	making this method static; may potentially be overridden
+	by subclasses. Avoid unnecessary variable policy.
+	* java/security/SecureRandom.java:
+	(setSeed(byte[])): Make synchronized to prevent
+	concurrent access to secureRandomSpi.
+	(setSeed(long)): Add @Override and make synchronized.
+	(nextBytes(byte[])): Likewise.
+	(next(int)): Likewise.
+	(generateSeed(byte[])): Make synchronized.
+	* java/security/Security.java:
+	(getAlgorithmProperty(String,String)): Add @Deprecated.
+	(getProvider(String)): Remove unnecessary else clause.
+	(getAlgorithm(String)): Use provs instead of providers
+	to avoid shadowing class variable.
+	(provides(Provider,String,String,String,String)): Set
+	serviceDotAlgorithm to the empty string to avoid null
+	pointer issues.
+	* java/security/SecurityPermission.java:
+	(SecurityPermission(String,String)): Suppress warning
+	due to nothing being done with actions.
+	* java/security/Signature.java:
+	(sign()): Remove unnecessary else clause.
+	(sign(byte[],int,int)): Likewise.
+	(verify(byte[])): Likewise.
+	(toString()): Mark @Override.
+	(setParameter(String,Object)): Add @Deprecated.
+	(getParameter(String)): Likewise.
+	(clone()): Add @Override.
+	* java/security/SignatureSpi.java:
+	(engineSetParameter(String,Object)): Add @Deprecated.
+	(engineSetParameter(AlgorithmParameterSpec)): Suppress
+	warnings about unused variables, unthrown exceptions and
+	ability to be a static method. Subclasses override this.
+	(engineGetParameters()): Suppress warnings about making
+	this method static.
+	(engineGetParameter(String)): Add @Deprecated.
+	* java/security/SignedObject.java:
+	(getSignature()): Remove unnecessary cast.
+	(readObject(ObjectInputStream)): Likewise x 2.
+	* java/security/Signer.java:
+	Mark as @Deprecated.
+	(toString()): Add @Override.
+	* java/security/UnresolvedPermission.java:
+	(getUnresolvedCerts()): Remove unnecessaary cast.
+	(UnresolvedPermissionCollection.elements()):
+	Add @Override to hasMoreElements and nextElement.
+	* java/security/acl/Acl.java:
+	(toString()): Add @Override.
+	* java/security/acl/AclEntry.java:
+	(setPrincipal(Principal)): Fix formatting of documentation.
+	(addPermission(Permission)): Likewise.
+	(removePermission(Permission)): Likewise.
+	(checkPermission(Permission)): Likewise.
+	(toString()): Add @Override.
+	* java/security/acl/Permission.java:
+	(equals(Object)): Add @Override.
+	(toString()): Likewise.
+	* java/security/cert/CRL.java:
+	(toString()): Add @Override.
+	* java/security/cert/CertPath.java:
+	(equals(Object)): Add @Override.
+	(hashCode()): Likewise.
+	(toString()): Likewise.
+	* java/security/cert/CertPathBuilderException.java:
+	(CertPathBuilderException(Throwable)): Just call
+	superclass constructor.
+	(CertPathBuilderException(String,Throwable)): Likewise.
+	(getMessage()): Removed; provided by superclass.
+	(getCause()): Likewise.
+	(toString()): Likewise.
+	(printStackTrace()): Likewise.
+	(printStackTrace(PrintStream)): Likewise.
+	(printStackTrace(PrintWriter)): Likewise.
+	* java/security/cert/CertPathValidatorException.java:
+	(CertPathValidatorException(String,Throwable)): Just call
+	superclass with both arguments, rather than initCause.
+	(getMessage()): Removed; provided by superclass.
+	(getCause()): Likewise.
+	(toString()): Likewise.
+	(printStackTrace()): Likewise.
+	(printStackTrace(PrintStream)): Likewise.
+	(printStackTrace(PrintWriter)): Likewise.
+	* java/security/cert/CertStoreException.java:
+	(CertStoreException(Throwable)): Just call superclass
+	constructor.
+	(CertStoreException(String,Throwable)): Likewise.
+	(getMessage()): Removed; provided by superclass.
+	(getCause()): Likewise.
+	(toString()): Likewise.
+	(printStackTrace()): Likewise.
+	(printStackTrace(PrintStream)): Likewise.
+	(printStackTrace(PrintWriter)): Likewise.
+	* java/security/cert/CertStoreSpi.java:
+	(CertStoreSpi(CertStoreParameters)): Suppress warnings
+	about exception not being thrown. Present for subclasses.
+	* java/security/cert/Certificate.java:
+	(equals(Object)): Add @Override.
+	(hashCode()): Likewise.
+	(toString()): Likewise.
+	* java/security/cert/CertificateFactorySpi.java:
+	(engineGenerateCertPath(InputStream)): Suppress warnings
+	about unused arguments, exceptions not being thrown and
+	method can be static. Provided for subclass implementations.
+	(engineGenerateCertPath(InputStream,String)): Likewise.
+	(engineGenerateCertPath(List)): Likewise.
+	(engineGetCertPathEncodings()): Likewise.
+	* java/security/cert/CollectionCertStoreParameters.java:
+	(toString()): Add @Override.
+	* java/security/cert/LDAPCertStoreParameters.java:
+	(clone()): Add @Override.
+	(toString()): Likewise.
+	* java/security/cert/PKIXBuilderParameters.java:
+	(toString()): Likewise.
+	* java/security/cert/PKIXCertPathBuilderResult.java:
+	(getCertPath()): Add @Override.
+	(toString()): Likewise.
+	* java/security/cert/PKIXCertPathChecker.java:
+	(clone()): Add @Override.
+	* java/security/cert/PKIXCertPathValidatorResult.java:
+	(clone()): Add @Override.
+	(toString()): Likewise.
+	* java/security/cert/PKIXParameters.java:
+	(clone()): Add @Overrride.
+	(toString()): Likewise.
+	* java/security/cert/PolicyQualifierInfo.java:
+	(PolicyQualifierInfo(byte[])): Remove unnecessary cast.
+	(getEncoded()): Likewise.
+	(toString()): Add @Override.
+	* java/security/cert/TrustAnchor.java:
+	(TrustAnchor(X509Certificate,byte[])): Remove unnecessary cast.
+	(TrustAnchor(String,PublicKey,byte[])): Document exceptions.
+	Catch IOException and throw as IllegalArgumentException.
+	Remove unnecessary casts.
+	(toString()): Add @Override.
+	* java/security/cert/X509CRL.java:
+	(equals(Object)): Add @Override.
+	(hashCode()): Likewise.
+	(getIssuerX500Principal()): Suppress warning about making this
+	static. Should be overridden by subclasses.
+	* java/security/cert/X509CRLEntry.java:
+	(equals(Object):: Add @Override.
+	(hashCode()): Likewise.
+	(toString()): Likewise.
+	* java/security/cert/X509CRLSelector.java:
+	Remove unneeded Cloneable reference.
+	(getIssuerNames()): Remove unneeded else block.
+	(toString()): Add @Override.
+	(match(CRL)): Likewise.
+	(clone()): LIkewise.
+	* java/security/cert/X509CertSelector.java:
+	Remove unneeded Cloneable reference.
+	(makeName(int,String)): Re-use earlier result of Kind.forTag(id).
+	Add default case.
+	(clone()): Add @Override.
+	(getAuthorityKeyIdentifier()): Remove unneeded else block
+	and cast.
+	(getCertificateValid()): Remove unneeded else block.
+	(getExtendedKeyUsage()): Likewise.
+	(getIssuerAsBytes()): Likewise.
+	(getIssuerAsString()): Likewise.
+	(getKeyUsage()): Likewise and remove unneeded cast.
+	(getNameConstraints()): Likewise.
+	(getPathToNames()): Explicitly convert int to Integer.
+	(getPrivateKeyValid()): Suppress static method warning.
+	Method is deliberately useless.
+	(getSubjectAlternativeNames()): Explicitly convert int to
+	Integer.
+	(getSubjectAsBytes()): Remove unneeded else block.
+	(getSubjectAsString()): Likewise.
+	(getSubjectKeyIdentifier()): Likewise and remove unneeded
+	cast.
+	(match(Certificate)): Add @Override. Rename cert to other
+	to avoid shadowing.
+	(setNameConstraints(byte[])): Remove unnecessary cast.
+	Suppress warnings about NameConstraints instance being unused.
+	(setPrivateKeyValid()): Suppress unused variable warning.
+	Method is deliberately useless.
+	(setSubjectPublicKey(PublicKey)): Remove unneeded cast.
+	(toString()): Add @Override.
+	* java/security/cert/X509Certificate.java:
+	(getExtendedKeyUsage()): Suppress unthrown exception warning
+	and static method suggestion. Overridden by subclasses.
+	(getSubjectAlternativeNames()): Likewise.
+	(getIssuerAlternativeNames()): Likewise.
+	(getSubjectX500Principal()): Suppress static method suggestion.
+	Overridden by subclasses.
+	(getIssuerX500Principal()): Likewise.
+	* java/security/spec/DSAParameterSpec.java:
+	(getP()): Add @Override.
+	(getQ()): Likewise.
+	(getG()): Likewise.
+	* java/security/spec/PKCS8EncodedKeySpec.java:
+	(getEncoded()): Add @Override.
+	(getFormat()): Likewise.
+	* java/security/spec/RSAMultiPrimePrivateCrtKeySpec.java:
+	(RSAMultiPrimePrivateCrtKeySpec(BigInteger,BigInteger,BigInteger,
+	BigInteger,BigInteger,BigInteger,BigInteger,BigInteger,
+	RSAOtherPrimeInfo[])): Remove unneeded else block.
+	* java/security/spec/X509EncodedKeySpec.java:
+	(getEncoded()): Add @Override.
+	(getFormat()): Likewise.
+	* javax/security/auth/Policy.java:
+	Add @Deprecated.
+	* javax/security/auth/PrivateCredentialPermission.java:
+	Remove unneeded Serializable reference.
+	(equals(Object)): Add @Override. Rename principals to
+	thisPrincipals to avoid shadowing.
+	(getActions()): Add @Override.
+	(hashCode()): Likewise.
+	(implies(Permission)): Likewise. Rename principals to
+	thisPrincipals to avoid shadowing.
+	(newPermissionCollection()): Add @Override to method
+	and anonymous inner class implementations of equals(Object) &
+	hashCode().
+	* javax/security/auth/SubjectDomainCombiner.java:
+	(combine(ProtectionDomain[],ProtectionDomain[])): Add @Override.
+	* javax/security/auth/callback/ConfirmationCallback.java:
+	(setOptions(String[],int)): Move reference to options.length to
+	after options null check.
+	* javax/security/auth/kerberos/KerberosKey.java:
+	Remove unneeded Serializable reference.
+	(getAlgorithm()): Add @Override.
+	(getFormat()): Likewise.
+	(getEncoded()): Likewise and remove unnecessary cast.
+	(destroy()): Add @Override.
+	(isDestroyed()): Likewise.
+	(toString()): Likewise.
+	* javax/security/auth/kerberos/KerberosPrincipal.java:
+	(getName()): Add @Override.
+	(hashCode()): Likewise.
+	(equals(Object)): Likewise.
+	(toString()): Likewise.
+	* javax/security/auth/kerberos/KerberosTicket.java:
+	(asn1Encoding): Remove @SuppressWarnings.
+	(KerberosTicket(byte[],KerberosPrincipal,KerberosPrincipal,
+	byte[],int,boolean[],Date,Date,Date,Date,InetAddress[])):
+	Remove unnecessary cast. Remove duplicate assignment to flags.
+	(destroy()): Add @Override.
+	(isDestroyed()): Likewise.
+	(isCurrent()): Likewise.
+	(refresh()): Likewise.
+	(getFlags()): Remove unnecessary cast.
+	(getEncoded()): Likewise.
+	(toString()): Add @Override.
+	* javax/security/auth/kerberos/KeyImpl.java:
+	Remove unneeded Serializable reference.
+	(KeyImpl(byte[],int)): Remove unnecessary cast.
+	(getAlgorithm()): Add @Override.
+	(getEncoded()): Likewise.
+	(getFormat()): Likewise.
+	(toString()): Likewise.
+	* javax/security/auth/login/AppConfigurationEntry.java:
+	(toString()): Add @Override.
+	(LoginModuleControlFlag.toString()): Likewise.
+	* javax/security/auth/login/Configuration.java:
+	(getConfig()): Use GetSecurityPropertyAction rather than
+	a bespoke PrivilegedAction implementation.
+	* javax/security/auth/login/LoginContext.java:
+	(LoginContext(String,Subject,CallbackHandler,Configuration)):
+	Rename entries to appEntries to avoid shadowing.
+	(lookupModule(AppConfigurationEntry,Subject,Map)): Rename
+	subject to subj to avoid shadowing. Check module is null
+	rather than cause is non-null.
+	* javax/security/auth/login/NullConfiguration.java:
+	(getAppConfigurationEntry(String)): Add @Override.
+	(refresh()): Likewise.
+	* javax/security/auth/x500/X500Principal.java:
+	(hashCode()): Add @Override.
+	(equals(Object)): Likewise.
+	(getEncoded()): Remove unnecessary cast.
+	(getName()): Add @Override.
+	(toString()): Likewise.
+	(readAttributeType(Reader)): Make static.
+	(parseDer(InputStream)): Rename encoded to encodedStream to
+	avoid shadowing.
+	* javax/security/auth/x500/X500PrivateCredential.java:
+	(destroy()): Add @Override.
+	(isDestroyed()): Likewise.
+	* javax/security/cert/Certificate.java:
+	(equals(Object)): Add @Override.
+	(hashCode()): Likewise.
+	(toString()): Likewise.
+	* javax/security/cert/X509CertBridge.java:
+	(getEncoded()): Add @Override.
+	(verify(PublicKey)): Likewise.
+	(verify(PublicKey,String)): Likewise.
+	(toString()): Likewise.
+	(getPublicKey()): Likewise.
+	(checkValidity()): Likewise.
+	(checkValidity(Date)): Likewise.
+	(getVersion()): Likewise.
+	(getSerialNumber()): Likewise.
+	(getIssuerDN()): Likewise.
+	(getSubjectDN()): Likewise.
+	(getNotBefore()): Likewise.
+	(getNotAfter()): Likewise.
+	(getSigAlgName()): Likewise.
+	(getSigAlgOID()): Likewise.
+	(getSigAlgParams()): Likewise.
+	* javax/security/sasl/Sasl.java:
+	(createSaslClient(String[],String,String,String,Map,CallbackHandler)):
+	Remove unnecessary else clause and pointless result assignment.
+	(createSaslServer(String,String,String,Map,CallbackHandler)): Likewise.
+	* javax/security/sasl/SaslException.java:
+	Remove unneeded Serializable reference.
+	(SaslException(String,Throwable)): Add cause to superclass call.
+	(getCause()): Add @Override.
+	(printStackTrace()): Removed; provided by superclass.
+	(printStackTrace(PrintStream)): Likewise.
+	(printStackTrace(PrintWriter)): Likewise.
+	(initCause(Throwable)): Call superclass version, then sync the
+	local copy.
+	(toString()): Add @Override.
+
 2015-02-02  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	PR classpath/64902

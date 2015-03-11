@@ -1,5 +1,5 @@
 /* Sasl.java --
-   Copyright (C) 2003, 2004, 2005, 2014 Free Software Foundation, Inc.
+   Copyright (C) 2003, 2004, 2005, 2014, 2015 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -416,13 +416,11 @@ public class Sasl
                   }
                 if (clazz == null)
                   continue;
-                else
-                  clazz = clazz.trim();
+		clazz = clazz.trim();
               }
 
             try
               {
-                result = null;
                 factory = (SaslClientFactory) Class.forName(clazz).newInstance();
                 result = factory.createSaslClient(mechanisms, authorizationID,
                                                   protocol, serverName, props, cbh);
@@ -610,12 +608,10 @@ public class Sasl
           }
         if (clazz == null)
           continue;
-        else
-          clazz = clazz.trim();
+	clazz = clazz.trim();
 
         try
           {
-            result = null;
             factory = (SaslServerFactory) Class.forName(clazz).newInstance();
             result =
               factory.createSaslServer(mechanism, protocol, serverName, props, cbh);

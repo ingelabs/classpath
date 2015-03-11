@@ -1,5 +1,6 @@
 /* PKIXCertPathValidatorImpl.java -- PKIX certificate path validator.
-   Copyright (C) 2004, 2005, 2006, 2010, 2014 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2005, 2006, 2010, 2014, 2015
+   Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -110,6 +111,7 @@ public class PKIXCertPathValidatorImpl
     super();
   }
 
+  @Override
   public CertPathValidatorResult engineValidate(CertPath path,
                                                 CertPathParameters params)
       throws CertPathValidatorException, InvalidAlgorithmParameterException
@@ -144,7 +146,7 @@ public class PKIXCertPathValidatorImpl
     X509Certificate[] p = null;
     try
       {
-        p = (X509Certificate[]) l.toArray(new X509Certificate[l.size()]);
+        p = l.toArray(new X509Certificate[l.size()]);
       }
     catch (ClassCastException cce)
       {
@@ -287,8 +289,7 @@ public class PKIXCertPathValidatorImpl
                   continue;
                 if (xcrl.isRevoked(p[i - 1]))
                   throw new CertPathValidatorException("certificate is revoked");
-                else
-                  certOk = true;
+		certOk = true;
               }
             if (! certOk)
               throw new CertPathValidatorException(
@@ -672,7 +673,7 @@ public class PKIXCertPathValidatorImpl
       throw new CertPathValidatorException("policy tree building failed");
   }
 
-  private boolean checkExplicitPolicy(int depth, List<int[]> explicitPolicies)
+  private static boolean checkExplicitPolicy(int depth, List<int[]> explicitPolicies)
   {
     if (Configuration.DEBUG)
       log.fine("checkExplicitPolicy depth=" + depth);

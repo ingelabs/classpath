@@ -521,6 +521,7 @@ public class PKIXParameters implements CertPathParameters
    *
    * @return The copy.
    */
+  @Override
   public Object clone()
   {
     return new PKIXParameters(this);
@@ -531,6 +532,7 @@ public class PKIXParameters implements CertPathParameters
    *
    * @return A printable representation of these parameters.
    */
+  @Override
   public String toString() {
     return "[ Trust Anchors: " + trustAnchors + "; Initial Policy OIDs="
       + (initPolicies != null ? initPolicies.toString() : "any")

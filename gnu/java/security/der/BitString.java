@@ -1,5 +1,5 @@
 /* BitString.java -- Java representation of the BIT STRING type.
-   Copyright (C) 2003, 2014 Free Software Foundation, Inc.
+   Copyright (C) 2003, 2014, 2015 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -197,10 +197,10 @@ public class BitString implements Cloneable, Comparable<BitString>
   public byte[] toByteArray()
   {
     if (ignoredBits == 0)
-      return (byte[]) bytes.clone();
+      return bytes.clone();
     if (externBytes == null)
       externBytes = new BigInteger(bytes).shiftRight(ignoredBits).toByteArray();
-    return (byte[]) externBytes.clone();
+    return externBytes.clone();
   }
 
   /**
@@ -212,7 +212,7 @@ public class BitString implements Cloneable, Comparable<BitString>
    */
   public byte[] getShiftedByteArray()
   {
-    return (byte[]) bytes.clone();
+    return bytes.clone();
   }
 
   /**
@@ -258,9 +258,10 @@ public class BitString implements Cloneable, Comparable<BitString>
               }
           }
       }
-    return (boolean[]) boolVal.clone();
+    return boolVal.clone();
   }
 
+  @Override
   public Object clone()
   {
     try
@@ -288,6 +289,7 @@ public class BitString implements Cloneable, Comparable<BitString>
     return 0; // not reached.
   }
 
+  @Override
   public int hashCode()
   {
     int result = 0;
@@ -301,6 +303,7 @@ public class BitString implements Cloneable, Comparable<BitString>
     return result;
   }
 
+  @Override
   public boolean equals(Object o)
   {
     if (!(o instanceof BitString))
@@ -314,6 +317,7 @@ public class BitString implements Cloneable, Comparable<BitString>
     return false;
   }
 
+  @Override
   public String toString()
   {
     CPStringBuilder sb = new CPStringBuilder();

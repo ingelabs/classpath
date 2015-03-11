@@ -1,5 +1,5 @@
 /* SimpleList.java -- simple way to make tuples.
-   Copyright (C) 2004, 2006, 2014 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2006, 2014, 2015 Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -131,6 +131,7 @@ public final class SimpleList
       elements[i++] = o;
   }
 
+  @Override
   public int size()
   {
     if (elements == null)
@@ -138,6 +139,7 @@ public final class SimpleList
     return elements.length;
   }
 
+  @Override
   public Object get(int index)
   {
     if (elements == null)
@@ -147,6 +149,7 @@ public final class SimpleList
     return elements[index];
   }
 
+  @Override
   public String toString()
   {
     return SimpleList.class.getName() + "(" + size() + ") " + super.toString();

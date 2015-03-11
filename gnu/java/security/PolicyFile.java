@@ -1,5 +1,5 @@
 /* PolicyFile.java -- policy file reader
-   Copyright (C) 2004, 2005, 2006  Free Software Foundation, Inc.
+   Copyright (C) 2004, 2005, 2006, 2015  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -176,6 +176,7 @@ public final class PolicyFile extends Policy
   // Instance methods.
   // -------------------------------------------------------------------------
 
+  @Override
   public PermissionCollection getPermissions(CodeSource codeSource)
   {
     Permissions perms = new Permissions();
@@ -201,6 +202,7 @@ public final class PolicyFile extends Policy
     return perms;
   }
 
+  @Override
   public void refresh()
   {
     cs2pc.clear();
@@ -213,6 +215,7 @@ public final class PolicyFile extends Policy
         AccessController.doPrivileged(
           new PrivilegedExceptionAction<Void>()
           {
+	    @Override
             public Void run() throws Exception
             {
               String allow = Security.getProperty ("policy.allowSystemProperty");
@@ -270,6 +273,7 @@ public final class PolicyFile extends Policy
       }
   }
 
+  @Override
   public String toString()
   {
     return super.toString() + " [ " + cs2pc.toString() + " ]";
@@ -290,6 +294,7 @@ public final class PolicyFile extends Policy
    * @throws IOException if an I/O error occurs, or if the policy file
    * cannot be parsed.
    */
+  @SuppressWarnings("null") // Exception is thrown if p == null
   private void parse(final URL url) throws IOException
   {
     logger.log (Component.POLICY, "reading policy file from {0}", url);
@@ -343,6 +348,7 @@ public final class PolicyFile extends Policy
             if (tok != ';')
               in.pushBack();
             continue;
+	  default: // do nothing
           }
         if (tok != StreamTokenizer.TT_WORD)
           {
@@ -376,7 +382,7 @@ public final class PolicyFile extends Policy
               }
             catch (Exception x)
               {
-                error(url, in, x.toString());
+                error(url, in, x);
               }
           }
         else if (in.sval.equalsIgnoreCase("grant"))
@@ -408,7 +414,7 @@ public final class PolicyFile extends Policy
                       }
                     catch (KeyStoreException kse)
                       {
-                        error(url, in, kse.toString());
+                        error(url, in, kse);
                       }
                   }
               }
@@ -436,7 +442,7 @@ public final class PolicyFile extends Policy
               }
             catch (MalformedURLException mue)
               {
-                error(url, in, mue.toString());
+                error(url, in, mue);
               }
             tok = in.nextToken();
             if (tok != ',')
@@ -463,8 +469,9 @@ public final class PolicyFile extends Policy
                   }
                 catch (Exception x)
                   {
-                    error(url, in, x.toString());
+                    error(url, in, x);
                   }
+		if (p == null) error(url, in, "Principal object not created");
                 for (Iterator<KeyStore> it = keystores.iterator(); it.hasNext(); )
                   {
                     KeyStore ks = it.next();
@@ -479,14 +486,14 @@ public final class PolicyFile extends Policy
                                 if (!(cert instanceof X509Certificate))
                                   continue;
                                 if (p.equals(((X509Certificate) cert).getSubjectDN()) ||
-                                    p.equals(((X509Certificate) cert).getSubjectX500Principal()))
+				    p.equals(((X509Certificate) cert).getSubjectX500Principal()))
                                   currentCerts.add(cert);
                               }
                           }
                       }
                     catch (KeyStoreException kse)
                       {
-                        error(url, in, kse.toString());
+                        error(url, in, kse);
                       }
                   }
               }
@@ -503,7 +510,7 @@ public final class PolicyFile extends Policy
                       }
                     catch (KeyStoreException kse)
                       {
-                        error(url, in, kse.toString());
+                        error(url, in, kse);
                       }
                   }
               }
@@ -535,7 +542,7 @@ public final class PolicyFile extends Policy
                 if (clazz == null)
                   {
                     currentPerms.add(new UnresolvedPermission(className,
-                      null, null, (Certificate[]) currentCerts.toArray(new Certificate[currentCerts.size()])));
+                      null, null, currentCerts.toArray(new Certificate[currentCerts.size()])));
                     continue;
                   }
                 try
@@ -544,7 +551,7 @@ public final class PolicyFile extends Policy
                   }
                 catch (Exception x)
                   {
-                    error(url, in, x.toString());
+                    error(url, in, x);
                   }
                 continue;
               }
@@ -557,7 +564,7 @@ public final class PolicyFile extends Policy
                 if (clazz == null)
                   {
                     currentPerms.add(new UnresolvedPermission(className,
-                      target, null, (Certificate[]) currentCerts.toArray(new Certificate[currentCerts.size()])));
+                      target, null, currentCerts.toArray(new Certificate[currentCerts.size()])));
                     continue;
                   }
                 try
@@ -569,7 +576,7 @@ public final class PolicyFile extends Policy
                   }
                 catch (Exception x)
                   {
-                    error(url, in, x.toString());
+                    error(url, in, x);
                   }
                 continue;
               }
@@ -589,7 +596,7 @@ public final class PolicyFile extends Policy
                   }
                 catch (Exception x)
                   {
-                    error(url, in, x.toString());
+                    error(url, in, x);
                   }
                 in.pushBack();
                 continue;
@@ -603,20 +610,17 @@ public final class PolicyFile extends Policy
 		  target, action, (currentCerts.toArray(new Certificate[currentCerts.size()]))));
                 continue;
               }
-            else
-              {
-                try
-                  {
-                    Constructor<?> c = clazz.getConstructor(
-                      new Class[] { String.class, String.class });
-                    currentPerms.add((Permission) c.newInstance(
-                      new Object[] { target, action }));
-                  }
-                catch (Exception x)
-                  {
-                    error(url, in, x.toString());
-                  }
-              }
+	    try
+	      {
+		Constructor<?> c = clazz.getConstructor(
+                    new Class[] { String.class, String.class });
+		currentPerms.add((Permission) c.newInstance(
+                    new Object[] { target, action }));
+	      }
+	    catch (Exception x)
+	      {
+		error(url, in, x);
+	      }
             tok = in.nextToken();
             if (tok != ';' && tok != ',')
               error(url, in, "expecting ';' or ','");
@@ -631,7 +635,7 @@ public final class PolicyFile extends Policy
   private static String expand(final String s)
   {
     final CPStringBuilder result = new CPStringBuilder();
-    final CPStringBuilder prop = new CPStringBuilder();
+    final CPStringBuilder propBuf = new CPStringBuilder();
     int state = 0;
     for (int i = 0; i < s.length(); i++)
       {
@@ -655,32 +659,41 @@ public final class PolicyFile extends Policy
           case 2:
             if (s.charAt(i) == '}')
               {
-                String p = prop.toString();
+                String p = propBuf.toString();
                 if (p.equals("/"))
                   p = "file.separator";
                 p = System.getProperty(p);
                 if (p == null)
                   p = "";
                 result.append(p);
-                prop.setLength(0);
+                propBuf.setLength(0);
                 state = 0;
               }
             else
-              prop.append(s.charAt(i));
+              propBuf.append(s.charAt(i));
             break;
+	  default:
+	    // State is never set to anything else
           }
       }
     if (state != 0)
-      result.append('$').append('{').append(prop);
+      result.append('$').append('{').append(propBuf);
     return result.toString();
   }
 
   /**
    * I miss macros.
    */
+  private static void error(URL base, StreamTokenizer in, Throwable cause)
+    throws IOException
+  {
+    throw new IOException(base+":"+in.lineno()+": "+cause.toString(), cause);
+  }
+
   private static void error(URL base, StreamTokenizer in, String msg)
     throws IOException
   {
     throw new IOException(base+":"+in.lineno()+": "+msg);
   }
+
 }

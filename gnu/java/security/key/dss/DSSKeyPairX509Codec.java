@@ -1,5 +1,5 @@
 /* DSSKeyPairX509Codec.java -- X.509 Encoding/Decoding handler
-   Copyright (C) 2006, 2014 Free Software Foundation, Inc.
+   Copyright (C) 2006, 2014, 2015 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -67,6 +67,7 @@ public class DSSKeyPairX509Codec
 
   // implicit 0-arguments constructor
 
+  @Override
   public int getFormatID()
   {
     return X509_FORMAT;
@@ -116,6 +117,7 @@ public class DSSKeyPairX509Codec
    *        of {@link DSSPublicKey} or if an exception occurs during the
    *        marshalling process.
    */
+  @Override
   public byte[] encodePublicKey(PublicKey key)
   {
     if (! (key instanceof DSSPublicKey))
@@ -179,6 +181,7 @@ public class DSSKeyPairX509Codec
   /**
    * @throws InvalidParameterException ALWAYS.
    */
+  @Override
   public byte[] encodePrivateKey(PrivateKey key)
   {
     throw new InvalidParameterException("Wrong format for private keys");
@@ -192,6 +195,7 @@ public class DSSKeyPairX509Codec
    * @throw InvalidParameterException if an exception occurs during the
    *        unmarshalling process.
    */
+  @Override
   public PublicKey decodePublicKey(byte[] input)
   {
     if (input == null)
@@ -269,6 +273,7 @@ public class DSSKeyPairX509Codec
   /**
    * @throws InvalidParameterException ALWAYS.
    */
+  @Override
   public PrivateKey decodePrivateKey(byte[] input)
   {
     throw new InvalidParameterException("Wrong format for private keys");

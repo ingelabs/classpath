@@ -1,5 +1,5 @@
 /* SignatureAdapter.java --
-   Copyright 2001, 2002, 2006, 2010, 2014 Free Software Foundation, Inc.
+   Copyright 2001, 2002, 2006, 2010, 2014, 2015 Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -39,7 +39,6 @@ exception statement from your version.  */
 package gnu.java.security.jce.sig;
 
 import gnu.java.security.Configuration;
-import gnu.java.security.sig.BaseSignature;
 import gnu.java.security.sig.ISignature;
 import gnu.java.security.sig.ISignatureCodec;
 import gnu.java.security.sig.SignatureFactory;
@@ -109,6 +108,7 @@ class SignatureAdapter
     this.codec = codec;
   }
 
+  @Override
   public Object clone()
   {
     return new SignatureAdapter((ISignature) adaptee.clone(), codec);
@@ -118,7 +118,7 @@ class SignatureAdapter
   public void engineInitVerify(PublicKey publicKey) throws InvalidKeyException
   {
     HashMap<String,Object> attributes = new HashMap<String,Object>();
-    attributes.put(BaseSignature.VERIFIER_KEY, publicKey);
+    attributes.put(ISignature.VERIFIER_KEY, publicKey);
     try
       {
         adaptee.setupVerify(attributes);
@@ -133,7 +133,7 @@ class SignatureAdapter
   public void engineInitSign(PrivateKey privateKey) throws InvalidKeyException
   {
     HashMap<String,Object> attributes = new HashMap<String,Object>();
-    attributes.put(BaseSignature.SIGNER_KEY, privateKey);
+    attributes.put(ISignature.SIGNER_KEY, privateKey);
     try
       {
         adaptee.setupSign(attributes);
@@ -149,8 +149,8 @@ class SignatureAdapter
       throws InvalidKeyException
   {
     HashMap<String,Object> attributes = new HashMap<String,Object>();
-    attributes.put(BaseSignature.SIGNER_KEY, privateKey);
-    attributes.put(BaseSignature.SOURCE_OF_RANDOMNESS, random);
+    attributes.put(ISignature.SIGNER_KEY, privateKey);
+    attributes.put(ISignature.SOURCE_OF_RANDOMNESS, random);
     try
       {
         adaptee.setupSign(attributes);

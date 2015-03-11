@@ -83,12 +83,15 @@ public abstract class KeyPairGeneratorAdapter
     this.adaptee = KeyPairGeneratorFactory.getInstance(localiseName(kpgName));
   }
 
+  @Override
   public abstract void initialize(int keysize, SecureRandom random);
 
+  @Override
   public abstract void initialize(AlgorithmParameterSpec params,
                                   SecureRandom random)
       throws InvalidAlgorithmParameterException;
 
+  @Override
   public KeyPair generateKeyPair()
   {
     if (!adaptee.isInitialized())
@@ -133,7 +136,6 @@ public abstract class KeyPairGeneratorAdapter
    */
   private static String localiseName(String kpgName)
   {
-    /**
     if ("DiffieHellman".equals(kpgName))
       return Registry.DH_KPG;
     if ("DH".equals(kpgName))
@@ -142,7 +144,6 @@ public abstract class KeyPairGeneratorAdapter
       return Registry.DSA_KPG;
     if ("RSA".equals(kpgName))
       return Registry.RSA_KPG;
-    */
     return kpgName;
   }
 

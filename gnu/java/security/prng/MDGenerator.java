@@ -1,5 +1,6 @@
 /* MDGenerator.java --
-   Copyright (C) 2001, 2002, 2006, 2014  Free Software Foundation, Inc.
+   Copyright (C) 2001, 2002, 2006, 2014, 2015
+   Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -54,7 +55,6 @@ import java.util.Map;
  */
 public class MDGenerator
     extends BasePRNG
-    implements Cloneable
 {
   /** Property name of underlying hash algorithm for this generator. */
   public static final String MD_NAME = "gnu.crypto.prng.md.hash.name";

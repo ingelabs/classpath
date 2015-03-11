@@ -1,5 +1,5 @@
 /* ConfigFileParser.java -- JAAS Login Configuration default syntax parser
-   Copyright (C) 2006, 2010, 2014  Free Software Foundation, Inc.
+   Copyright (C) 2006, 2010, 2014, 2015  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -130,7 +130,7 @@ public final class ConfigFileParser
       }
   }
 
-  private void initParser(Reader r) throws IOException
+  private void initParser(Reader r)
   {
     map.clear();
 
@@ -304,7 +304,7 @@ public final class ConfigFileParser
    * the string is not a known System property name, then the complete sequence
    * (incl. the ${} characters are passed AS IS.
    */
-  private String expandParamValue(String s)
+  private static String expandParamValue(String s)
   {
     String result = s;
     try

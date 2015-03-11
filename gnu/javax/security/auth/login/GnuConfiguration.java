@@ -1,5 +1,5 @@
 /* GnuConfiguration.java -- GNU Classpath implementation of JAAS Configuration
-   Copyright (C) 2006, 2010, 2014  Free Software Foundation, Inc.
+   Copyright (C) 2006, 2010, 2014, 2015  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -163,6 +163,7 @@ public final class GnuConfiguration extends Configuration
   /* (non-Javadoc)
    * @see javax.security.auth.login.Configuration#getAppConfigurationEntry(java.lang.String)
    */
+  @Override
   public AppConfigurationEntry[] getAppConfigurationEntry(String appName)
   {
     if (appName == null)
@@ -193,6 +194,7 @@ public final class GnuConfiguration extends Configuration
    * <code>refreshLoginConfiguration</code>.
    * @see AuthPermission
    */
+  @Override
   public void refresh()
   {
     SecurityManager sm = System.getSecurityManager();
@@ -289,7 +291,7 @@ public final class GnuConfiguration extends Configuration
    * @throws IOException
    *           if an exception occurs during the operation.
    */
-  private InputStream getInputStreamFromURL(String s) throws IOException
+  private static InputStream getInputStreamFromURL(String s) throws IOException
   {
     InputStream result = null;
     try
@@ -385,8 +387,7 @@ public final class GnuConfiguration extends Configuration
   private void parseConfig(InputStream configStream) throws IOException
   {
     cp.parse(new InputStreamReader(configStream, "UTF-8"));
-    Map<String,List<AppConfigurationEntry>> loginModulesMap = cp.getLoginModulesMap();
-    mergeLoginModules(loginModulesMap);
+    mergeLoginModules(cp.getLoginModulesMap());
   }
 
   private void mergeLoginModules(Map<String,List<AppConfigurationEntry>> otherLoginModules)
@@ -409,7 +410,7 @@ public final class GnuConfiguration extends Configuration
       }
   }
 
-  private File getUserHome()
+  private static File getUserHome()
   {
     String uh = System.getProperty("user.home");
     if (uh == null || uh.trim().length() == 0)
@@ -441,7 +442,7 @@ public final class GnuConfiguration extends Configuration
     return result;
   }
 
-  private File getConfigFromUserHome(File userHome, String fileName)
+  private static File getConfigFromUserHome(File userHome, String fileName)
   {
     File result = new File(userHome, fileName);
     if (! result.exists())

@@ -1,5 +1,5 @@
 /* X500DistinguishedName.java -- X.500 distinguished name.
-   Copyright (C) 2004, 2006, 2014  Free Software Foundation, Inc.
+   Copyright (C) 2004, 2006, 2014, 2015  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -99,17 +99,10 @@ public class X500DistinguishedName implements Principal
     components.add(currentRdn);
   }
 
-  public X500DistinguishedName(String name)
+  public X500DistinguishedName(String name) throws IOException
   {
     this();
-    try
-      {
-        parseString(name);
-      }
-    catch (IOException ioe)
-      {
-        throw new IllegalArgumentException(ioe.toString());
-      }
+    parseString(name);
   }
 
   public X500DistinguishedName(byte[] encoded) throws IOException
@@ -127,6 +120,7 @@ public class X500DistinguishedName implements Principal
   // Instance methods.
   // -------------------------------------------------------------------------
 
+  @Override
   public String getName()
   {
     return toString();
@@ -246,6 +240,7 @@ public class X500DistinguishedName implements Principal
     currentRdn = Collections.emptyMap();
   }
 
+  @Override
   public int hashCode()
   {
     int sum = 0;
@@ -261,6 +256,7 @@ public class X500DistinguishedName implements Principal
     return sum;
   }
 
+  @Override
   public boolean equals(Object o)
   {
     if (!(o instanceof X500DistinguishedName))
@@ -282,6 +278,7 @@ public class X500DistinguishedName implements Principal
     return true;
   }
 
+  @Override
   public String toString()
   {
     if (fixed && stringRep != null)
@@ -332,7 +329,7 @@ public class X500DistinguishedName implements Principal
   public byte[] getDer()
   {
     if (fixed && encoded != null)
-      return (byte[]) encoded.clone();
+      return encoded.clone();
 
     ArrayList<DERValue> name = new ArrayList<DERValue>(components.size());
     for (Map<OID,String> m : components)
@@ -351,7 +348,7 @@ public class X500DistinguishedName implements Principal
         name.add(new DERValue(DER.SET|DER.CONSTRUCTED, rdn));
       }
     DERValue val = new DERValue(DER.SEQUENCE|DER.CONSTRUCTED, name);
-    return (byte[]) (encoded = val.getEncoded()).clone();
+    return (encoded = val.getEncoded()).clone();
   }
 
   // Own methods.
@@ -375,7 +372,7 @@ public class X500DistinguishedName implements Principal
     setUnmodifiable();
   }
 
-  private String readAttributeType(Reader in) throws IOException
+  private static String readAttributeType(Reader in) throws IOException
   {
     CPStringBuilder buf = new CPStringBuilder();
     int ch;

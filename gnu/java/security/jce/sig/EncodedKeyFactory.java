@@ -1,5 +1,5 @@
 /* EncodedKeyFactory.java -- JCE Encoded key factory Adapter
-   Copyright (C) 2006, 2010, 2014  Free Software Foundation, Inc.
+   Copyright (C) 2006, 2010, 2014, 2015  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -305,7 +305,7 @@ public class EncodedKeyFactory
    * @return an instance of {@link DSSPublicKey} constructed from the
    *         information in the designated key-specification.
    */
-  private DSSPublicKey decodeDSSPublicKey(DSAPublicKeySpec spec)
+  private static DSSPublicKey decodeDSSPublicKey(DSAPublicKeySpec spec)
   {
     BigInteger p = spec.getP();
     BigInteger q = spec.getQ();
@@ -319,7 +319,7 @@ public class EncodedKeyFactory
    * @return an instance of {@link GnuRSAPublicKey} constructed from the
    *         information in the designated key-specification.
    */
-  private GnuRSAPublicKey decodeRSAPublicKey(RSAPublicKeySpec spec)
+  private static GnuRSAPublicKey decodeRSAPublicKey(RSAPublicKeySpec spec)
   {
     BigInteger n = spec.getModulus();
     BigInteger e = spec.getPublicExponent();
@@ -334,7 +334,7 @@ public class EncodedKeyFactory
    *           {@link DHPublicKey} interface exists at run-time, or if an
    *           exception occurs during its instantiation.
    */
-  private DHPublicKey decodeDHPublicKey(DHPublicKeySpec spec)
+  private static DHPublicKey decodeDHPublicKey(DHPublicKeySpec spec)
       throws InvalidKeySpecException
   {
     BigInteger p = spec.getP();
@@ -355,7 +355,7 @@ public class EncodedKeyFactory
    *           {@link DHPublicKey} interface exists at run-time, or if an
    *           exception occurs during its instantiation.
    */
-  private DHPublicKey decodeDHPublicKey(byte[] encoded)
+  private static DHPublicKey decodeDHPublicKey(byte[] encoded)
       throws InvalidKeySpecException
   {
     Object obj = invokeValueOf("gnu.javax.crypto.key.dh.GnuDHPublicKey",
@@ -368,7 +368,7 @@ public class EncodedKeyFactory
    * @return an instance of {@link DSSPrivateKey} constructed from the
    *         information in the designated key-specification.
    */
-  private PrivateKey decodeDSSPrivateKey(DSAPrivateKeySpec spec)
+  private static PrivateKey decodeDSSPrivateKey(DSAPrivateKeySpec spec)
   {
     BigInteger p = spec.getP();
     BigInteger q = spec.getQ();
@@ -382,7 +382,7 @@ public class EncodedKeyFactory
    * @return an instance of {@link GnuRSAPrivateKey} constructed from the
    *         information in the designated key-specification.
    */
-  private PrivateKey decodeRSAPrivateKey(RSAPrivateCrtKeySpec spec)
+  private static PrivateKey decodeRSAPrivateKey(RSAPrivateCrtKeySpec spec)
   {
     BigInteger n = spec.getModulus();
     BigInteger e = spec.getPublicExponent();
@@ -404,7 +404,7 @@ public class EncodedKeyFactory
    *           {@link DHPrivateKey} interface exists at run-time, or if an
    *           exception occurs during its instantiation.
    */
-  private DHPrivateKey decodeDHPrivateKey(DHPrivateKeySpec spec)
+  private static DHPrivateKey decodeDHPrivateKey(DHPrivateKeySpec spec)
       throws InvalidKeySpecException
   {
     BigInteger p = spec.getP();
@@ -425,7 +425,7 @@ public class EncodedKeyFactory
    *           {@link DHPrivateKey} interface exists at run-time, or if an
    *           exception occurs during its instantiation.
    */
-  private DHPrivateKey decodeDHPrivateKey(byte[] encoded)
+  private static DHPrivateKey decodeDHPrivateKey(byte[] encoded)
       throws InvalidKeySpecException
   {
     Object obj = invokeValueOf("gnu.javax.crypto.key.dh.GnuDHPrivateKey",

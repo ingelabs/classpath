@@ -274,7 +274,7 @@ public abstract class Policy
     if (pd2pc == null)
       setup(this);
 
-    PermissionCollection pc = (PermissionCollection) pd2pc.get(domain);
+    PermissionCollection pc = pd2pc.get(domain);
     if (pc != null)
       return pc.implies(permission);
 

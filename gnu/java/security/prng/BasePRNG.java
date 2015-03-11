@@ -1,5 +1,6 @@
 /* BasePRNG.java --
-   Copyright (C) 2001, 2002, 2006, 2014 Free Software Foundation, Inc.
+   Copyright (C) 2001, 2002, 2006, 2014, 2015
+   Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -143,13 +144,13 @@ public abstract class BasePRNG
   }
 
   @Override  
-  public void addRandomBytes(byte[] buffer)
+  public void addRandomBytes(byte[] buf)
   {
-    addRandomBytes(buffer, 0, buffer.length);
+    addRandomBytes(buf, 0, buf.length);
   }
 
   @Override
-  public void addRandomBytes(byte[] buffer, int offset, int length)
+  public void addRandomBytes(byte[] buf, int offset, int length)
   {
     throw new UnsupportedOperationException("random state is non-modifiable");
   }
@@ -174,8 +175,8 @@ public abstract class BasePRNG
   public Object clone() throws CloneNotSupportedException
   {
     BasePRNG result = (BasePRNG) super.clone();
-    if (this.buffer != null)
-      result.buffer = (byte[]) this.buffer.clone();
+    if (buffer != null)
+      result.buffer = buffer.clone();
 
     return result;
   }

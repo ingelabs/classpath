@@ -1,5 +1,5 @@
 /* PolicyNodeImpl.java -- An implementation of a policy tree node.
-   Copyright (C) 2004, 2014  Free Software Foundation, Inc.
+   Copyright (C) 2004, 2014, 2015  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -116,11 +116,11 @@ public final class PolicyNodeImpl implements PolicyNode
     expectedPolicies.addAll(policies);
   }
 
-  public void addExpectedPolicy(String policy)
+  public void addExpectedPolicy(String expectedPolicy)
   {
     if (readOnly)
       throw new IllegalStateException("read only");
-    expectedPolicies.add(policy);
+    expectedPolicies.add(expectedPolicy);
   }
 
   @Override
@@ -135,14 +135,18 @@ public final class PolicyNodeImpl implements PolicyNode
     return parent;
   }
 
-  public void addAllPolicyQualifiers (Collection<? extends PolicyQualifierInfo> qualifiers)
+  public void addAllPolicyQualifiers (Collection<? extends PolicyQualifierInfo> policyQualifiers)
   {
-    for (Iterator<? extends PolicyQualifierInfo> it = qualifiers.iterator(); it.hasNext(); )
+    try
       {
-        if (!(it.next() instanceof PolicyQualifierInfo))
-          throw new IllegalArgumentException ("can only add PolicyQualifierInfos");
+	for (Iterator<? extends PolicyQualifierInfo> it = policyQualifiers.iterator(); it.hasNext();) { it.next(); }
       }
-    this.qualifiers.addAll (qualifiers);
+    catch (ClassCastException ex)
+      {
+	throw new IllegalArgumentException ("can only add PolicyQualifierInfos",
+					    ex);
+      }
+    qualifiers.addAll (policyQualifiers);
   }
 
   public void addPolicyQualifier (PolicyQualifierInfo qualifier)
@@ -192,7 +196,8 @@ public final class PolicyNodeImpl implements PolicyNode
     for (Iterator<? extends PolicyNode> it = getChildren(); it.hasNext(); )
       ((PolicyNodeImpl) it.next()).setReadOnly();
   }
-
+  
+  @Override
   public String toString()
   {
     CPStringBuilder buf = new CPStringBuilder();

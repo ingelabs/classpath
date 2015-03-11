@@ -1,5 +1,5 @@
 /* PrivateCredentialPermission.java -- permissions governing private credentials.
-   Copyright (C) 2004, 2014 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2014, 2015 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -64,7 +64,6 @@ import java.util.StringTokenizer;
  * wildcard character.</p>
  */
 public final class PrivateCredentialPermission extends Permission
-  implements Serializable
 {
   /**
    * For compatability with Sun's JDK 1.4.2 rev. 5
@@ -125,6 +124,7 @@ public final class PrivateCredentialPermission extends Permission
   // Instance methods.
   // -------------------------------------------------------------------------
 
+  @Override
   public boolean equals (Object o)
   {
     if (! (o instanceof PrivateCredentialPermission))
@@ -141,20 +141,20 @@ public final class PrivateCredentialPermission extends Permission
         return false;
       }
 
-    final String[][] principals = getPrincipals();
+    final String[][] thisPrincipals = getPrincipals();
     final String[][] thatPrincipals = that.getPrincipals();
     if (thatPrincipals == null)
       {
         return false;
       }
-    if (thatPrincipals.length != principals.length)
+    if (thatPrincipals.length != thisPrincipals.length)
       {
         return false;
       }
-    for (int i = 0; i < principals.length; i++)
+    for (int i = 0; i < thisPrincipals.length; i++)
       {
-        if (!principals[i][0].equals (thatPrincipals[i][0]) ||
-            !principals[i][1].equals (thatPrincipals[i][1]))
+        if (!thisPrincipals[i][0].equals (thatPrincipals[i][0]) ||
+            !thisPrincipals[i][1].equals (thatPrincipals[i][1]))
           {
             return false;
           }
@@ -168,6 +168,7 @@ public final class PrivateCredentialPermission extends Permission
    *
    * @return The list of actions.
    */
+  @Override
   public String getActions()
   {
     return "read";
@@ -205,6 +206,7 @@ public final class PrivateCredentialPermission extends Permission
     return ret;
   }
 
+  @Override
   public int hashCode()
   {
     return credentialClass.hashCode() + principals.hashCode();
@@ -228,6 +230,7 @@ public final class PrivateCredentialPermission extends Permission
    * @param p The permission to check.
    * @return True if this permission implies <i>p</i>.
    */
+  @Override
   public boolean implies (Permission p)
   {
     if (! (p instanceof PrivateCredentialPermission))
@@ -240,19 +243,19 @@ public final class PrivateCredentialPermission extends Permission
       {
         return false;
       }
-    String[][] principals = getPrincipals();
+    String[][] thisPrincipals = getPrincipals();
     String[][] thatPrincipals = that.getPrincipals();
     if (thatPrincipals == null)
       {
         return false;
       }
-    for (int i = 0; i < principals.length; i++)
+    for (int i = 0; i < thisPrincipals.length; i++)
       {
         for (int j = 0; j < thatPrincipals.length; j++)
           {
-            if (principals[i][0].equals (thatPrincipals[j][0]) &&
-                (principals[i][1].equals ("*") ||
-                 principals[i][1].equals (thatPrincipals[j][1])))
+            if (thisPrincipals[i][0].equals (thatPrincipals[j][0]) &&
+                (thisPrincipals[i][1].equals ("*") ||
+                 thisPrincipals[i][1].equals (thatPrincipals[j][1])))
               {
                 return true;
               }
@@ -266,6 +269,7 @@ public final class PrivateCredentialPermission extends Permission
    *
    * @return null.
    */
+  @Override
   public PermissionCollection newPermissionCollection()
   {
     return null;
@@ -300,6 +304,7 @@ public final class PrivateCredentialPermission extends Permission
     // Instance methods.
     // -----------------------------------------------------------------------
 
+    @Override
     public boolean equals (Object o)
     {
       if (!(o instanceof CredOwner))
@@ -310,6 +315,7 @@ public final class PrivateCredentialPermission extends Permission
         principalName.equals (((CredOwner) o).getPrincipalName());
     }
 
+    @Override
     public int hashCode()
     {
       return principalClass.hashCode() + principalName.hashCode();
