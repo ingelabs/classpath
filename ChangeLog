@@ -1,3 +1,312 @@
+2015-04-18  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* gnu/xml/stream/SAXParser.java:
+	(getParser()): Add @Override.
+	(getXMLReader()): Likewise.
+	(isNamespaceAware()): Likewise.
+	(isValidating()): Likewise.
+	(setProperty(String,Object): Likewise.
+	(getProperty(String)): Likewise.
+	(isXIncludeAware()): Likewise.
+	(reset()): Likewise.
+	(getFeature(String)): Likewise.
+	(setFeature(String,boolean)): Likewise.
+	(setEntityResolver(EntityResolver)): Likewise.
+	(getEntityResolver()): Likewise.
+	(setDTDHandler(DTDHandler)): Likewise.
+	(getDTDHandler()): Likewise.
+	(setContentHandler(ContentHandler)): Likewise.
+	(getContentHandler()): Likewise.
+	(setErrorHandler(ErrorHandler)): Likewise.
+	(getErrorHandler()): Likewise.
+	(parse(InputSource)): Likewise. Add type
+	parameters to collection usage. Add
+	default cases in switch statements. Check
+	in is not null before attempting to call
+	close(). Remove superfluous else block.
+	(isIgnorableWhitespace(XMLParser,char,boolean)):
+	Remove exception declaration which is never thrown.
+	Rename 'reader' to 'r' to avoid shadowing. Fix
+	ContentModel type reference to refer to new enum.
+	(parse(String)): Add @Override.
+	(getIndex(String)): Likewise.
+	(getIndex(String,String)): Likewise.
+	(getLength()): Likewise.
+	(getLocalName(int)): Likewise.
+	(getQName(int)): Likewise.
+	(getType(int)): Likewise.
+	(getType(String)): Likewise.
+	(getType(String,String)): Likewise.
+	(getURI(int)): Likewise.
+	(getValue(int)): Likewise.
+	(getValue(String)): Likewise.
+	(getValue(String,String)): Likewise.
+	(isDeclared(int)): Likewise.
+	(isDeclared(String)): Likewise.
+	(isDeclared(Stirng,String)): Likewise.
+	(isSpecified(int)): Likewise.
+	(isSpecified(String)): Likewise.
+	(isSpecified(String,String)): Likewise.
+	(getColumnNumber()): Likewise.
+	(getLineNumber()): Likewise.
+	(getPublicId()): Likewise.
+	(getSystemId()): Likewise.
+	(getEncoding()): Likewise.
+	(getXMLVersion()): Likewise.
+	(resolveEntity(String,String,String,String)):
+	Likewise. Avoid shadowing of baseURI.
+	(resolveAsXMLEventReader(String)): Remove
+	unused method
+	(resolveAsXMLStreamReader(String)): Likewise.
+	(report(String,String,Object,Location)):
+	Add @Override.
+	(main(String[])): Add type parameter to Class
+	instance.
+	* gnu/xml/stream/XMLParser.java:
+	Add type parameters to all collection class
+	instances and use interfaces as types rather
+	than specific implementations. Switch from
+	StringBuffer to StringBuilder for internal
+	string buffering.
+	(XMLParser(InputStream, String, boolean,
+	boolean, boolean, boolean, boolean, boolean,
+	boolean, boolean, boolean, XMLReporter,
+	XMLResolver)): Add type parameters to
+	collection initialisation.
+	(XMLParser(Reader, String, boolean,
+	boolean, boolean, boolean, boolean, boolean,
+	boolean, boolean, boolean, XMLReporter,
+	XMLResolver)): Likewise.
+	(getNamespaceURI(String)): Add @Override
+	and type parameters.
+	(getPrefix(String)): Likewise.
+	(getPrefixes(String)): Likewise.
+	(close()): Add @Override.
+	(getNamespaceContext()): Likewise.
+	(getAttributeCount()): Likewise.
+	(getAttributeLocalName(int)): Likewise
+	and remove unneeded casting and variable
+	creation.
+	(getAttributeNamespace(int)): Add @Override
+	and remove unneeded variable creation.
+	(getAttributePrefix(int)): Add @Override
+	and remove unneeded casting and variable
+	creation.
+	(getAttributeName(int)): Add @Override and
+	remove unneeded casting.
+	(getAttributeType(int)): Add @Override and
+	remove unneeded casting and variable creation.
+	(getAttributeValue(int)): Likewise.
+	(getAttributeValue(String,String)): Add @Override.
+	Add for-each loop and remove unneeded casting.
+	(getCharacterEncodingScheme()): Add @Override.
+	(getElementText()): Likewise. Add Location instance
+	to XMLStreamException being thrown. Handle other
+	values of XMLStreamConstants as specified in
+	method specification.
+	(getEncoding()): Add @Override.
+	(getEventType()): Likewise.
+	(getLocalName()): Likewise.
+	(getLocation()): Likewise.
+	(getName()): Likewise.
+	(getNamespaceCount()): Likewise. Avoid use of
+	isEmpty() so Deque interface can be used for
+	namespaces. Avoid superfluous variable creation.
+	(getNamespacePrefix(int)): Add @Override and
+	remove redundant casting.
+	(getNamespaceURI()): Add @Override.
+	(getNamespaceURI(int)): Likewise. Remove redundant
+	casting.
+	(getPIData()): Add @Override.
+	(getPITarget()): Likewise.
+	(getPrefix()): Likewise.
+	(getProperty(String)): Likewise.
+	(getText()): Likewise.
+	(getTextCharacters()): Likewise.
+	(getTextCharacters(int,char[],int,int)): Likewise.
+	(getTextLength()): Likewise.
+	(getTextStart()): Likewise.
+	(getVersion(): Likewise.
+	(hasName()): Likewise.
+	(hasText()): Likewise.
+	(isAttributeSpecified(int)): Likewise. Avoid
+	redundant casting and variable creation.
+	(isCharacters()): Add @Override.
+	(isEndElement()): Likewise.
+	(isStandalone()): Likewise.
+	(isStartElement()): Likewise.
+	(isWhiteSpace()): Likewise.
+	(nextTag()): Likewise.
+	(require(int,String,String)): Likewise.
+	(standaloneSet()): Likewise.
+	(hasNext()): Likewise.
+	(next()): Likewise. Avoid use of isEmpty() so
+	Deque interface can be used for namespaces)
+	bases, startEntityStack, endEntityStack and
+	stack. Avoid unnecessary casting.
+	(getCurrentElement()): Remove redundant cast.
+	(getXMLBase()): Avoid unnecessary casting
+	and use for-each loops.
+	(pushInput(String,String,boolean,boolean)):
+	Likewise and drop IOException as one is not
+	thrown.
+	(pushInput(String,ExternalIds,boolean,boolean)):
+	Rename ids to exIDs to avoid shadowing. Use
+	for-each loop and avoid	unnecessary casting.
+	(pushInput(Input)): Rename input to in to
+	avoid shadowing.
+	(popInput()): Remove unnecessary casting.
+	(readTextDecl()): Remove redundant cast.
+	(readDoctypeDecl()): Rename ids to exIDs to
+	avoid shadowing. Remove redundant else block.
+	(readMarkupDecl(boolean)): Add default case to
+	switch statement.
+	(readElements(CPStringBuilder)): Mark fall-through in
+	a way the compiler can interpret.
+	(readAttDef(String)): Use for-each loops and interfaces
+	for collection types. Add type parameters and remove
+	redundant casts.
+	(readAttType(CPStringBuilder,Set)): Use Set with
+	type parameter instead of raw HashSet. Remove
+	redundant else block.
+	(readEnumeration(boolean,CPStringBuilder,Set)):
+	Use Set with type parameter rather than raw HashSet.
+	(readNotationType(CPStringBuilder,Set)): Likewise.
+	(readDefault(String,String,String,String,Set)): Likewise.
+	Remove unused defaultType variable.
+	(readEntityDecl(boolean)): Rename ids to exIDs to avoid
+	shadowing.
+	(readNotationDecl(boolean)): Likewise.
+	(readExternalIds(boolean,boolean)): Likewise.
+	(readStartElement()): Add type parameters and for-each
+	loops, removing redundant casts. Add default cases to
+	switch statements.
+	(attributeSpecified(String)): Use for-each loop and
+	avoid redundant casts.
+	(readAttribute(String)): Suppress warning about null
+	pointer as an exception is thrown via the error method.
+	Use interface types and type parameters for collections.
+	(addNamespace(Attribute)): Use interface types and type
+	parameters for collections.
+	(readEndElement()): Remove redundant cast.
+	(endElementValidationHook()): Avoid isEmpty() method so
+	Deque interface can be used for stack. Remove redundant
+	cast.
+	(readCharData(String)): Avoid redundant cast.
+	(expandEntity(String,boolean,boolean)): Rename ids to
+	exIDs to avoid shadowing.
+	(literalReadCh(boolean)): Avoid redundant cast.
+	(readLiteral(int,boolean)): Likewise.
+	(normalize(StringBuilder)): Make static and use
+	StringBuilder rather than StringBuffer. Rename buf
+	to buffer to avoid shadowing.
+	(normalizeCRLF(StringBuilder)): Likewise.
+	(expandPEReference()): Call readNmtoken with
+	StringBuilder, not StringBuffer.
+	(readNmtoken(boolean,StringBuilder)): Use StringBuilder
+	rather than StringBuffer. Rename buf to buffer
+	to avoid shadowing.
+	(isNameStartCharacter(int,boolean)): Remove unneeded else
+	block.
+	(isNameCharacter(int,boolean)): Likewise.
+	(intern(String)): Make package-private to allow access
+	from inner class.
+	(error(String)): Make static.
+	(error(String,Object)): Likewise. Avoid unnecessary
+	cast to Character as toString is available from Object.
+	(validateStartElement(String)): Remove unneeded prefix
+	from constants now they are part of an enum. Drop unneeded
+	cast. Add default case to switch statement.
+	(validateEndElement()): Likewise.
+	(validatePCData(String)): Remove unneeded prefix from
+	constants now they are part of an enum. Add default
+	case to switch statement.
+	(validateElementContent(ElementContentModel, List)):
+	Use interface type with parameter for collection.
+	Rename buf to buffer to avoid shadowing. Add
+	type parameters.
+	(createRegularExpression(ElementContentModel)): Rename
+	buf to buffer to avoid shadowing. Use type parameters
+	and avoid redundant casting.
+	(validateDoctype()): Add type parameters and avoid
+	redundant casting. Rename ids to exIDs to avoid
+	shadowing.
+	(Attribute.equals(Object)): Add @Override. Use
+	isNamespaceAware() and isXML11() rather than
+	trying to access private variables of outer class.
+	Remove redundant else block.
+	(Attribute.hashCode()): Implemented to match
+	equals method.
+	(Attribute.toString()): Add @Override. Rename
+	buf to buffer to avoid shadowing.
+	(Doctype): Rename externalEntities to externalEntitiesSet
+	to avoid shadowing.
+	(Doctype.addElementDecl(String,String,ContentModel)):
+	Use getInputSize() rather than trying to access
+	private variables of outer class.
+	(Doctype.addAttributeDecl(String,String,AttributeDecl)):
+	Add type parameters and remove redundant casts.
+	(Doctype.addEntityDecl(String,ExternalIds,boolean)):
+	Rename ids to exIDs to avoid shadowing.
+	(Doctype.addNotationDecl(String,ExternalIds,boolean)):
+	Likewise.
+	(Doctype.getElementModel(String)): Remove redundant cast.
+	(Doctype.getAttributeDecl(String,String)): Add type
+	parameters and remove redundant casts.
+	(Doctype.isAttributeDeclared(String,String)): Likewise.
+	(Doctype.attlistIterator(String)): Likewise.
+	(Doctype.entityIterator()): Add type parameter.
+	(Doctype.getNotation(String)): Remove redundant cast.
+	(Doctype.getComment(String)): Likewise.
+	(Doctype.getPI(String)): Likewise.
+	(Doctype.entryIterator()): Add type parameter.
+	(ContentModel): Make static.
+	(ContentModel.EMPTY): Removed.
+	(ContentModel.ANY): Likewise.
+	(ContentModel.ELEMENT): Likewise.
+	(ContentModel.MIXED): Likewise.
+	(ContentModel.Type): Introduce enum type with
+	values EMPTY, ANY, ELEMENT and MIXED to replace
+	integer constants.
+	(ContentModel.type): Change type to ContentModel.Type.
+	(EmptyContentModel): Make static.
+	(EmptyContentModel.EmptyContentModel()): Initialise using
+	enum constant.
+	(AnyContentModel): Make static.
+	(AnyContentModel.AnyContentModel()): Initialise using
+	enum constant.
+	(ElementContentModel): Make static.
+	(ElementContentModel.ElementContentModel()): Initialise using
+	enum constant. Add type parameters.
+	(ContentParticle): Make static.
+	(MixedContentModel): Likewise.
+	(MixedContentModel.MixedContentModel()): Initialise using
+	enum constant. Add type parameters.
+	(AttributeDecl): Make static.
+	(AttributeDecl.AttributeDecl(String,String,int,String,Set,
+	boolean)): Use Set with type parameter instead of raw HashSet.
+	(getCharacterOffset()): Add @Override.
+	(getColumnNumber()): Likewise.
+	(getLineNumber()): Likewise.
+	(getPublicId()): Likewise.
+	(getSystemId()): Likewise.
+	(isNamespaceAware()): New package-private accessor
+	for inner classes.
+	(isXML11()): Likewise.
+	(getInputSize()): Likewise.
+	* javax/xml/parsers/SAXParser.java:
+	(reset()): Fix documentation to refer to Java version
+	rather than JAXP version.
+	(getSchema()): Likewise. Suppress warnings about making
+	this a static method.
+	(isXIncludeAware()): Likewise.
+
+2015-03-22  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* tools/gnu/classpath/tools/keytool/SelfCertCmd.java:
+	(setDName(String,X500Principal)): Allow IOException
+	to be thrown.
+
 2015-03-11  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* configure.ac:
