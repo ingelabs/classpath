@@ -1,5 +1,5 @@
 /* SSLRecordHandler.java -- a class that handles SSL record layer messages.
-   Copyright (C) 2006  Free Software Foundation, Inc.
+   Copyright (C) 2006, 2015  Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -86,6 +86,7 @@ public abstract class SSLRecordHandler
     return contentType;
   }
 
+  @Override
   public boolean equals (final Object o)
   {
     if (!(o instanceof SSLRecordHandler))
@@ -93,6 +94,7 @@ public abstract class SSLRecordHandler
     return ((SSLRecordHandler) o).contentType == contentType;
   }
 
+  @Override
   public int hashCode ()
   {
     return contentType & 0xFF;

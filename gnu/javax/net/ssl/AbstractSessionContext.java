@@ -1,5 +1,5 @@
 /* AbstractSessionContext -- stores SSL sessions, possibly persistently.
-   Copyright (C) 2006  Free Software Foundation, Inc.
+   Copyright (C) 2006, 2015  Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -172,6 +172,7 @@ public abstract class AbstractSessionContext implements SSLSessionContext
    * @return The found session, or null if no such session was found,
    * or if that session has expired.
    */
+  @Override
   public final SSLSession getSession (byte[] sessionId)
   {
     Session s = implGet (sessionId);
@@ -186,9 +187,9 @@ public abstract class AbstractSessionContext implements SSLSessionContext
 
   public final SSLSession getSession(String host, int port)
   {
-    for (Enumeration e = getIds(); e.hasMoreElements(); )
+    for (Enumeration<byte[]> e = getIds(); e.hasMoreElements(); )
       {
-        byte[] id = (byte[]) e.nextElement();
+        byte[] id = e.nextElement();
         SSLSession s = getSession(id);
         if (s == null) // session expired.
           continue;
@@ -221,6 +222,7 @@ public abstract class AbstractSessionContext implements SSLSessionContext
    */
   protected abstract Session implGet (byte[] sessionId);
 
+  @Override
   public int getSessionTimeout()
   {
     return (int) (timeout / 1000);
@@ -267,6 +269,7 @@ public abstract class AbstractSessionContext implements SSLSessionContext
   /**
    *
    */
+  @Override
   public final void setSessionTimeout(int seconds)
   {
     if (timeout < 0)

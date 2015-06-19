@@ -1,5 +1,5 @@
 /* QtFramePeer.java --
-   Copyright (C)  2005  Free Software Foundation, Inc.
+   Copyright (C)  2005, 2014  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -56,8 +56,10 @@ public class QtFramePeer extends QtWindowPeer implements FramePeer
     super( kit, owner );
   }
 
+  @Override
   protected native void init();
 
+  @Override
   protected void setup()
   {
     super.setup();
@@ -81,12 +83,14 @@ public class QtFramePeer extends QtWindowPeer implements FramePeer
     dispose();
   }
 
+  @Override
   public int getState()
   {
     // FIXME
     return theState;
   }
 
+  @Override
   public Insets getInsets()
   {
     int mbHeight = ( ((Frame)owner).getMenuBar() != null ) ?
@@ -94,6 +98,7 @@ public class QtFramePeer extends QtWindowPeer implements FramePeer
     return new Insets(mbHeight, 0, 0, 0);
   }
 
+  @Override
   public void setIconImage(Image im)
   {
     if (im instanceof QtImage)
@@ -102,11 +107,13 @@ public class QtFramePeer extends QtWindowPeer implements FramePeer
       setIcon( new QtImage( im.getSource() ) );
   }
 
+  @Override
   public void setMaximizedBounds(Rectangle rect)
   {
     // FIXME
   }
 
+  @Override
   public void setMenuBar(MenuBar mb)
   {
     if( mb != null )
@@ -126,35 +133,41 @@ public class QtFramePeer extends QtWindowPeer implements FramePeer
       setMenu( null );
   }
 
+  @Override
   public void setResizable(boolean resizeable)
   {
     // FIXME
   }
 
+  @Override
   public void setState(int s)
   {
     theState = s;
     // FIXME
   }
 
+  @Override
   public void setBoundsPrivate(int x, int y, int width, int height)
   {
     // TODO Auto-generated method stub
 
   }
 
+  @Override
   public void updateAlwaysOnTop()
   {
     // TODO Auto-generated method stub
 
   }
 
+  @Override
   public boolean requestWindowFocus()
   {
     // TODO Auto-generated method stub
     return false;
   }
 
+  @Override
   public Rectangle getBoundsPrivate()
   {
     // TODO: Implement this properly.

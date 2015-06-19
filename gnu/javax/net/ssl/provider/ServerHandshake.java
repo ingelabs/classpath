@@ -1,5 +1,5 @@
 /* ServerHandshake.java -- the server-side handshake.
-   Copyright (C) 2006  Free Software Foundation, Inc.
+   Copyright (C) 2006, 2015  Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -194,8 +194,7 @@ class ServerHandshake extends AbstractHandshake
    * we have enabled.
    */
   private CipherSuite chooseSuite (final CipherSuiteList clientSuites,
-                                   final String[] enabledSuites,
-                                   final ProtocolVersion version)
+                                   final String[] enabledSuites)
     throws SSLException
   {
     // Figure out which SignatureAlgorithms we can support.
@@ -336,8 +335,7 @@ class ServerHandshake extends AbstractHandshake
                                 engine.getEnabledProtocols ());
             engine.session().suite =
               chooseSuite (hello.cipherSuites (),
-                           engine.getEnabledCipherSuites (),
-                           engine.session().version);
+                           engine.getEnabledCipherSuites ());
             compression = chooseCompression (hello.compressionMethods ());
             if (Debug.DEBUG)
               logger.logv(Component.SSL_HANDSHAKE,
@@ -513,10 +511,10 @@ class ServerHandshake extends AbstractHandshake
                   {
                     ClientDHE_PSKParameters params = (ClientDHE_PSKParameters)
                       kex.exchangeKeys();
-                    DHPublicKey serverKey = (DHPublicKey) dhPair.getPublic();
+                    DHPublicKey srvKey = (DHPublicKey) dhPair.getPublic();
                     DHPublicKey clientKey =
-                      new GnuDHPublicKey(null, serverKey.getParams().getP(),
-                                         serverKey.getParams().getG(),
+                      new GnuDHPublicKey(null, srvKey.getParams().getP(),
+                                         srvKey.getParams().getG(),
                                          params.params().publicValue());
                     SecretKey psk = null;
                     try
@@ -573,6 +571,12 @@ class ServerHandshake extends AbstractHandshake
                     engine.session().privateData.masterSecret = new byte[0];
                   }
                   break;
+	        case DH_DSS:
+	        case DH_RSA:
+		  // Message contains no data in this case (RFC2246, 7.4.7)
+		  break;
+	        default:
+		  throw new SSLException("Unsupported algorithm: " + alg);
               }
             // XXX SRP
 
@@ -690,6 +694,9 @@ class ServerHandshake extends AbstractHandshake
               }
           }
           break;
+
+        default:
+	  throw new IllegalStateException("Invalid state: " + state);
       }
 
     handshakeOffset += handshake.length() + 4;
@@ -724,8 +731,7 @@ class ServerHandshake extends AbstractHandshake
       {
         if (state.isWriteState() || outBuffer.hasRemaining())
           return HandshakeStatus.NEED_WRAP;
-        else
-          return HandshakeStatus.NEED_UNWRAP;
+	return HandshakeStatus.NEED_UNWRAP;
       }
 
     // XXX what we need to do here is generate a "stream" of handshake
@@ -1143,6 +1149,8 @@ output_loop:
                 state = DONE;
             }
             break;
+	    default:
+	      throw new IllegalStateException("Invalid state: " + state);
           }
       }
     if (!tasks.isEmpty())
@@ -1194,7 +1202,7 @@ output_loop:
     helloV2 = true;
   }
 
-  private ByteBuffer signParams(ByteBuffer serverParams)
+  ByteBuffer signParams(ByteBuffer serverParams)
     throws NoSuchAlgorithmException, InvalidKeyException, SignatureException
   {
     SignatureAlgorithm alg = engine.session().suite.signatureAlgorithm();
@@ -1254,6 +1262,43 @@ output_loop:
       }
   }
 
+  // Accessors and mutators for delegated tasks.
+
+  void setKeyAlias(final String ka)
+  {
+    keyAlias = ka;
+  }
+
+  String getKeyAlias()
+  {
+    return keyAlias;
+  }
+
+  void setLocalCert(final X509Certificate lc)
+  {
+    localCert = lc;
+  }
+
+  X509Certificate getLocalCert()
+  {
+    return localCert;
+  }
+
+  void setServerKey(final PrivateKey sk)
+  {
+    serverKey = sk;
+  }
+
+  PrivateKey getServerKey()
+  {
+    return serverKey;
+  }
+
+  void setDHPair(KeyPair dh)
+  {
+    dhPair = dh;
+  }
+
   // Delegated tasks.
 
   class CertLoader extends DelegatedTask
@@ -1262,21 +1307,24 @@ output_loop:
     {
     }
 
+    @Override
     public void implRun() throws SSLException
     {
       KeyExchangeAlgorithm kexalg = engine.session().suite.keyExchangeAlgorithm();
       X509ExtendedKeyManager km = engine.contextImpl.keyManager;
       Principal[] issuers = null; // XXX use TrustedAuthorities extension.
-      keyAlias = km.chooseEngineServerAlias(kexalg.name(), issuers, engine);
-      if (keyAlias == null)
+      String kAlias = km.chooseEngineServerAlias(kexalg.name(), issuers, engine);
+      setKeyAlias(kAlias);
+      if (kAlias == null)
         throw new SSLException("no certificates available");
-      X509Certificate[] chain = km.getCertificateChain(keyAlias);
+      X509Certificate[] chain = km.getCertificateChain(kAlias);
       engine.session().setLocalCertificates(chain);
-      localCert = chain[0];
-      serverKey = km.getPrivateKey(keyAlias);
+      X509Certificate lCert = chain[0];
+      setLocalCert(lCert);
+      setServerKey(km.getPrivateKey(kAlias));
       if (kexalg == DH_DSS || kexalg == DH_RSA)
-        dhPair = new KeyPair(localCert.getPublicKey(),
-                             km.getPrivateKey(keyAlias));
+        setDHPair(new KeyPair(lCert.getPublicKey(),
+			      km.getPrivateKey(keyAlias)));
     }
   }
 
@@ -1288,6 +1336,15 @@ output_loop:
     ByteBuffer paramsBuffer;
     ByteBuffer sigBuffer;
 
+    /**
+     * Public constructor to avoid synthetic accessor.
+     */
+    public GenDH()
+    {
+      super();
+    }
+
+    @Override
     protected void implRun()
       throws NoSuchAlgorithmException, InvalidAlgorithmParameterException,
              InvalidKeyException, SignatureException
@@ -1295,8 +1352,9 @@ output_loop:
       KeyPairGenerator dhGen = KeyPairGenerator.getInstance("DH");
       DHParameterSpec dhparams = DiffieHellman.getParams().getParams();
       dhGen.initialize(dhparams, engine.session().random());
-      dhPair = dhGen.generateKeyPair();
-      DHPublicKey pub = (DHPublicKey) dhPair.getPublic();
+      KeyPair pair = dhGen.generateKeyPair();
+      setDHPair(pair);
+      DHPublicKey pub = (DHPublicKey) pair.getPublic();
 
       // Generate the parameters message.
       ServerDHParams params = new ServerDHParams(pub.getParams().getP(),
@@ -1313,7 +1371,7 @@ output_loop:
       if (Debug.DEBUG_KEY_EXCHANGE)
         logger.logv(Component.SSL_KEY_EXCHANGE,
                     "Diffie-Hellman public:{0} private:{1}",
-                    dhPair.getPublic(), dhPair.getPrivate());
+                    pair.getPublic(), pair.getPrivate());
     }
   }
 
@@ -1326,13 +1384,14 @@ output_loop:
       this.encryptedPreMasterSecret = encryptedPreMasterSecret;
     }
 
+    @Override
     public void implRun()
       throws BadPaddingException, IllegalBlockSizeException, InvalidKeyException,
              NoSuchAlgorithmException, NoSuchPaddingException, SSLException
     {
       Cipher rsa = Cipher.getInstance("RSA");
-      rsa.init(Cipher.DECRYPT_MODE, serverKey);
-      rsa.init(Cipher.DECRYPT_MODE, localCert);
+      rsa.init(Cipher.DECRYPT_MODE, getServerKey());
+      rsa.init(Cipher.DECRYPT_MODE, getLocalCert());
       preMasterSecret = rsa.doFinal(encryptedPreMasterSecret);
       generateMasterSecret(clientRandom, serverRandom, engine.session());
       byte[][] keys = generateKeys(clientRandom, serverRandom, engine.session());
@@ -1356,8 +1415,8 @@ output_loop:
              NoSuchAlgorithmException, NoSuchPaddingException, SSLException
     {
       Cipher rsa = Cipher.getInstance("RSA");
-      rsa.init(Cipher.DECRYPT_MODE, serverKey);
-      rsa.init(Cipher.DECRYPT_MODE, localCert);
+      rsa.init(Cipher.DECRYPT_MODE, getServerKey());
+      rsa.init(Cipher.DECRYPT_MODE, getLocalCert());
       byte[] rsaSecret = rsa.doFinal(encryptedPreMasterSecret);
       byte[] psSecret = psKey.getEncoded();
       preMasterSecret = new byte[rsaSecret.length + psSecret.length + 4];

@@ -34,6 +34,7 @@ New in release 0.99.1 (XXX XX, 2012)
   - PR64881: KeyPairGenerator.genKeyPair() ends up calling the default generateKeyPair method which returns a DSA generator
   - PR64902: Keys returned by KeyPairGenerator don't use standardised algorithm names
   - PR64904: KeyPairGenerator.genKeyPair() fails if not explicitly initialised
+  - PR66376: Lack of method stringPropertyNames
 
 New in release 0.99 (Feb 15, 2012)
 

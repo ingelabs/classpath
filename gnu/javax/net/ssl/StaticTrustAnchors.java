@@ -1,5 +1,5 @@
 /* StaticTrustAnchors.java -- static list of CA certificates.
-   Copyright (C) 2006  Free Software Foundation, Inc.
+   Copyright (C) 2006, 2015  Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -68,7 +68,7 @@ public class StaticTrustAnchors implements ManagerFactoryParameters
 
   public StaticTrustAnchors(X509Certificate[] certs)
   {
-    this.certs = (X509Certificate[]) certs.clone();
+    this.certs = certs.clone();
   }
 
   // Class method.
@@ -94,7 +94,7 @@ public class StaticTrustAnchors implements ManagerFactoryParameters
 
   public X509Certificate[] getCertificates()
   {
-    return (X509Certificate[]) certs.clone();
+    return certs.clone();
   }
 
   // Constant.
@@ -112,7 +112,7 @@ public class StaticTrustAnchors implements ManagerFactoryParameters
 
   static
   {
-    LinkedList certs = new LinkedList();
+    LinkedList<X509Certificate> certs = new LinkedList<X509Certificate>();
     CertificateFactory factory = null;
 
     try
@@ -1935,6 +1935,6 @@ public class StaticTrustAnchors implements ManagerFactoryParameters
       "mmFei74pnykkiFY5LKjSq5YDWtRIn7lAhAuYaPsBQ9Yb4gmxlxw=\n" +
       "-----END CERTIFICATE-----\n");
 
-    CA_CERTS = new StaticTrustAnchors((X509Certificate[]) certs.toArray(new X509Certificate[0]));
+    CA_CERTS = new StaticTrustAnchors(certs.toArray(new X509Certificate[certs.size()]));
   }
 }

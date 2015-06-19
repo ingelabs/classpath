@@ -1,5 +1,5 @@
 /* ServerDHE_PSKParameters.java --
-   Copyright (C) 2006  Free Software Foundation, Inc.
+   Copyright (C) 2006, 2015  Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -57,7 +57,7 @@ import java.nio.charset.Charset;
  *
  * @author Casey Marshall (csm@gnu.org)
  */
-public class ServerDHE_PSKParameters implements Constructed, Builder, ServerKeyExchangeParams
+public class ServerDHE_PSKParameters implements Builder, ServerKeyExchangeParams
 {
   private ByteBuffer buffer;
 
@@ -81,6 +81,7 @@ public class ServerDHE_PSKParameters implements Constructed, Builder, ServerKeyE
     buffer.put(dhParams);
   }
 
+  @Override
   public KeyExchangeAlgorithm algorithm()
   {
     return KeyExchangeAlgorithm.DHE_PSK;
@@ -89,6 +90,7 @@ public class ServerDHE_PSKParameters implements Constructed, Builder, ServerKeyE
   /* (non-Javadoc)
    * @see gnu.javax.net.ssl.provider.Constructed#length()
    */
+  @Override
   public int length()
   {
     return (buffer.getShort(0) & 0xFFFF) + 2 + params().length();
@@ -115,6 +117,7 @@ public class ServerDHE_PSKParameters implements Constructed, Builder, ServerKeyE
   /* (non-Javadoc)
    * @see gnu.javax.net.ssl.provider.Builder#buffer()
    */
+  @Override
   public ByteBuffer buffer()
   {
     return (ByteBuffer) buffer.duplicate().rewind().limit(length());
@@ -128,6 +131,7 @@ public class ServerDHE_PSKParameters implements Constructed, Builder, ServerKeyE
   /* (non-Javadoc)
    * @see gnu.javax.net.ssl.provider.Constructed#toString(java.lang.String)
    */
+  @Override
   public String toString(String prefix)
   {
     StringWriter str = new StringWriter();
