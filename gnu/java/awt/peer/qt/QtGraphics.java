@@ -1,5 +1,5 @@
 /* QtGraphics.java --
-   Copyright (C)  2005, 2006, 2014  Free Software Foundation, Inc.
+   Copyright (C)  2005, 2006  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -144,7 +144,6 @@ public abstract class QtGraphics extends Graphics2D
 
   public synchronized native void delete();
 
-  @Override
   public void dispose()
   {
   }
@@ -163,7 +162,7 @@ public abstract class QtGraphics extends Graphics2D
   protected native void initVolatileImage(QtVolatileImage image);
 
   // Creates a new native QPainter object on the same context.
-  private native void cloneNativeContext( QtGraphics parentGraphics );
+  private native void cloneNativeContext( QtGraphics parent );
   private native void setColor(int r, int g, int b, int a);
   private native void drawNative( QPainterPath p );
   private native void fillNative( QPainterPath p );
@@ -194,23 +193,19 @@ public abstract class QtGraphics extends Graphics2D
   /**
    * Context-sensitive methods are declared abstract.
    */
-  @Override
   public abstract Graphics create();
 
-  @Override
   public abstract void copyArea(int x, int y, int width, int height,
                                 int dx, int dy);
 
-  @Override
   public abstract GraphicsConfiguration getDeviceConfiguration();
 
-  @Override
+
   public Color getColor()
   {
     return new Color(color.getRed(), color.getGreen(), color.getBlue());
   }
 
-  @Override
   public void setColor(Color c)
   {
     if( c == null )
@@ -220,48 +215,43 @@ public abstract class QtGraphics extends Graphics2D
     setColor(c.getRed(), c.getGreen(), c.getBlue(), alpha);
   }
 
-  @Override
   public void setBackground(Color color)
   {
     bgcolor = new Color(color.getRed(), color.getGreen(), color.getBlue());
   }
 
-  @Override
   public Color getBackground()
   {
     return new Color(bgcolor.getRed(), bgcolor.getGreen(), bgcolor.getBlue());
   }
 
-  @Override
   public void setPaintMode()
   {
   }
 
-  @Override
   public void setXORMode(Color color)
   {
     // FIXME
   }
 
-  @Override
   public boolean hit(Rectangle rect, Shape s, boolean onStroke)
   {
     if( onStroke )
       {
         Shape stroked = currentStroke.createStrokedShape( s );
-        return stroked.intersects( rect.x, rect.y, rect.width, rect.height );
+        return stroked.intersects( (double)rect.x, (double)rect.y,
+                                   (double)rect.width, (double)rect.height );
       }
-    return s.intersects( rect.x, rect.y, rect.width, rect.height );
+    return s.intersects( (double)rect.x, (double)rect.y,
+                         (double)rect.width, (double)rect.height );
   }
 
   // ******************* Font ***********************
-  @Override
   public Font getFont()
   {
     return font;
   }
 
-  @Override
   public void setFont(Font font)
   {
     if( font == null )
@@ -271,10 +261,9 @@ public abstract class QtGraphics extends Graphics2D
       setFontNative( (QtFontPeer)font.getPeer() );
   }
 
-  @Override
-  public FontMetrics getFontMetrics(Font f)
+  public FontMetrics getFontMetrics(Font font)
   {
-    return new QtFontMetrics(f, this);
+    return new QtFontMetrics(font, this);
   }
 
   // ***************** Clipping *********************
@@ -282,37 +271,31 @@ public abstract class QtGraphics extends Graphics2D
   /**
    * Intersects the current clip with the shape
    */
-  @Override
   public void clip(Shape s)
   {
     intersectClipNative( new QPainterPath( s ) );
   }
 
-  @Override
   public void clipRect(int x, int y, int width, int height)
   {
     intersectClipRectNative( x, y, width, height );
   }
 
-  @Override
   public void setClip(int x, int y, int width, int height)
   {
     setClipRectNative( x, y, width, height );
   }
 
-  @Override
   public Shape getClip()
   {
     return getClipNative().getPath();
   }
 
-  @Override
   public native Rectangle getClipBounds();
 
   /**
    * Sets the clip
    */
-  @Override
   public void setClip(Shape clip)
   {
     if (clip == null)
@@ -323,7 +306,6 @@ public abstract class QtGraphics extends Graphics2D
 
   // ***************** Drawing primitives *********************
 
-  @Override
   public void draw(Shape s)
   {
     if( nativeStroking )
@@ -332,40 +314,37 @@ public abstract class QtGraphics extends Graphics2D
       fillNative( new QPainterPath( currentStroke.createStrokedShape( s ) ) );
   }
 
-  @Override
   public void fill(Shape s)
   {
     fillNative( new QPainterPath(s) );
   }
 
-  @Override
   public void drawLine(int x1, int y1, int x2, int y2)
   {
     if( nativeStroking )
-      drawNative( new QPainterPath(x1, y1, x2, y2, true) );
+      drawNative( new QPainterPath((double)x1, (double)y1, (double)x2, (double)y2, true) );
     else
-      draw( new Line2D.Double(x1, y1, x2, y2) );
+      draw( new Line2D.Double((double)x1, (double)y1, (double)x2, (double)y2) );
   }
 
-  @Override
   public void drawRect(int x, int y, int width, int height)
   {
     if( nativeStroking )
-      drawNative( new QPainterPath(x, y, width, height) );
+      drawNative( new QPainterPath((double)x, (double)y,
+                                   (double)width, (double)height) );
     else
       fillNative( new QPainterPath
                   ( currentStroke.createStrokedShape
                     (new Rectangle2D.Double
-                     (x, y, width, height) ) ) );
+                     ((double)x, (double)y,
+                      (double)width, (double)height) ) ) );
   }
 
-  @Override
   public void fillRect(int x, int y, int width, int height)
   {
     fillNative( new QPainterPath( x, y, width, height ) );
   }
 
-  @Override
   public void clearRect(int x, int y, int width, int height)
   {
     Color c = color;
@@ -374,7 +353,6 @@ public abstract class QtGraphics extends Graphics2D
     setColor( c );
   }
 
-  @Override
   public void drawRoundRect(int x, int y, int width, int height,
                             int arcWidth, int arcHeight)
   {
@@ -382,7 +360,6 @@ public abstract class QtGraphics extends Graphics2D
                                       arcWidth, arcHeight) );
   }
 
-  @Override
   public void fillRoundRect(int x, int y, int width, int height,
                             int arcWidth, int arcHeight)
   {
@@ -390,19 +367,17 @@ public abstract class QtGraphics extends Graphics2D
                                       arcWidth, arcHeight) );
   }
 
-  @Override
   public void drawOval(int x, int y, int width, int height)
   {
-    draw( new Ellipse2D.Double(x, y, width, height) );
+    draw( new Ellipse2D.Double((double)x, (double)y,
+                               (double)width, (double)height) );
   }
 
-  @Override
   public void fillOval(int x, int y, int width, int height)
   {
     fill( new Ellipse2D.Double(x, y, width, height) );
   }
 
-  @Override
   public void drawArc(int x, int y, int width, int height,
                       int arcStart, int arcAngle)
   {
@@ -410,7 +385,6 @@ public abstract class QtGraphics extends Graphics2D
                            Arc2D.OPEN) );
   }
 
-  @Override
   public void fillArc(int x, int y, int width, int height,
                       int arcStart, int arcAngle)
   {
@@ -418,46 +392,38 @@ public abstract class QtGraphics extends Graphics2D
                            Arc2D.CHORD) );
   }
 
-  @Override
   public void drawPolyline(int xPoints[], int yPoints[], int npoints)
   {
     for( int i = 0; i < npoints - 1; i++)
       drawLine(xPoints[i], yPoints[i], xPoints[i + 1], yPoints[i + 1]);
   }
 
-  @Override
   public void drawPolygon(int xPoints[], int yPoints[], int npoints)
   {
     draw( new Polygon(xPoints, yPoints, npoints) );
   }
 
-  @Override
   public void fillPolygon(int xPoints[], int yPoints[], int npoints)
   {
     fill( new Polygon(xPoints, yPoints, npoints) );
   }
 
-  @Override
   public native void fill3DRect(int x, int y, int width, int height, boolean raised);
 
-  @Override
   public native void draw3DRect(int x, int y, int width, int height, boolean raised);
 
   // *********************** Text rendering *************************
 
-  @Override
   public void drawString(String string, int x, int y)
   {
-    drawStringNative(string, x, y);
+    drawStringNative(string, (double)x, (double)y);
   }
 
-  @Override
   public void drawString(String string, float x, float y)
   {
-    drawStringNative(string, x, y);
+    drawStringNative(string, (double)x, (double)y);
   }
 
-  @Override
   public void drawString (AttributedCharacterIterator ci, int x, int y)
   {
     // FIXME - to something more correct ?
@@ -467,7 +433,6 @@ public abstract class QtGraphics extends Graphics2D
     drawString(s, x, y);
   }
 
-  @Override
   public void drawString(AttributedCharacterIterator ci,
                          float x, float y)
   {
@@ -478,14 +443,12 @@ public abstract class QtGraphics extends Graphics2D
     drawString(s, x, y);
   }
 
-  @Override
   public void drawGlyphVector(GlyphVector v, float x, float y)
   {
     throw new RuntimeException("Not implemented");
   }
 
   // ******************* Image drawing ******************************
-  @Override
   public boolean drawImage(Image image,
                            AffineTransform Tx,
                            ImageObserver obs)
@@ -498,131 +461,113 @@ public abstract class QtGraphics extends Graphics2D
                                                       obs);
   }
 
-  @Override
-  public boolean drawImage(Image image, int x, int y, Color background,
+  public boolean drawImage(Image image, int x, int y, Color bgcolor,
                            ImageObserver observer)
   {
     if (image instanceof QtImage)
-      return ((QtImage)image).drawImage (this, x, y, background, observer);
+      return ((QtImage)image).drawImage (this, x, y, bgcolor, observer);
     return (new QtImage(image.getSource())).drawImage (this, x, y,
-                                                       background, observer);
+                                                       bgcolor, observer);
   }
-  
-  @Override
+
   public boolean drawImage(Image image,
                            int dx1, int dy1, int dx2, int dy2,
                            int sx1, int sy1, int sx2, int sy2,
-                           Color background, ImageObserver observer)
+                           Color bgcolor, ImageObserver observer)
   {
     if (image instanceof QtImage)
       return ((QtImage)image).drawImage(this, dx1, dy1, dx2, dy2,
-                                        sx1, sy1, sx2, sy2, background, observer);
+                                        sx1, sy1, sx2, sy2, bgcolor, observer);
 
     return (new QtImage(image.getSource())).drawImage(this, dx1, dy1,
                                                       dx2, dy2,
                                                       sx1, sy1, sx2, sy2,
-                                                      background, observer);
+                                                      bgcolor, observer);
   }
 
-  @Override
   public boolean drawImage(Image image, int x, int y,
-                           int width, int height, Color background,
+                           int width, int height, Color bgcolor,
                            ImageObserver observer)
   {
     if (image instanceof QtImage)
       return ((QtImage)image).drawImage (this, x, y, width, height,
-                                         background, observer);
+                                         bgcolor, observer);
     return (new QtImage(image.getSource())).drawImage (this, x, y,
                                                        width, height,
-                                                       background, observer);
+                                                       bgcolor, observer);
   }
 
-  @Override
   public boolean drawImage(Image image, int x, int y, int width, int height,
                            ImageObserver observer)
   {
     return drawImage(image, x, y, width, height, null, observer);
   }
 
-  @Override
   public boolean drawImage(Image image, int x, int y, ImageObserver observer)
   {
     return drawImage(image, x, y, null, observer);
   }
 
-  @Override
-  public boolean drawImage(Image image, int dx1, int dy1, int dx2, int dy2,
-			   int sx1, int sy1, int sx2, int sy2,
-			   ImageObserver observer)
+  public boolean drawImage(Image image, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, ImageObserver observer)
   {
     return drawImage(image, dx1, dy1, dx2, dy2,
                      sx1, sy1, sx2, sy2, null, observer);
   }
 
   // *********************** Transform methods *************************
-  @Override
   public AffineTransform getTransform()
   {
     return new AffineTransform( xform );
   }
 
-  @Override
   public void setTransform(AffineTransform Tx)
   {
     xform = new AffineTransform( Tx );
     setQtTransform( new QMatrix( xform ) );
   }
 
-  @Override
   public void rotate(double theta)
   {
     xform.rotate( theta );
     setQtTransform( new QMatrix( xform ) );
   }
 
-  @Override
   public void rotate(double theta, double x, double y)
   {
     xform.rotate(theta, x, y);
     setQtTransform( new QMatrix( xform ) );
   }
 
-  @Override
   public void scale(double sx, double sy)
   {
     xform.scale(sx, sy);
     setQtTransform( new QMatrix( xform ) );
   }
 
-  @Override
   public void shear(double shx, double shy)
   {
     xform.shear(shx, shy);
     setQtTransform( new QMatrix( xform ) );
   }
 
-  @Override
   public void transform(AffineTransform Tx)
   {
     xform.concatenate( Tx );
     setQtTransform( new QMatrix( xform ) );
   }
 
-  @Override
   public void translate(double tx, double ty)
   {
     xform.translate( tx, ty );
     setQtTransform( new QMatrix( xform ) );
   }
 
-  @Override
   public void translate(int x, int y)
   {
     translate((double)x, (double)y);
   }
 
   // *************** Stroking, Filling, Compositing *****************
-  @Override
   public void setStroke(Stroke s)
   {
     try  // ..to convert the stroke into a native one.
@@ -639,13 +584,11 @@ public abstract class QtGraphics extends Graphics2D
     currentStroke = s;
   }
 
-  @Override
   public Stroke getStroke()
   { // FIXME: return copy?
     return currentStroke;
   }
 
-  @Override
   public void setComposite(Composite comp)
   {
     if( comp == null)
@@ -674,13 +617,11 @@ public abstract class QtGraphics extends Graphics2D
       }
   }
 
-  @Override
   public Composite getComposite()
   {
     return composite;
   }
 
-  @Override
   public void setPaint(Paint p)
   {
     if( p == null )
@@ -708,7 +649,6 @@ public abstract class QtGraphics extends Graphics2D
                                             " paints yet.");
   }
 
-  @Override
   public Paint getPaint()
   {
     // FIXME
@@ -717,25 +657,21 @@ public abstract class QtGraphics extends Graphics2D
 
   // ********************** Rendering Hints *************************
 
-  @Override
-  public void addRenderingHints(Map<?,?> hints)
+  public void addRenderingHints(Map hints)
   {
     renderingHints.putAll( hints );
   }
 
-  @Override
   public Object getRenderingHint(RenderingHints.Key hintKey)
   {
     return renderingHints.get( hintKey );
   }
 
-  @Override
   public RenderingHints getRenderingHints()
   {
     return (RenderingHints) renderingHints.clone();
   }
 
-  @Override
   public void setRenderingHints(Map<?,?> hints)
   {
     renderingHints = new RenderingHints( null );
@@ -743,7 +679,6 @@ public abstract class QtGraphics extends Graphics2D
     updateRenderingHints();
   }
 
-  @Override
   public void setRenderingHint(RenderingHints.Key hintKey, Object hintValue)
   {
     renderingHints.put( hintKey, hintValue );
@@ -757,25 +692,21 @@ public abstract class QtGraphics extends Graphics2D
 
   ////////////////////////////// unimplemented /////////////////////
 
-  @Override
   public FontRenderContext getFontRenderContext()
   {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
-  @Override
-  public void drawRenderableImage(RenderableImage image, AffineTransform transform)
+  public void drawRenderableImage(RenderableImage image, AffineTransform xform)
   {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
-  @Override
-  public void drawRenderedImage(RenderedImage image, AffineTransform transform)
+  public void drawRenderedImage(RenderedImage image, AffineTransform xform)
   {
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
-  @Override
   public void drawImage(BufferedImage image, BufferedImageOp op, int x, int y)
   {
     throw new UnsupportedOperationException("Not implemented yet");

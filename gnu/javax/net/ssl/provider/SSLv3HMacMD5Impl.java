@@ -1,5 +1,5 @@
 /* SSLv3HMacMD5.java --
-   Copyright (C) 2006, 2015  Free Software Foundation, Inc.
+   Copyright (C) 2006  Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -37,8 +37,6 @@ exception statement from your version. */
 
 
 package gnu.javax.net.ssl.provider;
-
-import gnu.javax.crypto.mac.IMac;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -88,7 +86,7 @@ public class SSLv3HMacMD5Impl extends MacSpi
         || !key.getAlgorithm().equalsIgnoreCase("SSLv3HMac-MD5"))
       throw new InvalidKeyException("expecting secret key with algorithm \"SSLv3HMac-MD5\"");
     Map<String,byte[]> attr =
-      Collections.singletonMap(IMac.MAC_KEY_MATERIAL, key.getEncoded());
+      Collections.singletonMap(SSLHMac.MAC_KEY_MATERIAL, key.getEncoded());
     adaptee.init(attr);
   }
 

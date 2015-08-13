@@ -1,5 +1,5 @@
 /* SessionImpl.java -- concrete definition of SSLSession.
-   Copyright (C) 2006, 2014, 2015  Free Software Foundation, Inc.
+   Copyright (C) 2006, 2014  Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -95,25 +95,21 @@ public abstract class Session implements SSLSession, Serializable
     lastAccessedTime = System.currentTimeMillis ();
   }
 
-  @Override
   public int getApplicationBufferSize()
   {
     return applicationBufferSize;
   }
 
-  @Override
   public String getCipherSuite()
   {
     return null;
   }
 
-  @Override
   public long getCreationTime()
   {
     return creationTime;
   }
 
-  @Override
   public byte[] getId()
   {
     return sessionId.id();
@@ -124,21 +120,18 @@ public abstract class Session implements SSLSession, Serializable
     return sessionId;
   }
 
-  @Override
   public long getLastAccessedTime()
   {
     return lastAccessedTime;
   }
 
-  @Override
   public Certificate[] getLocalCertificates()
   {
     if (localCerts == null)
       return null;
-    return localCerts.clone();
+    return (Certificate[]) localCerts.clone();
   }
 
-  @Override
   public Principal getLocalPrincipal()
   {
     if (localCerts != null)
@@ -149,23 +142,20 @@ public abstract class Session implements SSLSession, Serializable
     return null;
   }
 
-  @Override
   public int getPacketBufferSize()
   {
     return applicationBufferSize + 2048;
   }
 
-  @Override
   public Certificate[] getPeerCertificates() throws SSLPeerUnverifiedException
   {
     if (!peerVerified)
       throw new SSLPeerUnverifiedException("peer not verified");
     if (peerCerts == null)
       return null;
-    return peerCerts.clone();
+    return (Certificate[]) peerCerts.clone();
   }
 
-  @Override
   public X509Certificate[] getPeerCertificateChain()
     throws SSLPeerUnverifiedException
   {
@@ -173,22 +163,19 @@ public abstract class Session implements SSLSession, Serializable
       throw new SSLPeerUnverifiedException("peer not verified");
     if (peerCertChain == null)
       return null;
-    return peerCertChain.clone();
+    return (X509Certificate[]) peerCertChain.clone();
   }
 
-  @Override
   public String getPeerHost()
   {
     return peerHost;
   }
 
-  @Override
   public int getPeerPort()
   {
     return peerPort;
   }
 
-  @Override
   public Principal getPeerPrincipal() throws SSLPeerUnverifiedException
   {
     if (!peerVerified)
@@ -198,38 +185,32 @@ public abstract class Session implements SSLSession, Serializable
     return peerCertChain[0].getSubjectDN();
   }
 
-  @Override
   public SSLSessionContext getSessionContext()
   {
     return context;
   }
 
-  @Override
   public String[] getValueNames()
   {
     Set<String> keys = this.values.keySet();
     return keys.toArray(new String[keys.size()]);
   }
 
-  @Override
   public Object getValue(String name)
   {
     return values.get(name);
   }
 
-  @Override
   public void invalidate()
   {
     valid = false;
   }
 
-  @Override
   public boolean isValid()
   {
     return valid;
   }
 
-  @Override
   public void putValue(String name, Object value)
   {
     values.put(name, value);
@@ -244,7 +225,6 @@ public abstract class Session implements SSLSession, Serializable
       }
   }
 
-  @Override
   public void removeValue(String name)
   {
     Object value = values.remove(name);
@@ -328,7 +308,7 @@ public abstract class Session implements SSLSession, Serializable
     {
       if (id.length > 32)
         throw new IllegalArgumentException ("session ID's are limited to 32 bytes");
-      this.id = id.clone();
+      this.id = (byte[]) id.clone();
     }
 
     // Instance methods.
@@ -336,7 +316,7 @@ public abstract class Session implements SSLSession, Serializable
 
     public byte[] id()
     {
-      return id.clone();
+      return (byte[]) id.clone();
     }
 
     @Override

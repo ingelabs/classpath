@@ -907,7 +907,6 @@ public class SimpleDateFormat extends DateFormat
         for (; fmt_index < fmt_max; ++fmt_index)
           {
             char ch = pattern.charAt(fmt_index);
-	    System.err.println("Handling pattern character " + ch);
             if (ch == '\'')
               {
                 if (fmt_index < fmt_max - 1
@@ -1100,7 +1099,6 @@ public class SimpleDateFormat extends DateFormat
                   }
                 break;
               default:
-		System.err.println("Hit default case from " + ch + "; returning null");
                 pos.setErrorIndex(pos.getIndex());
                 return null;
               }
@@ -1127,10 +1125,7 @@ public class SimpleDateFormat extends DateFormat
                 else
                   n = numberFormat.parse(dateStr, pos);
                 if (pos == null || ! (n instanceof Long))
-		  {
-		    System.err.println("Number format parsing error; n = " + n + "; returning null");
-		    return null;
-		  }
+                  return null;
                 value = n.intValue() + offset;
               }
             else if (set1 != null)
@@ -1165,7 +1160,6 @@ public class SimpleDateFormat extends DateFormat
                   }
                 if (!found)
                   {
-		    System.err.println("!found; returning null");
                     pos.setErrorIndex(index);
                     return null;
                   }
@@ -1218,12 +1212,9 @@ public class SimpleDateFormat extends DateFormat
     catch (IllegalArgumentException x)
       {
         pos.setErrorIndex(pos.getIndex());
-	System.err.println("Threw " + x + "; returning null.");
-	System.err.println("Index: " + pos.getIndex());
-	x.printStackTrace();
         return null;
       }
-  }
+      }
 
   /**
    * <p>
