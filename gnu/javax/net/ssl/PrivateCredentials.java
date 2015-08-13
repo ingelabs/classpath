@@ -1,5 +1,5 @@
 /* PrivateCredentials.java -- private key/certificate pairs.
-   Copyright (C) 2006, 2007, 2015  Free Software Foundation, Inc.
+   Copyright (C) 2006, 2007  Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -118,7 +118,7 @@ public class PrivateCredentials implements ManagerFactoryParameters
   {
     CertificateFactory cf = CertificateFactory.getInstance("X.509");
     Collection<? extends Certificate> certs = cf.generateCertificates(certChain);
-    X509Certificate[] chain = certs.toArray(new X509Certificate[certs.size()]);
+    X509Certificate[] chain = (X509Certificate[]) certs.toArray(new X509Certificate[0]);
 
     String alg = null;
     String line = readLine(privateKey);
@@ -234,9 +234,9 @@ public class PrivateCredentials implements ManagerFactoryParameters
   // Own methods.
   // -------------------------------------------------------------------------
 
-  private static String readLine(InputStream in) throws IOException
+  private String readLine(InputStream in) throws IOException
   {
-    boolean eolIsCR = System.getProperty("line.separator").equals("\r");
+    boolean eol_is_cr = System.getProperty("line.separator").equals("\r");
     CPStringBuilder str = new CPStringBuilder();
     while (true)
       {
@@ -245,11 +245,12 @@ public class PrivateCredentials implements ManagerFactoryParameters
           {
             if (str.length() > 0)
               break;
-	    return null;
+            else
+              return null;
           }
         else if (i == '\r')
           {
-            if (eolIsCR)
+            if (eol_is_cr)
               break;
           }
         else if (i == '\n')
@@ -268,7 +269,7 @@ public class PrivateCredentials implements ManagerFactoryParameters
     if (cipher.equals("DES-EDE3-CBC"))
       {
         mode = ModeFactory.getInstance("CBC", "TripleDES", 8);
-        HashMap<String,Object> attr = new HashMap<String,Object>();
+        HashMap attr = new HashMap();
         attr.put(IMode.KEY_MATERIAL, deriveKey(salt, 24));
         attr.put(IMode.IV, salt);
         attr.put(IMode.STATE, new Integer(IMode.DECRYPTION));
@@ -277,7 +278,7 @@ public class PrivateCredentials implements ManagerFactoryParameters
     else if (cipher.equals("DES-CBC"))
       {
         mode = ModeFactory.getInstance("CBC", "DES", 8);
-        HashMap<String,Object> attr = new HashMap<String,Object>();
+        HashMap attr = new HashMap();
         attr.put(IMode.KEY_MATERIAL, deriveKey(salt, 8));
         attr.put(IMode.IV, salt);
         attr.put(IMode.STATE, new Integer(IMode.DECRYPTION));
@@ -303,13 +304,13 @@ public class PrivateCredentials implements ManagerFactoryParameters
     return result;
   }
 
-  private static byte[] deriveKey(byte[] salt, int keylen)
+  private byte[] deriveKey(byte[] salt, int keylen)
     throws IOException
   {
     CallbackHandler passwordHandler = new ConsoleCallbackHandler();
     try
       {
-        Class<?> c = Class.forName(Security.getProperty("jessie.password.handler"));
+        Class c = Class.forName(Security.getProperty("jessie.password.handler"));
         passwordHandler = (CallbackHandler) c.newInstance();
       }
     catch (Exception x) { }
@@ -347,7 +348,7 @@ public class PrivateCredentials implements ManagerFactoryParameters
     return key;
   }
 
-  private static byte[] toByteArray(String hex)
+  private byte[] toByteArray(String hex)
   {
     hex = hex.toLowerCase();
     byte[] buf = new byte[hex.length() / 2];

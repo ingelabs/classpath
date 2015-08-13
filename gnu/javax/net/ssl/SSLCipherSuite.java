@@ -1,5 +1,5 @@
 /* SSLCipherSuite.java -- an SSL cipher suite.
-   Copyright (C) 2006, 2015  Free Software Foundation, Inc.
+   Copyright (C) 2006  Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -63,7 +63,7 @@ public abstract class SSLCipherSuite
     this.algorithm = algorithm;
     if (id.length != 2)
       throw new IllegalArgumentException ("cipher suite ID must be two bytes");
-    this.id = id.clone ();
+    this.id = (byte[]) id.clone ();
     this.version = version;
   }
 
@@ -111,7 +111,9 @@ public abstract class SSLCipherSuite
     catch (InvocationTargetException ite)
       {
         // XXX
-        throw new NoSuchAlgorithmException (name, ite);
+        NoSuchAlgorithmException nsae = new NoSuchAlgorithmException (name);
+        nsae.initCause (ite);
+        throw nsae;
       }
     return suite;
   }
@@ -123,7 +125,7 @@ public abstract class SSLCipherSuite
 
   public final byte[] getId ()
   {
-    return id.clone ();
+    return (byte[]) id.clone ();
   }
 
   public final Provider getProvider ()

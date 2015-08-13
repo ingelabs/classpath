@@ -1,5 +1,5 @@
 /* ClasspathFontPeer.java -- Font peer used by GNU Classpath.
-   Copyright (C) 2003, 2004, 2014 Free Software Foundation, Inc.
+   Copyright (C) 2003, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -129,8 +129,7 @@ public abstract class ClasspathFontPeer
       super(max, 0.75f, true);
       max_entries = max;
     }
-    @Override
-    protected boolean removeEldestEntry(Map.Entry<K,V> eldest)
+    protected boolean removeEldestEntry(Map.Entry eldest)
     {
       return size() > max_entries;
     }
@@ -192,7 +191,7 @@ public abstract class ClasspathFontPeer
     return name;
   }
 
-  public static void copyStyleToAttrs (int style, Map<TextAttribute,Object> attrs)
+  public static void copyStyleToAttrs (int style, Map attrs)
   {
     if ((style & Font.BOLD) == Font.BOLD)
       attrs.put (TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD);
@@ -205,18 +204,18 @@ public abstract class ClasspathFontPeer
       attrs.put (TextAttribute.POSTURE, TextAttribute.POSTURE_REGULAR);
   }
 
-  protected static void copyFamilyToAttrs (String fam, Map<TextAttribute,Object> attrs)
+  protected static void copyFamilyToAttrs (String fam, Map attrs)
   {
     if (fam != null)
       attrs.put (TextAttribute.FAMILY, fam);
   }
 
-  public static void copySizeToAttrs (float size, Map<TextAttribute,Object> attrs)
+  public static void copySizeToAttrs (float size, Map attrs)
   {
     attrs.put (TextAttribute.SIZE, new Float (size));
   }
 
-  protected static void copyTransformToAttrs (AffineTransform trans, Map<TextAttribute,Object> attrs)
+  protected static void copyTransformToAttrs (AffineTransform trans, Map attrs)
   {
     if (trans != null)
       {
@@ -256,12 +255,12 @@ public abstract class ClasspathFontPeer
   }
 
 
-  protected void setStandardAttributes (String name, Map<TextAttribute,Object> attribs)
+  protected void setStandardAttributes (String name, Map attribs)
   {
     String family = this.familyName;
     AffineTransform trans = this.transform;
-    float setSize = this.size;
-    int setStyle = this.style;
+    float size = this.size;
+    int style = this.style;
 
     if (attribs.containsKey (TextAttribute.FAMILY))
       family = (String) attribs.get (TextAttribute.FAMILY);
@@ -273,27 +272,27 @@ public abstract class ClasspathFontPeer
       {
         Float weight = (Float) attribs.get (TextAttribute.WEIGHT);
         if (weight.floatValue () >= TextAttribute.WEIGHT_BOLD.floatValue ())
-          setStyle += Font.BOLD;
+          style += Font.BOLD;
       }
 
     if (attribs.containsKey (TextAttribute.POSTURE))
       {
         Float posture = (Float) attribs.get (TextAttribute.POSTURE);
         if (posture.floatValue () >= TextAttribute.POSTURE_OBLIQUE.floatValue ())
-          setStyle += Font.ITALIC;
+          style += Font.ITALIC;
       }
 
     if (attribs.containsKey (TextAttribute.SIZE))
       {
         Float sz = (Float) attribs.get (TextAttribute.SIZE);
-        setSize = sz.floatValue ();
+        size = sz.floatValue ();
 
         // Pango doesn't accept 0 as a font size.
-        if (setSize < 1)
-          setSize = 1;
+        if (size < 1)
+          size = 1;
       }
     else
-      setSize = 12;
+      size = 12;
 
     if (attribs.containsKey (TextAttribute.TRANSFORM))
       {
@@ -302,10 +301,10 @@ public abstract class ClasspathFontPeer
         trans = ta.getTransform ();
       }
 
-    setStandardAttributes (name, family, setStyle, setSize, trans);
+    setStandardAttributes (name, family, style, size, trans);
   }
 
-  protected void getStandardAttributes (Map<TextAttribute,Object> attrs)
+  protected void getStandardAttributes (Map attrs)
   {
     copyFamilyToAttrs (this.familyName, attrs);
     copySizeToAttrs (this.size, attrs);
@@ -316,15 +315,15 @@ public abstract class ClasspathFontPeer
 
   /* Begin public API */
 
-  public ClasspathFontPeer (String name, Map<TextAttribute,Object> attrs)
+  public ClasspathFontPeer (String name, Map attrs)
   {
     setStandardAttributes (name, attrs);
   }
 
   public ClasspathFontPeer (String name, int style, int size)
   {
-    setStandardAttributes (name, (String)null, style, size,
-			   (AffineTransform)null);
+    setStandardAttributes (name, (String)null, style,
+                           (float)size, (AffineTransform)null);
   }
 
   /**
@@ -334,7 +333,7 @@ public abstract class ClasspathFontPeer
    * useful if you are sharing peers between Font objects. Otherwise it may
    * be ignored.
    */
-  @SuppressWarnings("unused")
+
   public String getName (Font font)
   {
     return logicalName;
@@ -347,7 +346,7 @@ public abstract class ClasspathFontPeer
    * useful if you are sharing peers between Font objects. Otherwise it may
    * be ignored.
    */
-  @SuppressWarnings("unused")
+
   public String getFamily (Font font)
   {
     return familyName;
@@ -360,7 +359,7 @@ public abstract class ClasspathFontPeer
    * useful if you are sharing peers between Font objects. Otherwise it may
    * be ignored.
    */
-  @SuppressWarnings("unused")
+
   public String getFamily (Font font, Locale lc)
   {
     return familyName;
@@ -373,7 +372,7 @@ public abstract class ClasspathFontPeer
    * useful if you are sharing peers between Font objects. Otherwise it may
    * be ignored.
    */
-  @SuppressWarnings("unused")
+
   public String getFontName (Font font)
   {
     return faceName;
@@ -386,7 +385,7 @@ public abstract class ClasspathFontPeer
    * useful if you are sharing peers between Font objects. Otherwise it may
    * be ignored.
    */
-  @SuppressWarnings("unused")
+
   public String getFontName (Font font, Locale lc)
   {
     return faceName;
@@ -399,7 +398,7 @@ public abstract class ClasspathFontPeer
    * useful if you are sharing peers between Font objects. Otherwise it may
    * be ignored.
    */
-  @SuppressWarnings("unused")
+
   public float getSize (Font font)
   {
     return size;
@@ -412,7 +411,7 @@ public abstract class ClasspathFontPeer
    * useful if you are sharing peers between Font objects. Otherwise it may
    * be ignored.
    */
-  @SuppressWarnings("unused")
+
   public boolean isPlain (Font font)
   {
     return style == Font.PLAIN;
@@ -425,7 +424,7 @@ public abstract class ClasspathFontPeer
    * useful if you are sharing peers between Font objects. Otherwise it may
    * be ignored.
    */
-  @SuppressWarnings("unused")
+
   public boolean isBold (Font font)
   {
     return ((style & Font.BOLD) == Font.BOLD);
@@ -438,7 +437,7 @@ public abstract class ClasspathFontPeer
    * useful if you are sharing peers between Font objects. Otherwise it may
    * be ignored.
    */
-  @SuppressWarnings("unused")
+
   public boolean isItalic (Font font)
   {
     return ((style & Font.ITALIC) == Font.ITALIC);
@@ -451,13 +450,13 @@ public abstract class ClasspathFontPeer
    * useful if you are sharing peers between Font objects. Otherwise it may
    * be ignored.
    */
-  @SuppressWarnings("unused")
-  public Font deriveFont (Font font, int newStyle, float newSize)
+
+  public Font deriveFont (Font font, int style, float size)
   {
-    Map<TextAttribute,Object> attrs = new HashMap<TextAttribute,Object>();
+    Map attrs = new HashMap ();
     getStandardAttributes (attrs);
-    copyStyleToAttrs (newStyle, attrs);
-    copySizeToAttrs (newSize, attrs);
+    copyStyleToAttrs (style, attrs);
+    copySizeToAttrs (size, attrs);
     return tk().getFont (logicalName, attrs);
   }
 
@@ -468,12 +467,12 @@ public abstract class ClasspathFontPeer
    * useful if you are sharing peers between Font objects. Otherwise it may
    * be ignored.
    */
-  @SuppressWarnings("unused")
-  public Font deriveFont (Font font, float newSize)
+
+  public Font deriveFont (Font font, float size)
   {
-    Map<TextAttribute,Object> attrs = new HashMap<TextAttribute,Object>();
+    Map attrs = new HashMap ();
     getStandardAttributes (attrs);
-    copySizeToAttrs (newSize, attrs);
+    copySizeToAttrs (size, attrs);
     return tk().getFont (logicalName, attrs);
   }
 
@@ -484,12 +483,12 @@ public abstract class ClasspathFontPeer
    * useful if you are sharing peers between Font objects. Otherwise it may
    * be ignored.
    */
-  @SuppressWarnings("unused")
-  public Font deriveFont (Font font, int newStyle)
+
+  public Font deriveFont (Font font, int style)
   {
-    Map<TextAttribute,Object> attrs = new HashMap<TextAttribute,Object>();
+    Map attrs = new HashMap ();
     getStandardAttributes (attrs);
-    copyStyleToAttrs (newStyle, attrs);
+    copyStyleToAttrs (style, attrs);
     return tk().getFont (logicalName, attrs);
   }
 
@@ -500,12 +499,12 @@ public abstract class ClasspathFontPeer
    * useful if you are sharing peers between Font objects. Otherwise it may
    * be ignored.
    */
-  @SuppressWarnings("unused")
-  public Font deriveFont (Font font, int newStyle, AffineTransform t)
+
+  public Font deriveFont (Font font, int style, AffineTransform t)
   {
-    Map<TextAttribute,Object> attrs = new HashMap<TextAttribute,Object>();
+    Map attrs = new HashMap ();
     getStandardAttributes (attrs);
-    copyStyleToAttrs (newStyle, attrs);
+    copyStyleToAttrs (style, attrs);
     copyTransformToAttrs (t, attrs);
     return tk().getFont (logicalName, attrs);
   }
@@ -517,10 +516,10 @@ public abstract class ClasspathFontPeer
    * useful if you are sharing peers between Font objects. Otherwise it may
    * be ignored.
    */
-  @SuppressWarnings("unused")
+
   public Font deriveFont (Font font, AffineTransform t)
   {
-    Map<TextAttribute,Object> attrs = new HashMap<TextAttribute,Object>();
+    Map attrs = new HashMap ();
     getStandardAttributes (attrs);
     copyTransformToAttrs (t, attrs);
     return tk().getFont (logicalName, attrs);
@@ -533,9 +532,8 @@ public abstract class ClasspathFontPeer
    * useful if you are sharing peers between Font objects. Otherwise it may
    * be ignored.
    */
-  @SuppressWarnings("unused")
-  public Font deriveFont (Font font,
-			  Map<? extends AttributedCharacterIterator.Attribute,?> attrs)
+
+  public Font deriveFont (Font font, Map attrs)
   {
     return tk().getFont (logicalName, attrs);
   }
@@ -547,10 +545,10 @@ public abstract class ClasspathFontPeer
    * useful if you are sharing peers between Font objects. Otherwise it may
    * be ignored.
    */
-  @SuppressWarnings("unused")
-  public Map<TextAttribute,?> getAttributes (Font font)
+
+  public Map getAttributes (Font font)
   {
-    HashMap<TextAttribute,Object> h = new HashMap<TextAttribute,Object>();
+    HashMap h = new HashMap ();
     getStandardAttributes (h);
     return h;
   }
@@ -562,8 +560,8 @@ public abstract class ClasspathFontPeer
    * useful if you are sharing peers between Font objects. Otherwise it may
    * be ignored.
    */
-  @SuppressWarnings("unused")
-  public static AttributedCharacterIterator.Attribute[] getAvailableAttributes(Font font)
+
+  public AttributedCharacterIterator.Attribute[] getAvailableAttributes(Font font)
   {
     AttributedCharacterIterator.Attribute a[] =
       new AttributedCharacterIterator.Attribute[5];
@@ -582,7 +580,7 @@ public abstract class ClasspathFontPeer
    * useful if you are sharing peers between Font objects. Otherwise it may
    * be ignored.
    */
-  @SuppressWarnings("unused")
+
   public AffineTransform getTransform (Font font)
   {
     if (transform == null)
@@ -597,7 +595,7 @@ public abstract class ClasspathFontPeer
    * useful if you are sharing peers between Font objects. Otherwise it may
    * be ignored.
    */
-  @SuppressWarnings("unused")
+
   public boolean isTransformed (Font font)
   {
     return ! transform.isIdentity ();
@@ -610,12 +608,13 @@ public abstract class ClasspathFontPeer
    * useful if you are sharing peers between Font objects. Otherwise it may
    * be ignored.
    */
-  @SuppressWarnings("unused")
+
   public float getItalicAngle (Font font)
   {
     if ((style & Font.ITALIC) == Font.ITALIC)
       return TextAttribute.POSTURE_OBLIQUE.floatValue ();
-    return TextAttribute.POSTURE_REGULAR.floatValue ();
+    else
+      return TextAttribute.POSTURE_REGULAR.floatValue ();
   }
 
 
@@ -626,7 +625,7 @@ public abstract class ClasspathFontPeer
    * useful if you are sharing peers between Font objects. Otherwise it may
    * be ignored.
    */
-  @SuppressWarnings("unused")
+
   public int getStyle (Font font)
   {
     return style;

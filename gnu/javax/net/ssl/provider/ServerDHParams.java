@@ -1,5 +1,5 @@
 /* ServerDHParams.java -- The server's Diffie-Hellman parameters.
-   Copyright (C) 2006, 2015  Free Software Foundation, Inc.
+   Copyright (C) 2006  Free Software Foundation, Inc.
 
 This file is a part of GNU Classpath.
 
@@ -104,13 +104,11 @@ public class ServerDHParams implements Builder, ServerKeyExchangeParams
     buffer.put(y_bytes, y_off, y_len);
   }
 
-  @Deprecated @Override
-  public KeyExchangeAlgorithm algorithm ()
+  @Deprecated public KeyExchangeAlgorithm algorithm ()
   {
     return null; // XXX can't support this.
   }
 
-  @Override
   public int length ()
   {
     int offset1 = buffer.getShort (0) & 0xFFFF;
@@ -119,7 +117,6 @@ public class ServerDHParams implements Builder, ServerKeyExchangeParams
             + offset1 + offset2 + 6);
   }
 
-  @Override
   public ByteBuffer buffer()
   {
     return (ByteBuffer) buffer.duplicate().position(0).limit(length());
@@ -224,13 +221,11 @@ public class ServerDHParams implements Builder, ServerKeyExchangeParams
     buffer.put (buf, offset, length);
   }
 
-  @Override
   public String toString ()
   {
     return toString (null);
   }
 
-  @Override
   public String toString (final String prefix)
   {
     StringWriter str = new StringWriter ();
