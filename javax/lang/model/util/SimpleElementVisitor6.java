@@ -61,7 +61,7 @@ import javax.lang.model.element.VariableElement;
  * in order to support later language versions, methods beginning with
  * the phrase {@code "visit"} should be avoided in subclasses.  This
  * class itself will be extended to direct these new methods to the
- * {@link #visitUnknown(Element,P) method and a new class will be
+ * {@link #visitUnknown(Element,P)} method and a new class will be
  * added to provide implementations for the new language version.
  * At this time, all or some of this class may be deprecated.</p>
  * 
@@ -122,6 +122,7 @@ public class SimpleElementVisitor6<R,P> extends AbstractElementVisitor6<R,P>
    * @param element the executable element to visit.
    * @param parameter the additional parameter, specific to the visitor.
    *        May be {@code null}.
+   * @return the result of {@code defaultAction(element, parameter)}.
    */
   @Override
   public R visitExecutable(ExecutableElement element, P parameter)
@@ -137,6 +138,7 @@ public class SimpleElementVisitor6<R,P> extends AbstractElementVisitor6<R,P>
    * @param element the package element to visit.
    * @param parameter the additional parameter, specific to the visitor.
    *        May be {@code null}.
+   * @return the result of {@code defaultAction(element, parameter)}.
    */
   @Override
   public R visitPackage(PackageElement element, P parameter)
@@ -151,6 +153,7 @@ public class SimpleElementVisitor6<R,P> extends AbstractElementVisitor6<R,P>
    * @param element the type element to visit.
    * @param parameter the additional parameter, specific to the visitor.
    *        May be {@code null}.
+   * @return the result of {@code defaultAction(element, parameter)}.
    */
   @Override
   public R visitType(TypeElement element, P parameter)
@@ -165,6 +168,7 @@ public class SimpleElementVisitor6<R,P> extends AbstractElementVisitor6<R,P>
    * @param element the type parameter element to visit.
    * @param parameter the additional parameter, specific to the visitor.
    *        May be {@code null}.
+   * @return the result of {@code defaultAction(element, parameter)}.
    */
   @Override
   public R visitTypeParameter(TypeParameterElement element, P parameter)
@@ -179,6 +183,7 @@ public class SimpleElementVisitor6<R,P> extends AbstractElementVisitor6<R,P>
    * @param element the variable element to visit.
    * @param parameter the additional parameter, specific to the visitor.
    *        May be {@code null}.
+   * @return the result of {@code defaultAction(element, parameter)}.
    */
   @Override
   public R visitVariable(VariableElement element, P parameter)
