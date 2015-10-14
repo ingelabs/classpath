@@ -37,8 +37,6 @@ exception statement from your version. */
 
 package javax.lang.model.type;
 
-import javax.lang.model.element.Element;
-
 /**
  * <p>Represents a wildcard type argument, which may take one
  * of three forms:</p>

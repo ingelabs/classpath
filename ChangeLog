@@ -1,3 +1,88 @@
+2015-09-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/lang/model/type/WildcardType.java:
+	Remove unneeded import.
+	* javax/lang/model/util/AbstractTypeVisitor6.java:
+	Implemented.
+	(AbstractTypeVisitor6()): Implemented.
+	(visit(TypeMirror)): Likewise.
+	(visit(TypeMirror,P)): Likewise.
+	(visitUnknown(TypeMirror, P)): Likewise.
+	(visitUnion(TypeMirror, P)): Likewise.
+	* javax/lang/model/util/ElementKindVisitor6.java:
+	Implemented.
+	(ElementKindVisitor6): Implemented.
+	(ElementKindVisitor6(R)): Likewise.
+	(visitExecutable(ExecutableElement,P)): Likewise.
+	(visitExecutableAsConstructor(ExecutableElement,P)): Likewise.
+	(visitExecutableAsInstanceInit(ExecutableElement,P)): Likewise.
+	(visitExecutableAsMethod(ExecutableElement,P)): Likewise.
+	(visitExecutableAsStaticInit(ExecutableElement,P)): Likewise.
+	(visitPackage(PackageElement,P)): Likewise.
+	(visitTypeAsAnnotationType(TypeElement,P)): Likewise.
+	(visitTypeAsClass(TypeElement,P)): Likewise.
+	(visitTypeAsEnum(TypeElement,P)): Likewise.
+	(visitTypeAsInterface(TypeElement,P)): Likewise.
+	(visitTypeParameter(TypeParameterElement,P)): Likewise.
+	(visitVariable(VariableElement,P)): Likewise.
+	(visitVariableAsEnumConstant(VariableElement,P)): Likewise.
+	(visitVariableAsExceptionParameter(VariableElement,P)): Likewise.
+	(visitVariableAsField(VariableElement,P)): Likewise.
+	(visitVariableAsLocalVariable(VariableElement,P)): Likewise.
+	(visitVariableAsParameter(VariableElement,P)): Likewise.
+	(visitVariableAsResourceVariable(VariableElement,P)): Likewise.
+	* javax/lang/model/util/SimpleAnnotationValueVisitor6.java:
+	(DEFAULT_VALUE): Added.
+	(SimpleAnnotationValueVisitor6()): Implemented.
+	(SimpleAnnotationValueVisitor6(R)): Likewise.
+	(defaultAction(Object,P)): Likewise.
+	(visitBoolean(boolean,P)): Likewise.
+	(visitByte(byte,P)): Likewise.
+	(visitChar(char,P)): Likewise.
+	(visitDouble(double,P)): Likewise.
+	(visitFloat(float,P)): Likewise.
+	(visitInt(int,P)): Likewise.
+	(visitLong(long,P)): Likewise.
+	(visitShort(short,P)): Likewise.
+	(visitString(String,P)): Likewise.
+	(visitType(TypeMirror,P)): Likewise.
+	(visitEnumConstant(VariableElement,P)): Likewise.
+	(visitAnnotation(AnnotationMirror,P)): Likewise.
+	(visitArray(List,P)): Likewise.
+	* javax/lang/model/util/SimpleElementVisitor6.java:
+	Fix missing brace in Javadoc. Add missing @return
+	documentation.
+	* javax/lang/model/util/SimpleTypeVisitor6.java:
+	(DEFAULT_VALUE): Added.
+	(SimpleTypeVisitor6()): Implemented.
+	(SimpleTypeVisitor6(R)): Likewise.
+	(defaultAction(TypeMirror,P)): Likewise.
+	(visitPrimitive(PrimitiveType,P)): Likewise.
+	(visitNull(NullType,P)): Likewise.
+	(visitArray(ArrayType,P)): Likewise.
+	(visitDeclared(DeclaredType,P)): Likewise.
+	(visitError(ErrorType,P)): Likewise.
+	(visitTypeVariable(TypeVariable,P)): Likewise.
+	(visitWildcard(WildcardType,P)): Likewise.
+	(visitExecutable(ExecutableType,P)): Likewise.
+	(visitNoType(NoType,P)): Likewise.
+	* javax/lang/model/util/TypeKindVisitor6.java:
+	(TypeKindVisitor6()): Implemented.
+	(TypeKindVisitor6(R)): Likewise.
+	(visitNoType(NoType,P)): Likewise.
+	(visitNoTypeAsNone(NoType,P)): Likewise.
+	(visitNoTypeAsPackage(NoType,P)): Likewise.
+	(visitNoTypeAsVoid(NoType,P)): Likewise.
+	(visitPrimitive(PrimitiveType,P)): Likewise.
+	(visitPrimitiveAsBoolean(PrimitiveType,P)): Likewise.
+	(visitPrimitiveAsByte(PrimitiveType,P)): Likewise.
+	(visitPrimitiveAsChar(PrimitiveType,P)): Likewise.
+	(visitPrimitiveAsDouble(PrimitiveType,P)): Likewise.
+	(visitPrimitiveAsFloat(PrimitiveType,P)): Likewise.
+	(visitPrimitiveAsint(PrimitiveType,P)): Likewise.
+	(visitPrimitiveAsLong(PrimitiveType,P)): Likewise.
+	(visitPrimitiveAsShort(PrimitiveType,P)): Likewise.
+
 2015-08-07  Uros Bizjak  <ubizjak@gmail.com>
 
 	* configure.ac:
