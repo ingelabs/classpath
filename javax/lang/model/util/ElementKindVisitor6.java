@@ -416,16 +416,16 @@ public class ElementKindVisitor6<R,P> extends SimpleElementVisitor6<R,P>
 
   /**
    * Visits a {@code RESOURCE_VARIABLE} variable element.  This implementation
-   * simply calls {@code defaultAction(element, parameter)}.
+   * calls {@code visitUnknown(element, parameter)}.
    *
-   * @param element the resource variable variable element to visit.
+   * @param element the resource variable element to visit.
    * @param parameter the additional parameter, specific to the visitor.
    *        May be {@code null}.
    * @return the result of {@code defaultAction(element, parameter)}.
    */
   public R visitVariableAsResourceVariable(VariableElement element, P parameter)
   {
-    return defaultAction(element, parameter);
+    return visitUnknown(element, parameter);
   }
 
 }

@@ -1,5 +1,5 @@
 /* ElementScanner6.java -- A scanning visitor of program elements for 1.6.
-   Copyright (C) 2013  Free Software Foundation, Inc.
+   Copyright (C) 2013, 2015  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -42,6 +42,7 @@ import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ElementVisitor;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.PackageElement;
@@ -62,7 +63,7 @@ import javax.lang.model.element.VariableElement;
  * in order to support later language versions, methods beginning with
  * the phrase {@code "visit"} should be avoided in subclasses.  This
  * class itself will be extended to direct these new methods to the
- * {@link #visitUnknown(Element,P) method and a new class will be
+ * {@link #visitUnknown(Element,P)} method and a new class will be
  * added to provide implementations for the new language version.
  * At this time, all or some of this class may be deprecated.</p>
  * 
@@ -156,6 +157,7 @@ public class ElementScanner6<R,P> extends AbstractElementVisitor6<R,P>
    * @param element the executable element to visit.
    * @param parameter the additional parameter, specific to the visitor.
    *        May be {@code null}.
+   * @return the result of scanning the element's parameters.
    */
   @Override
   public R visitExecutable(ExecutableElement element, P parameter)
@@ -171,6 +173,7 @@ public class ElementScanner6<R,P> extends AbstractElementVisitor6<R,P>
    * @param element the package element to visit.
    * @param parameter the additional parameter, specific to the visitor.
    *        May be {@code null}.
+   * @return the result of scanning the enclosed elements.
    */
   @Override
   public R visitPackage(PackageElement element, P parameter)
@@ -185,6 +188,7 @@ public class ElementScanner6<R,P> extends AbstractElementVisitor6<R,P>
    * @param element the type element to visit.
    * @param parameter the additional parameter, specific to the visitor.
    *        May be {@code null}.
+   * @return the result of scanning the enclosed elements.
    */
   @Override
   public R visitType(TypeElement element, P parameter)
@@ -199,6 +203,7 @@ public class ElementScanner6<R,P> extends AbstractElementVisitor6<R,P>
    * @param element the type parameter element to visit.
    * @param parameter the additional parameter, specific to the visitor.
    *        May be {@code null}.
+   * @return the result of scanning the enclosed elements.
    */
   @Override
   public R visitTypeParameter(TypeParameterElement element, P parameter)
@@ -208,15 +213,22 @@ public class ElementScanner6<R,P> extends AbstractElementVisitor6<R,P>
 
   /**
    * Visits a variable element.  This implementation scans the
-   * enclosed elements.
+   * enclosed elements, unless the element is a {@code RESOURCE_VARIABLE},
+   * in which case it calls {@code visitUnknown(element, parameter)} to
+   * retain 1.6 behaviour.
    *
    * @param element the variable element to visit.
    * @param parameter the additional parameter, specific to the visitor.
    *        May be {@code null}.
+   * @return the result of scanning the enclosed elements, or
+   *         the result of {@code visitUnknown(element, parameter)} if
+   *         the element is a {@code RESOURCE_VARIABLE}.
    */
   @Override
   public R visitVariable(VariableElement element, P parameter)
   {
+    if (element.getKind() == ElementKind.RESOURCE_VARIABLE)
+      return visitUnknown(element, parameter);
     return scan(element.getEnclosedElements(), parameter);
   }
 

@@ -1,5 +1,5 @@
-/* AbstractAnnotationValueVisitor6.java -- A visitor of annotation values for 1.6.
-   Copyright (C) 2014  Free Software Foundation, Inc.
+/* AbstractAnnotationValueVisitor7.java -- A visitor of annotation values for 1.7.
+   Copyright (C) 2015  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -41,16 +41,12 @@ import javax.annotation.processing.SupportedSourceVersion;
 
 import javax.lang.model.SourceVersion;
 
-import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.AnnotationValueVisitor;
-import javax.lang.model.element.UnknownAnnotationValueException;
-
 /**
  * <p>A skeletal implementation of {@link AnnotationValueVisitor} for the
- * 1.6 version of the Java programming language
- * ({@link SourceVersion#RELEASE_6}).  Implementors can extend this
+ * 1.7 version of the Java programming language
+ * ({@link SourceVersion#RELEASE_7}).  Implementors can extend this
  * class and need provide only implementations of the
- * {@code visitXYZ} methods appropriate to 1.6.</p>
+ * {@code visitXYZ} methods appropriate to 1.7.</p>
  * <p>As the interface this class implements may be extended in future,
  * in order to support later language versions, methods beginning with
  * the phrase {@code "visit"} should be avoided in subclasses.  This
@@ -65,64 +61,18 @@ import javax.lang.model.element.UnknownAnnotationValueException;
  *            methods.
  *
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
- * @since 1.6
+ * @since 1.7
  */
-@SupportedSourceVersion(SourceVersion.RELEASE_6)
-public abstract class AbstractAnnotationValueVisitor6<R,P> implements AnnotationValueVisitor<R,P>
+@SupportedSourceVersion(SourceVersion.RELEASE_7)
+public abstract class AbstractAnnotationValueVisitor7<R,P> extends AbstractAnnotationValueVisitor6<R,P>
 {
 
   /**
-   * Constructs a new {@code AbstractAnnotationValueVisitor6}.
+   * Constructs a new {@code AbstractAnnotationValueVisitor7}.
    */
-  protected AbstractAnnotationValueVisitor6() {}
-
-  /**
-   * Visits an annotation value by passing itself to the annotation
-   * value's {@code accept} method, with {@code null} for the additional
-   * parameter i.e. {@code{v.visit(annotationValue)} is equivalent to 
-   * {@code{element.accept(annotationValue, null)}.
-   *
-   * @param annotationValue the annotation value to visit.
-   * @return the return value specific to the annotation value.
-   */
-  @Override
-  public final R visit(AnnotationValue annotationValue)
+  protected AbstractAnnotationValueVisitor7()
   {
-    return annotationValue.accept(this, null);
-  }
-
-  /**
-   * Visits an annotation value by passing itself to the annotation
-   * value's {@code accept} method, with the specified value as the additional
-   * parameter i.e. {@code{v.visit(annotationValue, parameter)} is equivalent to 
-   * {@code{annotationValue.accept(v, parameter)}.
-   *
-   * @param annotationValue the annotation value to visit.
-   * @param parameter the value to use as the additional parameter.
-   * @return the return value specific to the annotation value.
-   */
-  @Override
-  public final R visit(AnnotationValue annotationValue, P parameter)
-  {
-    return annotationValue.accept(this, parameter);
-  }
-
-  /**
-   * Visits an unknown annotation value.  This method is called if
-   * this visitor is used in a version of the language later
-   * than 1.6, where new elements have been added.  This
-   * implementation always throws a {@link UnknownAnnotationValueException}
-   * but this is not required of subclasses.
-   *
-   * @param annotationValue the annotation value to visit.
-   * @param parameter the additional parameter, specific to the visitor.
-   * @return the return value specific to the visitor.
-   * @throws UnknownAnnotationValueException by default.
-   */
-  @Override
-  public R visitUnknown(AnnotationValue annotationValue, P parameter)
-  {
-    throw new UnknownAnnotationValueException(annotationValue, parameter);
+      super();
   }
 
 }

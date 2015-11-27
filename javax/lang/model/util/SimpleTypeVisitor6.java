@@ -85,7 +85,7 @@ public class SimpleTypeVisitor6<R,P> extends AbstractTypeVisitor6<R,P>
   protected final R DEFAULT_VALUE;
 
   /**
-   * Constructs a new {@link SimpleAnnotationValueVisitor6} with a {@code null}
+   * Constructs a new {@link SimpleTypeVisitor6} with a {@code null}
    * default value.
    */
   protected SimpleTypeVisitor6()

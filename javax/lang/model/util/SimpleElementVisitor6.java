@@ -1,5 +1,5 @@
 /* SimpleElementVisitor6.java -- A simple visitor implementation for 1.6.
-   Copyright (C) 2013  Free Software Foundation, Inc.
+   Copyright (C) 2013, 2015  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -42,6 +42,7 @@ import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ElementVisitor;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.PackageElement;
@@ -177,17 +178,23 @@ public class SimpleElementVisitor6<R,P> extends AbstractElementVisitor6<R,P>
   }
 
   /**
-   * Visits a variable element.  This implementation simply
-   * calls {@code defaultAction(element, parameter)}.
+   * Visits a variable element.  This implementation calls
+   * {@code defaultAction(element, parameter)}, unless the element is a
+   * {@code RESOURCE_VARIABLE}, in which case it calls
+   * {@code visitUnknown(element, parameter)} to retain 1.6 behaviour.
    *
    * @param element the variable element to visit.
    * @param parameter the additional parameter, specific to the visitor.
    *        May be {@code null}.
-   * @return the result of {@code defaultAction(element, parameter)}.
+   * @return the result of {@code defaultAction(element, parameter)},
+   *         or {@code visitUnknown(element, parameter)} if the element
+   *         is a {@code RESOURCE_VARIABLE}.
    */
   @Override
   public R visitVariable(VariableElement element, P parameter)
   {
+    if (element.getKind() == ElementKind.RESOURCE_VARIABLE)
+      return visitUnknown(element, parameter);
     return defaultAction(element, parameter);
   }
 

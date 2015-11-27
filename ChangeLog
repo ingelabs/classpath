@@ -1,3 +1,63 @@
+2015-11-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/lang/model/util/AbstractAnnotationValueVisitor6.java:
+	Fix missing brace in Javadoc.
+	* javax/lang/model/util/AbstractAnnotationValueVisitor7.java:
+	New abstract class.
+	(AbstractAnnotationValueVisitor7()): Implemented.
+	* javax/lang/model/util/AbstractElementVisitor7.java,
+	New abstract class.
+	(AbstractElementVisitor7()): Implemented.
+	* javax/lang/model/util/AbstractTypeVisitor6.java:
+	Fix missing brace in Javadoc.
+	* javax/lang/model/util/AbstractTypeVisitor7.java:
+	New abstract class.
+	(AbstractTypeVisitor7()): Implemented.
+	(visitUnion(UnionType,P)): Likewise.
+	* javax/lang/model/util/ElementKindVisitor6.java:
+	(visitVariableAsResourceVariable(VariableElement,P)):
+	Should call visitUnknown for version 6.
+	* javax/lang/model/util/ElementKindVisitor7.java:
+	New class.
+	(ElementKindVisitor7()): Implemented.
+	(ElementKindVisitor7(R)): Likewise.
+	(visitVariableAsResourceVariable(VariableElement,P)):
+	Implemented to return the result of defaultAction.
+	* javax/lang/model/util/ElementScanner6.java:
+	Fix missing brace in Javadoc. Add missing @return
+	documentation.
+	(visitVariable(VariableElement,P)): Should call visitUnknown
+	on 6 if the element is a resource variable element.
+	* javax/lang/model/util/ElementScanner7.java,
+	New class.
+	(ElementScanner7()): Implemented.
+	(ElementScanner7(R)): Likewise.
+	(visitVariable(VariableElement,P)): Implemented.
+	* javax/lang/model/util/SimpleAnnotationValueVisitor7.java:
+	New class.
+	(SimpleAnnotationValueVisitor7()): Implemented.
+	(SimpleAnnotationValueVisitor7(R)): Likewise.
+	* javax/lang/model/util/SimpleElementVisitor6.java:
+	(visitVariable(VariableElement,P)): Should call visitUnknown
+	on 6 if the element is a resource variable element.
+	* javax/lang/model/util/SimpleElementVisitor7.java:
+	New class.
+	(SimpleElementVisitor7()): Implemented.
+	(SimpleElementVisitor7(R)): Likewise.
+	(visitVariable(VariableElement,P)): Implemented.
+	* javax/lang/model/util/SimpleTypeVisitor6.java:
+	(SimpleTypeVisitor6): Fix copy-and-paste error in documentation.
+	* javax/lang/model/util/SimpleTypeVisitor7.java:
+	New class.
+	(SimpleTypeVisitor7()): Implemented.
+	(SimpleTypeVisitor7(R)): Likewise.
+	(visitUnion(UnionType,P)): Implemented.
+	* javax/lang/model/util/TypeKindVisitor7.java,
+	New class.
+	(TypeKindVisitor7()): Implemented.
+	(TypeKindVisitor7(R)): Likewise.
+	(visitUnion(UnionType,P)): Implemented.
+
 2015-09-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/lang/model/type/WildcardType.java:

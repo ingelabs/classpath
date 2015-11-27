@@ -1,4 +1,4 @@
-/* AbstractTypeVisitor6.java -- A visitor of types for 1.6.
+/* AbstractTypeVisitor7.java -- A visitor of types for 1.7.
    Copyright (C) 2015  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -39,17 +39,14 @@ package javax.lang.model.util;
 
 import javax.lang.model.SourceVersion;
 
-import javax.lang.model.type.TypeMirror;
-import javax.lang.model.type.TypeVisitor;
 import javax.lang.model.type.UnionType;
-import javax.lang.model.type.UnknownTypeException;
 
 /**
  * <p>A skeletal implementation of {@link TypeVisitor} for the
- * 1.6 version of the Java programming language
+ * 1.7 version of the Java programming language
  * ({@link SourceVersion#RELEASE_6}).  Implementors can extend this
  * class and need provide only implementations of the
- * {@code visitXYZ} methods appropriate to 1.6.</p>
+ * {@code visitXYZ} methods appropriate to 1.7.</p>
  * <p>As the interface this class implements may be extended in future,
  * in order to support later language versions, methods beginning with
  * the phrase {@code "visit"} should be avoided in subclasses.  This
@@ -65,69 +62,21 @@ import javax.lang.model.type.UnknownTypeException;
  *            parameter is required.
  *
  * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
- * @since 1.6
+ * @since 1.7
  */
-public abstract class AbstractTypeVisitor6<R,P> implements TypeVisitor<R,P>
+public abstract class AbstractTypeVisitor7<R,P> extends AbstractTypeVisitor6<R,P>
 {
 
   /**
-   * Constructs a new {@code AbstractTypeVisitor6}.
+   * Constructs a new {@code AbstractTypeVisitor7}.
    */
-  protected AbstractTypeVisitor6() {}
-
-  /**
-   * Visits a type mirror by passing itself to the type
-   * mirror's {@code accept} method, with {@code null} for the additional
-   * parameter i.e. {@code{v.visit(typeMirror)} is equivalent to 
-   * {@code{typeMirror.accept(v, null)}.
-   *
-   * @param typeMirror the type to visit.
-   * @return the return value specific to the visitor.
-   */
-  @Override
-  public final R visit(TypeMirror typeMirror)
+  protected AbstractTypeVisitor7()
   {
-    return typeMirror.accept(this, null);
+    super();
   }
 
   /**
-   * Visits a type mirror by passing itself to the type
-   * mirror's {@code accept} method, with the specified value as the additional
-   * parameter i.e. {@code{v.visit(typeMirror, parameter)} is equivalent to 
-   * {@code{typeMirror.accept(v, parameter)}.
-   *
-   * @param typeMirror the type to visit.
-   * @param parameter the value to use as the additional parameter.
-   * @return the return value specific to the visitor.
-   */
-  @Override
-  public final R visit(TypeMirror typeMirror, P parameter)
-  {
-    return typeMirror.accept(this, parameter);
-  }
-
-  /**
-   * Visits an unknown type mirror.  This method is called if
-   * this visitor is used in a version of the language later
-   * than 1.6, where new types have been added.  This
-   * implementation always throws a {@link UnknownTypeException}
-   * but this is not required of subclasses.
-   *
-   * @param typeMirror the type to visit.
-   * @param parameter the additional parameter, specific to the visitor.
-   * @return the return value specific to the visitor.
-   * @throws UnknownTypeException by default.
-   */
-  @Override
-  public R visitUnknown(TypeMirror typeMirror, P parameter)
-  {
-    throw new UnknownTypeException(typeMirror, parameter);
-  }
-
-  /**
-   * Provides a default implementation for the {@code visitUnion} method
-   * added in 1.7, so that existing subclasses continue to compile. It
-   * simply redirects to {@link #visitUnknown(TypeMirror,P)}.
+   * Visits a union type in a manner defined by a concrete subclass.
    *
    * @param type the union type to visit.
    * @param param the additional parameter, specific to the visitor.
@@ -136,9 +85,6 @@ public abstract class AbstractTypeVisitor6<R,P> implements TypeVisitor<R,P>
    * @since 1.7
    */
   @Override
-  public R visitUnion(UnionType type, P parameter)
-  {
-    return visitUnknown(type, parameter);
-  }
+  public abstract R visitUnion(UnionType type, P parameter);
 
 }
