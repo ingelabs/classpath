@@ -1,3 +1,217 @@
+2016-01-04  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	Cleanup warnings in gnu.xml.transform.* and
+	gnu.xml.util.*.
+	* gnu/xml/transform/AbstractNumberNode.java:
+	(format(String,int[])): Add type parameters to
+	lists and remove unnecessary casts.
+	* gnu/xml/transform/ApplyTemplatesNode.java:
+	Add type parameters to sortKeys and withParams.
+	(ApplyTemplatesNode(Expr,QName,List,List,boolean)):
+	Add type parameters to arguments.
+	(clone(Stylesheet)): Add type parameters to lists
+	and remove unnecessary casts.
+	(doApply(Stylesheet,QName,Node,int,int,Node,Node)):
+	Use a for-each loop rather than an Iterator. Remove
+	unnecessary cast.
+	(references(QName)): Likewise.
+	* gnu/xml/transform/CallTemplateNode.java:
+	Add type parameter to withParams.
+	(CallTemplateNote(QName,List)): Add type parameters
+	to List argument.
+	(clone(Stylesheet)): Add type parameters to lists
+	and remove unnecessary casts.
+	(doApply(Stylesheet,QName,Node,int,int,Node,Node)):
+	Use a for-each loop rather than an Iterator. Remove
+	unnecessary cast.
+	(references(QName)): Likewise.
+	* gnu/xml/transform/CopyNode.java:
+	(addAttributeSet(Stylesheet,QName,Node,int,int,
+	Node,Node,String)): Replace Iterator usage with
+	for-each loop.
+	* gnu/xml/transform/CopyOfNode.java:
+	(doApply(Stylesheet,QName,Node,int,int,Node,Node)):
+	Likewise. Add type parameter to ns.
+	* gnu/xml/transform/CurrentFunction.java:
+	(evaluate(List)): Suppress warnings from method
+	prescribed by javax.xml.xpath.XPathFunction.
+	(setArguments(List)): Add type parameter to argument.
+	* gnu/xml/transform/DocumentFunction.java:
+	Add type parameters to args and values.
+	(evaluate(List)): Suppress warnings from method
+	prescribed by javax.xml.xpath.XPathFunction.
+	(setArguments(List)): Add type parameter to argument.
+	(evaluate(Node,int,int)): Add type arguments and
+	remove unnecessary casts. Use a for-each loop rather
+	than an Iterator.
+	(document(String,String)): Add type parameters to
+	return type and set creation.
+	(clone(Object)): Add type parameter and remove
+	unnecessary cast.
+	(references(QName)): Likewise.
+	* gnu/xml/transform/ElementAvailableFunction.java:
+	Add type parameter to args, elements and in static
+	initializer.
+	(evaluate(List)): Suppress warnings from method
+	prescribed by javax.xml.xpath.XPathFunction.
+	(setArguments(List)): Add type parameter to argument.
+	(evaluate(Node,int,int)): Remove unnecessary cast.
+	(clone(Object)): Add type parameter and remove
+	unnecessary cast.
+	(references(QName)): Likewise.
+	* gnu/xml/transform/ElementNode.java:
+	Add type parameter to elementExcludeResultPrefixes.
+	(EleemntNode(TemplateNode,TemplateNode,String,Node)):
+	Add type parameters to collection creation.
+	(addAttributeSet(Stylesheet,QName,Node,int,int,
+	Node,Node,String)): Use a for-each loop rather than
+	an Iterator.
+	* gnu/xml/transform/FormatNumberFunction.java:
+	Add type parameter to args.
+	(evaluate(List)): Suppress warnings from method
+	prescribed by javax.xml.xpath.XPathFunction.
+	(setArguments(List)): Add type parameter to argument.
+	(evaluate(Node,int,int)): Add type arguments and
+	remove unnecessary casts. Use a for-each loop rather
+	than an Iterator.
+	(clone(Object)): Add type parameter and remove
+	unnecessary cast.
+	(references(QName)): Likewise.
+	* gnu/xml/transform/FunctionAvailableFunction.java:
+	Add type parameters to xsltFunctions, xpathFunctions
+	and args and in static initializer.
+	(evaluate(Node,int,int)): Remove unnecessary cast.
+	(clone(Object)): Add type parameter and remove
+	unnecessary cast.
+	(references(QName)): Likewise.
+	* gnu/xml/transform/GenerateIdFunction.java:
+	Add type parameter to args.
+	(evaluate(List)): Suppress warnings from method
+	prescribed by javax.xml.xpath.XPathFunction.
+	(setArguments(List)): Add type parameter to argument.
+	(evaluate(Node,int,int)): Add type arguments and
+	remove unnecessary casts.
+	(clone(Object)): Add type parameter and remove
+	unnecessary cast.
+	(references(QName)): Likewise.
+	* gnu/xml/transform/KeyFunction.java:
+	Add type parameter to args.
+	(evaluate(List)): Suppress warnings from method
+	(setArguments(List)): Add type parameter to argument.
+	(matches(Node)): Add type parameter.
+	(evaluate(Node,int,int)): Add type arguments and
+	remove unnecessary casts.  Use a for-each loop rather
+	than an Iterator.
+	(addKeyNodes(Node,Collection,String,Collection)):
+	Add type parameters.
+	(addKeyNodesIfMatch(Node,Collection,String,Collection)):
+	Likewise. Use a for-each loop rather than an Iterator.
+	(clone(Object)): Add type parameter and remove
+	unnecessary cast.
+	(references(QName)): Likewise.
+	* gnu/xml/transform/LiteralNode.java:
+	Add type parameter to elementExcludeResultPrefixes.
+	(LiteralNode(Node)): Add type parameters.
+	* gnu/xml/transform/NamespaceProxy.java:
+	(getPrefixes(String)): Add type parameter.
+	* gnu/xml/transform/NodeNumberNode.java:
+	(Stylesheet,Node,int,int): Add type parameters.
+	Remove redundant casts.
+	* gnu/xml/transform/SAXSerializer.java:
+	Add type parameters to namespaces.
+	(isDefined(String,String)): Add type parameters.
+	Use a for-each loop rather than an Iterator.
+	(define(String,String)): Likewise. Remove
+	redundant cast.
+	(undefine(String,String)): Add type parameters.
+	Use a for-each loop rather than an Iterator.
+	* gnu/xml/transform/StreamSerializer.java:
+	Add type parameters to HTML_BOOLEAN_ATTRIBUTES,
+	HTML_URIS, namespaces and cdataSectionElements.
+	Use type parameter in the static initialiser.
+	(StreamSerializer(int,String,String)): Add
+	type parameter.
+	(setCdataSectionElements(Collection)): Likewise.
+	(isDefined(String,String)): Add type parameters.
+	Use a for-each loop rather than an Iterator.
+	Remove redundant cast.
+	(pushNamespaceContext()): Add type parameters.
+	(define(String,String)): Likewise. Remove
+	redundant cast.
+	(isHTMLBoolean(Attr,String)): Likewise.
+	* gnu/xml/transform/SystemPropertyFunction.java:
+	Add type parameter to args.
+	(evaluate(List)): Suppress warnings from method
+	prescribed by javax.xml.xpath.XPathFunction.
+	(setArguments(List)): Add type parameter to argument.
+	(evaluate(Node,int,int)): Add type parameters and
+	remove unnecessary casts.
+	(clone(Object)): Likewise.
+	(references(QName)): Likewise.
+	* gnu/xml/transform/Template.java:
+	Implement Comparable<Template>.
+	(compareTo(Template)): Update type of argument
+	from Object to Template, and remove unnecessary
+	check/cast.
+	* gnu/xml/transform/TransformerFactoryImpl.java:
+	(getAssociatedStylesheet(Source,String,String,String)):
+	Add type parameters and remove unnecessary cast.
+	Use a for-each loop rather than an Iterator.
+	(parseParameters(String)): Add type parameters.
+	* gnu/xml/transform/TransformerImpl.java:
+	(transform(Source,Result)): Add type parameters.
+	(writeStreamResult(Node,StreamResult,int,String)): Likewise.
+	(reindent(Document,Node,int)): Likewise and remove
+	unnecessary casts.
+	(convertCdataSectionElements(Document,Node,List)): Likewise.
+	* gnu/xml/transform/TransformerOutputProperties.java:
+	(TransformerOutputProperties(Stylesheet)): Add type
+	parameters and remove redundant casts.
+	(apply()): Add type parameter.
+	* gnu/xml/transform/UnparsedEntityUriFunction.java:
+	(evaluate(List)): Suppress warnings from method
+	prescribed by javax.xml.xpath.XPathFunction.
+	* gnu/xml/transform/ValueOfNode.java:
+	(doApply(Stylesheet,QNae,Node,int,int,Node,Node)):
+	Avoid unchecked cast by retrieving objects and
+	then casting them to Node after instanceof test.
+	* gnu/xml/transform/XSLComparator.java:
+	Remove unneeded Iterator import.
+	* gnu/xml/util/DomParser.java:
+	(callEnd(Node)): Add type parameter.
+	* gnu/xml/util/Resolver.java:
+	Replace untyped Dictionary with typed Map.
+	(addDirectoryMapping(Map,String,File)): Likewise.
+	(Resolver(Map)): Likewise.
+	(resolveEntity(String,String)): Remove redundant cast.
+	* gnu/xml/util/SAXNullTransformerFactory.java:
+	Add type parameters to params.
+	* gnu/xml/util/XCat.java:
+	(normalizePublicId(boolean,String)): Remove unused
+	variable token.
+	(Catalog): Add type parameters to publicIds,
+	publicDelegations, systemIds,
+	systemRewrites, systemDelegations, uris,
+	uriRewrites, uriDelegations, doctypes and next.
+	(Catalog.mapURI(String,Hashtable,Hashtable,Hashtable)):
+	Add type parameters and remove redundant casts.
+	(Catalog.getExternalSubset(String)): Remove redundant cast.
+	(Catalog.checkDelegations(Hashtable,String,String,String)):
+	Add type parameters and remove redundant casts.
+	(Loader): Add type parameteres to externals & bases.
+	(Loader.absolutize(String)): Remove redundant cast.
+	(Loader.startDocument()): Add type parameter.
+	(Loader.externalEntityDecl(String,String,String)):
+	Likewise.
+	(Loader.startEntity(String)): Remove redundant cast.
+	(Loader.endEntity(String)): Likewise.
+	(Loader.startElement(String,String,String,Attributes)):
+	Remove redundant casts and add type parameters.
+	* gnu/xml/util/XMLWriter.java:
+	Add type parameter to space.
+	(startElement(String,String,String,Attributes):
+	Remove redundant cast.
+
 2015-11-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/lang/model/util/AbstractAnnotationValueVisitor6.java:
