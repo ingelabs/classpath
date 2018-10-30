@@ -1,0 +1,9 @@
+language: java
+script: ./autogen.sh && ./configure --disable-gjdoc && make
+addons:
+  apt:
+    packages:
+    - libgtk2.0-dev
+    - libgconf2-dev
+    - texinfo
+jdk: openjdk7
