@@ -62,7 +62,8 @@ EOF
 changequote([, ])dnl
 if test x$ac_cv_prog_uudecode_base64 != xyes; then
    	AC_REQUIRE([AC_PROG_JAVAC_WORKS])
-        if AC_TRY_COMMAND($JAVAC $JAVACFLAGS $JAVA_TEST) && test -s $CLASS_TEST; then
+   	CMD="$JAVAC $JAVACFLAGS -sourcepath '' $JAVA_TEST"
+        if AC_TRY_COMMAND($CMD) && test -s $CLASS_TEST; then
                 :
         else
           echo "configure: failed program was:" >&AC_FD_CC
