@@ -1006,27 +1006,37 @@ esac;
 AM_CONDITIONAL(USE_PREBUILT_GLIBJ_ZIP, test x$use_glibj_zip = xtrue)
 AC_SUBST(PATH_TO_GLIBJ_ZIP)
 
-if test "x${TOOLSDIR}" != x; then
-  if test "x${COMPILE_WRAPPERS}" = xno; then
-    AC_PROG_JAVA_WORKS
-  fi
-  if test "x${COMPILE_GJDOC}" = xyes; then
-    AC_LIB_ANTLR
-    if test "x${REGENERATE_GJDOC_PARSER}" = xyes; then
-	AC_PROG_ANTLR(2,7,1)
-    fi
-  fi
-fi
+dnl -----------------------------------------------------------
+dnl Checks for javac and other java tools
+dnl -----------------------------------------------------------
+dnl Note:
+dnl - AC_PROG_JAVAC must be called before AC_PROG_JAVA
+dnl - Make sure the AM_CONDITIONALS for GCJ_JAVAC and ECJ_JAVAC
+dnl   are always invoked, even if AC_PROG_JAVAC / IT_USING_ECJ
+dnl   didn't run
 
-# Check for javac if we need to build either the class library,
-# the examples or the tools
 if test "x${use_glibj_zip}" = xfalse || \
    test "x${EXAMPLESDIR}" != x || \
    test "x${TOOLSDIR}" != x && \
    test "x${build_class_files}" != xno; then 	
-	AC_PROG_JAVAC_WORKS
-  	CLASSPATH_JAVAC_MEM_CHECK
-	IT_USING_ECJ
+    AC_PROG_JAVAC
+    CLASSPATH_JAVAC_MEM_CHECK
+    IT_USING_ECJ
+
+  if test "x${TOOLSDIR}" != x; then
+    if test "x${COMPILE_WRAPPERS}" = xno; then
+      AC_PROG_JAVA
+    fi
+    if test "x${COMPILE_GJDOC}" = xyes; then
+      AC_LIB_ANTLR
+      if test "x${REGENERATE_GJDOC_PARSER}" = xyes; then
+        AC_PROG_ANTLR(2,7,1)
+      fi
+    fi
+  fi    
+else
+  AM_CONDITIONAL(GCJ_JAVAC, false)
+  AM_CONDITIONAL(ECJ_JAVAC, false)
 fi
 
 dnl -----------------------------------------------------------
