@@ -5,18 +5,18 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-
-      - name: Set up Java 8
-        run: |
-          export JAVA_HOME=$JAVA_HOME_8_X64
-          export PATH=$JAVA_HOME/bin:$PATH
-
       - name: Install dependencies
         run: |
           sudo apt-get -qq update
           sudo apt-get -qq install gettext libgtk2.0-dev libgconf2-dev
+
+      - name: Set up Java 8
+        run: |
+          echo "JAVA_HOME=$JAVA_HOME_8_X64" >> "$GITHUB_ENV"
+          echo "$JAVA_HOME_8_X64/bin" >> "$GITHUB_PATH"
+
+      - name: Check out Classpath
+        uses: actions/checkout@v4
 
       - name: Build GNU Classpath
         run: |
@@ -24,5 +24,30 @@ jobs:
           ./configure \
             --disable-plugin \
             --disable-examples \
+            --disable-tools \
             --disable-gjdoc
-          make
+          make && sudo make install
+
+      - name: Check out JamVM
+        uses: actions/checkout@v4
+        with:
+          repository: ingelabs/jamvm
+          path: jamvm
+
+      - name: Build JamVM
+        run: |
+          cd jamvm
+          ./autogen.sh
+          ./configure
+          make && sudo make install
+
+      - name: Check out Malva
+        uses: actions/checkout@v4
+        with:
+          repository: ingelabs/malva
+          path: malva
+
+      - name: Run tests
+        run: |
+          cd malva
+          JAVA=/usr/local/jamvm/bin/jamvm make check
