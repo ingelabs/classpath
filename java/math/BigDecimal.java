@@ -1331,6 +1331,8 @@ public class BigDecimal extends Number implements Comparable<BigDecimal>
    */
   public BigDecimal stripTrailingZeros()
   {
+    if (intVal.signum() == 0) return ZERO;
+
     String intValStr = intVal.toString();
     int newScale = scale;
     int pointer = intValStr.length() - 1;
