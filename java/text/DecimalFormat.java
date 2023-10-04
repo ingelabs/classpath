@@ -1371,6 +1371,7 @@ public class DecimalFormat extends NumberFormat
     else
       {
         this.positiveSuffix = buffer.toString();
+        this.negativeSuffix = positiveSuffix;
       }
 
     return i;
