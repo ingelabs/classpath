@@ -1106,7 +1106,8 @@ public class BigDecimal extends Number implements Comparable<BigDecimal>
         val.append(bigStr);
         // If there is more than one digit in the unscaled value we put a
         // decimal after the first digit.
-        if (bigStr.length() > 1)
+        int ndigits = bigStr.length() - (negative ? 1 : 0);
+        if (ndigits > 1)
           val.insert( ( negative ? 2 : 1 ), '.');
         // And then append 'E' and the exponent = (point - 1).
         val.append('E');
@@ -1204,12 +1205,13 @@ public class BigDecimal extends Number implements Comparable<BigDecimal>
 
         // Either we have to append zeros because, for example, 1.1E+5 should
         // be 110E+3, or we just have to put the decimal in the right place.
-        if (dot > val.length())
+        int ndigits = val.length() - (negative ? 1 : 0);
+        if (dot > ndigits)
           {
-            while (dot > val.length())
+            while (dot > ndigits++)
               val.append('0');
           }
-        else if (bigStr.length() > dot)
+        else if (ndigits > dot)
           val.insert(dot + (negative ? 1 : 0), '.');
 
         // And then append 'E' and the exponent (adjExp).
@@ -1270,7 +1272,8 @@ public class BigDecimal extends Number implements Comparable<BigDecimal>
       {
         // We must append zeros instead of using scientific notation.
         sb.append(bigStr);
-        for (int i = bigStr.length(); i < point; i++)
+        int ndigits = bigStr.length() - (negative ? 1 : 0);
+        for (int i = ndigits; i < point; i++)
           sb.append('0');
       }
     return sb.toString();
