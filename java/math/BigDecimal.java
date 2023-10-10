@@ -1063,59 +1063,7 @@ public class BigDecimal extends Number implements Comparable<BigDecimal>
    */
   public String toString()
   {
-    // bigStr is the String representation of the unscaled value.  If
-    // scale is zero we simply return this.
-    String bigStr = intVal.toString();
-    if (scale == 0)
-      return bigStr;
-
-    boolean negative = (bigStr.charAt(0) == '-');
-    int point = bigStr.length() - scale - (negative ? 1 : 0);
-
-    CPStringBuilder val = new CPStringBuilder();
-
-    if (scale >= 0 && (point - 1) >= -6)
-      {
-        // Convert to character form without scientific notation.
-        if (point <= 0)
-          {
-            // Zeros need to be prepended to the StringBuilder.
-            if (negative)
-              val.append('-');
-            // Prepend a '0' and a '.' and then as many more '0's as necessary.
-            val.append('0').append('.');
-            while (point < 0)
-              {
-                val.append('0');
-                point++;
-              }
-            // Append the unscaled value.
-            val.append(bigStr.substring(negative ? 1 : 0));
-          }
-        else
-          {
-            // No zeros need to be prepended so the String is simply the
-            // unscaled value with the decimal point inserted.
-            val.append(bigStr);
-            val.insert(point + (negative ? 1 : 0), '.');
-          }
-      }
-    else
-      {
-        // We must use scientific notation to represent this BigDecimal.
-        val.append(bigStr);
-        // If there is more than one digit in the unscaled value we put a
-        // decimal after the first digit.
-        int ndigits = bigStr.length() - (negative ? 1 : 0);
-        if (ndigits > 1)
-          val.insert( ( negative ? 2 : 1 ), '.');
-        // And then append 'E' and the exponent = (point - 1).
-        val.append('E');
-        if (point - 1 >= 0)
-          val.append('+');
-        val.append( point - 1 );
-      }
-    return val.toString();
+    return toSciString(false);
   }
 
   /**
@@ -1128,6 +1076,19 @@ public class BigDecimal extends Number implements Comparable<BigDecimal>
    * @since 1.5
    */
   public String toEngineeringString()
+  {
+    return toSciString(true);
+  }
+
+  /**
+   * Returns a String representation of this BigDecimal. If an exponent is
+   * needed, the eng parameter controls whether to use engineering notation
+   * (eng = true) or scientific notation (eng = false).
+   *
+   * @param eng whether to use engineering notation if an exponent is needed
+   * @return a String representation of this BigDecimal
+   */
+  private String toSciString(boolean eng)
   {
     // bigStr is the String representation of the unscaled value.  If
     // scale is zero we simply return this.
@@ -1171,50 +1132,63 @@ public class BigDecimal extends Number implements Comparable<BigDecimal>
     else
       {
         // We must use scientific notation to represent this BigDecimal.
-        // The exponent must be a multiple of 3 and the integer part
-        // must be between 1 and 999.
         val.append(bigStr);
-        int zeros = adjExp % 3;
-        int dot = 1;
-        if (adjExp > 0)
+
+        if (!eng)
           {
-            // If the exponent is positive we just move the decimal to the
-            // right and decrease the exponent until it is a multiple of 3.
-            dot += zeros;
-            adjExp -= zeros;
+            // If there is more than one digit in the unscaled value we put a
+            // decimal after the first digit.
+            int ndigits = bigStr.length() - (negative ? 1 : 0);
+            if (ndigits > 1)
+              val.insert((negative ? 2 : 1), '.');
           }
         else
           {
-            // If the exponent is negative then we move the dot to the right
-            // and decrease the exponent (increase its magnitude) until
-            // it is a multiple of 3.  Note that this is not adjExp -= zeros
-            // because the mod operator doesn't give us the distance to the
-            // correct multiple of 3.  (-5 mod 3) is -2 but the distance from
-            // -5 to the correct multiple of 3 (-6) is 1, not 2.
-            if (zeros == -2)
+            // The exponent must be a multiple of 3 and the integer part
+            // must be between 1 and 999.
+            int zeros = adjExp % 3;
+            int dot = 1;
+            if (adjExp > 0)
               {
-                dot += 1;
-                adjExp -= 1;
+                // If the exponent is positive we just move the decimal to the
+                // right and decrease the exponent until it is a multiple of 3.
+                dot += zeros;
+                adjExp -= zeros;
               }
-            else if (zeros == -1)
+            else
               {
-                dot += 2;
-                adjExp -= 2;
+                // If the exponent is negative then we move the dot to the right
+                // and decrease the exponent (increase its magnitude) until
+                // it is a multiple of 3.  Note that this is not adjExp -= zeros
+                // because the mod operator doesn't give us the distance to the
+                // correct multiple of 3.  (-5 mod 3) is -2 but the distance from
+                // -5 to the correct multiple of 3 (-6) is 1, not 2.
+                if (zeros == -2)
+                  {
+                    dot += 1;
+                    adjExp -= 1;
+                  }
+                else if (zeros == -1)
+                  {
+                    dot += 2;
+                    adjExp -= 2;
+                  }
               }
-          }
 
-        // Either we have to append zeros because, for example, 1.1E+5 should
-        // be 110E+3, or we just have to put the decimal in the right place.
-        int ndigits = val.length() - (negative ? 1 : 0);
-        if (dot > ndigits)
-          {
-            while (dot > ndigits++)
-              val.append('0');
+            // Either we have to append zeros because, for example, 1.1E+5 should
+            // be 110E+3, or we just have to put the decimal in the right place.
+            int ndigits = val.length() - (negative ? 1 : 0);
+            if (dot > ndigits)
+              {
+                while (dot > ndigits++)
+                  val.append('0');
+              }
+            else if (ndigits > dot)
+              val.insert(dot + (negative ? 1 : 0), '.');
           }
-        else if (ndigits > dot)
-          val.insert(dot + (negative ? 1 : 0), '.');
 
         // And then append 'E' and the exponent (adjExp).
+        // Skip if adjExp == 0 (only possible for the eng case)
         if (adjExp != 0)
           {
             val.append('E');
