@@ -1215,10 +1215,13 @@ public class BigDecimal extends Number implements Comparable<BigDecimal>
           val.insert(dot + (negative ? 1 : 0), '.');
 
         // And then append 'E' and the exponent (adjExp).
-        val.append('E');
-        if (adjExp >= 0)
-          val.append('+');
-        val.append(adjExp);
+        if (adjExp != 0)
+          {
+            val.append('E');
+            if (adjExp > 0)
+              val.append('+');
+            val.append(adjExp);
+          }
       }
     return val.toString();
   }
