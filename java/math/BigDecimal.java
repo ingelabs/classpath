@@ -1354,10 +1354,6 @@ public class BigDecimal extends Number implements Comparable<BigDecimal>
   public BigDecimal setScale (int scale, int roundingMode)
     throws ArithmeticException, IllegalArgumentException
   {
-    // NOTE: The 1.5 JRE doesn't throw this, ones prior to it do and
-    // the spec says it should. Nevertheless, if 1.6 doesn't fix this
-    // we should consider removing it.
-    if( scale < 0 ) throw new ArithmeticException("Scale parameter < 0.");
     return divide (ONE, scale, roundingMode);
   }
 
