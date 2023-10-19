@@ -396,7 +396,9 @@ Java_java_lang_VMProcess_nativeKill (JNIEnv * env, jclass clazz, jlong pid)
   int err;
   
   err = cpproc_kill((pid_t) pid, SIGKILL);
-  if (err != 0)
+
+  /* ESRCH (process does not exist) must be handled as success */
+  if (err != 0 && err != ESRCH)
     {
       snprintf (ebuf, sizeof (ebuf), "kill(%ld): %s",
 		(long) pid, cpnative_getErrorString (err));
