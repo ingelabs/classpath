@@ -250,17 +250,7 @@ final class VMProcess extends Process
     // Wait for processThread to spawn this process and update its state
     synchronized (this)
       {
-        while (state == INITIAL)
-          {
-            try
-              {
-                wait();
-              }
-            catch (InterruptedException e)
-              {
-                /* ignore */
-              }
-          }
+        waitForState(INITIAL, true);
       }
 
     // If spawning failed, rethrow the exception in this thread
@@ -360,7 +350,14 @@ final class VMProcess extends Process
 
     nativeKill(pid);
 
-    while (state != TERMINATED)
+    waitForState(TERMINATED, false);
+  }
+
+  private void waitForState(int state, boolean eq)
+  {
+    boolean interrupted = Thread.interrupted();
+
+    while ((this.state == state) == eq)
       {
         try
           {
@@ -368,9 +365,13 @@ final class VMProcess extends Process
           }
         catch (InterruptedException e)
           {
-            /* ignore */
+            interrupted = true;
           }
       }
+
+    // Ensure interrupted status is not lost
+    if (interrupted)
+      Thread.currentThread().interrupt();
   }
 
   /**
