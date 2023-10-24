@@ -165,8 +165,9 @@ final class VMProcess extends Process
           // If there is nothing left to do, exit this thread. Otherwise,
           // sleep a little while, and then check again for reapable children.
           // We will get woken up immediately if there are new processes to
-          // spawn, but not if there are new children to reap. So we only
-          // sleep a short time, in effect polling while processes are active.
+          // spawn, and also from waitFor() and destroy(), but not if there
+          // are new children to reap. So we only sleep a short time, in
+          // effect polling while processes are active.
           synchronized (workList)
             {
               if (!workList.isEmpty())
@@ -331,6 +332,11 @@ final class VMProcess extends Process
 
   public synchronized int waitFor() throws InterruptedException
   {
+    synchronized (workList)
+      {
+        workList.notify();
+      }
+
     while (state != TERMINATED)
       wait();
     return exitValue;
@@ -349,6 +355,11 @@ final class VMProcess extends Process
       return;
 
     nativeKill(pid);
+
+    synchronized (workList)
+      {
+        workList.notify();
+      }
 
     waitForStateUninterruptibly(TERMINATED, false);
   }
