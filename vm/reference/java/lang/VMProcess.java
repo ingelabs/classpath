@@ -250,7 +250,7 @@ final class VMProcess extends Process
     // Wait for processThread to spawn this process and update its state
     synchronized (this)
       {
-        waitForState(INITIAL, true);
+        waitForStateUninterruptibly(INITIAL, true);
       }
 
     // If spawning failed, rethrow the exception in this thread
@@ -350,10 +350,10 @@ final class VMProcess extends Process
 
     nativeKill(pid);
 
-    waitForState(TERMINATED, false);
+    waitForStateUninterruptibly(TERMINATED, false);
   }
 
-  private void waitForState(int state, boolean eq)
+  private void waitForStateUninterruptibly(int state, boolean eq)
   {
     boolean interrupted = Thread.interrupted();
 
