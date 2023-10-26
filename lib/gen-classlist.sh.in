@@ -125,8 +125,10 @@ done
 if test -n "$vm_omitlist"; then
    cat $vm_omitlist | sed "$sed_omit_hash" > tmp.awk
    cat $vm_omitlist | sed "$sed_omit_main_loop" >> tmp.awk
+   @AWK@ -f tmp.awk < vm.add >> ${top_builddir}/lib/classes.1
+else
+   cat vm.add >> ${top_builddir}/lib/classes.1
 fi
-@AWK@ -f tmp.awk < vm.add >>${top_builddir}/lib/classes.1
 
 rm -f vm.omit vm.add tmp.omit tmp.awk
 
