@@ -51,7 +51,7 @@ import java.io.Serializable;
  * interface.  Elements in the Map will be sorted by either a user-provided
  * Comparator object, or by the natural ordering of the keys.
  *
- * The algorithms are adopted from Corman, Leiserson, and Rivest's
+ * The algorithms are adopted from Cormen, Leiserson, and Rivest's
  * <i>Introduction to Algorithms.</i>  TreeMap guarantees O(log n)
  * insertion and deletion of elements.  That being said, there is a large
  * enough constant coefficient in front of that "log n" (overhead involved
