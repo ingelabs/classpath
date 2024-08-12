@@ -27,6 +27,14 @@
 #endif
 #endif
 
+#ifdef __aarch64__
+#ifdef __AARCH64EB__
+#define __IEEE_BIG_ENDIAN
+#elif defined(__AARCH64EL__)
+#define __IEEE_LITTLE_ENDIAN
+#endif
+#endif
+
 #ifdef __hppa__
 #define __IEEE_BIG_ENDIAN
 #endif
