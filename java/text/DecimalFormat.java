@@ -314,19 +314,29 @@ public class DecimalFormat extends NumberFormat
    */
   public final StringBuffer format(Object obj, StringBuffer sbuf, FieldPosition pos)
   {
+    return format(obj, sbuf, pos, false);
+  }
+
+  private StringBuffer format(Object obj, StringBuffer sbuf, FieldPosition pos,
+                              boolean addAttrs)
+  {
     if (obj instanceof BigInteger)
       {
         BigDecimal decimal = new BigDecimal((BigInteger) obj);
-        formatInternal(decimal, true, sbuf, pos);
+        formatInternal(decimal, true, sbuf, pos, addAttrs);
         return sbuf;
       }
     else if (obj instanceof BigDecimal)
       {
-        formatInternal((BigDecimal) obj, true, sbuf, pos);
+        formatInternal((BigDecimal) obj, false, sbuf, pos, addAttrs);
         return sbuf;
       }
+    else if (obj instanceof Number)
+      {
+        return format(((Number) obj).doubleValue(), sbuf, pos, addAttrs);
+      }
 
-    return super.format(obj, sbuf, pos);
+    throw new IllegalArgumentException("Cannot format given Object as a Number");
   }
 
   /**
@@ -341,6 +351,12 @@ public class DecimalFormat extends NumberFormat
    */
   public StringBuffer format(double number, StringBuffer dest,
                              FieldPosition fieldPos)
+  {
+    return format(number, dest, fieldPos, false);
+  }
+
+  private StringBuffer format(double number, StringBuffer dest,
+                              FieldPosition fieldPos, boolean addAttrs)
   {
     // special cases for double: NaN and negative or positive infinity
     if (Double.isNaN(number))
@@ -384,7 +400,7 @@ public class DecimalFormat extends NumberFormat
       {
         // get the number as a BigDecimal
         BigDecimal bigDecimal = new BigDecimal(String.valueOf(number));
-        formatInternal(bigDecimal, false, dest, fieldPos);
+        formatInternal(bigDecimal, false, dest, fieldPos, addAttrs);
       }
 
     return dest;
@@ -402,8 +418,14 @@ public class DecimalFormat extends NumberFormat
   public StringBuffer format(long number, StringBuffer dest,
                              FieldPosition fieldPos)
   {
+    return format(number, dest, fieldPos, false);
+  }
+
+  private StringBuffer format(long number, StringBuffer dest,
+                              FieldPosition fieldPos, boolean addAttrs)
+  {
     BigDecimal bigDecimal = new BigDecimal(String.valueOf(number));
-    formatInternal(bigDecimal, true, dest, fieldPos);
+    formatInternal(bigDecimal, true, dest, fieldPos, addAttrs);
     return dest;
   }
 
@@ -430,9 +452,7 @@ public class DecimalFormat extends NumberFormat
       IllegalArgumentException("Cannot format given Object as a Number");
 
     StringBuffer text = new StringBuffer();
-    attributes.clear();
-    super.format(value, text, new FieldPosition(0));
-
+    format(value, text, new FieldPosition(0), true);
     AttributedString as = new AttributedString(text.toString());
 
     // add NumberFormat field attributes to the AttributedString
@@ -444,6 +464,7 @@ public class DecimalFormat extends NumberFormat
         as.addAttribute(attribute, attribute, pos.getBeginIndex(),
                         pos.getEndIndex());
       }
+    attributes.clear();
 
     // return the CharacterIterator from AttributedString
     return as.getIterator();
@@ -1764,9 +1785,10 @@ public class DecimalFormat extends NumberFormat
    * @param isLong A boolean that indicates if this BigDecimal is a real
    * decimal or an integer.
    * @param fieldPos Use to keep track of the formatting position.
+   * @param addAttrs If true, attribute information will be recorded.
    */
   private void formatInternal(BigDecimal number, boolean isLong,
-                              StringBuffer dest, FieldPosition fieldPos)
+                              StringBuffer dest, FieldPosition fieldPos, boolean addAttrs)
   {
     // The specs says that fieldPos should not be null, and that we
     // should throw a NPE, but it seems that in few classes that
@@ -1798,7 +1820,8 @@ public class DecimalFormat extends NumberFormat
 
         _multiplier = negativePatternMultiplier;
 
-        addAttribute(Field.SIGN, attributeStart, dest.length());
+        if (addAttrs)
+          addAttribute(Field.SIGN, attributeStart, dest.length());
       }
     else
       {
@@ -1930,7 +1953,8 @@ public class DecimalFormat extends NumberFormat
       }
 
     // add the INTEGER attribute
-    addAttribute(Field.INTEGER, attributeStart, dest.length());
+    if (addAttrs)
+      addAttribute(Field.INTEGER, attributeStart, dest.length());
 
     // ...update field position, if needed, and return...
     if ((fieldPos.getField() == INTEGER_FIELD ||
@@ -1940,7 +1964,7 @@ public class DecimalFormat extends NumberFormat
         fieldPos.setEndIndex(endIndexInt);
       }
 
-    handleFractionalPart(dest, fractPart, fieldPos, isLong);
+    handleFractionalPart(dest, fractPart, fieldPos, isLong, addAttrs);
 
     // and the exponent
     if (this.useExponentialNotation)
@@ -1949,7 +1973,8 @@ public class DecimalFormat extends NumberFormat
 
         dest.append(symbols.getExponential());
 
-        addAttribute(Field.EXPONENT_SYMBOL, attributeStart, dest.length());
+        if (addAttrs)
+          addAttribute(Field.EXPONENT_SYMBOL, attributeStart, dest.length());
         attributeStart = dest.length();
 
         if (exponent < 0)
@@ -1957,7 +1982,8 @@ public class DecimalFormat extends NumberFormat
             dest.append(symbols.getMinusSign());
             exponent = -exponent;
 
-            addAttribute(Field.EXPONENT_SIGN, attributeStart, dest.length());
+            if (addAttrs)
+              addAttribute(Field.EXPONENT_SIGN, attributeStart, dest.length());
           }
 
         attributeStart = dest.length();
@@ -1971,7 +1997,8 @@ public class DecimalFormat extends NumberFormat
         for (int i = 0; i < exponentLength; ++i)
           dest.append(exponentString.charAt(i));
 
-        addAttribute(Field.EXPONENT, attributeStart, dest.length());
+        if (addAttrs)
+          addAttribute(Field.EXPONENT, attributeStart, dest.length());
       }
 
     // now include the suffixes...
@@ -1993,9 +2020,10 @@ public class DecimalFormat extends NumberFormat
    * @param fractPart
    * @param fieldPos
    * @param isLong
+   * @param addAttrs
    */
   private void handleFractionalPart(StringBuffer dest, String fractPart,
-                                    FieldPosition fieldPos, boolean isLong)
+                                    FieldPosition fieldPos, boolean isLong, boolean addAttrs)
   {
     int dotStart = 0;
     int dotEnd = 0;
@@ -2071,10 +2099,10 @@ public class DecimalFormat extends NumberFormat
           }
       }
 
-    if (addDecimal)
+    if (addAttrs && addDecimal)
       addAttribute(Field.DECIMAL_SEPARATOR, dotStart, dotEnd);
 
-    if (addFractional)
+    if (addAttrs && addFractional)
       addAttribute(Field.FRACTION, fractStart, fractEnd);
 
     if ((fieldPos.getField() == FRACTION_FIELD ||
