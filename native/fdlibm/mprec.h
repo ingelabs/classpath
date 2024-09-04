@@ -316,6 +316,8 @@ struct _Jv_reent
   int _max_k;
 };
 
+void _EXFUN(reclaim_reent, (struct _Jv_reent *ptr));
+
 
 typedef struct _Jv_Bigint _Jv_Bigint;
 
