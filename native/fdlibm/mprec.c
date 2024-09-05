@@ -110,7 +110,7 @@ mprec_calloc (void *ignore, size_t x1, size_t x2)
 }
 
 void
-reclaim_reent (struct _reent *ptr)
+_reclaim_reent (struct _reent *ptr)
 {
   if (_REENT_MP_FREELIST(ptr))
     {

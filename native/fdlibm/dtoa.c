@@ -904,5 +904,5 @@ _DEFUN (_dtoa,
   p = _dtoa_r (&reent, _d, mode, ndigits, decpt, sign, rve, float_type);
   strcpy (buf, p);
 
-  reclaim_reent (&reent);
+  _reclaim_reent (&reent);
 }
