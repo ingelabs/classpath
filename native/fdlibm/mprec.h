@@ -343,6 +343,7 @@ typedef struct _Jv_Bigint _Jv_Bigint;
 #define _dtoa _Jv_dtoa
 #define _dtoa_r _Jv_dtoa_r
 #define _strtod_r _Jv_strtod_r
+#define _reclaim_reent _Jv_reclaim_reent
 
 extern double _EXFUN(_strtod_r, (struct _Jv_reent *ptr, const char *s00, char **se));
 extern char* _EXFUN(_dtoa_r, (struct _Jv_reent *ptr, double d,
@@ -350,6 +351,7 @@ extern char* _EXFUN(_dtoa_r, (struct _Jv_reent *ptr, double d,
 			      char **rve, int float_type));
 void _EXFUN(_dtoa, (double d, int mode, int ndigits, int *decpt, int *sign,
 		    char **rve, char *buf, int float_type));
+void _EXFUN(_reclaim_reent, (struct _Jv_reent *ptr));
 
 double 		_EXFUN(ulp,(double x));
 double		_EXFUN(b2d,(_Jv_Bigint *a , int *e));

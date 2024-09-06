@@ -224,6 +224,8 @@ parseDoubleFromChars(JNIEnv * env, const char * buf)
 
       val = _strtod_r (&reent, p, &endptr);
 
+      _reclaim_reent (&reent);
+
 #ifdef DEBUG
       fprintf (stderr, "java.lang.VMDouble.parseDouble val = %g\n", val);
       fprintf (stderr, "java.lang.VMDouble.parseDouble %p != %p ???\n",

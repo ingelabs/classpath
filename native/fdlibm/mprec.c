@@ -95,6 +95,7 @@
 
 #define _REENT_CHECK_MP(x)
 #define _REENT_MP_FREELIST(x) ((x)->_freelist)
+#define _REENT_MP_RESULT(x) ((x)->_result)
 #define _REENT_MP_P5S(x) ((x)->_p5s)
 
 typedef unsigned long __ULong;
@@ -106,6 +107,42 @@ mprec_calloc (void *ignore, size_t x1, size_t x2)
   char *result = (char *) malloc (x1 * x2);
   memset (result, 0, x1 * x2);
   return result;
+}
+
+void
+_reclaim_reent (struct _reent *ptr)
+{
+  if (_REENT_MP_FREELIST(ptr))
+    {
+      int i;
+      for (i = 0; i < ptr->_max_k; i++)
+        {
+          struct _Bigint *thisone, *nextone;
+
+          nextone = _REENT_MP_FREELIST(ptr)[i];
+          while (nextone)
+            {
+              thisone = nextone;
+              nextone = nextone->_next;
+              free (thisone);
+            }
+        }
+
+      free (_REENT_MP_FREELIST(ptr));
+    }
+  if (_REENT_MP_RESULT(ptr))
+    free (_REENT_MP_RESULT(ptr));
+  if (_REENT_MP_P5S(ptr))
+    {
+      struct _Bigint *thisone, *nextone;
+      nextone = _REENT_MP_P5S(ptr);
+      while (nextone)
+       {
+         thisone = nextone;
+         nextone = nextone->_next;
+         free (thisone);
+       }
+    }
 }
 
 _Bigint *

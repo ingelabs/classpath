@@ -898,23 +898,11 @@ _DEFUN (_dtoa,
 {
   struct _Jv_reent reent;
   char *p;
-  int i;
 
   memset (&reent, 0, sizeof reent);
 
   p = _dtoa_r (&reent, _d, mode, ndigits, decpt, sign, rve, float_type);
   strcpy (buf, p);
 
-  for (i = 0; i < reent._result_k; ++i)
-    {
-      struct _Jv_Bigint *l = reent._freelist[i];
-      while (l)
-	{
-	  struct _Jv_Bigint *next = l->_next;
-	  free (l);
-	  l = next;
-	}
-    }
-  if (reent._freelist)
-    free (reent._freelist);
+  _reclaim_reent (&reent);
 }
