@@ -1,14 +1,16 @@
 name: Build
-on: pull_request
+on:
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Install dependencies
         run: |
           sudo apt-get -qq update
-          sudo apt-get -qq install gettext libgtk2.0-dev libgconf2-dev
+          sudo apt-get -qq install gettext libgtk2.0-dev
 
       - name: Set up Java 8
         run: |
@@ -22,6 +24,8 @@ jobs:
         run: |
           ./autogen.sh
           ./configure \
+            --disable-gconf-peer \
+            --enable-default-preferences-peer=file \
             --disable-plugin \
             --disable-examples \
             --disable-tools \
@@ -37,7 +41,7 @@ jobs:
       - name: Build JamVM
         run: |
           cd jamvm
-          ./autogen.sh
+          NOCONFIGURE=1 ./autogen.sh
           ./configure
           make && sudo make install
 
