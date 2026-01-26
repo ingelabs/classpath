@@ -7,7 +7,10 @@ libclasspathnative_la_SOURCES = cpnet.c \
 				cpproc.h \
 				cpproc.c
 
+# GRG: binrunner helper program
+pkglib_PROGRAMS = binrunner
+
 AM_LDFLAGS = @CLASSPATH_CONVENIENCE@
 AM_CPPFLAGS = @CLASSPATH_INCLUDES@
 AM_CFLAGS = @WARNING_CFLAGS@ @STRICT_WARNING_CFLAGS@ @ERROR_CFLAGS@ \
-            @EXTRA_CFLAGS@
+            @EXTRA_CFLAGS@ -DVFORK_HELPER=\"$(pkglibdir)/binrunner\" -pthread

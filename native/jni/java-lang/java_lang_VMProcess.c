@@ -53,6 +53,8 @@ exception statement from your version. */
 #include "cpnative.h"
 #include "cpproc.h"
 
+static int useVfork = 0;
+
 /* Internal functions */
 static char *copy_string (JNIEnv * env, jobject string);
 static char *copy_elem (JNIEnv * env, jobject stringArray, jint i);
@@ -114,6 +116,16 @@ copy_elem (JNIEnv * env, jobject stringArray, jint i)
     return NULL;
   (*env)->DeleteLocalRef (env, elem);
   return rtn;
+}
+
+/*
+ * private static native void nativeUseVfork(boolean)
+ */
+JNIEXPORT void JNICALL
+Java_java_lang_VMProcess_nativeUseVfork (JNIEnv * env, jclass clazz,
+					 jboolean b)
+{
+  useVfork = b;
 }
 
 /*
@@ -206,7 +218,10 @@ Java_java_lang_VMProcess_nativeSpawn (JNIEnv * env, jobject this,
     }
 
   /* Create inter-process pipes */
-  err = cpproc_forkAndExec(strings, newEnviron, fds, pipe_count, &pid, dir);
+  err = useVfork ?
+  	  cpproc_vforkAndExec(strings, newEnviron, fds, pipe_count, &pid, dir) :
+  	  cpproc_forkAndExec(strings, newEnviron, fds, pipe_count, &pid, dir);
+
   if (err != 0)
     {
       strncpy(errbuf, cpnative_getErrorString (err), sizeof(errbuf));

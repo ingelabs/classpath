@@ -46,6 +46,8 @@ exception statement from your version. */
 
 JNIEXPORT int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
 				  int *fds, int pipe_count, pid_t *pid, const char *wd);
+JNIEXPORT int cpproc_vforkAndExec (char * const *commandLine, char * const * newEnviron,
+				   int *fds, int pipe_count, pid_t *pid, const char *wd);
 JNIEXPORT int cpproc_waitpid (pid_t pid, int *status, pid_t *outpid, int options);
 JNIEXPORT int cpproc_kill (pid_t pid, int signal);
 

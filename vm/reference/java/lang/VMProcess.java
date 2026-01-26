@@ -253,6 +253,9 @@ final class VMProcess extends Process
         workList.add(this);
         if (processThread == null)
           {
+            String prop = System.getProperty("gnu.lang.process.vfork");
+            nativeUseVfork(prop != null && !"false".equals(prop));
+
             processThread = new ProcessThread();
             processThread.setDaemon(true);
             processThread.start();
@@ -416,6 +419,12 @@ final class VMProcess extends Process
     if (interrupted)
       Thread.currentThread().interrupt();
   }
+
+  /**
+   * Controls whether vfork() should be used instead of fork() to
+   * create processes.
+   */
+  private static native void nativeUseVfork(boolean b);
 
   /**
    * Does the fork()/exec() thing to create the O/S process.
