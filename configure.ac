@@ -427,6 +427,7 @@ if test "x${COMPILE_JNI}" = xyes; then
 		    sys/select.h \
 		    crt_externs.h \
                     fcntl.h \
+		    pthread.h \
 		    sys/mman.h \
 		    magic.h \
                     sys/event.h sys/epoll.h \
@@ -441,10 +442,12 @@ if test "x${COMPILE_JNI}" = xyes; then
 
   AC_SEARCH_LIBS([clock_gettime], [rt])
   AC_SEARCH_LIBS([inet_pton],[nsl])
+  AC_SEARCH_LIBS([pthread_sigmask], [pthread])
+  AC_SEARCH_LIBS([pthread_setcancelstate], [pthread])
   AC_CHECK_LIB([socket], [gethostname]) 
 
   AC_CHECK_FUNCS([ftruncate fsync select \
-		  gethostname socket strerror fork pipe execve open close \
+		  gethostname socket strerror fork vfork pipe execve open close \
 		  lseek fstat read readv write writev htonl memset htons connect \
 		  getsockname getpeername bind listen accept \
 		  recvfrom send sendto setsockopt getsockopt time mktime clock_gettime \
@@ -456,7 +459,8 @@ if test "x${COMPILE_JNI}" = xyes; then
 		  lstat readlink \
  		  inet_aton inet_addr inet_pton \
 		  getifaddrs kqueue kevent epoll_create \
-                  getloadavg])
+                  getloadavg \
+		  pthread_setcancelstate pthread_sigmask])
 
   LIBMAGIC=
   AC_CHECK_LIB(magic, magic_open, LIBMAGIC=-lmagic)
