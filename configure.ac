@@ -808,6 +808,11 @@ AC_SUBST(CLASSPATH_INCLUDES)
 
 dnl -----------------------------------------------------------
 if test "x${COMPILE_JNI}" = xyes; then
+  dnl Normalize Darwin OS name (strip version number)
+  case "$target_os" in
+    darwin*) target_os=darwin ;;
+  esac
+
   AC_MSG_CHECKING(jni_md.h support)
   if test -f ${srcdir}/include/jni_md-${target_cpu}-${target_os}.h; then
     AC_MSG_RESULT(yes)
