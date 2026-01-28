@@ -73,6 +73,12 @@ final class VMProcess extends Process
   private static final int RUNNING = 1;
   private static final int TERMINATED = 2;
 
+  // Whether to use vfork() instead of fork() for process spawning.
+  // vfork() avoids copying the address space, which is beneficial on
+  // embedded/low-RAM systems. Enabled by defining the gnu.classpath.process.vfork
+  // system property (e.g., -Dgnu.classpath.process.vfork).
+  static final boolean useVfork = System.getProperty("gnu.classpath.process.vfork") != null;
+
   // Dedicated thread that does all the fork()'ing and wait()'ing.
   static Thread processThread;
 
@@ -217,7 +223,7 @@ final class VMProcess extends Process
           try
             {
               process.nativeSpawn(process.cmd, process.env, process.dir,
-                                  process.redirect);
+                                  process.redirect, useVfork);
               process.state = RUNNING;
               activeMap.put(new Long(process.pid), process);
             }
@@ -425,7 +431,7 @@ final class VMProcess extends Process
    * @throws IOException if the O/S process could not be created.
    */
   native void nativeSpawn(String[] cmd, String[] env, File dir,
-                          boolean redirect)
+                          boolean redirect, boolean useVfork)
     throws IOException;
 
   /**

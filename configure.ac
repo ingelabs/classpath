@@ -451,12 +451,13 @@ if test "x${COMPILE_JNI}" = xyes; then
 		  gethostbyname_r localtime_r \
 		  strerror_r \
                   fcntl \
-		  statvfs \  
+		  statvfs \
 		  mmap munmap mincore msync madvise getpagesize sysconf \
 		  lstat readlink \
  		  inet_aton inet_addr inet_pton \
 		  getifaddrs kqueue kevent epoll_create \
-                  getloadavg])
+                  getloadavg \
+		  vfork])
 
   LIBMAGIC=
   AC_CHECK_LIB(magic, magic_open, LIBMAGIC=-lmagic)
