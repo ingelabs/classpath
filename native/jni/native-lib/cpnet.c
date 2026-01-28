@@ -661,7 +661,7 @@ jint cpnet_getHostByName (JNIEnv *env, const char *hostname, cpnet_address ***ad
 
       result = gethostbyname (hostname);
       if (result == NULL)
-        return -errno;
+        return -h_errno;
       memcpy (&hret, result, sizeof (struct hostent));
 #endif
       if (ret != 0 || result == NULL)
