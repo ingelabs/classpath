@@ -8,10 +8,11 @@ libclasspathnative_la_SOURCES = cpnet.c \
 				cpproc.c
 
 # Helper binary for vfork-based process spawning
-libexec_PROGRAMS = cpprochelper
-cpprochelper_SOURCES = cpprochelper.c
+cphelperdir = $(pkglibdir)
+cphelper_PROGRAMS = binrunner
+binrunner_SOURCES = binrunner.c
 
 AM_LDFLAGS = @CLASSPATH_CONVENIENCE@
-AM_CPPFLAGS = @CLASSPATH_INCLUDES@ -DCPPROCHELPER_PATH='"$(libexecdir)/cpprochelper"'
+AM_CPPFLAGS = @CLASSPATH_INCLUDES@ -DBINRUNNER_PATH='"$(pkglibdir)/binrunner"'
 AM_CFLAGS = @WARNING_CFLAGS@ @STRICT_WARNING_CFLAGS@ @ERROR_CFLAGS@ \
             @EXTRA_CFLAGS@

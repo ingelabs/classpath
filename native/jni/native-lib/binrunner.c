@@ -66,6 +66,7 @@ exception statement from your version. */
 
 #include <errno.h>
 #include <fcntl.h>
+#include <signal.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -139,7 +140,11 @@ static void mark_all_cloexec(void)
       if (getrlimit(RLIMIT_NOFILE, &rl) == 0 && rl.rlim_cur != RLIM_INFINITY)
         max_fd = (int)rl.rlim_cur;
       else
-        max_fd = 1024;  /* Reasonable default */
+        {
+          max_fd = (int)sysconf(_SC_OPEN_MAX);
+          if (max_fd < 0)
+            max_fd = 1024;
+        }
 
       for (fd = 3; fd < max_fd; fd++)
         fcntl(fd, F_SETFD, FD_CLOEXEC);
@@ -213,6 +218,16 @@ int main(int argc, char *argv[])
       if (chdir(cwd) < 0)
         report_error_and_exit(status_fd, errno);
     }
+
+  /* Reset signal mask. The parent blocked all signals before vfork, and
+   * the signal mask is inherited across exec. We must reset it so the
+   * target process starts with a clean signal mask.
+   */
+  {
+    sigset_t empty_mask;
+    sigemptyset(&empty_mask);
+    sigprocmask(SIG_SETMASK, &empty_mask, NULL);
+  }
 
   /* Execute target using PATH search. The helper inherits the correct
    * environment from the parent's execve(), so execvp will search PATH

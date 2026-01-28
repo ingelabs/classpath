@@ -50,11 +50,6 @@ exception statement from your version. */
 #include <string.h>
 #include <pthread.h>
 
-/* Helper binary path - defined in Makefile.am */
-#ifndef CPPROCHELPER_PATH
-#define CPPROCHELPER_PATH "/usr/libexec/cpprochelper"
-#endif
-
 /* Number of fixed arguments for the helper before command args */
 #define HELPER_FIXED_ARGS 6
 
@@ -204,7 +199,7 @@ static int vfork_and_exec(char * const *commandLine, char * const *newEnviron,
   snprintf(stderr_fd_str, INT_STR_SIZE, "%d", stderr_child_fd);
 
   /* Build helper argument vector */
-  helper_argv[0] = (char *)CPPROCHELPER_PATH;
+  helper_argv[0] = (char *)BINRUNNER_PATH;
   helper_argv[1] = status_fd_str;
   helper_argv[2] = stdin_fd_str;
   helper_argv[3] = stdout_fd_str;
@@ -238,9 +233,9 @@ static int vfork_and_exec(char * const *commandLine, char * const *newEnviron,
     {
       /* Child: immediately exec helper, passing environment via execve */
       if (newEnviron != NULL)
-        execve(CPPROCHELPER_PATH, helper_argv, newEnviron);
+        execve(BINRUNNER_PATH, helper_argv, newEnviron);
       else
-        execv(CPPROCHELPER_PATH, helper_argv);
+        execv(BINRUNNER_PATH, helper_argv);
 
       /* exec failed - exit with error code */
       _exit(127);
