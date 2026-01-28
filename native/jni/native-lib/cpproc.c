@@ -44,11 +44,13 @@ exception statement from your version. */
 #include <unistd.h>
 #include <errno.h>
 #include <stdlib.h>
+
+#ifdef HAVE_VFORK
 #include <stdio.h>
 #include <string.h>
 #include <pthread.h>
 
-/* Helper binary path - defined by configure */
+/* Helper binary path - defined in Makefile.am */
 #ifndef CPPROCHELPER_PATH
 #define CPPROCHELPER_PATH "/usr/libexec/cpprochelper"
 #endif
@@ -58,6 +60,7 @@ exception statement from your version. */
 
 /* Buffer size for integer-to-string conversion */
 #define INT_STR_SIZE 12
+#endif /* HAVE_VFORK */
 
 static void close_all_fds(int *fds, int numFds)
 {
@@ -67,6 +70,7 @@ static void close_all_fds(int *fds, int numFds)
     close(fds[i]);
 }
 
+#ifdef HAVE_VFORK
 /*
  * Count the number of elements in a NULL-terminated string array.
  */
@@ -104,9 +108,21 @@ static ssize_t read_all(int fd, void *buf, size_t count)
   return count - remaining;
 }
 
-int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
-			int *fds, int pipe_count, pid_t *out_pid, const char *wd,
-			int use_vfork)
+/*
+ * vfork-based implementation using helper binary.
+ *
+ * After vfork(), the child shares the parent's address space until exec.
+ * According to POSIX, the only safe operations after vfork() are:
+ * - Checking the return value
+ * - Calling exec*()
+ * - Calling _exit()
+ *
+ * Any other operations (dup2, close, chdir, etc.) are undefined behavior.
+ * Therefore, we immediately exec a helper binary which then performs
+ * all the necessary setup in its own address space.
+ */
+static int vfork_and_exec(char * const *commandLine, char * const *newEnviron,
+                          int *fds, int pipe_count, pid_t *out_pid, const char *wd)
 {
   int local_fds[6];
   int status_pipe[2];
@@ -123,6 +139,8 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
   ssize_t n;
   int err;
   int stdin_child_fd, stdout_child_fd, stderr_child_fd;
+  sigset_t all_signals, old_sigmask;
+  int old_cancel_state;
 
   /* Create pipes for stdin/stdout/stderr */
   for (i = 0; i < (pipe_count * 2); i += 2)
@@ -199,70 +217,45 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
   helper_argv[HELPER_FIXED_ARGS + cmd_argc] = NULL;
 
   /*
-   * Fork (or vfork) and exec the helper.
+   * vfork and exec the helper.
    *
    * With vfork, the child shares the parent's memory until exec, so we must:
    * 1. Block all signals to prevent parent's signal handlers running in child
    * 2. Disable pthread cancellation to prevent cleanup handlers running
    * 3. Immediately exec without modifying variables or calling unsafe functions
    */
-#ifdef HAVE_VFORK
-  if (use_vfork)
+
+  /* Block all signals */
+  sigfillset(&all_signals);
+  pthread_sigmask(SIG_BLOCK, &all_signals, &old_sigmask);
+
+  /* Disable pthread cancellation */
+  pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &old_cancel_state);
+
+  pid = vfork();
+
+  if (pid == 0)
     {
-      sigset_t all_signals, old_sigmask;
-      int old_cancel_state;
+      /* Child: immediately exec helper, passing environment via execve */
+      if (newEnviron != NULL)
+        execve(CPPROCHELPER_PATH, helper_argv, newEnviron);
+      else
+        execv(CPPROCHELPER_PATH, helper_argv);
 
-      /* Block all signals */
-      sigfillset(&all_signals);
-      pthread_sigmask(SIG_BLOCK, &all_signals, &old_sigmask);
-
-      /* Disable pthread cancellation */
-      pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &old_cancel_state);
-
-      pid = vfork();
-
-      if (pid == 0)
-        {
-          /* Child: immediately exec helper, passing environment via execve */
-          if (newEnviron != NULL)
-            execve(CPPROCHELPER_PATH, helper_argv, newEnviron);
-          else
-            execv(CPPROCHELPER_PATH, helper_argv);
-
-          /* exec failed - exit with error code */
-          _exit(127);
-        }
-
-      /* Parent: restore signal mask and cancellation state */
-      pthread_setcancelstate(old_cancel_state, NULL);
-      pthread_sigmask(SIG_SETMASK, &old_sigmask, NULL);
-    }
-  else
-#endif
-    {
-      pid = fork();
-
-      if (pid == 0)
-        {
-          /* Child: immediately exec helper, passing environment via execve */
-          if (newEnviron != NULL)
-            execve(CPPROCHELPER_PATH, helper_argv, newEnviron);
-          else
-            execv(CPPROCHELPER_PATH, helper_argv);
-
-          /* exec failed - exit with error code */
-          _exit(127);
-        }
+      /* exec failed - exit with error code */
+      _exit(127);
     }
 
-  /* Parent continues here */
+  /* Parent: restore signal mask and cancellation state */
+  pthread_setcancelstate(old_cancel_state, NULL);
+  pthread_sigmask(SIG_SETMASK, &old_sigmask, NULL);
 
   /* Free helper_argv - no longer needed */
   free(helper_argv);
 
   if (pid < 0)
     {
-      /* Fork failed */
+      /* vfork failed */
       err = errno;
       close_all_fds(local_fds, pipe_count * 2);
       close(status_pipe[0]);
@@ -324,8 +317,91 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
       return (n < 0) ? errno : ECHILD;
     }
 }
+#endif /* HAVE_VFORK */
 
-int cpproc_waitpid (pid_t pid, int *status, pid_t *outpid, int options)
+static int fork_and_exec(char * const *commandLine, char * const *newEnviron,
+                         int *fds, int pipe_count, pid_t *out_pid, const char *wd)
+{
+  int local_fds[6];
+  int i;
+  pid_t pid;
+
+  for (i = 0; i < (pipe_count * 2); i += 2)
+    {
+      if (pipe(&local_fds[i]) < 0)
+        {
+          int err = errno;
+
+          close_all_fds(local_fds, i);
+
+          return err;
+        }
+    }
+
+  pid = fork();
+
+  switch (pid)
+    {
+    case 0:
+      dup2(local_fds[0], 0);
+      dup2(local_fds[3], 1);
+      if (pipe_count == 3)
+        dup2(local_fds[5], 2);
+      else
+        dup2(1, 2);
+
+      close_all_fds(local_fds, pipe_count * 2);
+
+      i = chdir(wd);
+      /* FIXME: Handle the return value */
+      if (newEnviron == NULL)
+        execvp(commandLine[0], commandLine);
+      else
+        execve(commandLine[0], commandLine, newEnviron);
+
+      abort();
+
+      break;
+    case -1:
+      {
+        int err = errno;
+
+        close_all_fds(local_fds, pipe_count * 2);
+        return err;
+      }
+    default:
+      close(local_fds[0]);
+      close(local_fds[3]);
+      if (pipe_count == 3)
+        close(local_fds[5]);
+
+      fds[0] = local_fds[1];
+      fds[1] = local_fds[2];
+      fds[2] = local_fds[4];
+      *out_pid = pid;
+      return 0;
+    }
+
+  /* keep compiler happy */
+
+  return 0;
+}
+
+int cpproc_forkAndExec(char * const *commandLine, char * const *newEnviron,
+                       int *fds, int pipe_count, pid_t *out_pid, const char *wd,
+                       int use_vfork)
+{
+#ifdef HAVE_VFORK
+  if (use_vfork)
+    return vfork_and_exec(commandLine, newEnviron, fds, pipe_count, out_pid, wd);
+#else
+  (void)use_vfork;  /* Suppress unused parameter warning */
+#endif
+
+  return fork_and_exec(commandLine, newEnviron, fds, pipe_count, out_pid, wd);
+}
+
+int cpproc_waitpid(pid_t pid, int *status, pid_t *outpid, int options)
 {
   pid_t wp = waitpid(pid, status, options);
 
@@ -336,7 +412,7 @@ int cpproc_waitpid (pid_t pid, int *status, pid_t *outpid, int options)
   return 0;
 }
 
-int cpproc_kill (pid_t pid, int signal)
+int cpproc_kill(pid_t pid, int signal)
 {
   if (kill(pid, signal) < 0)
     return errno;
