@@ -75,9 +75,27 @@ final class VMProcess extends Process
 
   // Whether to use vfork() instead of fork() for process spawning.
   // vfork() avoids copying the address space, which is beneficial on
-  // embedded/low-RAM systems. Enabled by defining the gnu.classpath.process.vfork
-  // system property (e.g., -Dgnu.classpath.process.vfork).
-  static final boolean useVfork = System.getProperty("gnu.classpath.process.vfork") != null;
+  // embedded/low-RAM systems.
+  //
+  // Controlled by gnu.lang.process.vfork system property:
+  //   - not set: use platform default (enabled on Linux)
+  //   - set to "false": disable
+  //   - set to any other value: enable
+  static final boolean useVfork;
+  static
+  {
+    String prop = System.getProperty("gnu.lang.process.vfork");
+    if (prop == null)
+      {
+        // Platform default: enable on Linux only
+        String osName = System.getProperty("os.name", "");
+        useVfork = osName.toLowerCase().contains("linux");
+      }
+    else
+      {
+        useVfork = !"false".equalsIgnoreCase(prop);
+      }
+  }
 
   // Dedicated thread that does all the fork()'ing and wait()'ing.
   static Thread processThread;
