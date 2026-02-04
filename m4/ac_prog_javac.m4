@@ -38,23 +38,12 @@ AC_DEFUN([AC_PROG_JAVAC],[
 AC_REQUIRE([AC_EXEEXT])dnl
 ECJ_OPTS="-warn:-deprecation,serial,unusedImport,unusedPrivate,resource"
 JAVAC_OPTS="-Xlint:unchecked,cast,divzero,empty,finally,overrides"
-GCJ_OPTS="-g"
 if test "x$JAVAPREFIX" = x; then
-        test "x$JAVAC" = x && AC_CHECK_PROGS(JAVAC, ["ecj$EXEEXT $ECJ_OPTS"] ["ecj-3.3$EXEEXT $ECJ_OPTS"] ["ecj-3.2$EXEEXT $ECJ_OPTS"] ["javac$EXEEXT $JAVAC_OPTS"] "gcj$EXEEXT -C")
+        test "x$JAVAC" = x && AC_CHECK_PROGS(JAVAC, ["ecj$EXEEXT $ECJ_OPTS"] ["ecj-3.3$EXEEXT $ECJ_OPTS"] ["ecj-3.2$EXEEXT $ECJ_OPTS"] ["javac$EXEEXT $JAVAC_OPTS"])
 else
-        test "x$JAVAC" = x && AC_CHECK_PROGS(JAVAC, ["ecj$EXEEXT $ECJ_OPTS"] ["ecj-3.3$EXEEXT $ECJ_OPTS"] ["ecj-3.2$EXEEXT $ECJ_OPTS"] ["javac$EXEEXT $JAVAC_OPTS"] "gcj$EXEEXT -C", $JAVAPREFIX)
+        test "x$JAVAC" = x && AC_CHECK_PROGS(JAVAC, ["ecj$EXEEXT $ECJ_OPTS"] ["ecj-3.3$EXEEXT $ECJ_OPTS"] ["ecj-3.2$EXEEXT $ECJ_OPTS"] ["javac$EXEEXT $JAVAC_OPTS"], $JAVAPREFIX)
 fi
 test "x$JAVAC" = x && AC_MSG_ERROR([no acceptable Java compiler found in \$PATH])
-AC_CACHE_CHECK([if $JAVAC is a version of gcj], ac_cv_prog_javac_is_gcj, [
-if $JAVAC --version 2>&1 | grep gcj >&AS_MESSAGE_LOG_FD ; then
-  ac_cv_prog_javac_is_gcj=yes;
-  JAVAC="$JAVAC $GCJ_OPTS";
-else
-  ac_cv_prog_javac_is_gcj=no;
-fi
-])
-AC_SUBST(JAVAC_IS_GCJ, $ac_cv_prog_javac_is_gcj)
-AM_CONDITIONAL(GCJ_JAVAC, test x"${JAVAC_IS_GCJ}" = xyes)
 AC_PROG_JAVAC_WORKS
 AC_PROVIDE([$0])dnl
 ])

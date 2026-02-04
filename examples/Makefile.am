@@ -2,17 +2,12 @@
 GLIBJ_CLASSPATH='$(top_builddir)/lib/glibj.zip:$(top_builddir)/lib'
 
 # source, target and classpath options
-GCJ_OPTS = -fsource=1.6 -ftarget=1.6 --encoding=UTF-8 --bootclasspath=$(GLIBJ_CLASSPATH) --classpath='$(top_builddir)/tools/tools.zip'
 ECJ_OPTS = -source 1.6 -target 1.6 -encoding UTF-8 -bootclasspath $(GLIBJ_CLASSPATH) -classpath '$(top_builddir)/tools/tools.zip'
 
-if GCJ_JAVAC
-JCOMPILER = $(JAVAC) $(JAVACFLAGS) $(GCJ_OPTS)
-else
 if ECJ_JAVAC
 JCOMPILER = $(JAVAC) $(JAVACFLAGS) $(ECJ_WARNINGS) $(ECJ_OPTS)
 else
 JCOMPILER = $(JAVAC) $(JAVACFLAGS) $(JAVAC_WARNINGS) $(ECJ_OPTS)
-endif
 endif
 
 # All our example java source files

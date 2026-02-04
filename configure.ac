@@ -1011,9 +1011,8 @@ dnl Checks for javac and other java tools
 dnl -----------------------------------------------------------
 dnl Note:
 dnl - AC_PROG_JAVAC must be called before AC_PROG_JAVA
-dnl - Make sure the AM_CONDITIONALS for GCJ_JAVAC and ECJ_JAVAC
-dnl   are always invoked, even if AC_PROG_JAVAC / IT_USING_ECJ
-dnl   didn't run
+dnl - Make sure the AM_CONDITIONAL for ECJ_JAVAC is always invoked,
+dnl   even if AC_PROG_JAVAC / IT_USING_ECJ didn't run
 
 if test "x${use_glibj_zip}" = xfalse || \
    test "x${EXAMPLESDIR}" != x || \
@@ -1035,7 +1034,6 @@ if test "x${use_glibj_zip}" = xfalse || \
     fi
   fi    
 else
-  AM_CONDITIONAL(GCJ_JAVAC, false)
   AM_CONDITIONAL(ECJ_JAVAC, false)
 fi
 

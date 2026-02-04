@@ -8,19 +8,14 @@ sinclude $(JAVA_DEPEND)
 compile_classpath = $(vm_classes):$(top_srcdir):$(top_srcdir)/external/w3c_dom:$(top_srcdir)/external/sax:$(top_srcdir)/external/relaxngDatatype:$(top_srcdir)/external/jsr166:.:$(PATH_TO_GLIBJ_ZIP):$(PATH_TO_ESCHER)
 
 # source,target and classpath options
-GCJ_OPTS=-fsource=1.6 -ftarget=1.6 --bootclasspath='' --classpath=$(compile_classpath)
 ECJ_OPTS=-source 1.6 -target 1.6 -bootclasspath '' -classpath $(compile_classpath)
 JAVAC_OPTS=$(ECJ_OPTS)
 
-# handling source to bytecode compiler programs like gcj, jikes  and kjc
-if GCJ_JAVAC
-JCOMPILER = $(JAVAC) $(JAVACFLAGS) $(GCJ_OPTS) -d . @classes
-else
+# handling source to bytecode compiler programs
 if ECJ_JAVAC
 JCOMPILER = $(JAVAC) $(JAVACFLAGS) $(ECJ_WARNINGS) $(ECJ_OPTS) $(JAVAC_MEM_OPT) -d . @classes
 else
 JCOMPILER = $(JAVAC) $(JAVACFLAGS) $(JAVAC_WARNINGS) $(JAVAC_OPTS) $(JAVAC_MEM_OPT) -d . @classes
-endif
 endif
 
 if CREATE_COLLECTIONS
@@ -132,24 +127,11 @@ endif # REGEN_PARSER
 
 $(JAVA_DEPEND): genclasses
 
-#if FOUND_GCJ
-## When building with gcj, we do a recursive make.  We split this rule
-## out specially, rather than simply defining JAVAC, so that GNU make
-## will see the recursive make invocation and still allow parallel
-## builds.
-#compile-classes: classes $(JAVA_SRCS) Makefile
-#	$(MAKE) -f $(srcdir)/Makefile.gcj \
-#	  GCJ='$(GCJ)' \
-#	  compile_classpath='$(top_builddir):$(compile_classpath)' \
-#	  top_srcdir=$(top_srcdir)
-#   	  touch compile-classes
-#else
 compile-classes: genclasses $(JAVA_SRCS) Makefile
 	$(JCOMPILER)
 	touch compile-classes
-#endif
 
-EXTRA_DIST = standard.omit.in mkcollections.pl.in Makefile.gcj split-for-gcj.sh glibj.zip
+EXTRA_DIST = standard.omit.in mkcollections.pl.in glibj.zip
 CLEANFILES = compile-classes resources classes genclasses gen-xpath-parser \
 	glibj.zip classes.1 classes.2 Makefile.deps \
 	$(top_builddir)/gnu/java/locale/LocaleData.java \

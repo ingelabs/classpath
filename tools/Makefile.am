@@ -15,17 +15,12 @@ GLIBJ_CLASSPATH=asm:$(ANTLR_CLASSPATH)
 # Setup the compiler to use the GNU Classpath library we just built.
 
 # source, target and classpath options
-GCJ_OPTS = -fsource=1.6 -ftarget=1.6 --encoding=UTF-8 --bootclasspath=$(GLIBJ_BOOTCLASSPATH) --classpath=$(GLIBJ_CLASSPATH)
 ECJ_OPTS = -source 1.6 -target 1.6 -encoding UTF-8 -bootclasspath $(GLIBJ_BOOTCLASSPATH) -classpath $(GLIBJ_CLASSPATH)
 
-if GCJ_JAVAC
-JCOMPILER = $(JAVAC) $(JAVACFLAGS) $(GCJ_OPTS)
-else
 if ECJ_JAVAC
 JCOMPILER = $(JAVAC) $(JAVACFLAGS) $(ECJ_WARNINGS) $(ECJ_OPTS)
 else
 JCOMPILER = $(JAVAC) $(JAVACFLAGS) $(JAVAC_WARNINGS) $(ECJ_OPTS)
-endif
 endif
 
 if CREATE_WRAPPERS
