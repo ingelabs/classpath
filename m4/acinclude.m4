@@ -19,10 +19,12 @@ AC_DEFUN([CLASSPATH_WITH_JAVAH],
 ])
 
 dnl -----------------------------------------------------------
-dnl Checking for a javah like program 
+dnl Checking for a javah like program
 dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_CHECK_JAVAH],
 [
+  USE_JAVAH_WRAPPER=no
+
   if test "x$1" != x; then
     if test -f "$1"; then
       USER_JAVAH="$1"
@@ -32,9 +34,33 @@ AC_DEFUN([CLASSPATH_CHECK_JAVAH],
   else
     AC_PATH_PROGS([USER_JAVAH],[gjavah gjavah-4.3 gjavah-4.2 gjavah-4.1 gcjh-wrapper-4.1 gcjh-4.1 javah])
   fi
-  
+
   if test "x${USER_JAVAH}" = x; then
-    AC_MSG_ERROR([can not find javah])
+    dnl No javah found, check if javac supports -h (Java 9+)
+    dnl Note: Check actual javac binary, not $JAVAC which may be ecj
+    AC_PATH_PROG([JAVAC_BIN], [javac])
+    AC_MSG_CHECKING([if javac supports -h option])
+    if test -n "$JAVAC_BIN"; then
+      dnl Test by actually trying javac -h with a minimal native method
+      mkdir -p conftest.dir
+      cat > conftest.dir/JNITest.java << 'EOF'
+class JNITest { native void test(); }
+EOF
+      if $JAVAC_BIN -h conftest.dir -d conftest.dir conftest.dir/JNITest.java 2>/dev/null && \
+         test -f conftest.dir/JNITest.h; then
+        AC_MSG_RESULT([yes])
+        USER_JAVAH='$(top_srcdir)/scripts/javah-wrapper.sh'
+        USE_JAVAH_WRAPPER=yes
+        AC_MSG_NOTICE([using javah-wrapper.sh with javac -h])
+      else
+        AC_MSG_RESULT([no])
+        AC_MSG_ERROR([cannot find javah and javac does not support -h])
+      fi
+      rm -rf conftest.dir
+    else
+      AC_MSG_RESULT([no])
+      AC_MSG_ERROR([cannot find javah and javac does not support -h])
+    fi
   fi
 ])
 

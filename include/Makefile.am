@@ -8,8 +8,15 @@ endif
 
 ARG_JNI_JAVAH = -jni
 ARG_CLASSPATH_JAVAH = -bootclasspath
-JAVAH = $(USER_JAVAH) $(ARG_JNI_JAVAH) $(ARG_CLASSPATH_JAVAH) ../lib:$(PATH_TO_GLIBJ_ZIP)
 CLASSDIR = lib
+
+# For javah-wrapper.sh, pass source file via -src and classpath for dependencies
+# For traditional javah, use -jni and -bootclasspath
+if USE_JAVAH_WRAPPER
+JAVAH = $(USER_JAVAH) -src $< -classpath ../lib
+else
+JAVAH = $(USER_JAVAH) $(ARG_JNI_JAVAH) $(ARG_CLASSPATH_JAVAH) ../lib:$(PATH_TO_GLIBJ_ZIP)
+endif
 
 SOUND_H_FILES = \
 gnu_javax_sound_midi_alsa_AlsaPortDevice.h \
