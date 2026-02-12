@@ -18,6 +18,14 @@ dnl -----------------------------------------------------------
 if expr ${target_cpu} : '.*86' > /dev/null; then target_cpu=x86; fi
 
 dnl -----------------------------------------------------------
+dnl Normalize versioned darwin OS (e.g. darwin23.0.0) to
+dnl plain "darwin" for jni_md header lookup
+dnl -----------------------------------------------------------
+case "$target_os" in
+     darwin*) target_os=darwin ;;
+esac
+
+dnl -----------------------------------------------------------
 dnl We will not track/change lib version until we reach version 1.0
 dnl at which time we'll have to be more anal about such things
 dnl -----------------------------------------------------------
