@@ -18,6 +18,11 @@ dnl -----------------------------------------------------------
 if expr ${target_cpu} : '.*86' > /dev/null; then target_cpu=x86; fi
 
 dnl -----------------------------------------------------------
+dnl Normalize Apple Silicon CPU naming to "aarch64"
+dnl -----------------------------------------------------------
+if test "x${target_cpu}" = xarm64; then target_cpu=aarch64; fi
+
+dnl -----------------------------------------------------------
 dnl We will not track/change lib version until we reach version 1.0
 dnl at which time we'll have to be more anal about such things
 dnl -----------------------------------------------------------
@@ -808,15 +813,23 @@ AC_SUBST(CLASSPATH_INCLUDES)
 
 dnl -----------------------------------------------------------
 if test "x${COMPILE_JNI}" = xyes; then
+  classpath_jni_md_cpu="${target_cpu}"
+  classpath_jni_md_os="${target_os}"
+  case "${classpath_jni_md_os}" in
+    darwin*)
+      classpath_jni_md_os=darwin
+      ;;
+  esac
+
   AC_MSG_CHECKING(jni_md.h support)
-  if test -f ${srcdir}/include/jni_md-${target_cpu}-${target_os}.h; then
+  if test -f ${srcdir}/include/jni_md-${classpath_jni_md_cpu}-${classpath_jni_md_os}.h; then
     AC_MSG_RESULT(yes)
   else
-    target_cpu=x86
-    target_os=linux-gnu 
+    classpath_jni_md_cpu=x86
+    classpath_jni_md_os=linux-gnu
     AC_MSG_WARN(no, using x86-linux-gnu)
   fi
-  ac_sources="include/jni_md-${target_cpu}-${target_os}.h"
+  ac_sources="include/jni_md-${classpath_jni_md_cpu}-${classpath_jni_md_os}.h"
   ac_dests="include/jni_md.h"
   while test -n "$ac_sources"; do
     set $ac_dests; ac_dest=$1; shift; ac_dests=$*
