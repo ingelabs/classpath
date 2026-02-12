@@ -1,0 +1,153 @@
+# javah-wrapper: Comparison with origin/chore/javah-wrapper
+
+This report compares the current working tree implementation against the
+WIP branch `origin/chore/javah-wrapper` (commit `3a569b6e0`).
+
+## Converged design decisions
+
+Both implementations arrived at the same core approach through independent
+development:
+
+- **`-src $<`**: The Makefile passes the source file directly via the `$<`
+  automatic variable (the first prerequisite of each rule), rather than
+  having the wrapper resolve class names to source paths.
+- **`-classpath` for compiled classes**: Dependencies are resolved from
+  the compiled `.class` files in `../lib:$(PATH_TO_GLIBJ_ZIP)`, matching
+  how the real `javah` operates.
+- **`-source 1.6 -target 1.6`**: Matches the flags already used by the
+  build system for normal Java compilation (`lib/Makefile.am`).
+- **`-bootclasspath ''`**: Removes the JDK's own classes so javac only
+  sees GNU Classpath's via `-classpath`, avoiding split-package conflicts
+  (e.g., JDK 11's `java.lang` vs GNU Classpath's `java.lang`).
+- **`-implicit:none`**: Avoids compiling transitive dependencies from
+  source; javac only processes the named file.
+- **Functional configure test**: Both detect `javac -h` support by actually
+  compiling a minimal `JNITest.java` with a native method and checking that
+  the header file was produced, rather than parsing `javac -help` output.
+- **Independent javac lookup**: Both look for the `javac` binary
+  independently of `$JAVAC`, because `$JAVAC` may point to ecj or another
+  compiler that does not support `-h`.
+- **`EXTRA_DIST` updated**: Both add the wrapper script to `scripts/Makefile.am`
+  so it is included in the distribution tarball.
+
+## Remaining differences
+
+### 1. Script name and shell
+
+| | Current | Remote |
+|---|---|---|
+| Name | `scripts/javah-wrapper` | `scripts/javah-wrapper.sh` |
+| Shebang | `#!/bin/sh` (POSIX) | `#!/bin/bash` |
+
+The current implementation uses POSIX `sh` for maximum portability.  The
+script uses no bash-specific features.
+
+### 2. Automake conditional name
+
+| Current | Remote |
+|---|---|
+| `JAVAH_USES_WRAPPER` | `USE_JAVAH_WRAPPER` |
+
+Cosmetic difference only.
+
+### 3. Javac binary resolution
+
+**Current**: `configure` finds the javac path via `AC_PATH_PROG([JAVAH_WRAPPER_JAVAC], [javac])`
+and exports it via `AC_SUBST`.  The wrapper reads it from the environment:
+
+```sh
+JAVAC="${JAVAH_WRAPPER_JAVAC:-javac}"
+```
+
+This ensures the same javac binary validated at configure time is used at
+build time, and works correctly even if `javac` is not on `$PATH` during
+`make` (e.g., when using a non-standard `--prefix`).
+
+**Remote**: Hardcodes `javac` in the script:
+
+```sh
+eval javac $JAVAC_ARGS "$SOURCE_FILE"
+```
+
+This assumes `javac` is on `$PATH` at build time, which may differ from
+configure time.
+
+### 4. `-bootclasspath ''` quoting
+
+**Current**: Passes `-bootclasspath ''` directly to javac as separate
+arguments in the shell command, with no quoting issues:
+
+```sh
+$JAVAC -source 1.6 -target 1.6 -bootclasspath '' -implicit:none \
+  -h "$tmpdir" -d "$tmpdir" -proc:none \
+  -classpath "$classpath" "$source_file" 2>/dev/null || true
+```
+
+**Remote**: Builds the arguments in a string variable and uses `eval`:
+
+```sh
+JAVAC_ARGS="$JAVAC_ARGS -bootclasspath '' -classpath $CLASSPATH"
+eval javac $JAVAC_ARGS "$SOURCE_FILE"
+```
+
+The `eval` approach is fragile: if `$CLASSPATH` or `$SOURCE_FILE` contains
+spaces or shell metacharacters, the command may break or behave unexpectedly.
+
+### 5. Header file lookup
+
+**Current**: Computes the expected header filename from the class name
+(which is still passed as a trailing positional argument):
+
+```sh
+header_name=$(echo "$classname" | sed 's/\./_/g').h
+```
+
+This is deterministic and fails with a clear error message naming the
+expected file.
+
+**Remote**: Uses `find` to discover whatever `.h` file was generated:
+
+```sh
+GENERATED_HEADER=$(find "$TEMP_DIR" -maxdepth 1 -name "*.h" -type f)
+```
+
+This silently picks up the wrong header if javac generates multiple headers
+as a side-effect (which does happen — e.g., compiling `VMDouble.java` can
+also produce `java_lang_VMThrowable.h` and reflection-related headers).
+
+### 6. Error handling on javac failure
+
+**Current**: Suppresses javac stderr and tolerates a non-zero exit code,
+since compilation errors are expected (we only need the header):
+
+```sh
+$JAVAC ... "$source_file" 2>/dev/null || true
+```
+
+Then checks specifically for the expected header file.
+
+**Remote**: Does not suppress errors or tolerate failure:
+
+```sh
+eval javac $JAVAC_ARGS "$SOURCE_FILE"
+```
+
+With `set -e` in effect, the script aborts immediately if javac returns
+non-zero.  Since javac commonly emits warnings (e.g., "source value 6 is
+obsolete") and may encounter non-fatal errors in dependencies, this can
+cause spurious build failures.
+
+### 7. Test script
+
+The remote branch includes `scripts/test-javac-h.sh`, a standalone test
+that compares headers generated by `javac -h` against existing headers in
+`include/`.  The current implementation does not include this script.  It
+could be adopted as a useful CI/development aid.
+
+## Summary
+
+The core approach is identical.  The current implementation improves on the
+remote WIP in robustness (`-bootclasspath ''` quoting, error tolerance,
+deterministic header lookup, configure-detected javac path) and portability
+(POSIX sh).  The remote's test script is a useful addition worth adopting
+separately.

@@ -8,7 +8,11 @@ endif
 
 ARG_JNI_JAVAH = -jni
 ARG_CLASSPATH_JAVAH = -bootclasspath
+if JAVAH_USES_WRAPPER
+JAVAH = $(USER_JAVAH) -src $< -classpath ../lib:$(PATH_TO_GLIBJ_ZIP)
+else
 JAVAH = $(USER_JAVAH) $(ARG_JNI_JAVAH) $(ARG_CLASSPATH_JAVAH) ../lib:$(PATH_TO_GLIBJ_ZIP)
+endif
 CLASSDIR = lib
 
 SOUND_H_FILES = \

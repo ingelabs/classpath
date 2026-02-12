@@ -34,8 +34,36 @@ AC_DEFUN([CLASSPATH_CHECK_JAVAH],
   fi
   
   if test "x${USER_JAVAH}" = x; then
-    AC_MSG_ERROR([can not find javah])
+    dnl No javah found — check if a real javac supports -h (JDK 8+).
+    dnl Note: we look for the javac binary explicitly rather than using
+    dnl $JAVAC, because $JAVAC may point to ecj which does not support -h.
+    AC_PATH_PROG([JAVAH_WRAPPER_JAVAC], [javac])
+    AC_MSG_CHECKING([whether javac supports -h])
+    if test -n "$JAVAH_WRAPPER_JAVAC"; then
+      mkdir -p conftest.dir
+      cat > conftest.dir/JNITest.java << 'EOF'
+class JNITest { native void test(); }
+EOF
+      if $JAVAH_WRAPPER_JAVAC -h conftest.dir -d conftest.dir conftest.dir/JNITest.java 2>/dev/null && \
+         test -f conftest.dir/JNITest.h; then
+        AC_MSG_RESULT([yes])
+        USER_JAVAH="${srcdir}/scripts/javah-wrapper"
+        JAVAH_USES_WRAPPER=yes
+        AC_MSG_NOTICE([using javah-wrapper with javac -h])
+      else
+        AC_MSG_RESULT([no])
+        AC_MSG_ERROR([cannot find javah and javac does not support -h])
+      fi
+      rm -rf conftest.dir
+    else
+      AC_MSG_RESULT([javac not found])
+      AC_MSG_ERROR([cannot find javah or javac])
+    fi
+  else
+    JAVAH_USES_WRAPPER=no
   fi
+  AC_SUBST(JAVAH_USES_WRAPPER)
+  AC_SUBST(JAVAH_WRAPPER_JAVAC)
 ])
 
 dnl -----------------------------------------------------------

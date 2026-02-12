@@ -1,0 +1,112 @@
+#!/bin/sh
+# javah-wrapper -- emulate javah(1) using javac -h (JDK 8+)
+#
+# GNU Classpath uses javah to generate JNI header files, but javah was
+# removed in JDK 10.  Since JDK 8, "javac -h <dir>" can produce the
+# same headers as a side-effect of compilation.  This wrapper translates
+# a javah-compatible command line into a javac -h invocation.
+#
+# Usage:
+#   javah-wrapper -src <source_file> [-classpath <cp>] -o <output_file> <classname>
+#
+# The Makefile passes -src $< (the rule prerequisite) so the wrapper
+# receives the source file path directly.  The trailing class name is
+# used only to compute the expected header file name.
+#
+# Environment:
+#   JAVAH_WRAPPER_JAVAC -- path to javac (set by configure; default: javac)
+
+set -e
+
+# Use JAVAH_WRAPPER_JAVAC if set by configure, otherwise find javac on PATH.
+# We intentionally do NOT use $JAVAC here because that may point to ecj or
+# another compiler that does not support -h.
+JAVAC="${JAVAH_WRAPPER_JAVAC:-javac}"
+
+source_file=
+classpath=
+output_file=
+classname=
+
+# Parse arguments
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -src)
+      source_file="$2"
+      shift 2
+      ;;
+    -classpath|-cp|-bootclasspath)
+      classpath="$2"
+      shift 2
+      ;;
+    -o)
+      output_file="$2"
+      shift 2
+      ;;
+    -jni)
+      # Silently consumed; javac -h always produces JNI-style headers.
+      shift
+      ;;
+    -*)
+      echo "javah-wrapper: unknown option: $1" >&2
+      exit 1
+      ;;
+    *)
+      classname="$1"
+      shift
+      ;;
+  esac
+done
+
+if [ -z "$source_file" ]; then
+  echo "javah-wrapper: missing -src <source_file>" >&2
+  exit 1
+fi
+
+if [ ! -f "$source_file" ]; then
+  echo "javah-wrapper: source file not found: $source_file" >&2
+  exit 1
+fi
+
+if [ -z "$output_file" ]; then
+  echo "javah-wrapper: missing -o <output_file>" >&2
+  exit 1
+fi
+
+if [ -z "$classname" ]; then
+  echo "javah-wrapper: missing class name" >&2
+  exit 1
+fi
+
+# Create a temporary directory for javac output
+tmpdir=$(mktemp -d "${TMPDIR:-/tmp}/javah-wrapper.XXXXXX")
+trap 'rm -rf "$tmpdir"' EXIT
+
+# Run javac -h to generate the JNI header.
+# Use -source 1.6 -target 1.6 -bootclasspath '' to match the flags the
+# GNU Classpath build system uses for normal compilation (see lib/Makefile.am).
+# The empty -bootclasspath removes the JDK's own classes so javac only sees
+# GNU Classpath's via -classpath, avoiding split-package conflicts.
+# -implicit:none avoids compiling transitive dependencies.
+# Compilation errors are expected and suppressed.
+if [ -n "$classpath" ]; then
+  $JAVAC -source 1.6 -target 1.6 -bootclasspath '' -implicit:none \
+    -h "$tmpdir" -d "$tmpdir" -proc:none \
+    -classpath "$classpath" "$source_file" 2>/dev/null || true
+else
+  $JAVAC -source 1.6 -target 1.6 -bootclasspath '' -implicit:none \
+    -h "$tmpdir" -d "$tmpdir" -proc:none \
+    "$source_file" 2>/dev/null || true
+fi
+
+# Compute expected header file name:
+#   java.lang.VMDouble -> java_lang_VMDouble.h
+header_name=$(echo "$classname" | sed 's/\./_/g').h
+
+if [ ! -f "$tmpdir/$header_name" ]; then
+  echo "javah-wrapper: javac -h did not produce $header_name for $classname" >&2
+  exit 1
+fi
+
+# Copy the generated header to the requested output location
+cp "$tmpdir/$header_name" "$output_file"

@@ -797,7 +797,10 @@ fi
 
 if test "x${REGENERATE_JNI_HEADERS}" = xyes; then
   CLASSPATH_WITH_JAVAH
+else
+  JAVAH_USES_WRAPPER=no
 fi
+AM_CONDITIONAL(JAVAH_USES_WRAPPER, test "x${JAVAH_USES_WRAPPER}" = xyes)
 
 dnl ----------------------------------------------------------- 
 dnl Add the include files for the native abstraction layer.
