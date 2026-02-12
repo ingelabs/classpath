@@ -752,14 +752,7 @@ jint cpnet_getHostByAddr (JNIEnv *env UNUSED, cpnet_address *addr, char *hostnam
    */
   ret = gethostbyaddr(raw_addr, addr_len, addr_type);
   if (ret == NULL)
-    {
-      /* The trouble here is how to distinguish the two cases ? */
-      if (h_errno != 0)
-	return h_errno;
-      else
-	return errno;
-
-    }
+    return h_errno;
   strncpy(hostname, ret->h_name, hostname_len);
 
   return 0;
