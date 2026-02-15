@@ -520,88 +520,108 @@ public class GregorianCalendar extends Calendar
     if (! isLenient())
       nonLeniencyCheck();
 
-    if (! isSet[MONTH] && (! isSet[DAY_OF_WEEK] || isSet[WEEK_OF_YEAR]))
+    // Resolve which date pattern to use via stamp-based priority.
+    //
+    // The five valid date patterns, in order of priority:
+    // 1  YEAR + MONTH + DAY_OF_MONTH
+    // 2  YEAR + MONTH + WEEK_OF_MONTH + DAY_OF_WEEK
+    // 3  YEAR + MONTH + DAY_OF_WEEK_IN_MONTH + DAY_OF_WEEK
+    // 4  YEAR + DAY_OF_YEAR
+    // 5  YEAR + DAY_OF_WEEK + WEEK_OF_YEAR
+    //
+    // Resolution uses two groups:
+    //   Group 1 (month-based): patterns 1, 2, 3
+    //   Group 2 (day-of-year-based): patterns 4, 5
+    //
+    // Within each group, the pattern whose determining fields have
+    // the highest aggregate stamp wins (using >= so later-listed
+    // patterns win ties).  Between groups, the group with the
+    // strictly higher stamp wins; ties go to group 1.
+    //
+    // If no pattern is fully determined, fall back to the pattern
+    // whose primary field has the highest stamp.
+
+    int datePattern = resolveDateFields();
+
+    int dayOfWeek = getStamp(DAY_OF_WEEK) != 0
+                    ? fields[DAY_OF_WEEK] : getFirstDayOfWeek();
+
+    switch (datePattern)
       {
-        // 5: YEAR + DAY_OF_WEEK + WEEK_OF_YEAR
-        if (isSet[WEEK_OF_YEAR])
-          {
-            int first = getFirstDayOfMonth(year, 0);
-            int offs = 1;
-            int daysInFirstWeek = getFirstDayOfWeek() - first;
-            if (daysInFirstWeek <= 0)
-              daysInFirstWeek += 7;
+      case 5: // YEAR + DAY_OF_WEEK + WEEK_OF_YEAR
+        {
+          int first = getFirstDayOfMonth(year, 0);
+          int offs = 1;
+          int daysInFirstWeek = getFirstDayOfWeek() - first;
+          if (daysInFirstWeek <= 0)
+            daysInFirstWeek += 7;
 
-            if (daysInFirstWeek < getMinimalDaysInFirstWeek())
-              offs += daysInFirstWeek;
-            else
-              offs -= 7 - daysInFirstWeek;
-            month = 0;
-            day = offs + 7 * (fields[WEEK_OF_YEAR] - 1);
-            offs = fields[DAY_OF_WEEK] - getFirstDayOfWeek();
+          if (daysInFirstWeek < getMinimalDaysInFirstWeek())
+            offs += daysInFirstWeek;
+          else
+            offs -= 7 - daysInFirstWeek;
+          month = 0;
+          day = offs + 7 * (fields[WEEK_OF_YEAR] - 1);
+          offs = dayOfWeek - getFirstDayOfWeek();
 
-            if (offs < 0)
-              offs += 7;
-            day += offs;
-          }
-        else
-          {
-            // 4:  YEAR + DAY_OF_YEAR
-            month = 0;
-            day = fields[DAY_OF_YEAR];
-          }
+          if (offs < 0)
+            offs += 7;
+          day += offs;
+        }
+        break;
+      case 4: // YEAR + DAY_OF_YEAR
+        month = 0;
+        day = fields[DAY_OF_YEAR];
+        break;
+      case 3: // YEAR + MONTH + DAY_OF_WEEK_IN_MONTH + DAY_OF_WEEK
+        {
+          int first = getFirstDayOfMonth(year, month);
+          if (fields[DAY_OF_WEEK_IN_MONTH] < 0)
+            {
+              month++;
+              first = getFirstDayOfMonth(year, month);
+              day = 1 + 7 * (fields[DAY_OF_WEEK_IN_MONTH]);
+            }
+          else
+            day = 1 + 7 * (fields[DAY_OF_WEEK_IN_MONTH] - 1);
+
+          int offs = dayOfWeek - first;
+          if (offs < 0)
+            offs += 7;
+          day += offs;
+        }
+        break;
+      case 2: // YEAR + MONTH + WEEK_OF_MONTH + DAY_OF_WEEK
+        {
+          int first = getFirstDayOfMonth(year, month);
+          int offs = 1;
+          int daysInFirstWeek = getFirstDayOfWeek() - first;
+          if (daysInFirstWeek <= 0)
+            daysInFirstWeek += 7;
+
+          if (daysInFirstWeek < getMinimalDaysInFirstWeek())
+            offs += daysInFirstWeek;
+          else
+            offs -= 7 - daysInFirstWeek;
+
+          day = offs + 7 * (fields[WEEK_OF_MONTH] - 1);
+          offs = dayOfWeek - getFirstDayOfWeek();
+          if (offs < 0)
+            offs += 7;
+          day += offs;
+        }
+        break;
+      default: // case 1: YEAR + MONTH + DAY_OF_MONTH (default)
+        break;
       }
-    else
-      {
-        if (isSet[DAY_OF_WEEK])
-          {
-            int first = getFirstDayOfMonth(year, month);
 
-            // 3: YEAR + MONTH + DAY_OF_WEEK_IN_MONTH + DAY_OF_WEEK
-            if (isSet[DAY_OF_WEEK_IN_MONTH])
-              {
-                if (fields[DAY_OF_WEEK_IN_MONTH] < 0)
-                  {
-                    month++;
-                    first = getFirstDayOfMonth(year, month);
-                    day = 1 + 7 * (fields[DAY_OF_WEEK_IN_MONTH]);
-                  }
-                else
-                  day = 1 + 7 * (fields[DAY_OF_WEEK_IN_MONTH] - 1);
-
-                int offs = fields[DAY_OF_WEEK] - first;
-                if (offs < 0)
-                  offs += 7;
-                day += offs;
-              }
-            else
-              { // 2: YEAR + MONTH + WEEK_OF_MONTH + DAY_OF_WEEK
-                int offs = 1;
-                int daysInFirstWeek = getFirstDayOfWeek() - first;
-                if (daysInFirstWeek <= 0)
-                  daysInFirstWeek += 7;
-
-                if (daysInFirstWeek < getMinimalDaysInFirstWeek())
-                  offs += daysInFirstWeek;
-                else
-                  offs -= 7 - daysInFirstWeek;
-
-                day = offs + 7 * (fields[WEEK_OF_MONTH] - 1);
-                offs = fields[DAY_OF_WEEK] - getFirstDayOfWeek();
-                if (offs < 0)
-                  offs += 7;
-                day += offs;
-              }
-          }
-
-        // 1:  YEAR + MONTH + DAY_OF_MONTH
-      }
     if (era == BC && year > 0)
       year = 1 - year;
 
-    // rest of code assumes day/month/year set
-    // should negative BC years be AD?
-    // get the hour (but no check for validity)
-    if (isSet[HOUR])
+    // Resolve hour: HOUR_OF_DAY vs HOUR + AM_PM
+    int hourOfDayStamp = getStamp(HOUR_OF_DAY);
+    int amPmHourStamp = aggregateStamp(AM_PM, HOUR);
+    if (amPmHourStamp > hourOfDayStamp)
       {
         hour = fields[HOUR];
         if (fields[AM_PM] == PM)
@@ -695,6 +715,111 @@ public class GregorianCalendar extends Calendar
     time -= rawOffset + dstOffset;
 
     isTimeSet = true;
+  }
+
+  /**
+   * Resolves which date pattern to use based on field stamps.
+   *
+   * @return 1 for YEAR+MONTH+DAY_OF_MONTH,
+   *         2 for YEAR+MONTH+WEEK_OF_MONTH+DAY_OF_WEEK,
+   *         3 for YEAR+MONTH+DAY_OF_WEEK_IN_MONTH+DAY_OF_WEEK,
+   *         4 for YEAR+DAY_OF_YEAR,
+   *         5 for YEAR+DAY_OF_WEEK+WEEK_OF_YEAR.
+   */
+  private int resolveDateFields()
+  {
+    // Group 1 (month-based patterns): 1, 2, 3
+    // Determining fields (excluding YEAR and MONTH which are common):
+    //   Pattern 1: DAY_OF_MONTH
+    //   Pattern 2: WEEK_OF_MONTH, DAY_OF_WEEK
+    //   Pattern 3: DAY_OF_WEEK_IN_MONTH, DAY_OF_WEEK
+    int bestGroup1Stamp = 0;
+    int bestGroup1Pattern = 0;
+
+    int stamp1 = getStamp(DAY_OF_MONTH);
+    if (stamp1 > 0)
+      {
+        bestGroup1Stamp = stamp1;
+        bestGroup1Pattern = 1;
+      }
+
+    int stamp2 = aggregateStamp(WEEK_OF_MONTH, DAY_OF_WEEK);
+    if (stamp2 >= bestGroup1Stamp && stamp2 > 0)
+      {
+        bestGroup1Stamp = stamp2;
+        bestGroup1Pattern = 2;
+      }
+
+    int stamp3 = aggregateStamp(DAY_OF_WEEK_IN_MONTH, DAY_OF_WEEK);
+    if (stamp3 >= bestGroup1Stamp && stamp3 > 0)
+      {
+        bestGroup1Stamp = stamp3;
+        bestGroup1Pattern = 3;
+      }
+
+    // Group 2 (day-of-year-based patterns): 4, 5
+    // Determining fields:
+    //   Pattern 4: DAY_OF_YEAR
+    //   Pattern 5: WEEK_OF_YEAR, DAY_OF_WEEK
+    int bestGroup2Stamp = 0;
+    int bestGroup2Pattern = 0;
+
+    int stamp4 = getStamp(DAY_OF_YEAR);
+    if (stamp4 > 0)
+      {
+        bestGroup2Stamp = stamp4;
+        bestGroup2Pattern = 4;
+      }
+
+    int stamp5 = aggregateStamp(WEEK_OF_YEAR, DAY_OF_WEEK);
+    if (stamp5 >= bestGroup2Stamp && stamp5 > 0)
+      {
+        bestGroup2Stamp = stamp5;
+        bestGroup2Pattern = 5;
+      }
+
+    // Between groups: group 2 must strictly exceed group 1 to win.
+    if (bestGroup1Stamp > 0 || bestGroup2Stamp > 0)
+      {
+        if (bestGroup2Stamp > bestGroup1Stamp)
+          return bestGroup2Pattern;
+        if (bestGroup1Stamp > 0)
+          return bestGroup1Pattern;
+        return bestGroup2Pattern;
+      }
+
+    // Fallback: no complete pattern found.  Pick the pattern whose
+    // primary determining field has the highest stamp.
+    int bestStamp = 0;
+    int bestPattern = 1; // default
+
+    if (getStamp(DAY_OF_MONTH) > bestStamp)
+      {
+        bestStamp = getStamp(DAY_OF_MONTH);
+        bestPattern = 1;
+      }
+    if (getStamp(WEEK_OF_MONTH) > bestStamp)
+      {
+        bestStamp = getStamp(WEEK_OF_MONTH);
+        bestPattern = 2;
+      }
+    if (getStamp(DAY_OF_WEEK_IN_MONTH) > bestStamp)
+      {
+        bestStamp = getStamp(DAY_OF_WEEK_IN_MONTH);
+        bestPattern = 3;
+      }
+    if (getStamp(DAY_OF_YEAR) > bestStamp)
+      {
+        bestStamp = getStamp(DAY_OF_YEAR);
+        bestPattern = 4;
+      }
+    if (getStamp(WEEK_OF_YEAR) > bestStamp)
+      {
+        bestStamp = getStamp(WEEK_OF_YEAR);
+        bestPattern = 5;
+      }
+
+    return bestPattern;
   }
 
   /**

@@ -452,6 +452,20 @@ public abstract class Calendar
   private boolean explicitDSTOffset = false;
 
   /**
+   * Stamps recording the order in which fields were set.
+   * stamp[i] == 0 means the field was never set by the user.
+   * stamp[i] >= 2 means the field was explicitly set by the user;
+   * higher values indicate more recent set() calls.
+   */
+  private int[] stamp = new int[FIELD_COUNT];
+
+  /**
+   * The next stamp value to assign.  Starts at 2 (0 = unset,
+   * 1 reserved for computed fields).
+   */
+  private int nextStamp = 2;
+
+  /**
    * The version of the serialized data on the stream.
    * <dl><dt>0 or not present</dt>
    * <dd> JDK 1.1.5 or later.</dd>
@@ -781,6 +795,41 @@ public abstract class Calendar
   }
 
   /**
+   * Gets the stamp value for the specified field.  A stamp of 0 means
+   * the field was never explicitly set.  Higher values indicate more
+   * recent set() calls.
+   *
+   * @param field the time field.
+   * @return the stamp value.
+   */
+  final int getStamp(int field)
+  {
+    return stamp[field];
+  }
+
+  /**
+   * Computes an aggregate stamp for a set of fields.  Returns 0 if
+   * any field has stamp 0 (unset).  Otherwise returns the maximum
+   * stamp among the fields.
+   *
+   * @param fields the field indices to aggregate.
+   * @return the aggregate stamp, or 0 if any field is unset.
+   */
+  final int aggregateStamp(int... fields)
+  {
+    int result = 0;
+    for (int f : fields)
+      {
+        int s = stamp[f];
+        if (s == 0)
+          return 0;
+        if (s > result)
+          result = s;
+      }
+    return result;
+  }
+
+  /**
    * Sets the time field with the given value.  This does invalidate
    * the time in milliseconds.
    * @param field the time field. One of the time field constants
@@ -792,95 +841,21 @@ public abstract class Calendar
    */
   public void set(int field, int value)
   {
-    if (isTimeSet)
-      for (int i = 0; i < FIELD_COUNT; i++)
-        isSet[i] = false;
     isTimeSet = false;
+    areFieldsSet = false;
     fields[field] = value;
     isSet[field] = true;
+    stamp[field] = nextStamp++;
 
-    // The five valid date patterns, in order of priority
-    // 1  YEAR + MONTH + DAY_OF_MONTH
-    // 2  YEAR + MONTH + WEEK_OF_MONTH + DAY_OF_WEEK
-    // 3  YEAR + MONTH + DAY_OF_WEEK_IN_MONTH + DAY_OF_WEEK
-    // 4  YEAR + DAY_OF_YEAR
-    // 5  YEAR + DAY_OF_WEEK + WEEK_OF_YEAR
-    switch (field)
-      {
-      case MONTH: // pattern 1,2 or 3
-        isSet[DAY_OF_YEAR] = false;
-        isSet[WEEK_OF_YEAR] = false;
-        break;
-      case DAY_OF_MONTH: // pattern 1
-        isSet[YEAR] = true;
-        isSet[MONTH] = true;
-        isSet[WEEK_OF_MONTH] = true;
-        isSet[DAY_OF_WEEK] = false;
-        isSet[DAY_OF_WEEK_IN_MONTH] = false;
-        isSet[DAY_OF_YEAR] = false;
-        isSet[WEEK_OF_YEAR] = false;
-        break;
-      case WEEK_OF_MONTH: // pattern 2
-        if (! isSet[DAY_OF_WEEK])
-          fields[DAY_OF_WEEK] = getFirstDayOfWeek();
-        isSet[YEAR] = true;
-        isSet[MONTH] = true;
-        isSet[DAY_OF_WEEK] = true;
-        isSet[DAY_OF_MONTH] = false;
-        isSet[DAY_OF_WEEK_IN_MONTH] = false;
-        isSet[DAY_OF_YEAR] = false;
-        isSet[WEEK_OF_YEAR] = false;
-        break;
-      case DAY_OF_WEEK_IN_MONTH: // pattern 3
-        if (! isSet[DAY_OF_WEEK])
-          fields[DAY_OF_WEEK] = getFirstDayOfWeek();
-        isSet[YEAR] = true;
-        isSet[MONTH] = true;
-        isSet[DAY_OF_WEEK] = true;
-        isSet[DAY_OF_YEAR] = false;
-        isSet[DAY_OF_MONTH] = false;
-        isSet[WEEK_OF_MONTH] = false;
-        isSet[WEEK_OF_YEAR] = false;
-        break;
-      case DAY_OF_YEAR: // pattern 4
-        isSet[YEAR] = true;
-        isSet[MONTH] = false;
-        isSet[WEEK_OF_MONTH] = false;
-        isSet[DAY_OF_MONTH] = false;
-        isSet[DAY_OF_WEEK] = false;
-        isSet[WEEK_OF_YEAR] = false;
-        isSet[DAY_OF_WEEK_IN_MONTH] = false;
-        break;
-      case WEEK_OF_YEAR: // pattern 5
-        if (! isSet[DAY_OF_WEEK])
-          fields[DAY_OF_WEEK] = getFirstDayOfWeek();
-        isSet[YEAR] = true;
-        isSet[DAY_OF_WEEK] = true;
-        isSet[MONTH] = false;
-        isSet[DAY_OF_MONTH] = false;
-        isSet[WEEK_OF_MONTH] = false;
-        isSet[DAY_OF_YEAR] = false;
-        isSet[DAY_OF_WEEK_IN_MONTH] = false;
-        break;
-      case AM_PM:
-        isSet[HOUR] = true;
-        isSet[HOUR_OF_DAY] = false;
-        break;
-      case HOUR_OF_DAY:
-        isSet[AM_PM] = false;
-        isSet[HOUR] = false;
-        break;
-      case HOUR:
-        isSet[AM_PM] = true;
-        isSet[HOUR_OF_DAY] = false;
-        break;
-      case DST_OFFSET:
-        explicitDSTOffset = true;
-      }
+    if (field == DST_OFFSET)
+      explicitDSTOffset = true;
 
     // May have crossed over a DST boundary.
     if (! explicitDSTOffset && (field != DST_OFFSET && field != ZONE_OFFSET))
-      isSet[DST_OFFSET] = false;
+      {
+        isSet[DST_OFFSET] = false;
+        stamp[DST_OFFSET] = 0;
+      }
   }
 
   /**
@@ -892,19 +867,20 @@ public abstract class Calendar
   public final void set(int year, int month, int date)
   {
     isTimeSet = false;
+    areFieldsSet = false;
     fields[YEAR] = year;
     fields[MONTH] = month;
     fields[DATE] = date;
     isSet[YEAR] = isSet[MONTH] = isSet[DATE] = true;
-    isSet[WEEK_OF_YEAR] = false;
-    isSet[DAY_OF_YEAR] = false;
-    isSet[WEEK_OF_MONTH] = false;
-    isSet[DAY_OF_WEEK] = false;
-    isSet[DAY_OF_WEEK_IN_MONTH] = false;
-    isSet[ERA] = false;
+    stamp[YEAR] = nextStamp++;
+    stamp[MONTH] = nextStamp++;
+    stamp[DATE] = nextStamp++;
 
     if (! explicitDSTOffset)
-      isSet[DST_OFFSET] = false; // May have crossed a DST boundary.
+      {
+        isSet[DST_OFFSET] = false;
+        stamp[DST_OFFSET] = 0;
+      }
   }
 
   /**
@@ -921,8 +897,8 @@ public abstract class Calendar
     fields[HOUR_OF_DAY] = hour;
     fields[MINUTE] = minute;
     isSet[HOUR_OF_DAY] = isSet[MINUTE] = true;
-    isSet[AM_PM] = false;
-    isSet[HOUR] = false;
+    stamp[HOUR_OF_DAY] = nextStamp++;
+    stamp[MINUTE] = nextStamp++;
   }
 
   /**
@@ -940,6 +916,7 @@ public abstract class Calendar
     set(year, month, date, hour, minute);
     fields[SECOND] = second;
     isSet[SECOND] = true;
+    stamp[SECOND] = nextStamp++;
   }
 
   /**
@@ -957,7 +934,12 @@ public abstract class Calendar
                        };
     fields = tempFields;
     for (int i = 0; i < FIELD_COUNT; i++)
-      isSet[i] = false;
+      {
+        isSet[i] = false;
+        stamp[i] = 0;
+      }
+    nextStamp = 2;
+    explicitDSTOffset = false;
   }
 
   /**
@@ -978,6 +960,7 @@ public abstract class Calendar
     isTimeSet = false;
     areFieldsSet = false;
     isSet[field] = false;
+    stamp[field] = 0;
     fields[field] = tempFields[field];
   }
 
@@ -1327,6 +1310,7 @@ public abstract class Calendar
         Calendar cal = (Calendar) super.clone();
         cal.fields = (int[]) fields.clone();
         cal.isSet = (boolean[]) isSet.clone();
+        cal.stamp = (int[]) stamp.clone();
         return cal;
       }
     catch (CloneNotSupportedException ex)
