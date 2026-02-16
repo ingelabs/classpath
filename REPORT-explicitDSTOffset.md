@@ -18,41 +18,14 @@ int dstOffset = isSet[DST_OFFSET] ? fields[DST_OFFSET]
 So an explicit `DST_OFFSET` is honored only if `isSet[DST_OFFSET]`
 survives until `computeTime()` runs.
 
-## VMR approach
+## The bug (before fix)
 
-The VMR patch removes the `explicitDSTOffset` flag and all associated
-logic in `set()`.  The `isSet[DST_OFFSET]` flag is no longer protected
-against clearing by subsequent `set()` calls.
-
-However, VMR also retains the `if (isTimeSet) clear-all-isSet` block in
-`set()`, which clears *all* `isSet[]` flags on the first `set()` after a
-`getTime()` or `get()` call.  This means `isSet[DST_OFFSET]` is always
-cleared after a computation cycle, regardless of whether it was
-explicitly set.
-
-## Our approach
-
-Our stamp-based fix preserves the `explicitDSTOffset` flag from the
-original code.  When `set(DST_OFFSET, value)` is called:
-
-```java
-if (field == DST_OFFSET)
-    explicitDSTOffset = true;
-```
-
-Subsequent `set()` calls to other fields skip the DST invalidation:
-
-```java
-if (! explicitDSTOffset && (field != DST_OFFSET && field != ZONE_OFFSET))
-  {
-    isSet[DST_OFFSET] = false;
-    stamp[DST_OFFSET] = 0;
-  }
-```
-
-The flag is reset by `clear()` but not by `computeFields()`.  This means
-once `DST_OFFSET` is explicitly set, it remains protected across
-`getTime()` + `set()` cycles indefinitely.
+The original code never cleared `explicitDSTOffset` after
+`computeTime()` consumed the value.  Once set, the flag remained `true`
+indefinitely (only `clear()` reset it).  This meant that after a
+`getTime()` + `set(other field)` cycle, `isSet[DST_OFFSET]` was still
+protected, and the stale explicit value was reused instead of being
+recomputed from the timezone.
 
 ## OpenJDK approach
 
@@ -127,6 +100,84 @@ by `getTime()` followed by `set()`:
    **not** included in the mask, and `computeTime()` recomputes the
    DST offset from the timezone.
 
+## VMR approach
+
+The VMR patch removes the `explicitDSTOffset` flag and all associated
+logic in `set()`.  The `isSet[DST_OFFSET]` flag is no longer protected
+against clearing by subsequent `set()` calls.
+
+VMR also retains the `if (isTimeSet) clear-all-isSet` block in
+`set()`, which clears *all* `isSet[]` flags on the first `set()` after a
+`getTime()` call.  This means `isSet[DST_OFFSET]` is always cleared
+after a computation cycle, which accidentally matches OpenJDK's
+behavior for DST_OFFSET.
+
+However, the sledgehammer clearing of all `isSet[]` flags causes
+collateral damage to other fields.  For example, after `getTime()` +
+`set(MONTH)`, the `isSet[HOUR]` and `isSet[AM_PM]` flags are also
+cleared, causing HOUR and AM_PM to revert to defaults instead of being
+preserved.  This is tested by `testHourAmPmPreservedAfterSet` in
+CalendarTest.
+
+## Our fix
+
+We keep the `explicitDSTOffset` flag but clear it at the top of
+`set()` when `isTimeSet` is `true` — i.e., when `computeTime()` has
+already consumed the explicit value:
+
+```java
+public void set(int field, int value)
+{
+    // If computeTime() already ran (isTimeSet == true), it consumed
+    // any explicit DST_OFFSET.  Clear the flag so that DST_OFFSET
+    // reverts to "computed" status and will be invalidated below.
+    if (isTimeSet)
+      explicitDSTOffset = false;
+
+    isTimeSet = false;
+    areFieldsSet = false;
+    fields[field] = value;
+    isSet[field] = true;
+    stamp[field] = nextStamp++;
+
+    if (field == DST_OFFSET)
+      explicitDSTOffset = true;
+
+    if (! explicitDSTOffset && (field != DST_OFFSET && field != ZONE_OFFSET))
+      {
+        isSet[DST_OFFSET] = false;
+        stamp[DST_OFFSET] = 0;
+      }
+}
+```
+
+The logic:
+
+1. On the first `set()` after `getTime()`, `isTimeSet` is `true`,
+   so `explicitDSTOffset` is cleared.
+2. If this `set()` call is for `DST_OFFSET` itself, the flag is
+   immediately re-set to `true`.
+3. If this `set()` call is for any other field, `explicitDSTOffset`
+   is now `false`, so the existing guard clears `isSet[DST_OFFSET]`
+   and `stamp[DST_OFFSET]`, forcing recomputation on the next cycle.
+
+This is surgically targeted: only `DST_OFFSET` is affected, unlike
+VMR's approach which clears all `isSet[]` flags.  The flag and all
+its logic remain private to `Calendar`, with no changes needed in
+`GregorianCalendar`.
+
+### Comparison with VMR
+
+For DST_OFFSET specifically, both approaches produce the same result.
+The difference is scope:
+
+| Aspect | VMR | Our fix |
+|--------|-----|---------|
+| Mechanism | `if (isTimeSet)` clears **all** `isSet[]` | `if (isTimeSet)` clears only `explicitDSTOffset`, then existing guard clears `isSet[DST_OFFSET]` |
+| DST_OFFSET result | Correct (matches OpenJDK) | Correct (matches OpenJDK) |
+| Collateral damage | Yes — HOUR, AM_PM, and other fields lose their `isSet` status | None — only DST_OFFSET is affected |
+| Match with OpenJDK | Accidental (right result, wrong mechanism) | Deliberate (targeted clearing after consumption) |
+
 ## Test results
 
 Three scenarios were tested with Europe/Madrid timezone (CET/CEST),
@@ -154,7 +205,7 @@ All agree.  The explicit `DST_OFFSET=0` is honored.
 ```java
 c.set(YEAR, 2018); c.set(MONTH, JULY); c.set(DAY_OF_MONTH, 15);
 c.set(HOUR_OF_DAY, 12); c.set(DST_OFFSET, 0);
-c.getTime();                        // triggers computeFields()
+c.getTime();                        // triggers computeTime()
 c.set(DAY_OF_MONTH, 20);           // modify a date field
 c.getTime();                        // is DST_OFFSET=0 still honored?
 ```
@@ -163,11 +214,10 @@ c.getTime();                        // is DST_OFFSET=0 still honored?
 |----------------|--------------------:|-----------------|
 | OpenJDK        |       1532080800000 | 3600000 (recomputed, CEST) |
 | VMR            |       1532080800000 | 3600000 (recomputed, CEST) |
-| Our fix        |       1532084400000 | 0 (preserved, CET) |
+| Our fix        |       1532080800000 | 3600000 (recomputed, CEST) |
 
-OpenJDK and VMR agree: `DST_OFFSET` is recomputed from the timezone
-after the cycle.  **Our fix differs**: the `explicitDSTOffset` flag
-keeps `isSet[DST_OFFSET]` alive, so the explicit value is preserved.
+All agree.  After the `getTime()` + `set()` cycle, `DST_OFFSET` is
+recomputed from the timezone.
 
 ### Test C: DST_OFFSET re-set after the cycle
 
@@ -232,30 +282,6 @@ The transition from `areAllFieldsSet=false` (after getTime) to
 inside the `set()` call, triggered by the `areFieldsSet && !areAllFieldsSet`
 guard.
 
-## Analysis
-
-The discrepancy in test B stems from how each implementation handles
-the transition from "user-set" to "computed" for `DST_OFFSET`:
-
-- **OpenJDK**: The three-level stamp system (`UNSET`/`COMPUTED`/`USER_SET`)
-  is a deliberate design.  `computeFields()` resets all stamps to
-  `COMPUTED=1`, and `selectFields()` explicitly checks
-  `stamp[DST_OFFSET] >= MINIMUM_USER_STAMP` to distinguish user-set
-  from computed values.  After the `getTime()` + `set()` cycle,
-  `DST_OFFSET` is downgraded to "computed" and recomputed from the
-  timezone.
-
-- **VMR**: The `if (isTimeSet) clear-all-isSet` block in `set()` clears
-  `isSet[DST_OFFSET]`.  Without the `explicitDSTOffset` flag, there is
-  nothing to protect it.  The result **accidentally** matches OpenJDK,
-  but through a different mechanism (isSet clearing vs stamp downgrading).
-
-- **Our fix**: The `explicitDSTOffset` flag protects `isSet[DST_OFFSET]`
-  indefinitely once set.  Unlike OpenJDK, we never downgrade it back to
-  "computed" status.  Our `computeFields()` does not reset stamps.
-  This causes `DST_OFFSET=0` to persist across the cycle when it
-  shouldn't.
-
 ## JDK bug tracker evidence
 
 - **JDK-6615045** ("Calendar.set(SECOND, ...) clears DST_OFFSET set by
@@ -274,29 +300,18 @@ the transition from "user-set" to "computed" for `DST_OFFSET`:
 
 1. **OpenJDK's behavior is by design.**  The three-level stamp system
    with the `COMPUTED`/`MINIMUM_USER_STAMP` distinction, the
-   `setFieldsNormalized()` → deferred `computeFields()` chain, and the
+   `setFieldsNormalized()` -> deferred `computeFields()` chain, and the
    `selectFields()` check are all deliberate mechanisms.  The JDK bug
    tracker (JDK-6615045, closed as "Not an Issue") confirms that
    `DST_OFFSET` is not expected to survive across `getTime()` + `set()`
    cycles.
 
-2. **Our fix has a discrepancy with OpenJDK** in test B: we
-   over-preserve the explicit `DST_OFFSET`.  The root cause is that our
-   `computeFields()` does not reset stamps for computed fields, and the
-   `explicitDSTOffset` flag is never cleared after computation.
+2. **Fixed.**  Our `set()` now clears `explicitDSTOffset` when
+   `isTimeSet` is `true`, matching OpenJDK's behavior in all three
+   test scenarios.  The fix is minimal (4 lines in `Calendar.set()`),
+   keeps the flag private to `Calendar`, and causes no collateral
+   damage to other fields.
 
-3. **To match OpenJDK**, we have two options:
-   - (a) Clear `explicitDSTOffset` after `computeFields()` runs.
-     This is the minimal change but specific to DST_OFFSET.
-   - (b) Implement a two-level stamp distinction in `computeFields()`,
-     resetting all stamps to a "computed" level (e.g., 1) while
-     user `set()` calls use stamps >= 2.  This is architecturally
-     closer to OpenJDK but a more invasive change.
-
-4. VMR issue #3 (removal of `explicitDSTOffset`) is **not independently
-   testable** because VMR's behavior matches OpenJDK in all tested
-   scenarios, albeit through a different mechanism.
-
-5. This is a **low-priority edge case**: it requires the specific
-   sequence of `set(DST_OFFSET)` + `getTime()` + `set(other field)` +
-   `getTime()`, which is uncommon in practice.  The fix can be deferred.
+3. **Test coverage.**  The three scenarios (A, B, C) are covered by
+   `testExplicitDSTOffset()` in `CalendarTest.java` (malva), verified
+   against both OpenJDK and our implementation.
