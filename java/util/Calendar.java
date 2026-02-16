@@ -445,25 +445,27 @@ public abstract class Calendar
   private int minimalDaysInFirstWeek;
 
   /**
-   * Is set to true if DST_OFFSET is explicitly set. In that case
-   * it's value overrides the value computed from the current
-   * time and the timezone.
+   * Is set to true if DST_OFFSET is explicitly set by the user.
+   * Protects isSet[DST_OFFSET] from being cleared by subsequent
+   * set() calls to other fields.  Cleared on the first set() call
+   * after computeTime() has consumed the value (detected via
+   * isTimeSet), so that DST_OFFSET reverts to "computed" status
+   * and will be recomputed from the timezone on the next cycle.
    */
   private boolean explicitDSTOffset = false;
 
   /**
    * Stamps recording the order in which fields were set.
    * stamp[i] == 0 means the field was never set by the user.
-   * stamp[i] >= 2 means the field was explicitly set by the user;
+   * stamp[i] >= 1 means the field was explicitly set by the user;
    * higher values indicate more recent set() calls.
    */
   private int[] stamp = new int[FIELD_COUNT];
 
   /**
-   * The next stamp value to assign.  Starts at 2 (0 = unset,
-   * 1 reserved for computed fields).
+   * The next stamp value to assign.  Starts at 1 (0 = unset).
    */
-  private int nextStamp = 2;
+  private int nextStamp = 1;
 
   /**
    * The version of the serialized data on the stream.
@@ -841,6 +843,12 @@ public abstract class Calendar
    */
   public void set(int field, int value)
   {
+    // If computeTime() already ran (isTimeSet == true), it consumed
+    // any explicit DST_OFFSET.  Clear the flag so that DST_OFFSET
+    // reverts to "computed" status and will be invalidated below.
+    if (isTimeSet)
+      explicitDSTOffset = false;
+
     isTimeSet = false;
     areFieldsSet = false;
     fields[field] = value;
@@ -938,7 +946,7 @@ public abstract class Calendar
         isSet[i] = false;
         stamp[i] = 0;
       }
-    nextStamp = 2;
+    nextStamp = 1;
     explicitDSTOffset = false;
   }
 
