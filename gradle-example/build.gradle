@@ -1,0 +1,29 @@
+plugins {
+    id 'application'
+}
+
+repositories {
+    maven {
+        name = 'centralPortalSnapshots'
+        url = 'https://central.sonatype.com/repository/maven-snapshots/'
+    }
+    mavenCentral()
+}
+
+configurations {
+    bootclasspath
+}
+
+dependencies {
+    bootclasspath 'com.ingelabs.classpath:classpath:0.99.1-SNAPSHOT'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    sourceCompatibility = JavaVersion.VERSION_1_6
+    targetCompatibility = JavaVersion.VERSION_1_6
+    options.bootstrapClasspath = files(configurations.bootclasspath)
+}
+
+application {
+    mainClass = 'HelloWorld'
+}
