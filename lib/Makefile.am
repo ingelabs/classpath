@@ -8,8 +8,8 @@ sinclude $(JAVA_DEPEND)
 compile_classpath = $(vm_classes):$(top_srcdir):$(top_srcdir)/external/w3c_dom:$(top_srcdir)/external/sax:$(top_srcdir)/external/relaxngDatatype:$(top_srcdir)/external/jsr166:.:$(PATH_TO_GLIBJ_ZIP):$(PATH_TO_ESCHER)
 
 # source,target and classpath options
-GCJ_OPTS=-fsource=1.8 -ftarget=1.8 --bootclasspath='' --classpath=$(compile_classpath)
-ECJ_OPTS=-source 1.8 -target 1.8 -bootclasspath '' -classpath $(compile_classpath)
+GCJ_OPTS=-fsource=1.6 -ftarget=1.6 --bootclasspath='' --classpath=$(compile_classpath)
+ECJ_OPTS=-source 1.6 -target 1.6 -bootclasspath '' -classpath $(compile_classpath)
 JAVAC_OPTS=$(ECJ_OPTS)
 
 # handling source to bytecode compiler programs like gcj, jikes  and kjc
