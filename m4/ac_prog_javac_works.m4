@@ -32,9 +32,9 @@ public class Object
 }
 EOF
 if test x$JAVAC_IS_GCJ = xyes; then
-  CMD="$JAVAC $JAVACFLAGS -fsource=1.6 -ftarget=1.6 $JAVA_TEST"
+  CMD="$JAVAC $JAVACFLAGS -fsource=1.8 -ftarget=1.8 $JAVA_TEST"
 else
-  CMD="$JAVAC $JAVACFLAGS -sourcepath '' -source 1.6 -target 1.6 $JAVA_TEST"
+  CMD="$JAVAC $JAVACFLAGS -sourcepath '' -source 1.8 -target 1.8 $JAVA_TEST"
 fi
 if AC_TRY_COMMAND($CMD) >/dev/null 2>&1; then
   ac_cv_prog_javac_works=yes
