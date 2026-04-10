@@ -44,6 +44,8 @@ import gnu.java.lang.CPStringBuilder;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Throwable is the superclass of all exceptions that can be raised.
@@ -104,7 +106,7 @@ import java.io.Serializable;
  * @author Tom Tromey
  * @author Eric Blake (ebb9@email.byu.edu)
  * @since 1.0
- * @status updated to 1.4
+ * @status updated to 1.7
  */
 public class Throwable implements Serializable
 {
@@ -138,6 +140,22 @@ public class Throwable implements Serializable
    * @since 1.4
    */
   private StackTraceElement[] stackTrace;
+
+  /**
+   * The list of suppressed exceptions, or null if suppression is disabled.
+   *
+   * @serial the suppressed exceptions
+   * @since 1.7
+   */
+  private List<Throwable> suppressedExceptions = new ArrayList<Throwable>();
+
+  /**
+   * Whether stack traces are writable for this throwable.
+   * @since 1.7
+   */
+  private transient boolean writableStackTrace = true;
+
+  private static final Throwable[] EMPTY_THROWABLE_ARRAY = new Throwable[0];
 
   /**
    * Instantiate this Throwable with an empty message. The cause remains
@@ -188,6 +206,30 @@ public class Throwable implements Serializable
   public Throwable(Throwable cause)
   {
     this(cause == null ? null : cause.toString(), cause);
+  }
+
+  /**
+   * Instantiate this Throwable with the given message, cause, and control
+   * over suppression and stack trace writability.  This constructor is for
+   * use by subclasses that need to disable suppression or avoid the overhead
+   * of filling in the stack trace.
+   *
+   * @param message the detail message
+   * @param cause the cause, may be null
+   * @param enableSuppression whether suppressed exceptions can be added
+   * @param writableStackTrace whether the stack trace is writable
+   * @since 1.7
+   */
+  protected Throwable(String message, Throwable cause,
+                      boolean enableSuppression, boolean writableStackTrace)
+  {
+    this.writableStackTrace = writableStackTrace;
+    if (writableStackTrace)
+      fillInStackTrace();
+    detailMessage = message;
+    this.cause = cause;
+    if (!enableSuppression)
+      suppressedExceptions = null;
   }
 
   /**
@@ -419,6 +461,15 @@ public class Throwable implements Serializable
     StackTraceElement[] stack = getStackTrace();
     stackTraceStringBuffer(sb, this.toString(), stack, 0);
 
+    // Suppressed exceptions
+    Throwable[] suppressed = getSuppressed();
+    for (Throwable s : suppressed)
+      {
+        sb.append("\tSuppressed: ");
+        StackTraceElement[] suppressedStack = s.getStackTrace();
+        stackTraceStringBuffer(sb, s.toString(), suppressedStack, 0);
+      }
+
     // The cause(s)
     Throwable cause = getCause();
     while (cause != null)
@@ -487,6 +538,41 @@ public class Throwable implements Serializable
             sb.append(nl);
           }
       }
+  }
+
+  /**
+   * Adds the given exception to the list of exceptions that were suppressed
+   * in order to deliver this exception, typically by a try-with-resources
+   * statement.
+   *
+   * @param exception the exception to add; must not be null or this
+   * @throws IllegalArgumentException if exception is this
+   * @throws NullPointerException if exception is null
+   * @since 1.7
+   */
+  public final void addSuppressed(Throwable exception)
+  {
+    if (exception == this)
+      throw new IllegalArgumentException("Self-suppression not permitted");
+    if (exception == null)
+      throw new NullPointerException("Cannot suppress a null exception");
+    if (suppressedExceptions != null)
+      suppressedExceptions.add(exception);
+  }
+
+  /**
+   * Returns the suppressed exceptions that were added to this exception,
+   * typically by a try-with-resources statement.  Returns an empty array
+   * if no exceptions were suppressed or suppression is disabled.
+   *
+   * @return a non-null, possibly empty array of suppressed exceptions
+   * @since 1.7
+   */
+  public final Throwable[] getSuppressed()
+  {
+    if (suppressedExceptions == null || suppressedExceptions.isEmpty())
+      return EMPTY_THROWABLE_ARRAY;
+    return suppressedExceptions.toArray(EMPTY_THROWABLE_ARRAY);
   }
 
   /**
