@@ -43,6 +43,7 @@ exception statement from your version. */
 #include <sys/wait.h>
 #include <unistd.h>
 #include <errno.h>
+#include <fcntl.h>
 #include <stdlib.h>
 
 static void close_all_fds(int *fds, int numFds)
@@ -57,8 +58,17 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
 			int *fds, int pipe_count, pid_t *out_pid, const char *wd)
 {
   int local_fds[6];
+  int fail_fds[2];
+  int errnum;
+  ssize_t n;
   int i;
   pid_t pid;
+
+  /* Initialize the output fds so that the caller sees no garbage in
+     them if we return with an error, or in the unused stderr entry
+     when redirection is requested */
+  for (i = 0; i < CPIO_EXEC_NUM_PIPES; i++)
+    fds[i] = -1;
 
   for (i = 0; i < (pipe_count * 2); i += 2)
     {
@@ -67,16 +77,32 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
 	  int err = errno;
 
 	  close_all_fds(local_fds, i);
-	  
+
 	  return err;
 	}
     }
-  
+
+  /* Extra pipe used by the child to report a failed chdir or exec to
+     the parent. On success the exec closes the write end (FD_CLOEXEC)
+     and the parent reads EOF. */
+  if (pipe(fail_fds) < 0)
+    {
+      int err = errno;
+
+      close_all_fds(local_fds, pipe_count * 2);
+
+      return err;
+    }
+
   pid = fork();
-  
+
   switch (pid)
     {
     case 0:
+      close(fail_fds[0]);
+      if (fcntl(fail_fds[1], F_SETFD, FD_CLOEXEC) < 0)
+	goto child_error;
+
       dup2(local_fds[0], 0);
       dup2(local_fds[3], 1);
       if (pipe_count == 3)
@@ -86,24 +112,58 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
 
       close_all_fds(local_fds, pipe_count * 2);
 
-      i = chdir(wd);
-      /* FIXME: Handle the return value */
-      if (newEnviron == NULL)
-	execvp(commandLine[0], commandLine);
-      else
-	execve(commandLine[0], commandLine, newEnviron);
-      
-      abort();
-      
-      break;
+      if (wd == NULL || chdir(wd) == 0)
+	{
+	  if (newEnviron == NULL)
+	    execvp(commandLine[0], commandLine);
+	  else
+	    execve(commandLine[0], commandLine, newEnviron);
+	}
+
+    child_error:
+      /* The fcntl, chdir or exec failed; send our errno to the parent */
+      errnum = errno;
+      while (write(fail_fds[1], &errnum, sizeof(errnum)) < 0
+	     && errno == EINTR)
+	;
+      _exit(127);
+
     case -1:
       {
 	int err = errno;
-	
+
 	close_all_fds(local_fds, pipe_count * 2);
+	close(fail_fds[0]);
+	close(fail_fds[1]);
 	return err;
       }
-    default: 
+    default:
+      close(fail_fds[1]);
+
+      /* Wait for the outcome of the exec: EOF if it succeeded, the
+	 child's errno if not */
+      do
+	{
+	  n = read(fail_fds[0], &errnum, sizeof(errnum));
+	}
+      while (n < 0 && errno == EINTR);
+      close(fail_fds[0]);
+
+      if (n != 0)
+	{
+	  int status;
+
+	  if (n != (ssize_t) sizeof(errnum))
+	    errnum = EIO;
+
+	  /* The child exited without exec'ing; reap it */
+	  while (waitpid(pid, &status, 0) < 0 && errno == EINTR)
+	    ;
+
+	  close_all_fds(local_fds, pipe_count * 2);
+	  return errnum;
+	}
+
       close(local_fds[0]);
       close(local_fds[3]);
       if (pipe_count == 3)
@@ -111,7 +171,8 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
 
       fds[0] = local_fds[1];
       fds[1] = local_fds[2];
-      fds[2] = local_fds[4];
+      if (pipe_count == 3)
+	fds[2] = local_fds[4];
       *out_pid = pid;
       return 0;
     }
