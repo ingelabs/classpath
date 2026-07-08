@@ -44,7 +44,14 @@ exception statement from your version. */
 #include <unistd.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <limits.h>
 #include <stdlib.h>
+#include <string.h>
+
+/* PATH_MAX is not guaranteed to be defined (e.g. on GNU Hurd) */
+#ifndef PATH_MAX
+#define PATH_MAX 4096
+#endif
 
 static void close_all_fds(int *fds, int numFds)
 {
@@ -54,13 +61,141 @@ static void close_all_fds(int *fds, int numFds)
     close(fds[i]);
 }
 
+/* Like execve, but also implementing execvp's "shell fallback"
+   behaviour: if execve fails with ENOEXEC, try to execute as a
+   script via /bin/sh. The shell receives the script path (file)
+   followed by the original arguments minus argv[0], which is
+   dropped. If envp is NULL the environment is inherited (execv is
+   used instead of execve). */
+static void cp_execve_sh(const char *file, char * const *argv,
+			 char * const *envp, char **sh_argv)
+{
+  if (envp != NULL)
+    execve(file, argv, envp);
+  else
+    execv(file, argv);
+
+  if (errno == ENOEXEC)
+    {
+      int i;
+
+      sh_argv[0] = (char *) "/bin/sh";
+      sh_argv[1] = (char *) file;
+      for (i = 1; argv[i] != NULL; i++)
+	sh_argv[i + 1] = argv[i];
+      sh_argv[i + 1] = NULL;
+
+      if (envp != NULL)
+	execve("/bin/sh", sh_argv, envp);
+      else
+	execv("/bin/sh", sh_argv);
+    }
+}
+
+/* Replacement for execvpe, which is a GNU extension and not available
+   everywhere. If envp is NULL the environment is inherited. The
+   supplied preallocated sh_argv array must have room for one entry
+   more than argv, including its terminating NULL. */
+static void cp_execvpe(const char *file, char * const *argv,
+		       char * const *envp, const char *path,
+		       char **sh_argv)
+{
+  /* - This runs in the child of a fork of a multi-threaded process,
+       so it may only execute async-signal-safe operations.
+     - If execve fails with ENOEXEC, we assume it is a script with +x
+       permission (otherwise we would have seen EACCES) but without a
+       shebang line, and execute it via /bin/sh, as execvp would do.
+       The fallback is implemented explicitly because execve does not
+       provide it, and execvp (which does) is not async-signal-safe.
+     - OpenJDK implements a similar execvpe replacement, except that
+       they do use execvp in fork mode (see childproc.c). */
+  char buffer[PATH_MAX];
+  const char *p, *next;
+  size_t filelen = strlen(file);
+  int got_eacces = 0;
+
+  /* An empty command name fails with ENOENT */
+  if (*file == '\0')
+    {
+      errno = ENOENT;
+      return;
+    }
+
+  /* Command names containing a slash are not looked up in the PATH */
+  if (strchr(file, '/') != NULL)
+    {
+      cp_execve_sh(file, argv, envp, sh_argv);
+      return;
+    }
+
+  for (p = path; p != NULL; p = next)
+    {
+      const char *candidate;
+      const char *sep;
+      size_t len;
+
+      sep = strchr(p, ':');
+      next = (sep != NULL) ? sep + 1 : NULL;
+      len = (sep != NULL) ? (size_t) (sep - p) : strlen(p);
+      if (len == 0)
+	{
+	  /* An empty PATH element means the current directory */
+	  candidate = file;
+	}
+      else if (len + filelen + 2 <= sizeof(buffer))
+	{
+	  memcpy(buffer, p, len);
+	  buffer[len] = '/';
+	  strcpy(buffer + len + 1, file);
+	  candidate = buffer;
+	}
+      else
+	{
+	  errno = ENAMETOOLONG;
+	  continue;
+	}
+
+      cp_execve_sh(candidate, argv, envp, sh_argv);
+      switch (errno)
+	{
+	case EACCES:
+	  /* Keep searching, but report EACCES if nothing is found */
+	  got_eacces = 1;
+	  break;
+	case ENOENT:
+	case ENOTDIR:
+#ifdef ELOOP
+	case ELOOP:
+#endif
+#ifdef ESTALE
+	case ESTALE:
+#endif
+#ifdef ENODEV
+	case ENODEV:
+#endif
+#ifdef ETIMEDOUT
+	case ETIMEDOUT:
+#endif
+	  break;
+	default:
+	  return;
+	}
+    }
+
+  if (got_eacces)
+    errno = EACCES;
+}
+
 int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
 			int *fds, int pipe_count, pid_t *out_pid, const char *wd)
 {
   int local_fds[6];
   int fail_fds[2];
+  const char *path;
+  char **sh_argv;
   int errnum;
   ssize_t n;
+  int argc;
   int i;
   pid_t pid;
 
@@ -70,6 +205,18 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
   for (i = 0; i < CPIO_EXEC_NUM_PIPES; i++)
     fds[i] = -1;
 
+  /* Preallocate the buffer used by cp_execvpe in the child: after the
+     fork of a multi-threaded process only async-signal-safe operations
+     may be executed, so no malloc there */
+  path = getenv("PATH");
+  if (path == NULL)
+    path = "/bin:/usr/bin";
+  for (argc = 0; commandLine[argc] != NULL; argc++)
+    ;
+  sh_argv = malloc((argc + 2) * sizeof(char *));
+  if (sh_argv == NULL)
+    return ENOMEM;
+
   for (i = 0; i < (pipe_count * 2); i += 2)
     {
       if (pipe(&local_fds[i]) < 0)
@@ -77,6 +224,7 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
 	  int err = errno;
 
 	  close_all_fds(local_fds, i);
+	  free(sh_argv);
 
 	  return err;
 	}
@@ -90,6 +238,7 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
       int err = errno;
 
       close_all_fds(local_fds, pipe_count * 2);
+      free(sh_argv);
 
       return err;
     }
@@ -113,12 +262,7 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
       close_all_fds(local_fds, pipe_count * 2);
 
       if (wd == NULL || chdir(wd) == 0)
-	{
-	  if (newEnviron == NULL)
-	    execvp(commandLine[0], commandLine);
-	  else
-	    execve(commandLine[0], commandLine, newEnviron);
-	}
+	cp_execvpe(commandLine[0], commandLine, newEnviron, path, sh_argv);
 
     child_error:
       /* The fcntl, chdir or exec failed; send our errno to the parent */
@@ -135,9 +279,11 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
 	close_all_fds(local_fds, pipe_count * 2);
 	close(fail_fds[0]);
 	close(fail_fds[1]);
+	free(sh_argv);
 	return err;
       }
     default:
+      free(sh_argv);
       close(fail_fds[1]);
 
       /* Wait for the outcome of the exec: EOF if it succeeded, the
