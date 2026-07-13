@@ -126,7 +126,7 @@ Java_java_lang_VMProcess_nativeSpawn (JNIEnv * env, jobject this,
 				      jobjectArray envArray, jobject dirFile,
 				      jboolean redirect)
 {
-  int fds[CPIO_EXEC_NUM_PIPES];
+  int fds[CPIO_EXEC_NUM_PIPES] = { -1, -1, -1 };
   jobject streams[CPIO_EXEC_NUM_PIPES] = { NULL, NULL, NULL };
   jobject dirString = NULL;
   char **newEnviron = NULL;
