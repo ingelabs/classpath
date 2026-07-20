@@ -282,6 +282,10 @@ static int mark_dir_fds_cloexec(void)
   if (dir == NULL)
     return -1;
 
+  /* The directory stream's own fd may appear in FD_DIR. We don't
+     want to close it while we walk the dir, but setting FD_CLOEXEC
+     on it is harmless: it remains open until closedir(). */
+
   for (;;)
     {
       struct dirent *entry;
