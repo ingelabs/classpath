@@ -35,9 +35,15 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+/* For close_range() */
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE 1
+#endif
+
 #include "config.h"
 #include <jni.h>
 #include "cpproc.h"
+#include <dirent.h>
 #include <signal.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -53,11 +59,27 @@ exception statement from your version. */
 #define PATH_MAX 4096
 #endif
 
-static void close_all_fds(int *fds, int numFds);
+/* Bound the last-resort fcntl scan when OPEN_MAX is pathologically large. */
+#define MAX_FD_SCAN 65536
+
+static void close_fds(int *fds, int numFds);
 static void child_process(char * const *commandLine,
 			  char * const *newEnviron,
 			  int *local_fds, int pipe_count, int *fail_fds,
-			  const char *path, char **sh_argv, const char *wd);
+			  const char *path, char **sh_argv, const char *wd,
+			  int maxfd);
+
+/* Compute the fallback loop's upper bound in the parent. sysconf()
+   is not async-signal-safe, so avoid calling it after fork. */
+static int get_max_fd(void)
+{
+  long value = sysconf(_SC_OPEN_MAX);
+
+  if (value <= 0 || value > MAX_FD_SCAN)
+    return MAX_FD_SCAN;
+
+  return (int) value;
+}
 
 int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
 			int *fds, int pipe_count, pid_t *out_pid, const char *wd)
@@ -70,6 +92,7 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
   ssize_t n;
   int argc;
   int i;
+  int maxfd;
   pid_t pid;
 
   /* Initialize the output fds so that the caller sees no garbage in
@@ -90,27 +113,29 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
   if (sh_argv == NULL)
     return ENOMEM;
 
+  maxfd = get_max_fd();
+
   for (i = 0; i < (pipe_count * 2); i += 2)
     {
       if (pipe(&local_fds[i]) < 0)
 	{
 	  int err = errno;
 
-	  close_all_fds(local_fds, i);
+	  close_fds(local_fds, i);
 	  free(sh_argv);
 
 	  return err;
 	}
     }
 
-  /* Extra pipe used by the child to report a failed chdir or exec to
-     the parent. On success the exec closes the write end (FD_CLOEXEC)
-     and the parent reads EOF. */
+  /* Extra pipe used by the child to report failure to the parent.
+     On success the exec closes the write end (FD_CLOEXEC) and the
+     parent reads EOF. */
   if (pipe(fail_fds) < 0)
     {
       int err = errno;
 
-      close_all_fds(local_fds, pipe_count * 2);
+      close_fds(local_fds, pipe_count * 2);
       free(sh_argv);
 
       return err;
@@ -122,7 +147,7 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
     {
     case 0:
       child_process(commandLine, newEnviron, local_fds, pipe_count,
-		    fail_fds, path, sh_argv, wd);
+		    fail_fds, path, sh_argv, wd, maxfd);
       /* child_process() does not return. */
       _exit(127);
 
@@ -130,7 +155,7 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
       {
 	int err = errno;
 
-	close_all_fds(local_fds, pipe_count * 2);
+	close_fds(local_fds, pipe_count * 2);
 	close(fail_fds[0]);
 	close(fail_fds[1]);
 	free(sh_argv);
@@ -160,7 +185,7 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
 	  while (waitpid(pid, &status, 0) < 0 && errno == EINTR)
 	    ;
 
-	  close_all_fds(local_fds, pipe_count * 2);
+	  close_fds(local_fds, pipe_count * 2);
 	  return errnum;
 	}
 
@@ -211,12 +236,105 @@ int cpproc_kill (pid_t pid, int signal)
    and passed in. */
 
 /* Also used by the parent. */
-static void close_all_fds(int *fds, int numFds)
+static void close_fds(int *fds, int numFds)
 {
   int i;
 
   for (i = 0; i < numFds; i++)
     close(fds[i]);
+}
+
+static int mark_fd_cloexec(int fd)
+{
+  int flags = fcntl(fd, F_GETFD);
+
+  if (flags < 0)
+    return -1;
+
+  if (!(flags & FD_CLOEXEC))
+    return fcntl(fd, F_SETFD, flags | FD_CLOEXEC);
+
+  return 0;
+}
+
+/* Walk the process' open fds directory to avoid scanning all possible
+   fds up to OPEN_MAX. This uses opendir/readdir/closedir, which are
+   not specified async-signal-safe, but should be safe in practice after
+   fork (not vfork!) on Linux (glibc, musl >= 1.2.2) and macOS. OpenJDK
+   uses the same approach, as does CPython in its non-Linux fallback.
+
+   We deliberately do not use this on *BSD: without fdescfs mounted
+   (not the default), /dev/fd is a static directory (0, 1, 2, or 0..63)
+   and enumerating it would silently miss open descriptors. */
+#if defined(__linux__)
+#define FD_DIR "/proc/self/fd"
+#elif defined(__APPLE__)
+#define FD_DIR "/dev/fd"
+#endif
+
+#ifdef FD_DIR
+static int mark_dir_fds_cloexec(void)
+{
+  DIR *dir;
+  int result;
+
+  dir = opendir(FD_DIR);
+  if (dir == NULL)
+    return -1;
+
+  /* The directory stream's own fd may appear in FD_DIR. We don't
+     want to close it while we walk the dir, but setting FD_CLOEXEC
+     on it is harmless: it remains open until closedir(). */
+
+  for (;;)
+    {
+      struct dirent *entry;
+      char *name;
+      int fd;
+
+      errno = 0;
+      entry = readdir(dir);
+      if (entry == NULL)
+	{
+	  result = errno == 0 ? 0 : -1;
+	  break;
+	}
+
+      name = entry->d_name;
+      if (name[0] >= '0' && name[0] <= '9'
+	  && (fd = strtol(name, NULL, 10)) >= 3
+	  && mark_fd_cloexec(fd) < 0)
+	{
+	  result = -1;
+	  break;
+	}
+    }
+
+  closedir(dir);
+  return result;
+}
+#endif
+
+/* Mark every non-standard descriptor close-on-exec in the child after fork. */
+static int mark_nonstd_fds_cloexec(int maxfd)
+{
+  int fd;
+
+#if defined(HAVE_CLOSE_RANGE) && defined(CLOSE_RANGE_CLOEXEC)
+  if (close_range(3, UINT_MAX, CLOSE_RANGE_CLOEXEC) == 0)
+    return 0;
+#endif
+
+#ifdef FD_DIR
+  if (mark_dir_fds_cloexec() == 0)
+    return 0;
+#endif
+
+  for (fd = 3; fd < maxfd; fd++)
+    if (mark_fd_cloexec(fd) < 0 && errno != EBADF)
+      return -1;
+
+  return 0;
 }
 
 /* Like execve, but also implementing execvp's "shell fallback"
@@ -345,13 +463,12 @@ static void cp_execvpe(const char *file, char * const *argv,
 static void child_process(char * const *commandLine,
 			  char * const *newEnviron,
 			  int *local_fds, int pipe_count, int *fail_fds,
-			  const char *path, char **sh_argv, const char *wd)
+			  const char *path, char **sh_argv, const char *wd,
+			  int maxfd)
 {
   int errnum;
 
   close(fail_fds[0]);
-  if (fcntl(fail_fds[1], F_SETFD, FD_CLOEXEC) < 0)
-    goto child_error;
 
   dup2(local_fds[0], 0);
   dup2(local_fds[3], 1);
@@ -360,13 +477,19 @@ static void child_process(char * const *commandLine,
   else
     dup2(1, 2);
 
-  close_all_fds(local_fds, pipe_count * 2);
+  close_fds(local_fds, pipe_count * 2);
+
+  /* Mark non-standard fds (>= 3) close-on-exec. This includes fail_fds[1],
+     which must stay open until exec(), and should be closed automatically
+     if exec() succeeds. */
+  if (mark_nonstd_fds_cloexec(maxfd) < 0)
+    goto child_error;
 
   if (wd == NULL || chdir(wd) == 0)
     cp_execvpe(commandLine[0], commandLine, newEnviron, path, sh_argv);
 
  child_error:
-  /* The fcntl, chdir or exec failed; send our errno to the parent */
+  /* Child setup or exec itself failed; send our errno to the parent */
   errnum = errno;
   while (write(fail_fds[1], &errnum, sizeof(errnum)) < 0
 	 && errno == EINTR)
