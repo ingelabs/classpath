@@ -54,6 +54,24 @@ exception statement from your version. */
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef __linux__
+# include <sys/syscall.h>
+/* Define constants that may be missing from older kernel or libc headers.
+   The syscall number is defined only for ABIs where the value is known
+   and stable. */
+# ifndef __NR_close_range
+#  if defined(__i386__) \
+     || (defined(__x86_64__) && !defined(__ILP32__))  \
+     || (defined(__arm__) && defined(__ARM_EABI__))   \
+     || (defined(__aarch64__) && !defined(__ILP32__))
+#   define __NR_close_range 436
+#  endif
+# endif
+# ifndef CLOSE_RANGE_CLOEXEC
+#  define CLOSE_RANGE_CLOEXEC (1U << 2)
+# endif
+#endif
+
 /* PATH_MAX is not guaranteed to be defined (e.g. on GNU Hurd) */
 #ifndef PATH_MAX
 #define PATH_MAX 4096
@@ -322,6 +340,9 @@ static int mark_nonstd_fds_cloexec(int maxfd)
 
 #if defined(HAVE_CLOSE_RANGE) && defined(CLOSE_RANGE_CLOEXEC)
   if (close_range(3, UINT_MAX, CLOSE_RANGE_CLOEXEC) == 0)
+    return 0;
+#elif defined(__NR_close_range)
+  if (syscall(__NR_close_range, 3, UINT_MAX, CLOSE_RANGE_CLOEXEC) == 0)
     return 0;
 #endif
 
