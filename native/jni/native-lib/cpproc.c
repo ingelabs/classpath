@@ -466,6 +466,7 @@ static void child_process(char * const *commandLine,
 			  const char *path, char **sh_argv, const char *wd,
 			  int maxfd)
 {
+  sigset_t sigmask;
   int errnum;
 
   close(fail_fds[0]);
@@ -485,8 +486,16 @@ static void child_process(char * const *commandLine,
   if (mark_nonstd_fds_cloexec(maxfd) < 0)
     goto child_error;
 
-  if (wd == NULL || chdir(wd) == 0)
-    cp_execvpe(commandLine[0], commandLine, newEnviron, path, sh_argv);
+  if (wd != NULL && chdir(wd) != 0)
+    goto child_error;
+
+  /* Reset the signal mask so that the executed program starts with all
+     signals unblocked. */
+  sigemptyset(&sigmask);
+  if (sigprocmask(SIG_SETMASK, &sigmask, NULL) < 0)
+    goto child_error;
+
+  cp_execvpe(commandLine[0], commandLine, newEnviron, path, sh_argv);
 
  child_error:
   /* Child setup or exec itself failed; send our errno to the parent */
