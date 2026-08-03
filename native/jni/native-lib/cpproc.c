@@ -88,6 +88,8 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
   int fail_fds[2];
   const char *path;
   char **sh_argv;
+  sigset_t allsigs;
+  sigset_t savedmask;
   int errnum;
   ssize_t n;
   int argc;
@@ -141,6 +143,11 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
       return err;
     }
 
+  /* Block all signals before we fork() to ensure that the child's
+     setup is not interrupted, so no call can fail with EINTR. */
+  sigfillset(&allsigs);
+  pthread_sigmask(SIG_SETMASK, &allsigs, &savedmask);
+
   pid = fork();
 
   switch (pid)
@@ -155,6 +162,7 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
       {
 	int err = errno;
 
+	pthread_sigmask(SIG_SETMASK, &savedmask, NULL);
 	close_fds(local_fds, pipe_count * 2);
 	close(fail_fds[0]);
 	close(fail_fds[1]);
@@ -162,6 +170,7 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
 	return err;
       }
     default:
+      pthread_sigmask(SIG_SETMASK, &savedmask, NULL);
       free(sh_argv);
       close(fail_fds[1]);
 
