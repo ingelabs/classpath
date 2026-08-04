@@ -514,12 +514,17 @@ static void child_process(char * const *commandLine,
 
   close(fail_fds[0]);
 
-  dup2(local_fds[0], 0);
-  dup2(local_fds[3], 1);
+  if (dup2(local_fds[0], 0) < 0)
+    goto child_error;
+  if (dup2(local_fds[3], 1) < 0)
+    goto child_error;
   if (pipe_count == 3)
-    dup2(local_fds[5], 2);
-  else
-    dup2(1, 2);
+    {
+      if (dup2(local_fds[5], 2) < 0)
+	goto child_error;
+    }
+  else if (dup2(1, 2) < 0)
+    goto child_error;
 
   close_fds(local_fds, pipe_count * 2);
 
