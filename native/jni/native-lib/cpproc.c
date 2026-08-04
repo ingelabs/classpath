@@ -81,6 +81,40 @@ static int get_max_fd(void)
   return (int) value;
 }
 
+/* Create a pipe with both endpoints above the standard descriptors.
+   If fd 0, 1 or 2 is closed, pipe() would reuse the free slot, and
+   the child's stdio setup would then close that fd or wire a
+   standard descriptor to the wrong pipe. */
+static int pipe_above_stdio(int *fds)
+{
+  int i;
+
+  if (pipe(fds) < 0)
+    return -1;
+
+  for (i = 0; i < 2; i++)
+    {
+      if (fds[i] <= 2)
+	{
+	  int newfd = fcntl(fds[i], F_DUPFD, 3);
+
+	  if (newfd < 0)
+	    {
+	      int err = errno;
+
+	      close(fds[0]);
+	      close(fds[1]);
+	      errno = err;
+	      return -1;
+	    }
+	  close(fds[i]);
+	  fds[i] = newfd;
+	}
+    }
+
+  return 0;
+}
+
 int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
 			int *fds, int pipe_count, pid_t *out_pid, const char *wd)
 {
@@ -119,7 +153,7 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
 
   for (i = 0; i < (pipe_count * 2); i += 2)
     {
-      if (pipe(&local_fds[i]) < 0)
+      if (pipe_above_stdio(&local_fds[i]) < 0)
 	{
 	  int err = errno;
 
@@ -133,7 +167,7 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
   /* Extra pipe used by the child to report failure to the parent.
      On success the exec closes the write end (FD_CLOEXEC) and the
      parent reads EOF. */
-  if (pipe(fail_fds) < 0)
+  if (pipe_above_stdio(fail_fds) < 0)
     {
       int err = errno;
 
