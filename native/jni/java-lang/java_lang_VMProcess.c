@@ -362,7 +362,7 @@ Java_java_lang_VMProcess_nativeReap (JNIEnv * env, jclass clazz)
 
   /* Get exit code; for signal termination return negative signal value XXX */
   if (WIFEXITED (status))
-    status = (jint) (jbyte) WEXITSTATUS (status);
+    status = (jint) WEXITSTATUS (status);
   else if (WIFSIGNALED (status))
     status = -(jint) WTERMSIG (status);
   else
