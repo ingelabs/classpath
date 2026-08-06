@@ -5,7 +5,9 @@ libclasspathnative_la_SOURCES = cpnet.c \
 				cpio.h \
 				cpnative.h \
 				cpproc.h \
-				cpproc.c
+				cpproc.c \
+				cpproc-child.h \
+				cpproc-child.c
 
 AM_LDFLAGS = @CLASSPATH_CONVENIENCE@
 AM_CPPFLAGS = @CLASSPATH_INCLUDES@
