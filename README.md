@@ -1,6 +1,6 @@
 # GNU Classpath
 
-GNU Classpath is a set of core class libraries for use with Java Virtual Machines, providing roughly Java 1.6 (Java SE 6) API compatibility.
+GNU Classpath is a set of free core class libraries for the Java programming language, covering most of the Java 1.6 (Java SE 6) API.
 
 ## Why GNU Classpath
 
@@ -95,8 +95,8 @@ JamVM automatically locates the GNU Classpath library classes from its installat
 
 ## History
 
-This project is a fork of the original GNU Classpath project, which is no longer actively maintained (last release: 0.99, March 2012).
+This project is a fork of GNU Classpath, whose last release was 0.99 in March 2012.
 
-The original project site can be found here: https://www.gnu.org/software/classpath/
+The original project site can be found here: https://www.gnu.org/software/classpath/.
 
 This fork continues development with a focus on embedded Linux targets.
