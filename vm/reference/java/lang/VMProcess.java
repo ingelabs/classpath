@@ -73,8 +73,28 @@ final class VMProcess extends Process
   private static final int RUNNING = 1;
   private static final int TERMINATED = 2;
 
-  // Whether to spawn processes via posix_spawn() instead of fork()
-  private static final boolean USE_POSIX_SPAWN = false;
+  // Whether to spawn processes via posix_spawn() and the spawn helper
+  // instead of fork(). Controlled by the gnu.lang.process.posixSpawn
+  // property:
+  //   - unset: platform default (enabled on Linux and macOS)
+  //   - "false": disabled
+  //   - any other value: enabled
+  private static final boolean usePosixSpawn;
+  static
+  {
+    String prop = System.getProperty("gnu.lang.process.posixSpawn");
+    if (prop != null)
+      {
+        usePosixSpawn = !prop.equalsIgnoreCase("false");
+      }
+    else
+      {
+        String os = System.getProperty("os.name", "").toLowerCase();
+        usePosixSpawn = os.contains("linux")
+                        || os.contains("mac")
+                        || os.contains("darwin");
+      }
+  }
 
   // Dedicated thread that does all the fork()'ing and wait()'ing.
   static Thread processThread;
@@ -220,7 +240,7 @@ final class VMProcess extends Process
           try
             {
               process.nativeSpawn(process.cmd, process.env, process.dir,
-                                  process.redirect, USE_POSIX_SPAWN);
+                                  process.redirect, usePosixSpawn);
               process.state = RUNNING;
               activeMap.put(new Long(process.pid), process);
             }
