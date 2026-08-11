@@ -73,6 +73,9 @@ final class VMProcess extends Process
   private static final int RUNNING = 1;
   private static final int TERMINATED = 2;
 
+  // Whether to spawn processes via posix_spawn() instead of fork()
+  private static final boolean USE_POSIX_SPAWN = false;
+
   // Dedicated thread that does all the fork()'ing and wait()'ing.
   static Thread processThread;
 
@@ -217,7 +220,7 @@ final class VMProcess extends Process
           try
             {
               process.nativeSpawn(process.cmd, process.env, process.dir,
-                                  process.redirect);
+                                  process.redirect, USE_POSIX_SPAWN);
               process.state = RUNNING;
               activeMap.put(new Long(process.pid), process);
             }
@@ -425,7 +428,7 @@ final class VMProcess extends Process
    * @throws IOException if the O/S process could not be created.
    */
   native void nativeSpawn(String[] cmd, String[] env, File dir,
-                          boolean redirect)
+                          boolean redirect, boolean usePosixSpawn)
     throws IOException;
 
   /**

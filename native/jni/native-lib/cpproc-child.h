@@ -50,11 +50,49 @@ exception statement from your version. */
 #define CP_HIDDEN
 #endif
 
-/* Fork and exec the target program; returns the child pid, or -1
-   with errno set if fork() fails. */
-CP_HIDDEN pid_t cpproc_child_fork_exec(char * const *commandLine, char * const *newEnviron,
+/* Entry point for fork-based spawning. Fork and execute the target;
+   returns the child pid, or -1 with errno set if fork() fails. */
+CP_HIDDEN pid_t cpproc_child_fork_exec(char * const *commandLine,
+				       char * const *newEnviron,
 				       int *local_fds, int pipe_count, int *fail_fds,
 				       const char *path, char **sh_argv, const char *wd,
 				       int maxfd);
+
+/* Entry point for the spawn helper. Execute the target in the current
+   process; never returns. */
+CP_HIDDEN void cpproc_child_exec(char * const *commandLine,
+				 char * const *newEnviron,
+				 int in_fd, int out_fd, int err_fd, int fail_fd,
+				 const char *path, char **sh_argv, const char *wd,
+				 int maxfd);
+
+/* Once either entry point is reached, failures before exec are
+   reported as an int errno through fail_fd; a successful exec closes
+   fail_fd. */
+
+/* Exit status of a child that fails before executing the target.
+   posix_spawn() uses the same value for failures between spawn and
+   exec. */
+#define CPPROC_EXIT_ERROR 127
+
+/* Spawn environment transfer from the parent to the spawn helper:
+
+   The helper is launched with an empty environment, so the target
+   environment cannot affect its dynamic loader or appear in its
+   command line. The env pipe carries the effective target
+   environment instead.
+
+   The pipe format is:
+
+     int magic            CPPROC_SPAWN_MAGIC
+     int length           byte length of the string block
+     char block[length]   concatenated NUL-terminated strings
+
+   The block is either empty or ends in a NUL, so the helper can safely
+   walk it and derive the number of strings. */
+
+/* Magic number in the pipe format header. Bump whenever the format
+   changes so that a stale helper rejects the block. */
+#define CPPROC_SPAWN_MAGIC 0x43505331	/* "CPS1" */
 
 #endif
