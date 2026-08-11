@@ -1,5 +1,6 @@
 /* cpproc.c -
    Copyright (C) 2003, 2004, 2005, 2006  Free Software Foundation, Inc.
+   Copyright (C) 2026  INGELABS S.L.
 
 This file is part of GNU Classpath.
 
@@ -35,16 +36,13 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-/* For close_range() */
-#ifndef _GNU_SOURCE
-#define _GNU_SOURCE 1
-#endif
-
 #include "config.h"
 #include <jni.h>
+#include <jcl.h>		/* for environ */
 #include "cpproc.h"
-#include <dirent.h>
+#include "cpproc-child.h"
 #include <signal.h>
+#include <stdio.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -54,20 +52,23 @@ exception statement from your version. */
 #include <stdlib.h>
 #include <string.h>
 
-/* PATH_MAX is not guaranteed to be defined (e.g. on GNU Hurd) */
-#ifndef PATH_MAX
-#define PATH_MAX 4096
+#ifdef HAVE_POSIX_SPAWN
+#include <spawn.h>
+#ifndef CPPROC_SPAWN_HELPER
+#error Path to the spawn helper not defined
+#endif
 #endif
 
 /* Bound the last-resort fcntl scan when OPEN_MAX is pathologically large. */
 #define MAX_FD_SCAN 65536
 
-static void close_fds(int *fds, int numFds);
-static void child_process(char * const *commandLine,
-			  char * const *newEnviron,
-			  int *local_fds, int pipe_count, int *fail_fds,
-			  const char *path, char **sh_argv, const char *wd,
-			  int maxfd);
+static void close_fds(int *fds, int numFds)
+{
+  int i;
+
+  for (i = 0; i < numFds; i++)
+    close(fds[i]);
+}
 
 /* Compute the fallback loop's upper bound in the parent. sysconf()
    is not async-signal-safe, so avoid calling it after fork. */
@@ -115,21 +116,185 @@ static int pipe_above_stdio(int *fds)
   return 0;
 }
 
+#ifdef HAVE_POSIX_SPAWN
+/* Send the effective target environment to the helper.
+   Returns 0, or an errno. */
+static int write_spawn_env(int fd, char * const *newEnviron)
+{
+  char * const *env = (newEnviron != NULL) ? newEnviron : environ;
+  int header[2];
+  size_t total;
+  size_t len = 0;
+  size_t off;
+  char *buf;
+  int count;
+  int err = 0;
+  int i;
+
+  for (count = 0; env[count] != NULL; count++)
+    len += strlen(env[count]) + 1;
+
+  if (len > INT_MAX)
+    return E2BIG;
+
+  header[0] = CPPROC_SPAWN_MAGIC;
+  header[1] = (int) len;
+
+  total = sizeof(header) + len;
+  buf = malloc(total);
+  if (buf == NULL)
+    return ENOMEM;
+
+  memcpy(buf, header, sizeof(header));
+  off = sizeof(header);
+  for (i = 0; i < count; i++)
+    {
+      size_t n = strlen(env[i]) + 1;
+
+      memcpy(buf + off, env[i], n);
+      off += n;
+    }
+
+  for (off = 0; off < total; )
+    {
+      ssize_t n = write(fd, buf + off, total - off);
+
+      if (n < 0)
+	{
+	  if (errno == EINTR)
+	    continue;
+	  err = errno;
+	  break;
+	}
+      off += (size_t) n;
+    }
+
+  free(buf);
+
+  return err;
+}
+
+
+/* Decimal needs ~2.4 chars per byte, plus NUL terminator */
+#define FD_ARG_SIZE ((3 * sizeof(int)) + 1)
+
+/* Spawn the helper without file actions or attributes, so that older
+   glibc versions will use vfork() internally, and not fork(). Returns
+   the helper pid, or -1 with errno set. */
+static pid_t spawn_via_helper(char * const *commandLine,
+			      char * const *newEnviron, int *local_fds,
+			      int pipe_count, int *fail_fds,
+			      const char *path, const char *wd, int argc)
+{
+  char * const empty_envp[] = { NULL };
+  char fd_args[5][FD_ARG_SIZE];
+  int parent_fds[5];
+  int env_fds[2];
+  char **helper_argv;
+  pid_t pid = -1;
+  int err;
+  int i;
+
+  helper_argv = malloc((8 + argc + 1) * sizeof(char *));
+  if (helper_argv == NULL)
+    {
+      errno = ENOMEM;
+      return -1;
+    }
+
+  if (pipe_above_stdio(env_fds) < 0)
+    {
+      err = errno;
+      free(helper_argv);
+      errno = err;
+      return -1;
+    }
+
+  /* Mark the parent's ends of these pipes close-on-exec, so the helper
+     inherits only their child ends. In particular, if the helper also
+     inherited the env pipe's write end, it would never see EOF if the
+     parent dies mid-spawn, leaving the orphaned helper blocked forever
+     (JDK-8307990). */
+  parent_fds[0] = env_fds[1];
+  parent_fds[1] = fail_fds[0];
+  parent_fds[2] = local_fds[1];
+  parent_fds[3] = local_fds[2];
+  parent_fds[4] = (pipe_count == 3) ? local_fds[4] : -1;
+  for (i = 0; i < 5; i++)
+    {
+      if (parent_fds[i] != -1
+	  && fcntl(parent_fds[i], F_SETFD, FD_CLOEXEC) < 0)
+	{
+	  err = errno;
+	  free(helper_argv);
+	  close(env_fds[0]);
+	  close(env_fds[1]);
+	  errno = err;
+	  return -1;
+	}
+    }
+
+  snprintf(fd_args[0], FD_ARG_SIZE, "%d", local_fds[0]);
+  snprintf(fd_args[1], FD_ARG_SIZE, "%d", local_fds[3]);
+  snprintf(fd_args[2], FD_ARG_SIZE, "%d",
+	   pipe_count == 3 ? local_fds[5] : local_fds[3]);
+  snprintf(fd_args[3], FD_ARG_SIZE, "%d", fail_fds[1]);
+  snprintf(fd_args[4], FD_ARG_SIZE, "%d", env_fds[0]);
+
+  helper_argv[0] = (char *) CPPROC_SPAWN_HELPER;
+  for (i = 0; i < 5; i++)
+    helper_argv[1 + i] = fd_args[i];
+  helper_argv[6] = (char *) (wd != NULL ? wd : ".");
+  helper_argv[7] = (char *) path;
+  for (i = 0; i < argc; i++)
+    helper_argv[8 + i] = commandLine[i];
+  helper_argv[8 + argc] = NULL;
+
+  /* The helper is launched with an empty environment, so it must be
+     loadable without environment-dependent search paths. */
+  err = posix_spawn(&pid, CPPROC_SPAWN_HELPER, NULL, NULL, helper_argv, empty_envp);
+  free(helper_argv);
+  close(env_fds[0]);
+
+  if (err == 0)
+    err = write_spawn_env(env_fds[1], newEnviron);
+  close(env_fds[1]);
+
+  if (err != 0)
+    {
+      if (pid > 0)
+	{
+	  /* Helper was spawned, but the environment transfer failed.
+	     We already closed the pipe's write end, so the helper's
+	     read returns EOF and it exits. Reap it. */
+	  int status;
+
+	  while (waitpid(pid, &status, 0) < 0 && errno == EINTR)
+	    ;
+	}
+      errno = err;
+      return -1;
+    }
+
+  return pid;
+}
+#endif /* HAVE_POSIX_SPAWN */
+
 int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
-			int *fds, int pipe_count, pid_t *out_pid, const char *wd)
+			int *fds, int pipe_count, pid_t *out_pid, const char *wd,
+			int use_posix_spawn)
 {
   int local_fds[6];
   int fail_fds[2];
   const char *path;
-  char **sh_argv;
   sigset_t allsigs;
   sigset_t savedmask;
   int errnum;
   ssize_t n;
   int argc;
+  int err;
   int i;
-  int maxfd;
-  pid_t pid;
+  pid_t pid = -1;
 
   /* Initialize the output fds so that the caller sees no garbage in
      them if we return with an error, or in the unused stderr entry
@@ -137,28 +302,18 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
   for (i = 0; i < CPIO_EXEC_NUM_PIPES; i++)
     fds[i] = -1;
 
-  /* Preallocate the buffer used by cp_execvpe in the child: after the
-     fork of a multi-threaded process only async-signal-safe operations
-     may be executed, so no malloc there */
   path = getenv("PATH");
   if (path == NULL)
     path = "/bin:/usr/bin";
   for (argc = 0; commandLine[argc] != NULL; argc++)
     ;
-  sh_argv = malloc((argc + 2) * sizeof(char *));
-  if (sh_argv == NULL)
-    return ENOMEM;
-
-  maxfd = get_max_fd();
 
   for (i = 0; i < (pipe_count * 2); i += 2)
     {
       if (pipe_above_stdio(&local_fds[i]) < 0)
 	{
-	  int err = errno;
-
+	  err = errno;
 	  close_fds(local_fds, i);
-	  free(sh_argv);
 
 	  return err;
 	}
@@ -169,83 +324,124 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
      parent reads EOF. */
   if (pipe_above_stdio(fail_fds) < 0)
     {
-      int err = errno;
-
+      err = errno;
       close_fds(local_fds, pipe_count * 2);
-      free(sh_argv);
 
       return err;
     }
 
   /* Block all signals before we fork() to ensure that the child's
-     setup is not interrupted, so no call can fail with EINTR. */
+     setup is not interrupted, so no call can fail with EINTR. The
+     mask also crosses posix_spawn's exec into the helper, whose
+     setup runs equally shielded. */
   sigfillset(&allsigs);
   pthread_sigmask(SIG_SETMASK, &allsigs, &savedmask);
 
-  pid = fork();
-
-  switch (pid)
+  if (use_posix_spawn)
     {
-    case 0:
-      child_process(commandLine, newEnviron, local_fds, pipe_count,
-		    fail_fds, path, sh_argv, wd, maxfd);
-      /* child_process() does not return. */
-      _exit(127);
+#ifdef HAVE_POSIX_SPAWN
+      pid = spawn_via_helper(commandLine, newEnviron, local_fds,
+			     pipe_count, fail_fds, path, wd, argc);
+      err = errno;
+#else
+      err = ENOSYS;
+#endif
+    }
+  else
+    {
+      /* Preallocate cp_execvpe's buffer because malloc is unsafe after fork.
+	 The child gets its own copy, so the parent can free it immediately. */
+      char **sh_argv = malloc((argc + 2) * sizeof(char *));
 
-    case -1:
-      {
-	int err = errno;
+      if (sh_argv == NULL)
+	err = ENOMEM;
+      else
+	{
+	  pid = cpproc_child_fork_exec(commandLine, newEnviron, local_fds,
+				       pipe_count, fail_fds, path, sh_argv,
+				       wd, get_max_fd());
+	  err = errno;
+	  free(sh_argv);
+	}
+    }
 
-	pthread_sigmask(SIG_SETMASK, &savedmask, NULL);
-	close_fds(local_fds, pipe_count * 2);
-	close(fail_fds[0]);
-	close(fail_fds[1]);
-	free(sh_argv);
-	return err;
-      }
-    default:
-      pthread_sigmask(SIG_SETMASK, &savedmask, NULL);
-      free(sh_argv);
+  pthread_sigmask(SIG_SETMASK, &savedmask, NULL);
+
+  if (pid == -1)
+    {
+      close_fds(local_fds, pipe_count * 2);
+      close(fail_fds[0]);
       close(fail_fds[1]);
+      return err;
+    }
+  close(fail_fds[1]);
 
-      /* Wait for the outcome of the exec: EOF if it succeeded, the
-	 child's errno if not */
+#ifdef HAVE_POSIX_SPAWN
+  if (use_posix_spawn)
+    {
+      /* Require the helper's readiness marker before trusting the
+	 fail-pipe EOF below. POSIX allows posix_spawn() to report a
+	 failed exec of the helper only through an exit status of 127
+	 (glibc < 2.24; see glibc #18433), and the helper can also die
+	 after a successful exec but before main() runs; either way,
+	 EOF would then be misread as success. */
       do
 	{
 	  n = read(fail_fds[0], &errnum, sizeof(errnum));
 	}
       while (n < 0 && errno == EINTR);
-      close(fail_fds[0]);
 
-      if (n != 0)
+      if (n != (ssize_t) sizeof(errnum) || errnum != CPPROC_HELPER_ALIVE)
 	{
 	  int status;
 
-	  if (n != (ssize_t) sizeof(errnum))
-	    errnum = EIO;
-
-	  /* The child exited without exec'ing; reap it */
+	  /* The helper failed before main(), or a stale helper
+	     reported an errno after rejecting the protocol magic. */
 	  while (waitpid(pid, &status, 0) < 0 && errno == EINTR)
 	    ;
 
 	  close_fds(local_fds, pipe_count * 2);
-	  return errnum;
+	  close(fail_fds[0]);
+	  return (n == (ssize_t) sizeof(errnum) && errnum > 0)
+		 ? errnum : ENOEXEC;
 	}
+    }
+#endif
 
-      close(local_fds[0]);
-      close(local_fds[3]);
-      if (pipe_count == 3)
-	close(local_fds[5]);
+  /* Wait for the outcome of the exec: EOF if it succeeded, the
+     child's errno if not */
+  do
+    {
+      n = read(fail_fds[0], &errnum, sizeof(errnum));
+    }
+  while (n < 0 && errno == EINTR);
+  close(fail_fds[0]);
 
-      fds[0] = local_fds[1];
-      fds[1] = local_fds[2];
-      if (pipe_count == 3)
-	fds[2] = local_fds[4];
-      *out_pid = pid;
-      return 0;
+  if (n != 0)
+    {
+      int status;
+
+      if (n != (ssize_t) sizeof(errnum))
+	errnum = EIO;
+
+      /* The child exited without exec'ing; reap it */
+      while (waitpid(pid, &status, 0) < 0 && errno == EINTR)
+	;
+
+      close_fds(local_fds, pipe_count * 2);
+      return errnum;
     }
 
-  /* keep compiler happy */
+  close(local_fds[0]);
+  close(local_fds[3]);
+  if (pipe_count == 3)
+    close(local_fds[5]);
+
+  fds[0] = local_fds[1];
+  fds[1] = local_fds[2];
+  if (pipe_count == 3)
+    fds[2] = local_fds[4];
+  *out_pid = pid;
 
   return 0;
 }
@@ -267,289 +463,4 @@ int cpproc_kill (pid_t pid, int signal)
     return errno;
 
   return 0;
-}
-
-
-/* Child-side implementation.
-
-   Everything below this point may run in the child of a fork() of a
-   multi-threaded process, so it should only use async-signal-safe
-   operations. Avoid malloc and functions that may take locks. Any
-   buffers that require allocation must be preallocated by the parent
-   and passed in. */
-
-/* Also used by the parent. */
-static void close_fds(int *fds, int numFds)
-{
-  int i;
-
-  for (i = 0; i < numFds; i++)
-    close(fds[i]);
-}
-
-static int mark_fd_cloexec(int fd)
-{
-  int flags = fcntl(fd, F_GETFD);
-
-  if (flags < 0)
-    return -1;
-
-  if (!(flags & FD_CLOEXEC))
-    return fcntl(fd, F_SETFD, flags | FD_CLOEXEC);
-
-  return 0;
-}
-
-/* Walk the process' open fds directory to avoid scanning all possible
-   fds up to OPEN_MAX. This uses opendir/readdir/closedir, which are
-   not specified async-signal-safe, but should be safe in practice after
-   fork (not vfork!) on Linux (glibc, musl >= 1.2.2) and macOS. OpenJDK
-   uses the same approach, as does CPython in its non-Linux fallback.
-
-   We deliberately do not use this on *BSD: without fdescfs mounted
-   (not the default), /dev/fd is a static directory (0, 1, 2, or 0..63)
-   and enumerating it would silently miss open descriptors. */
-#if defined(__linux__)
-#define FD_DIR "/proc/self/fd"
-#elif defined(__APPLE__)
-#define FD_DIR "/dev/fd"
-#endif
-
-#ifdef FD_DIR
-static int mark_dir_fds_cloexec(void)
-{
-  DIR *dir;
-  int result;
-
-  dir = opendir(FD_DIR);
-  if (dir == NULL)
-    return -1;
-
-  /* The directory stream's own fd may appear in FD_DIR. We don't
-     want to close it while we walk the dir, but setting FD_CLOEXEC
-     on it is harmless: it remains open until closedir(). */
-
-  for (;;)
-    {
-      struct dirent *entry;
-      char *name;
-      int fd;
-
-      errno = 0;
-      entry = readdir(dir);
-      if (entry == NULL)
-	{
-	  result = errno == 0 ? 0 : -1;
-	  break;
-	}
-
-      name = entry->d_name;
-      if (name[0] >= '0' && name[0] <= '9'
-	  && (fd = strtol(name, NULL, 10)) >= 3
-	  && mark_fd_cloexec(fd) < 0)
-	{
-	  result = -1;
-	  break;
-	}
-    }
-
-  closedir(dir);
-  return result;
-}
-#endif
-
-/* Mark every non-standard descriptor close-on-exec in the child after fork. */
-static int mark_nonstd_fds_cloexec(int maxfd)
-{
-  int fd;
-
-#if defined(HAVE_CLOSE_RANGE) && defined(CLOSE_RANGE_CLOEXEC)
-  if (close_range(3, UINT_MAX, CLOSE_RANGE_CLOEXEC) == 0)
-    return 0;
-#endif
-
-#ifdef FD_DIR
-  if (mark_dir_fds_cloexec() == 0)
-    return 0;
-#endif
-
-  for (fd = 3; fd < maxfd; fd++)
-    if (mark_fd_cloexec(fd) < 0 && errno != EBADF)
-      return -1;
-
-  return 0;
-}
-
-/* Like execve, but also implementing execvp's "shell fallback"
-   behaviour: if execve fails with ENOEXEC, try to execute as a
-   script via /bin/sh. The shell receives the script path (file)
-   followed by the original arguments minus argv[0], which is
-   dropped. If envp is NULL the environment is inherited (execv is
-   used instead of execve). */
-static void cp_execve_sh(const char *file, char * const *argv,
-			 char * const *envp, char **sh_argv)
-{
-  if (envp != NULL)
-    execve(file, argv, envp);
-  else
-    execv(file, argv);
-
-  if (errno == ENOEXEC)
-    {
-      int i;
-
-      sh_argv[0] = (char *) "/bin/sh";
-      sh_argv[1] = (char *) file;
-      for (i = 1; argv[i] != NULL; i++)
-	sh_argv[i + 1] = argv[i];
-      sh_argv[i + 1] = NULL;
-
-      if (envp != NULL)
-	execve("/bin/sh", sh_argv, envp);
-      else
-	execv("/bin/sh", sh_argv);
-    }
-}
-
-/* Replacement for execvpe, which is a GNU extension and not available
-   everywhere. If envp is NULL the environment is inherited. The
-   supplied preallocated sh_argv array must have room for one entry
-   more than argv, including its terminating NULL. */
-static void cp_execvpe(const char *file, char * const *argv,
-		       char * const *envp, const char *path,
-		       char **sh_argv)
-{
-  /* - If execve fails with ENOEXEC, we assume it is a script with +x
-       permission (otherwise we would have seen EACCES) but without a
-       shebang line, and execute it via /bin/sh, as execvp would do.
-       The fallback is implemented explicitly because execve does not
-       provide it, and execvp (which does) is not async-signal-safe.
-     - OpenJDK implements a similar execvpe replacement, except that
-       they do use execvp in fork mode (see childproc.c). */
-  char buffer[PATH_MAX];
-  const char *p, *next;
-  size_t filelen = strlen(file);
-  int got_eacces = 0;
-
-  /* An empty command name fails with ENOENT */
-  if (*file == '\0')
-    {
-      errno = ENOENT;
-      return;
-    }
-
-  /* Command names containing a slash are not looked up in the PATH */
-  if (strchr(file, '/') != NULL)
-    {
-      cp_execve_sh(file, argv, envp, sh_argv);
-      return;
-    }
-
-  for (p = path; p != NULL; p = next)
-    {
-      const char *candidate;
-      const char *sep;
-      size_t len;
-
-      sep = strchr(p, ':');
-      next = (sep != NULL) ? sep + 1 : NULL;
-      len = (sep != NULL) ? (size_t) (sep - p) : strlen(p);
-      if (len == 0)
-	{
-	  /* An empty PATH element means the current directory */
-	  candidate = file;
-	}
-      else if (len + filelen + 2 <= sizeof(buffer))
-	{
-	  memcpy(buffer, p, len);
-	  buffer[len] = '/';
-	  strcpy(buffer + len + 1, file);
-	  candidate = buffer;
-	}
-      else
-	{
-	  errno = ENAMETOOLONG;
-	  continue;
-	}
-
-      cp_execve_sh(candidate, argv, envp, sh_argv);
-      switch (errno)
-	{
-	case EACCES:
-	  /* Keep searching, but report EACCES if nothing is found */
-	  got_eacces = 1;
-	  break;
-	case ENOENT:
-	case ENOTDIR:
-#ifdef ELOOP
-	case ELOOP:
-#endif
-#ifdef ESTALE
-	case ESTALE:
-#endif
-#ifdef ENODEV
-	case ENODEV:
-#endif
-#ifdef ETIMEDOUT
-	case ETIMEDOUT:
-#endif
-	  break;
-	default:
-	  return;
-	}
-    }
-
-  if (got_eacces)
-    errno = EACCES;
-}
-
-static void child_process(char * const *commandLine,
-			  char * const *newEnviron,
-			  int *local_fds, int pipe_count, int *fail_fds,
-			  const char *path, char **sh_argv, const char *wd,
-			  int maxfd)
-{
-  sigset_t sigmask;
-  int errnum;
-
-  close(fail_fds[0]);
-
-  if (dup2(local_fds[0], 0) < 0)
-    goto child_error;
-  if (dup2(local_fds[3], 1) < 0)
-    goto child_error;
-  if (pipe_count == 3)
-    {
-      if (dup2(local_fds[5], 2) < 0)
-	goto child_error;
-    }
-  else if (dup2(1, 2) < 0)
-    goto child_error;
-
-  close_fds(local_fds, pipe_count * 2);
-
-  /* Mark non-standard fds (>= 3) close-on-exec. This includes fail_fds[1],
-     which must stay open until exec(), and should be closed automatically
-     if exec() succeeds. */
-  if (mark_nonstd_fds_cloexec(maxfd) < 0)
-    goto child_error;
-
-  if (wd != NULL && chdir(wd) != 0)
-    goto child_error;
-
-  /* Reset the signal mask so that the executed program starts with all
-     signals unblocked. */
-  sigemptyset(&sigmask);
-  if (sigprocmask(SIG_SETMASK, &sigmask, NULL) < 0)
-    goto child_error;
-
-  cp_execvpe(commandLine[0], commandLine, newEnviron, path, sh_argv);
-
- child_error:
-  /* Child setup or exec itself failed; send our errno to the parent */
-  errnum = errno;
-  while (write(fail_fds[1], &errnum, sizeof(errnum)) < 0
-	 && errno == EINTR)
-    ;
-  _exit(127);
 }
