@@ -445,6 +445,7 @@ if test "x${COMPILE_JNI}" = xyes; then
 
   AC_CHECK_FUNCS([ftruncate fsync select \
 		  gethostname socket strerror fork pipe execve open close close_range \
+		  posix_spawn \
 		  lseek fstat read readv write writev htonl memset htons connect \
 		  getsockname getpeername bind listen accept \
 		  recvfrom send sendto setsockopt getsockopt time mktime clock_gettime \

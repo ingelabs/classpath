@@ -117,14 +117,15 @@ copy_elem (JNIEnv * env, jobject stringArray, jint i)
 }
 
 /*
- * private final native void nativeSpawn(String[], String[], File)
+ * private final native void nativeSpawn(String[], String[], File, boolean, boolean)
  *	throws java/io/IOException
  */
 JNIEXPORT void JNICALL
 Java_java_lang_VMProcess_nativeSpawn (JNIEnv * env, jobject this,
 				      jobjectArray cmdArray,
 				      jobjectArray envArray, jobject dirFile,
-				      jboolean redirect)
+				      jboolean redirect,
+				      jboolean usePosixSpawn)
 {
   int fds[CPIO_EXEC_NUM_PIPES] = { -1, -1, -1 };
   jobject streams[CPIO_EXEC_NUM_PIPES] = { NULL, NULL, NULL };
@@ -206,7 +207,7 @@ Java_java_lang_VMProcess_nativeSpawn (JNIEnv * env, jobject this,
     }
 
   /* Create inter-process pipes */
-  err = cpproc_forkAndExec(strings, newEnviron, fds, pipe_count, &pid, dir);
+  err = cpproc_forkAndExec(strings, newEnviron, fds, pipe_count, &pid, dir, usePosixSpawn);
   if (err != 0)
     {
       strncpy(errbuf, cpnative_getErrorString (err), sizeof(errbuf));
