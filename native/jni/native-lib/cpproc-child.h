@@ -75,6 +75,12 @@ CP_HIDDEN void cpproc_child_exec(char * const *commandLine,
    exec. */
 #define CPPROC_EXIT_ERROR 127
 
+/* Written to fail_fd once the spawn helper has reached main() and
+   parsed its arguments. The parent requires this marker before
+   treating a subsequent EOF as a successful exec. Negative, so it
+   cannot be a valid errno. */
+#define CPPROC_HELPER_ALIVE (-0x4C495645)  /* -("LIVE") */
+
 /* Spawn environment transfer from the parent to the spawn helper:
 
    The helper is launched with an empty environment, so the target

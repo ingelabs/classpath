@@ -376,6 +376,38 @@ int cpproc_forkAndExec (char * const *commandLine, char * const * newEnviron,
     }
   close(fail_fds[1]);
 
+#ifdef HAVE_POSIX_SPAWN
+  if (use_posix_spawn)
+    {
+      /* Require the helper's readiness marker before trusting the
+	 fail-pipe EOF below. POSIX allows posix_spawn() to report a
+	 failed exec of the helper only through an exit status of 127
+	 (glibc < 2.24; see glibc #18433), and the helper can also die
+	 after a successful exec but before main() runs; either way,
+	 EOF would then be misread as success. */
+      do
+	{
+	  n = read(fail_fds[0], &errnum, sizeof(errnum));
+	}
+      while (n < 0 && errno == EINTR);
+
+      if (n != (ssize_t) sizeof(errnum) || errnum != CPPROC_HELPER_ALIVE)
+	{
+	  int status;
+
+	  /* The helper failed before main(), or a stale helper
+	     reported an errno after rejecting the protocol magic. */
+	  while (waitpid(pid, &status, 0) < 0 && errno == EINTR)
+	    ;
+
+	  close_fds(local_fds, pipe_count * 2);
+	  close(fail_fds[0]);
+	  return (n == (ssize_t) sizeof(errnum) && errnum > 0)
+		 ? errnum : ENOEXEC;
+	}
+    }
+#endif
+
   /* Wait for the outcome of the exec: EOF if it succeeded, the
      child's errno if not */
   do
