@@ -185,6 +185,10 @@ int main(int argc, char **argv)
   path = argv[7];
   target_argv = &argv[8];
 
+  /* Tell the parent we are alive, before doing anything that may
+     block or fail. */
+  report_errnum(fail_fd, CPPROC_HELPER_ALIVE);
+
   err = read_spawn_env(env_fd, &target_envp);
   if (err != 0)
     {
