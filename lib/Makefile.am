@@ -98,6 +98,12 @@ resources: copy-vmresources.sh
           if ! test -d "$$dirname"; then @mkdir_p@ "$$dirname"; fi; \
 	  cp $(top_srcdir)/resource/$$p $$p; \
 	done
+	@list=`cd $(top_srcdir)/resource && $(FIND) META-INF -name \*\.in -print`; for p in $$list; do \
+	  f=`echo $$p | sed -e 's/\.in$$//'`; \
+          dirname=`dirname $$f`; \
+          if ! test -d "$$dirname"; then @mkdir_p@ "$$dirname"; fi; \
+	  if test -f $(top_builddir)/resource/$$f; then cp $(top_builddir)/resource/$$f $$f; fi; \
+	done
 	@$(SHELL) ./copy-vmresources.sh
 	@list=`cd $(top_srcdir) && $(FIND) gnu/javax/swing/plaf/gtk/icons -name *.png -type f -print`; for p in $$list; do \
           dirname=`dirname $$p`; \
