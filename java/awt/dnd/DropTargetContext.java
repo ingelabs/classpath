@@ -85,7 +85,6 @@ public class DropTargetContext implements Serializable
   }
 
   private DropTarget dropTarget;
-  private int targetActions;
   private DropTargetContextPeer dtcp;
 
   // package private
@@ -116,12 +115,18 @@ public class DropTargetContext implements Serializable
 
   protected void setTargetActions(int actions)
   {
-    targetActions = actions;
+    if (dtcp != null)
+      dtcp.setTargetActions(actions);
+    dropTarget.setDefaultActions(actions);
   }
 
   protected int getTargetActions()
   {
-    return targetActions;
+    // As in the JDK, the peer knows the actions; without one, use the
+    // drop target's default actions.
+    if (dtcp != null)
+      return dtcp.getTargetActions();
+    return dropTarget.getDefaultActions();
   }
 
   /**
