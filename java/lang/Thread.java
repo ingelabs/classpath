@@ -159,7 +159,7 @@ public class Thread implements Runnable
   /** Thread local storage. Package accessible for use by
     * InheritableThreadLocal.
     */
-  final ThreadLocalMap locals;
+  ThreadLocalMap locals;
 
   /** The uncaught exception handler.  */
   UncaughtExceptionHandler exceptionHandler;
@@ -1073,7 +1073,10 @@ public class Thread implements Runnable
    */
   static ThreadLocalMap getThreadLocals()
   {
-    return currentThread().locals;
+    Thread t = currentThread();
+    if (t.locals == null)
+      t.locals = new ThreadLocalMap();
+    return t.locals;
   }
 
   /**
