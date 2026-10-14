@@ -51,6 +51,11 @@ exception statement from your version. */
 #include <string.h>
 
 #include <net/if.h>
+
+/* Haiku does not define IFF_RUNNING. */
+#ifndef IFF_RUNNING
+#define IFF_RUNNING 0x40
+#endif
 #include <sys/ioctl.h>
 /* Required on Solaris. */
 #include <unistd.h>
