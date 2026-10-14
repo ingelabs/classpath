@@ -645,7 +645,12 @@ jint cpnet_getHostByName (JNIEnv *env, const char *hostname, cpnet_address ***ad
     {
       buf = (char *)JCL_malloc(env, buflen);
 
-#ifdef HAVE_GETHOSTBYNAME_R
+/* Use gethostbyname_r only if its declaration was found.  Haiku has the
+   function in libnetwork but does not declare it. */
+#if defined(HAVE_GETHOSTBYNAME_R) \
+    && (defined(HAVE_FUNC_GETHOSTBYNAME_R_6) \
+        || defined(HAVE_FUNC_GETHOSTBYNAME_R_5) \
+        || defined(HAVE_FUNC_GETHOSTBYNAME_R_3))
 # if defined(HAVE_FUNC_GETHOSTBYNAME_R_6)
       ret = gethostbyname_r (hostname, &hret, buf, buflen, &result, &herr);
 # elif defined(HAVE_FUNC_GETHOSTBYNAME_R_5)
