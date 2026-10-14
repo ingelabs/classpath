@@ -559,11 +559,11 @@ public class Frame extends Window implements MenuContainer
 
     if (state == NORMAL
         && (current_state & ICONIFIED) != 0)
-      setExtendedState(current_state | ICONIFIED);
+      setExtendedState(current_state & ~ICONIFIED);
 
     if (state == ICONIFIED
-        && (current_state & ~ICONIFIED) == 0)
-      setExtendedState(current_state & ~ICONIFIED);
+        && (current_state & ICONIFIED) == 0)
+      setExtendedState(current_state | ICONIFIED);
   }
 
   public int getState()
