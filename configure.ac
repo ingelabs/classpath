@@ -234,6 +234,33 @@ AC_ARG_ENABLE([qt-peer],
 AM_CONDITIONAL(CREATE_QT_PEER_LIBRARIES, test "x${COMPILE_QT_PEER}" = xyes)
 
 dnl -----------------------------------------------------------
+dnl Haiku AWT and sound peer (enabled by default on Haiku)
+dnl -----------------------------------------------------------
+AC_ARG_ENABLE([haiku-peer],
+              [AS_HELP_STRING(--enable-haiku-peer,compile the Haiku AWT and sound peer (disabled by --disable-jni) [default=yes on Haiku])],
+              [case "${enableval}" in
+                yes) COMPILE_HAIKU_PEER=yes ;;
+                no) COMPILE_HAIKU_PEER=no ;;
+                *) COMPILE_HAIKU_PEER=yes ;;
+              esac],
+              [case "${host_os}" in
+                haiku*) COMPILE_HAIKU_PEER=yes ;;
+                *) COMPILE_HAIKU_PEER=no ;;
+              esac])
+if test "x${COMPILE_JNI}" != xyes; then
+  COMPILE_HAIKU_PEER=no
+fi
+AM_CONDITIONAL(CREATE_HAIKU_PEER_LIBRARIES, test "x${COMPILE_HAIKU_PEER}" = xyes)
+if test "x${COMPILE_HAIKU_PEER}" = xyes; then
+  dnl The Haiku peer is the default toolkit and sound mixer when it is built.
+  if test "x${enable_default_toolkit}" = x; then
+    default_toolkit=gnu.java.awt.peer.haiku.HaikuToolkit
+  fi
+  HAIKU_MIXER_PROVIDER=gnu.javax.sound.sampled.haiku.HaikuMixerProvider
+fi
+AC_SUBST(HAIKU_MIXER_PROVIDER)
+
+dnl -----------------------------------------------------------
 dnl Plugin (disabled by default)
 dnl -----------------------------------------------------------
 AC_ARG_ENABLE([plugin],
@@ -1142,6 +1169,7 @@ native/jni/gtk-peer/Makefile
 native/jni/gconf-peer/Makefile
 native/jni/gstreamer-peer/Makefile
 native/jni/qt-peer/Makefile
+native/jni/haiku-peer/Makefile
 native/jni/xmlj/Makefile
 native/jni/midi-alsa/Makefile
 native/jni/midi-dssi/Makefile

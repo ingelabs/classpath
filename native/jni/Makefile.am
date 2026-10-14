@@ -20,6 +20,10 @@ if CREATE_QT_PEER_LIBRARIES
   CLASSPATH_QT_PEER_DIR = qt-peer
 endif
 
+if CREATE_HAIKU_PEER_LIBRARIES
+  HAIKUDIR = haiku-peer
+endif
+
 if CREATE_GCONF_PEER_LIBRARIES
   CLASSPATH_GCONF_PEER_DIR = gconf-peer
 endif
@@ -38,9 +42,10 @@ endif
 
 SUBDIRS = classpath $(JNIDIRS) \
   $(ALSADIR) $(DSSIDIR) $(GTKDIR) $(CLASSPATH_QT_PEER_DIR) $(XMLJDIR) \
-  $(CLASSPATH_GCONF_PEER_DIR) $(CLASSPATH_GSTREAMER_PEER_DIR) $(GMPDIR)
+  $(CLASSPATH_GCONF_PEER_DIR) $(CLASSPATH_GSTREAMER_PEER_DIR) $(GMPDIR) \
+  $(HAIKUDIR)
 DIST_SUBDIRS = classpath java-io java-lang java-math java-net java-nio java-util \
-               gtk-peer gconf-peer gstreamer-peer qt-peer xmlj midi-alsa \
+               gtk-peer gconf-peer gstreamer-peer qt-peer haiku-peer xmlj midi-alsa \
                midi-dssi native-lib
 
 all-local:
