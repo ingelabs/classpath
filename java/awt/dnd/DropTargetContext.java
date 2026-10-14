@@ -117,11 +117,18 @@ public class DropTargetContext implements Serializable
   protected void setTargetActions(int actions)
   {
     targetActions = actions;
+    if (dtcp != null)
+      dtcp.setTargetActions(actions);
   }
 
   protected int getTargetActions()
   {
-    return targetActions;
+    // As in the JDK, the peer knows the actions; without one, use the
+    // drop target's default actions.
+    if (dtcp != null)
+      return dtcp.getTargetActions();
+    return targetActions != 0 ? targetActions
+                              : dropTarget.getDefaultActions();
   }
 
   /**
@@ -162,7 +169,7 @@ public class DropTargetContext implements Serializable
   protected DataFlavor[] getCurrentDataFlavors ()
   {
     if (dtcp != null)
-      dtcp.getTransferDataFlavors();
+      return dtcp.getTransferDataFlavors();
     return null;
   }
 
