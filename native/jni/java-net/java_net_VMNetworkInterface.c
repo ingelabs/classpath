@@ -67,6 +67,13 @@ exception statement from your version. */
 
 #include "java_net_VMNetworkInterface.h"
 
+/* Some systems, for example Haiku, do not define IFF_RUNNING.  Then
+   isUp() tests IFF_UP only.  (Haiku's IFF_LINK is not the same: it
+   tells if the hardware has a link, also when the interface is down.)  */
+#ifndef IFF_RUNNING
+# define IFF_RUNNING 0
+#endif
+
 int iff_flags(JNIEnv *, jstring, jint *);
 
 static jmethodID java_net_VMNetworkInterface_init;
