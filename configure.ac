@@ -440,7 +440,8 @@ if test "x${COMPILE_JNI}" = xyes; then
   AC_EGREP_HEADER(u_int32_t, sys/config.h, AC_DEFINE(HAVE_BSD_INT32_DEFINED, 1, [Define to 1 if you have BSD u_int32_t]))
 
   AC_SEARCH_LIBS([clock_gettime], [rt])
-  AC_SEARCH_LIBS([inet_pton],[nsl])
+  dnl Haiku has the socket functions and h_errno in libnetwork.
+  AC_SEARCH_LIBS([inet_pton],[nsl network])
   AC_CHECK_LIB([socket], [gethostname]) 
 
   AC_CHECK_FUNCS([ftruncate fsync select \
