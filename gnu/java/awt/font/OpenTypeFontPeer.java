@@ -290,14 +290,15 @@ public class OpenTypeFontPeer
 
   public boolean canDisplay(Font font, int c)
   {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
+    return fontDelegate.getGlyphIndex(c) != fontDelegate.getMissingGlyphCode();
   }
 
   public int canDisplayUpTo(Font font, CharacterIterator i, int start, int limit)
   {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
+    for (char c = i.setIndex(start); i.getIndex() < limit; c = i.next())
+      if (! canDisplay(font, c))
+        return i.getIndex();
+    return -1;
   }
 
   public String getSubFamilyName(Font font, Locale locale)
