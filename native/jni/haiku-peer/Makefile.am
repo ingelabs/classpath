@@ -3,7 +3,8 @@
 
 nativeexeclib_LTLIBRARIES = libhaikupeer.la
 
-libhaikupeer_la_SOURCES = gnu_java_awt_peer_haiku_HaikuNative.cpp
+libhaikupeer_la_SOURCES = gnu_java_awt_peer_haiku_HaikuNative.cpp \
+	gnu_java_awt_peer_haiku_HaikuRaster.cpp
 
 libhaikupeer_la_LIBADD = -lbe -ltracker -lmedia -ltranslation
 
