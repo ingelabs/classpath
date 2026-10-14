@@ -41,6 +41,8 @@ package java.awt.print;
 import gnu.java.awt.print.JavaPrinterJob;
 
 import java.awt.HeadlessException;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.print.DocFlavor;
@@ -64,6 +66,36 @@ public abstract class PrinterJob
    */
   public static PrinterJob getPrinterJob()
   {
+    // As in the JDK, the system property java.awt.printerjob can name
+    // the class. Load it as Toolkit loads awt.toolkit, so that a class
+    // on the class path also works.
+    String name = gnu.classpath.SystemProperties.getProperty("java.awt.printerjob");
+    if (name != null)
+      {
+        Throwable error;
+        try
+          {
+            ClassLoader cl = (ClassLoader) AccessController.doPrivileged
+              (new PrivilegedAction()
+                {
+                  public Object run()
+                  {
+                    return ClassLoader.getSystemClassLoader();
+                  }
+                });
+            return (PrinterJob) Class.forName(name, true, cl).newInstance();
+          }
+        catch (Exception e)
+          {
+            error = e;
+          }
+        catch (LinkageError e)
+          {
+            error = e;
+          }
+        System.err.println("PrinterJob: cannot use java.awt.printerjob="
+                           + name + " (" + error + "), using the default");
+      }
     return new JavaPrinterJob();
   }
 
