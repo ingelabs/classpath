@@ -76,8 +76,6 @@ public class DragSource implements Serializable
   private transient DragSourceMotionListener dragSourceMotionListener;
 
   private static DragSource ds;
-  private DragSourceContextPeer peer;
-  private DragSourceContext context;
 
   /**
    * Initializes the drag source.
@@ -144,15 +142,12 @@ public class DragSource implements Serializable
       {
         flavorMap = map;
 
-        if (peer == null)
-          peer = Toolkit.getDefaultToolkit().createDragSourceContextPeer(trigger);
-
-        if (context == null)
-          context = createDragSourceContext(peer, trigger,
-                                                            dragCursor,
-                                                            dragImage,
-                                                            imageOffset, trans,
-                                                            dsl);
+        // Each drag gets its own peer and context.
+        DragSourceContextPeer peer =
+          Toolkit.getDefaultToolkit().createDragSourceContextPeer(trigger);
+        DragSourceContext context =
+          createDragSourceContext(peer, trigger, dragCursor, dragImage,
+                                  imageOffset, trans, dsl);
 
         if (peer == null)
           throw new InvalidDnDOperationException();
