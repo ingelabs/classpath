@@ -64,6 +64,20 @@ public abstract class PrinterJob
    */
   public static PrinterJob getPrinterJob()
   {
+    // As in the JDK, the system property java.awt.printerjob can name
+    // the class (the Haiku toolkit sets it).
+    String name = gnu.classpath.SystemProperties.getProperty("java.awt.printerjob");
+    if (name != null)
+      {
+        try
+          {
+            return (PrinterJob) Class.forName(name).newInstance();
+          }
+        catch (Exception e)
+          {
+            // Use the default.
+          }
+      }
     return new JavaPrinterJob();
   }
 
