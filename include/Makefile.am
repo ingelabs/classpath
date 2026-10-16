@@ -122,6 +122,11 @@ gnu_java_awt_peer_qt_MainQtThread.h \
 gnu_java_awt_peer_qt_QtFileDialogPeer.h \
 gnu_java_awt_peer_qt_QtEmbeddedWindowPeer.h 
 
+HAIKUPEER_H_FILES = \
+gnu_java_awt_peer_haiku_HaikuNative.h \
+gnu_java_awt_peer_haiku_HaikuRaster.h \
+gnu_javax_sound_sampled_haiku_HaikuAudio.h
+
 GCONF_PREFS_FILES = \
 gnu_java_util_prefs_gconf_GConfNativePeer.h
 
@@ -131,6 +136,7 @@ $(GST_PEER_H_FILES) \
 $(XMLJ_H_FILES) \
 $(GTKPEER_H_FILES) \
 $(QTPEER_H_FILES) \
+$(HAIKUPEER_H_FILES) \
 $(GCONF_PREFS_FILES) \
 gnu_java_math_GMP.h \
 gnu_java_net_VMPlainSocketImpl.h \
@@ -287,6 +293,12 @@ gnu_java_awt_peer_qt_QtCheckboxPeer.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtChec
 	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtCheckboxPeer
 gnu_java_awt_peer_qt_QtToolkit.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtToolkit.java
 	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtToolkit
+gnu_java_awt_peer_haiku_HaikuNative.h: $(top_srcdir)/gnu/java/awt/peer/haiku/HaikuNative.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.haiku.HaikuNative
+gnu_java_awt_peer_haiku_HaikuRaster.h: $(top_srcdir)/gnu/java/awt/peer/haiku/HaikuRaster.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.haiku.HaikuRaster
+gnu_javax_sound_sampled_haiku_HaikuAudio.h: $(top_srcdir)/gnu/javax/sound/sampled/haiku/HaikuAudio.java
+	$(JAVAH) -o $@ gnu.javax.sound.sampled.haiku.HaikuAudio
 gnu_java_awt_peer_qt_QtAudioClip.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtAudioClip.java
 	$(JAVAH) -o $@ gnu.java.awt.peer.qt.QtAudioClip
 gnu_java_awt_peer_qt_QtScreenDevice.h: $(top_srcdir)/gnu/java/awt/peer/qt/QtScreenDevice.java
