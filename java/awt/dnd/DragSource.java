@@ -144,15 +144,11 @@ public class DragSource implements Serializable
       {
         flavorMap = map;
 
-        if (peer == null)
-          peer = Toolkit.getDefaultToolkit().createDragSourceContextPeer(trigger);
-
-        if (context == null)
-          context = createDragSourceContext(peer, trigger,
-                                                            dragCursor,
-                                                            dragImage,
-                                                            imageOffset, trans,
-                                                            dsl);
+        // Each drag gets its own peer and context; reusing the first ones
+        // would drag the first Transferable again.
+        peer = Toolkit.getDefaultToolkit().createDragSourceContextPeer(trigger);
+        context = createDragSourceContext(peer, trigger, dragCursor,
+                                          dragImage, imageOffset, trans, dsl);
 
         if (peer == null)
           throw new InvalidDnDOperationException();
