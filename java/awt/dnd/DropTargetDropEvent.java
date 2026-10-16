@@ -104,7 +104,7 @@ public class DropTargetDropEvent extends DropTargetEvent
                       | DnDConstants.ACTION_LINK
                       | DnDConstants.ACTION_REFERENCE;
 
-    if (~(actions ^ actionsMask) != 0)
+    if ((actions & ~actionsMask) != 0)
       throw new IllegalArgumentException();
 
     this.dropAction = dropAction;
