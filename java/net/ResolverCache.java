@@ -71,6 +71,19 @@ import java.util.LinkedList;
 class ResolverCache
 {
   /**
+   * The cache itself.  It is declared before the TTLs: computing them can
+   * load classes that resolve names, and the cache must exist by then.
+   * Lookups made during that time see both TTLs as 0, so their results
+   * are not cached.
+   */
+  private static HashMap<Object, Entry> cache = new HashMap<Object, Entry>();
+
+  /**
+   * List of entries which may expire.
+   */
+  private static LinkedList<Entry> killqueue = new LinkedList<Entry>();
+
+  /**
    * The time in seconds for which successful lookups are cached.
    */
   private static final int POSITIVE_TTL =
@@ -93,16 +106,6 @@ class ResolverCache
 
     return Integer.parseInt(propValue);
   }
-
-  /**
-   * The cache itself.
-   */
-  private static HashMap<Object, Entry> cache = new HashMap<Object, Entry>();
-
-  /**
-   * List of entries which may expire.
-   */
-  private static LinkedList<Entry> killqueue = new LinkedList<Entry>();
 
   /**
    * Return the hostname for the specified IP address.
