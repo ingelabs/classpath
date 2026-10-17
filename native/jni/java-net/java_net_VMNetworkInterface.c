@@ -67,11 +67,13 @@ exception statement from your version. */
 
 #include "java_net_VMNetworkInterface.h"
 
-/* Some systems, for example Haiku, do not define IFF_RUNNING.  Then
-   isUp() tests IFF_UP only.  (Haiku's IFF_LINK is not the same: it
-   tells if the hardware has a link, also when the interface is down.)  */
+/* Haiku uses IFF_LINK to report link state. */
 #ifndef IFF_RUNNING
-# define IFF_RUNNING 0
+# ifdef __HAIKU__
+#  define IFF_RUNNING IFF_LINK
+# else
+#  error "IFF_RUNNING is required to determine interface operational status"
+# endif
 #endif
 
 int iff_flags(JNIEnv *, jstring, jint *);
@@ -309,6 +311,7 @@ JNIEXPORT jboolean JNICALL
 Java_java_net_VMNetworkInterface_isUp (JNIEnv *env, jclass class UNUSED,
                                        jstring name)
 {
+  const jint MASK = IFF_UP | IFF_RUNNING;
   jint flags;
   int error;
   jboolean retval;
@@ -322,7 +325,7 @@ Java_java_net_VMNetworkInterface_isUp (JNIEnv *env, jclass class UNUSED,
   }
   else
   {
-    retval = (flags & (IFF_UP | IFF_RUNNING))
+    retval = ((flags & MASK) == MASK)
              ? JNI_TRUE
              : JNI_FALSE;
   }
