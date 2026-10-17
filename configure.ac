@@ -450,7 +450,7 @@ if test "x${COMPILE_JNI}" = xyes; then
 		  lseek fstat read readv write writev htonl memset htons connect \
 		  getsockname getpeername bind listen accept \
 		  recvfrom send sendto setsockopt getsockopt time mktime clock_gettime \
-		  gethostbyname_r localtime_r \
+		  getnameinfo gethostbyname_r localtime_r \
 		  strerror_r \
                   fcntl \
 		  statvfs \
