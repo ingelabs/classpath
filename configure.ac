@@ -440,9 +440,16 @@ if test "x${COMPILE_JNI}" = xyes; then
   AC_EGREP_HEADER(u_int32_t, sys/config.h, AC_DEFINE(HAVE_BSD_INT32_DEFINED, 1, [Define to 1 if you have BSD u_int32_t]))
 
   AC_SEARCH_LIBS([clock_gettime], [rt])
-  dnl Haiku has the socket functions and h_errno in libnetwork.
+  dnl Haiku has the socket functions in libnetwork.
   AC_SEARCH_LIBS([inet_pton],[nsl network])
   AC_CHECK_LIB([socket], [gethostname]) 
+
+  if test "x${COMPILE_CORE_JNI}" = xyes; then
+    AC_SEARCH_LIBS([getaddrinfo], [socket network], [],
+                  [AC_MSG_ERROR([getaddrinfo() is required for native networking])])
+    AC_SEARCH_LIBS([getnameinfo], [socket network], [],
+                  [AC_MSG_ERROR([getnameinfo() is required for native networking])])
+  fi
 
   AC_CHECK_FUNCS([ftruncate fsync select \
 		  gethostname socket strerror fork pipe execve open close close_range \
@@ -450,7 +457,7 @@ if test "x${COMPILE_JNI}" = xyes; then
 		  lseek fstat read readv write writev htonl memset htons connect \
 		  getsockname getpeername bind listen accept \
 		  recvfrom send sendto setsockopt getsockopt time mktime clock_gettime \
-		  gethostbyname_r localtime_r \
+		  localtime_r \
 		  strerror_r \
                   fcntl \
 		  statvfs \
@@ -500,7 +507,6 @@ if test "x${COMPILE_JNI}" = xyes; then
   AC_C_CONST
   AC_C_INLINE
   AC_C_ATTRIBUTE
-  AX_FUNC_WHICH_GETHOSTBYNAME_R
 
   dnl See if we HAVE_ICONV, how ICONV_CONST is set and LTLIBICONV
   AM_ICONV

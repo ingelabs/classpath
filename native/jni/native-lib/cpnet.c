@@ -629,140 +629,114 @@ jint cpnet_getHostname (JNIEnv *env UNUSED, char *hostname, jint hostname_len)
   return 0;
 }
 
+/* Translate resolver errors to regular errno values. */
+static jint resolverError (int error, int last_errno)
+{
+  switch (error)
+    {
+    case EAI_AGAIN:
+      return EAGAIN;
+    case EAI_NONAME:
+#if defined(EAI_NODATA) && EAI_NODATA != EAI_NONAME
+    case EAI_NODATA:
+#endif
+      return ENOENT;
+    case EAI_MEMORY:
+      return ENOMEM;
+    case EAI_OVERFLOW:
+      return ENAMETOOLONG;
+    case EAI_FAMILY:
+      return EAFNOSUPPORT;
+    case EAI_BADFLAGS:
+      return EINVAL;
+    case EAI_SYSTEM:
+      /* errno should not be 0 here, but see glibc bug #23530 */
+      return last_errno != 0 ? last_errno : EIO;
+    default:
+      return EIO;
+    }
+}
+
 jint cpnet_getHostByName (JNIEnv *env, const char *hostname, cpnet_address ***addresses, jint *addresses_count)
 {
-  struct hostent hret;
-  struct hostent *result;
-  jint buflen = 1024;
-  int herr = 0;
-  int ret = 0;
-  int counter = 0;
+  struct addrinfo hints;
+  struct addrinfo *result;
+  struct addrinfo *entry;
+  struct sockaddr_in *netaddr;
   cpnet_address **addr_arr;
-  int i;
-  char *buf;
+  int ret;
+  int counter = 0;
+  int i = 0;
 
-  do
+  *addresses = NULL;
+  *addresses_count = 0;
+
+  memset (&hints, 0, sizeof (hints));
+  /* Request IPv4 only: the current socket implementation creates
+     AF_INET sockets, which cannot connect to IPv6 addresses. */
+  hints.ai_family = AF_INET;
+  /* Set a socket type explicitly so that we get only one entry per
+     address. */
+  hints.ai_socktype = SOCK_STREAM;
+  ret = getaddrinfo (hostname, NULL, &hints, &result);
+  if (ret != 0)
+    return resolverError (ret, errno);
+
+  for (entry = result; entry != NULL; entry = entry->ai_next)
+    if (entry->ai_family == AF_INET)
+      counter++;
+
+  if (counter == 0)
     {
-      buf = (char *)JCL_malloc(env, buflen);
-
-#ifdef HAVE_GETHOSTBYNAME_R
-# if defined(HAVE_FUNC_GETHOSTBYNAME_R_6)
-      ret = gethostbyname_r (hostname, &hret, buf, buflen, &result, &herr);
-# elif defined(HAVE_FUNC_GETHOSTBYNAME_R_5)
-      result = gethostbyname_r(hostname, &hret, buf, buflen, &herr);
-# elif defined(HAVE_FUNC_GETHOSTBYNAME_R_3)
-#  error IMPLEMENT ME!
-# else
-#  error unknown number of arguments for gethostbyname_r
-# endif
-#else
-      hret.h_addr_list = NULL;
-      hret.h_addrtype = 0;
-
-      result = gethostbyname (hostname);
-      if (result == NULL)
-        return -h_errno;
-      memcpy (&hret, result, sizeof (struct hostent));
-#endif
-      if (ret != 0 || result == NULL)
-	{
-	  if (herr == ERANGE)
-	    {
-	      buflen *= 2;
-	      JCL_free(env, buf);
-	      continue;
-	    }
-	  JCL_free(env, buf);	  
-
-	  return -herr;
-	}
-
-      break;
+      freeaddrinfo (result);
+      return ENOENT;
     }
-  while (1);
-  
-  while (hret.h_addr_list[counter] != NULL)
-    counter++;
 
+  addr_arr = JCL_malloc (env, sizeof (cpnet_address *) * counter);
+  if (addr_arr == NULL)
+    {
+      freeaddrinfo (result);
+      return ENOMEM;
+    }
+
+  for (entry = result; entry != NULL; entry = entry->ai_next)
+    if (entry->ai_family == AF_INET)
+      {
+	addr_arr[i] = JCL_malloc (env, sizeof (cpnet_address)
+				+ sizeof (struct sockaddr_in));
+	if (addr_arr[i] == NULL)
+	  {
+	    cpnet_freeAddresses (env, addr_arr, i);
+	    JCL_free (env, addr_arr);
+	    freeaddrinfo (result);
+	    return ENOMEM;
+	  }
+	addr_arr[i]->len = sizeof (struct sockaddr_in);
+	netaddr = (struct sockaddr_in *) addr_arr[i]->data;
+	memset (netaddr, 0, sizeof (*netaddr));
+	netaddr->sin_family = AF_INET;
+	netaddr->sin_addr = ((struct sockaddr_in *) entry->ai_addr)->sin_addr;
+	i++;
+      }
+
+  freeaddrinfo (result);
+  *addresses = addr_arr;
   *addresses_count = counter;
-  addr_arr = *addresses = JCL_malloc(env, sizeof(cpnet_address *) * counter);
-  switch (hret.h_addrtype)
-    {
-    case AF_INET:
-      for (i = 0; i < counter; i++)
-	{
-	  addr_arr[i] = cpnet_newIPV4Address(env);
-	  cpnet_bytesToIPV4Address(addr_arr[i], (jbyte *)hret.h_addr_list[i]);
-	}
-      break;
-#ifdef HAVE_INET6
-    case AF_INET6:
-      for (i = 0; i < counter; i++)
-	{
-	  addr_arr[i] = cpnet_newIPV6Address(env);
-	  cpnet_bytesToIPV6Address(addr_arr[i], (jbyte *)hret.h_addr_list[i]);
-	}
-      break;
-#endif
-    default:
-      *addresses_count = 0;
-      JCL_free(env, addr_arr);
-      break;
-    }
-
-  JCL_free(env, buf);
-
   return 0;
 }
 
 jint cpnet_getHostByAddr (JNIEnv *env UNUSED, cpnet_address *addr, char *hostname, jint hostname_len)
 {
-  union 
-  {
-    struct sockaddr_in *addr_v4;
-    struct sockaddr_in6 *addr_v6;
-    char *data;
-  } haddr;
-  void *raw_addr;
-  int addr_type;
-  struct hostent *ret;
-  int addr_len;
+  int ret;
 
-  haddr.data = addr->data;
-  
-  if (haddr.addr_v4->sin_family == AF_INET)
-    {
-      raw_addr = &haddr.addr_v4->sin_addr;
-      addr_len = sizeof(haddr.addr_v4->sin_addr);
-      addr_type = AF_INET;
-    }
-#ifdef HAVE_INET6
-  else if (haddr.addr_v6->sin6_family == AF_INET6)
-    {
-      raw_addr = &haddr.addr_v6->sin6_addr;
-      addr_type = AF_INET6;
-      addr_len = sizeof(haddr.addr_v6->sin6_addr);
-    }
-#endif
-  else
+  if (hostname_len <= 0)
     return EINVAL;
 
-  /* Here we do not have any thread safe call. VM implementors will have to
-   * do a big lock. Or it should be put on the Classpath VM interface.
-   */
-  ret = gethostbyaddr(raw_addr, addr_len, addr_type);
-  if (ret == NULL)
-    {
-      /* The trouble here is how to distinguish the two cases ? */
-      if (h_errno != 0)
-	return h_errno;
-      else
-	return errno;
+  /* Require a hostname rather than falling back to a numeric address */
+  ret = getnameinfo ((struct sockaddr *) addr->data, addr->len,
+		     hostname, hostname_len, NULL, 0, NI_NAMEREQD);
 
-    }
-  strncpy(hostname, ret->h_name, hostname_len);
-
-  return 0;
+  return (ret != 0) ? resolverError (ret, errno) : 0;
 }
 
 jint cpnet_aton (JNIEnv *env, const char *hostname, cpnet_address **addr)
