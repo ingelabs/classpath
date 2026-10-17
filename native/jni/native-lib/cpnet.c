@@ -717,6 +717,40 @@ jint cpnet_getHostByName (JNIEnv *env, const char *hostname, cpnet_address ***ad
 
 jint cpnet_getHostByAddr (JNIEnv *env UNUSED, cpnet_address *addr, char *hostname, jint hostname_len)
 {
+#ifdef HAVE_GETNAMEINFO
+  int ret;
+
+  if (hostname_len <= 0)
+    return EINVAL;
+
+  /* Require a hostname rather than falling back to a numeric address */
+  ret = getnameinfo ((struct sockaddr *) addr->data, addr->len,
+		     hostname, hostname_len, NULL, 0, NI_NAMEREQD);
+
+  /* Translate EAI_* errors to equivalent errno values */
+  switch (ret)
+    {
+    case 0:
+      return 0;
+    case EAI_AGAIN:
+      return EAGAIN;
+    case EAI_NONAME:
+      return ENOENT;
+    case EAI_MEMORY:
+      return ENOMEM;
+    case EAI_OVERFLOW:
+      return ENAMETOOLONG;
+    case EAI_FAMILY:
+      return EAFNOSUPPORT;
+    case EAI_BADFLAGS:
+      return EINVAL;
+    case EAI_SYSTEM:
+      /* errno should not be 0 here, but see glibc bug #23530 */
+      return errno != 0 ? errno : EIO;
+    default:
+      return EIO;
+    }
+#else
   union 
   {
     struct sockaddr_in *addr_v4;
@@ -763,6 +797,7 @@ jint cpnet_getHostByAddr (JNIEnv *env UNUSED, cpnet_address *addr, char *hostnam
   strncpy(hostname, ret->h_name, hostname_len);
 
   return 0;
+#endif
 }
 
 jint cpnet_aton (JNIEnv *env, const char *hostname, cpnet_address **addr)
