@@ -631,6 +631,92 @@ jint cpnet_getHostname (JNIEnv *env UNUSED, char *hostname, jint hostname_len)
 
 jint cpnet_getHostByName (JNIEnv *env, const char *hostname, cpnet_address ***addresses, jint *addresses_count)
 {
+#ifdef HAVE_GETADDRINFO
+  struct addrinfo hints;
+  struct addrinfo *result;
+  struct addrinfo *entry;
+  struct sockaddr_in *netaddr;
+  cpnet_address **addr_arr;
+  int ret;
+  int counter = 0;
+  int i = 0;
+
+  *addresses = NULL;
+  *addresses_count = 0;
+
+  memset (&hints, 0, sizeof (hints));
+  /* Request IPv4 only: the current socket implementation creates
+     AF_INET sockets, which cannot connect to IPv6 addresses. */
+  hints.ai_family = AF_INET;
+  /* Set a socket type explicitly so that we get only one entry per
+     address. */
+  hints.ai_socktype = SOCK_STREAM;
+  ret = getaddrinfo (hostname, NULL, &hints, &result);
+  if (ret != 0)
+    {
+      /* Keep resolver errors in the existing negative h_errno domain */
+      switch (ret)
+	{
+	case EAI_AGAIN:
+	  return -TRY_AGAIN;
+	case EAI_NONAME:
+	  return -HOST_NOT_FOUND;
+#if defined(EAI_NODATA) && EAI_NODATA != EAI_NONAME
+	case EAI_NODATA:
+	  return -NO_DATA;
+#endif
+	case EAI_MEMORY:
+	  return ENOMEM;
+	case EAI_SYSTEM:
+	  /* errno should not be 0 here, but see glibc bug #23530 */
+	  return errno != 0 ? errno : EIO;
+	default:
+	  return -NO_RECOVERY;
+	}
+    }
+
+  for (entry = result; entry != NULL; entry = entry->ai_next)
+    if (entry->ai_family == AF_INET)
+      counter++;
+
+  if (counter == 0)
+    {
+      freeaddrinfo (result);
+      return -NO_DATA;
+    }
+
+  addr_arr = JCL_malloc (env, sizeof (cpnet_address *) * counter);
+  if (addr_arr == NULL)
+    {
+      freeaddrinfo (result);
+      return ENOMEM;
+    }
+
+  for (entry = result; entry != NULL; entry = entry->ai_next)
+    if (entry->ai_family == AF_INET)
+      {
+	addr_arr[i] = JCL_malloc (env, sizeof (cpnet_address)
+				+ sizeof (struct sockaddr_in));
+	if (addr_arr[i] == NULL)
+	  {
+	    cpnet_freeAddresses (env, addr_arr, i);
+	    JCL_free (env, addr_arr);
+	    freeaddrinfo (result);
+	    return ENOMEM;
+	  }
+	addr_arr[i]->len = sizeof (struct sockaddr_in);
+	netaddr = (struct sockaddr_in *) addr_arr[i]->data;
+	memset (netaddr, 0, sizeof (*netaddr));
+	netaddr->sin_family = AF_INET;
+	netaddr->sin_addr = ((struct sockaddr_in *) entry->ai_addr)->sin_addr;
+	i++;
+      }
+
+  freeaddrinfo (result);
+  *addresses = addr_arr;
+  *addresses_count = counter;
+  return 0;
+#else
   struct hostent hret;
   struct hostent *result;
   jint buflen = 1024;
@@ -713,6 +799,7 @@ jint cpnet_getHostByName (JNIEnv *env, const char *hostname, cpnet_address ***ad
   JCL_free(env, buf);
 
   return 0;
+#endif
 }
 
 jint cpnet_getHostByAddr (JNIEnv *env UNUSED, cpnet_address *addr, char *hostname, jint hostname_len)
