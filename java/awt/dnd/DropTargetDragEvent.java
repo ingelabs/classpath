@@ -115,7 +115,7 @@ public class DropTargetDragEvent extends DropTargetEvent
 
   public int getDropAction()
   {
-    return dropAction & ((DropTargetContext) source).getTargetActions();
+    return dropAction;
   }
 
   public Point getLocation ()
