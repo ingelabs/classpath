@@ -161,9 +161,10 @@ public class DropTargetContext implements Serializable
 
   protected DataFlavor[] getCurrentDataFlavors ()
   {
+    DataFlavor[] flavors = null;
     if (dtcp != null)
-      dtcp.getTransferDataFlavors();
-    return null;
+      flavors = dtcp.getTransferDataFlavors();
+    return flavors != null ? flavors : new DataFlavor[0];
   }
 
   protected List<DataFlavor> getCurrentDataFlavorsAsList ()
