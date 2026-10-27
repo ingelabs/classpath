@@ -5759,6 +5759,9 @@ p   * <li>the set of backward traversal keys
 
     switch (type)
       {
+      case ActionEvent.ACTION_PERFORMED:
+        return (eventMask & AWTEvent.ACTION_EVENT_MASK) != 0;
+
       case HierarchyEvent.HIERARCHY_CHANGED:
         return (hierarchyListener != null
             || (eventMask & AWTEvent.HIERARCHY_EVENT_MASK) != 0);
