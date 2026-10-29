@@ -296,8 +296,20 @@ public class OpenTypeFontPeer
   public int canDisplayUpTo(Font font, CharacterIterator i, int start, int limit)
   {
     for (char c = i.setIndex(start); i.getIndex() < limit; c = i.next())
-      if (! canDisplay(font, c))
-        return i.getIndex();
+      {
+        int index = i.getIndex();
+        int codePoint = c;
+        if (Character.isHighSurrogate(c) && index + 1 < limit)
+          {
+            char low = i.next();
+            if (Character.isLowSurrogate(low))
+              codePoint = Character.toCodePoint(c, low);
+            else
+              i.previous();
+          }
+        if (! canDisplay(font, codePoint))
+          return index;
+      }
     return -1;
   }
 
