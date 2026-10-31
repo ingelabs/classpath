@@ -706,8 +706,7 @@ jint cpnet_getHostByName (JNIEnv *env, const char *hostname, cpnet_address ***ad
 				+ sizeof (struct sockaddr_in));
 	if (addr_arr[i] == NULL)
 	  {
-	    cpnet_freeAddresses (env, addr_arr, i);
-	    JCL_free (env, addr_arr);
+	    cpnet_freeAddressArray (env, addr_arr, i);
 	    freeaddrinfo (result);
 	    return ENOMEM;
 	  }
@@ -783,10 +782,12 @@ jint cpnet_aton (JNIEnv *env, const char *hostname, cpnet_address **addr)
   return 0;
 }
 
-void cpnet_freeAddresses(JNIEnv * env, cpnet_address **addr, jint addresses_count)
+void cpnet_freeAddressArray(JNIEnv * env, cpnet_address **addr, jint addresses_count)
 {
   jint i;
 
   for (i = 0; i < addresses_count; i++)
     cpnet_freeAddress(env, addr[i]);
+
+  JCL_free(env, addr);
 }
