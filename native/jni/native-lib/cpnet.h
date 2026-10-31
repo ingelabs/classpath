@@ -101,7 +101,7 @@ JNIEXPORT jint cpnet_getHostname (JNIEnv *env, char *hostname, jint hostname_len
 JNIEXPORT jint cpnet_getHostByName (JNIEnv *env, const char *hostname, cpnet_address ***adresses, jint *addresses_count);
 JNIEXPORT jint cpnet_getHostByAddr (JNIEnv *env, cpnet_address *addr, char *hostname, jint hostname_len);
 JNIEXPORT jint cpnet_aton (JNIEnv *env, const char *hostname, cpnet_address **addr);
-JNIEXPORT void cpnet_freeAddresses(JNIEnv * env, cpnet_address **addr, jint addresses_count);
+JNIEXPORT void cpnet_freeAddressArray (JNIEnv * env, cpnet_address **addr, jint addresses_count);
 
 static inline cpnet_address *cpnet_newIPV4Address(JNIEnv * env)
 {

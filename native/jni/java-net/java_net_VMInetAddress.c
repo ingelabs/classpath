@@ -255,7 +255,7 @@ Java_java_net_VMInetAddress_getHostByName (JNIEnv * env,
 	  if (!ret_octets)
 	    {
 	      JCL_ThrowException (env, UNKNOWN_HOST_EXCEPTION, "Internal Error");
-	      cpnet_freeAddresses (env, addresses, addresses_count);
+	      cpnet_freeAddressArray (env, addresses, addresses_count);
 	      return (jobjectArray) NULL;
 	    }
 	  
@@ -275,7 +275,7 @@ Java_java_net_VMInetAddress_getHostByName (JNIEnv * env,
 	  if (!ret_octets)
 	    {
 	      JCL_ThrowException (env, UNKNOWN_HOST_EXCEPTION, "Internal Error");
-	      cpnet_freeAddresses (env, addresses, addresses_count);
+	      cpnet_freeAddressArray (env, addresses, addresses_count);
 	      return (jobjectArray) NULL;
 	    }
 	  
@@ -291,12 +291,12 @@ Java_java_net_VMInetAddress_getHostByName (JNIEnv * env,
       else
 	{
 	  JCL_ThrowException (env, UNKNOWN_HOST_EXCEPTION, "Internal Error");
-	  cpnet_freeAddresses (env, addresses, addresses_count);
+	  cpnet_freeAddressArray (env, addresses, addresses_count);
 	  return (jobjectArray) NULL;
 	}
     }
 
-  cpnet_freeAddresses (env, addresses, addresses_count);
+  cpnet_freeAddressArray (env, addresses, addresses_count);
 
   return (addrs);
 #else /* not WITHOUT_NETWORK */
