@@ -144,7 +144,11 @@ Java_java_net_VMInetAddress_getHostByAddr (JNIEnv * env,
 
   /* Grab the byte[] array with the IP out of the input data */
   len = (*env)->GetArrayLength (env, arr);
+#ifdef HAVE_INET6
   if (len != 4 && len != 16)
+#else
+  if (len != 4)
+#endif
     {
       JCL_ThrowException (env, UNKNOWN_HOST_EXCEPTION, "Bad IP Address");
       return (jstring) NULL;
@@ -161,7 +165,7 @@ Java_java_net_VMInetAddress_getHostByAddr (JNIEnv * env,
     {
     case 4:
       addr = cpnet_newIPV4Address(env);
-      cpnet_bytesToIPV4Address (addr, octets);      
+      cpnet_bytesToIPV4Address (addr, octets);
       break;
 #ifdef HAVE_INET6
     case 16:
@@ -169,11 +173,7 @@ Java_java_net_VMInetAddress_getHostByAddr (JNIEnv * env,
       cpnet_bytesToIPV6Address (addr, octets);
       break;
 #endif
-    default:
-      JCL_ThrowException (env, UNKNOWN_HOST_EXCEPTION, "Bad IP Address");
-      return (jstring) NULL;
-
-   }
+    }
 
   /* Release some memory */
   (*env)->ReleaseByteArrayElements (env, arr, octets, 0);
@@ -227,6 +227,7 @@ Java_java_net_VMInetAddress_getHostByName (JNIEnv * env,
   if (result != CPNATIVE_OK || addresses_count == 0)
     {
       JCL_ThrowException (env, UNKNOWN_HOST_EXCEPTION, hostname);
+      (*env)->ReleaseStringUTFChars (env, host, hostname);
       return (jobjectArray) NULL;
     }
   (*env)->ReleaseStringUTFChars (env, host, hostname);
@@ -235,6 +236,7 @@ Java_java_net_VMInetAddress_getHostByName (JNIEnv * env,
   if (!arr_class)
     {
       JCL_ThrowException (env, UNKNOWN_HOST_EXCEPTION, "Internal Error");
+      cpnet_freeAddressArray (env, addresses, addresses_count);
       return (jobjectArray) NULL;
     }
 
@@ -242,6 +244,7 @@ Java_java_net_VMInetAddress_getHostByName (JNIEnv * env,
   if (!addrs)
     {
       JCL_ThrowException (env, UNKNOWN_HOST_EXCEPTION, "Internal Error");
+      cpnet_freeAddressArray (env, addresses, addresses_count);
       return (jobjectArray) NULL;
     }
 

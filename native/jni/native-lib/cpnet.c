@@ -520,11 +520,15 @@ jint cpnet_getMulticastIF (JNIEnv *env, jint fd, cpnet_address **addr)
 
   slen -= sizeof(jint);
   ret = getsockopt(fd, IPPROTO_IP, IP_MULTICAST_IF, (struct sockaddr *)(*addr)->data, &slen);
+  if (ret != 0)
+    {
+      int err = errno;
+      JCL_free(env, *addr);
+      return err;
+    }
+
   (*addr)->len = slen;
 
-  if (ret != 0)
-    return errno;
-  
   return 0;
 }
 
