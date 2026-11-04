@@ -159,14 +159,12 @@ JCL_malloc (JNIEnv * env, size_t size)
 JNIEXPORT void *JNICALL
 JCL_realloc (JNIEnv * env, void *ptr, size_t size)
 {
-  void *orig_ptr = ptr;
   ptr = realloc (ptr, size);
   if (ptr == NULL)
     {
-      if (orig_ptr != NULL)
-        free (orig_ptr);
       JCL_ThrowException (env, "java/lang/OutOfMemoryError",
 			  "malloc() failed.");
+      return NULL;
     }
   return (ptr);
 }
