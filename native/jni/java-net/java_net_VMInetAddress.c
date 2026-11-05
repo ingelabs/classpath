@@ -107,6 +107,11 @@ Java_java_net_VMInetAddress_lookupInaddrAny (JNIEnv * env,
 
 #ifndef WITHOUT_NETWORK
   addr = cpnet_newIPV4Address (env);
+  if (addr == NULL)
+    {
+      (*env)->ReleaseByteArrayElements (env, IParray, octets, 0);
+      return (jarray) NULL;
+    }
   cpnet_setIPV4Any (addr);
   cpnet_IPV4AddressToBytes (addr, octets);
   cpnet_freeAddress (env, addr);
@@ -165,18 +170,22 @@ Java_java_net_VMInetAddress_getHostByAddr (JNIEnv * env,
     {
     case 4:
       addr = cpnet_newIPV4Address(env);
-      cpnet_bytesToIPV4Address (addr, octets);
+      if (addr != NULL)
+        cpnet_bytesToIPV4Address (addr, octets);
       break;
 #ifdef HAVE_INET6
     case 16:
       addr = cpnet_newIPV6Address(env);
-      cpnet_bytesToIPV6Address (addr, octets);
+      if (addr != NULL)
+        cpnet_bytesToIPV6Address (addr, octets);
       break;
 #endif
     }
 
   /* Release some memory */
   (*env)->ReleaseByteArrayElements (env, arr, octets, 0);
+  if (addr == NULL)
+    return (jstring) NULL;
 
   /* Resolve the address and return the name */
   result = cpnet_getHostByAddr (env, addr, hostname, sizeof (hostname));
@@ -337,7 +346,8 @@ Java_java_net_VMInetAddress_aton (JNIEnv *env,
   (*env)->ReleaseStringUTFChars (env, host, hostname);
   if (result != CPNATIVE_OK)
     {
-      JCL_ThrowException (env, UNKNOWN_HOST_EXCEPTION, "Internal Error");
+      if (!(*env)->ExceptionCheck (env))
+	JCL_ThrowException (env, UNKNOWN_HOST_EXCEPTION, "Internal Error");
       if (address)
 	cpnet_freeAddress (env, address);
       return (jbyteArray) NULL;

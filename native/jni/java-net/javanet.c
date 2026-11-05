@@ -393,12 +393,14 @@ _javanet_get_ip_netaddr (JNIEnv * env, jobject addr)
     {
     case 4:      
       netaddr = cpnet_newIPV4Address(env);
-      cpnet_bytesToIPV4Address(netaddr, octets);
+      if (netaddr != NULL)
+        cpnet_bytesToIPV4Address(netaddr, octets);
       break;
 #ifdef HAVE_INET6
     case 16:
       netaddr = cpnet_newIPV6Address(env);
-      cpnet_bytesToIPV6Address(netaddr, octets);
+      if (netaddr != NULL)
+        cpnet_bytesToIPV6Address(netaddr, octets);
       break;
 #endif
     default:
@@ -410,6 +412,8 @@ _javanet_get_ip_netaddr (JNIEnv * env, jobject addr)
     }
 
   (*env)->ReleaseByteArrayElements (env, arr, octets, 0);
+  if (netaddr == NULL)
+    return 0;
   DBG ("_javanet_get_ip_netaddr(): Done getting addr\n");
 
   return netaddr;

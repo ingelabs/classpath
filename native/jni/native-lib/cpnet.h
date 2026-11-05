@@ -106,8 +106,12 @@ JNIEXPORT void cpnet_freeAddressArray (JNIEnv * env, cpnet_address **addr, jint 
 static inline cpnet_address *cpnet_newIPV4Address(JNIEnv * env)
 {
   cpnet_address *addr = (cpnet_address *)JCL_malloc(env, sizeof(cpnet_address) + sizeof(struct sockaddr_in));
-  struct sockaddr_in *netaddr = (struct sockaddr_in *)&(addr->data[0]);
+  struct sockaddr_in *netaddr;
 
+  if (addr == NULL)
+    return NULL;
+
+  netaddr = (struct sockaddr_in *)&(addr->data[0]);
   addr->len = sizeof(struct sockaddr_in);
   memset(netaddr, 0, addr->len);
   netaddr->sin_family = AF_INET;
@@ -125,8 +129,12 @@ static inline void cpnet_setIPV4Any(cpnet_address *addr)
 static inline cpnet_address *cpnet_newIPV6Address(JNIEnv * env)
 {
   cpnet_address * addr = (cpnet_address *)JCL_malloc(env, sizeof(cpnet_address) + sizeof(struct sockaddr_in6));
-  struct sockaddr_in6 *netaddr = (struct sockaddr_in6 *)&(addr->data[0]);
+  struct sockaddr_in6 *netaddr;
 
+  if (addr == NULL)
+    return NULL;
+
+  netaddr = (struct sockaddr_in6 *)&(addr->data[0]);
   addr->len = sizeof(struct sockaddr_in6);
   memset(netaddr, 0, addr->len);
   netaddr->sin6_family = AF_INET6;

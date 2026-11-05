@@ -769,6 +769,8 @@ jint cpnet_aton (JNIEnv *env, const char *hostname, cpnet_address **addr)
   if (bytes)
     {
       *addr = cpnet_newIPV4Address(env);
+      if (*addr == NULL)
+        return ENOMEM;
       cpnet_bytesToIPV4Address(*addr, bytes);
       return 0;
     }
@@ -777,6 +779,8 @@ jint cpnet_aton (JNIEnv *env, const char *hostname, cpnet_address **addr)
   if (inet_pton (AF_INET6, hostname, inet6_addr) > 0)
     {
       *addr = cpnet_newIPV6Address(env);
+      if (*addr == NULL)
+        return ENOMEM;
       cpnet_bytesToIPV6Address(*addr, inet6_addr);
       return 0;
     }
