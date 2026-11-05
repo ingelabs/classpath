@@ -959,13 +959,19 @@ nextChunkSize (int size)
   return ((size >> CHUNKLOG) + ((size & (CHUNKSIZ - 1)) ? 1 : 0)) << CHUNKLOG;
 }
 
+/* Returns NULL, with buf freed, if it cannot be grown.  */
 static char *
 maybeGrowBuf (JNIEnv *env, char *buf, int *size, int required)
 {
+  char *new_buf;
+
   if (required > *size)
     {
       *size = nextChunkSize (required);
-      buf = JCL_realloc (env, buf, *size);
+      new_buf = JCL_realloc (env, buf, *size);
+      if (new_buf == NULL)
+	JCL_free (env, buf);
+      buf = new_buf;
     }
   return buf;
 }
@@ -1103,6 +1109,7 @@ Java_java_io_VMFile_toCanonicalForm (JNIEnv *env,
 	    {
 	      int tmpl = CHUNKSIZ;
 	      char *tmp = JCL_malloc (env, tmpl);
+	      char *new_tmp;
 	      if (tmp == NULL)
 		{
 		  JCL_free (env, src);
@@ -1125,7 +1132,15 @@ Java_java_io_VMFile_toCanonicalForm (JNIEnv *env,
 		  if (tmpi < tmpl)
 		    break;
 		  tmpl += CHUNKSIZ;
-		  tmp = JCL_realloc (env, tmp, tmpl);
+		  new_tmp = JCL_realloc (env, tmp, tmpl);
+		  if (new_tmp == NULL)
+		    {
+		      JCL_free (env, src);
+		      JCL_free (env, dst);
+		      JCL_free (env, tmp);
+		      return NULL;
+		    }
+		  tmp = new_tmp;
 		}
 
 	      /* Prepend the link's path to src. */
