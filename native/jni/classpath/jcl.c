@@ -109,38 +109,36 @@ JNIEXPORT void JNICALL
 JCL_ThrowException (JNIEnv * env, const char *className, const char *errMsg)
 {
   jclass excClass;
-  if ((*env)->ExceptionOccurred (env))
+  const char *msg = errMsg;
+
+  if ((*env)->ExceptionCheck (env))
     {
       (*env)->ExceptionClear (env);
     }
+
   excClass = (*env)->FindClass (env, className);
-  if (excClass == NULL)
+  if (excClass == NULL && !(*env)->ExceptionCheck (env))
     {
-      jclass errExcClass;
-      errExcClass =
-	(*env)->FindClass (env, "java/lang/ClassNotFoundException");
-      if (errExcClass == NULL)
-	{
-	  errExcClass = (*env)->FindClass (env, "java/lang/InternalError");
-	  if (errExcClass == NULL)
-	    {
-	      fprintf (stderr, "JCL: Utterly failed to throw exeption ");
-	      fprintf (stderr, "%s", className);
-	      fprintf (stderr, " with message ");
-	      fprintf (stderr, "%s", errMsg);
-	      return;
-	    }
-	}
-      /* Removed this (more comprehensive) error string to avoid the need for
-       * a static variable or allocation of a buffer for this message in this
-       * (unlikely) error case. --Fridi.
-       *
-       * sprintf(errstr,"JCL: Failed to throw exception %s with message %s:"
-       * " could not find exception class.", className, errMsg);
-       */
-      (*env)->ThrowNew (env, errExcClass, className);
+      /* FindClass may fail without raising an exception.  Report the
+         lookup failure in that case.  */
+      excClass = (*env)->FindClass (env, "java/lang/NoClassDefFoundError");
+      msg = className;
     }
-  (*env)->ThrowNew (env, excClass, errMsg);
+
+  if (excClass != NULL)
+    {
+      (*env)->ThrowNew (env, excClass, msg);
+      (*env)->DeleteLocalRef (env, excClass);
+    }
+
+  /* If no exception is pending, report failure on stderr as a last resort.  */
+  if (!(*env)->ExceptionCheck (env))
+    {
+      if (errMsg != NULL)
+	fprintf (stderr, "JCL: Failed to throw %s: %s\n", className, errMsg);
+      else
+	fprintf (stderr, "JCL: Failed to throw %s\n", className);
+    }
 }
 
 JNIEXPORT void *JNICALL
