@@ -230,9 +230,11 @@ JNIEXPORT jclass JNICALL
 JCL_FindClass (JNIEnv * env, const char *className)
 {
   jclass retval = (*env)->FindClass (env, className);
-  if (retval == NULL)
+  if (retval == NULL && !(*env)->ExceptionCheck (env))
     {
-      JCL_ThrowException (env, "java/lang/ClassNotFoundException", className);
+      /* FindClass may fail without raising an exception.  Report the
+         lookup failure in that case.  */
+      JCL_ThrowException (env, "java/lang/NoClassDefFoundError", className);
     }
   return retval;
 }
