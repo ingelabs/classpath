@@ -58,6 +58,9 @@ JNIEXPORT jclass JNICALL JCL_FindClass (JNIEnv * env, const char *className);
 JNIEXPORT void JNICALL JCL_ThrowException (JNIEnv * env,
 					   const char *className,
 					   const char *errMsg);
+JNIEXPORT void JNICALL JCL_ThrowExceptionUnlessPending (JNIEnv * env,
+							const char *className,
+							const char *errMsg);
 JNIEXPORT void *JNICALL JCL_malloc (JNIEnv * env, size_t size);
 JNIEXPORT void *JNICALL JCL_realloc (JNIEnv * env, void *ptr, size_t size);
 JNIEXPORT void JNICALL JCL_free (JNIEnv * env, void *p);

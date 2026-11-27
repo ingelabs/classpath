@@ -105,16 +105,13 @@ JNI_OnLoad (JavaVM *vm, void *reserved __attribute__((unused)))
 
 #endif /* !JCL_NO_JNIONLOAD */
 
-JNIEXPORT void JNICALL
-JCL_ThrowException (JNIEnv * env, const char *className, const char *errMsg)
+/* Throw an exception of class CLASSNAME, or NoClassDefFoundError if the
+   class cannot be found.  No exception may be pending.  */
+static void
+throw_exception (JNIEnv * env, const char *className, const char *errMsg)
 {
   jclass excClass;
   const char *msg = errMsg;
-
-  if ((*env)->ExceptionCheck (env))
-    {
-      (*env)->ExceptionClear (env);
-    }
 
   excClass = (*env)->FindClass (env, className);
   if (excClass == NULL && !(*env)->ExceptionCheck (env))
@@ -138,6 +135,26 @@ JCL_ThrowException (JNIEnv * env, const char *className, const char *errMsg)
 	fprintf (stderr, "JCL: Failed to throw %s: %s\n", className, errMsg);
       else
 	fprintf (stderr, "JCL: Failed to throw %s\n", className);
+    }
+}
+
+JNIEXPORT void JNICALL
+JCL_ThrowException (JNIEnv * env, const char *className, const char *errMsg)
+{
+  if ((*env)->ExceptionCheck (env))
+    {
+      (*env)->ExceptionClear (env);
+    }
+  throw_exception (env, className, errMsg);
+}
+
+JNIEXPORT void JNICALL
+JCL_ThrowExceptionUnlessPending (JNIEnv * env, const char *className,
+				 const char *errMsg)
+{
+  if (!(*env)->ExceptionCheck (env))
+    {
+      throw_exception (env, className, errMsg);
     }
 }
 
